@@ -28,6 +28,7 @@ from ..mdp.stationary import curriculums as custom_curriculums
 from ..mdp.stationary import events as custom_events
 from ..mdp.stationary.observations import balance_imu_state
 from ..mdp.stationary.rewards import (
+    balance_action_rate_penalty,
     balance_drive_reward,
     balance_joint_acc_penalty,
     balance_position_penalty,
@@ -87,6 +88,10 @@ class BalanceRewardsCfg:
     # exponential survival (commented — flip back by swapping which line is active):
     # survival = RewardTermCfg(func=balance_survival_reward, weight=5.0)  # exp reward peaks at 1.0 (vertical), so weight == peak survival = 5.0.
     survival = RewardTermCfg(func=balance_survival_reward_binary, weight=5.0)  # binary +1 while |roll|<30°, else 0 (flat alive bonus, no shaping). Dominates drive(1.0)/steer(0.25).
+    # action-rate (smoothness) penalty: -||a_t - a_{t-1}||. weight 0.0 = OFF by default
+    # (contributes nothing, so no-flag runs are unchanged); set per-run with --arp_w
+    # (e.g. 0.1) to damp motor jitter/chaos. Unbounded -> keep the weight small.
+    action_rate = RewardTermCfg(func=balance_action_rate_penalty, weight=0.0)
     #termination_pen = RewardTermCfg(func=balance_termination_penalty, weight=10.0)  # one-time -1 on failure termination (fallen/diverged)
     # stability disabled: it penalises angular velocity, which fights the active
     # corrective motion the bike needs. Function kept in rewards.py.

@@ -37,6 +37,8 @@ parser.add_argument("--drive_w", type=float, default=None,
     help="Override the drive_reward weight (kept at the env-cfg value if omitted). 0 disables the term.")
 parser.add_argument("--steer_w", type=float, default=None,
     help="Override the steer_reward weight (kept at the env-cfg value if omitted). 0 disables the term.")
+parser.add_argument("--arp_w", type=float, default=None,
+    help="Override the action_rate penalty weight (kept at the env-cfg value if omitted; cfg default 0=off). Small, e.g. 0.1.")
 parser.add_argument(
     "--distributed", action="store_true", default=False, help="Run training with multiple GPUs or nodes."
 )
@@ -162,6 +164,7 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
         (args_cli.survival_w, "survival"),
         (args_cli.drive_w, "drive_reward"),
         (args_cli.steer_w, "steer_reward"),
+        (args_cli.arp_w, "action_rate"),
     ):
         if w is not None:
             _set_reward_weight(term_name, w)
