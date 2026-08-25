@@ -13,7 +13,7 @@ from lmbike's values after a run where action std inflated off good policies and
 reward regressed — gentler updates + less entropy pressure to stabilize.
 """
 
-from isaaclab.utils import configclass
+from isaaclab.utils.configclass import configclass
 
 from isaaclab_rl.rsl_rl import (
     RslRlMLPModelCfg,
