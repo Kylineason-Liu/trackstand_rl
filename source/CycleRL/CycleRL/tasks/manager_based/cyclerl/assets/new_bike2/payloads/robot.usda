@@ -1,0 +1,83 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "URDF USD Converter v0.1.3"
+    }
+    defaultPrim = "new_bike2"
+    doc = """Generated from Composed Stage of root layer /tmp/tmp62z_vts5/new_bike2.usdc
+
+
+Generated from Composed Stage of root layer /tmp/urdf_import_new_bike2_9_fjv54r/usdex_new_bike2/new_bike2.usdc
+
+
+Generated from Composed Stage of root layer /tmp/urdf_import_new_bike2_9_fjv54r/temp_new_bike2/new_bike2.usd
+"""
+    kilogramsPerUnit = 1
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+over "new_bike2" (
+    prepend apiSchemas = ["IsaacRobotAPI"]
+)
+{
+    prepend rel isaac:physics:robotJoints = [
+        </new_bike2/Physics/rearwheel_joint>,
+        </new_bike2/Physics/steering_joint>,
+        </new_bike2/Physics/frontwheel_joint>,
+    ]
+    prepend rel isaac:physics:robotLinks = [
+        </new_bike2/Geometry/base_link>,
+        </new_bike2/Geometry/base_link/rear_wheel_link_1>,
+        </new_bike2/Geometry/base_link/steering_link_1>,
+        </new_bike2/Geometry/base_link/steering_link_1/front_wheel_link_1>,
+    ]
+    token isaac:robotType = "Default"
+
+    over "Geometry"
+    {
+        over "base_link" (
+            prepend apiSchemas = ["IsaacLinkAPI"]
+        )
+        {
+            over "rear_wheel_link_1" (
+                prepend apiSchemas = ["IsaacLinkAPI"]
+            )
+            {
+            }
+
+            over "steering_link_1" (
+                prepend apiSchemas = ["IsaacLinkAPI"]
+            )
+            {
+                over "front_wheel_link_1" (
+                    prepend apiSchemas = ["IsaacLinkAPI"]
+                )
+                {
+                }
+            }
+        }
+    }
+
+    over "Physics"
+    {
+        over "rearwheel_joint" (
+            prepend apiSchemas = ["IsaacJointAPI"]
+        )
+        {
+        }
+
+        over "steering_joint" (
+            prepend apiSchemas = ["IsaacJointAPI"]
+        )
+        {
+        }
+
+        over "frontwheel_joint" (
+            prepend apiSchemas = ["IsaacJointAPI"]
+        )
+        {
+        }
+    }
+}
+

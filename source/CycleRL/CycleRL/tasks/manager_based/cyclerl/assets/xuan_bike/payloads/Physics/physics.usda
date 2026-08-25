@@ -1,0 +1,154 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "URDF USD Converter v0.1.2"
+    }
+    defaultPrim = "xuan_bike"
+    doc = """Generated from Composed Stage of root layer /tmp/tmpn4e3pmbt/xuan_bike.usdc
+
+
+Generated from Composed Stage of root layer /tmp/urdf_import_xuan_bike_my2s2sih/usdex_xuan_bike/xuan_bike.usdc
+
+
+Generated from Composed Stage of root layer /tmp/urdf_import_xuan_bike_my2s2sih/temp_xuan_bike/xuan_bike.usd
+
+
+Generated from Composed Stage of root layer /home/lmbike2/xuan_bike/urdf/xuan_bike/payloads/base.usd
+"""
+    kilogramsPerUnit = 1
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+over "xuan_bike"
+{
+    over "Geometry"
+    {
+        over "base_link" (
+            prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsArticulationRootAPI", "NewtonArticulationRootAPI", "PhysicsMassAPI"]
+        )
+        {
+            bool newton:selfCollisionEnabled = 0
+            point3f physics:centerOfMass = (-5.706142e-7, 0.6637125, 0.18570861)
+            float3 physics:diagonalInertia = (0.27028483, 0.42830017, 0.677249)
+            float physics:mass = 13.331665
+            quatf physics:principalAxes = (0.69005674, -0.15433583, 0.6900588, 0.15434033)
+
+            over "steering_1" (
+                prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+            )
+            {
+                point3f physics:centerOfMass = (-0.00018363418, -0.02688994, -0.04017065)
+                float3 physics:diagonalInertia = (0.010783932, 0.062211506, 0.06679756)
+                float physics:mass = 2.315188
+                quatf physics:principalAxes = (0.069216356, 0.7048426, 0.70246285, 0.07036962)
+
+                over "wheel_front_1" (
+                    prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+                )
+                {
+                    point3f physics:centerOfMass = (0.03800011, 0.00011039567, -0.00007774208)
+                    float3 physics:diagonalInertia = (0.34220895, 0.34249106, 0.682833)
+                    float physics:mass = 6.946055
+                    quatf physics:principalAxes = (0.67387927, 0.21421194, 0.67387927, -0.21421194)
+                }
+            }
+
+            over "wheel_rear_1" (
+                prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+            )
+            {
+                point3f physics:centerOfMass = (0.049692556, 0.000016216118, 0.00012937578)
+                float3 physics:diagonalInertia = (0.3426841, 0.34296593, 0.682947)
+                float physics:mass = 7.20946
+                quatf physics:principalAxes = (0.52865744, -0.46959713, -0.5286559, -0.4695985)
+            }
+
+            over "flywheel_1" (
+                prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+            )
+            {
+                point3f physics:centerOfMass = (6.7369484e-14, 0.00023395363, -0.0049947477)
+                float3 physics:diagonalInertia = (0.001643, 0.0016434424, 0.0032705576)
+                float physics:mass = 0.95040405
+                quatf physics:principalAxes = (0.99972653, -0.023386184, 0, 0)
+            }
+        }
+    }
+
+    over "Physics"
+    {
+        def PhysicsRevoluteJoint "Revolute_7" (
+            prepend apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+        )
+        {
+            float drive:angular:physics:maxForce = 100
+            uniform token physics:axis = "X"
+            custom rel physics:body0
+            prepend rel physics:body0 = </xuan_bike/Geometry/base_link>
+            custom rel physics:body1
+            prepend rel physics:body1 = </xuan_bike/Geometry/base_link/steering_1>
+            point3f physics:localPos0 = (0, 0.826125, -0.292525)
+            point3f physics:localPos1 = (0, 0, 0)
+            quatf physics:localRot0 = (0.70710677, 0, -0.17974865, 0.68387896)
+            quatf physics:localRot1 = (0.70710677, 0, -0.17974865, 0.68387896)
+            custom float urdf:limit:effort = 100
+            custom float urdf:limit:velocity = 100
+        }
+
+        def PhysicsRevoluteJoint "Revolute_8" (
+            prepend apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+        )
+        {
+            float drive:angular:physics:maxForce = 100
+            uniform token physics:axis = "X"
+            custom rel physics:body0
+            prepend rel physics:body0 = </xuan_bike/Geometry/base_link/steering_1>
+            custom rel physics:body1
+            prepend rel physics:body1 = </xuan_bike/Geometry/base_link/steering_1/wheel_front_1>
+            point3f physics:localPos0 = (-0.039925, -0.475408, -0.174513)
+            point3f physics:localPos1 = (0, 0, 0)
+            quatf physics:localRot0 = (1, 0, 0, 0)
+            quatf physics:localRot1 = (1, 0, 0, 0)
+            custom float urdf:limit:effort = 100
+            custom float urdf:limit:velocity = 100
+        }
+
+        def PhysicsRevoluteJoint "Revolute_9" (
+            prepend apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+        )
+        {
+            float drive:angular:physics:maxForce = 100
+            uniform token physics:axis = "X"
+            custom rel physics:body0
+            prepend rel physics:body0 = </xuan_bike/Geometry/base_link>
+            custom rel physics:body1
+            prepend rel physics:body1 = </xuan_bike/Geometry/base_link/wheel_rear_1>
+            point3f physics:localPos0 = (-0.049, 0.351096, 0.583536)
+            point3f physics:localPos1 = (0, 0, 0)
+            quatf physics:localRot0 = (1, 0, 0, 0)
+            quatf physics:localRot1 = (1, 0, 0, 0)
+            custom float urdf:limit:effort = 100
+            custom float urdf:limit:velocity = 100
+        }
+
+        def PhysicsRevoluteJoint "Revolute_11" (
+            prepend apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+        )
+        {
+            float drive:angular:physics:maxForce = 100
+            uniform token physics:axis = "X"
+            custom rel physics:body0
+            prepend rel physics:body0 = </xuan_bike/Geometry/base_link>
+            custom rel physics:body1
+            prepend rel physics:body1 = </xuan_bike/Geometry/base_link/flywheel_1>
+            point3f physics:localPos0 = (0, 0.608519, 0.105861)
+            point3f physics:localPos1 = (0, 0, 0)
+            quatf physics:localRot0 = (0.70710677, 0, 0.70633507, 0.033027533)
+            quatf physics:localRot1 = (0.70710677, 0, 0.70633507, 0.033027533)
+            custom float urdf:limit:effort = 100
+            custom float urdf:limit:velocity = 100
+        }
+    }
+}
+

@@ -1,0 +1,92 @@
+# Shared sim ↔ hardware motor / observation contract.
+# Source of truth for Isaac ImplicitActuator, PhysX maxForce, and ROS MIT node.
+# Copy lives at ws_rl_balance/src/rl/models/newbike_speed1p8/deploy_cfg/motor_contract.yaml
+
+version: 1
+policy:
+  obs_dim: 8
+  act_dim: 2
+  # Sim tensor order. Hardware keys are renamed to this; do not change Isaac contract.
+  obs_keys:
+    - gravity_y          # projected_gravity_b[:, 1] ≈ sin(roll); not Euler roll
+    - ang_vel_x          # body roll rate wx
+    - ang_vel_y          # body pitch rate wy
+    - ang_vel_z          # body yaw rate wz
+    - speed              # root_lin_vel_b[:, 0]
+    - steer              # steering_joint pos wrapped to [-π, π]
+    - vel_error          # command − measured forward speed
+    - yaw_rate_error     # command − measured yaw rate
+  action:
+    steer:
+      mode: position
+      scale: 0.7853981633974483  # δ = a0 * 45°; joint still continuous (no USD stop)
+      clip: null
+    drive:
+      mode: velocity
+      scale: 10.0
+      clip_rad_s: 45.0
+
+sign:
+  ros_positive_steer: left
+  # MIT node multiplies drive and steer by −1. balance_executor.drive_sign is unused.
+  sign_flip: mit_node_only
+
+steering:
+  model: GIM4310-10
+  hw_revision: V1.1
+  can_id: 2
+  mode: MIT_position
+  gear: 10
+  joint_sim: steering_joint
+  joint_ros: steer_motor
+  effort_limit_nm: 5.6          # stall
+  rated_nm: 2.05
+  velocity_limit_rad_s: 23.9    # 228 RPM
+  stall_current_a: 6.8
+  operating_current_a: 4.0      # enough for rated 2.05 N·m (Kt ≈ 0.96)
+  kt_nm_per_a: 0.96
+  encoder_bits: 14
+  range: continuous             # 360°; no mechanical or software angle stop
+  pd:
+    kp: 10.0                    # N·m/rad  (Isaac stiffness = MIT kp)
+    kd: 0.2                     # N·m·s/rad (Isaac damping = MIT kd)
+  mit:
+    kp_encode_max: 500.0
+    kd_encode_max: 5.0
+    write_f0_limits_to_motor: false
+    pos_max_rad: 95.5           # host encoding range, not a joint stop
+    vel_max_rad_s: 23.9
+    torque_max_nm: 5.6
+    pos_max_speed_rpm: 228
+    home_speed_rpm: 100
+
+drive:
+  model: GIM3510-8
+  can_id: 1
+  mode: C1_speed
+  gear: 8
+  joint_sim: rearwheel_joint
+  joint_ros: drive_motor
+  effort_limit_nm: 6.28         # stall
+  rated_nm: 1.0
+  velocity_limit_rad_s: 61.6    # 588 RPM
+  stall_current_a: 29.0
+  operating_current_a: 12.0     # written once at MIT init; stay under stall
+  kt_nm_per_a: 0.26
+  pd:
+    stiffness: 0.0              # velocity mode: τ = Kd * (ω* − ω)
+    damping: 5.0                # sim uses 5.0 (Xuan); 6.28/5 ≈ 1.26 rad/s before stall
+  wheel_radius_m: 0.0725
+
+kickstand:
+  model: Feetech STS3250
+  in_policy: false              # ROS-only; not in action or obs
+  uart: /dev/ttyAMA2
+  baud: 1000000
+  ids: {right: 1, left: 2}
+  stall_nm: 4.9                 # 50 kg·cm @ 12 V
+  encoder: 12-bit               # 0–4096 over 360°
+  deploy_speed_ms: 1.2
+  retract_speed_ms: 1.5
+  swing_rad: 0.4363
+  sim: wrench_on_base_link      # finite-duration disturbance; no USD joints

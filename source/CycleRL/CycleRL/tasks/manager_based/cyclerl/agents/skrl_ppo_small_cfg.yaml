@@ -1,0 +1,66 @@
+seed: 42
+
+# Small-network variant matching lmbike_rl (which balanced well): tiny [32,32]
+# actor/critic, entropy 0.005, base LR 1e-3, KL-adaptive target 0.01.
+# Use this for the balance tasks; skrl_ppo_cfg.yaml keeps the big net for others.
+models:
+  separate: True
+  policy:
+    class: GaussianMixin
+    clip_actions: False
+    clip_mean_actions: False
+    network:
+      - name: net
+        input: observations
+        layers: [32, 32]
+        activations: elu
+    output: ACTIONS
+  value:
+    class: DeterministicMixin
+    network:
+      - name: net
+        input: observations
+        layers: [32, 32]
+        activations: elu
+    output: ONE
+
+memory:
+  class: RandomMemory
+  memory_size: -1
+
+agent:
+  class: PPO
+  rollouts: 16
+  mini_batches: 4
+  learning_epochs: 5
+
+  learning_rate: 0.001            # lmbike base LR
+  learning_rate_scheduler: KLAdaptiveLR
+  learning_rate_scheduler_kwargs:
+    kl_threshold: 0.01            # lmbike desired_kl
+
+  discount_factor: 0.99
+  gae_lambda: 0.95
+  ratio_clip: 0.2
+  value_clip: 0.2
+
+  value_loss_scale: 1.0
+  entropy_loss_scale: 0.005       # lmbike entropy_coef
+  grad_norm_clip: 1.0
+  kl_threshold: 0.0
+
+  observation_preprocessor: RunningStandardScaler
+  observation_preprocessor_kwargs: null
+  value_preprocessor: RunningStandardScaler
+  value_preprocessor_kwargs: null
+
+  experiment:
+    directory: "cyclerl_logs"
+    experiment_name: "bicycle_ppo_small"
+    write_interval: 1000
+    checkpoint_interval: 10000
+
+trainer:
+  class: SequentialTrainer
+  timesteps: 1000000
+  environment_info: log

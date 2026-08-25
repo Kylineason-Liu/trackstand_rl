@@ -1,0 +1,367 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "MuJoCo USD Converter v0.2.0"
+    }
+    defaultPrim = "new_bike"
+    doc = """Generated from Composed Stage of root layer /tmp/tmppvrqbpqv/new_bike.usdc
+
+
+Generated from Composed Stage of root layer /tmp/mjcf_import_new_bike_o72k7luu/usdex_new_bike/new_bike.usdc
+
+
+Generated from Composed Stage of root layer /tmp/mjcf_import_new_bike_o72k7luu/temp_new_bike/new_bike.usd
+
+
+Generated from Composed Stage of root layer /home/lmbike2/bike_models/thubike_new/new_bike/payloads/base.usd
+"""
+    kilogramsPerUnit = 1
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+over "new_bike"
+{
+    over "Geometry"
+    {
+        over "floor" (
+            prepend apiSchemas = ["NewtonCollisionAPI", "PhysicsMassAPI"]
+        )
+        {
+            float newton:contactGap = 0
+            float physics:density = 1000
+            bool physics:collisionEnabled = 0
+        }
+
+        over "base_link" (
+            prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI", "PhysicsArticulationRootAPI", "NewtonArticulationRootAPI"]
+        )
+        {
+            bool newton:selfCollisionEnabled = 0
+            point3f physics:centerOfMass = (-0.047907054, 0.004121234, 0.10983308)
+            float3 physics:diagonalInertia = (0.019937584, 0.018864086, 0.0034755317)
+            float physics:mass = 1.8344557
+            quatf physics:principalAxes = (0.6098562, 0.3300056, 0.3293533, 0.6408574)
+
+            over "payload_power_distribution_board" (
+                prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+            )
+            {
+                point3f physics:centerOfMass = (0.042798676, 0.0044892016, 0.22464365)
+                float3 physics:diagonalInertia = (0.000006475, 0.000003731, 0.00000343)
+                float physics:mass = 0.021
+                quatf physics:principalAxes = (0.45451948, 0.45451948, -0.5416752, 0.5416752)
+
+                def PhysicsFixedJoint "PhysicsFixedJoint"
+                {
+                    custom rel physics:body0
+                    prepend rel physics:body0 = </new_bike/Geometry/base_link>
+                    custom rel physics:body1
+                    prepend rel physics:body1 = </new_bike/Geometry/base_link/payload_power_distribution_board>
+                    point3f physics:localPos0 = (0, 0, 0)
+                    point3f physics:localPos1 = (0, 0, 0)
+                    quatf physics:localRot0 = (1, 0, 0, 0)
+                    quatf physics:localRot1 = (1, 0, 0, 0)
+                }
+            }
+
+            over "payload_raspberry_pi" (
+                prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+            )
+            {
+                point3f physics:centerOfMass = (-0.0039606392, 0.005629103, 0.16819334)
+                float3 physics:diagonalInertia = (0.00007733333, 0.000057553334, 0.000022033333)
+                float physics:mass = 0.08
+                quatf physics:principalAxes = (1, 0, 0, 0)
+
+                def PhysicsFixedJoint "PhysicsFixedJoint"
+                {
+                    custom rel physics:body0
+                    prepend rel physics:body0 = </new_bike/Geometry/base_link>
+                    custom rel physics:body1
+                    prepend rel physics:body1 = </new_bike/Geometry/base_link/payload_raspberry_pi>
+                    point3f physics:localPos0 = (0, 0, 0)
+                    point3f physics:localPos1 = (0, 0, 0)
+                    quatf physics:localRot0 = (1, 0, 0, 0)
+                    quatf physics:localRot1 = (1, 0, 0, 0)
+                }
+            }
+
+            over "payload_transformer" (
+                prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+            )
+            {
+                point3f physics:centerOfMass = (-0.024441103, 0.005279408, 0.10733572)
+                float3 physics:diagonalInertia = (0.000040408333, 0.000031108335, 0.000017366667)
+                float physics:mass = 0.1
+                quatf physics:principalAxes = (0.5, 0.5, -0.5, 0.5)
+
+                def PhysicsFixedJoint "PhysicsFixedJoint"
+                {
+                    custom rel physics:body0
+                    prepend rel physics:body0 = </new_bike/Geometry/base_link>
+                    custom rel physics:body1
+                    prepend rel physics:body1 = </new_bike/Geometry/base_link/payload_transformer>
+                    point3f physics:localPos0 = (0, 0, 0)
+                    point3f physics:localPos1 = (0, 0, 0)
+                    quatf physics:localRot0 = (1, 0, 0, 0)
+                    quatf physics:localRot1 = (1, 0, 0, 0)
+                }
+            }
+
+            over "payload_servo_power" (
+                prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+            )
+            {
+                point3f physics:centerOfMass = (0.018616676, 0.005416821, 0.13746376)
+                float3 physics:diagonalInertia = (0.000005041167, 0.0000035583334, 0.0000015411666)
+                float physics:mass = 0.014
+                quatf physics:principalAxes = (0.70710677, 0.70710677, 0, 0)
+
+                def PhysicsFixedJoint "PhysicsFixedJoint"
+                {
+                    custom rel physics:body0
+                    prepend rel physics:body0 = </new_bike/Geometry/base_link>
+                    custom rel physics:body1
+                    prepend rel physics:body1 = </new_bike/Geometry/base_link/payload_servo_power>
+                    point3f physics:localPos0 = (0, 0, 0)
+                    point3f physics:localPos1 = (0, 0, 0)
+                    quatf physics:localRot0 = (1, 0, 0, 0)
+                    quatf physics:localRot1 = (1, 0, 0, 0)
+                }
+            }
+
+            over "payload_raspberry_pi_power" (
+                prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+            )
+            {
+                point3f physics:centerOfMass = (-0.032771856, 0.0044186893, 0.1299056)
+                float3 physics:diagonalInertia = (0.000015948834, 0.0000091736665, 0.0000068141667)
+                float physics:mass = 0.026
+                quatf physics:principalAxes = (0.5, 0.5, -0.5, 0.5)
+
+                def PhysicsFixedJoint "PhysicsFixedJoint"
+                {
+                    custom rel physics:body0
+                    prepend rel physics:body0 = </new_bike/Geometry/base_link>
+                    custom rel physics:body1
+                    prepend rel physics:body1 = </new_bike/Geometry/base_link/payload_raspberry_pi_power>
+                    point3f physics:localPos0 = (0, 0, 0)
+                    point3f physics:localPos1 = (0, 0, 0)
+                    quatf physics:localRot0 = (1, 0, 0, 0)
+                    quatf physics:localRot1 = (1, 0, 0, 0)
+                }
+            }
+
+            over "payload_connection_accessory" (
+                prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+            )
+            {
+                point3f physics:centerOfMass = (-0.0326244, 0.0045967493, 0.17523852)
+                float3 physics:diagonalInertia = (0.000023909382, 0.000016778133, 0.000009304584)
+                float physics:mass = 0.0326
+                quatf physics:principalAxes = (0.70710677, 0.70710677, 0, 0)
+
+                def PhysicsFixedJoint "PhysicsFixedJoint"
+                {
+                    custom rel physics:body0
+                    prepend rel physics:body0 = </new_bike/Geometry/base_link>
+                    custom rel physics:body1
+                    prepend rel physics:body1 = </new_bike/Geometry/base_link/payload_connection_accessory>
+                    point3f physics:localPos0 = (0, 0, 0)
+                    point3f physics:localPos1 = (0, 0, 0)
+                    quatf physics:localRot0 = (1, 0, 0, 0)
+                    quatf physics:localRot1 = (1, 0, 0, 0)
+                }
+            }
+
+            over "payload_battery" (
+                prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+            )
+            {
+                point3f physics:centerOfMass = (-0.06888631, 0.0076693017, 0.14199232)
+                float3 physics:diagonalInertia = (0.0008515613, 0.0008515613, 0.00010977801)
+                float physics:mass = 0.4547
+                quatf physics:principalAxes = (1, 0, 0, 0)
+
+                def PhysicsFixedJoint "PhysicsFixedJoint"
+                {
+                    custom rel physics:body0
+                    prepend rel physics:body0 = </new_bike/Geometry/base_link>
+                    custom rel physics:body1
+                    prepend rel physics:body1 = </new_bike/Geometry/base_link/payload_battery>
+                    point3f physics:localPos0 = (0, 0, 0)
+                    point3f physics:localPos1 = (0, 0, 0)
+                    quatf physics:localRot0 = (1, 0, 0, 0)
+                    quatf physics:localRot1 = (1, 0, 0, 0)
+                }
+            }
+
+            over "payload_imu_fixing_plate_left" (
+                prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+            )
+            {
+                point3f physics:centerOfMass = (-0.03828381, 0.049710173, 0.20526248)
+                float3 physics:diagonalInertia = (0.000006365286, 0.0000048779775, 0.0000015015083)
+                float physics:mass = 0.0213
+                quatf physics:principalAxes = (0.50005096, 0.499949, 0.499949, 0.50005096)
+
+                def PhysicsFixedJoint "PhysicsFixedJoint"
+                {
+                    custom rel physics:body0
+                    prepend rel physics:body0 = </new_bike/Geometry/base_link>
+                    custom rel physics:body1
+                    prepend rel physics:body1 = </new_bike/Geometry/base_link/payload_imu_fixing_plate_left>
+                    point3f physics:localPos0 = (0, 0, 0)
+                    point3f physics:localPos1 = (0, 0, 0)
+                    quatf physics:localRot0 = (1, 0, 0, 0)
+                    quatf physics:localRot1 = (1, 0, 0, 0)
+                }
+            }
+
+            over "payload_imu_fixing_plate_right" (
+                prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+            )
+            {
+                point3f physics:centerOfMass = (-0.038279347, -0.038289826, 0.205266)
+                float3 physics:diagonalInertia = (0.0000063674706, 0.000004879211, 0.0000015024597)
+                float physics:mass = 0.0213
+                quatf physics:principalAxes = (0.5001432, 0.49985677, 0.49985677, 0.5001432)
+
+                def PhysicsFixedJoint "PhysicsFixedJoint"
+                {
+                    custom rel physics:body0
+                    prepend rel physics:body0 = </new_bike/Geometry/base_link>
+                    custom rel physics:body1
+                    prepend rel physics:body1 = </new_bike/Geometry/base_link/payload_imu_fixing_plate_right>
+                    point3f physics:localPos0 = (0, 0, 0)
+                    point3f physics:localPos1 = (0, 0, 0)
+                    quatf physics:localRot0 = (1, 0, 0, 0)
+                    quatf physics:localRot1 = (1, 0, 0, 0)
+                }
+            }
+
+            over "payload_imu_wood_plate" (
+                prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+            )
+            {
+                point3f physics:centerOfMass = (-0.03827919, 0.005710174, 0.21838118)
+                float3 physics:diagonalInertia = (0.000010231881, 0.000007839989, 0.0000023990922)
+                float physics:mass = 0.0108
+                quatf physics:principalAxes = (0.5, 0.5, -0.5, 0.5)
+
+                def PhysicsFixedJoint "PhysicsFixedJoint"
+                {
+                    custom rel physics:body0
+                    prepend rel physics:body0 = </new_bike/Geometry/base_link>
+                    custom rel physics:body1
+                    prepend rel physics:body1 = </new_bike/Geometry/base_link/payload_imu_wood_plate>
+                    point3f physics:localPos0 = (0, 0, 0)
+                    point3f physics:localPos1 = (0, 0, 0)
+                    quatf physics:localRot0 = (1, 0, 0, 0)
+                    quatf physics:localRot1 = (1, 0, 0, 0)
+                }
+            }
+
+            over "rearwheel" (
+                prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+            )
+            {
+                point3f physics:centerOfMass = (-0.1777792, 0.010462252, 0.05915119)
+                float3 physics:diagonalInertia = (0.00034928528, 0.000189043, 0.000189043)
+                float physics:mass = 0.13072956
+                quatf physics:principalAxes = (0.70710677, 0, 0, 0.70710677)
+
+                def PhysicsRevoluteJoint "rearwheel_joint" (
+                    prepend apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+                )
+                {
+                    float drive:angular:physics:maxForce = 6.28
+                    uniform token physics:axis = "Y"
+                    custom rel physics:body0
+                    prepend rel physics:body0 = </new_bike/Geometry/base_link>
+                    custom rel physics:body1
+                    prepend rel physics:body1 = </new_bike/Geometry/base_link/rearwheel>
+                    point3f physics:localPos0 = (-0.1777792, 0.010462252, 0.05915119)
+                    point3f physics:localPos1 = (-0.1777792, 0.010462252, 0.05915119)
+                    quatf physics:localRot0 = (1, 0, 0, 0)
+                    quatf physics:localRot1 = (1, 0, 0, 0)
+                }
+            }
+
+            over "steer" (
+                prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+            )
+            {
+                point3f physics:centerOfMass = (0.08864312, 0.0057101753, 0.1501129)
+                float3 physics:diagonalInertia = (0.00014677427, 0.00012174797, 0.00003995143)
+                float physics:mass = 0.10888959
+                quatf physics:principalAxes = (0.9961904, -0.00025472514, -0.087155424, 0.0029115197)
+
+                over "frontwheel" (
+                    prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+                )
+                {
+                    point3f physics:centerOfMass = (0.10514237, 0.0057101725, 0.05654097)
+                    float3 physics:diagonalInertia = (0.00032023643, 0.00016119579, 0.00016119579)
+                    float physics:mass = 0.116540164
+                    quatf physics:principalAxes = (0.7050685, -0.0003598958, 0.00035783, 0.709139)
+
+                    def PhysicsRevoluteJoint "frontwheel_joint" (
+                        prepend apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+                    )
+                    {
+                        uniform token physics:axis = "X"
+                        custom rel physics:body0
+                        prepend rel physics:body0 = </new_bike/Geometry/base_link/steer>
+                        custom rel physics:body1
+                        prepend rel physics:body1 = </new_bike/Geometry/base_link/steer/frontwheel>
+                        point3f physics:localPos0 = (0.10514237, 0.0057101725, 0.05654097)
+                        point3f physics:localPos1 = (0.10514237, 0.0057101725, 0.05654097)
+                        quatf physics:localRot0 = (0.70506877, 0, 0.00071978796, 0.7091386)
+                        quatf physics:localRot1 = (0.70506877, 0, 0.00071978796, 0.7091386)
+                    }
+                }
+
+                def PhysicsRevoluteJoint "steering_joint" (
+                    prepend apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+                )
+                {
+                    float drive:angular:physics:maxForce = 5.6
+                    uniform token physics:axis = "X"
+                    custom rel physics:body0
+                    prepend rel physics:body0 = </new_bike/Geometry/base_link>
+                    custom rel physics:body1
+                    prepend rel physics:body1 = </new_bike/Geometry/base_link/steer>
+                    point3f physics:localPos0 = (0.07909537, 0.005710174, 0.20426197)
+                    point3f physics:localPos1 = (0.07909537, 0.005710174, 0.20426197)
+                    quatf physics:localRot0 = (0.6427877, 0, -0.7660444, 0)
+                    quatf physics:localRot1 = (0.6427877, 0, -0.7660444, 0)
+                }
+            }
+        }
+    }
+
+    over "Physics"
+    {
+        over "PhysicsMaterial" (
+            prepend apiSchemas = ["PhysicsMaterialAPI", "NewtonMaterialAPI"]
+        )
+        {
+            float newton:rollingFriction = 0.0001
+            float newton:torsionalFriction = 0.005
+            float physics:dynamicFriction = 1
+        }
+    }
+}
+
+def PhysicsScene "PhysicsScene" (
+    prepend apiSchemas = ["NewtonSceneAPI"]
+)
+{
+    uniform int newton:maxSolverIterations = 50
+    uniform int newton:timeStepsPerSecond = 2000
+    vector3f physics:gravityDirection = (0, 0, -1)
+    float physics:gravityMagnitude = 9.81
+}
+

@@ -1,0 +1,301 @@
+"""Stationary balancing environment for NewBike — independent of CycleRL.
+
+Goal: keep the bicycle upright at its spawn position using steering and drive,
+with a strong position-keeping penalty to prevent drift.
+"""
+
+from isaaclab.envs import ManagerBasedRLEnvCfg
+from isaaclab.managers import (
+    CurriculumTermCfg,
+    ObservationGroupCfg,
+    ObservationTermCfg,
+    RewardTermCfg,
+    TerminationTermCfg,
+    EventTermCfg,
+    SceneEntityCfg,
+)
+from isaaclab.assets import AssetBaseCfg
+from isaaclab.scene import InteractiveSceneCfg
+from isaaclab.terrains import TerrainImporterCfg
+from isaaclab.sim import DomeLightCfg
+from isaaclab.envs.mdp.actions import JointEffortActionCfg, JointPositionActionCfg, JointVelocityActionCfg
+import isaaclab.envs.mdp as mdp
+from isaaclab.utils.configclass import configclass
+from isaaclab.utils.noise import GaussianNoiseCfg
+
+from ..bicycle_cfg import NEW_BIKE_STANDARD_CFG, NEW_BIKE_TORQUE_CFG
+from ..mdp.stationary import curriculums as custom_curriculums
+from ..mdp.stationary import events as custom_events
+from ..mdp.stationary.observations import balance_imu_state
+from ..mdp.stationary.rewards import (
+    balance_drive_reward,
+    balance_joint_acc_penalty,
+    balance_position_penalty,
+    # balance_stability_reward,  # disabled below (kept in rewards.py)
+    balance_steer_reward,
+    balance_survival_reward,
+    balance_survival_reward_binary,
+    balance_termination_penalty,
+)
+from ..mdp.stationary.terminations import nonfinite_or_extreme_state, thubike_fallen_termination
+
+
+# ===========================================================================
+# Config classes
+# ===========================================================================
+
+
+@configclass
+class NewBikeBalanceSceneCfg(InteractiveSceneCfg):
+    terrain = TerrainImporterCfg(prim_path="/World/ground", terrain_type="plane")
+    robot = NEW_BIKE_STANDARD_CFG.replace(prim_path="{ENV_REGEX_NS}/Robot")
+    dome_light = AssetBaseCfg(
+        prim_path="/World/DomeLight",
+        spawn=DomeLightCfg(intensity=2000.0, color=(0.75, 0.75, 0.75)),
+    )
+
+
+@configclass
+class NewBikeBalanceActionsCfg:
+    steering = JointPositionActionCfg(
+        asset_name="robot", joint_names=["steering_joint"], scale=1.57  # ±90°
+    )
+    drive = JointVelocityActionCfg(
+        asset_name="robot", joint_names=["rearwheel_joint"], scale=10.0,
+        # ponytail: cap the velocity target so the Gaussian policy can't command a
+        # blow-up wheel speed (clip == scale, per this repo's convention). Tune.
+        clip={"rearwheel_joint": (-10.0, 10.0)},
+    )
+
+
+@configclass
+class NewBikeBalanceObservationsCfg(ObservationGroupCfg):
+    imu = ObservationTermCfg(
+        func=balance_imu_state,
+        params={"steer_joint_name": "steering_joint", "drive_joint_name": "rearwheel_joint"},
+        noise=GaussianNoiseCfg(mean=0.0, std=0.01),
+    )
+
+
+# ---------------------------------------------------------------------------
+# Shared reward, termination, and event configs (bike-agnostic)
+# ---------------------------------------------------------------------------
+
+
+@configclass
+class BalanceRewardsCfg:
+    # exponential survival (commented — flip back by swapping which line is active):
+    # survival = RewardTermCfg(func=balance_survival_reward, weight=5.0)  # exp reward peaks at 1.0 (vertical), so weight == peak survival = 5.0.
+    survival = RewardTermCfg(func=balance_survival_reward_binary, weight=5.0)  # binary +1 while |roll|<30°, else 0 (flat alive bonus, no shaping). Dominates drive(1.0)/steer(0.25).
+    #termination_pen = RewardTermCfg(func=balance_termination_penalty, weight=10.0)  # one-time -1 on failure termination (fallen/diverged)
+    # stability disabled: it penalises angular velocity, which fights the active
+    # corrective motion the bike needs. Function kept in rewards.py.
+    # stability = RewardTermCfg(func=balance_stability_reward, weight=1.0)
+    #position = RewardTermCfg(func=balance_position_penalty, weight=0.01)
+    # Quadratic (-v^2) velocity penalties; weights lowered so the motors aren't
+    # frozen. Unbounded but polynomial (no overflow) — see rewards.py.
+    drive_reward = RewardTermCfg(
+        func=balance_drive_reward,
+        weight=12.0,  # bounded reward peaks ~1.0; set to desired peak. Keep < survival (5) so balance stays primary.
+        params={"drive_joint_name": "rearwheel_joint"},
+    )
+
+    '''
+    
+    '''
+    steer_reward = RewardTermCfg(
+            func=balance_steer_reward,
+            weight=5.0,  # peaks ~1.0; keep SMALL — steering is the main balancing actuator, over-rewarding stillness suppresses corrective steering.
+            params={"steer_joint_name": "steering_joint"},
+    )
+    '''
+    
+    '''
+    
+    #joint_acc = RewardTermCfg(func=balance_joint_acc_penalty, weight=0.01)
+
+
+@configclass
+class BalanceTerminationsCfg:
+    time_out = TerminationTermCfg(func=mdp.time_out, time_out=True)
+    fallen = TerminationTermCfg(
+        func=thubike_fallen_termination,
+        params={"limit_angle": 0.5236},  # 30°
+        time_out=False,
+    )
+    # Containment: reset a diverging env before a NaN can poison the shared policy.
+    diverged = TerminationTermCfg(
+        func=nonfinite_or_extreme_state,
+        params={"max_lin_vel": 20.0, "max_ang_vel": 50.0},
+        time_out=False,
+    )
+
+
+@configclass
+class BalanceEventsCfg:
+    reset_scene = EventTermCfg(func=mdp.reset_scene_to_default, mode="reset")
+
+    # --- Ground friction (startup): pinned to a fixed nominal, so it's DR-free.
+    # The shared ground can't be ramped reliably mid-sim (USD material writes), so
+    # friction DR is carried entirely by the per-env robot tire
+    # (randomize_material below), which updates reliably at reset. ---
+    randomize_ground_friction = EventTermCfg(
+        func=custom_events.randomize_ground_plane_material,
+        mode="startup",
+        params={
+            "asset_cfg": SceneEntityCfg("terrain"),
+            "static_friction_range": (1.0, 1.0),   # pinned nominal; tune if needed
+            "dynamic_friction_range": (1.0, 1.0),
+            "restitution_range": (0.0, 0.0),
+            "make_consistent": True,
+        },
+    )
+
+    # --- Robot dynamics (reset) ---
+    randomize_mass = EventTermCfg(
+        func=mdp.randomize_rigid_body_mass,
+        mode="reset",
+        params={
+            "asset_cfg": SceneEntityCfg("robot"),
+            "operation": "scale",
+            "mass_distribution_params": (0.5, 1.5),
+        },
+    )
+    randomize_com = EventTermCfg(
+        func=mdp.randomize_rigid_body_com,
+        mode="reset",
+        params={
+            "asset_cfg": SceneEntityCfg("robot"),
+            "com_range": {
+                "x": (-0.02, 0.02),
+                "y": (-0.02, 0.02),
+                "z": (-0.05, 0.05),
+            },
+        },
+    )
+    randomize_material = EventTermCfg(
+        func=mdp.randomize_rigid_body_material,
+        mode="reset",
+        params={
+            "asset_cfg": SceneEntityCfg("robot"),
+            "static_friction_range": (0.5, 1.2),
+            "dynamic_friction_range": (0.5, 1.2),
+            "restitution_range": (0.0, 0.0),
+            "num_buckets": 32,
+            "make_consistent": True,
+        },
+    )
+    randomize_actuator_gains = EventTermCfg(
+        func=mdp.randomize_actuator_gains,
+        mode="reset",
+        params={
+            "asset_cfg": SceneEntityCfg("robot"),
+            "stiffness_distribution_params": (0.9, 1.1),
+            "damping_distribution_params": (0.9, 1.1),
+            "operation": "scale",
+        },
+    )
+    initial_state = EventTermCfg(
+        func=mdp.reset_root_state_uniform,
+        mode="reset",
+        params={
+            "asset_cfg": SceneEntityCfg("robot"),
+            "pose_range": {
+                "x": (0.0, 0.0),
+                "y": (0.0, 0.0),
+                "z": (0.0, 0.0),
+                "roll": (-0.15, 0.15),
+                "pitch": (0.0, 0.0),
+                "yaw": (0.0, 0.0),
+            },
+            "velocity_range": {
+                "x": (0.0, 0.0),  # stationary balancing: no initial forward momentum
+                "y": (0.0, 0.0),
+                "z": (0.0, 0.0),
+                "roll": (-0.5, 0.5),  # nonzero initial roll rate: train mid-fall recovery
+                "pitch": (0.0, 0.0),
+                "yaw": (0.0, 0.0),
+            },
+        },
+    )
+
+    # --- IMU sensor model: per-episode bias + 20-60 ms latency (reset) ---
+    reset_imu_sensor_model = EventTermCfg(
+        func=custom_events.reset_imu_sensor_model,
+        mode="reset",
+        params={
+            "gyro_bias_std": 0.03,
+            "tilt_bias_std": 0.02,
+            "min_delay_steps": 1,   # step_dt = 20 ms  ->  1..3 steps = 20..60 ms
+            "max_delay_steps": 3,
+        },
+    )
+
+
+@configclass
+class BalanceCurriculumsCfg:
+    # Diagnostics only: logs motor speeds to TensorBoard (Curriculum/...).
+    motor_speeds = CurriculumTermCfg(func=custom_curriculums.log_motor_speeds)
+    # Gradual DR ramp: OFF at step 0 -> full authored ranges by step 50k.
+    # alpha logged as Curriculum/dr_ramp. (Ground friction is pinned/DR-free;
+    # the per-env robot tire material carries the friction DR.)
+    dr_ramp = CurriculumTermCfg(
+        func=custom_curriculums.ramp_domain_randomization,
+        params={"start_step": 0, "end_step": 50000},
+    )
+
+
+@configclass
+class NewBikeBalanceEnvCfg(ManagerBasedRLEnvCfg):
+    decimation = 2
+    scene = NewBikeBalanceSceneCfg(num_envs=4096, env_spacing=2.5)
+    actions = NewBikeBalanceActionsCfg()
+    observations = {"policy": NewBikeBalanceObservationsCfg()}
+    rewards = BalanceRewardsCfg()
+    terminations = BalanceTerminationsCfg()
+    events = BalanceEventsCfg()
+    curriculum = BalanceCurriculumsCfg()
+    # No commands — pure stationary balancing with position-keeping
+
+    def __post_init__(self):
+        self.viewer.eye = [5.0, 5.0, 2.0]
+        self.step_dt = 0.02
+        self.episode_length_s = 30.0  # 30 s of balancing per episode
+
+
+# ===========================================================================
+# Torque-controlled variant (A/B against the position/velocity setup above)
+# ===========================================================================
+
+
+@configclass
+class NewBikeBalanceTorqueActionsCfg:
+    """Direct torque control: the policy outputs a torque per motor (like the
+    well-balanced lmbike_rl setup and the GM4310/GIM3510 CAN torque interface).
+    Scale = the motor stall torque; the actuator effort_limit clips beyond it."""
+
+    steering = JointEffortActionCfg(
+        asset_name="robot", joint_names=["steering_joint"], scale=5.6  # ±stall N·m
+    )
+    drive = JointEffortActionCfg(
+        asset_name="robot", joint_names=["rearwheel_joint"], scale=6.28  # ±stall N·m
+    )
+
+
+@configclass
+class NewBikeBalanceTorqueEnvCfg(NewBikeBalanceEnvCfg):
+    """Torque-controlled A/B variant of the NewBike balance task.
+
+    Both motors are driven by direct effort/torque instead of the parent's
+    position (steering) + velocity (drive). Everything else — rewards,
+    terminations, events, curriculum, observations — is inherited unchanged, so
+    the only difference under test is the control mode.
+    """
+
+    actions = NewBikeBalanceTorqueActionsCfg()
+
+    def __post_init__(self):
+        super().__post_init__()
+        # swap in the torque actuators (stiffness=0 so the effort action isn't
+        # fought by a PD servo)
+        self.scene.robot = NEW_BIKE_TORQUE_CFG.replace(prim_path="{ENV_REGEX_NS}/Robot")

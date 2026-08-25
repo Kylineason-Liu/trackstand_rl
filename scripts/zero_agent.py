@@ -1,0 +1,91 @@
+# Copyright (c) 2022-2026, The Isaac Lab Project Developers...
+"""Script to run an environment with zero action agent."""
+
+import argparse
+import contextlib
+import sys
+
+# 1. ONLY import standard Python and App/CLI utilities first
+from isaaclab.app import AppLauncher
+
+# add argparse arguments
+parser = argparse.ArgumentParser(description="Zero agent for Isaac Lab environments.")
+parser.add_argument("--disable_fabric", action="store_true", default=False, help="Disable fabric and use USD I/O operations.")
+parser.add_argument("--num_envs", type=int, default=None, help="Number of environments to simulate.")
+parser.add_argument("--task", type=str, default=None, help="Name of the task.")
+parser.add_argument(
+    "--terrain",
+    type=str,
+    default=None,
+    choices=["flat", "complex", "stairs"],
+    help=(
+        "Bicycle terrain: 'flat' is a regular plane (default when omitted); "
+        "'complex' is 5×5 (flat/rough/slopes/blocks/waves); "
+        "'stairs' is 8×3 planes, up/down pyramid stairs, and waves."
+    ),
+)
+
+# append AppLauncher cli args
+AppLauncher.add_app_launcher_args(parser)
+args_cli, hydra_args = parser.parse_known_args()
+
+# parse_known_args() silently swallows unknown flags (e.g. a typo'd --Task), which
+# then surface as a confusing crash minutes later. Reject them here instead.
+_unknown = [a for a in hydra_args if a.startswith("-")]
+if _unknown:
+    parser.error(f"unrecognized arguments: {' '.join(_unknown)}")
+if args_cli.task is None:
+    parser.error("--task is required (flags are case-sensitive: --task, not --Task)")
+sys.argv = [sys.argv[0]] + hydra_args
+
+# 2. Start the AppLauncher FIRST to secure the CUDA/Vulkan context
+app_launcher = AppLauncher(args_cli)
+simulation_app = app_launcher.app
+
+# 3. NOW it is safe to import torch, gym, and tasks
+import gymnasium as gym
+import torch
+from isaaclab_tasks.utils import parse_env_cfg
+
+import isaaclab_tasks  # noqa: F401
+with contextlib.suppress(ImportError):
+    import isaaclab_tasks_experimental  # noqa: F401
+import CycleRL.tasks  # noqa: F401
+
+MAX_STEPS = 100
+
+def main():
+    """Zero actions agent with Isaac Lab environment."""
+    torch.manual_seed(42)
+
+    env_cfg = parse_env_cfg(args_cli.task, device=args_cli.device, num_envs=args_cli.num_envs)
+
+    with contextlib.nullcontext():  # ponytail: keeps indentation; Kit is closed after main()
+        from CycleRL.tasks.manager_based.cyclerl.config.terrain_presets import apply_terrain_preset
+
+        apply_terrain_preset(env_cfg, args_cli.terrain)
+
+        env_cfg.scene.num_envs = args_cli.num_envs if args_cli.num_envs is not None else env_cfg.scene.num_envs
+        env_cfg.sim.device = args_cli.device if args_cli.device is not None else env_cfg.sim.device
+        if args_cli.disable_fabric:
+            env_cfg.sim.use_fabric = False
+
+        env = gym.make(args_cli.task, cfg=env_cfg)
+
+        print(f"[INFO]: Gym observation space: {env.observation_space}")
+        print(f"[INFO]: Gym action space: {env.action_space}")
+        
+        env.reset()
+        
+        # 4. Use type ignores to silence VS Code warnings
+        actions = torch.zeros(env.action_space.shape, device=env.unwrapped.device)  # type: ignore
+        
+        while simulation_app.is_running():
+            with torch.inference_mode():
+                env.step(actions)
+        
+        env.close()
+
+if __name__ == "__main__":
+    main()
+    simulation_app.close()

@@ -1,0 +1,125 @@
+import torch
+from isaaclab.envs import ManagerBasedRLEnv
+from isaaclab.managers import SceneEntityCfg
+
+
+def _apply_obs_latency(env: ManagerBasedRLEnv, obs: torch.Tensor) -> torch.Tensor:
+    """Return a per-env delayed copy of ``obs`` via a ring buffer on ``env``.
+
+    Delay (steps) per env is ``env._obs_delay`` (set by ``reset_imu_sensor_model``);
+    index 0 of the buffer is the newest sample, so buffer[d] is ``d`` steps old.
+    Freshly reset envs are primed with the current obs so they never read stale
+    history from the previous episode.
+    """
+    n_env, obs_dim = obs.shape
+    buf_len = env._obs_max_delay + 1
+    if getattr(env, "_obs_buffer", None) is None or env._obs_buffer.shape != (buf_len, n_env, obs_dim):
+        env._obs_buffer = obs.unsqueeze(0).expand(buf_len, n_env, obs_dim).clone()
+
+    env._obs_buffer = torch.roll(env._obs_buffer, shifts=1, dims=0)
+    env._obs_buffer[0] = obs
+
+    # prime just-reset envs so buffer[d] is a valid (not stale) sample
+    prime = getattr(env, "_obs_needs_prime", None)
+    if prime is not None and bool(prime.any()):
+        env._obs_buffer[:, prime] = obs[prime].unsqueeze(0)
+        env._obs_needs_prime[prime] = False
+
+    delay = env._obs_delay.clamp(0, buf_len - 1)
+    idx = delay.view(1, n_env, 1).expand(1, n_env, obs_dim)
+    return torch.gather(env._obs_buffer, 0, idx).squeeze(0)
+
+
+def _accumulate_motor_speeds(env: ManagerBasedRLEnv, steer_v: torch.Tensor, drive_v: torch.Tensor) -> None:
+    """Sum / max the |motor speeds| per env for later terminal logging.
+
+    Called every step from balance_imu_state; consumed and reset per episode by
+    ``mdp.stationary.curriculums.log_motor_speeds``. Pure diagnostics — no effect
+    on the policy, reward, or dynamics.
+    """
+    if not hasattr(env, "_motor_speed_count"):
+        z = torch.zeros(env.num_envs, device=env.device)
+        env._drive_speed_sum = z.clone()
+        env._drive_speed_max = z.clone()
+        env._steer_speed_sum = z.clone()
+        env._steer_speed_max = z.clone()
+        env._motor_speed_count = z.clone()
+    dv, sv = drive_v.abs(), steer_v.abs()
+    env._drive_speed_sum += dv
+    env._steer_speed_sum += sv
+    env._drive_speed_max = torch.maximum(env._drive_speed_max, dv)
+    env._steer_speed_max = torch.maximum(env._steer_speed_max, sv)
+    env._motor_speed_count += 1.0
+
+
+def balance_imu_state(
+    env: ManagerBasedRLEnv,
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+    steer_joint_name: str = "Revolute_9",
+    drive_joint_name: str = "Revolute_8",
+) -> torch.Tensor:
+    """IMU-rich observation for stationary balancing.
+
+    Returns (num_envs, 14):
+        [gravity_y, gravity_z,           # projected gravity (roll-lean, upright)
+         ang_vel_x, ang_vel_y, ang_vel_z, # body-frame angular velocity
+         lin_vel_x, lin_vel_y,           # body-frame linear velocity (drift)
+         steering_pos, drive_pos,        # joint positions
+         steering_vel, drive_vel,        # joint velocities
+         sin_steer, cos_steer]           # encoded steering angle
+    """
+    asset = env.scene[asset_cfg.name]
+
+    gravity_y = asset.data.projected_gravity_b[:, 1:2]   # roll lean
+    gravity_z = asset.data.projected_gravity_b[:, 2:3]   # upright
+
+    ang_vel = asset.data.root_ang_vel_b
+    lin_vel_xy = asset.data.root_lin_vel_b[:, :2]
+
+    steer_idx = asset.find_joints(steer_joint_name)[0][0]
+    drive_idx = asset.find_joints(drive_joint_name)[0][0]
+
+    steer_pos = asset.data.joint_pos[:, steer_idx : steer_idx + 1]
+    drive_pos = asset.data.joint_pos[:, drive_idx : drive_idx + 1]
+    steer_vel = asset.data.joint_vel[:, steer_idx : steer_idx + 1]
+    drive_vel = asset.data.joint_vel[:, drive_idx : drive_idx + 1]
+
+    # diagnostics: accumulate TRUE motor speeds each step for per-episode
+    # terminal logging (read + reset at reset by curriculums.log_motor_speeds)
+    _accumulate_motor_speeds(env, steer_vel[:, 0], drive_vel[:, 0])
+
+    sin_steer = torch.sin(steer_pos)
+    cos_steer = torch.cos(steer_pos)
+
+    obs = torch.cat(
+        [
+            gravity_y, gravity_z,
+            ang_vel,
+            lin_vel_xy,
+            steer_pos, drive_pos,
+            steer_vel, drive_vel,
+            sin_steer, cos_steer,
+        ],
+        dim=-1,
+    )
+
+    # --- IMU sensor-model domain randomisation (per-episode, set by
+    #     mdp.stationary.events.reset_imu_sensor_model) ---
+    if hasattr(env, "_imu_tilt_bias"):
+        obs[:, 0:2] = obs[:, 0:2] + env._imu_tilt_bias   # [gravity_y, gravity_z] accel/mount bias
+        obs[:, 2:5] = obs[:, 2:5] + env._imu_gyro_bias   # body angular velocity gyro bias
+    if hasattr(env, "_obs_delay"):
+        obs = _apply_obs_latency(env, obs)               # 20-60 ms sensor/loop latency
+
+    # Last line of defence: a stray non-finite value from one diverging env must
+    # never reach the shared network, or the PPO update NaNs every policy weight.
+    return torch.nan_to_num(obs, nan=0.0, posinf=0.0, neginf=0.0)
+
+
+def balance_command_obs(env: ManagerBasedRLEnv) -> torch.Tensor:
+    """Provide the current velocity command to the policy.
+
+    Returns (num_envs, 1): [target_vel_x]
+    """
+    vel_cmd = env.command_manager.get_command("velocity")
+    return vel_cmd[:, 0].unsqueeze(-1)

@@ -1,0 +1,67 @@
+seed: 42
+
+models:
+  separate: True
+  policy:
+    class: GaussianMixin
+    clip_actions: False
+    clip_mean_actions: False
+    network:
+      - name: net
+        input: observations
+        layers: [512, 256, 128, 64]
+        activations: elu
+    output: ACTIONS
+  value:
+    class: DeterministicMixin
+    network:
+      - name: net
+        input: observations
+        layers: [512, 256, 128, 64]
+        activations: elu
+    output: ONE
+
+memory:
+  class: RandomMemory
+  memory_size: -1 
+
+agent:
+  class: PPO
+  rollouts: 16
+  mini_batches: 4
+  learning_epochs: 5
+  
+  learning_rate: 0.0001
+  # KL-adaptive LR: raises/lowers LR each update to hold ~kl_threshold policy
+  # change. Robust to run length (unlike CosineAnnealingLR T_max, which annealed
+  # the LR to ~0 within ~8k timesteps and stalled learning). Bounded [1e-6, 1e-2].
+  learning_rate_scheduler: KLAdaptiveLR
+  learning_rate_scheduler_kwargs:
+    kl_threshold: 0.008
+
+  discount_factor: 0.99
+  gae_lambda: 0.95         # Updated from 'lambda'
+  ratio_clip: 0.2
+  value_clip: 0.2          # Automatically handles clip_predicted_values
+  
+  value_loss_scale: 1.0
+  entropy_loss_scale: 0.01
+  grad_norm_clip: 1.0
+  kl_threshold: 0.0
+
+  # Updated preprocessor terminology for skrl 2.1.0+
+  observation_preprocessor: RunningStandardScaler
+  observation_preprocessor_kwargs: null
+  value_preprocessor: RunningStandardScaler
+  value_preprocessor_kwargs: null
+
+  experiment:
+    directory: "cyclerl_logs"
+    experiment_name: "bicycle_ppo"
+    write_interval: 1000  # changed from auto
+    checkpoint_interval: 10000
+
+trainer:
+  class: SequentialTrainer
+  timesteps: 1000000
+  environment_info: log

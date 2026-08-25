@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+
+# Training runs: checkpoints, TensorBoard events, exported policies per run.
+# Keep sweep records (e.g. cfg_record.txt) OUTSIDE this tree so they survive.
+logs/
+
+# Hydra / Isaac Lab run output
+outputs/
+.hydra/
+
+# Experiment trackers
+wandb/
+runs/
+
+# Editors / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store

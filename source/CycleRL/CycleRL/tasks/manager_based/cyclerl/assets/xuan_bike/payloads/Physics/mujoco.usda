@@ -1,0 +1,153 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "URDF USD Converter v0.1.2"
+    }
+    defaultPrim = "xuan_bike"
+    doc = """Generated from Composed Stage of root layer /tmp/tmpn4e3pmbt/xuan_bike.usdc
+
+
+Generated from Composed Stage of root layer /tmp/urdf_import_xuan_bike_my2s2sih/usdex_xuan_bike/xuan_bike.usdc
+
+
+Generated from Composed Stage of root layer /tmp/urdf_import_xuan_bike_my2s2sih/temp_xuan_bike/xuan_bike.usd
+
+
+Generated from Composed Stage of root layer /home/lmbike2/xuan_bike/urdf/xuan_bike/payloads/base.usd
+"""
+    kilogramsPerUnit = 1
+    metersPerUnit = 1
+    subLayers = [
+        @./physics.usda@
+    ]
+    upAxis = "Z"
+)
+
+over "xuan_bike"
+{
+    over "Physics"
+    {
+        def MjcActuator "Revolute_7_actuator"
+        {
+            uniform double mjc:forceRange:max = 100
+            uniform double mjc:forceRange:min = -100
+            custom rel mjc:target
+            prepend rel mjc:target = </xuan_bike/Physics/Revolute_7>
+        }
+
+        def MjcActuator "Revolute_8_actuator"
+        {
+            uniform double mjc:forceRange:max = 100
+            uniform double mjc:forceRange:min = -100
+            custom rel mjc:target
+            prepend rel mjc:target = </xuan_bike/Physics/Revolute_8>
+        }
+
+        def MjcActuator "Revolute_9_actuator"
+        {
+            uniform double mjc:forceRange:max = 100
+            uniform double mjc:forceRange:min = -100
+            custom rel mjc:target
+            prepend rel mjc:target = </xuan_bike/Physics/Revolute_9>
+        }
+
+        def MjcActuator "Revolute_11_actuator"
+        {
+            uniform double mjc:forceRange:max = 100
+            uniform double mjc:forceRange:min = -100
+            custom rel mjc:target
+            prepend rel mjc:target = </xuan_bike/Physics/Revolute_11>
+        }
+
+        over "Revolute_7" (
+            delete apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+        )
+        {
+        }
+
+        over "Revolute_8" (
+            delete apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+        )
+        {
+        }
+
+        over "Revolute_9" (
+            delete apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+        )
+        {
+        }
+
+        over "Revolute_11" (
+            delete apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+        )
+        {
+        }
+    }
+
+    over "Geometry"
+    {
+        over "base_link"
+        {
+            over "steering_1"
+            {
+                over "wheel_front_1"
+                {
+                    over "wheel_front_1"
+                    {
+                    }
+
+                    over "wheel_front_1_1"
+                    {
+                    }
+                }
+
+                over "steering_1"
+                {
+                }
+
+                over "steering_1_1"
+                {
+                }
+            }
+
+            over "wheel_rear_1"
+            {
+                over "wheel_rear_1"
+                {
+                }
+
+                over "wheel_rear_1_1"
+                {
+                }
+            }
+
+            over "flywheel_1"
+            {
+                over "flywheel_1"
+                {
+                }
+
+                over "flywheel_1_1"
+                {
+                }
+            }
+
+            over "base_link_mesh"
+            {
+            }
+
+            over "base_link_mesh_1"
+            {
+            }
+        }
+    }
+
+    over "Materials"
+    {
+    }
+
+    over "VisualMaterials"
+    {
+    }
+}
+
