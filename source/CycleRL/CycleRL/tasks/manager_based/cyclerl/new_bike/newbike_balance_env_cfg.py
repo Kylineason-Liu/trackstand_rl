@@ -264,8 +264,12 @@ class NewBikeBalanceEnvCfg(ManagerBasedRLEnvCfg):
 
     def __post_init__(self):
         self.viewer.eye = [5.0, 5.0, 2.0]
-        self.step_dt = 0.02
-        self.episode_length_s = 30.0  # 30 s of balancing per episode
+        # 50 Hz control. step_dt is a READ-ONLY property on the env
+        # (= sim.dt * decimation), NOT a cfg field — assigning `self.step_dt`
+        # silently does nothing and left the policy running at 30 Hz
+        # (sim.dt default 1/60 * decimation 2 = 33.3 ms). Set sim.dt instead.
+        self.sim.dt = 0.01  # * decimation(2) -> step_dt = 0.02 s = 50 Hz
+        self.episode_length_s = 30.0  # 30 s of balancing per episode -> 1500 steps
 
 
 # ===========================================================================
