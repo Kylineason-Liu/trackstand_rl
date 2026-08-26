@@ -381,8 +381,12 @@ class NewBikeEnvCfg(ManagerBasedRLEnvCfg):
 
     def __post_init__(self):
         self.viewer.eye = [5.0, 5.0, 2.0]
-        self.step_dt = 0.02
-        self.episode_length_s = 64.0
+        # 50 Hz control. Assigning `self.step_dt` does NOT work — it is a
+        # read-only property on the env (= sim.dt * decimation), not a cfg
+        # field, so it silently left control at 30 Hz. Set sim.dt instead.
+        self.sim.dt = 0.01  # * decimation(2) -> step_dt = 0.02 s = 50 Hz
+        step_dt = self.sim.dt * self.decimation  # local: cfg has no step_dt attr
+        self.episode_length_s = 64.0  # -> 3200 steps
         # inherit terrain physics material (high-friction for bicycle tyres)
         self.sim.physics_material = self.scene.terrain.physics_material
         # enable terrain difficulty curriculum
@@ -396,5 +400,5 @@ class NewBikeEnvCfg(ManagerBasedRLEnvCfg):
         # force_params = self.external_force.event_params()
         # self.events.reset_random_external_force.params = force_params
         # self.events.random_external_force.params = force_params
-        # self.events.random_external_force.interval_range_s = (self.step_dt, self.step_dt)
-        self.events.wrap_root_at_terrain_border.interval_range_s = (self.step_dt, self.step_dt)
+        # self.events.random_external_force.interval_range_s = (step_dt, step_dt)
+        self.events.wrap_root_at_terrain_border.interval_range_s = (step_dt, step_dt)
