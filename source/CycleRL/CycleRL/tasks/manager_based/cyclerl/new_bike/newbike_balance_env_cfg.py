@@ -86,7 +86,7 @@ class NewBikeBalanceObservationsCfg(ObservationGroupCfg):
 @configclass
 class BalanceRewardsCfg:
     # exponential survival (commented — flip back by swapping which line is active):
-    # survival = RewardTermCfg(func=balance_survival_reward, weight=5.0)  # exp reward peaks at 1.0 (vertical), so weight == peak survival = 5.0.
+    #survival = RewardTermCfg(func=balance_survival_reward, weight=5.0)  # exp reward peaks at 1.0 (vertical), so weight == peak survival = 5.0.
     survival = RewardTermCfg(func=balance_survival_reward_binary, weight=5.0)  # binary +1 while |roll|<30°, else 0 (flat alive bonus, no shaping). Dominates drive(1.0)/steer(0.25).
     # action-rate (smoothness) penalty: -||a_t - a_{t-1}||. weight 0.0 = OFF by default
     # (contributes nothing, so no-flag runs are unchanged); set per-run with --arp_w
@@ -131,7 +131,10 @@ class BalanceTerminationsCfg:
     # Containment: reset a diverging env before a NaN can poison the shared policy.
     diverged = TerminationTermCfg(
         func=nonfinite_or_extreme_state,
-        params={"max_lin_vel": 20.0, "max_ang_vel": 50.0},
+        # max_joint_vel: root-only checks miss a runaway wheel under torque control
+        # (see terminations.py). Loose on purpose — 5x the drive motor's limit, so it
+        # only fires on real divergence, not on ordinary velocity-limit overshoot.
+        params={"max_lin_vel": 20.0, "max_ang_vel": 50.0, "max_joint_vel": 300.0},
         time_out=False,
     )
 

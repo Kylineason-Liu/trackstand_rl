@@ -57,6 +57,7 @@ def balance_imu_state(
     asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
     steer_joint_name: str = "Revolute_9",
     drive_joint_name: str = "Revolute_8",
+    obs_clip: float = 100.0,
 ) -> torch.Tensor:
     """IMU-rich observation for stationary balancing.
 
@@ -113,7 +114,14 @@ def balance_imu_state(
 
     # Last line of defence: a stray non-finite value from one diverging env must
     # never reach the shared network, or the PPO update NaNs every policy weight.
-    return torch.nan_to_num(obs, nan=0.0, posinf=0.0, neginf=0.0)
+    # The clamp covers the *finite but huge* case, which killed the torque runs: an
+    # unbounded rear wheel put |drive_vel| = 2420 rad/s in this vector, and with
+    # obs_normalization=False that single feature drove the critic's value loss to
+    # 1e4 -> NaN -> NaN policy weights. Every real signal here is well inside +-obs_clip
+    # (gravity <= 1, motor speeds <= ~60 rad/s), so this only ever bites an env that is
+    # already diverging (and which the `diverged` termination resets the same step).
+    obs = torch.nan_to_num(obs, nan=0.0, posinf=0.0, neginf=0.0)
+    return torch.clamp(obs, -obs_clip, obs_clip)
 
 
 def balance_command_obs(env: ManagerBasedRLEnv) -> torch.Tensor:

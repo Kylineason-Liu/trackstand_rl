@@ -223,17 +223,23 @@ NEW_BIKE_TORQUE_CFG = NEW_BIKE_BASE_CFG.replace(
     actuators={
         "steering": ImplicitActuatorCfg(
             joint_names_expr=["steering_joint"],
-            effort_limit=5.6,       # GIM4310-10 V1.1 stall (N·m)
-            velocity_limit=23.9,    # 228 RPM
-            stiffness=0.0,          # torque control: no position servo
-            damping=0.2,            # light bearing friction; tune to real motor
+            effort_limit_sim=5.6,       # GIM4310-10 V1.1 stall (N·m)
+            velocity_limit_sim=23.9,    # 228 RPM
+            stiffness=0.0,              # torque control: no position servo
+            damping=0.2,                # light bearing friction; tune to real motor
         ),
         "drive": ImplicitActuatorCfg(
             joint_names_expr=["rearwheel_joint"],
-            effort_limit=6.28,      # GIM3510-8 stall (N·m)
-            velocity_limit=61.6,    # 588 RPM
-            stiffness=0.0,          # torque control: no position servo
-            damping=0.05,           # wheel spins near-freely; tune
+            # *_sim, NOT the bare effort_limit/velocity_limit: for IMPLICIT actuators
+            # Isaac Lab ignores the bare velocity_limit (it warns, then drops it), so
+            # under pure torque control nothing bounded the wheel — measured 2420 rad/s
+            # (39x this limit), which fed a 2420-magnitude feature into the unnormalised
+            # critic, blew the value loss to 1e4/NaN, and NaN'd every policy weight.
+            # Only *_sim reaches PhysX and is actually enforced.
+            effort_limit_sim=6.28,      # GIM3510-8 stall (N·m)
+            velocity_limit_sim=61.6,    # 588 RPM
+            stiffness=0.0,              # torque control: no position servo
+            damping=0.05,               # wheel spins near-freely; tune
         ),
     }
 )
