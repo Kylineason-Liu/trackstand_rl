@@ -8,9 +8,10 @@ dist/
 .venv/
 venv/
 
-# Training runs: checkpoints, TensorBoard events, exported policies per run.
-# Keep sweep records (e.g. cfg_record.txt) OUTSIDE this tree so they survive.
-logs/
+# logs/ is tracked for small provenance files (sweep records, run cfgs, git
+# diffs). Heavy regenerable artifacts stay ignored.
+logs/**/*.pt
+logs/**/events.out.tfevents.*
 
 # Hydra / Isaac Lab run output
 outputs/

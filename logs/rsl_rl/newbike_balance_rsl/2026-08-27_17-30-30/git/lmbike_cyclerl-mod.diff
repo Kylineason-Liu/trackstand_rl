@@ -1,0 +1,196 @@
+--- git commit ---
+cd3e1809708c4bf138123ce46df8cdfe1139aff0
+
+
+--- git status ---
+On branch main
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   scripts/rsl_rl/play.py
+	modified:   scripts/rsl_rl/play_eval.py
+	modified:   source/CycleRL/CycleRL/tasks/manager_based/cyclerl/bicycle_cfg.py
+	modified:   source/CycleRL/CycleRL/tasks/manager_based/cyclerl/mdp/stationary/observations.py
+	modified:   source/CycleRL/CycleRL/tasks/manager_based/cyclerl/mdp/stationary/terminations.py
+	modified:   source/CycleRL/CycleRL/tasks/manager_based/cyclerl/new_bike/newbike_balance_env_cfg.py
+
+no changes added to commit (use "git add" and/or "git commit -a") 
+
+
+--- git diff ---
+diff --git a/scripts/rsl_rl/play.py b/scripts/rsl_rl/play.py
+index 2c05c7b..eb2aef6 100644
+--- a/scripts/rsl_rl/play.py
++++ b/scripts/rsl_rl/play.py
+@@ -84,8 +84,16 @@ from isaaclab_rl.rsl_rl import (
+     export_policy_as_jit,
+     export_policy_as_onnx,
+     handle_deprecated_rsl_rl_cfg,
+-    handle_deprecated_rsl_rl_checkpoint,
+ )
++
++try:
++    from isaaclab_rl.rsl_rl import handle_deprecated_rsl_rl_checkpoint
++except ImportError:
++    # Isaac Lab 7.2.0 ships no checkpoint migrator (only the cfg one above).
++    # Checkpoints written by the installed rsl-rl are already in its current
++    # format, so passing the path through unchanged is correct here.
++    def handle_deprecated_rsl_rl_checkpoint(resume_path, installed_version):
++        return resume_path
+ from isaaclab_rl.utils.pretrained_checkpoint import get_published_pretrained_checkpoint
+ 
+ import isaaclab_tasks  # noqa: F401
+diff --git a/scripts/rsl_rl/play_eval.py b/scripts/rsl_rl/play_eval.py
+index dec370e..485d448 100644
+--- a/scripts/rsl_rl/play_eval.py
++++ b/scripts/rsl_rl/play_eval.py
+@@ -73,8 +73,16 @@ from isaaclab.utils.assets import retrieve_file_path
+ from isaaclab_rl.rsl_rl import (
+     RslRlVecEnvWrapper,
+     handle_deprecated_rsl_rl_cfg,
+-    handle_deprecated_rsl_rl_checkpoint,
+ )
++
++try:
++    from isaaclab_rl.rsl_rl import handle_deprecated_rsl_rl_checkpoint
++except ImportError:
++    # Isaac Lab 7.2.0 ships no checkpoint migrator (only the cfg one above).
++    # Checkpoints written by the installed rsl-rl are already in its current
++    # format, so passing the path through unchanged is correct here.
++    def handle_deprecated_rsl_rl_checkpoint(resume_path, installed_version):
++        return resume_path
+ from isaaclab_rl.utils.pretrained_checkpoint import get_published_pretrained_checkpoint
+ 
+ import isaaclab_tasks  # noqa: F401
+diff --git a/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/bicycle_cfg.py b/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/bicycle_cfg.py
+index cf65ec7..81243db 100644
+--- a/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/bicycle_cfg.py
++++ b/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/bicycle_cfg.py
+@@ -223,17 +223,23 @@ NEW_BIKE_TORQUE_CFG = NEW_BIKE_BASE_CFG.replace(
+     actuators={
+         "steering": ImplicitActuatorCfg(
+             joint_names_expr=["steering_joint"],
+-            effort_limit=5.6,       # GIM4310-10 V1.1 stall (N·m)
+-            velocity_limit=23.9,    # 228 RPM
+-            stiffness=0.0,          # torque control: no position servo
+-            damping=0.2,            # light bearing friction; tune to real motor
++            effort_limit_sim=5.6,       # GIM4310-10 V1.1 stall (N·m)
++            velocity_limit_sim=23.9,    # 228 RPM
++            stiffness=0.0,              # torque control: no position servo
++            damping=0.2,                # light bearing friction; tune to real motor
+         ),
+         "drive": ImplicitActuatorCfg(
+             joint_names_expr=["rearwheel_joint"],
+-            effort_limit=6.28,      # GIM3510-8 stall (N·m)
+-            velocity_limit=61.6,    # 588 RPM
+-            stiffness=0.0,          # torque control: no position servo
+-            damping=0.05,           # wheel spins near-freely; tune
++            # *_sim, NOT the bare effort_limit/velocity_limit: for IMPLICIT actuators
++            # Isaac Lab ignores the bare velocity_limit (it warns, then drops it), so
++            # under pure torque control nothing bounded the wheel — measured 2420 rad/s
++            # (39x this limit), which fed a 2420-magnitude feature into the unnormalised
++            # critic, blew the value loss to 1e4/NaN, and NaN'd every policy weight.
++            # Only *_sim reaches PhysX and is actually enforced.
++            effort_limit_sim=6.28,      # GIM3510-8 stall (N·m)
++            velocity_limit_sim=61.6,    # 588 RPM
++            stiffness=0.0,              # torque control: no position servo
++            damping=0.05,               # wheel spins near-freely; tune
+         ),
+     }
+ )
+\ No newline at end of file
+diff --git a/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/mdp/stationary/observations.py b/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/mdp/stationary/observations.py
+index a4e5ee9..9e7dca0 100644
+--- a/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/mdp/stationary/observations.py
++++ b/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/mdp/stationary/observations.py
+@@ -57,6 +57,7 @@ def balance_imu_state(
+     asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+     steer_joint_name: str = "Revolute_9",
+     drive_joint_name: str = "Revolute_8",
++    obs_clip: float = 100.0,
+ ) -> torch.Tensor:
+     """IMU-rich observation for stationary balancing.
+ 
+@@ -113,7 +114,14 @@ def balance_imu_state(
+ 
+     # Last line of defence: a stray non-finite value from one diverging env must
+     # never reach the shared network, or the PPO update NaNs every policy weight.
+-    return torch.nan_to_num(obs, nan=0.0, posinf=0.0, neginf=0.0)
++    # The clamp covers the *finite but huge* case, which killed the torque runs: an
++    # unbounded rear wheel put |drive_vel| = 2420 rad/s in this vector, and with
++    # obs_normalization=False that single feature drove the critic's value loss to
++    # 1e4 -> NaN -> NaN policy weights. Every real signal here is well inside +-obs_clip
++    # (gravity <= 1, motor speeds <= ~60 rad/s), so this only ever bites an env that is
++    # already diverging (and which the `diverged` termination resets the same step).
++    obs = torch.nan_to_num(obs, nan=0.0, posinf=0.0, neginf=0.0)
++    return torch.clamp(obs, -obs_clip, obs_clip)
+ 
+ 
+ def balance_command_obs(env: ManagerBasedRLEnv) -> torch.Tensor:
+diff --git a/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/mdp/stationary/terminations.py b/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/mdp/stationary/terminations.py
+index 6637f09..a8d2bf6 100644
+--- a/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/mdp/stationary/terminations.py
++++ b/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/mdp/stationary/terminations.py
+@@ -29,6 +29,7 @@ def nonfinite_or_extreme_state(
+     env: ManagerBasedRLEnv,
+     max_lin_vel: float = 20.0,
+     max_ang_vel: float = 50.0,
++    max_joint_vel: float = 300.0,
+     asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+ ) -> torch.Tensor:
+     """Reset a diverging bike *before* it can NaN-poison the shared policy.
+@@ -37,11 +38,27 @@ def nonfinite_or_extreme_state(
+     observation, so the PPO update writes NaN into the shared network weights and
+     the whole run dies. Firing this termination resets the bad env each step, so
+     the blow-up is contained to one env instead of ending training.
++
++    Checks the ROOT (lin/ang velocity) and the JOINTS. The joint check matters
++    under torque control, where nothing else bounds a free-spinning wheel: the
++    torque runs died with |drive_vel| = 2420 rad/s in the observation while the
++    root state stayed perfectly finite, so a root-only check never fired.
++    ``max_joint_vel`` is deliberately loose (5x the drive motor's 61.6 rad/s limit):
++    PhysX velocity limits are soft constraints, so sustained full torque still
++    overshoots to ~130 rad/s, and this net is meant to catch genuine divergence
++    (10^3+), not ordinary saturation. Protecting the network from large-but-finite
++    values is the observation clamp's job (see stationary/observations.py).
+     """
+     asset = env.scene[asset_cfg.name]
+     lin_vel = asset.data.root_lin_vel_b
+     ang_vel = asset.data.root_ang_vel_b
+-    nonfinite = ~torch.isfinite(lin_vel).all(dim=-1) | ~torch.isfinite(ang_vel).all(dim=-1)
++    joint_vel = asset.data.joint_vel
++    nonfinite = (
++        ~torch.isfinite(lin_vel).all(dim=-1)
++        | ~torch.isfinite(ang_vel).all(dim=-1)
++        | ~torch.isfinite(joint_vel).all(dim=-1)
++    )
+     too_fast = torch.norm(lin_vel, dim=-1) > max_lin_vel
+     spinning = torch.norm(ang_vel, dim=-1) > max_ang_vel
+-    return nonfinite | too_fast | spinning
++    joint_runaway = joint_vel.abs().amax(dim=-1) > max_joint_vel
++    return nonfinite | too_fast | spinning | joint_runaway
+diff --git a/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/new_bike/newbike_balance_env_cfg.py b/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/new_bike/newbike_balance_env_cfg.py
+index eebcb23..0d67af0 100644
+--- a/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/new_bike/newbike_balance_env_cfg.py
++++ b/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/new_bike/newbike_balance_env_cfg.py
+@@ -86,7 +86,7 @@ class NewBikeBalanceObservationsCfg(ObservationGroupCfg):
+ @configclass
+ class BalanceRewardsCfg:
+     # exponential survival (commented — flip back by swapping which line is active):
+-    # survival = RewardTermCfg(func=balance_survival_reward, weight=5.0)  # exp reward peaks at 1.0 (vertical), so weight == peak survival = 5.0.
++    #survival = RewardTermCfg(func=balance_survival_reward, weight=5.0)  # exp reward peaks at 1.0 (vertical), so weight == peak survival = 5.0.
+     survival = RewardTermCfg(func=balance_survival_reward_binary, weight=5.0)  # binary +1 while |roll|<30°, else 0 (flat alive bonus, no shaping). Dominates drive(1.0)/steer(0.25).
+     # action-rate (smoothness) penalty: -||a_t - a_{t-1}||. weight 0.0 = OFF by default
+     # (contributes nothing, so no-flag runs are unchanged); set per-run with --arp_w
+@@ -131,7 +131,10 @@ class BalanceTerminationsCfg:
+     # Containment: reset a diverging env before a NaN can poison the shared policy.
+     diverged = TerminationTermCfg(
+         func=nonfinite_or_extreme_state,
+-        params={"max_lin_vel": 20.0, "max_ang_vel": 50.0},
++        # max_joint_vel: root-only checks miss a runaway wheel under torque control
++        # (see terminations.py). Loose on purpose — 5x the drive motor's limit, so it
++        # only fires on real divergence, not on ordinary velocity-limit overshoot.
++        params={"max_lin_vel": 20.0, "max_ang_vel": 50.0, "max_joint_vel": 300.0},
+         time_out=False,
+     )
+ 
