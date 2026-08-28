@@ -1,0 +1,124 @@
+(drive & steer rewards are always exponential, exp(-decay*|v|); only their weights vary. type = survival reward: 1/0 = binary, exp; definition of better/best: largest/er mean episode length achieved with shortest/er number of iterations, and evaluated through play_eval.py)
+timestamp      surv  type  drive   steer   arp     dr?     comment
+08261408       5.00  1/0    0.00   0.00    0.00    no_dr   seed 42, 5090 laptop, baseline model for training validation
+08261734       5.00  1/0    0.00   0.00    0.00    no_dr   seed 123, 5090, baseline model
+08262013       5.00  1/0    0.00   0.00    0.00    no_dr   seed 1, 5090, baseline model -> best for 5090 laptop
+08262024       5.00  1/0    0.00   0.00    0.00    no_dr   seed 20, 5090, baseline model
+08262053       5.00  1/0    0.00   0.00    0.00    no_dr   seed 80, 5090, baseline model
+
+08261634       5.00  1/0    0.00   0.00    0.00    no_dr   seed 42, 4090 desktop, baseline model -> best for 4090 desktop
+08261743       5.00  1/0    0.00   0.00    0.00    no_dr   seed 123, 4090, baseline model
+08262017       5.00  1/0    0.00   0.00    0.00    no_dr   seed 1, 4090, baseline model
+08262042       5.00  1/0    0.00   0.00    0.00    no_dr   seed 20, 4090, baseline model
+08262058       5.00  1/0    0.00   0.00    0.00    no_dr   seed 80, 4090, baseline model
+
+08262138       5.00  1/0    1.00   0.00    0.00    no_dr   find best drive_w, seed 42, 4090 (below default)
+08271011       5.00  1/0    2.00   0.00    0.00    no_dr
+08271020       5.00  1/0    5.00   0.00    0.00    no_dr   drive weight=5 is best. 2 and 20 are runner-ups
+08262135       5.00  1/0   10.00   0.00    0.00    no_dr   failed instantly in play_eval.py
+08262141       5.00  1/0   20.00   0.00    0.00    no_dr
+			   
+08262148       5.00  exp    2.00   0.00    0.00    no_dr   binary survival reward is better
+
+               5.00  1/0    0.25   0.00    0.00       dr   find best drive_w with domain randomization
+               5.00  1/0    0.50   0.00    0.00       dr
+               5.00  1/0    1.00   0.00    0.00       dr
+08271730       5.00  1/0    2.00   0.00    0.00       dr
+08271731       5.00  1/0    5.00   0.00    0.00       dr
+               5.00  1/0    7.50   0.00    0.00       dr
+08271811       5.00  1/0   10.00   0.00    0.00       dr
+08271732       5.00  1/0   12.00   0.00    0.00       dr
+08271733       5.00  1/0   20.00   0.00    0.00       dr
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------
+               5.00  1/0   10.00   2.50    0.00    no_dr   tune steer weight with drive : steer = 4 : 1
+
+08271209       5.00  1/0   5.00    1.25    0.00    no_dr   
+
+               5.00  1/0   5.00    0.00    0.00    no_dr   s0 anchor (d5): does any steer>0 beat s0 here?
+               5.00  1/0   5.00    2.50    0.00    no_dr   (+1156 @ s1.25 -> d5 steer sweep {0, 1.25, 2.5})
+
+               5.00  1/0   8.00    0.00    0.00    no_dr   s0 anchor (d8)
+               5.00  1/0   8.00    2.00    0.00    no_dr
+
+               5.00  1/0   12.00   1.50    0.00    no_dr   low-steer point (anchor 1826 @ s0 -> d12 steer sweep {0, 1.5, 3, 6})
+               5.00  1/0   12.00   3.00    0.00    no_dr
+               5.00  1/0   12.00   6.00    0.00    no_dr   single confirmatory high point (steer > survival 5); expect downslope
+             
+               5.00  1/0   12.00   0.00 0.00001    no_dr
+               5.00  1/0   12.00   0.00  0.0001    no_dr
+               5.00  1/0   12.00   0.00   0.001    no_dr
+               5.00  1/0   12.00   0.00    0.01    no_dr   tune action rate penalty
+               5.00  1/0   12.00   0.00    0.10    no_dr   
+               5.00  1/0   12.00   0.00    0.50    no_dr
+
+
+--------------------------------------------------------------------------------
+PHASE 2 (planned, gated on the Phase-1 grid) — ACTION-RATE PENALTY for chaos/jitter
+  Prereq: DONE — `action_rate` term wired into BalanceRewardsCfg (weight 0 = off by
+          default; func = balance_action_rate_penalty; returns -||a_t - a_{t-1}||_2,
+          UNBOUNDED -> keep small), and --arp_w flag added to train.py /
+          train_deterministic.py. Just pass --arp_w 0.1 (etc.) per run.
+  Goal: does a SLIGHT smoothness penalty cut roll-RMS / action jitter WITHOUT
+        shortening episodes? It penalizes action CHANGE, not motion -> smooths both
+        motors, unlike steer_reward (which suppresses the steering the bike needs).
+  Scope: apply only to the two LEADERS; arp=0 baselines already exist, so this is a
+         controlled 1-var comparison. Do NOT cross arp with every grid cell.
+
+    survival  drive  steer   arp    arp=0 baseline   note
+    5 1/0      12     0.00    0.10   1826             smoothness on the steer=0 leader
+    5 1/0      12     0.00    0.50   1826
+    5 1/0     <winning drive/steer from Phase-1 grid>  0.10   <that run>   smoothness on the steer>0 leader
+    5 1/0     <winning drive/steer from Phase-1 grid>  0.50   <that run>
+  Read: arp should LOWER roll-RMS / action-jitter with ~unchanged episode length.
+        If 0.50 helps at no cost, bracket up to 1.0; if it SHORTENS episodes it is
+        too strong (over-damping the corrective control).
+--------------------------------------------------------------------------------
+
+
+================================================================================
+SUMMARY   (survival pinned to BINARY; metric = mean episode length; all no_dr)
+================================================================================
+
+GRID  — rows = drive weight, cols = steer weight; cell = run id / plan / -
+  drive\steer   s0.0   s1.25  s1.5   s2.0   s2.5   s3.0   s6.0
+  d5            plan   1156   -      -      plan   -      -
+  d8            plan   -      -      plan   -      -      -
+  d10           -      -      -      -      1122   -      -
+  d11           2149   -      -      -      -      -      -
+  d12           1826*  -      plan   -      -      plan   plan
+  d13           1854   -      -      -      -      -      -
+  d14           1901   -      -      -      -      -      -
+  * = best confirmed so far (longest mean episode length, at steer=0)
+  superseded exp-survival runs: 1136 (d12/s0), 1204 (d5/s1.25) — both lost to binary
+
+SETTLED
+  1. Survival reward: BINARY (+1 while |roll|<30 deg) beats exp. Proven twice —
+     1826 > 1136 (d12/s0) and 1156 > 1204 (d5/s1.25), both on mean episode length.
+  2. At steer=0, drive sweep {11,12,13,14}: drive=12 gives the longest mean
+     episode length (1826).  [single-seed — re-confirm on a 2nd seed]
+
+PENDING
+  A. Does steer>0 help at all? -> steer sweeps at d5, d8, d12, each anchored at
+     its s0 cell. Judge each steer>0 cell against the SAME-drive s0 cell.
+  B. Drive x steer interaction: does the best steer weight depend on drive?
+  C. Prediction to test (cheaply): steer weight >= survival (5), i.e. d12/s6,
+     HURTS — steer_reward rewards a STILL steering motor, which opposes balancing
+     (steering is the balancing actuator). Expect the d12 sweep {0,1.5,3,6} to
+     peak at low steer, then decline.
+  D. NOT STARTED, higher priority than fine steer tuning: robustness of the
+     leading config under DR + kick. Every optimum above is for the easy (no_dr)
+     task and may reshuffle once DR is on.
+
+METHOD NOTES
+  - Single-seed + cudnn.deterministic=False -> nearby cells can differ by noise.
+    Use train_deterministic.py for attributable comparisons; re-check any winner
+    on a 2nd --seed.
+  - Rank by episode length / roll RMS / fall rate (play_eval.py), NOT mean reward
+    (not comparable across reward-weight or survival-type changes).
