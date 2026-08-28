@@ -21,11 +21,12 @@ Example:
         --checkpoint logs/rsl_rl/newbike_balance_rsl/<run>/model_14999.pt \\
         --num_envs 64 --num_steps 3000 --headless
 
-Note: the env is used as-configured, so if the task has a `dr_ramp` DR curriculum
-it will ramp during eval (early steps see less DR). For a clean fixed-DR eval, pin
-DR in the cfg first. Also: mean_reward is NOT comparable across reward-weight
-changes (the scale moves with the weights) — rank configs by episode length /
-roll metrics instead.
+Note: domain randomization is PINNED for eval, not ramped — by default the
+`dr_ramp` curriculum is set to FULL DR from step 0 (start_step = end_step = 0);
+pass --no_dr to disable DR entirely (alpha pinned to 0). Unlike training, there
+is no 50k-step ramp: eval should see the regime the policy must survive. Also:
+mean_reward is NOT comparable across reward-weight changes (the scale moves with
+the weights) — rank configs by episode length / roll metrics instead.
 """
 
 """Launch Isaac Sim Simulator first."""
@@ -43,11 +44,15 @@ parser.add_argument("--num_envs", type=int, default=64, help="Number of environm
 parser.add_argument("--task", type=str, default=None, help="Name of the task.")
 parser.add_argument("--agent", type=str, default="rsl_rl_cfg_entry_point", help="RL agent config entry point.")
 parser.add_argument("--seed", type=int, default=None, help="Seed used for the environment.")
-parser.add_argument("--checkpoint", type=str, default=None, help="Path to a model_*.pt checkpoint.")
 parser.add_argument("--use_pretrained_checkpoint", action="store_true", help="Use the published pretrained checkpoint.")
 parser.add_argument(
     "--num_steps", type=int, default=3000,
     help="Env steps to run (~2 episodes/env at the 1500-step / 30s cap).",
+)
+parser.add_argument(
+    "--no_dr", action="store_true", default=False,
+    help="Disable domain randomization entirely (dr_ramp alpha pinned to 0). "
+    "Without this flag, eval runs at FULL DR from step 0 (no ramp).",
 )
 cli_args.add_rsl_rl_args(parser)
 AppLauncher.add_app_launcher_args(parser)
@@ -73,8 +78,16 @@ from isaaclab.utils.assets import retrieve_file_path
 from isaaclab_rl.rsl_rl import (
     RslRlVecEnvWrapper,
     handle_deprecated_rsl_rl_cfg,
-    handle_deprecated_rsl_rl_checkpoint,
 )
+
+try:
+    from isaaclab_rl.rsl_rl import handle_deprecated_rsl_rl_checkpoint
+except ImportError:
+    # Isaac Lab 7.2.0 ships no checkpoint migrator (only the cfg one above).
+    # Checkpoints written by the installed rsl-rl are already in its current
+    # format, so passing the path through unchanged is correct here.
+    def handle_deprecated_rsl_rl_checkpoint(resume_path, installed_version):
+        return resume_path
 from isaaclab_rl.utils.pretrained_checkpoint import get_published_pretrained_checkpoint
 
 import isaaclab_tasks  # noqa: F401
@@ -100,6 +113,23 @@ def main(env_cfg, agent_cfg):
 
     agent_cfg = cli_args.update_rsl_rl_cfg(agent_cfg, args_cli)
     env_cfg.scene.num_envs = args_cli.num_envs if args_cli.num_envs is not None else env_cfg.scene.num_envs
+
+    # Pin DR for eval (play-only convention — training keeps its 50k-step ramp):
+    # default = FULL DR from step 0 (end_step <= start_step -> alpha = 1.0 on the
+    # ramp term's first call, before any reset events fire); --no_dr = alpha pinned
+    # to 0 (end_step = 10**9, same mechanism as train_deterministic.py's flag).
+    dr_ramp = getattr(getattr(env_cfg, "curriculum", None), "dr_ramp", None)
+    if dr_ramp is not None:
+        if args_cli.no_dr:
+            dr_ramp.params["end_step"] = 10**9
+            print("[INFO] --no_dr: domain randomization disabled (dr_ramp alpha pinned to 0).")
+        else:
+            dr_ramp.params["start_step"] = 0
+            dr_ramp.params["end_step"] = 0
+            print("[INFO] DR pinned to FULL from step 0 (no ramp); use --no_dr to disable.")
+    else:
+        print("[WARN] Task has no 'dr_ramp' curriculum term; --no_dr has nothing to disable.")
+
     agent_cfg = handle_deprecated_rsl_rl_cfg(agent_cfg, installed_version)
     env_cfg.seed = agent_cfg.seed
     env_cfg.sim.device = args_cli.device if args_cli.device is not None else env_cfg.sim.device

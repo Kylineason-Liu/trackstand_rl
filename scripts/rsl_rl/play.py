@@ -34,6 +34,15 @@ parser.add_argument(
     help="Use the pre-trained checkpoint from Nucleus.",
 )
 parser.add_argument("--real-time", action="store_true", default=False, help="Run in real-time, if possible.")
+parser.add_argument(
+    "--no_dr", action="store_true", default=False,
+    help="Disable domain randomization entirely (dr_ramp alpha pinned to 0). "
+    "Without this flag, play runs at FULL DR from step 0 (no ramp).",
+)
+parser.add_argument(
+    "--num_steps", type=int, default=3000,
+    help="Env steps to run (~2 episodes/env at the 1500-step / 30s cap).",
+)
 # append RSL-RL cli arguments
 cli_args.add_rsl_rl_args(parser)
 # append AppLauncher cli args
@@ -84,8 +93,16 @@ from isaaclab_rl.rsl_rl import (
     export_policy_as_jit,
     export_policy_as_onnx,
     handle_deprecated_rsl_rl_cfg,
-    handle_deprecated_rsl_rl_checkpoint,
 )
+
+try:
+    from isaaclab_rl.rsl_rl import handle_deprecated_rsl_rl_checkpoint
+except ImportError:
+    # Isaac Lab 7.2.0 ships no checkpoint migrator (only the cfg one above).
+    # Checkpoints written by the installed rsl-rl are already in its current
+    # format, so passing the path through unchanged is correct here.
+    def handle_deprecated_rsl_rl_checkpoint(resume_path, installed_version):
+        return resume_path
 from isaaclab_rl.utils.pretrained_checkpoint import get_published_pretrained_checkpoint
 
 import isaaclab_tasks  # noqa: F401
@@ -105,6 +122,22 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
     # override configurations with non-hydra CLI arguments
     agent_cfg: RslRlBaseRunnerCfg = cli_args.update_rsl_rl_cfg(agent_cfg, args_cli)
     env_cfg.scene.num_envs = args_cli.num_envs if args_cli.num_envs is not None else env_cfg.scene.num_envs
+
+    # Pin DR for play (play-only convention — training keeps its 50k-step ramp):
+    # default = FULL DR from step 0 (end_step <= start_step -> alpha = 1.0 on the
+    # ramp term's first call, before any reset events fire); --no_dr = alpha pinned
+    # to 0 (end_step = 10**9, same mechanism as train_deterministic.py's flag).
+    dr_ramp = getattr(getattr(env_cfg, "curriculum", None), "dr_ramp", None)
+    if dr_ramp is not None:
+        if args_cli.no_dr:
+            dr_ramp.params["end_step"] = 10**9
+            print("[INFO] --no_dr: domain randomization disabled (dr_ramp alpha pinned to 0).")
+        else:
+            dr_ramp.params["start_step"] = 0
+            dr_ramp.params["end_step"] = 0
+            print("[INFO] DR pinned to FULL from step 0 (no ramp); use --no_dr to disable.")
+    else:
+        print("[WARN] Task has no 'dr_ramp' curriculum term; --no_dr has nothing to disable.")
 
     # handle deprecated configurations
     agent_cfg = handle_deprecated_rsl_rl_cfg(agent_cfg, installed_version)
