@@ -198,15 +198,20 @@ NEW_BIKE_STANDARD_CFG = NEW_BIKE_BASE_CFG.replace(
     actuators={
         "steering": ImplicitActuatorCfg(
             joint_names_expr=["steering_joint"],
-            effort_limit=5.6,       # GIM4310-10 V1.1 stall (N·m)
-            velocity_limit=23.9,    # 228 RPM
+            # *_sim: the bare effort_limit/velocity_limit are dropped for IMPLICIT
+            # actuators on Isaac Lab 7.2.0 (see NEW_BIKE_TORQUE_CFG below). Under
+            # position (steering) / velocity (drive) control the action clips bound
+            # the joints anyway, so enabling these nominal limits changes nothing
+            # physically — it just uses the fields this version honours.
+            effort_limit_sim=5.6,   # GIM4310-10 V1.1 stall (N·m)
+            velocity_limit_sim=23.9,    # 228 RPM
             stiffness=10.0,         # same SI PD as MIT kp
             damping=0.2,            # same SI PD as MIT kd
         ),
         "drive": ImplicitActuatorCfg(
             joint_names_expr=["rearwheel_joint"],
-            effort_limit=6.28,      # GIM3510-8 stall (N·m)
-            velocity_limit=61.6,    # 588 RPM
+            effort_limit_sim=6.28,  # GIM3510-8 stall (N·m)
+            velocity_limit_sim=61.6,    # 588 RPM
             stiffness=0.0,          # velocity mode: τ = Kd*(ω*−ω)
             damping=5.0,            # match Xuan bike; 8.0 saturated at ~0.79 rad/s error
         ),
