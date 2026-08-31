@@ -219,6 +219,30 @@ NEW_BIKE_STANDARD_CFG = NEW_BIKE_BASE_CFG.replace(
 )
 
 # =========================================================================
+# 8b. New Bike Hybrid Configuration (position steering + torque drive)
+#     Steering keeps the STANDARD position servo (stiffness/damping PD), the
+#     drive motor runs in TORQUE mode (stiffness 0), like NEW_BIKE_TORQUE_CFG.
+# =========================================================================
+NEW_BIKE_HYBRID_CFG = NEW_BIKE_BASE_CFG.replace(
+    actuators={
+        "steering": ImplicitActuatorCfg(
+            joint_names_expr=["steering_joint"],
+            effort_limit_sim=5.6,   # GIM4310-10 V1.1 stall (N·m)
+            velocity_limit_sim=23.9,    # 228 RPM
+            stiffness=10.0,         # position servo: same SI PD as MIT kp
+            damping=0.2,            # same SI PD as MIT kd
+        ),
+        "drive": ImplicitActuatorCfg(
+            joint_names_expr=["rearwheel_joint"],
+            effort_limit_sim=6.28,  # GIM3510-8 stall (N·m)
+            velocity_limit_sim=61.6,    # 588 RPM
+            stiffness=0.0,          # torque control: no position servo
+            damping=0.05,           # light bearing friction; tune
+        ),
+    }
+)
+
+# =========================================================================
 # 9. New Bike Torque Configuration (direct effort/torque control)
 #     Both motors driven by torque: stiffness=0 so a JointEffortAction is not
 #     fought by a PD servo. Matches GM4310 / GIM3510 CAN torque mode. Effort

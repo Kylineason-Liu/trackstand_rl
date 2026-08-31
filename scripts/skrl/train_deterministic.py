@@ -100,6 +100,12 @@ parser.add_argument("--steer_w", type=float, default=None,
 parser.add_argument("--arp_w", type=float, default=None,
     help="Override the action_rate penalty weight (kept at the env-cfg value if omitted; cfg default 0=off). Small, e.g. 0.1.")
 parser.add_argument("--run_name", type=str, default=None, help="Run name suffix to the log directory.")
+parser.add_argument(
+    "--layers", type=str, default=None,
+    help="Comma-separated hidden-layer sizes overriding BOTH policy and value networks, "
+    "e.g. '512,256,128,64'. Only the layers change — entropy/LR/schedule stay at the "
+    "loaded cfg's values, so this is a clean capacity A/B.",
+)
 
 # =========================================================================
 # NEW ARGUMENTS FOR TERMINAL METRICS TRACKING
@@ -285,6 +291,13 @@ def main():
     ):
         if w is not None:
             _set_reward_weight(term_name, w)
+
+    # --layers: capacity A/B — override the hidden layers of both networks, nothing else.
+    if args_cli.layers:
+        layers = [int(x) for x in args_cli.layers.split(",")]
+        agent_cfg["models"]["policy"]["network"][0]["layers"] = layers
+        agent_cfg["models"]["value"]["network"][0]["layers"] = layers
+        print(f"[INFO] network layers overridden to {layers} (policy and value).")
 
     # =========================================================================
     # PRINT SPECIFIED METADATA & CONFIGURATION

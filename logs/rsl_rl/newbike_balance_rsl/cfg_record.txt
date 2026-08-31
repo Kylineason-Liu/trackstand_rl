@@ -20,10 +20,7 @@ timestamp      surv  type  drive   steer   arp     dr?     comment
 			   
 08262148       5.00  exp    2.00   0.00    0.00    no_dr   binary survival reward is better
 
-               5.00  1/0    0.25   0.00    0.00       dr   find best drive_w with domain randomization
-               5.00  1/0    0.50   0.00    0.00       dr
-               5.00  1/0    1.00   0.00    0.00       dr
-08271730       5.00  1/0    2.00   0.00    0.00       dr
+08271730       5.00  1/0    2.00   0.00    0.00       dr   find best drive_w with domain randomization
 08271731       5.00  1/0    5.00   0.00    0.00       dr
                5.00  1/0    7.50   0.00    0.00       dr
 08271811       5.00  1/0   10.00   0.00    0.00       dr
@@ -31,8 +28,7 @@ timestamp      surv  type  drive   steer   arp     dr?     comment
 08271733       5.00  1/0   20.00   0.00    0.00       dr   all performed very bad
 
 
-               5.00  1/0    1.00   0.00    0.00       dr   NewBike-Balance-v0 (speed/position control) drive sweep, seed 42 deterministic
-08281822       5.00  1/0    1.00   0.00    0.00       dr
+08281822       5.00  1/0    1.00   0.00    0.00       dr   NewBike-Balance-v0 (speed/position control) drive sweep, seed 42 deterministic
 08281948       5.00  1/0    2.00   0.00    0.00       dr
 08282122       5.00  1/0    5.00   0.00    0.00       dr
 08282257       5.00  1/0    7.00   0.00    0.00       dr
@@ -40,6 +36,7 @@ timestamp      surv  type  drive   steer   arp     dr?     comment
 08290206       5.00  1/0   12.00   0.00    0.00       dr   eval via play_eval.py at FULL DR (pinned from step 0)
 08290349       5.00  1/0    1.00   0.00    0.10       dr   arp fallback on d1 leader: eval 156 vs 127 steps, fall 0.932 — mild help, still bad
 08290514       5.00  1/0    1.00   0.00    0.50       dr   arp too strong: over-damped, eval 24 steps, fall 1.000
+08311840       5.00  1/0    5.00   0.00    0.00       dr   skrl [512,256,128,64] capacity A/B on torque d5; eval 9 steps, fall 1.0 — MUCH worse than [32,32] (212 steps)
 
 
 

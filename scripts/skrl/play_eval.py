@@ -78,6 +78,11 @@ parser.add_argument(
     help="Env steps to run (~2 episodes/env at the 1500-step / 30s cap).",
 )
 parser.add_argument(
+    "--layers", type=str, default=None,
+    help="Comma-separated hidden-layer sizes overriding BOTH policy and value networks "
+    "(must match the trained checkpoint), e.g. '512,256,128,64'.",
+)
+parser.add_argument(
     "--no_dr", action="store_true", default=False,
     help="Disable domain randomization entirely (dr_ramp alpha pinned to 0). "
     "Without this flag, eval runs at FULL DR from step 0 (no ramp).",
@@ -111,9 +116,15 @@ simulation_app = app_launcher.app
 """Rest everything follows."""
 
 import contextlib  # noqa: E402
+import random  # noqa: E402
 import time  # noqa: E402
 
 import gymnasium as gym  # noqa: E402
+import matplotlib  # noqa: E402
+
+matplotlib.use("Agg")  # headless: render to file only, never to a display
+import matplotlib.pyplot as plt  # noqa: E402
+import numpy as np  # noqa: E402
 import torch  # noqa: E402
 from packaging import version  # noqa: E402
 
@@ -151,6 +162,44 @@ def _roll_deg(robot, device):
     """Lean angle in degrees from projected gravity (|sin(roll)| -> deg), like the reward code."""
     lean = robot.data.projected_gravity_b[:, 1].abs().clamp(max=1.0)
     return torch.rad2deg(torch.asin(lean)).to(device)
+
+
+def _plot_torque_traces(resume_path, steps, envs, drive_trace, steer_trace, drive_lim, steer_lim):
+    """6 stacked subplots (3 envs x drive/steer) of per-step applied motor torque.
+
+    Rows 1-3: drive torque of the 3 traced envs; rows 4-6: steer torque. Each env
+    keeps one colour across both blocks. Dashed lines mark the effort limits.
+    Saved next to the checkpoint as ``torque_profile.png`` (plus raw ``.npz``).
+    """
+    colors = ["#1f77b4", "#ff7f0e", "#2ca02c"]
+    fig, axes = plt.subplots(6, 1, figsize=(10, 15), sharex=True)
+    steps_arr = steps.cpu().numpy()
+    for i, (e, c) in enumerate(zip(envs, colors)):
+        for block, trace, lim, name in ((0, drive_trace, drive_lim, "drive"), (3, steer_trace, steer_lim, "steer")):
+            if trace is None:
+                continue
+            ax = axes[block + i]
+            ax.plot(steps_arr, trace[:, i].cpu().numpy(), color=c, lw=0.7, label=f"env {e}")
+            ax.axhline(lim, color="k", ls="--", lw=0.8)
+            ax.axhline(-lim, color="k", ls="--", lw=0.8)
+            ax.set_ylim(-1.15 * lim, 1.15 * lim)
+            ax.set_ylabel(f"env {e}\n{name} τ (N·m)", fontsize=8)
+            ax.tick_params(labelsize=7)
+            ax.legend(loc="upper right", fontsize=7)
+    axes[0].set_title(f"applied motor torque vs step — {os.path.basename(resume_path)}")
+    axes[-1].set_xlabel("step")
+    fig.tight_layout()
+    out_dir = os.path.dirname(resume_path)
+    fig.savefig(os.path.join(out_dir, "torque_profile.png"), dpi=150)
+    plt.close(fig)
+    np.savez(
+        os.path.join(out_dir, "torque_profile.npz"),
+        steps=steps_arr,
+        envs=np.array(envs),
+        drive=drive_trace.cpu().numpy() if drive_trace is not None else None,
+        steer=steer_trace.cpu().numpy() if steer_trace is not None else None,
+    )
+    print(f"[INFO] torque traces saved next to checkpoint: torque_profile.png / .npz (envs {envs})")
 
 
 def _resolve_checkpoint(experiment_cfg, train_task_name):
@@ -193,6 +242,13 @@ def main():
 
     env_cfg = parse_env_cfg(args_cli.task, device=args_cli.device, num_envs=args_cli.num_envs)
     experiment_cfg = load_cfg_from_registry(args_cli.task, agent_cfg_entry_point)
+
+    # --layers: must match the trained checkpoint (see train_deterministic.py's flag).
+    if args_cli.layers:
+        layers = [int(x) for x in args_cli.layers.split(",")]
+        experiment_cfg["models"]["policy"]["network"][0]["layers"] = layers
+        experiment_cfg["models"]["value"]["network"][0]["layers"] = layers
+        print(f"[INFO] network layers overridden to {layers} (policy and value).")
 
     from CycleRL.tasks.manager_based.cyclerl.config.terrain_presets import apply_terrain_preset
 
@@ -272,6 +328,15 @@ def main():
     steer_idx = _joint_idx("steering_joint")
     drive_idx = _joint_idx("rearwheel_joint")
 
+    # --- torque tracing: 3 random envs, per-step drive & steer applied torque ---
+    _torque_envs = random.sample(range(num_envs), min(3, num_envs))
+    _torque_envs.sort()
+    n_trace = len(_torque_envs)
+    drive_trace = torch.zeros(args_cli.num_steps, n_trace, device=device) if drive_idx is not None else None
+    steer_trace = torch.zeros(args_cli.num_steps, n_trace, device=device) if steer_idx is not None else None
+    drive_lim = float(robot.data.joint_effort_limits[_torque_envs, drive_idx].max()) if drive_idx is not None else 6.28
+    steer_lim = float(robot.data.joint_effort_limits[_torque_envs, steer_idx].max()) if steer_idx is not None else 5.6
+
     # per-env running accumulators (reset at each episode boundary)
     cur_return = torch.zeros(num_envs, device=device)
     cur_len = torch.zeros(num_envs, dtype=torch.long, device=device)
@@ -285,7 +350,7 @@ def main():
 
     obs, _ = env.reset()
     states = env.state()
-    for _ in range(args_cli.num_steps):
+    for t in range(args_cli.num_steps):
         with torch.inference_mode():
             outputs = runner.agent.act(obs, states, timestep=0, timesteps=0)
             if hasattr(env, "possible_agents"):
@@ -321,6 +386,12 @@ def main():
             sv = robot.data.joint_vel[:, steer_idx].abs()
             steer_abs_sum += float(sv.sum())
             steer_max = max(steer_max, float(sv.max()))
+
+        # torque traces for the 3 picked envs (applied torque, post effort-limit clip)
+        if drive_idx is not None:
+            drive_trace[t] = robot.data.applied_torque[_torque_envs, drive_idx]
+        if steer_idx is not None:
+            steer_trace[t] = robot.data.applied_torque[_torque_envs, steer_idx]
         drift = torch.norm(robot.data.root_pos_w[:, :2] - origins_xy, dim=-1)
         drift_sum += float(drift.sum())
         drift_max = max(drift_max, float(drift.max()))
@@ -333,6 +404,12 @@ def main():
             cur_return[dones_b] = 0.0
             cur_len[dones_b] = 0
             ep_max_roll[dones_b] = 0.0
+
+    # --- save torque traces + plot (before closing, data is on-device) ---
+    _plot_torque_traces(
+        resume_path, torch.arange(args_cli.num_steps, device="cpu"),
+        _torque_envs, drive_trace, steer_trace, drive_lim, steer_lim,
+    )
 
     env.close()
 

@@ -16,7 +16,11 @@ from .thu_bike.thubike_trackstand_env_cfg import TrackstandEnvCfg
 
 # NEW_BIKE model configs
 from .new_bike.cyclerl_env_cfg import NewBikeEnvCfg
-from .new_bike.newbike_balance_env_cfg import NewBikeBalanceEnvCfg, NewBikeBalanceTorqueEnvCfg
+from .new_bike.newbike_balance_env_cfg import (
+    NewBikeBalanceEnvCfg,
+    NewBikeBalanceHybridEnvCfg,
+    NewBikeBalanceTorqueEnvCfg,
+)
 
 
 # Register the environment with the gym registry
@@ -92,6 +96,17 @@ gym.register(
     disable_env_checker=True,
     kwargs={
         "env_cfg_entry_point": NewBikeBalanceEnvCfg,
+        "skrl_cfg_entry_point": f"{__name__}.agents:skrl_ppo_small_cfg.yaml",
+        "rsl_rl_cfg_entry_point": f"{__name__}.agents.rsl_rl_ppo_cfg:NewBikeBalancePPORunnerCfg",
+    },
+)
+
+gym.register(
+    id="NewBike-Balance-v1",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": NewBikeBalanceHybridEnvCfg,
         "skrl_cfg_entry_point": f"{__name__}.agents:skrl_ppo_small_cfg.yaml",
         "rsl_rl_cfg_entry_point": f"{__name__}.agents.rsl_rl_ppo_cfg:NewBikeBalancePPORunnerCfg",
     },

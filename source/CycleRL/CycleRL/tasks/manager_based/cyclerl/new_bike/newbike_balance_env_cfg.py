@@ -23,7 +23,7 @@ import isaaclab.envs.mdp as mdp
 from isaaclab.utils.configclass import configclass
 from isaaclab.utils.noise import GaussianNoiseCfg
 
-from ..bicycle_cfg import NEW_BIKE_STANDARD_CFG, NEW_BIKE_TORQUE_CFG
+from ..bicycle_cfg import NEW_BIKE_HYBRID_CFG, NEW_BIKE_STANDARD_CFG, NEW_BIKE_TORQUE_CFG
 from ..mdp.stationary import curriculums as custom_curriculums
 from ..mdp.stationary import events as custom_events
 from ..mdp.stationary.observations import balance_imu_state
@@ -292,6 +292,38 @@ class NewBikeBalanceTorqueActionsCfg:
     drive = JointEffortActionCfg(
         asset_name="robot", joint_names=["rearwheel_joint"], scale=6.28  # ±stall N·m
     )
+
+
+@configclass
+class NewBikeBalanceHybridActionsCfg:
+    """Hybrid control: steering = joint POSITION (servo), drive = joint EFFORT (torque).
+
+    Action vector is 2-dim: [steer_target, drive_torque], each in [-1, 1] before scaling.
+    """
+
+    steering = JointPositionActionCfg(
+        asset_name="robot", joint_names=["steering_joint"], scale=1.57  # ±90°
+    )
+    drive = JointEffortActionCfg(
+        asset_name="robot", joint_names=["rearwheel_joint"], scale=6.28  # ±stall N·m
+    )
+
+
+@configclass
+class NewBikeBalanceHybridEnvCfg(NewBikeBalanceEnvCfg):
+    """NewBike-Balance-v1: same task as v0, hybrid control.
+
+    Drive = direct torque (like the Torque variant); steering = position servo
+    (like v0). Everything else — rewards, terminations, events, curriculum,
+    observations — is inherited unchanged.
+    """
+
+    actions = NewBikeBalanceHybridActionsCfg()
+
+    def __post_init__(self):
+        super().__post_init__()
+        # steering servo gains + torque-mode drive (stiffness=0)
+        self.scene.robot = NEW_BIKE_HYBRID_CFG.replace(prim_path="{ENV_REGEX_NS}/Robot")
 
 
 @configclass
