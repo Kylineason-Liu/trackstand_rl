@@ -130,3 +130,15 @@ METHOD NOTES
     on a 2nd --seed.
   - Rank by episode length / roll RMS / fall rate (play_eval.py), NOT mean reward
     (not comparable across reward-weight or survival-type changes).
+
+================================================================================
+V1 CAMPAIGN (NewBike-Balance-v1, hybrid: torque drive + position steering)
+Reworked literature-based reward. Weights: surv / roll / drift / micro / act / rate.
+act = act_penalty (-||a||), rate = rate_penalty (-||da/scale||, normed).
+All runs: rsl_rl train_deterministic.py, seed 42, 4096 envs, 20k iters, DR ramp on.
+Satisfactory = mean episode length > 1400 in play_eval.py WITH full DR.
+timestamp   surv  roll  drift  micro  act    rate   dr?  comment
+--------------------------------------------------------------------------------
+09010034      2.00  8.00   2.00   2.00   -0.10  -0.05   yes   initial literature weights (sigma 8deg, drift band 0.2m, micro 3rad/s)
+09010034      2.00  8.00   2.00   2.00   -0.10  -0.05   yes   ITER1 RESULT: ep_len 134.9 (DR), timeout 3.2%, wheel 15/239 rad/s. NOT ok.
+  -> iter2: micro_band Gaussian->plateau[0,3]+linear tail (const gradient, w 2->4); roll sigma 8->12deg; rate -0.05->-0.1

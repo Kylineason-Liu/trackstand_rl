@@ -45,6 +45,87 @@ def balance_action_rate_penalty(env: ManagerBasedRLEnv) -> torch.Tensor:
     return action_rate_penalty(env)
 
 
+def balance_roll_shaping(
+    env: ManagerBasedRLEnv,
+    sigma: float = 0.1396,  # 8 deg: trackstand-quality uprightness kernel (survey w2*exp(-phi^2/2s^2))
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+) -> torch.Tensor:
+    """Gaussian uprightness shaping: exp(-roll^2/(2 sigma^2)) in (0, 1].
+
+    1.0 at perfectly upright, decaying smoothly with lean. Unlike the binary
+    survival term this gives a *gradient toward uprightness* inside the survival
+    band (survival pays 29 deg the same as 0 deg; this term does not). The kernel
+    is the survey's prescribed uprightness term (Baltes' 1-phi^2 and Weyrer's
+    (eta-|phi|)/eta are equivalent alternatives).
+    """
+    asset = env.scene[asset_cfg.name]
+    roll = torch.asin(asset.data.projected_gravity_b[:, 1].clamp(-1.0, 1.0))
+    return torch.exp(-(roll**2) / (2.0 * sigma**2))
+
+
+def balance_displacement_band(
+    env: ManagerBasedRLEnv,
+    band: float = 0.2,   # full reward inside +-0.2 m of spawn (survey r_displacement band)
+    sigma: float = 0.3,  # Gaussian decay beyond the band
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+) -> torch.Tensor:
+    """Position-keeping as a TOLERANCE BAND, not a hard quadratic.
+
+    1.0 while the bike stays within ``band`` of its spawn; decays as a Gaussian
+    beyond. Track stand REQUIRES micro-motion (Brockett: no static feedback law
+    exists), so a hard position penalty would fight the necessary oscillation —
+    the band rewards staying put *within* a neighbourhood and only punishes
+    genuine drift (the survey's "reward micro-motion, penalise drift" rule).
+    """
+    asset = env.scene[asset_cfg.name]
+    d = torch.norm(asset.data.root_pos_w[:, :2] - env.scene.env_origins[:, :2], dim=-1)
+    excess = torch.clamp(d - band, min=0.0)
+    return torch.exp(-(excess**2) / (2.0 * sigma**2))
+
+
+def balance_micro_motion_band(
+    env: ManagerBasedRLEnv,
+    target: float = 3.0,  # rad/s: free micro-motion allowance (Wang 2024 / 黄用华 2012)
+    tail_slope: float = 0.03,  # per rad/s beyond target -> 0 at |w| = target + 33
+    drive_joint_name: str = "rearwheel_joint",
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+) -> torch.Tensor:
+    """Band reward on |rear wheel speed|: full credit up to ``target``, linear tail beyond.
+
+    Wang 2024: track stand works through torque-level high-frequency rear-wheel
+    micro-motion. Iteration 1 used a symmetric Gaussian (sigma=3.0), whose
+    gradient vanishes beyond ~10 rad/s — the policy spun the wheel (eval: 15
+    rad/s mean, 239 max, diverged deaths) and the term said nothing. The linear
+    tail keeps a CONSTANT gradient at any speed, so runaway spin is always
+    pushed back toward the micro-motion band, while up to ``target`` the wheel
+    is free to oscillate (frozen wheel gets full credit too — the drift_band
+    term handles the position side, per the survey's separation of concerns).
+    """
+    asset = env.scene[asset_cfg.name]
+    idx = asset.find_joints(drive_joint_name)[0][0]
+    w = asset.data.joint_vel[:, idx].abs()
+    excess = torch.clamp(w - target, min=0.0)
+    return (1.0 - tail_slope * excess).clamp(min=0.0)
+
+
+def balance_action_rate_penalty_norm(
+    env: ManagerBasedRLEnv,
+    action_scales: tuple[float, ...] = (1.57, 6.28),  # steer rad, drive N-m
+) -> torch.Tensor:
+    """Per-joint-NORMALISED action-rate penalty: -sqrt(sum_j (da_j/scale_j)^2).
+
+    The stock ``action_rate_penalty`` computes the plain L2 norm of the action
+    change, which for the hybrid task mixes units (steering rad vs drive N-m) and
+    weights them arbitrarily. Dividing each dimension by its action scale makes
+    the penalty unit-free before summing. Negative and small; keep the weight
+    low so the necessarily-oscillatory track stand control is not over-damped
+    (survey: penalise amplitude excess, not frequency).
+    """
+    scales = torch.tensor(action_scales, device=env.device)
+    da = env.action_manager.action - env.action_manager.prev_action
+    return -torch.sqrt(((da / scales) ** 2).sum(dim=-1) + 1e-8)
+
+
 def balance_joint_acc_penalty(
     env: ManagerBasedRLEnv,
     asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),

@@ -25,6 +25,23 @@ def thubike_fallen_termination(
     return too_tilted | flipped
 
 
+def balance_drift_termination(
+    env: ManagerBasedRLEnv,
+    max_dist: float = 2.0,
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+) -> torch.Tensor:
+    """Reset a bike that drifts far from spawn (Weyrer's displacement-threshold idea).
+
+    Track stand tolerates micro-motion but not genuine drift: without this, a
+    policy can learn "keep rolling slowly sideways/forward" and never fall while
+    the episode runs out the clock. 2 m is deliberately loose — well inside it,
+    the displacement BAND reward shapes behaviour; only clear drift is reset.
+    """
+    asset = env.scene[asset_cfg.name]
+    d = torch.norm(asset.data.root_pos_w[:, :2] - env.scene.env_origins[:, :2], dim=-1)
+    return d > max_dist
+
+
 def nonfinite_or_extreme_state(
     env: ManagerBasedRLEnv,
     max_lin_vel: float = 20.0,

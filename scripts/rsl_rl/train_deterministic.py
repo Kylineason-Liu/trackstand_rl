@@ -53,6 +53,17 @@ parser.add_argument("--steer_w", type=float, default=None,
     help="Override the steer_reward weight (kept at the env-cfg value if omitted). 0 disables the term.")
 parser.add_argument("--arp_w", type=float, default=None,
     help="Override the action_rate penalty weight (kept at the env-cfg value if omitted; cfg default 0=off). Small, e.g. 0.1.")
+# --- v1 hybrid-reward overrides (NewBike-Balance-v1) ---
+parser.add_argument("--roll_w", type=float, default=None,
+    help="Override the roll_shaping (uprightness Gaussian) weight. 0 disables the term.")
+parser.add_argument("--drift_w", type=float, default=None,
+    help="Override the drift_band (position tolerance) weight. 0 disables the term.")
+parser.add_argument("--micro_w", type=float, default=None,
+    help="Override the micro_band (drive micro-motion) weight. 0 disables the term.")
+parser.add_argument("--act_w", type=float, default=None,
+    help="Override the act_penalty (action magnitude) weight. 0 disables the term.")
+parser.add_argument("--rate_w", type=float, default=None,
+    help="Override the rate_penalty (normalised action-rate) weight. 0 disables the term.")
 parser.add_argument(
     "--distributed", action="store_true", default=False, help="Run training with multiple GPUs or nodes."
 )
@@ -182,6 +193,11 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
         (args_cli.drive_w, "drive_reward"),
         (args_cli.steer_w, "steer_reward"),
         (args_cli.arp_w, "action_rate"),
+        (args_cli.roll_w, "roll_shaping"),
+        (args_cli.drift_w, "drift_band"),
+        (args_cli.micro_w, "micro_band"),
+        (args_cli.act_w, "act_penalty"),
+        (args_cli.rate_w, "rate_penalty"),
     ):
         if w is not None:
             _set_reward_weight(term_name, w)

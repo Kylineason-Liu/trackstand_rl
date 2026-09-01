@@ -29,16 +29,25 @@ from ..mdp.stationary import events as custom_events
 from ..mdp.stationary.observations import balance_imu_state
 from ..mdp.stationary.rewards import (
     balance_action_rate_penalty,
+    balance_action_rate_penalty_norm,
+    balance_displacement_band,
     balance_drive_reward,
     balance_joint_acc_penalty,
+    balance_joint_torque_penalty,
+    balance_micro_motion_band,
     balance_position_penalty,
     # balance_stability_reward,  # disabled below (kept in rewards.py)
+    balance_roll_shaping,
     balance_steer_reward,
     balance_survival_reward,
     balance_survival_reward_binary,
     balance_termination_penalty,
 )
-from ..mdp.stationary.terminations import nonfinite_or_extreme_state, thubike_fallen_termination
+from ..mdp.stationary.terminations import (
+    balance_drift_termination,
+    nonfinite_or_extreme_state,
+    thubike_fallen_termination,
+)
 
 
 # ===========================================================================
@@ -310,15 +319,81 @@ class NewBikeBalanceHybridActionsCfg:
 
 
 @configclass
+class NewBikeBalanceHybridRewardsCfg:
+    """Literature-based reward for the hybrid (torque drive + servo steering) track stand.
+
+    Reworked per the static-balance survey: the old drive_reward/steer_reward paid
+    for a *still* wheel, which contradicts the trackstand mechanism (Brockett: no
+    static feedback law — micro-motion is necessary; Wang 2024: balance torque
+    comes from torque-level rear-wheel micro-motion). Term-by-term:
+
+    - survival (w=2.0): flat alive bonus while |roll|<30° — just enough to make
+      falling strictly worse than wobbling; no shaping so it can't paper over
+      bad uprightness.
+    - roll_shaping (w=8.0): exp(-roll²/2σ²), σ=12° — the main gradient term,
+      pushes upright inside the survival band (survival alone pays 29° == 0°).
+    - drift_band (w=2.0): tolerance band ±0.2 m around spawn, Gaussian decay
+      beyond — position-keeping WITHOUT fighting the necessary micro-motion.
+    - micro_band (w=4.0): plateau up to |ω_drive|=3 rad/s, linear tail beyond —
+      rewards micro-motion, with CONSTANT gradient against runaway spin.
+    - act_penalty (w=-0.1): -‖a‖₂ on the 2-dim action — light effort cost.
+    - rate_penalty (w=-0.1): per-joint-normalised -‖Δa/scale‖₂ — damps jitter
+      without over-penalising the necessary oscillation frequency.
+    """
+
+    survival = RewardTermCfg(func=balance_survival_reward_binary, weight=2.0)
+    roll_shaping = RewardTermCfg(
+        func=balance_roll_shaping,
+        weight=8.0,
+        params={"sigma": 0.2094},  # 12 deg: gradient coverage out to the 30-deg fall limit
+    )
+    drift_band = RewardTermCfg(
+        func=balance_displacement_band,
+        weight=2.0,
+        params={"band": 0.2, "sigma": 0.3},
+    )
+    micro_band = RewardTermCfg(
+        func=balance_micro_motion_band,
+        weight=4.0,  # iter1: Gaussian tail vanished -> wheel spun to 239 rad/s. Linear tail now.
+        params={"target": 3.0, "tail_slope": 0.03, "drive_joint_name": "rearwheel_joint"},
+    )
+    act_penalty = RewardTermCfg(func=balance_joint_torque_penalty, weight=-0.1)
+    rate_penalty = RewardTermCfg(
+        func=balance_action_rate_penalty_norm,
+        weight=-0.1,  # iter1 -0.05 let the servo slam (steer max 151 rad/s)
+        params={"action_scales": (1.57, 6.28)},  # steer rad, drive N-m
+    )
+
+
+@configclass
+class NewBikeBalanceHybridTerminationsCfg(BalanceTerminationsCfg):
+    """v1 terminations: parent's (time_out / fallen 30° / diverged) plus drift.
+
+    drifted: reset beyond 2 m of spawn. Track stand tolerates micro-motion but
+    not genuine drift — without this a policy could keep slowly rolling and
+    never fall, clocking the episode out. 2 m is deliberately loose so only
+    clear drift triggers; inside it the drift_band reward shapes behaviour.
+    """
+
+    drifted = TerminationTermCfg(
+        func=balance_drift_termination,
+        params={"max_dist": 2.0},
+        time_out=False,
+    )
+
+
+@configclass
 class NewBikeBalanceHybridEnvCfg(NewBikeBalanceEnvCfg):
     """NewBike-Balance-v1: same task as v0, hybrid control.
 
     Drive = direct torque (like the Torque variant); steering = position servo
-    (like v0). Everything else — rewards, terminations, events, curriculum,
-    observations — is inherited unchanged.
+    (like v0). Rewards/terminations are the literature-based v1 set; events,
+    curriculum and observations are inherited unchanged.
     """
 
     actions = NewBikeBalanceHybridActionsCfg()
+    rewards = NewBikeBalanceHybridRewardsCfg()
+    terminations = NewBikeBalanceHybridTerminationsCfg()
 
     def __post_init__(self):
         super().__post_init__()
