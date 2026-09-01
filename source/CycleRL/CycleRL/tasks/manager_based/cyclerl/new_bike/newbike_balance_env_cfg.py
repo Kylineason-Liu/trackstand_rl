@@ -336,8 +336,9 @@ class NewBikeBalanceHybridRewardsCfg:
       beyond — position-keeping WITHOUT fighting the necessary micro-motion.
     - micro_band (w=4.0): plateau up to |ω_drive|=3 rad/s, linear tail beyond —
       rewards micro-motion, with CONSTANT gradient against runaway spin.
-    - act_penalty (w=-0.1): -‖a‖₂ on the 2-dim action — light effort cost.
-    - rate_penalty (w=-0.1): per-joint-normalised -‖Δa/scale‖₂ — damps jitter
+    - act_penalty (w=0.1): -‖a‖₂ on the 2-dim action — light effort cost.
+      (Func returns negative; weight stays positive so it remains a penalty.)
+    - rate_penalty (w=0.1): per-joint-normalised -‖Δa/scale‖₂ — damps jitter
       without over-penalising the necessary oscillation frequency.
     """
 
@@ -357,10 +358,14 @@ class NewBikeBalanceHybridRewardsCfg:
         weight=4.0,  # iter1: Gaussian tail vanished -> wheel spun to 239 rad/s. Linear tail now.
         params={"target": 3.0, "tail_slope": 0.03, "drive_joint_name": "rearwheel_joint"},
     )
-    act_penalty = RewardTermCfg(func=balance_joint_torque_penalty, weight=-0.1)
+    # NOTE: both penalty funcs RETURN NEGATIVE values (see rewards.py), so the
+    # weights must be POSITIVE to stay penalties — negative weight would flip
+    # them into rewards (reward manager: value * weight). Iter1 had the sign
+    # wrong (TB confirmed net-positive contributions); fixed in iter2.
+    act_penalty = RewardTermCfg(func=balance_joint_torque_penalty, weight=0.1)
     rate_penalty = RewardTermCfg(
         func=balance_action_rate_penalty_norm,
-        weight=-0.1,  # iter1 -0.05 let the servo slam (steer max 151 rad/s)
+        weight=0.1,  # iter1 -0.05 SIGN WRONG (rewarded slamming); 0.1 damps servo slam (steer max 151 rad/s)
         params={"action_scales": (1.57, 6.28)},  # steer rad, drive N-m
     )
 
