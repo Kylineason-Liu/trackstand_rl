@@ -248,6 +248,9 @@ def main(env_cfg, agent_cfg):
     # per-episode accumulated |yaw change| — orbits a circle, 2*pi rad per lap
     ep_turn = torch.zeros(num_envs, device=device)
     prev_yaw = None
+    # per-env spawn-heading baseline: the bike's USD root spawns facing ~+-pi in
+    # WORLD yaw, so heading metrics must be relative to the post-reset yaw
+    base_yaw = None
     n_steps_counted = 0
 
     obs = env.get_observations()
@@ -295,15 +298,18 @@ def main(env_cfg, agent_cfg):
         drift_sum += float(drift.sum())
         drift_max = max(drift_max, float(drift.max()))
 
-        # yaw (heading) vs spawn: mean/max |yaw|, plus per-episode accumulated turn
-        # (detects orbiting policies that radial drift metrics are blind to)
-        q = robot.data.root_quat_w  # (w, x, y, z)
-        yaw = torch.atan2(
-            2.0 * (q[:, 0] * q[:, 3] + q[:, 1] * q[:, 2]),
-            1.0 - 2.0 * (q[:, 2] ** 2 + q[:, 3] ** 2),
-        )
-        yaw_abs_sum += float(yaw.abs().sum())
-        yaw_max = max(yaw_max, float(yaw.abs().max()))
+        # yaw (heading) vs spawn: mean/max |yaw| RELATIVE to each env's post-reset
+        # heading. Uses the canonical heading_w (base-frame +x rotated to world)
+        # — root_quat_w is stored (x, y, z, w) in this stack, and hand-rolled
+        # wxyz math on it silently returned pi for the identity spawn quaternion.
+        # Plus per-episode accumulated turn (detects orbiting policies that
+        # radial drift metrics are blind to).
+        yaw = robot.data.heading_w  # canonical heading (rad)
+        if base_yaw is None:
+            base_yaw = yaw.clone()
+        rel = torch.atan2(torch.sin(yaw - base_yaw), torch.cos(yaw - base_yaw))
+        yaw_abs_sum += float(rel.abs().sum())
+        yaw_max = max(yaw_max, float(rel.abs().max()))
         if prev_yaw is not None:
             # wrap-aware angular difference, then accumulate per-episode turn.
             # Envs that terminated this step are already auto-reset, so their
@@ -324,6 +330,7 @@ def main(env_cfg, agent_cfg):
             ep_max_roll[dones_b] = 0.0
             ep_turn[dones_b] = 0.0
             prev_yaw[dones_b] = yaw[dones_b]  # reset the diff baseline on episode reset
+            base_yaw[dones_b] = yaw[dones_b]  # new episode's spawn-heading baseline
 
     # --- save torque traces + plot (before closing, data is on-device) ---
     _plot_torque_traces(

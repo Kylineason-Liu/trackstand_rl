@@ -161,3 +161,27 @@ COLUMN CHANGE: new term yaw_band (ANTI-ORBITAL, w=2.0, sigma=0.4) added; column 
   iter2 was ALSO circling (its 854.9 contaminated). Roll RMS 4.94->6.51: sigma 15deg flattened precision.
   -> iter4: yaw_band -> PLATEAU+LINEAR TAIL (band 0.1, slope 1/(pi-0.1)=0.33, w 2->4); roll sigma 15->12deg;
      micro tail_slope 0.03->0.05 (drive still 6.1 rad/s vs target 1.5)
+09011600      2.00  8.00   5.00   4.00   1.50   0.10   0.10   yes   ITER4 RESULT: ep_len 846.1, timeout 48.5%,
+  yaw mean/max 174.7/180 deg, turn/ep 242.7 deg -> STILL ORBITING. TB yaw_band=0.075: the CLAMPED linear
+  tail's value hits 0 exactly at |yaw|=pi -> the policy PARKED at the zero-gradient floor (yaw=174.7deg).
+  -> iter5: (1) yaw_band UNCLAMPED (value -1 at pi, constant gradient everywhere, no parking spot);
+     (2) NEW wheel_net term (user's net-wheel-angle idea): joint_pos WRAPS at +-pi (verified: write 10.0 ->
+     read -2.5), so a custom env class NewBikeBalanceHybridEnv integrates joint_vel; plateau band 1.0 rad,
+     slope 0.19, floor-capped at -1/step (cap prevents suicide-by-reset), w=1.0.
+09011824      2.00  8.00   5.00   4.00   1.50   0.10   0.10   yes   ITER5 RESULT: ep_len 621.7, timeout 35.2%.
+  MAJOR CORRECTION: yaw probe showed the bike SPAWNS at yaw ~+-180deg (USD root faces -x), so the
+  absolute-yaw term/metrics measured against the WRONG baseline: "yaw pinned at 174.7deg" = the bike
+  faces its spawn direction, NOT orbiting. Since iter3 yaw_band taxed upright bikes -4/step for facing
+  spawn and its gradient rewarded TURNING AROUND. Real failure mode: policy balances by ROLLING FORWARD
+  (drive 6.3 rad/s) and dies at the 2 m drift limit or falls. (User's visual "circling" = wide-arc rolling.)
+  -> iter6: yaw_band + play_eval yaw metric now RELATIVE to per-env spawn yaw (env records spawn_yaw at
+     reset; wrap-aware atan2 difference). Same weights otherwise (attribution-clean).
+AUDIT (iter6, aborted 41min): full reward-term audit. FATAL: hand-rolled yaw formula assumed quat (w,x,y,z)
+  but isaaclab stores (x,y,z,w) (quat_from_euler_xyz returns [qx,qy,qz,qw]; physx passthrough). On the
+  identity spawn quat the formula returned pi -> "spawn facing backward" was an artifact; a true 5-deg
+  turn read 0.0 relative -> iter6 yaw_band was INERT. FIX: use canonical asset.data.heading_w (kernels.py
+  root_heading_w: base+x rotated to world, atan2(y,x)) in reward, env baseline, and play_eval metrics.
+  Also flagged: rate_penalty divides dimensionless raw-action delta by physical scales (1/rad, 1/(N-m)
+  mixed; steer biased 4:1); act_penalty name says torque but reads normalized actions. USD: steering
+  limits +-89.999985deg match action scale 1.57 rad; rearwheel free revolute; fork at +x -> base+x = fwd.
+0901xxxx      2.00  8.00   5.00   4.00   1.50   0.10   0.10   yes   iter6 relaunched with heading_w fix

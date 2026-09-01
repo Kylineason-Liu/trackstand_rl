@@ -16,6 +16,7 @@ from .thu_bike.thubike_trackstand_env_cfg import TrackstandEnvCfg
 
 # NEW_BIKE model configs
 from .new_bike.cyclerl_env_cfg import NewBikeEnvCfg
+from .new_bike.newbike_balance_env import NewBikeBalanceHybridEnv
 from .new_bike.newbike_balance_env_cfg import (
     NewBikeBalanceEnvCfg,
     NewBikeBalanceHybridEnvCfg,
@@ -103,7 +104,9 @@ gym.register(
 
 gym.register(
     id="NewBike-Balance-v1",
-    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    # custom env class: maintains wheel_net_angle for the anti-orbital
+    # wheel_net reward term (joint_pos wraps at +-pi, see newbike_balance_env.py)
+    entry_point="CycleRL.tasks.manager_based.cyclerl.new_bike.newbike_balance_env:NewBikeBalanceHybridEnv",
     disable_env_checker=True,
     kwargs={
         "env_cfg_entry_point": NewBikeBalanceHybridEnvCfg,

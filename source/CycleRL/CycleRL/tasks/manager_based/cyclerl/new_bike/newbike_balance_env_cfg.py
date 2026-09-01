@@ -42,6 +42,7 @@ from ..mdp.stationary.rewards import (
     balance_survival_reward,
     balance_survival_reward_binary,
     balance_termination_penalty,
+    balance_wheel_net_angle_band,
     balance_yaw_band,
 )
 from ..mdp.stationary.terminations import (
@@ -351,15 +352,20 @@ class NewBikeBalanceHybridRewardsCfg:
         weight=8.0,
         params={"sigma": 0.2094},  # 12 deg: iter3's 15 deg flattened precision (roll RMS 4.94->6.51)
     )
-    drift_band = RewardTermCfg(
+    drift_band = RewardTermCfg( # Can we delete this, because yaw_band, wheel_net and micro_band already penalize drift?
         func=balance_displacement_band,
         weight=5.0,  # iter2 2.0: drift deaths (max 2.0 m, term firing). Position-keeping = first-class objective.
         params={"band": 0.2, "sigma": 0.3},
     )
     yaw_band = RewardTermCfg(
         func=balance_yaw_band,
-        weight=4.0,  # ANTI-ORBITAL. iter3: Gaussian sigma=0.4 was INERT (TB 1.7e-12, turn/ep 282 deg). Linear tail now.
-        params={"band": 0.1, "tail_slope": 0.3288},  # ~6 deg free; constant gradient to 0 at pi
+        weight=4.0,  # ANTI-ORBITAL. iter3 Gaussian inert; iter4 CLAMPED tail -> policy parked AT the pi floor
+        params={"band": 0.1, "tail_slope": 0.66},  # NO clamp: value ~ -1 at pi, constant gradient everywhere
+    )
+    wheel_net = RewardTermCfg(
+        func=balance_wheel_net_angle_band,
+        weight=1.0,  # anti-orbit/anti-roll backstop in wheel space (net rotation since reset)
+        params={"band": 1.0, "tail_slope": 0.19, "penalty_floor": -1.0},  # floor-capped: no suicide pressure
     )
     micro_band = RewardTermCfg(
         func=balance_micro_motion_band,

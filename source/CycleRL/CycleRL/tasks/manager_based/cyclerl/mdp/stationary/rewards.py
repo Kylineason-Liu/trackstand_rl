@@ -100,18 +100,60 @@ def balance_yaw_band(
     Iter3 used a Gaussian (sigma=0.4 rad) here and FAILED: once |yaw| passed
     ~0.8 rad the Gaussian hit ~0 and its gradient vanished, so the policy
     forfeited the whole term and orbited freely (TB yaw_band = 1.7e-12;
-    eval turn/episode = 282 deg). The linear tail keeps a CONSTANT gradient
-    all the way to pi, so any committed orbit is pulled back toward the spawn
-    heading.
+    eval turn/episode = 282 deg).
+
+    Iter4 used a linear tail CLAMPED at 0, and the policy parked EXACTLY at the
+    clamp floor: with slope 1/(pi-band) the value hits 0 at |yaw| = pi, and
+    eval yaw sat at 174.7 deg ~ pi with zero gradient. The value is therefore
+    NOT clamped at all now: it goes NEGATIVE beyond the band. Since |yaw| <= pi
+    from atan2, the term is bounded in [-1, 1] — no overflow, no suicide risk,
+    and a CONSTANT gradient everywhere: no parking spot exists.
+
+    BASELINE (iter6 audit finding): root_quat_w is stored (x, y, z, w) in this
+    stack (isaaclab's own quat_from_euler_xyz returns [qx,qy,qz,qw]; physx
+    passthrough is xyzw), while the earlier hand-rolled formula assumed
+    (w, x, y, z) — on the identity spawn quaternion it returned pi, which
+    misread "upright at spawn" as "facing backward". The canonical
+    ``asset.data.heading_w`` (base-frame +x rotated to world, atan2(y, x) —
+    kernels.py root_heading_w) replaces the hand-rolled math. The env
+    (NewBikeBalanceHybridEnv) records ``spawn_yaw`` per env at reset; this
+    term measures the wrap-aware yaw RELATIVE to that baseline.
     """
     asset = env.scene[asset_cfg.name]
-    q = asset.data.root_quat_w  # (w, x, y, z)
-    yaw = torch.atan2(
-        2.0 * (q[:, 0] * q[:, 3] + q[:, 1] * q[:, 2]),
-        1.0 - 2.0 * (q[:, 2] ** 2 + q[:, 3] ** 2),
-    )
-    excess = torch.clamp(yaw.abs() - band, min=0.0)
-    return (1.0 - tail_slope * excess).clamp(min=0.0)
+    yaw = asset.data.heading_w  # canonical: atan2 of base +x in world (rad)
+    rel = torch.atan2(torch.sin(yaw - env.spawn_yaw), torch.cos(yaw - env.spawn_yaw))
+    excess = torch.clamp(rel.abs() - band, min=0.0)
+    return 1.0 - tail_slope * excess
+
+
+def balance_wheel_net_angle_band(
+    env: ManagerBasedRLEnv,
+    band: float = 1.0,  # rad of free NET wheel rotation since reset
+    tail_slope: float = 0.19,  # per rad beyond band
+    penalty_floor: float = -1.0,  # cap the per-step penalty (bounded cost, no suicide pressure)
+) -> torch.Tensor:
+    """Plateau + linear tail on |NET drive-wheel angle| since reset, floor-capped.
+
+    Zero-mean micro-motion requirement (the user's anti-orbit idea): oscillation
+    keeps the net angle ~0, while constant rolling, orbiting, or sustained
+    in-place wheel spin accumulate it monotonically and are pushed back with a
+    constant gradient. Complements micro_band (instantaneous |w| cap) and
+    yaw_band (heading) — this is the wheel-space backstop.
+
+    NOTE: ``env.wheel_net_angle`` is maintained by the custom
+    ``NewBikeBalanceHybridEnv`` (new_bike/newbike_balance_env.py), because the
+    wheel's joint_pos WRAPS at +-pi in this stack (verified empirically:
+    write 10.0 rad -> read back -2.5 rad) and a stateless reward function
+    cannot integrate velocity itself. The env integrates joint_vel each step
+    and zeroes the buffer for reset envs.
+
+    The floor cap matters: an unbounded growing penalty resets to 0 on episode
+    end, which teaches "fall deliberately to escape the penalty" (suicide).
+    Capped at -1/step, surviving is always preferable to falling.
+    """
+    theta = env.wheel_net_angle  # (num_envs,), maintained by NewBikeBalanceHybridEnv
+    excess = torch.clamp(theta.abs() - band, min=0.0)
+    return (1.0 - tail_slope * excess).clamp(min=penalty_floor)
 
 
 def balance_micro_motion_band(
