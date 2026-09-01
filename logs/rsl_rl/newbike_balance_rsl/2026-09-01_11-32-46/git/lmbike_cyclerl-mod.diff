@@ -1,0 +1,68 @@
+--- git commit ---
+3e2b271bc96fd4db602a90170e4602550c059559
+
+
+--- git status ---
+On branch lmbike_4090
+Your branch is up to date with 'origin/lmbike_4090'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   logs/rsl_rl/newbike_balance_rsl/cfg_record.txt
+	modified:   source/CycleRL/CycleRL/tasks/manager_based/cyclerl/new_bike/newbike_balance_env_cfg.py
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	logs/rsl_rl/newbike_balance_rsl/2026-09-01_00-34-07/exported/
+	logs/rsl_rl/newbike_balance_rsl/2026-09-01_11-32-46/
+
+no changes added to commit (use "git add" and/or "git commit -a") 
+
+
+--- git diff ---
+diff --git a/logs/rsl_rl/newbike_balance_rsl/cfg_record.txt b/logs/rsl_rl/newbike_balance_rsl/cfg_record.txt
+index a621051..023872b 100644
+--- a/logs/rsl_rl/newbike_balance_rsl/cfg_record.txt
++++ b/logs/rsl_rl/newbike_balance_rsl/cfg_record.txt
+@@ -142,3 +142,7 @@ timestamp   surv  roll  drift  micro  act    rate   dr?  comment
+ 09010034      2.00  8.00   2.00   2.00   -0.10  -0.05   yes   initial literature weights (sigma 8deg, drift band 0.2m, micro 3rad/s)
+ 09010034      2.00  8.00   2.00   2.00   -0.10  -0.05   yes   ITER1 RESULT: ep_len 134.9 (DR), timeout 3.2%, wheel 15/239 rad/s. NOT ok.
+   -> iter2: micro_band Gaussian->plateau[0,3]+linear tail (const gradient, w 2->4); roll sigma 8->12deg; rate -0.05->-0.1
++09011013      2.00  8.00   2.00   4.00   -0.10  -0.10   yes   ABORTED at 63%: SIGN ERROR. act/rate funcs return NEGATIVE
++  values, so negative weights flipped them into REWARDS (TB iter1: act +0.074, rate +0.005, both net-positive).
++  This also explains iter1's servo slamming (rate "penalty" rewarded action change). Weights fixed to +0.10.
++0901xxxx      2.00  8.00   2.00   4.00    0.10   0.10   yes   iter2 relaunched with corrected penalty signs
+diff --git a/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/new_bike/newbike_balance_env_cfg.py b/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/new_bike/newbike_balance_env_cfg.py
+index e31cd88..e5e959b 100644
+--- a/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/new_bike/newbike_balance_env_cfg.py
++++ b/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/new_bike/newbike_balance_env_cfg.py
+@@ -336,8 +336,9 @@ class NewBikeBalanceHybridRewardsCfg:
+       beyond — position-keeping WITHOUT fighting the necessary micro-motion.
+     - micro_band (w=4.0): plateau up to |ω_drive|=3 rad/s, linear tail beyond —
+       rewards micro-motion, with CONSTANT gradient against runaway spin.
+-    - act_penalty (w=-0.1): -‖a‖₂ on the 2-dim action — light effort cost.
+-    - rate_penalty (w=-0.1): per-joint-normalised -‖Δa/scale‖₂ — damps jitter
++    - act_penalty (w=0.1): -‖a‖₂ on the 2-dim action — light effort cost.
++      (Func returns negative; weight stays positive so it remains a penalty.)
++    - rate_penalty (w=0.1): per-joint-normalised -‖Δa/scale‖₂ — damps jitter
+       without over-penalising the necessary oscillation frequency.
+     """
+ 
+@@ -357,10 +358,14 @@ class NewBikeBalanceHybridRewardsCfg:
+         weight=4.0,  # iter1: Gaussian tail vanished -> wheel spun to 239 rad/s. Linear tail now.
+         params={"target": 3.0, "tail_slope": 0.03, "drive_joint_name": "rearwheel_joint"},
+     )
+-    act_penalty = RewardTermCfg(func=balance_joint_torque_penalty, weight=-0.1)
++    # NOTE: both penalty funcs RETURN NEGATIVE values (see rewards.py), so the
++    # weights must be POSITIVE to stay penalties — negative weight would flip
++    # them into rewards (reward manager: value * weight). Iter1 had the sign
++    # wrong (TB confirmed net-positive contributions); fixed in iter2.
++    act_penalty = RewardTermCfg(func=balance_joint_torque_penalty, weight=0.1)
+     rate_penalty = RewardTermCfg(
+         func=balance_action_rate_penalty_norm,
+-        weight=-0.1,  # iter1 -0.05 let the servo slam (steer max 151 rad/s)
++        weight=0.1,  # iter1 -0.05 SIGN WRONG (rewarded slamming); 0.1 damps servo slam (steer max 151 rad/s)
+         params={"action_scales": (1.57, 6.28)},  # steer rad, drive N-m
+     )
+ 

@@ -240,10 +240,14 @@ def main(env_cfg, agent_cfg):
     cur_len = torch.zeros(num_envs, dtype=torch.long, device=device)
     ep_max_roll = torch.zeros(num_envs, device=device)
     # completed-episode collections
-    ep_returns, ep_lengths, ep_timeouts, ep_maxrolls = [], [], [], []
+    ep_returns, ep_lengths, ep_timeouts, ep_maxrolls, ep_turns = [], [], [], [], []
     # global step-wise stats
     roll_sum = roll_sqsum = roll_max = 0.0
     drive_abs_sum = drive_max = steer_abs_sum = steer_max = drift_sum = drift_max = 0.0
+    yaw_abs_sum = yaw_max = 0.0
+    # per-episode accumulated |yaw change| — orbits a circle, 2*pi rad per lap
+    ep_turn = torch.zeros(num_envs, device=device)
+    prev_yaw = None
     n_steps_counted = 0
 
     obs = env.get_observations()
@@ -291,14 +295,35 @@ def main(env_cfg, agent_cfg):
         drift_sum += float(drift.sum())
         drift_max = max(drift_max, float(drift.max()))
 
+        # yaw (heading) vs spawn: mean/max |yaw|, plus per-episode accumulated turn
+        # (detects orbiting policies that radial drift metrics are blind to)
+        q = robot.data.root_quat_w  # (w, x, y, z)
+        yaw = torch.atan2(
+            2.0 * (q[:, 0] * q[:, 3] + q[:, 1] * q[:, 2]),
+            1.0 - 2.0 * (q[:, 2] ** 2 + q[:, 3] ** 2),
+        )
+        yaw_abs_sum += float(yaw.abs().sum())
+        yaw_max = max(yaw_max, float(yaw.abs().max()))
+        if prev_yaw is not None:
+            # wrap-aware angular difference, then accumulate per-episode turn.
+            # Envs that terminated this step are already auto-reset, so their
+            # `yaw` is the fresh spawn heading — the difference to `prev_yaw`
+            # is a reset teleport, not physical turning; exclude it.
+            d = torch.atan2(torch.sin(yaw - prev_yaw), torch.cos(yaw - prev_yaw))
+            ep_turn += torch.where(dones_b, torch.zeros_like(d), d.abs())
+        prev_yaw = yaw.clone()
+
         if dones_b.any():
             ep_returns.append(cur_return[dones_b].clone())
             ep_lengths.append(cur_len[dones_b].clone())
             ep_timeouts.append(time_outs[dones_b].clone())
             ep_maxrolls.append(ep_max_roll[dones_b].clone())
+            ep_turns.append(ep_turn[dones_b].clone())
             cur_return[dones_b] = 0.0
             cur_len[dones_b] = 0
             ep_max_roll[dones_b] = 0.0
+            ep_turn[dones_b] = 0.0
+            prev_yaw[dones_b] = yaw[dones_b]  # reset the diff baseline on episode reset
 
     # --- save torque traces + plot (before closing, data is on-device) ---
     _plot_torque_traces(
@@ -347,6 +372,11 @@ def main(env_cfg, agent_cfg):
     if steer_idx is not None:
         print(f"  steer_speed mean/max   : {steer_abs_sum / denom:8.2f} / {steer_max:7.2f} rad/s")
     print(f"  drift mean/max         : {drift_sum / denom:8.3f} / {drift_max:7.3f} m   (position drift from spawn)")
+    print(f"  yaw mean/max           : {math.degrees(yaw_abs_sum / denom):8.2f} / {math.degrees(yaw_max):7.2f} deg (heading vs spawn)")
+    if n_ep > 0:
+        turns = _cat(ep_turns).float()
+        # mean accumulated |yaw change| per completed episode; 360 deg = one full circle
+        print(f"  turn/episode mean      : {float(turns.mean()) * 180.0 / math.pi:8.1f} deg (orbiting detection: 360 deg = full circle)")
     print("=" * 64 + "\n")
 
 

@@ -83,6 +83,37 @@ def balance_displacement_band(
     return torch.exp(-(excess**2) / (2.0 * sigma**2))
 
 
+def balance_yaw_band(
+    env: ManagerBasedRLEnv,
+    band: float = 0.1,  # rad (~6 deg): free reorientation allowance
+    tail_slope: float = 0.3288,  # = 1/(pi - band): value hits 0 at |yaw| = pi (full reversal)
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+) -> torch.Tensor:
+    """Plateau + LINEAR-TAIL band on |yaw| relative to the spawn heading.
+
+    ANTI-ORBITAL term. A track stand oscillates around a fixed heading, but a
+    policy holding a constant steer deflection + roll rides a CIRCLE around the
+    spawn: radial drift metrics (and drift_band) are blind to orbital motion,
+    so a circle inside the drift band earns full position credit forever and
+    only the horizon ends the episode.
+
+    Iter3 used a Gaussian (sigma=0.4 rad) here and FAILED: once |yaw| passed
+    ~0.8 rad the Gaussian hit ~0 and its gradient vanished, so the policy
+    forfeited the whole term and orbited freely (TB yaw_band = 1.7e-12;
+    eval turn/episode = 282 deg). The linear tail keeps a CONSTANT gradient
+    all the way to pi, so any committed orbit is pulled back toward the spawn
+    heading.
+    """
+    asset = env.scene[asset_cfg.name]
+    q = asset.data.root_quat_w  # (w, x, y, z)
+    yaw = torch.atan2(
+        2.0 * (q[:, 0] * q[:, 3] + q[:, 1] * q[:, 2]),
+        1.0 - 2.0 * (q[:, 2] ** 2 + q[:, 3] ** 2),
+    )
+    excess = torch.clamp(yaw.abs() - band, min=0.0)
+    return (1.0 - tail_slope * excess).clamp(min=0.0)
+
+
 def balance_micro_motion_band(
     env: ManagerBasedRLEnv,
     target: float = 3.0,  # rad/s: free micro-motion allowance (Wang 2024 / 黄用华 2012)

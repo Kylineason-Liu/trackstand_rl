@@ -42,6 +42,7 @@ from ..mdp.stationary.rewards import (
     balance_survival_reward,
     balance_survival_reward_binary,
     balance_termination_penalty,
+    balance_yaw_band,
 )
 from ..mdp.stationary.terminations import (
     balance_drift_termination,
@@ -332,9 +333,11 @@ class NewBikeBalanceHybridRewardsCfg:
       bad uprightness.
     - roll_shaping (w=8.0): exp(-roll²/2σ²), σ=12° — the main gradient term,
       pushes upright inside the survival band (survival alone pays 29° == 0°).
-    - drift_band (w=2.0): tolerance band ±0.2 m around spawn, Gaussian decay
+    - drift_band (w=5.0): tolerance band ±0.2 m around spawn, Gaussian decay
       beyond — position-keeping WITHOUT fighting the necessary micro-motion.
-    - micro_band (w=4.0): plateau up to |ω_drive|=3 rad/s, linear tail beyond —
+    - yaw_band (w=4.0): ANTI-ORBITAL plateau+linear tail on |yaw| vs spawn
+      heading — a circling policy earns nothing for holding a circle.
+    - micro_band (w=4.0): plateau up to |ω_drive|=1.5 rad/s, linear tail beyond —
       rewards micro-motion, with CONSTANT gradient against runaway spin.
     - act_penalty (w=0.1): -‖a‖₂ on the 2-dim action — light effort cost.
       (Func returns negative; weight stays positive so it remains a penalty.)
@@ -346,17 +349,23 @@ class NewBikeBalanceHybridRewardsCfg:
     roll_shaping = RewardTermCfg(
         func=balance_roll_shaping,
         weight=8.0,
-        params={"sigma": 0.2094},  # 12 deg: gradient coverage out to the 30-deg fall limit
+        params={"sigma": 0.2094},  # 12 deg: iter3's 15 deg flattened precision (roll RMS 4.94->6.51)
     )
     drift_band = RewardTermCfg(
         func=balance_displacement_band,
-        weight=2.0,
+        weight=5.0,  # iter2 2.0: drift deaths (max 2.0 m, term firing). Position-keeping = first-class objective.
         params={"band": 0.2, "sigma": 0.3},
+    )
+    yaw_band = RewardTermCfg(
+        func=balance_yaw_band,
+        weight=4.0,  # ANTI-ORBITAL. iter3: Gaussian sigma=0.4 was INERT (TB 1.7e-12, turn/ep 282 deg). Linear tail now.
+        params={"band": 0.1, "tail_slope": 0.3288},  # ~6 deg free; constant gradient to 0 at pi
     )
     micro_band = RewardTermCfg(
         func=balance_micro_motion_band,
-        weight=4.0,  # iter1: Gaussian tail vanished -> wheel spun to 239 rad/s. Linear tail now.
-        params={"target": 3.0, "tail_slope": 0.03, "drive_joint_name": "rearwheel_joint"},
+        weight=4.0,
+        # iter3: drive still 6.1 rad/s vs target 1.5 -> tail gradient (0.03) too weak. Steepen to 0.05.
+        params={"target": 1.5, "tail_slope": 0.05, "drive_joint_name": "rearwheel_joint"},
     )
     # NOTE: both penalty funcs RETURN NEGATIVE values (see rewards.py), so the
     # weights must be POSITIVE to stay penalties — negative weight would flip

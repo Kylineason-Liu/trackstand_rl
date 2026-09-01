@@ -248,11 +248,16 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
                 policy.reset(dones)
             else:
                 policy_nn.reset(dones)
+        timestep += 1
         if args_cli.video:
-            timestep += 1
             # Exit the play loop after recording one video
-            if timestep == args_cli.video_length:
+            if timestep >= args_cli.video_length:
                 break
+        elif timestep >= args_cli.num_steps:
+            # --num_steps was previously declared but never read: without a
+            # video the loop ran until the window closed / Ctrl+C. Bound it so
+            # a play run exits on its own (~2 episodes at the 1500-step cap).
+            break
 
         # time delay for real-time evaluation
         sleep_time = dt - (time.time() - start_time)

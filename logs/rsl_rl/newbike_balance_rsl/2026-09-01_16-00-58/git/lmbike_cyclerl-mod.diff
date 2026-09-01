@@ -1,0 +1,220 @@
+--- git commit ---
+4d52f0b0cc6c4cbd98d719856e3f88ed21e5c4dc
+
+
+--- git status ---
+On branch lmbike_4090
+Your branch is up to date with 'origin/lmbike_4090'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   logs/rsl_rl/newbike_balance_rsl/cfg_record.txt
+	modified:   scripts/rsl_rl/play_eval.py
+	modified:   source/CycleRL/CycleRL/tasks/manager_based/cyclerl/mdp/stationary/rewards.py
+	modified:   source/CycleRL/CycleRL/tasks/manager_based/cyclerl/new_bike/newbike_balance_env_cfg.py
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	logs/rsl_rl/newbike_balance_rsl/2026-09-01_00-34-07/exported/
+	logs/rsl_rl/newbike_balance_rsl/2026-09-01_11-32-46/
+	logs/rsl_rl/newbike_balance_rsl/2026-09-01_13-56-17/
+	logs/rsl_rl/newbike_balance_rsl/2026-09-01_16-00-58/
+
+no changes added to commit (use "git add" and/or "git commit -a") 
+
+
+--- git diff ---
+diff --git a/logs/rsl_rl/newbike_balance_rsl/cfg_record.txt b/logs/rsl_rl/newbike_balance_rsl/cfg_record.txt
+index 35b99be..68dd6bc 100644
+--- a/logs/rsl_rl/newbike_balance_rsl/cfg_record.txt
++++ b/logs/rsl_rl/newbike_balance_rsl/cfg_record.txt
+@@ -137,7 +137,7 @@ Reworked literature-based reward. Weights: surv / roll / drift / micro / act / r
+ act = act_penalty (-||a||), rate = rate_penalty (-||da/scale||, normed).
+ All runs: rsl_rl train_deterministic.py, seed 42, 4096 envs, 20k iters, DR ramp on.
+ Satisfactory = mean episode length > 1400 in play_eval.py WITH full DR.
+-timestamp   surv  roll  drift  micro  act    rate   dr?  comment
++timestamp     surv  roll   drift  micro   act    rate   dr?   comment
+ --------------------------------------------------------------------------------
+ 09010034      2.00  8.00   2.00   2.00   -0.10  -0.05   yes   initial literature weights (sigma 8deg, drift band 0.2m, micro 3rad/s)
+ 09010034      2.00  8.00   2.00   2.00   -0.10  -0.05   yes   ITER1 RESULT: ep_len 134.9 (DR), timeout 3.2%, wheel 15/239 rad/s. NOT ok.
+@@ -146,3 +146,18 @@ timestamp   surv  roll  drift  micro  act    rate   dr?  comment
+   values, so negative weights flipped them into REWARDS (TB iter1: act +0.074, rate +0.005, both net-positive).
+   This also explains iter1's servo slamming (rate "penalty" rewarded action change). Weights fixed to +0.10.
+ 09011132      2.00  8.00   2.00   4.00    0.10   0.10   yes   iter2 relaunched with corrected penalty signs
++09011132      2.00  8.00   2.00   4.00    0.10   0.10   yes   ITER2 RESULT: ep_len 854.9 (DR), timeout 55.3%, fall 44.7%,
++  rollRMS 4.9deg, drive 5.5/79, steer 1.5/36, drift max 2.0m (term firing). 6x over iter1, NOT ok yet.
++  -> iter3: drift_band 2->5 (drift deaths); micro target 3->1.5 (constant rolling feeds drift);
++     roll sigma 12->15deg (fall-zone gradient: value at 30deg 0.0016->0.135)
++COLUMN CHANGE: new term yaw_band (ANTI-ORBITAL, w=2.0, sigma=0.4) added; column "yaw" inserted after drift
++  from iter3 onward. Iter2 diagnosis was radial only: a constant steer+roll policy rides a CIRCLE around
++  spawn — drift_band and the drifted termination are blind to orbital motion, and a circle inside the
++  band survives to timeout (would satisfy the >1400 criterion by circling). play_eval now reports
++  "yaw mean/max" and "turn/episode" (360 deg = one full circle). Iter3 aborted ~20min in to fix the objective.
++09011356      2.00  8.00   5.00   2.00   1.50   0.10   0.10   yes   ITER3 RESULT: ep_len 769.0, timeout 45.2%,
++  yaw mean/max 174.7/180 deg, turn/ep 282.5 deg -> STILL ORBITING. TB yaw_band=1.7e-12: Gaussian tail dead
++  (gradient vanishes past ~0.8 rad), same failure as iter1 micro_band. Iter2 re-eval: turn/ep 256.5 deg ->
++  iter2 was ALSO circling (its 854.9 contaminated). Roll RMS 4.94->6.51: sigma 15deg flattened precision.
++  -> iter4: yaw_band -> PLATEAU+LINEAR TAIL (band 0.1, slope 1/(pi-0.1)=0.33, w 2->4); roll sigma 15->12deg;
++     micro tail_slope 0.03->0.05 (drive still 6.1 rad/s vs target 1.5)
+diff --git a/scripts/rsl_rl/play_eval.py b/scripts/rsl_rl/play_eval.py
+index 5d68371..1f96470 100644
+--- a/scripts/rsl_rl/play_eval.py
++++ b/scripts/rsl_rl/play_eval.py
+@@ -240,10 +240,14 @@ def main(env_cfg, agent_cfg):
+     cur_len = torch.zeros(num_envs, dtype=torch.long, device=device)
+     ep_max_roll = torch.zeros(num_envs, device=device)
+     # completed-episode collections
+-    ep_returns, ep_lengths, ep_timeouts, ep_maxrolls = [], [], [], []
++    ep_returns, ep_lengths, ep_timeouts, ep_maxrolls, ep_turns = [], [], [], [], []
+     # global step-wise stats
+     roll_sum = roll_sqsum = roll_max = 0.0
+     drive_abs_sum = drive_max = steer_abs_sum = steer_max = drift_sum = drift_max = 0.0
++    yaw_abs_sum = yaw_max = 0.0
++    # per-episode accumulated |yaw change| — orbits a circle, 2*pi rad per lap
++    ep_turn = torch.zeros(num_envs, device=device)
++    prev_yaw = None
+     n_steps_counted = 0
+ 
+     obs = env.get_observations()
+@@ -291,14 +295,32 @@ def main(env_cfg, agent_cfg):
+         drift_sum += float(drift.sum())
+         drift_max = max(drift_max, float(drift.max()))
+ 
++        # yaw (heading) vs spawn: mean/max |yaw|, plus per-episode accumulated turn
++        # (detects orbiting policies that radial drift metrics are blind to)
++        q = robot.data.root_quat_w  # (w, x, y, z)
++        yaw = torch.atan2(
++            2.0 * (q[:, 0] * q[:, 3] + q[:, 1] * q[:, 2]),
++            1.0 - 2.0 * (q[:, 2] ** 2 + q[:, 3] ** 2),
++        )
++        yaw_abs_sum += float(yaw.abs().sum())
++        yaw_max = max(yaw_max, float(yaw.abs().max()))
++        if prev_yaw is not None:
++            # wrap-aware angular difference, then accumulate per-episode turn
++            d = torch.atan2(torch.sin(yaw - prev_yaw), torch.cos(yaw - prev_yaw))
++            ep_turn += d.abs()
++        prev_yaw = yaw.clone()
++
+         if dones_b.any():
+             ep_returns.append(cur_return[dones_b].clone())
+             ep_lengths.append(cur_len[dones_b].clone())
+             ep_timeouts.append(time_outs[dones_b].clone())
+             ep_maxrolls.append(ep_max_roll[dones_b].clone())
++            ep_turns.append(ep_turn[dones_b].clone())
+             cur_return[dones_b] = 0.0
+             cur_len[dones_b] = 0
+             ep_max_roll[dones_b] = 0.0
++            ep_turn[dones_b] = 0.0
++            prev_yaw[dones_b] = yaw[dones_b]  # reset the diff baseline on episode reset
+ 
+     # --- save torque traces + plot (before closing, data is on-device) ---
+     _plot_torque_traces(
+@@ -347,6 +369,11 @@ def main(env_cfg, agent_cfg):
+     if steer_idx is not None:
+         print(f"  steer_speed mean/max   : {steer_abs_sum / denom:8.2f} / {steer_max:7.2f} rad/s")
+     print(f"  drift mean/max         : {drift_sum / denom:8.3f} / {drift_max:7.3f} m   (position drift from spawn)")
++    print(f"  yaw mean/max           : {math.degrees(yaw_abs_sum / denom):8.2f} / {math.degrees(yaw_max):7.2f} deg (heading vs spawn)")
++    if n_ep > 0:
++        turns = _cat(ep_turns).float()
++        # mean accumulated |yaw change| per completed episode; 360 deg = one full circle
++        print(f"  turn/episode mean      : {float(turns.mean()) * 180.0 / math.pi:8.1f} deg (orbiting detection: 360 deg = full circle)")
+     print("=" * 64 + "\n")
+ 
+ 
+diff --git a/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/mdp/stationary/rewards.py b/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/mdp/stationary/rewards.py
+index f7e0bf9..d6e8438 100644
+--- a/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/mdp/stationary/rewards.py
++++ b/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/mdp/stationary/rewards.py
+@@ -83,6 +83,37 @@ def balance_displacement_band(
+     return torch.exp(-(excess**2) / (2.0 * sigma**2))
+ 
+ 
++def balance_yaw_band(
++    env: ManagerBasedRLEnv,
++    band: float = 0.1,  # rad (~6 deg): free reorientation allowance
++    tail_slope: float = 0.3288,  # = 1/(pi - band): value hits 0 at |yaw| = pi (full reversal)
++    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
++) -> torch.Tensor:
++    """Plateau + LINEAR-TAIL band on |yaw| relative to the spawn heading.
++
++    ANTI-ORBITAL term. A track stand oscillates around a fixed heading, but a
++    policy holding a constant steer deflection + roll rides a CIRCLE around the
++    spawn: radial drift metrics (and drift_band) are blind to orbital motion,
++    so a circle inside the drift band earns full position credit forever and
++    only the horizon ends the episode.
++
++    Iter3 used a Gaussian (sigma=0.4 rad) here and FAILED: once |yaw| passed
++    ~0.8 rad the Gaussian hit ~0 and its gradient vanished, so the policy
++    forfeited the whole term and orbited freely (TB yaw_band = 1.7e-12;
++    eval turn/episode = 282 deg). The linear tail keeps a CONSTANT gradient
++    all the way to pi, so any committed orbit is pulled back toward the spawn
++    heading.
++    """
++    asset = env.scene[asset_cfg.name]
++    q = asset.data.root_quat_w  # (w, x, y, z)
++    yaw = torch.atan2(
++        2.0 * (q[:, 0] * q[:, 3] + q[:, 1] * q[:, 2]),
++        1.0 - 2.0 * (q[:, 2] ** 2 + q[:, 3] ** 2),
++    )
++    excess = torch.clamp(yaw.abs() - band, min=0.0)
++    return (1.0 - tail_slope * excess).clamp(min=0.0)
++
++
+ def balance_micro_motion_band(
+     env: ManagerBasedRLEnv,
+     target: float = 3.0,  # rad/s: free micro-motion allowance (Wang 2024 / 黄用华 2012)
+diff --git a/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/new_bike/newbike_balance_env_cfg.py b/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/new_bike/newbike_balance_env_cfg.py
+index e5e959b..5311c36 100644
+--- a/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/new_bike/newbike_balance_env_cfg.py
++++ b/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/new_bike/newbike_balance_env_cfg.py
+@@ -42,6 +42,7 @@ from ..mdp.stationary.rewards import (
+     balance_survival_reward,
+     balance_survival_reward_binary,
+     balance_termination_penalty,
++    balance_yaw_band,
+ )
+ from ..mdp.stationary.terminations import (
+     balance_drift_termination,
+@@ -332,9 +333,11 @@ class NewBikeBalanceHybridRewardsCfg:
+       bad uprightness.
+     - roll_shaping (w=8.0): exp(-roll²/2σ²), σ=12° — the main gradient term,
+       pushes upright inside the survival band (survival alone pays 29° == 0°).
+-    - drift_band (w=2.0): tolerance band ±0.2 m around spawn, Gaussian decay
++    - drift_band (w=5.0): tolerance band ±0.2 m around spawn, Gaussian decay
+       beyond — position-keeping WITHOUT fighting the necessary micro-motion.
+-    - micro_band (w=4.0): plateau up to |ω_drive|=3 rad/s, linear tail beyond —
++    - yaw_band (w=4.0): ANTI-ORBITAL plateau+linear tail on |yaw| vs spawn
++      heading — a circling policy earns nothing for holding a circle.
++    - micro_band (w=4.0): plateau up to |ω_drive|=1.5 rad/s, linear tail beyond —
+       rewards micro-motion, with CONSTANT gradient against runaway spin.
+     - act_penalty (w=0.1): -‖a‖₂ on the 2-dim action — light effort cost.
+       (Func returns negative; weight stays positive so it remains a penalty.)
+@@ -346,17 +349,23 @@ class NewBikeBalanceHybridRewardsCfg:
+     roll_shaping = RewardTermCfg(
+         func=balance_roll_shaping,
+         weight=8.0,
+-        params={"sigma": 0.2094},  # 12 deg: gradient coverage out to the 30-deg fall limit
++        params={"sigma": 0.2094},  # 12 deg: iter3's 15 deg flattened precision (roll RMS 4.94->6.51)
+     )
+     drift_band = RewardTermCfg(
+         func=balance_displacement_band,
+-        weight=2.0,
++        weight=5.0,  # iter2 2.0: drift deaths (max 2.0 m, term firing). Position-keeping = first-class objective.
+         params={"band": 0.2, "sigma": 0.3},
+     )
++    yaw_band = RewardTermCfg(
++        func=balance_yaw_band,
++        weight=4.0,  # ANTI-ORBITAL. iter3: Gaussian sigma=0.4 was INERT (TB 1.7e-12, turn/ep 282 deg). Linear tail now.
++        params={"band": 0.1, "tail_slope": 0.3288},  # ~6 deg free; constant gradient to 0 at pi
++    )
+     micro_band = RewardTermCfg(
+         func=balance_micro_motion_band,
+-        weight=4.0,  # iter1: Gaussian tail vanished -> wheel spun to 239 rad/s. Linear tail now.
+-        params={"target": 3.0, "tail_slope": 0.03, "drive_joint_name": "rearwheel_joint"},
++        weight=4.0,
++        # iter3: drive still 6.1 rad/s vs target 1.5 -> tail gradient (0.03) too weak. Steepen to 0.05.
++        params={"target": 1.5, "tail_slope": 0.05, "drive_joint_name": "rearwheel_joint"},
+     )
+     # NOTE: both penalty funcs RETURN NEGATIVE values (see rewards.py), so the
+     # weights must be POSITIVE to stay penalties — negative weight would flip
