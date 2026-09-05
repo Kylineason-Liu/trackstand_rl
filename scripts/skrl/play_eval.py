@@ -159,9 +159,12 @@ else:
 
 
 def _roll_deg(robot, device):
-    """Lean angle in degrees from projected gravity (|sin(roll)| -> deg), like the reward code."""
-    lean = robot.data.projected_gravity_b[:, 1].abs().clamp(max=1.0)
-    return torch.rad2deg(torch.asin(lean)).to(device)
+    """|Roll| in degrees from the RAW root quaternion (xyzw -> euler).
+
+    Raw buffer is fresh in every window; the kernel-cached projected_gravity_b
+    is stale for reset envs until the next physics step (audit finding)."""
+    roll = math_utils.euler_xyz_from_quat(robot.data.root_quat_w.torch)[0].abs()
+    return torch.rad2deg(roll).to(device)
 
 
 def _plot_torque_traces(resume_path, steps, envs, drive_trace, steer_trace, drive_lim, steer_lim):

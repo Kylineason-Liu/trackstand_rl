@@ -77,6 +77,7 @@ matplotlib.use("Agg")  # headless: render to file only, never to a display
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
+import isaaclab.utils.math as math_utils
 from rsl_rl.runners import DistillationRunner, OnPolicyRunner
 
 from isaaclab.envs import DirectMARLEnv, multi_agent_to_single_agent
@@ -107,9 +108,12 @@ installed_version = metadata.version("rsl-rl-lib")
 
 
 def _roll_deg(robot, device):
-    """Lean angle in degrees from projected gravity (|sin(roll)| -> deg), like the reward code."""
-    lean = robot.data.projected_gravity_b[:, 1].abs().clamp(max=1.0)
-    return torch.rad2deg(torch.asin(lean)).to(device)
+    """|Roll| in degrees from the RAW root quaternion (xyzw -> euler).
+
+    Raw buffer is fresh in every window; the kernel-cached projected_gravity_b
+    is stale for reset envs until the next physics step (audit finding)."""
+    roll = math_utils.euler_xyz_from_quat(robot.data.root_quat_w.torch)[0].abs()
+    return torch.rad2deg(roll).to(device)
 
 
 def _plot_torque_traces(resume_path, steps, envs, drive_trace, steer_trace, drive_lim, steer_lim):
@@ -251,6 +255,16 @@ def main(env_cfg, agent_cfg):
     # per-env spawn-heading baseline: the bike's USD root spawns facing ~+-pi in
     # WORLD yaw, so heading metrics must be relative to the post-reset yaw
     base_yaw = None
+    # termination-cause tracking: which term(s) fired for each completed episode.
+    # _last_episode_dones (num_envs, num_terms) records exactly the terms that
+    # fired when an episode ended, and is NOT cleared by the reset (the reset
+    # only reads it to build the extras the runner logs to TensorBoard).
+    try:
+        _term_mgr = env.unwrapped.termination_manager
+        term_names = [name for name, _ in _term_mgr.get_active_iterable_terms(0)]
+        ep_term_counts = torch.zeros(len(term_names), device=device)
+    except Exception:
+        term_names, ep_term_counts = [], None
     n_steps_counted = 0
 
     obs = env.get_observations()
@@ -304,7 +318,7 @@ def main(env_cfg, agent_cfg):
         # wxyz math on it silently returned pi for the identity spawn quaternion.
         # Plus per-episode accumulated turn (detects orbiting policies that
         # radial drift metrics are blind to).
-        yaw = robot.data.heading_w  # canonical heading (rad)
+        yaw = math_utils.euler_xyz_from_quat(robot.data.root_quat_w.torch)[2]  # raw quat -> yaw (rad)
         if base_yaw is None:
             base_yaw = yaw.clone()
         rel = torch.atan2(torch.sin(yaw - base_yaw), torch.cos(yaw - base_yaw))
@@ -325,6 +339,9 @@ def main(env_cfg, agent_cfg):
             ep_timeouts.append(time_outs[dones_b].clone())
             ep_maxrolls.append(ep_max_roll[dones_b].clone())
             ep_turns.append(ep_turn[dones_b].clone())
+            if ep_term_counts is not None:
+                # per-term firing record for the episodes that just ended
+                ep_term_counts += _term_mgr._last_episode_dones[dones_b].float().sum(dim=0)
             cur_return[dones_b] = 0.0
             cur_len[dones_b] = 0
             ep_max_roll[dones_b] = 0.0
@@ -351,40 +368,62 @@ def main(env_cfg, agent_cfg):
     n_ep = returns.numel()
     denom = max(n_steps_counted, 1)
 
-    print("\n" + "=" * 64)
-    print(f"  EVAL SUMMARY  —  {os.path.basename(resume_path)}")
-    print(f"  {num_envs} envs x {args_cli.num_steps} steps  |  {n_ep} completed episodes")
-    print("=" * 64)
+    # ---- build the summary block (printed AND saved to eval.txt next to the checkpoint) ----
+    lines: list[str] = []
+
+    def emit(text: str = "") -> None:
+        lines.append(text)
+        print(text)
+
+    emit("=" * 64)
+    emit(f"  EVAL SUMMARY  —  {os.path.basename(resume_path)}")
+    emit(f"  {num_envs} envs x {args_cli.num_steps} steps  |  {n_ep} completed episodes")
+    emit("=" * 64)
     if n_ep == 0:
-        print("  No episode completed within --num_steps. Increase it, or the")
-        print(f"  policy is timing out. In-progress mean length: {float(cur_len.float().mean()):.1f} steps.")
+        emit("  No episode completed within --num_steps. Increase it, or the")
+        emit(f"  policy is timing out. In-progress mean length: {float(cur_len.float().mean()):.1f} steps.")
     else:
         surv = float(timeouts.mean())
-        print(f"  mean_reward            : {float(returns.mean()):10.3f}   (episodic return; not comparable across reward-weight changes)")
-        print(f"  mean_episode_length    : {float(lengths.mean()):10.1f} steps  ({float(lengths.mean()) * step_dt:6.2f} s)")
-        print(f"  min_episode_length     : {float(lengths.min()):10.1f} steps  ({float(lengths.min()) * step_dt:6.2f} s)")
-        print(f"  max_episode_length     : {float(lengths.max()):10.1f} steps  ({float(lengths.max()) * step_dt:6.2f} s)")
-        print(f"  std_episode_length     : {float(lengths.std(unbiased=False)):10.1f} steps")
-        print(f"  timeout_rate (survived): {surv:10.3f}   (reached the horizon vs fell)")
-        print(f"  fall_rate              : {1.0 - surv:10.3f}")
-        print("  " + "-" * 60)
-    print(f"  mean_roll_angle        : {roll_sum / denom:10.2f} deg   (mean over all steps)")
-    print(f"  max_roll_angle         : {roll_max:10.2f} deg")
-    print(f"  roll_RMS               : {math.sqrt(roll_sqsum / denom):10.2f} deg   (tightness of balance; lower = steadier)")
+        emit(f"  mean_reward            : {float(returns.mean()):10.3f}   (episodic return; not comparable across reward-weight changes)")
+        emit(f"  mean_episode_length    : {float(lengths.mean()):10.1f} steps  ({float(lengths.mean()) * step_dt:6.2f} s)")
+        emit(f"  min_episode_length     : {float(lengths.min()):10.1f} steps  ({float(lengths.min()) * step_dt:6.2f} s)")
+        emit(f"  max_episode_length     : {float(lengths.max()):10.1f} steps  ({float(lengths.max()) * step_dt:6.2f} s)")
+        emit(f"  std_episode_length     : {float(lengths.std(unbiased=False)):10.1f} steps")
+        emit(f"  timeout_rate (survived): {surv:10.3f}   (reached the horizon vs fell)")
+        emit(f"  fall_rate              : {1.0 - surv:10.3f}")
+        emit("  " + "-" * 60)
+        if ep_term_counts is not None:
+            emit("  death breakdown (share of completed episodes; a step may fire >1 term):")
+            for i, name in enumerate(term_names):
+                pct = 100.0 * float(ep_term_counts[i].item()) / n_ep
+                emit(f"    {name:<22}: {pct:6.1f}%")
+            emit("  " + "-" * 60)
+    emit(f"  mean_roll_angle        : {roll_sum / denom:10.2f} deg   (mean over all steps)")
+    emit(f"  max_roll_angle         : {roll_max:10.2f} deg")
+    emit(f"  roll_RMS               : {math.sqrt(roll_sqsum / denom):10.2f} deg   (tightness of balance; lower = steadier)")
     if n_ep > 0:
-        print(f"  mean_worst_lean/episode: {float(maxrolls.mean()):10.2f} deg")
-    print("  " + "-" * 60)
+        emit(f"  mean_worst_lean/episode: {float(maxrolls.mean()):10.2f} deg")
+    emit("  " + "-" * 60)
     if drive_idx is not None:
-        print(f"  drive_speed mean/max   : {drive_abs_sum / denom:8.2f} / {drive_max:7.2f} rad/s")
+        emit(f"  drive_speed mean/max   : {drive_abs_sum / denom:8.2f} / {drive_max:7.2f} rad/s")
     if steer_idx is not None:
-        print(f"  steer_speed mean/max   : {steer_abs_sum / denom:8.2f} / {steer_max:7.2f} rad/s")
-    print(f"  drift mean/max         : {drift_sum / denom:8.3f} / {drift_max:7.3f} m   (position drift from spawn)")
-    print(f"  yaw mean/max           : {math.degrees(yaw_abs_sum / denom):8.2f} / {math.degrees(yaw_max):7.2f} deg (heading vs spawn)")
+        emit(f"  steer_speed mean/max   : {steer_abs_sum / denom:8.2f} / {steer_max:7.2f} rad/s")
+    emit(f"  drift mean/max         : {drift_sum / denom:8.3f} / {drift_max:7.3f} m   (position drift from spawn)")
+    emit(f"  yaw mean/max           : {math.degrees(yaw_abs_sum / denom):8.2f} / {math.degrees(yaw_max):7.2f} deg (heading vs spawn)")
     if n_ep > 0:
         turns = _cat(ep_turns).float()
         # mean accumulated |yaw change| per completed episode; 360 deg = one full circle
-        print(f"  turn/episode mean      : {float(turns.mean()) * 180.0 / math.pi:8.1f} deg (orbiting detection: 360 deg = full circle)")
-    print("=" * 64 + "\n")
+        emit(f"  turn/episode mean      : {float(turns.mean()) * 180.0 / math.pi:8.1f} deg (orbiting detection: 360 deg = full circle)")
+    emit("=" * 64)
+
+    # save the summary into the checkpoint's run folder (overwrites a previous eval.txt)
+    out_dir = os.path.dirname(resume_path)
+    try:
+        with open(os.path.join(out_dir, "eval.txt"), "w") as f:
+            f.write("\n".join(lines) + "\n")
+        print(f"[INFO] summary saved to {os.path.join(out_dir, 'eval.txt')}\n")
+    except OSError as e:
+        print(f"[WARN] could not write eval.txt: {e}\n")
 
 
 if __name__ == "__main__":

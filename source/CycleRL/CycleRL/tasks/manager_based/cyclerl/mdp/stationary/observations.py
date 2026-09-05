@@ -1,4 +1,5 @@
 import torch
+import isaaclab.utils.math as math_utils
 from isaaclab.envs import ManagerBasedRLEnv
 from isaaclab.managers import SceneEntityCfg
 
@@ -71,11 +72,21 @@ def balance_imu_state(
     """
     asset = env.scene[asset_cfg.name]
 
-    gravity_y = asset.data.projected_gravity_b[:, 1:2]   # roll lean
-    gravity_z = asset.data.projected_gravity_b[:, 2:3]   # upright
+    # Derive gravity/velocities from the RAW root quaternion instead of the
+    # kernel-cached derived fields. The raw pose buffer is updated synchronously
+    # by the reset-write kernels, but _reset_pose() does NOT invalidate the
+    # projected_gravity_b / *_b caches (audit finding) — so in the post-reset
+    # window those return the dying pose's values, and the FIRST observation of
+    # a new episode would feed the policy stale gravity for one step.
+    q = asset.data.root_quat_w.torch  # (N, 4) xyzw, raw buffer — fresh in all windows
+    g_vec = torch.zeros(q.shape[0], 3, device=env.device)
+    g_vec[:, 2] = -1.0  # normalized gravity direction in world frame
+    g_b = math_utils.quat_apply_inverse(q, g_vec)
+    gravity_y = g_b[:, 1:2]  # roll lean
+    gravity_z = g_b[:, 2:3]  # upright
 
-    ang_vel = asset.data.root_ang_vel_b
-    lin_vel_xy = asset.data.root_lin_vel_b[:, :2]
+    ang_vel = math_utils.quat_apply_inverse(q, asset.data.root_link_ang_vel_w.torch)
+    lin_vel_xy = math_utils.quat_apply_inverse(q, asset.data.root_link_lin_vel_w.torch)[:, :2]
 
     steer_idx = asset.find_joints(steer_joint_name)[0][0]
     drive_idx = asset.find_joints(drive_joint_name)[0][0]

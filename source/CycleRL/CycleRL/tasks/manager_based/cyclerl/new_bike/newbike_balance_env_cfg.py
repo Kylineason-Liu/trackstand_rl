@@ -32,6 +32,7 @@ from ..mdp.stationary.rewards import (
     balance_action_rate_penalty_norm,
     balance_displacement_band,
     balance_drive_reward,
+    balance_drift_gaussian,
     balance_joint_acc_penalty,
     balance_joint_torque_penalty,
     balance_micro_motion_band,
@@ -43,10 +44,15 @@ from ..mdp.stationary.rewards import (
     balance_survival_reward_binary,
     balance_termination_penalty,
     balance_wheel_net_angle_band,
+    balance_wheel_net_gaussian,
     balance_yaw_band,
+    balance_drift_penalty_quadratic,
+    balance_wheel_net_angle_penalty,
 )
 from ..mdp.stationary.terminations import (
     balance_drift_termination,
+    balance_wheel_net_termination,
+    balance_yaw_deviation_termination,
     nonfinite_or_extreme_state,
     thubike_fallen_termination,
 )
@@ -223,7 +229,7 @@ class BalanceEventsCfg:
                 "x": (0.0, 0.0),
                 "y": (0.0, 0.0),
                 "z": (0.0, 0.0),
-                "roll": (-0.15, 0.15),
+                "roll": (-0.10, 0.10),  # iter10: gentler starts — recovery must fit inside the 30-deg heading cap
                 "pitch": (0.0, 0.0),
                 "yaw": (0.0, 0.0),
             },
@@ -231,7 +237,7 @@ class BalanceEventsCfg:
                 "x": (0.0, 0.0),  # stationary balancing: no initial forward momentum
                 "y": (0.0, 0.0),
                 "z": (0.0, 0.0),
-                "roll": (-0.5, 0.5),  # nonzero initial roll rate: train mid-fall recovery
+                "roll": (-0.25, 0.25),  # iter10: 0.5 swung heading past 30 deg during recovery (41% yaw deaths)
                 "pitch": (0.0, 0.0),
                 "yaw": (0.0, 0.0),
             },
@@ -258,6 +264,10 @@ class BalanceCurriculumsCfg:
     # Gradual DR ramp: OFF at step 0 -> full authored ranges by step 50k.
     # alpha logged as Curriculum/dr_ramp. (Ground friction is pinned/DR-free;
     # the per-env robot tire material carries the friction DR.)
+    # no dr_ramp for evaluating different DR terms' effects on policy learning curve
+    '''
+    
+    '''
     dr_ramp = CurriculumTermCfg(
         func=custom_curriculums.ramp_domain_randomization,
         params={"start_step": 0, "end_step": 50000},
@@ -346,20 +356,23 @@ class NewBikeBalanceHybridRewardsCfg:
       without over-penalising the necessary oscillation frequency.
     """
 
-    survival = RewardTermCfg(func=balance_survival_reward_binary, weight=2.0)
+    survival = RewardTermCfg(func=balance_survival_reward_binary, weight=5.0)  # iter10: episodes die in <1s; alive-time gradient must dominate
+
+    
+    '''
     roll_shaping = RewardTermCfg(
         func=balance_roll_shaping,
-        weight=8.0,
+        weight=5.0,
         params={"sigma": 0.2094},  # 12 deg: iter3's 15 deg flattened precision (roll RMS 4.94->6.51)
     )
     drift_band = RewardTermCfg( # Can we delete this, because yaw_band, wheel_net and micro_band already penalize drift?
         func=balance_displacement_band,
-        weight=5.0,  # iter2 2.0: drift deaths (max 2.0 m, term firing). Position-keeping = first-class objective.
+        weight=1.5,  # iter2 2.0: drift deaths (max 2.0 m, term firing). Position-keeping = first-class objective.
         params={"band": 0.2, "sigma": 0.3},
     )
     yaw_band = RewardTermCfg(
         func=balance_yaw_band,
-        weight=4.0,  # ANTI-ORBITAL. iter3 Gaussian inert; iter4 CLAMPED tail -> policy parked AT the pi floor
+        weight=2.5,  # ANTI-ORBITAL. iter3 Gaussian inert; iter4 CLAMPED tail -> policy parked AT the pi floor
         params={"band": 0.1, "tail_slope": 0.66},  # NO clamp: value ~ -1 at pi, constant gradient everywhere
     )
     wheel_net = RewardTermCfg(
@@ -369,35 +382,81 @@ class NewBikeBalanceHybridRewardsCfg:
     )
     micro_band = RewardTermCfg(
         func=balance_micro_motion_band,
-        weight=4.0,
+        weight=2.5,
         # iter3: drive still 6.1 rad/s vs target 1.5 -> tail gradient (0.03) too weak. Steepen to 0.05.
         params={"target": 1.5, "tail_slope": 0.05, "drive_joint_name": "rearwheel_joint"},
     )
+    drift_quad = RewardTermCfg(
+            func=balance_drift_penalty_quadratic,
+            weight=1.0
+        )
+    wheel_net_quad = RewardTermCfg(
+            func=balance_wheel_net_angle_penalty,
+            weight=1.0,
+        )
+
+    # --- gaussian reward variants (EXPERIMENTAL — NOT active; import
+    #     balance_drift_gaussian, balance_wheel_net_gaussian from ..mdp.stationary.rewards) ---
+    # Gaussian wheel-net: positive, gradient everywhere incl. the band's dead zone;
+    # wide sigma keeps the tail alive out to the 7.2 rad termination cap.
+    
+    # Gaussian drift: d bounded by the 0.5 m drifted termination -> gradient over
+    # the whole range; ~0.83 at the 0.15 m operating point (barely perturbs the optimum).
+    wheel_net_gauss = RewardTermCfg(
+        func=balance_wheel_net_gaussian,
+        weight=2.0,  # peak per-step contribution
+        params={"sigma": 3.0},  # rad
+    )
+    '''
+    
+    drift_gauss = RewardTermCfg(
+        func=balance_drift_gaussian,
+        weight=2.0,  # peak per-step contribution
+        params={"sigma": 0.25},  # m
+    )
+
     # NOTE: both penalty funcs RETURN NEGATIVE values (see rewards.py), so the
     # weights must be POSITIVE to stay penalties — negative weight would flip
     # them into rewards (reward manager: value * weight). Iter1 had the sign
     # wrong (TB confirmed net-positive contributions); fixed in iter2.
+    '''
+    
     act_penalty = RewardTermCfg(func=balance_joint_torque_penalty, weight=0.1)
+
+    '''
     rate_penalty = RewardTermCfg(
         func=balance_action_rate_penalty_norm,
         weight=0.1,  # iter1 -0.05 SIGN WRONG (rewarded slamming); 0.1 damps servo slam (steer max 151 rad/s)
         params={"action_scales": (1.57, 6.28)},  # steer rad, drive N-m
     )
-
+    
 
 @configclass
 class NewBikeBalanceHybridTerminationsCfg(BalanceTerminationsCfg):
-    """v1 terminations: parent's (time_out / fallen 30° / diverged) plus drift.
+    """v1 terminations: parent's (time_out / fallen 30° / diverged) plus three
+    trackstand-envelope terms:
 
-    drifted: reset beyond 2 m of spawn. Track stand tolerates micro-motion but
-    not genuine drift — without this a policy could keep slowly rolling and
-    never fall, clocking the episode out. 2 m is deliberately loose so only
-    clear drift triggers; inside it the drift_band reward shapes behaviour.
+    drifted (0.5 m): position envelope around spawn. 2 m let the bike orbit
+    inside the limit with a ~0.07 m wheel radius; 0.5 m keeps the stand local.
+    yaw_deviation (60°): heading envelope vs spawn heading — a circling bike
+    accumulates yaw and gets reset.
+    wheel_net (7.2 rad): net rear-wheel rotation envelope — constant rolling
+    or sustained in-place spin accumulates it; micro-motion oscillates ~0.
     """
 
     drifted = TerminationTermCfg(
         func=balance_drift_termination,
-        params={"max_dist": 2.0},
+        params={"max_dist": 0.5},  # m; wheel radius ~0.07 m, so 2.0 m allowed orbiting inside
+        time_out=False,
+    )
+    yaw_deviation = TerminationTermCfg(
+        func=balance_yaw_deviation_termination,
+        params={"limit_angle": 0.5236},  # 30 deg
+        time_out=False,
+    )
+    wheel_net = TerminationTermCfg(
+        func=balance_wheel_net_termination,
+        params={"limit_angle": 7.2},  # rad of net rotation since reset
         time_out=False,
     )
 

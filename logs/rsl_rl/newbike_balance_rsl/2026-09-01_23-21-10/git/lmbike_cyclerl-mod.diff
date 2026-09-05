@@ -1,0 +1,131 @@
+--- git commit ---
+d495a498cbafdf4704590aa9e1963692761d6f28
+
+
+--- git status ---
+On branch lmbike_4090
+Your branch is up to date with 'origin/lmbike_4090'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   logs/rsl_rl/newbike_balance_rsl/cfg_record.txt
+	modified:   source/CycleRL/CycleRL/tasks/manager_based/cyclerl/mdp/stationary/terminations.py
+	modified:   source/CycleRL/CycleRL/tasks/manager_based/cyclerl/new_bike/newbike_balance_env_cfg.py
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	logs/rsl_rl/newbike_balance_rsl/2026-09-01_23-21-10/
+
+no changes added to commit (use "git add" and/or "git commit -a") 
+
+
+--- git diff ---
+diff --git a/logs/rsl_rl/newbike_balance_rsl/cfg_record.txt b/logs/rsl_rl/newbike_balance_rsl/cfg_record.txt
+index 44e2fc7..24e5568 100644
+--- a/logs/rsl_rl/newbike_balance_rsl/cfg_record.txt
++++ b/logs/rsl_rl/newbike_balance_rsl/cfg_record.txt
+@@ -185,3 +185,8 @@ AUDIT (iter6, aborted 41min): full reward-term audit. FATAL: hand-rolled yaw for
+   mixed; steer biased 4:1); act_penalty name says torque but reads normalized actions. USD: steering
+   limits +-89.999985deg match action scale 1.57 rad; rearwheel free revolute; fork at +x -> base+x = fwd.
+ 0901xxxx      2.00  8.00   5.00   4.00   1.50   0.10   0.10   yes   iter6 relaunched with heading_w fix
++TERMINATION CHANGE: v1 envelope tightened for the next run (user spec): drifted 2.0m -> 0.5m (wheel radius
++  ~0.07m: 2.0m allowed orbiting inside); NEW yaw_deviation termination |heading-spawn|>60deg (1.0472 rad,
++  heading_w is rad); NEW wheel_net termination |net wheel angle|>7.2 rad (wheel_net_angle is rad, unwrapped).
++  These reset orbiting/rolling policies outright. Iter6 (heading_w fix, loose limits) aborted at 73%:
++  training under loose limits + eval under tight = mismatched comparison.
+diff --git a/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/mdp/stationary/terminations.py b/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/mdp/stationary/terminations.py
+index 1b2b5f4..6000757 100644
+--- a/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/mdp/stationary/terminations.py
++++ b/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/mdp/stationary/terminations.py
+@@ -25,6 +25,39 @@ def thubike_fallen_termination(
+     return too_tilted | flipped
+ 
+ 
++def balance_yaw_deviation_termination(
++    env: ManagerBasedRLEnv,
++    limit_angle: float = 1.0472,  # 60 deg, in rad (heading_w is radians)
++    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
++) -> torch.Tensor:
++    """Terminate when |heading - spawn heading| exceeds ``limit_angle`` (rad).
++
++    Heading is the canonical ``asset.data.heading_w`` (base +x rotated to
++    world, atan2 — radians). The spawn baseline ``env.spawn_yaw`` is maintained
++    per env by NewBikeBalanceHybridEnv, so this term only applies to tasks
++    running on that env class.
++    """
++    asset = env.scene[asset_cfg.name]
++    yaw = asset.data.heading_w
++    rel = torch.atan2(torch.sin(yaw - env.spawn_yaw), torch.cos(yaw - env.spawn_yaw))
++    return rel.abs() > limit_angle
++
++
++def balance_wheel_net_termination(
++    env: ManagerBasedRLEnv,
++    limit_angle: float = 7.2,  # rad of net rear-wheel rotation since reset
++) -> torch.Tensor:
++    """Terminate when |net drive-wheel rotation| since reset exceeds the limit.
++
++    Uses ``env.wheel_net_angle`` (rad) maintained by NewBikeBalanceHybridEnv —
++    the raw joint_pos WRAPS at +-pi and cannot be used (verified empirically).
++    One-step lag: the env integrates after super().step(), so this term reads
++    the value through the PREVIOUS step — <= 0.03 rad at the 1.5 rad/s micro
++    band; at runaway speeds the ``diverged`` term already covers that regime.
++    """
++    return env.wheel_net_angle.abs() > limit_angle
++
++
+ def balance_drift_termination(
+     env: ManagerBasedRLEnv,
+     max_dist: float = 2.0,
+diff --git a/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/new_bike/newbike_balance_env_cfg.py b/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/new_bike/newbike_balance_env_cfg.py
+index 7027040..ac891fc 100644
+--- a/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/new_bike/newbike_balance_env_cfg.py
++++ b/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/new_bike/newbike_balance_env_cfg.py
+@@ -47,6 +47,8 @@ from ..mdp.stationary.rewards import (
+ )
+ from ..mdp.stationary.terminations import (
+     balance_drift_termination,
++    balance_wheel_net_termination,
++    balance_yaw_deviation_termination,
+     nonfinite_or_extreme_state,
+     thubike_fallen_termination,
+ )
+@@ -387,17 +389,30 @@ class NewBikeBalanceHybridRewardsCfg:
+ 
+ @configclass
+ class NewBikeBalanceHybridTerminationsCfg(BalanceTerminationsCfg):
+-    """v1 terminations: parent's (time_out / fallen 30° / diverged) plus drift.
+-
+-    drifted: reset beyond 2 m of spawn. Track stand tolerates micro-motion but
+-    not genuine drift — without this a policy could keep slowly rolling and
+-    never fall, clocking the episode out. 2 m is deliberately loose so only
+-    clear drift triggers; inside it the drift_band reward shapes behaviour.
++    """v1 terminations: parent's (time_out / fallen 30° / diverged) plus three
++    trackstand-envelope terms:
++
++    drifted (0.5 m): position envelope around spawn. 2 m let the bike orbit
++    inside the limit with a ~0.07 m wheel radius; 0.5 m keeps the stand local.
++    yaw_deviation (60°): heading envelope vs spawn heading — a circling bike
++    accumulates yaw and gets reset.
++    wheel_net (7.2 rad): net rear-wheel rotation envelope — constant rolling
++    or sustained in-place spin accumulates it; micro-motion oscillates ~0.
+     """
+ 
+     drifted = TerminationTermCfg(
+         func=balance_drift_termination,
+-        params={"max_dist": 2.0},
++        params={"max_dist": 0.5},  # m; wheel radius ~0.07 m, so 2.0 m allowed orbiting inside
++        time_out=False,
++    )
++    yaw_deviation = TerminationTermCfg(
++        func=balance_yaw_deviation_termination,
++        params={"limit_angle": 1.0472},  # 60 deg in rad
++        time_out=False,
++    )
++    wheel_net = TerminationTermCfg(
++        func=balance_wheel_net_termination,
++        params={"limit_angle": 7.2},  # rad of net rotation since reset
+         time_out=False,
+     )
+ 

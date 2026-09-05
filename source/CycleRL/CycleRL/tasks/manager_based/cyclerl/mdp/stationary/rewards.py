@@ -1,4 +1,5 @@
 import torch
+import isaaclab.utils.math as math_utils
 from isaaclab.envs import ManagerBasedRLEnv
 from isaaclab.managers import SceneEntityCfg
 
@@ -83,6 +84,24 @@ def balance_displacement_band(
     return torch.exp(-(excess**2) / (2.0 * sigma**2))
 
 
+def balance_drift_penalty_quadratic(
+    env: ManagerBasedRLEnv,
+    max_dist: float = 0.5,  # must match the `drifted` termination's max_dist
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+) -> torch.Tensor:
+    """NORMALISED quadratic penalty on XY displacement from spawn: -(d/max_dist)^2.
+
+    Value range [-1, 0]: -1 exactly at the ``drifted`` termination boundary
+    (d = max_dist), 0 at spawn — no floor cap and no NaN path needed. Gradient
+    is -2d/max_dist^2: nonzero everywhere except the spawn point and growing
+    with distance. The cfg weight is therefore the MAX per-step penalty
+    directly (weight 1.0 -> 1.0/step at the death boundary).
+    """
+    asset = env.scene[asset_cfg.name]
+    d = torch.norm(asset.data.root_pos_w[:, :2] - env.scene.env_origins[:, :2], dim=-1)
+    return -((d / max_dist) ** 2)
+
+
 def balance_yaw_band(
     env: ManagerBasedRLEnv,
     band: float = 0.1,  # rad (~6 deg): free reorientation allowance
@@ -120,7 +139,9 @@ def balance_yaw_band(
     term measures the wrap-aware yaw RELATIVE to that baseline.
     """
     asset = env.scene[asset_cfg.name]
-    yaw = asset.data.heading_w  # canonical: atan2 of base +x in world (rad)
+    # raw root quat (xyzw, fresh in all windows) -> canonical euler yaw; the
+    # kernel-cached heading_w is stale in the post-reset window (audit finding)
+    yaw = math_utils.euler_xyz_from_quat(asset.data.root_quat_w.torch)[2]
     rel = torch.atan2(torch.sin(yaw - env.spawn_yaw), torch.cos(yaw - env.spawn_yaw))
     excess = torch.clamp(rel.abs() - band, min=0.0)
     return 1.0 - tail_slope * excess
@@ -154,6 +175,60 @@ def balance_wheel_net_angle_band(
     theta = env.wheel_net_angle  # (num_envs,), maintained by NewBikeBalanceHybridEnv
     excess = torch.clamp(theta.abs() - band, min=0.0)
     return (1.0 - tail_slope * excess).clamp(min=penalty_floor)
+
+
+def balance_wheel_net_angle_penalty(
+    env: ManagerBasedRLEnv,
+    limit_angle: float = 7.2,  # must match the `wheel_net` termination's limit_angle
+) -> torch.Tensor:
+    """NORMALISED quadratic penalty on the net drive-wheel angle: -(theta/limit)^2.
+
+    Value range [-1, 0]: -1 exactly at the ``wheel_net`` termination boundary
+    (|theta| = limit_angle), 0 at zero-mean — no floor cap and no NaN path
+    needed. Gradient is -2*theta/limit^2: zero only at the zero-mean target
+    and strongest near the death boundary — unlike the band version, which has
+    a gradient dead zone inside ``band`` (where the slow net bias grows for
+    free). The cfg weight is therefore the MAX per-step penalty directly
+    (weight 1.0 -> 1.0/step at the death boundary).
+    """
+    theta = env.wheel_net_angle  # (num_envs,), maintained by NewBikeBalanceHybridEnv
+    return -((theta / limit_angle) ** 2)
+
+
+def balance_wheel_net_gaussian(
+    env: ManagerBasedRLEnv,
+    sigma: float = 3.0,  # rad: wide so the gradient stays meaningful out toward the 7.2 rad cap
+) -> torch.Tensor:
+    """Gaussian reward on the net drive-wheel angle since reset: exp(-theta^2/2sigma^2).
+
+    Value range (0, 1], peaking at zero-mean — positive like the band version
+    (so the necessary oscillation is never taxed at rest), but with gradient
+    everywhere except the peak itself, including INSIDE the band version's
+    1-rad dead zone where the slow net bias grows for free. Wide sigma avoids
+    the far-tail gradient death (at sigma=3 the gradient at 3 rad is ~0.20/rad,
+    at 7 rad ~0.05/rad). The cfg weight is the peak per-step contribution.
+    """
+    theta = env.wheel_net_angle  # (num_envs,), maintained by NewBikeBalanceHybridEnv
+    return torch.exp(-(theta**2) / (2.0 * sigma**2))
+
+
+def balance_drift_gaussian(
+    env: ManagerBasedRLEnv,
+    sigma: float = 0.25,  # m: d is bounded by the 0.5 m drifted termination, so this covers the whole range
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+) -> torch.Tensor:
+    """Gaussian reward on XY displacement from spawn: exp(-d^2/2sigma^2).
+
+    Value range (0, 1], peaking at spawn. d is bounded by the ``drifted``
+    termination at 0.5 m, so with sigma=0.25 the gradient stays meaningful over
+    the ENTIRE range (at 0.5 m: value 0.135, gradient ~1.1/m) — no tail problem.
+    Near the operating point (d ~ 0.15 m) the value is ~0.83, nearly flat, so it
+    barely perturbs the optimum while still pulling excursions back. The cfg
+    weight is the peak per-step contribution.
+    """
+    asset = env.scene[asset_cfg.name]
+    d = torch.norm(asset.data.root_pos_w[:, :2] - env.scene.env_origins[:, :2], dim=-1)
+    return torch.exp(-(d**2) / (2.0 * sigma**2))
 
 
 def balance_micro_motion_band(

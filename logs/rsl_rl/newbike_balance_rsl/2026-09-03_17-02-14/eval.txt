@@ -1,0 +1,31 @@
+================================================================
+  EVAL SUMMARY  —  model_34700.pt
+  64 envs x 3000 steps  |  128 completed episodes
+================================================================
+  mean_reward            :    175.938   (episodic return; not comparable across reward-weight changes)
+  mean_episode_length    :     1369.4 steps  ( 27.39 s)
+  min_episode_length     :      520.0 steps  ( 10.40 s)
+  max_episode_length     :     1500.0 steps  ( 30.00 s)
+  std_episode_length     :      241.9 steps
+  timeout_rate (survived):      0.656   (reached the horizon vs fell)
+  fall_rate              :      0.344
+  ------------------------------------------------------------
+  death breakdown (share of completed episodes; a step may fire >1 term):
+    time_out              :   65.6%
+    fallen                :    0.0%
+    diverged              :    0.0%
+    drifted               :    0.0%
+    yaw_deviation         :    0.0%
+    wheel_net             :   34.4%
+  ------------------------------------------------------------
+  mean_roll_angle        :       1.47 deg   (mean over all steps)
+  max_roll_angle         :       5.04 deg
+  roll_RMS               :       1.54 deg   (tightness of balance; lower = steadier)
+  mean_worst_lean/episode:       3.80 deg
+  ------------------------------------------------------------
+  drive_speed mean/max   :     1.26 /   82.44 rad/s
+  steer_speed mean/max   :     1.99 /   32.31 rad/s
+  drift mean/max         :    0.181 /   0.450 m   (position drift from spawn)
+  yaw mean/max           :     9.40 /   27.71 deg (heading vs spawn)
+  turn/episode mean      :    345.0 deg (orbiting detection: 360 deg = full circle)
+================================================================

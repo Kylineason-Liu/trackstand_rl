@@ -1,4 +1,5 @@
 import torch
+import isaaclab.utils.math as math_utils
 from isaaclab.envs import ManagerBasedRLEnv
 from isaaclab.managers import SceneEntityCfg
 
@@ -23,6 +24,41 @@ def thubike_fallen_termination(
     flipped = gravity_z > 0.0  # bike is inverted (more than 90° from upright)
 
     return too_tilted | flipped
+
+
+def balance_yaw_deviation_termination(
+    env: ManagerBasedRLEnv,
+    limit_angle: float = 1.0472,  # 60 deg, in rad (heading_w is radians)
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+) -> torch.Tensor:
+    """Terminate when |heading - spawn heading| exceeds ``limit_angle`` (rad).
+
+    Heading is the canonical ``asset.data.heading_w`` (base +x rotated to
+    world, atan2 — radians). The spawn baseline ``env.spawn_yaw`` is maintained
+    per env by NewBikeBalanceHybridEnv, so this term only applies to tasks
+    running on that env class.
+    """
+    asset = env.scene[asset_cfg.name]
+    # raw root quat (xyzw, fresh in all windows) -> euler yaw; kernel-cached
+    # heading_w is stale in the post-reset window (audit finding)
+    yaw = math_utils.euler_xyz_from_quat(asset.data.root_quat_w.torch)[2]
+    rel = torch.atan2(torch.sin(yaw - env.spawn_yaw), torch.cos(yaw - env.spawn_yaw))
+    return rel.abs() > limit_angle
+
+
+def balance_wheel_net_termination(
+    env: ManagerBasedRLEnv,
+    limit_angle: float = 7.2,  # rad of net rear-wheel rotation since reset
+) -> torch.Tensor:
+    """Terminate when |net drive-wheel rotation| since reset exceeds the limit.
+
+    Uses ``env.wheel_net_angle`` (rad) maintained by NewBikeBalanceHybridEnv —
+    the raw joint_pos WRAPS at +-pi and cannot be used (verified empirically).
+    One-step lag: the env integrates after super().step(), so this term reads
+    the value through the PREVIOUS step — <= 0.03 rad at the 1.5 rad/s micro
+    band; at runaway speeds the ``diverged`` term already covers that regime.
+    """
+    return env.wheel_net_angle.abs() > limit_angle
 
 
 def balance_drift_termination(

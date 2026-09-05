@@ -1,0 +1,452 @@
+--- git commit ---
+d495a498cbafdf4704590aa9e1963692761d6f28
+
+
+--- git status ---
+On branch lmbike_4090
+Your branch is up to date with 'origin/lmbike_4090'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   logs/rsl_rl/newbike_balance_rsl/cfg_record.txt
+	modified:   scripts/rsl_rl/play_eval.py
+	modified:   scripts/skrl/play_eval.py
+	modified:   source/CycleRL/CycleRL/tasks/manager_based/cyclerl/mdp/stationary/observations.py
+	modified:   source/CycleRL/CycleRL/tasks/manager_based/cyclerl/mdp/stationary/rewards.py
+	modified:   source/CycleRL/CycleRL/tasks/manager_based/cyclerl/mdp/stationary/terminations.py
+	modified:   source/CycleRL/CycleRL/tasks/manager_based/cyclerl/new_bike/newbike_balance_env.py
+	modified:   source/CycleRL/CycleRL/tasks/manager_based/cyclerl/new_bike/newbike_balance_env_cfg.py
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	logs/rsl_rl/newbike_balance_rsl/2026-09-01_23-21-10/
+	logs/rsl_rl/newbike_balance_rsl/2026-09-02_01-10-04/
+	logs/rsl_rl/newbike_balance_rsl/2026-09-02_01-58-30/
+	logs/rsl_rl/newbike_balance_rsl/2026-09-02_11-48-31/
+	logs/rsl_rl/newbike_balance_rsl/2026-09-02_12-42-25/
+	logs/rsl_rl/newbike_balance_rsl/2026-09-02_16-27-07/
+	logs/rsl_rl/newbike_balance_rsl/2026-09-02_17-47-42/
+	logs/rsl_rl/newbike_balance_rsl/2026-09-02_21-02-33/
+	logs/rsl_rl/newbike_balance_rsl/2026-09-02_21-32-36/
+	logs/rsl_rl/newbike_balance_rsl/2026-09-03_01-11-02/
+	logs/rsl_rl/newbike_balance_rsl/2026-09-03_01-13-58/
+
+no changes added to commit (use "git add" and/or "git commit -a") 
+
+
+--- git diff ---
+diff --git a/logs/rsl_rl/newbike_balance_rsl/cfg_record.txt b/logs/rsl_rl/newbike_balance_rsl/cfg_record.txt
+index 44e2fc7..a7dbacb 100644
+--- a/logs/rsl_rl/newbike_balance_rsl/cfg_record.txt
++++ b/logs/rsl_rl/newbike_balance_rsl/cfg_record.txt
+@@ -185,3 +185,72 @@ AUDIT (iter6, aborted 41min): full reward-term audit. FATAL: hand-rolled yaw for
+   mixed; steer biased 4:1); act_penalty name says torque but reads normalized actions. USD: steering
+   limits +-89.999985deg match action scale 1.57 rad; rearwheel free revolute; fork at +x -> base+x = fwd.
+ 0901xxxx      2.00  8.00   5.00   4.00   1.50   0.10   0.10   yes   iter6 relaunched with heading_w fix
++TERMINATION CHANGE: v1 envelope tightened for the next run (user spec): drifted 2.0m -> 0.5m (wheel radius
++  ~0.07m: 2.0m allowed orbiting inside); NEW yaw_deviation termination |heading-spawn|>60deg (1.0472 rad,
++  heading_w is rad); NEW wheel_net termination |net wheel angle|>7.2 rad (wheel_net_angle is rad, unwrapped).
++  These reset orbiting/rolling policies outright. Iter6 (heading_w fix, loose limits) aborted at 73%:
++  training under loose limits + eval under tight = mismatched comparison.
++  
++  
++  
++  
++  
++  
++  
++  
++  
++  
++  
++  
++  
++  
++  
++  
++  
++  
++
++AUDIT2 (iter7 finished but TAINTED, skip eval): spawn_yaw was captured from kernel-cached heading_w in
++  the post-reset window where _reset_pose() does NOT invalidate it -> baseline = dying bike's heading,
++  yaw_deviation could false-fire, yaw_band mis-baselined. Project-wide stale-read audit + fixes:
++  1) env: spawn_yaw from RAW root_quat_w + euler_xyz_from_quat (fresh in all windows)
++  2) rewards.yaw_band + terminations.yaw_deviation: same raw-quat yaw
++  3) observations.balance_imu_state: gravity + lin/ang vel from raw quat via quat_apply_inverse
++     (first obs of a new episode no longer carries the dying pose's values)
++  4) play_eval (rsl_rl + skrl): roll + yaw metrics from raw quat
++  eval_logger already reads raw quat per call (xyzw helper) - no change. dynamic mdp - no stale reads.
++0901xxxx      2.00  8.00   5.00   4.00   1.50   0.10   0.10   yes   iter8: first CLEAN run (fresh-baseline yaw)
++09020158      2.00  0.00   0.00   0.00   0.00   0.10   0.10   yes   ITER8 (survival-only ablation, per user):
++  5 shaping terms commented out in cfg (user edit 01:04). Trained WITH all freshness fixes (raw-quat spawn_yaw,
++  fresh obs, fresh metrics). Terminations: drifted 0.5m, yaw 60deg, wheel_net 7.2rad. User's pre-fix duplicate
++  run 01-10-04 killed at ~04:30 per user choice. Answers: does survival alone + envelope teach oscillation?
++  ITER8 RESULT: ep_len 54.2 (DR), timeout 0.3%, fall 99.7%, yaw max 60deg + drift max 0.5m (envelope biting).
++  SURVIVAL-ONLY VERDICT: does NOT learn oscillation — alive-time gradient too sparse to bootstrap under full DR.
++  -> iter9: restore the 5 shaping terms (uncomment), same tightened terminations. Full 8-term set + all fixes.
++TERMINATION CHANGE: yaw_deviation 60deg -> 30deg (0.5236 rad) per user: 60deg still leaves room to learn
++  orbiting; 30deg forces oscillation. Iter9 (60deg) aborted at 42 min, relaunched with 30deg.
++09021148      2.00  8.00   5.00   4.00   1.50   0.10   0.10   yes   ITER9 RESULT: ep_len 29.9, timeout 0%!
++  Death breakdown (train end): fallen 54%, YAW_DEV 41% (30deg cap firing), wheel_net 9%, drifted 0.5%.
++  The bike can't finish a recovery turn within 30deg of heading -> squeezed between yaw wall and fall wall.
++  User's 15k duplicate (12-42-25): ep_len 29.4, fallen 65%, yaw 27% — same picture.
++  -> iter10: KEEP 30deg envelope (user design) but make resets survivable: initial roll +-0.15->0.10,
++     rollrate +-0.5->0.25; survival 2->5 (alive-time gradient must dominate while episodes are short).
++09021627      5.00  8.00   5.00   4.00   1.50   0.10   0.10   yes   ITER10 RESULT: ep_len 37.9 (user 15k dup: 19.4),
++  timeout 0%, fall 100%. Death breakdown (train end): YAW_DEV 50%, fallen 33%, drifted 18%, wheel 1%.
++  Even with gentle resets (+-0.10 roll / +-0.25 rollrate, verified in params), HALF of all episodes die by the
++  30-deg heading cap — recovery at this bike's geometry inherently swings >30deg. 30deg is unlearnable from
++  scratch under full DR.
++  -> iter11: yaw cap 30->60deg (data-driven: learn balance first, tighten later). Keep survival 5, resets gentle.
++CORRECTION (user): the 17-47-42 run was trained with --no_dr (dr_ramp end_step=1e9, alpha~0 forever),
++  NOT the DR ramp — my earlier "same cfg" claim was wrong (reward weights identical; DR regime completely
++  different). Its fair eval is NO-DR: ep_len 1306.9, timeout 53.9%, rollRMS 1.45deg, yaw max 36deg,
++  drive mean 1.4 rad/s -> the FIRST real trackstand of the campaign (no-DR). Under full DR it collapses
++  to 19.4 (67x). Confirms the DR-regime verdict with a much stronger policy: the full-DR criterion is
++  the wall, not the reward design. Next lever: shrink DR ranges (mass/friction), not more reward tuning.
++09022102      5.00  5.00   2.50   1.00   2.50   0.10   0.10   yes   ITER11 (user weights, yaw 60deg,
++  DR ramp, 20k): DR eval ep_len 32.9, timeout 0%. Rebalanced weights did NOT break the full-DR wall.
++09022132      5.00  5.00   2.50   1.00   2.50   0.10   0.10   no_dr ITER12 (user run: yaw 30deg, NO DR, 15k):
++  no-DR eval ep_len 977.3, rollRMS 0.38deg (!), worst lean 1.97deg, yaw max 29.98deg (cap holds).
++  BEST balance quality of the campaign — user's rebalance validated. Failure mode shifted: deaths mostly by
++  the 30deg heading cap after ~20s (turn/ep 113.8deg slow heading wander), not by falling.
++  Full-DR eval: 20.0 steps (49x collapse) — DR wall confirmed again.
++LOOP STOPPED per user. Next step agreed: shrink DR ranges (mass 0.8-1.2, friction 0.8-1.2) and retrain.
+diff --git a/scripts/rsl_rl/play_eval.py b/scripts/rsl_rl/play_eval.py
+index bcb2317..6cc2c52 100644
+--- a/scripts/rsl_rl/play_eval.py
++++ b/scripts/rsl_rl/play_eval.py
+@@ -77,6 +77,7 @@ matplotlib.use("Agg")  # headless: render to file only, never to a display
+ import matplotlib.pyplot as plt
+ import numpy as np
+ import torch
++import isaaclab.utils.math as math_utils
+ from rsl_rl.runners import DistillationRunner, OnPolicyRunner
+ 
+ from isaaclab.envs import DirectMARLEnv, multi_agent_to_single_agent
+@@ -107,9 +108,12 @@ installed_version = metadata.version("rsl-rl-lib")
+ 
+ 
+ def _roll_deg(robot, device):
+-    """Lean angle in degrees from projected gravity (|sin(roll)| -> deg), like the reward code."""
+-    lean = robot.data.projected_gravity_b[:, 1].abs().clamp(max=1.0)
+-    return torch.rad2deg(torch.asin(lean)).to(device)
++    """|Roll| in degrees from the RAW root quaternion (xyzw -> euler).
++
++    Raw buffer is fresh in every window; the kernel-cached projected_gravity_b
++    is stale for reset envs until the next physics step (audit finding)."""
++    roll = math_utils.euler_xyz_from_quat(robot.data.root_quat_w.torch)[0].abs()
++    return torch.rad2deg(roll).to(device)
+ 
+ 
+ def _plot_torque_traces(resume_path, steps, envs, drive_trace, steer_trace, drive_lim, steer_lim):
+@@ -304,7 +308,7 @@ def main(env_cfg, agent_cfg):
+         # wxyz math on it silently returned pi for the identity spawn quaternion.
+         # Plus per-episode accumulated turn (detects orbiting policies that
+         # radial drift metrics are blind to).
+-        yaw = robot.data.heading_w  # canonical heading (rad)
++        yaw = math_utils.euler_xyz_from_quat(robot.data.root_quat_w.torch)[2]  # raw quat -> yaw (rad)
+         if base_yaw is None:
+             base_yaw = yaw.clone()
+         rel = torch.atan2(torch.sin(yaw - base_yaw), torch.cos(yaw - base_yaw))
+diff --git a/scripts/skrl/play_eval.py b/scripts/skrl/play_eval.py
+index 060e585..0244e41 100644
+--- a/scripts/skrl/play_eval.py
++++ b/scripts/skrl/play_eval.py
+@@ -159,9 +159,12 @@ else:
+ 
+ 
+ def _roll_deg(robot, device):
+-    """Lean angle in degrees from projected gravity (|sin(roll)| -> deg), like the reward code."""
+-    lean = robot.data.projected_gravity_b[:, 1].abs().clamp(max=1.0)
+-    return torch.rad2deg(torch.asin(lean)).to(device)
++    """|Roll| in degrees from the RAW root quaternion (xyzw -> euler).
++
++    Raw buffer is fresh in every window; the kernel-cached projected_gravity_b
++    is stale for reset envs until the next physics step (audit finding)."""
++    roll = math_utils.euler_xyz_from_quat(robot.data.root_quat_w.torch)[0].abs()
++    return torch.rad2deg(roll).to(device)
+ 
+ 
+ def _plot_torque_traces(resume_path, steps, envs, drive_trace, steer_trace, drive_lim, steer_lim):
+diff --git a/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/mdp/stationary/observations.py b/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/mdp/stationary/observations.py
+index 9e7dca0..1a76b1e 100644
+--- a/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/mdp/stationary/observations.py
++++ b/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/mdp/stationary/observations.py
+@@ -1,4 +1,5 @@
+ import torch
++import isaaclab.utils.math as math_utils
+ from isaaclab.envs import ManagerBasedRLEnv
+ from isaaclab.managers import SceneEntityCfg
+ 
+@@ -71,11 +72,21 @@ def balance_imu_state(
+     """
+     asset = env.scene[asset_cfg.name]
+ 
+-    gravity_y = asset.data.projected_gravity_b[:, 1:2]   # roll lean
+-    gravity_z = asset.data.projected_gravity_b[:, 2:3]   # upright
+-
+-    ang_vel = asset.data.root_ang_vel_b
+-    lin_vel_xy = asset.data.root_lin_vel_b[:, :2]
++    # Derive gravity/velocities from the RAW root quaternion instead of the
++    # kernel-cached derived fields. The raw pose buffer is updated synchronously
++    # by the reset-write kernels, but _reset_pose() does NOT invalidate the
++    # projected_gravity_b / *_b caches (audit finding) — so in the post-reset
++    # window those return the dying pose's values, and the FIRST observation of
++    # a new episode would feed the policy stale gravity for one step.
++    q = asset.data.root_quat_w.torch  # (N, 4) xyzw, raw buffer — fresh in all windows
++    g_vec = torch.zeros(q.shape[0], 3, device=env.device)
++    g_vec[:, 2] = -1.0  # normalized gravity direction in world frame
++    g_b = math_utils.quat_apply_inverse(q, g_vec)
++    gravity_y = g_b[:, 1:2]  # roll lean
++    gravity_z = g_b[:, 2:3]  # upright
++
++    ang_vel = math_utils.quat_apply_inverse(q, asset.data.root_link_ang_vel_w.torch)
++    lin_vel_xy = math_utils.quat_apply_inverse(q, asset.data.root_link_lin_vel_w.torch)[:, :2]
+ 
+     steer_idx = asset.find_joints(steer_joint_name)[0][0]
+     drive_idx = asset.find_joints(drive_joint_name)[0][0]
+diff --git a/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/mdp/stationary/rewards.py b/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/mdp/stationary/rewards.py
+index 9a9c207..e0ebfae 100644
+--- a/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/mdp/stationary/rewards.py
++++ b/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/mdp/stationary/rewards.py
+@@ -1,4 +1,5 @@
+ import torch
++import isaaclab.utils.math as math_utils
+ from isaaclab.envs import ManagerBasedRLEnv
+ from isaaclab.managers import SceneEntityCfg
+ 
+@@ -120,7 +121,9 @@ def balance_yaw_band(
+     term measures the wrap-aware yaw RELATIVE to that baseline.
+     """
+     asset = env.scene[asset_cfg.name]
+-    yaw = asset.data.heading_w  # canonical: atan2 of base +x in world (rad)
++    # raw root quat (xyzw, fresh in all windows) -> canonical euler yaw; the
++    # kernel-cached heading_w is stale in the post-reset window (audit finding)
++    yaw = math_utils.euler_xyz_from_quat(asset.data.root_quat_w.torch)[2]
+     rel = torch.atan2(torch.sin(yaw - env.spawn_yaw), torch.cos(yaw - env.spawn_yaw))
+     excess = torch.clamp(rel.abs() - band, min=0.0)
+     return 1.0 - tail_slope * excess
+diff --git a/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/mdp/stationary/terminations.py b/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/mdp/stationary/terminations.py
+index 1b2b5f4..4d9217b 100644
+--- a/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/mdp/stationary/terminations.py
++++ b/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/mdp/stationary/terminations.py
+@@ -1,4 +1,5 @@
+ import torch
++import isaaclab.utils.math as math_utils
+ from isaaclab.envs import ManagerBasedRLEnv
+ from isaaclab.managers import SceneEntityCfg
+ 
+@@ -25,6 +26,41 @@ def thubike_fallen_termination(
+     return too_tilted | flipped
+ 
+ 
++def balance_yaw_deviation_termination(
++    env: ManagerBasedRLEnv,
++    limit_angle: float = 1.0472,  # 60 deg, in rad (heading_w is radians)
++    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
++) -> torch.Tensor:
++    """Terminate when |heading - spawn heading| exceeds ``limit_angle`` (rad).
++
++    Heading is the canonical ``asset.data.heading_w`` (base +x rotated to
++    world, atan2 — radians). The spawn baseline ``env.spawn_yaw`` is maintained
++    per env by NewBikeBalanceHybridEnv, so this term only applies to tasks
++    running on that env class.
++    """
++    asset = env.scene[asset_cfg.name]
++    # raw root quat (xyzw, fresh in all windows) -> euler yaw; kernel-cached
++    # heading_w is stale in the post-reset window (audit finding)
++    yaw = math_utils.euler_xyz_from_quat(asset.data.root_quat_w.torch)[2]
++    rel = torch.atan2(torch.sin(yaw - env.spawn_yaw), torch.cos(yaw - env.spawn_yaw))
++    return rel.abs() > limit_angle
++
++
++def balance_wheel_net_termination(
++    env: ManagerBasedRLEnv,
++    limit_angle: float = 7.2,  # rad of net rear-wheel rotation since reset
++) -> torch.Tensor:
++    """Terminate when |net drive-wheel rotation| since reset exceeds the limit.
++
++    Uses ``env.wheel_net_angle`` (rad) maintained by NewBikeBalanceHybridEnv —
++    the raw joint_pos WRAPS at +-pi and cannot be used (verified empirically).
++    One-step lag: the env integrates after super().step(), so this term reads
++    the value through the PREVIOUS step — <= 0.03 rad at the 1.5 rad/s micro
++    band; at runaway speeds the ``diverged`` term already covers that regime.
++    """
++    return env.wheel_net_angle.abs() > limit_angle
++
++
+ def balance_drift_termination(
+     env: ManagerBasedRLEnv,
+     max_dist: float = 2.0,
+diff --git a/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/new_bike/newbike_balance_env.py b/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/new_bike/newbike_balance_env.py
+index d274bae..81c7e29 100644
+--- a/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/new_bike/newbike_balance_env.py
++++ b/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/new_bike/newbike_balance_env.py
+@@ -13,6 +13,7 @@ Two buffers that reward functions cannot compute statelessly:
+ """
+ 
+ import torch
++import isaaclab.utils.math as math_utils
+ 
+ from isaaclab.envs import ManagerBasedRLEnv
+ 
+@@ -28,6 +29,18 @@ class NewBikeBalanceHybridEnv(ManagerBasedRLEnv):
+         self.spawn_yaw = torch.zeros(self.num_envs, device=self.device)
+         self._drive_idx = self.scene["robot"].find_joints("rearwheel_joint")[0][0]
+ 
++    def _heading_of(self):
++        """Yaw of the base frame, computed from the RAW root quaternion.
++
++        The raw pose buffer is updated synchronously by the reset-write kernels
++        (write_root_link_pose_to_sim_index writes into the data buffer directly),
++        so this is fresh in EVERY window — unlike ``data.heading_w``, whose
++        kernel cache is NOT invalidated by ``_reset_pose()`` (audit finding) and
++        which returns the pre-reset heading until the next physics step.
++        """
++        quat = self.scene["robot"].data.root_quat_w.torch  # (N, 4) xyzw, raw buffer
++        return math_utils.euler_xyz_from_quat(quat)[2]
++
+     def step(self, action):
+         obs, rew, term, trunc, extras = super().step(action)
+         # integrate this step's drive-wheel rotation; zero for envs that just reset
+@@ -36,7 +49,7 @@ class NewBikeBalanceHybridEnv(ManagerBasedRLEnv):
+         dv = self.scene["robot"].data.joint_vel[:, self._drive_idx]
+         self.wheel_net_angle = self.wheel_net_angle + dv * self.step_dt
+         # capture the post-reset heading as each resetting env's new episode baseline
+-        yaw = self.scene["robot"].data.heading_w  # canonical heading (rad)
++        yaw = self._heading_of()
+         self.spawn_yaw[self.reset_terminated] = yaw[self.reset_terminated]
+         self.wheel_net_angle[self.reset_terminated] = 0.0
+         return obs, rew, term, trunc, extras
+@@ -44,5 +57,5 @@ class NewBikeBalanceHybridEnv(ManagerBasedRLEnv):
+     def reset(self, seed=None, options=None):
+         obs, extras = super().reset(seed=seed, options=options)
+         self.wheel_net_angle.zero_()
+-        self.spawn_yaw = self.scene["robot"].data.heading_w.clone()
++        self.spawn_yaw = self._heading_of().clone()
+         return obs, extras
+diff --git a/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/new_bike/newbike_balance_env_cfg.py b/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/new_bike/newbike_balance_env_cfg.py
+index 7027040..a3544ec 100644
+--- a/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/new_bike/newbike_balance_env_cfg.py
++++ b/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/new_bike/newbike_balance_env_cfg.py
+@@ -47,6 +47,8 @@ from ..mdp.stationary.rewards import (
+ )
+ from ..mdp.stationary.terminations import (
+     balance_drift_termination,
++    balance_wheel_net_termination,
++    balance_yaw_deviation_termination,
+     nonfinite_or_extreme_state,
+     thubike_fallen_termination,
+ )
+@@ -223,7 +225,7 @@ class BalanceEventsCfg:
+                 "x": (0.0, 0.0),
+                 "y": (0.0, 0.0),
+                 "z": (0.0, 0.0),
+-                "roll": (-0.15, 0.15),
++                "roll": (-0.10, 0.10),  # iter10: gentler starts — recovery must fit inside the 30-deg heading cap
+                 "pitch": (0.0, 0.0),
+                 "yaw": (0.0, 0.0),
+             },
+@@ -231,7 +233,7 @@ class BalanceEventsCfg:
+                 "x": (0.0, 0.0),  # stationary balancing: no initial forward momentum
+                 "y": (0.0, 0.0),
+                 "z": (0.0, 0.0),
+-                "roll": (-0.5, 0.5),  # nonzero initial roll rate: train mid-fall recovery
++                "roll": (-0.25, 0.25),  # iter10: 0.5 swung heading past 30 deg during recovery (41% yaw deaths)
+                 "pitch": (0.0, 0.0),
+                 "yaw": (0.0, 0.0),
+             },
+@@ -346,25 +348,27 @@ class NewBikeBalanceHybridRewardsCfg:
+       without over-penalising the necessary oscillation frequency.
+     """
+ 
+-    survival = RewardTermCfg(func=balance_survival_reward_binary, weight=2.0)
++    survival = RewardTermCfg(func=balance_survival_reward_binary, weight=5.0)  # iter10: episodes die in <1s; alive-time gradient must dominate
++    
++    '''
+     roll_shaping = RewardTermCfg(
+         func=balance_roll_shaping,
+-        weight=8.0,
++        weight=5.0,
+         params={"sigma": 0.2094},  # 12 deg: iter3's 15 deg flattened precision (roll RMS 4.94->6.51)
+     )
+     drift_band = RewardTermCfg( # Can we delete this, because yaw_band, wheel_net and micro_band already penalize drift?
+         func=balance_displacement_band,
+-        weight=5.0,  # iter2 2.0: drift deaths (max 2.0 m, term firing). Position-keeping = first-class objective.
++        weight=2.5,  # iter2 2.0: drift deaths (max 2.0 m, term firing). Position-keeping = first-class objective.
+         params={"band": 0.2, "sigma": 0.3},
+     )
+     yaw_band = RewardTermCfg(
+         func=balance_yaw_band,
+-        weight=4.0,  # ANTI-ORBITAL. iter3 Gaussian inert; iter4 CLAMPED tail -> policy parked AT the pi floor
++        weight=1.0,  # ANTI-ORBITAL. iter3 Gaussian inert; iter4 CLAMPED tail -> policy parked AT the pi floor
+         params={"band": 0.1, "tail_slope": 0.66},  # NO clamp: value ~ -1 at pi, constant gradient everywhere
+     )
+     wheel_net = RewardTermCfg(
+         func=balance_wheel_net_angle_band,
+-        weight=1.0,  # anti-orbit/anti-roll backstop in wheel space (net rotation since reset)
++        weight=2.5,  # anti-orbit/anti-roll backstop in wheel space (net rotation since reset)
+         params={"band": 1.0, "tail_slope": 0.19, "penalty_floor": -1.0},  # floor-capped: no suicide pressure
+     )
+     micro_band = RewardTermCfg(
+@@ -373,31 +377,49 @@ class NewBikeBalanceHybridRewardsCfg:
+         # iter3: drive still 6.1 rad/s vs target 1.5 -> tail gradient (0.03) too weak. Steepen to 0.05.
+         params={"target": 1.5, "tail_slope": 0.05, "drive_joint_name": "rearwheel_joint"},
+     )
++    '''
++
+     # NOTE: both penalty funcs RETURN NEGATIVE values (see rewards.py), so the
+     # weights must be POSITIVE to stay penalties — negative weight would flip
+     # them into rewards (reward manager: value * weight). Iter1 had the sign
+     # wrong (TB confirmed net-positive contributions); fixed in iter2.
++    '''
+     act_penalty = RewardTermCfg(func=balance_joint_torque_penalty, weight=0.1)
++    
++
++    '''
+     rate_penalty = RewardTermCfg(
+         func=balance_action_rate_penalty_norm,
+-        weight=0.1,  # iter1 -0.05 SIGN WRONG (rewarded slamming); 0.1 damps servo slam (steer max 151 rad/s)
++        weight=0.5,  # iter1 -0.05 SIGN WRONG (rewarded slamming); 0.1 damps servo slam (steer max 151 rad/s)
+         params={"action_scales": (1.57, 6.28)},  # steer rad, drive N-m
+     )
+ 
+-
+ @configclass
+ class NewBikeBalanceHybridTerminationsCfg(BalanceTerminationsCfg):
+-    """v1 terminations: parent's (time_out / fallen 30° / diverged) plus drift.
+-
+-    drifted: reset beyond 2 m of spawn. Track stand tolerates micro-motion but
+-    not genuine drift — without this a policy could keep slowly rolling and
+-    never fall, clocking the episode out. 2 m is deliberately loose so only
+-    clear drift triggers; inside it the drift_band reward shapes behaviour.
++    """v1 terminations: parent's (time_out / fallen 30° / diverged) plus three
++    trackstand-envelope terms:
++
++    drifted (0.5 m): position envelope around spawn. 2 m let the bike orbit
++    inside the limit with a ~0.07 m wheel radius; 0.5 m keeps the stand local.
++    yaw_deviation (60°): heading envelope vs spawn heading — a circling bike
++    accumulates yaw and gets reset.
++    wheel_net (7.2 rad): net rear-wheel rotation envelope — constant rolling
++    or sustained in-place spin accumulates it; micro-motion oscillates ~0.
+     """
+ 
+     drifted = TerminationTermCfg(
+         func=balance_drift_termination,
+-        params={"max_dist": 2.0},
++        params={"max_dist": 0.5},  # m; wheel radius ~0.07 m, so 2.0 m allowed orbiting inside
++        time_out=False,
++    )
++    yaw_deviation = TerminationTermCfg(
++        func=balance_yaw_deviation_termination,
++        params={"limit_angle": 0.5236},  # 30 deg
++        time_out=False,
++    )
++    wheel_net = TerminationTermCfg(
++        func=balance_wheel_net_termination,
++        params={"limit_angle": 7.2},  # rad of net rotation since reset
+         time_out=False,
+     )
+ 
