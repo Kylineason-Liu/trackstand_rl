@@ -7,7 +7,7 @@ from isaaclab.managers import SceneEntityCfg
 def _apply_obs_latency(env: ManagerBasedRLEnv, obs: torch.Tensor) -> torch.Tensor:
     """Return a per-env delayed copy of ``obs`` via a ring buffer on ``env``.
 
-    Delay (steps) per env is ``env._obs_delay`` (set by ``reset_imu_sensor_model``);
+    Delay (steps) per env is ``env._obs_delay`` (set by ``reset_imu_turnon_residuals``);
     index 0 of the buffer is the newest sample, so buffer[d] is ``d`` steps old.
     Freshly reset envs are primed with the current obs so they never read stale
     history from the previous episode.
@@ -62,13 +62,17 @@ def balance_imu_state(
 ) -> torch.Tensor:
     """IMU-rich observation for stationary balancing.
 
-    Returns (num_envs, 14):
+    Returns (num_envs, 13):
         [gravity_y, gravity_z,           # projected gravity (roll-lean, upright)
          ang_vel_x, ang_vel_y, ang_vel_z, # body-frame angular velocity
          lin_vel_x, lin_vel_y,           # body-frame linear velocity (drift)
          steering_pos, drive_pos,        # joint positions
          steering_vel, drive_vel,        # joint velocities
          sin_steer, cos_steer]           # encoded steering angle
+    (The four joint channels are currently UN-commented for the 13-dim x noise
+     2x2 experiment (09090950). Re-comment them to restore the 9-dim obs that
+     2242/2246/2248/09090944 trained with — remember to shorten the noise tuple
+     to 9 entries at the same time.)
     """
     asset = env.scene[asset_cfg.name]
 
@@ -115,13 +119,14 @@ def balance_imu_state(
         dim=-1,
     )
 
-    # --- IMU sensor-model domain randomisation (per-episode, set by
-    #     mdp.stationary.events.reset_imu_sensor_model) ---
+    # --- IMU sensor-model domain randomization (per-episode, set by
+    #     mdp.stationary.events.reset_imu_turnon_residuals) ---
     if hasattr(env, "_imu_tilt_bias"):
         obs[:, 0:2] = obs[:, 0:2] + env._imu_tilt_bias   # [gravity_y, gravity_z] accel/mount bias
         obs[:, 2:5] = obs[:, 2:5] + env._imu_gyro_bias   # body angular velocity gyro bias
-    if hasattr(env, "_obs_delay"):
-        obs = _apply_obs_latency(env, obs)               # 20-60 ms sensor/loop latency
+    # if hasattr(env, "_obs_delay"):                      # latency REMOVED 2026-09-08:
+    #     obs = _apply_obs_latency(env, obs)              # the event no longer creates _obs_delay;
+    #                                                     # _apply_obs_latency is dormant below
 
     # Last line of defence: a stray non-finite value from one diverging env must
     # never reach the shared network, or the PPO update NaNs every policy weight.

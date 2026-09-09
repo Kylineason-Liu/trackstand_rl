@@ -80,13 +80,23 @@ def _obs_noise_terms(env: ManagerBasedRLEnv):
             yield noise
 
 
-def _get_obs_noise_std(env: ManagerBasedRLEnv, default: float = 0.0) -> float:
+def _get_obs_noise_std(env: ManagerBasedRLEnv, default: float = 0.0):
+    """Return the imu term's noise std: float for a scalar cfg, the tensor
+    cloned for a tensor cfg, or the tuple as-is (immutable -> safe snapshot)
+    for a per-channel tuple cfg."""
     for noise in _obs_noise_terms(env):
-        return float(noise.std)
+        std = noise.std
+        if isinstance(std, torch.Tensor):
+            return std.clone()
+        if isinstance(std, tuple):
+            return std
+        return float(std)
     return default
 
 
-def _set_obs_noise_std(env: ManagerBasedRLEnv, std: float) -> None:
+def _set_obs_noise_std(env: ManagerBasedRLEnv, std: float | torch.Tensor | tuple) -> None:
+    """Set the imu term's noise std: scalar, per-channel tensor, or per-channel
+    tuple (dr_ramp lerp is element-wise in the tensor/tuple cases)."""
     for noise in _obs_noise_terms(env):
         noise.std = std
 
@@ -134,11 +144,10 @@ def ramp_domain_randomization(
         if (t := term("initial_state")) is not None:
             full["roll"] = tuple(t.params["pose_range"]["roll"])
             full["rollrate"] = tuple(t.params["velocity_range"]["roll"])
-        if (t := term("reset_imu_sensor_model")) is not None:
-            full["gyro"] = float(t.params["gyro_bias_std"])
-            full["tilt"] = float(t.params["tilt_bias_std"])
-            full["dmin"] = int(t.params["min_delay_steps"])
-            full["dmax"] = int(t.params["max_delay_steps"])
+        if (t := term("reset_imu_turnon_residuals")) is not None:
+            full["gyro_res"] = float(t.params["gyro_res_bias_std"])
+            full["accel_res"] = float(t.params["accel_res_bias_std"])
+            # latency params removed 2026-09-08 (no dmin/dmax snapshot)
         full["noise"] = _get_obs_noise_std(env)
         env._dr_full = full
     full = env._dr_full
@@ -159,12 +168,14 @@ def ramp_domain_randomization(
     if (t := term("initial_state")) is not None and "roll" in full:
         t.params["pose_range"]["roll"] = _lerp_range(a, (0.0, 0.0), full["roll"])
         t.params["velocity_range"]["roll"] = _lerp_range(a, (0.0, 0.0), full["rollrate"])
-    if (t := term("reset_imu_sensor_model")) is not None and "gyro" in full:
-        t.params["gyro_bias_std"] = _lerp(a, 0.0, full["gyro"])
-        t.params["tilt_bias_std"] = _lerp(a, 0.0, full["tilt"])
-        t.params["min_delay_steps"] = int(round(_lerp(a, 0.0, full["dmin"])))
-        t.params["max_delay_steps"] = int(round(_lerp(a, 0.0, full["dmax"])))
-    _set_obs_noise_std(env, _lerp(a, 0.0, full["noise"]))
+    if (t := term("reset_imu_turnon_residuals")) is not None and "gyro_res" in full:
+        t.params["gyro_res_bias_std"] = _lerp(a, 0.0, full["gyro_res"])
+        t.params["accel_res_bias_std"] = _lerp(a, 0.0, full["accel_res"])
+        # t.params["min_delay_steps"] = ...  # latency removed 2026-09-08
+    if isinstance(full["noise"], tuple):
+        _set_obs_noise_std(env, tuple(_lerp(a, 0.0, v) for v in full["noise"]))
+    else:
+        _set_obs_noise_std(env, _lerp(a, 0.0, full["noise"]))
 
     if step - getattr(env, "_last_dr_print", -(10**9)) >= 2000:
         env._last_dr_print = step

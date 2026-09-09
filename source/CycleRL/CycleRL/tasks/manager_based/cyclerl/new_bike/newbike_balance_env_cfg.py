@@ -21,7 +21,8 @@ from isaaclab.sim import DomeLightCfg
 from isaaclab.envs.mdp.actions import JointEffortActionCfg, JointPositionActionCfg, JointVelocityActionCfg
 import isaaclab.envs.mdp as mdp
 from isaaclab.utils.configclass import configclass
-from isaaclab.utils.noise import GaussianNoiseCfg
+
+from ..mdp.stationary.noise import PerChannelGaussianNoiseCfg
 
 from ..bicycle_cfg import NEW_BIKE_HYBRID_CFG, NEW_BIKE_STANDARD_CFG, NEW_BIKE_TORQUE_CFG
 from ..mdp.stationary import curriculums as custom_curriculums
@@ -88,11 +89,17 @@ class NewBikeBalanceActionsCfg:
 
 @configclass
 class NewBikeBalanceObservationsCfg(ObservationGroupCfg):
+    enable_corruption = True  # turns ON the per-step gaussian obs noise (term #8 white noise)
+
     imu = ObservationTermCfg(
         func=balance_imu_state,
         params={"steer_joint_name": "steering_joint", "drive_joint_name": "rearwheel_joint"},
-        noise=GaussianNoiseCfg(mean=0.0, std=0.01),
-    )
+        # per-channel std matching the 9-dim obs [gravity_y, gravity_z, angvel*3, linvel*2, sin, cos]:
+        #   gravity: 0.001 (g units; accel noise 0.001 g RMS from the IMU manual)
+        #   ang_vel: 0.0012 (rad/s; gyro noise 0.07 deg/s RMS from the IMU manual)
+        #   lin_vel / sin-cos: fusion- and encoder-derived, not in the manual -> 0 until measured
+        noise=PerChannelGaussianNoiseCfg(std=(0.001, 0.001, 0.0012, 0.0012, 0.0012, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)),
+    ) #                                       0.001, 0.001, 0.0012, 0.0012, 0.0012, 0.0, 0.0, 0.0, 0.0
 
 
 # ---------------------------------------------------------------------------
@@ -175,7 +182,7 @@ class BalanceEventsCfg:
             "make_consistent": True,
         },
     )
-
+    '''
     # --- Robot dynamics (reset) ---
     randomize_mass = EventTermCfg(
         func=mdp.randomize_rigid_body_mass,
@@ -186,18 +193,20 @@ class BalanceEventsCfg:
             "mass_distribution_params": (0.5, 1.5),
         },
     )
+    
     randomize_com = EventTermCfg(
         func=mdp.randomize_rigid_body_com,
         mode="reset",
         params={
             "asset_cfg": SceneEntityCfg("robot"),
             "com_range": {
-                "x": (-0.02, 0.02),
-                "y": (-0.02, 0.02),
-                "z": (-0.05, 0.05),
+                "x": (-0.0, 0.0), # 0.02
+                "y": (-0.01, 0.01), # 0.02
+                "z": (-0.0, 0.0), # 0.02
             },
         },
     )
+    
     randomize_material = EventTermCfg(
         func=mdp.randomize_rigid_body_material,
         mode="reset",
@@ -210,6 +219,7 @@ class BalanceEventsCfg:
             "make_consistent": True,
         },
     )
+    
     randomize_actuator_gains = EventTermCfg(
         func=mdp.randomize_actuator_gains,
         mode="reset",
@@ -220,6 +230,7 @@ class BalanceEventsCfg:
             "operation": "scale",
         },
     )
+    
     initial_state = EventTermCfg(
         func=mdp.reset_root_state_uniform,
         mode="reset",
@@ -243,18 +254,21 @@ class BalanceEventsCfg:
             },
         },
     )
-
-    # --- IMU sensor model: per-episode bias + 20-60 ms latency (reset) ---
-    reset_imu_sensor_model = EventTermCfg(
-        func=custom_events.reset_imu_sensor_model,
+    
+    # --- IMU turn-on residuals: per-episode post-calibration bias residual (reset) ---
+    #     Turn-on residual is #1 error mentioned in cfg_record.txt. It can be largely eliminated
+    #     by calibration, but the post-calibration residual is non-zero and un-negligible.
+    #     (The 20-60 ms sensor/loop latency params were REMOVED on 2026-09-08.)
+    reset_imu_turnon_residuals = EventTermCfg(
+        func=custom_events.reset_imu_turnon_residuals,
         mode="reset",
         params={
-            "gyro_bias_std": 0.03,
-            "tilt_bias_std": 0.02,
-            "min_delay_steps": 1,   # step_dt = 20 ms  ->  1..3 steps = 20..60 ms
-            "max_delay_steps": 3,
+            "gyro_res_bias_std": 0.0000,  # 0.03 original | PLACEHOLDER 2e-4 rad/s (= calibration floor noise/sqrt(N) ~1e-4 + thermal allowance) — REPLACE with the MEASURED per-boot residual spread
+            "accel_res_bias_std": 0.002,  # 0.02 original | PLACEHOLDER 0.002 g (~0.11 deg, stand-leveling dominated) — REPLACE with the MEASURED accel residual
         },
     )
+    
+    '''
 
 
 @configclass
@@ -266,12 +280,12 @@ class BalanceCurriculumsCfg:
     # the per-env robot tire material carries the friction DR.)
     # no dr_ramp for evaluating different DR terms' effects on policy learning curve
     '''
-    
-    '''
     dr_ramp = CurriculumTermCfg(
         func=custom_curriculums.ramp_domain_randomization,
         params={"start_step": 0, "end_step": 50000},
     )
+    '''
+    
 
 
 @configclass
@@ -378,7 +392,11 @@ class NewBikeBalanceHybridRewardsCfg:
     wheel_net = RewardTermCfg(
         func=balance_wheel_net_angle_band,
         weight=1.0,  # anti-orbit/anti-roll backstop in wheel space (net rotation since reset)
-        params={"band": 1.0, "tail_slope": 0.19, "penalty_floor": -1.0},  # floor-capped: no suicide pressure
+        params={"band": 1.0ate_penalty = RewardTermCfg(
+        func=balance_action_rate_penalty_norm,
+        weight=0.1,  # iter1 -0.05 SIGN WRONG (rewarded slamming); 0.1 damps servo slam (steer max 151 rad/s)
+        params={"action_scales": (1.57, 6.28)},  # steer rad, drive N-m
+    ), "tail_slope": 0.19, "penalty_floor": -1.0},  # floor-capped: no suicide pressure
     )
     micro_band = RewardTermCfg(
         func=balance_micro_motion_band,
