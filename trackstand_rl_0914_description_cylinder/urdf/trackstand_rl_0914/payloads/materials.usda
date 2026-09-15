@@ -1,0 +1,57 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "URDF USD Converter v0.1.2"
+    }
+    doc = """Generated from Composed Stage of root layer /tmp/tmpbjrf7c9u/trackstand_rl_0914.usdc
+
+
+Generated from Composed Stage of root layer /tmp/urdf_import_trackstand_rl_0914_2cnw8lfr/usdex_trackstand_rl_0914/trackstand_rl_0914.usdc
+
+
+Generated from Composed Stage of root layer /tmp/urdf_import_trackstand_rl_0914_2cnw8lfr/temp_trackstand_rl_0914/trackstand_rl_0914.usd
+
+
+Generated from Composed Stage of root layer /home/lmbike/lmbike_cyclerl-mod/trackstand_rl_0914_description_cylinder/urdf/trackstand_rl_0914/payloads/base.usd
+"""
+    kilogramsPerUnit = 1
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Scope "Materials"
+{
+    def Material "silver"
+    {
+        color3f inputs:diffuseColor = (0, 0, 0)
+        float inputs:metallic = 0
+        float inputs:opacity = 0
+        float inputs:roughness = 0.5
+        token inputs:wrapMode = "repeat"
+        token outputs:displacement (
+            displayGroup = "Outputs"
+        )
+        prepend token outputs:displacement.connect = </Materials/silver/PreviewSurface.outputs:displacement>
+        token outputs:surface (
+            displayGroup = "Outputs"
+        )
+        prepend token outputs:surface.connect = </Materials/silver/PreviewSurface.outputs:surface>
+        token outputs:volume (
+            displayGroup = "Outputs"
+        )
+
+        def Shader "PreviewSurface" (
+            apiSchemas = ["NodeDefAPI"]
+        )
+        {
+            token info:id = "UsdPreviewSurface"
+            prepend color3f inputs:diffuseColor.connect = </Materials/silver.inputs:diffuseColor>
+            prepend float inputs:metallic.connect = </Materials/silver.inputs:metallic>
+            prepend float inputs:opacity.connect = </Materials/silver.inputs:opacity>
+            prepend float inputs:roughness.connect = </Materials/silver.inputs:roughness>
+            token outputs:displacement
+            token outputs:surface
+        }
+    }
+}
+

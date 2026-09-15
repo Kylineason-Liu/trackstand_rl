@@ -496,6 +496,14 @@ class NewBikeBalanceHybridEnvCfg(NewBikeBalanceEnvCfg):
         super().__post_init__()
         # steering servo gains + torque-mode drive (stiffness=0)
         self.scene.robot = NEW_BIKE_HYBRID_CFG.replace(prim_path="{ENV_REGEX_NS}/Robot")
+        # apply actuator/external forces EVERY TGS solver iteration: with the
+        # flag off the drive torque is injected once per step and the velocity
+        # sweeps can't propagate it (the x24.5 sluggish-drive root cause,
+        # confirmed by the in-air probe 2026-09-13; see cfg_record.txt).
+        # The default None physics cfg uses the engine defaults -- assigning an
+        # explicit PhysxCfg with only this flag keeps everything else default.
+        from isaaclab_physx.physics.physx_manager_cfg import PhysxCfg
+        self.sim.physics = PhysxCfg(enable_external_forces_every_iteration=True)
 
 
 @configclass

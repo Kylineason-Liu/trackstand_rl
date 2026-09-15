@@ -1,0 +1,113 @@
+<?xml version="1.0" ?>
+<robot name="trackstand_rl_0910" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:include filename="$(find trackstand_rl_0910_description)/urdf/materials.xacro" />
+<xacro:include filename="$(find trackstand_rl_0910_description)/urdf/trackstand_rl_0910.trans" />
+<xacro:include filename="$(find trackstand_rl_0910_description)/urdf/trackstand_rl_0910.gazebo" />
+<link name="base_link">
+  <inertial>
+    <origin xyz="0.15586503061988644 -0.04250839271023068 0.1480000936166176" rpy="0 0 0"/>
+    <mass value="2.02679270030967"/>
+    <inertia ixx="0.008427" iyy="0.018521" izz="0.011644" ixy="-0.00036" iyz="-0.000235" ixz="-0.005894"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://trackstand_rl_0910_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://trackstand_rl_0910_description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="rear_wheel_link_1">
+  <inertial>
+    <origin xyz="0 0.083816 0" rpy="0 0 0"/>
+    <mass value="0.12332977036722836"/>
+    <inertia ixx="0.000178" iyy="0.000329" izz="0.000178" ixy="-2e-06" iyz="-0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.203642 0.126324 -0.198923" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://trackstand_rl_0910_description/meshes/rear_wheel_link_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.203642 0.126324 -0.198923" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://trackstand_rl_0910_description/meshes/rear_wheel_link_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="front_wheel_link_1">
+  <inertial>
+    <origin xyz="0 0.137903 0" rpy="0 0 0"/>
+    <mass value="0.16491532139005347"/>
+    <inertia ixx="0.000228" iyy="0.000453" izz="0.000228" ixy="-0.0" iyz="0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.062654 0.180411 -0.161195" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://trackstand_rl_0910_description/meshes/front_wheel_link_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0.062654 0.180411 -0.161195" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://trackstand_rl_0910_description/meshes/front_wheel_link_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="steering_link_1">
+  <inertial>
+    <origin xyz="0.007789607522588282 4.1096528183105774e-05 -0.04158914917979156" rpy="0 0 0"/>
+    <mass value="0.10929162034075482"/>
+    <inertia ixx="0.000157" iyy="0.000135" izz="4.5e-05" ixy="0.0" iyz="0.0" ixz="2.2e-05"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.287919 0.039893 -0.204058" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://trackstand_rl_0910_description/meshes/steering_link_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.287919 0.039893 -0.204058" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://trackstand_rl_0910_description/meshes/steering_link_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<joint name="rear_wheel_joint" type="revolute">
+  <origin xyz="0.203642 -0.126324 0.198923" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="rear_wheel_link_1"/>
+  <axis xyz="0.013263 -0.999911 0.001485"/>
+</joint>
+
+<joint name="front_wheel_joint" type="revolute">
+  <origin xyz="-0.350573 -0.140518 -0.042863" rpy="0 0 0"/>
+  <parent link="steering_link_1"/>
+  <child link="front_wheel_link_1"/>
+  <axis xyz="0.001854 -0.999998 -0.000652"/>
+</joint>
+
+<joint name="steering_joint" type="revolute">
+  <origin xyz="0.287919 -0.039893 0.204058" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="steering_link_1"/>
+  <axis xyz="-0.184089 -0.000982 0.982909"/>
+  <limit upper="1.570796" lower="-1.570796" effort="100" velocity="100"/>
+</joint>
+
+</robot>

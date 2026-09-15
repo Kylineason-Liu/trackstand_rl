@@ -1,0 +1,52 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "URDF USD Converter v0.1.2"
+    }
+    defaultPrim = "trackstand_rl_0914"
+    doc = """Generated from Composed Stage of root layer /tmp/tmpopjjg54c/trackstand_rl_0914.usdc
+
+
+Generated from Composed Stage of root layer /tmp/urdf_import_trackstand_rl_0914_1rewdpvb/usdex_trackstand_rl_0914/trackstand_rl_0914.usdc
+
+
+Generated from Composed Stage of root layer /tmp/urdf_import_trackstand_rl_0914_1rewdpvb/temp_trackstand_rl_0914/trackstand_rl_0914.usd
+
+
+Generated from Composed Stage of root layer /home/lmbike/lmbike_cyclerl-mod/trackstand_rl_0914_description/urdf/trackstand_rl_0914/payloads/base.usd
+"""
+    kilogramsPerUnit = 1
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "trackstand_rl_0914" (
+    prepend references = @./payloads/base.usda@
+    variants = {
+        string Physics = "physx"
+    }
+    append variantSets = "Physics"
+)
+{
+    variantSet "Physics" = {
+        "mujoco" (
+            prepend payload = @./payloads/Physics/mujoco.usda@
+        ) {
+
+        }
+        "none" {
+
+        }
+        "physics" (
+            prepend payload = @./payloads/Physics/physics.usda@
+        ) {
+
+        }
+        "physx" (
+            prepend payload = @./payloads/Physics/physx.usda@
+        ) {
+
+        }
+    }
+}
+

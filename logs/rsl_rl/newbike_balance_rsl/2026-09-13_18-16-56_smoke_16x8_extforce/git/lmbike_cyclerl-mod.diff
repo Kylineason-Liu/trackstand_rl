@@ -1,0 +1,362 @@
+--- git commit ---
+292390a0fc3114d0fe579129b6d53b6b281c3a83
+
+
+--- git status ---
+On branch lmbike_4090
+Your branch is up to date with 'origin/lmbike_4090'.
+
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   logs/rsl_rl/newbike_balance_rsl/cfg_record.txt
+	deleted:    scripts/deployment/10-0.2.onnx
+	deleted:    scripts/deployment/10-0.2.onnx.data
+	deleted:    scripts/deployment/CycleRL-NewBike-v0_2026-08-07_14-06-11_ppo_torch_bicycle_ppo_nice1.onnx
+	deleted:    scripts/deployment/CycleRL-NewBike-v0_2026-08-07_14-06-11_ppo_torch_bicycle_ppo_nice1.onnx.data
+	deleted:    scripts/deployment/CycleRL-NewBike-v0_2026-08-14_11-41-04_ppo_torch_bicycle_ppo.onnx
+	deleted:    scripts/deployment/CycleRL-NewBike-v0_2026-08-14_11-41-04_ppo_torch_bicycle_ppo.onnx.data
+	deleted:    scripts/deployment/NewBike-Balance-v0_2026-08-07_00-32-20_ppo_torch_bicycle_ppo_nice.onnx
+	deleted:    scripts/deployment/NewBike-Balance-v0_2026-08-07_00-32-20_ppo_torch_bicycle_ppo_nice.onnx.data
+	modified:   source/CycleRL/CycleRL/tasks/manager_based/cyclerl/new_bike/newbike_balance_env_cfg.py
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	log.txt
+	logs/rsl_rl/newbike_balance_rsl/2026-09-02_17-47-42/exported/
+	logs/rsl_rl/newbike_balance_rsl/2026-09-06_02-06-42/
+	logs/rsl_rl/newbike_balance_rsl/2026-09-06_02-07-38/
+	logs/rsl_rl/newbike_balance_rsl/2026-09-06_02-08-32/
+	logs/rsl_rl/newbike_balance_rsl/2026-09-06_11-47-11/
+	logs/rsl_rl/newbike_balance_rsl/2026-09-06_15-51-06/
+	logs/rsl_rl/newbike_balance_rsl/2026-09-06_15-52-10/
+	logs/rsl_rl/newbike_balance_rsl/2026-09-06_18-11-24/
+	logs/rsl_rl/newbike_balance_rsl/2026-09-06_18-13-11/
+	logs/rsl_rl/newbike_balance_rsl/2026-09-06_18-14-31/
+	logs/rsl_rl/newbike_balance_rsl/2026-09-08_22-42-54/
+	logs/rsl_rl/newbike_balance_rsl/2026-09-08_22-46-44/
+	logs/rsl_rl/newbike_balance_rsl/2026-09-08_22-48-51/
+	logs/rsl_rl/newbike_balance_rsl/2026-09-09_09-50-48/exported/
+	logs/rsl_rl/newbike_balance_rsl/2026-09-09_15-49-26/
+	logs/rsl_rl/newbike_balance_rsl/2026-09-09_15-50-38/
+	logs/rsl_rl/newbike_balance_rsl/2026-09-09_22-44-30/
+	logs/rsl_rl/newbike_balance_rsl/2026-09-10_12-10-00/
+	logs/rsl_rl/newbike_balance_rsl/2026-09-11_01-38-54/
+	logs/rsl_rl/newbike_balance_rsl/2026-09-13_09-26-09/
+	logs/rsl_rl/newbike_balance_rsl/2026-09-13_18-16-56_smoke_16x8_extforce/
+	scripts/deployment/export_rsl_rl_onnx.py
+	scripts/deployment/newbike_balance_rsl_2026-09-09_09-50-48_model_500.onnx
+	scripts/fall_time_probe.py
+	trackstand_rl_0910_description/
+
+no changes added to commit (use "git add" and/or "git commit -a") 
+
+
+--- git diff ---
+diff --git a/logs/rsl_rl/newbike_balance_rsl/cfg_record.txt b/logs/rsl_rl/newbike_balance_rsl/cfg_record.txt
+index 16e5e8b..1fdf3bd 100644
+--- a/logs/rsl_rl/newbike_balance_rsl/cfg_record.txt
++++ b/logs/rsl_rl/newbike_balance_rsl/cfg_record.txt
+@@ -347,14 +347,27 @@ timestamp       survival_rew  rate_pen  drift_rew  DR?          comments
+ 09090950              5.0       0.1        2.0     \            with imu white noise (class NewBikeBalanceObservationsCfg(ObservationGroupCfg)), 13-dim observation. Result: mean epi len of 1500 at model 500.
+ 09090944              5.0       0.1        2.0     \            without imu white noise, 9-dim observation. Result: mean epi len 438.2
+ 
++2026.9.9 New best baseline found: 09090950. Conclusion: full 13-dim observations are vital. Now see how imu initial bias residual affects the policy.
+ 
++timestamp       survival_rew  rate_pen  drift_rew  DR?          comments
+ 
++09091549              5.0       0.1        2.0     imu #1-gyro  Result: mean epi len 1500 at model 3600
++09091550              5.0       0.1        2.0     imu #1-accel Result: mean epi len 1500 at model 350
+ 
+-
+-Now combine all helpful dr terms to observe a full dr's effect on policy learning: is it additive, or multiple helpful dr terms will interfere with each other, harming the policy?
++2026.9.9 All good. Now combine all helpful dr terms to observe a full dr's effect on policy learning: is it additive, or multiple helpful dr terms will interfere with each other, harming the policy?
+ timestamp       survival_rew  rate_pen  drift_rew  DR?          comments
+ 
+-0907xxxx              5.0       0.1        2.0     
++09092244              5.0       0.1        2.0     all          max_iterations=60000. Result: mean epi len 791 at model 56650
++09101210              5.0       0.1        2.0     all          Continues the last model of 09092244 with max_iterations=200000 ******
++09110138              5.0       0.1        2.0     all          Continues the last model of 09101210 with max_iterations=500000 ******
++
++2026.9.11 Attempted to transfer 09090950 model 500 (mean epi len 1500) to mujoco for sim-to-sim verification. However, discovered large gap between isaaclab and mujoco simulation environments. First, the minimum physical step dt is different between them. However, the upstream policy inference frequency are aligned to 50Hz. Second, collision meshes are implemented differently. In isaaclab, due to a lack of pre-defined collision configuration in usda file, convex hulls were employed to handle collision. However, mujoco only supports primitive collision shapes (cuboids, spheres, cylinders......). Third, groun/wheel friction, motor dynamics, bike inertia, initial condition, observation consistency remain largely unexplored.
++
++2026.9.12 So the next step is: First, verify mujoco and isaaclab simulation environment consistency (simulator metrics). Second, perform a simplest baseline test of free fall across the two simulators, and measure the average time to determine bike model consistency. Can probably also use the bike model from Tsinghua University, and check the differences between theirs and ours, since their model work find on a lqr task in mujoco, and ours are modified. Third, verify evaluation metric consistency based on the Tsinghua bike model.
++
++
++
++
+ 
+ 
+ 
+@@ -749,4 +762,61 @@ HOW TO DETERMINE gyro_res_bias_std AND accel_res_bias_std (both = the std, ACROS
+   model_500 is the champion (the 09061147 pattern: early peak > final); (3) 0944/0950 trainings
+   no longer need to run to completion — 0944's cell documented by TB, 0950's by this eval;
+   (4) next: combined helpful-DR run on the validated base (13-dim + noise + 11-33 rewards).
+-
++09090950 COMPLETION (60k full curve; eval env verified, cfg untouched): the curve HELD 1470-1500
++  all the way to the end (unlike 09061147's late decline). Both best models perfect:
++    model_500  (RAW 1500.00): ep 1500.0/100.0% rollRMS 0.38 maxRoll 3.00 turn 58.9  <- tighter average
++    model_32400 (SMOOTH 1499.88): ep 1500.0/100.0% rollRMS 0.55 maxRoll 0.87 turn 21.7 <- tighter extremes
++  Both zero-death 1500/100%. Champion pick for deployment: model_500 (average tightness matters
++  for smoothness); model_32400 if extremes/orbiting matter more. Final model_59999 exists and the
++  late curve suggests it is also perfect — evaluate if a fresher option is wanted.
++  0950 STORY COMPLETE: the 13-dim + always-on #8 noise baseline trains perfect at iter 514 and
++  holds it to 60k — the validated architecture. Committed as baseline 292390a.
++
++
++## Engine audit for NewBike-Balance-v1 (2026-09-13) — sim-side problems
++
++Found against the run's logged params/env.yaml (2026-09-11_01-38-54), the USD
++payloads (Physics/physics.usda, physx.usda, materials.usda), bicycle_cfg.py and
++newbike_balance_env_cfg.py:
++
++1. solver_position/velocity_iteration_count = 4/2 (NEW_BIKE_BASE_CFG spawn
++   articulation_props) — the ROOT CAUSE of the ~x24.5 sluggish drive: the TGS
++   under-delivers the effort-actuated wheel per step. Probe-verified: 16/8
++   restores the rigid response (the wheel slams the 61.6 rad/s limit).
++2. enable_external_forces_every_iteration = False (env.yaml sim.physics) —
++   CONFIRMED 2026-09-13 (in-air welded-root probe, /tmp/sim_extforce_probe.py):
++   the PRIMARY cause of the sluggish drive. At 4/2 + False the wheel plateaus
++   at 23.11 rad/s (a1>=0.6); flipping the flag True at the SAME 4/2 restores
++   the rigid physics (61.60 rad/s = the velocity limit; effort follows the
++   authored tau = 6.28*a1 - 0.05*w exactly, incl. 0.00 Nm at a1=0.2). The
++   16/8 iteration fix and the flag flip are two independent repairs of the
++   same truncation: the once-per-step force injection + 2 sweeps cannot
++   propagate the impulse. The fall-probe log's "may cause noisy velocities"
++   warning names exactly this.
++3. Runtime mass ~+20% above the USD payload masses — the collision geometry
++   contributes default-density mass (the USD colliders declare no density;
++   measured in the inertia probe). The MuJoCo model carries only the payload
++   masses (2.3996 kg total). Un-compensated.
++4. DR active in this run on every reset: randomize_mass 0.5-1.5x,
++   randomize_com, tire friction U(0.5, 1.2) (num_buckets 32),
++   randomize_actuator_gains 0.9-1.1x. play_eval numbers are DR-averaged;
++   any nominal-only comparison (e.g. the MuJoCo deploy) must use the nominal
++   envelope, not the eval mean.
++5. Reset state: the initial_state event resets root z=0, roll U(-0.1, 0.1)
++   rad, roll rate U(-0.25, 0.25) rad/s every episode — NOT the fixed zeros
++   the MuJoCo env comment assumes (that was 0950's protocol).
++6. Friction reference values: ground pinned 1.0 (startup event); tire = the
++   global physxMaterial 0.5/0.5 isotropic (the USD has no per-wheel physics
++   material — materials.usda carries only the visual "silver"). The MuJoCo
++   wheels now carry the sim's pair: sliding 0.75 (MuJoCo combines pair
++   friction by MAX — verified empirically; MuJoCo's triple is
++   sliding/torsional/rolling — the earlier 'anisotropic 1.0/0.005'
++   phrasing misread the orange-bike triple).
++7. Sim-side quirk: balance_wheel_net_termination reads with a one-step lag
++   (its own docstring); the MuJoCo env checks immediately. Immaterial.
++8. physx.usda sets maxJointVelocity 100 rad/s (5729.578 deg/s) on the
++   steering joint — dominated by the actuator's velocity_limit_sim 23.9;
++   no effect.
++9. GPU patch-based friction (friction_offset_threshold 0.04,
++   friction_correlation_distance 0.025) has no MuJoCo analog — model-level
++   difference, no config translation.
+diff --git a/scripts/deployment/10-0.2.onnx b/scripts/deployment/10-0.2.onnx
+deleted file mode 100644
+index 6a36421..0000000
+Binary files a/scripts/deployment/10-0.2.onnx and /dev/null differ
+diff --git a/scripts/deployment/10-0.2.onnx.data b/scripts/deployment/10-0.2.onnx.data
+deleted file mode 100644
+index bc2a561..0000000
+Binary files a/scripts/deployment/10-0.2.onnx.data and /dev/null differ
+diff --git a/scripts/deployment/CycleRL-NewBike-v0_2026-08-07_14-06-11_ppo_torch_bicycle_ppo_nice1.onnx b/scripts/deployment/CycleRL-NewBike-v0_2026-08-07_14-06-11_ppo_torch_bicycle_ppo_nice1.onnx
+deleted file mode 100644
+index fb8e0b5..0000000
+Binary files a/scripts/deployment/CycleRL-NewBike-v0_2026-08-07_14-06-11_ppo_torch_bicycle_ppo_nice1.onnx and /dev/null differ
+diff --git a/scripts/deployment/CycleRL-NewBike-v0_2026-08-07_14-06-11_ppo_torch_bicycle_ppo_nice1.onnx.data b/scripts/deployment/CycleRL-NewBike-v0_2026-08-07_14-06-11_ppo_torch_bicycle_ppo_nice1.onnx.data
+deleted file mode 100644
+index bf1796a..0000000
+Binary files a/scripts/deployment/CycleRL-NewBike-v0_2026-08-07_14-06-11_ppo_torch_bicycle_ppo_nice1.onnx.data and /dev/null differ
+diff --git a/scripts/deployment/CycleRL-NewBike-v0_2026-08-14_11-41-04_ppo_torch_bicycle_ppo.onnx b/scripts/deployment/CycleRL-NewBike-v0_2026-08-14_11-41-04_ppo_torch_bicycle_ppo.onnx
+deleted file mode 100644
+index 4faa03b..0000000
+Binary files a/scripts/deployment/CycleRL-NewBike-v0_2026-08-14_11-41-04_ppo_torch_bicycle_ppo.onnx and /dev/null differ
+diff --git a/scripts/deployment/CycleRL-NewBike-v0_2026-08-14_11-41-04_ppo_torch_bicycle_ppo.onnx.data b/scripts/deployment/CycleRL-NewBike-v0_2026-08-14_11-41-04_ppo_torch_bicycle_ppo.onnx.data
+deleted file mode 100644
+index e57da1b..0000000
+Binary files a/scripts/deployment/CycleRL-NewBike-v0_2026-08-14_11-41-04_ppo_torch_bicycle_ppo.onnx.data and /dev/null differ
+diff --git a/scripts/deployment/NewBike-Balance-v0_2026-08-07_00-32-20_ppo_torch_bicycle_ppo_nice.onnx b/scripts/deployment/NewBike-Balance-v0_2026-08-07_00-32-20_ppo_torch_bicycle_ppo_nice.onnx
+deleted file mode 100644
+index 356ada2..0000000
+Binary files a/scripts/deployment/NewBike-Balance-v0_2026-08-07_00-32-20_ppo_torch_bicycle_ppo_nice.onnx and /dev/null differ
+diff --git a/scripts/deployment/NewBike-Balance-v0_2026-08-07_00-32-20_ppo_torch_bicycle_ppo_nice.onnx.data b/scripts/deployment/NewBike-Balance-v0_2026-08-07_00-32-20_ppo_torch_bicycle_ppo_nice.onnx.data
+deleted file mode 100644
+index d64ae21..0000000
+Binary files a/scripts/deployment/NewBike-Balance-v0_2026-08-07_00-32-20_ppo_torch_bicycle_ppo_nice.onnx.data and /dev/null differ
+diff --git a/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/new_bike/newbike_balance_env_cfg.py b/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/new_bike/newbike_balance_env_cfg.py
+index 00d347f..5014054 100644
+--- a/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/new_bike/newbike_balance_env_cfg.py
++++ b/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/new_bike/newbike_balance_env_cfg.py
+@@ -182,7 +182,7 @@ class BalanceEventsCfg:
+             "make_consistent": True,
+         },
+     )
+-    '''
++    
+     # --- Robot dynamics (reset) ---
+     randomize_mass = EventTermCfg(
+         func=mdp.randomize_rigid_body_mass,
+@@ -200,9 +200,9 @@ class BalanceEventsCfg:
+         params={
+             "asset_cfg": SceneEntityCfg("robot"),
+             "com_range": {
+-                "x": (-0.0, 0.0), # 0.02
+-                "y": (-0.01, 0.01), # 0.02
+-                "z": (-0.0, 0.0), # 0.02
++                "x": (-0.02, 0.02), # 0.02
++                "y": (-0.005, 0.005), # 0.005
++                "z": (-0.02, 0.02), # 0.02
+             },
+         },
+     )
+@@ -263,12 +263,12 @@ class BalanceEventsCfg:
+         func=custom_events.reset_imu_turnon_residuals,
+         mode="reset",
+         params={
+-            "gyro_res_bias_std": 0.0000,  # 0.03 original | PLACEHOLDER 2e-4 rad/s (= calibration floor noise/sqrt(N) ~1e-4 + thermal allowance) — REPLACE with the MEASURED per-boot residual spread
++            "gyro_res_bias_std": 0.0002,  # 0.03 original | PLACEHOLDER 2e-4 rad/s (= calibration floor noise/sqrt(N) ~1e-4 + thermal allowance) — REPLACE with the MEASURED per-boot residual spread
+             "accel_res_bias_std": 0.002,  # 0.02 original | PLACEHOLDER 0.002 g (~0.11 deg, stand-leveling dominated) — REPLACE with the MEASURED accel residual
+         },
+     )
+     
+-    '''
++    
+ 
+ 
+ @configclass
+@@ -346,108 +346,13 @@ class NewBikeBalanceHybridActionsCfg:
+ 
+ @configclass
+ class NewBikeBalanceHybridRewardsCfg:
+-    """Literature-based reward for the hybrid (torque drive + servo steering) track stand.
+-
+-    Reworked per the static-balance survey: the old drive_reward/steer_reward paid
+-    for a *still* wheel, which contradicts the trackstand mechanism (Brockett: no
+-    static feedback law — micro-motion is necessary; Wang 2024: balance torque
+-    comes from torque-level rear-wheel micro-motion). Term-by-term:
+-
+-    - survival (w=2.0): flat alive bonus while |roll|<30° — just enough to make
+-      falling strictly worse than wobbling; no shaping so it can't paper over
+-      bad uprightness.
+-    - roll_shaping (w=8.0): exp(-roll²/2σ²), σ=12° — the main gradient term,
+-      pushes upright inside the survival band (survival alone pays 29° == 0°).
+-    - drift_band (w=5.0): tolerance band ±0.2 m around spawn, Gaussian decay
+-      beyond — position-keeping WITHOUT fighting the necessary micro-motion.
+-    - yaw_band (w=4.0): ANTI-ORBITAL plateau+linear tail on |yaw| vs spawn
+-      heading — a circling policy earns nothing for holding a circle.
+-    - micro_band (w=4.0): plateau up to |ω_drive|=1.5 rad/s, linear tail beyond —
+-      rewards micro-motion, with CONSTANT gradient against runaway spin.
+-    - act_penalty (w=0.1): -‖a‖₂ on the 2-dim action — light effort cost.
+-      (Func returns negative; weight stays positive so it remains a penalty.)
+-    - rate_penalty (w=0.1): per-joint-normalised -‖Δa/scale‖₂ — damps jitter
+-      without over-penalising the necessary oscillation frequency.
+-    """
+-
+-    survival = RewardTermCfg(func=balance_survival_reward_binary, weight=5.0)  # iter10: episodes die in <1s; alive-time gradient must dominate
+-
+-    
+-    '''
+-    roll_shaping = RewardTermCfg(
+-        func=balance_roll_shaping,
+-        weight=5.0,
+-        params={"sigma": 0.2094},  # 12 deg: iter3's 15 deg flattened precision (roll RMS 4.94->6.51)
+-    )
+-    drift_band = RewardTermCfg( # Can we delete this, because yaw_band, wheel_net and micro_band already penalize drift?
+-        func=balance_displacement_band,
+-        weight=1.5,  # iter2 2.0: drift deaths (max 2.0 m, term firing). Position-keeping = first-class objective.
+-        params={"band": 0.2, "sigma": 0.3},
+-    )
+-    yaw_band = RewardTermCfg(
+-        func=balance_yaw_band,
+-        weight=2.5,  # ANTI-ORBITAL. iter3 Gaussian inert; iter4 CLAMPED tail -> policy parked AT the pi floor
+-        params={"band": 0.1, "tail_slope": 0.66},  # NO clamp: value ~ -1 at pi, constant gradient everywhere
+-    )
+-    wheel_net = RewardTermCfg(
+-        func=balance_wheel_net_angle_band,
+-        weight=1.0,  # anti-orbit/anti-roll backstop in wheel space (net rotation since reset)
+-        params={"band": 1.0ate_penalty = RewardTermCfg(
+-        func=balance_action_rate_penalty_norm,
+-        weight=0.1,  # iter1 -0.05 SIGN WRONG (rewarded slamming); 0.1 damps servo slam (steer max 151 rad/s)
+-        params={"action_scales": (1.57, 6.28)},  # steer rad, drive N-m
+-    ), "tail_slope": 0.19, "penalty_floor": -1.0},  # floor-capped: no suicide pressure
+-    )
+-    micro_band = RewardTermCfg(
+-        func=balance_micro_motion_band,
+-        weight=2.5,
+-        # iter3: drive still 6.1 rad/s vs target 1.5 -> tail gradient (0.03) too weak. Steepen to 0.05.
+-        params={"target": 1.5, "tail_slope": 0.05, "drive_joint_name": "rearwheel_joint"},
+-    )
+-    drift_quad = RewardTermCfg(
+-            func=balance_drift_penalty_quadratic,
+-            weight=1.0
+-        )
+-    wheel_net_quad = RewardTermCfg(
+-            func=balance_wheel_net_angle_penalty,
+-            weight=1.0,
+-        )
+-
+-    # --- gaussian reward variants (EXPERIMENTAL — NOT active; import
+-    #     balance_drift_gaussian, balance_wheel_net_gaussian from ..mdp.stationary.rewards) ---
+-    # Gaussian wheel-net: positive, gradient everywhere incl. the band's dead zone;
+-    # wide sigma keeps the tail alive out to the 7.2 rad termination cap.
+-    
+-    # Gaussian drift: d bounded by the 0.5 m drifted termination -> gradient over
+-    # the whole range; ~0.83 at the 0.15 m operating point (barely perturbs the optimum).
+-    wheel_net_gauss = RewardTermCfg(
+-        func=balance_wheel_net_gaussian,
+-        weight=2.0,  # peak per-step contribution
+-        params={"sigma": 3.0},  # rad
+-    )
+-    '''
+-    
+-    drift_gauss = RewardTermCfg(
+-        func=balance_drift_gaussian,
+-        weight=2.0,  # peak per-step contribution
+-        params={"sigma": 0.25},  # m
+-    )
++    """TEMPORARY (09090950 smoke test; this file is restored afterwards):
++    the 0950 run's exact logged reward set (params/env.yaml of 2026-09-09_09-50-48)."""
++    survival = RewardTermCfg(func=balance_survival_reward_binary, weight=5.0)
++    drift_gauss = RewardTermCfg(func=balance_drift_gaussian, weight=2.0, params={"sigma": 0.25})
++    rate_penalty = RewardTermCfg(func=balance_action_rate_penalty_norm, weight=0.1,
++                                 params={"action_scales": (1.57, 6.28)})
+ 
+-    # NOTE: both penalty funcs RETURN NEGATIVE values (see rewards.py), so the
+-    # weights must be POSITIVE to stay penalties — negative weight would flip
+-    # them into rewards (reward manager: value * weight). Iter1 had the sign
+-    # wrong (TB confirmed net-positive contributions); fixed in iter2.
+-    '''
+-    
+-    act_penalty = RewardTermCfg(func=balance_joint_torque_penalty, weight=0.1)
+-
+-    '''
+-    rate_penalty = RewardTermCfg(
+-        func=balance_action_rate_penalty_norm,
+-        weight=0.1,  # iter1 -0.05 SIGN WRONG (rewarded slamming); 0.1 damps servo slam (steer max 151 rad/s)
+-        params={"action_scales": (1.57, 6.28)},  # steer rad, drive N-m
+-    )
+-    
+ 
+ @configclass
+ class NewBikeBalanceHybridTerminationsCfg(BalanceTerminationsCfg):
+@@ -497,6 +402,20 @@ class NewBikeBalanceHybridEnvCfg(NewBikeBalanceEnvCfg):
+         # steering servo gains + torque-mode drive (stiffness=0)
+         self.scene.robot = NEW_BIKE_HYBRID_CFG.replace(prim_path="{ENV_REGEX_NS}/Robot")
+ 
++        # --- TEMPORARY (09090950 smoke test; restored afterwards) ---
++        # 0950's event set: only reset_scene + the pinned ground friction
++        for name in list(self.events.__dict__.keys()):
++            if name.startswith("_") or name in ("reset_scene", "randomize_ground_friction"):
++                continue
++            delattr(self.events, name)
++        # the solver fix: 16 pos / 8 vel iterations (the probe-verified rigid
++        # response) + external forces every TGS iteration (the confirmed flag fix)
++        ap = self.scene.robot.spawn.articulation_props
++        ap.solver_position_iteration_count = 16
++        ap.solver_velocity_iteration_count = 8
++        from isaaclab_physx.physics.physx_manager_cfg import PhysxCfg
++        self.sim.physics = PhysxCfg(enable_external_forces_every_iteration=True)
++
+ 
+ @configclass
+ class NewBikeBalanceTorqueEnvCfg(NewBikeBalanceEnvCfg):

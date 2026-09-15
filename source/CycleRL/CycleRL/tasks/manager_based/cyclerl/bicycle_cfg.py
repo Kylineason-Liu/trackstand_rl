@@ -177,8 +177,14 @@ NEW_BIKE_BASE_CFG = ArticulationCfg(
         ),
         articulation_props=sim_utils.ArticulationRootPropertiesCfg(
             enabled_self_collisions=False,
-            solver_position_iteration_count=4,
-            solver_velocity_iteration_count=2,  # 0 gave inaccurate velocities → NaN blow-ups
+            solver_position_iteration_count=16,
+            # 4/2 (the old value; 0 gave inaccurate velocities -> NaN blow-ups)
+            # under-delivered the effort-actuated drive ~x24.5: the TGS solver
+            # truncated the per-step impulse propagation, and the policy trained
+            # against that sluggish world. 16/8 is the probe-verified fix (the
+            # wheel then follows the rigid physics). See cfg_record.txt's
+            # engine audit (2026-09-13).
+            solver_velocity_iteration_count=8,
         ),
     ),
     init_state=ArticulationCfg.InitialStateCfg(

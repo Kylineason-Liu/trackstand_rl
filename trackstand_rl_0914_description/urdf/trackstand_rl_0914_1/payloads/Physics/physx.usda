@@ -1,0 +1,50 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "URDF USD Converter v0.1.2"
+    }
+    defaultPrim = "trackstand_rl_0914"
+    doc = """Generated from Composed Stage of root layer /tmp/tmp2lyr7j08/trackstand_rl_0914.usdc
+
+
+Generated from Composed Stage of root layer /tmp/urdf_import_trackstand_rl_0914_gynoeu_m/usdex_trackstand_rl_0914/trackstand_rl_0914.usdc
+
+
+Generated from Composed Stage of root layer /tmp/urdf_import_trackstand_rl_0914_gynoeu_m/temp_trackstand_rl_0914/trackstand_rl_0914.usd
+
+
+Generated from Composed Stage of root layer /home/lmbike/lmbike_cyclerl-mod/trackstand_rl_0914_description/urdf/trackstand_rl_0914_1/payloads/base.usd
+"""
+    kilogramsPerUnit = 1
+    metersPerUnit = 1
+    subLayers = [
+        @./physics.usda@
+    ]
+    upAxis = "Z"
+)
+
+over "trackstand_rl_0914"
+{
+    over "Physics"
+    {
+        over "rear_wheel_joint" (
+            prepend apiSchemas = ["PhysxJointAPI"]
+        )
+        {
+        }
+
+        over "steering_joint" (
+            prepend apiSchemas = ["PhysxJointAPI"]
+        )
+        {
+            float physxJoint:maxJointVelocity = 5729.578
+        }
+
+        over "front_wheel_joint" (
+            prepend apiSchemas = ["PhysxJointAPI"]
+        )
+        {
+        }
+    }
+}
+

@@ -347,14 +347,62 @@ timestamp       survival_rew  rate_pen  drift_rew  DR?          comments
 09090950              5.0       0.1        2.0     \            with imu white noise (class NewBikeBalanceObservationsCfg(ObservationGroupCfg)), 13-dim observation. Result: mean epi len of 1500 at model 500.
 09090944              5.0       0.1        2.0     \            without imu white noise, 9-dim observation. Result: mean epi len 438.2
 
+2026.9.9 New best baseline found: 09090950. Conclusion: full 13-dim observations are vital. Now see how imu initial bias residual affects the policy.
 
-
-
-
-Now combine all helpful dr terms to observe a full dr's effect on policy learning: is it additive, or multiple helpful dr terms will interfere with each other, harming the policy?
 timestamp       survival_rew  rate_pen  drift_rew  DR?          comments
 
-0907xxxx              5.0       0.1        2.0     
+09091549              5.0       0.1        2.0     imu #1-gyro  Result: mean epi len 1500 at model 3600
+09091550              5.0       0.1        2.0     imu #1-accel Result: mean epi len 1500 at model 350
+
+2026.9.9 All good. Now combine all helpful dr terms to observe a full dr's effect on policy learning: is it additive, or multiple helpful dr terms will interfere with each other, harming the policy?
+timestamp       survival_rew  rate_pen  drift_rew  DR?          comments
+
+09092244              5.0       0.1        2.0     all          max_iterations=60000. Result: mean epi len 791 at model 56650
+09101210              5.0       0.1        2.0     all          Continues the last model of 09092244 with max_iterations=200000 Result: unsatisfactory -- mean epi len < 1000.
+09110138              5.0       0.1        2.0     all          Continues the last model of 09101210 with max_iterations=500000 Result: unsatisfactory -- mean epi len < 1000.
+
+2026.9.11 Attempted to transfer 09090950 model 500 (mean epi len 1500) to mujoco for sim-to-sim verification. However, discovered large gap between isaaclab and mujoco simulation environments. First, the minimum physical step dt is different between them. However, the upstream policy inference frequency are aligned to 50Hz. Second, collision meshes are implemented differently. In isaaclab, due to a lack of pre-defined collision configuration in usda file, convex hulls were employed to handle collision. However, mujoco only supports primitive collision shapes (cuboids, spheres, cylinders......). Third, groun/wheel friction, motor dynamics, bike inertia, initial condition, observation consistency remain largely unexplored.
+
+2026.9.12 So the next step is: First, verify mujoco and isaaclab simulation environment consistency (simulator metrics). Second, perform a simplest baseline test of free fall across the two simulators, and measure the average time to determine bike model consistency. Can probably also use the bike model from Tsinghua University, and check the differences between theirs and ours, since their model work find on a lqr task in mujoco, and ours are modified. Third, verify evaluation metric consistency based on the Tsinghua bike model.
+
+2026.9.13 Ran simple gravity test on tsinghua's orange bike in mujoco. Physic worked normally. Fixed newbike's collision meshes based on orange bike's ellipsoid collision meshes. Result improved: balance ~60 steps -> 200+ steps. But still far from 09090950 model 500's play_eval performance. Found a few other problems. 1. NewBike-Balance-v1 and deploy_sim use different wheel collision meshes: convex hull and ellipsoid. However, isaaclab doesn't have ellipsoid, and mujoco doesn't have convex hull. Pending solution: use SDF collider (supported by both simulators). 2. solver_velocity_iteration_count is too small in isaaclab, causing the actuator force not fully impacting the bike. (Force didn't propogate to every link). Consequently, x24.5 is needed on rear wheel rotational inertia to compensate for the deficiency. Running 09131837 with improved position iteration count=16, velocity iteration count = 8 to address this (other config same as 09090950). After finish, verity on mujoco. Pending result. 3. Exported our newest bike model (with hardware modifications) to both urdf -- for isaaclab, and xml (mjcf) -- for mujoco. However, opening urdf, discoverd when the bike intends a free fall, all components break apart. Opening xml, discovered the geometry mesh for base link is too complicated and exceeded mujoco cap. Solution for mujoco: downgrade export quality (already done, exported file in usb). Solution for isaaclab still pending.
+
+timestamp       survival_rew  rate_pen  drift_rew  DR?          comments
+
+09131837              5.0       0.1        2.0     \            solver position/velocity iteration count = 16/8 Result: mean epi len 1312.
+
+2026.9.14 09131837 evaluation on isaaclab is ok, but in mujoco deploy_sim without x24.5 compensation, only 30-40 steps, even worse than 0950 policy with x24.5 compensation. Demonsrates the deficiency brought about by different collision meshes. Main center of work put to aligning physical consistency between isaaclab and mujoco. Now export the newest bike model both to mujoco (.xml) and isaaclab (.urdf). Today's main focus is to ensure consistency in every single aspect of the physics configuration.  Exported trackstand_rl_0914_description/ (isaaclab) and trackstand_rl_bike_0914 (mujoco). Here is the checkpoint:
+
+2026.9.14 1. Mass, 2. center of mass coordinate, 3. friction coefficient (ground-wheel relative), 4. collision mesh (MOST IMPORTANT FOCUS), 5. joint stiffness & damping, 6. actuator enabled normally (can give command and turn) 7. pass gravity free-fall test, 8. 
+
+2026.9.14 Already verified: 1, 2, 5 (.xml have actuator configs, but .urdf does not. Instead, it is achieved in bicycle_cfg.py manually.)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -749,4 +797,79 @@ HOW TO DETERMINE gyro_res_bias_std AND accel_res_bias_std (both = the std, ACROS
   model_500 is the champion (the 09061147 pattern: early peak > final); (3) 0944/0950 trainings
   no longer need to run to completion — 0944's cell documented by TB, 0950's by this eval;
   (4) next: combined helpful-DR run on the validated base (13-dim + noise + 11-33 rewards).
+09090950 COMPLETION (60k full curve; eval env verified, cfg untouched): the curve HELD 1470-1500
+  all the way to the end (unlike 09061147's late decline). Both best models perfect:
+    model_500  (RAW 1500.00): ep 1500.0/100.0% rollRMS 0.38 maxRoll 3.00 turn 58.9  <- tighter average
+    model_32400 (SMOOTH 1499.88): ep 1500.0/100.0% rollRMS 0.55 maxRoll 0.87 turn 21.7 <- tighter extremes
+  Both zero-death 1500/100%. Champion pick for deployment: model_500 (average tightness matters
+  for smoothness); model_32400 if extremes/orbiting matter more. Final model_59999 exists and the
+  late curve suggests it is also perfect — evaluate if a fresher option is wanted.
+  0950 STORY COMPLETE: the 13-dim + always-on #8 noise baseline trains perfect at iter 514 and
+  holds it to 60k — the validated architecture. Committed as baseline 292390a.
 
+
+## Engine audit for NewBike-Balance-v1 (2026-09-13) — sim-side problems
+
+Found against the run's logged params/env.yaml (2026-09-11_01-38-54), the USD
+payloads (Physics/physics.usda, physx.usda, materials.usda), bicycle_cfg.py and
+newbike_balance_env_cfg.py:
+
+1. solver_position/velocity_iteration_count = 4/2 (NEW_BIKE_BASE_CFG spawn
+   articulation_props) — the ROOT CAUSE of the ~x24.5 sluggish drive: the TGS
+   under-delivers the effort-actuated wheel per step. Probe-verified: 16/8
+   restores the rigid response (the wheel slams the 61.6 rad/s limit).
+2. enable_external_forces_every_iteration = False (env.yaml sim.physics) —
+   CONFIRMED 2026-09-13 (in-air welded-root probe, /tmp/sim_extforce_probe.py):
+   the PRIMARY cause of the sluggish drive. At 4/2 + False the wheel plateaus
+   at 23.11 rad/s (a1>=0.6); flipping the flag True at the SAME 4/2 restores
+   the rigid physics (61.60 rad/s = the velocity limit; effort follows the
+   authored tau = 6.28*a1 - 0.05*w exactly, incl. 0.00 Nm at a1=0.2). The
+   16/8 iteration fix and the flag flip are two independent repairs of the
+   same truncation: the once-per-step force injection + 2 sweeps cannot
+   propagate the impulse. The fall-probe log's "may cause noisy velocities"
+   warning names exactly this.
+3. Runtime mass ~+20% above the USD payload masses — the collision geometry
+   contributes default-density mass (the USD colliders declare no density;
+   measured in the inertia probe). The MuJoCo model carries only the payload
+   masses (2.3996 kg total). Un-compensated.
+4. DR active in this run on every reset: randomize_mass 0.5-1.5x,
+   randomize_com, tire friction U(0.5, 1.2) (num_buckets 32),
+   randomize_actuator_gains 0.9-1.1x. play_eval numbers are DR-averaged;
+   any nominal-only comparison (e.g. the MuJoCo deploy) must use the nominal
+   envelope, not the eval mean.
+5. Reset state: the initial_state event resets root z=0, roll U(-0.1, 0.1)
+   rad, roll rate U(-0.25, 0.25) rad/s every episode — NOT the fixed zeros
+   the MuJoCo env comment assumes (that was 0950's protocol).
+6. Friction reference values: ground pinned 1.0 (startup event); tire = the
+   global physxMaterial 0.5/0.5 isotropic (the USD has no per-wheel physics
+   material — materials.usda carries only the visual "silver"). The MuJoCo
+   wheels now carry the sim's pair: sliding 0.75 (MuJoCo combines pair
+   friction by MAX — verified empirically; MuJoCo's triple is
+   sliding/torsional/rolling — the earlier 'anisotropic 1.0/0.005'
+   phrasing misread the orange-bike triple).
+7. Sim-side quirk: balance_wheel_net_termination reads with a one-step lag
+   (its own docstring); the MuJoCo env checks immediately. Immaterial.
+8. physx.usda sets maxJointVelocity 100 rad/s (5729.578 deg/s) on the
+   steering joint — dominated by the actuator's velocity_limit_sim 23.9;
+   no effect.
+9. GPU patch-based friction (friction_offset_threshold 0.04,
+   friction_correlation_distance 0.025) has no MuJoCo analog — model-level
+   difference, no config translation.
+
+## Collision meshes in NewBike-Balance-v1 (2026-09-13)
+
+- The runtime wheel colliders = ONE CONVEX HULL per collision mesh: the URDF
+  converter authored `token physics:approximation = "convexHull"` on every
+  link's collision prim in payloads/instances.usda (with PhysicsCollisionAPI
+  + MeshCollisionAPI). NEW_BIKE_BASE_CFG sets no mesh-collision override, so
+  the USD's token stands — this is the provenance of the hull/vertex-walk
+  contact the sim-to-sim campaign has been matching against.
+- The cfg CAN override the approximation via mesh_approximation_name
+  (boundingCube | boundingSphere | convexDecomposition | convexHull | none |
+  meshSimplification | sdf — verified in isaaclab/sim/schemas/schemas.py).
+  PhysX has NO ellipsoid/cylinder primitive collider.
+- The MuJoCo deploy's collisions are hand-authored primitives (model.xml:
+  frame box, fork box, wheel ellipsoids); its meshes are visual-only.
+- Representation gap: the two engines' common wheel shapes do not overlap.
+  Fix paths: boundingSphere on both (cheap, retrain), SDF on both (true
+  geometry, plumbing, retrain), or keep fitting MuJoCo (status quo).

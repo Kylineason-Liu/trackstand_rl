@@ -1,0 +1,31 @@
+================================================================
+  EVAL SUMMARY  —  model_19050.pt
+  64 envs x 3000 steps  |  397 completed episodes
+================================================================
+  mean_reward            :     59.611   (episodic return; not comparable across reward-weight changes)
+  mean_episode_length    :      440.8 steps  (  8.82 s)
+  min_episode_length     :      152.0 steps  (  3.04 s)
+  max_episode_length     :     1455.0 steps  ( 29.10 s)
+  std_episode_length     :      178.2 steps
+  timeout_rate (survived):      0.000   (reached the horizon vs fell)
+  fall_rate              :      1.000
+  ------------------------------------------------------------
+  death breakdown (share of completed episodes; a step may fire >1 term):
+    time_out              :    0.0%
+    fallen                :    0.0%
+    diverged              :    0.0%
+    drifted               :    1.0%
+    yaw_deviation         :   14.6%
+    wheel_net             :   84.6%
+  ------------------------------------------------------------
+  mean_roll_angle        :       0.66 deg   (mean over all steps)
+  max_roll_angle         :       4.97 deg
+  roll_RMS               :       0.82 deg   (tightness of balance; lower = steadier)
+  mean_worst_lean/episode:       2.45 deg
+  ------------------------------------------------------------
+  drive_speed mean/max   :     5.89 /   84.99 rad/s
+  steer_speed mean/max   :     3.24 /   34.35 rad/s
+  drift mean/max         :    0.092 /   0.500 m   (position drift from spawn)
+  yaw mean/max           :     8.41 /   30.00 deg (heading vs spawn)
+  turn/episode mean      :    120.4 deg (orbiting detection: 360 deg = full circle)
+================================================================
