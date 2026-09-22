@@ -1,0 +1,184 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "URDF USD Converter v0.1.2"
+    }
+    doc = """Generated from Composed Stage of root layer /tmp/tmp0rmogw06/trackstand_rl_0914.usdc
+
+
+Generated from Composed Stage of root layer /tmp/urdf_import_trackstand_rl_0916_im2m9bju/usdex_trackstand_rl_0916/trackstand_rl_0914.usdc
+
+
+Generated from Composed Stage of root layer /tmp/urdf_import_trackstand_rl_0916_im2m9bju/temp_trackstand_rl_0916/trackstand_rl_0916.usd
+
+
+Generated from Composed Stage of root layer /home/lmbike/lmbike_cyclerl-mod/trackstand_rl_0916_description/urdf/trackstand_rl_0916/payloads/base.usd
+"""
+    kilogramsPerUnit = 1
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Scope "Instances"
+{
+    def Xform "base_link" (
+        prepend references = @./geometries.usd@</Geometries/base_link>
+    )
+    {
+        over "base_link" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/base_link/VisualMaterials/silver>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "silver" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/silver>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "base_link_1" (
+        prepend references = @./geometries.usd@</Geometries/base_link>
+    )
+    {
+        over "base_link" (
+            apiSchemas = ["PhysicsMaterialAPI", "PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            float physics:staticFriction = 0.5
+            float physics:dynamicFriction = 0.5
+            float physics:restitution = 0
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "rear_wheel_link_1" (
+        prepend references = @./geometries.usd@</Geometries/rear_wheel_link_1>
+    )
+    {
+        over "rear_wheel_link_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/rear_wheel_link_1/VisualMaterials/silver>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "silver" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/silver>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "rear_wheel_link_1_1" (
+        prepend references = @./geometries.usd@</Geometries/rear_wheel_link_1>
+    )
+    {
+        over "rear_wheel_link_1" (
+            prepend apiSchemas = ["PhysxSDFMeshCollisionAPI", "PhysicsMaterialAPI", "PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "sdf"
+            float physxSDFMeshCollision:sdfMargin = 0.01
+            int physxSDFMeshCollision:sdfResolution = 256
+            float physics:staticFriction = 0.5
+            float physics:dynamicFriction = 0.5
+            float physics:restitution = 0
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "steering_link_1" (
+        prepend references = @./geometries.usd@</Geometries/steering_link_1>
+    )
+    {
+        over "steering_link_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/steering_link_1/VisualMaterials/silver>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "silver" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/silver>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "steering_link_1_1" (
+        prepend references = @./geometries.usd@</Geometries/steering_link_1>
+    )
+    {
+        over "steering_link_1" (
+            apiSchemas = ["PhysicsMaterialAPI", "PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            float physics:staticFriction = 0.5
+            float physics:dynamicFriction = 0.5
+            float physics:restitution = 0
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "front_wheel_link_1" (
+        prepend references = @./geometries.usd@</Geometries/front_wheel_link_1>
+    )
+    {
+        over "front_wheel_link_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/front_wheel_link_1/VisualMaterials/silver>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "silver" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/silver>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "front_wheel_link_1_1" (
+        prepend references = @./geometries.usd@</Geometries/front_wheel_link_1>
+    )
+    {
+        over "front_wheel_link_1" (
+            prepend apiSchemas = ["PhysxSDFMeshCollisionAPI", "PhysicsMaterialAPI", "PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "sdf"
+            float physxSDFMeshCollision:sdfMargin = 0.01
+            int physxSDFMeshCollision:sdfResolution = 256
+            float physics:staticFriction = 0.5
+            float physics:dynamicFriction = 0.5
+            float physics:restitution = 0
+            token purpose = "guide"
+        }
+    }
+}
+

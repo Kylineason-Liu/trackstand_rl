@@ -23,9 +23,10 @@ from .new_bike.newbike_balance_env_cfg import (
     NewBikeBalanceTorqueEnvCfg,
 )
 
-# TRACKSTAND-RL (SDF-wheel) task — standalone package under scripts/source/
-from scripts.source.trackstand_rl.trackstand_rl_env import TrackstandRLHybridEnv
-from scripts.source.trackstand_rl.trackstand_rl_env_cfg import TrackstandRLHybridEnvCfg
+# TRACKSTAND-RL (SDF-wheel) task: a fully standalone task package under
+# source/trackstand_rl (mirrors this package's layout). Importing it
+# registers its gym environments (Trackstand-Balance-v0).
+import source.trackstand_rl.trackstand_rl.tasks  # noqa: F401
 
 
 # Register the environment with the gym registry
@@ -137,18 +138,5 @@ gym.register(
     kwargs={
         "env_cfg_entry_point": TrackstandEnvCfg,
         "skrl_cfg_entry_point": f"{__name__}.agents:skrl_ppo_cfg.yaml",
-    },
-)
-
-gym.register(
-    id="Trackstand-rl-v0",
-    # standalone task package (scripts/source/trackstand_rl): own env class,
-    # own robot cfg (SDF-wheel USD), own agent cfg — no NewBike-task imports
-    entry_point="scripts.source.trackstand_rl.trackstand_rl_env:TrackstandRLHybridEnv",
-    disable_env_checker=True,
-    kwargs={
-        "env_cfg_entry_point": TrackstandRLHybridEnvCfg,
-        "skrl_cfg_entry_point": f"{__name__}.agents:skrl_ppo_small_cfg.yaml",
-        "rsl_rl_cfg_entry_point": "scripts.source.trackstand_rl.agent_cfg:TrackstandRLPPORunnerCfg",
     },
 )

@@ -1,0 +1,134 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "URDF USD Converter v0.1.2"
+    }
+    defaultPrim = "trackstand_rl_0914"
+    doc = """Generated from Composed Stage of root layer /tmp/tmpbpzuc86x/trackstand_rl_0914.usdc
+
+
+Generated from Composed Stage of root layer /tmp/urdf_import_trackstand_rl_0916_w0yv04fb/usdex_trackstand_rl_0916/trackstand_rl_0914.usdc
+
+
+Generated from Composed Stage of root layer /tmp/urdf_import_trackstand_rl_0916_w0yv04fb/temp_trackstand_rl_0916/trackstand_rl_0916.usd
+
+
+Generated from Composed Stage of root layer /home/lmbike/lmbike_cyclerl-mod/trackstand_rl_0916_description_cylinder/urdf/trackstand_rl_0916/payloads/base.usd
+"""
+    kilogramsPerUnit = 1
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+over "trackstand_rl_0914"
+{
+    over "Geometry"
+    {
+        over "base_link" (
+            prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsArticulationRootAPI", "NewtonArticulationRootAPI", "PhysicsMassAPI"]
+        )
+        {
+            bool newton:selfCollisionEnabled = 0
+            point3f physics:centerOfMass = (0.15570563, -0.042488232, 0.16299923)
+            float3 physics:diagonalInertia = (0.0039133737, 0.016144622, 0.018534005)
+            float physics:mass = 2.0267928
+            quatf physics:principalAxes = (-0.6686647, 0.6709083, -0.21506913, 0.23772849)
+
+            over "rear_wheel_link_1" (
+                prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+            )
+            {
+                point3f physics:centerOfMass = (0.00017552167, -0.018247312, 0.000019991758)
+                float3 physics:diagonalInertia = (0.00017797352, 0.000178, 0.0003290265)
+                float physics:mass = 0.12332977
+                quatf physics:principalAxes = (-0.7070913, 0.7070913, 0.004681697, 0.004681697)
+
+                over "cylinder" (
+                    prepend apiSchemas = ["NewtonCollisionAPI"]
+                )
+                {
+                }
+            }
+
+            over "steering_link_1" (
+                prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+            )
+            {
+                point3f physics:centerOfMass = (0.0077892006, 0.000041257426, -0.04158901)
+                float3 physics:diagonalInertia = (0.000040833565, 0.000135, 0.00016116643)
+                float physics:mass = 0.10929162
+                quatf physics:principalAxes = (0.63793576, 0, 0.77008957, 0)
+
+                over "front_wheel_link_1" (
+                    prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+                )
+                {
+                    point3f physics:centerOfMass = (2.5494957e-8, 2.731535e-7, 3.3619102e-7)
+                    float3 physics:diagonalInertia = (0.00022799111, 0.000228, 0.0004530089)
+                    float physics:mass = 0.16491532
+                    quatf physics:principalAxes = (0.6541286, 0.6524279, 0.26854375, 0.27264968)
+
+                    over "cylinder" (
+                        prepend apiSchemas = ["NewtonCollisionAPI"]
+                    )
+                    {
+                    }
+                }
+            }
+        }
+    }
+
+    over "Physics"
+    {
+        def PhysicsRevoluteJoint "rear_wheel_joint" (
+            prepend apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+        )
+        {
+            uniform token physics:axis = "X"
+            custom rel physics:body0
+            prepend rel physics:body0 = </trackstand_rl_0914/Geometry/base_link>
+            custom rel physics:body1
+            prepend rel physics:body1 = </trackstand_rl_0914/Geometry/base_link/rear_wheel_link_1>
+            point3f physics:localPos0 = (0.029465, -0.025495, 0.085946)
+            point3f physics:localPos1 = (0, 0, 0)
+            quatf physics:localRot0 = (0.70240194, 0, 0.001057087, 0.7117798)
+            quatf physics:localRot1 = (0.70240194, 0, 0.001057087, 0.7117798)
+        }
+
+        def PhysicsRevoluteJoint "steering_joint" (
+            prepend apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+        )
+        {
+            float drive:angular:physics:maxForce = 100
+            uniform token physics:axis = "X"
+            custom rel physics:body0
+            prepend rel physics:body0 = </trackstand_rl_0914/Geometry/base_link>
+            custom rel physics:body1
+            prepend rel physics:body1 = </trackstand_rl_0914/Geometry/base_link/steering_link_1>
+            point3f physics:localPos0 = (0.28776, -0.039873, 0.219057)
+            point3f physics:localPos1 = (0, 0, 0)
+            quatf physics:localRot0 = (0.7694443, 0, 0.6387136, 0.00063812296)
+            quatf physics:localRot1 = (0.7694443, 0, 0.6387136, 0.00063812296)
+            float physics:lowerLimit = -89.999985
+            float physics:upperLimit = 89.999985
+            custom float urdf:limit:effort = 100
+            custom float urdf:limit:velocity = 100
+        }
+
+        def PhysicsRevoluteJoint "front_wheel_joint" (
+            prepend apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+        )
+        {
+            uniform token physics:axis = "X"
+            custom rel physics:body0
+            prepend rel physics:body0 = </trackstand_rl_0914/Geometry/base_link/steering_link_1>
+            custom rel physics:body1
+            prepend rel physics:body1 = </trackstand_rl_0914/Geometry/base_link/steering_link_1/front_wheel_link_1>
+            point3f physics:localPos0 = (0.024852, 0.000132, -0.132693)
+            point3f physics:localPos1 = (0, 0, 0)
+            quatf physics:localRot0 = (0.708774, 0, 0.000081125996, -0.7054357)
+            quatf physics:localRot1 = (0.708774, 0, 0.000081125996, -0.7054357)
+        }
+    }
+}
+

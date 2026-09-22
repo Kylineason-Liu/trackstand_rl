@@ -1,0 +1,9 @@
+<launch>
+
+<rosparam file="$(find trackstand_rl_0914_description)/launch/controller.yaml" command="load"/>
+<node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="trackstand_rl_0914" args="rear_wheel_joint_position_controller steering_joint_position_controller front_wheel_joint_position_controller joint_state_controller "/>
+<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
+  <remap from="/joint_states" to="/trackstand_rl_0914/joint_states"/>
+</node>
+
+</launch>

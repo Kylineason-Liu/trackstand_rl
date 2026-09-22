@@ -1,0 +1,2915 @@
+--- git commit ---
+61268ed50e2220c5f0c427d98da1a4020cc425be
+
+
+--- git status ---
+On branch lmbike_4090
+Your branch is up to date with 'origin/lmbike_4090'.
+
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	deleted:    logs/rsl_rl/newbike_balance_rsl/cfg_record.txt
+	modified:   scripts/rsl_rl/play_eval.py
+	deleted:    scripts/source/trackstand_rl/__init__.py
+	deleted:    scripts/source/trackstand_rl/agent_cfg.py
+	deleted:    scripts/source/trackstand_rl/assets/payloads/Physics/mujoco.usda
+	deleted:    scripts/source/trackstand_rl/assets/payloads/Physics/physics.usda
+	deleted:    scripts/source/trackstand_rl/assets/payloads/Physics/physx.usda
+	deleted:    scripts/source/trackstand_rl/assets/payloads/base.usda
+	deleted:    scripts/source/trackstand_rl/assets/payloads/geometries.usd
+	deleted:    scripts/source/trackstand_rl/assets/payloads/instances.usda
+	deleted:    scripts/source/trackstand_rl/assets/payloads/materials.usda
+	deleted:    scripts/source/trackstand_rl/assets/payloads/robot.usda
+	deleted:    scripts/source/trackstand_rl/assets/trackstand_rl.usda
+	deleted:    scripts/source/trackstand_rl/trackstand_rl_cfg.py
+	deleted:    scripts/source/trackstand_rl/trackstand_rl_env.py
+	deleted:    scripts/source/trackstand_rl/trackstand_rl_env_cfg.py
+	modified:   source/CycleRL/CycleRL/tasks/manager_based/cyclerl/__init__.py
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	logs/rsl_rl/cfg_record.txt
+	logs/rsl_rl/trackstand_rl_rsl/
+	scripts/deployment/trackstand_rl_rsl_2026-09-16_16-48-46_model_15650.onnx
+	scripts/deployment/trackstand_rl_rsl_2026-09-16_16-48-46_model_15650.onnx.data
+	scripts/deployment/trackstand_rl_rsl_2026-09-17_19-46-37_model_41050.onnx
+	scripts/deployment/trackstand_rl_rsl_2026-09-17_19-46-37_model_41050.onnx.data
+	source/trackstand_rl/
+	trackstand_rl_0916_description/
+	trackstand_rl_0916_description_cylinder/
+
+no changes added to commit (use "git add" and/or "git commit -a") 
+
+
+--- git diff ---
+diff --git a/logs/rsl_rl/newbike_balance_rsl/cfg_record.txt b/logs/rsl_rl/newbike_balance_rsl/cfg_record.txt
+deleted file mode 100644
+index 551833e..0000000
+--- a/logs/rsl_rl/newbike_balance_rsl/cfg_record.txt
++++ /dev/null
+@@ -1,875 +0,0 @@
+-(drive & steer rewards are always exponential, exp(-decay*|v|); only their weights vary. type = survival reward: 1/0 = binary, exp; definition of better/best: largest/er mean episode length achieved with shortest/er number of iterations, and evaluated through play_eval.py)
+-timestamp      surv  type  drive   steer   arp     dr?     comment
+-08261408       5.00  1/0    0.00   0.00    0.00    no_dr   seed 42, 5090 laptop, baseline model for training validation
+-08261734       5.00  1/0    0.00   0.00    0.00    no_dr   seed 123, 5090, baseline model
+-08262013       5.00  1/0    0.00   0.00    0.00    no_dr   seed 1, 5090, baseline model -> best for 5090 laptop
+-08262024       5.00  1/0    0.00   0.00    0.00    no_dr   seed 20, 5090, baseline model
+-08262053       5.00  1/0    0.00   0.00    0.00    no_dr   seed 80, 5090, baseline model
+-
+-08261634       5.00  1/0    0.00   0.00    0.00    no_dr   seed 42, 4090 desktop, baseline model -> best for 4090 desktop
+-08261743       5.00  1/0    0.00   0.00    0.00    no_dr   seed 123, 4090, baseline model
+-08262017       5.00  1/0    0.00   0.00    0.00    no_dr   seed 1, 4090, baseline model
+-08262042       5.00  1/0    0.00   0.00    0.00    no_dr   seed 20, 4090, baseline model
+-08262058       5.00  1/0    0.00   0.00    0.00    no_dr   seed 80, 4090, baseline model
+-
+-08262138       5.00  1/0    1.00   0.00    0.00    no_dr   find best drive_w, seed 42, 4090 (below default)
+-08271011       5.00  1/0    2.00   0.00    0.00    no_dr
+-08271020       5.00  1/0    5.00   0.00    0.00    no_dr   drive weight=5 is best. 2 and 20 are runner-ups
+-08262135       5.00  1/0   10.00   0.00    0.00    no_dr   failed instantly in play_eval.py
+-08262141       5.00  1/0   20.00   0.00    0.00    no_dr
+-			   
+-08262148       5.00  exp    2.00   0.00    0.00    no_dr   binary survival reward is better
+-
+-08271730       5.00  1/0    2.00   0.00    0.00       dr   find best drive_w with domain randomization
+-08271731       5.00  1/0    5.00   0.00    0.00       dr
+-               5.00  1/0    7.50   0.00    0.00       dr
+-08271811       5.00  1/0   10.00   0.00    0.00       dr
+-08271732       5.00  1/0   12.00   0.00    0.00       dr
+-08271733       5.00  1/0   20.00   0.00    0.00       dr   all performed very bad
+-
+-
+-08281822       5.00  1/0    1.00   0.00    0.00       dr   NewBike-Balance-v0 (speed/position control) drive sweep, seed 42 deterministic
+-08281948       5.00  1/0    2.00   0.00    0.00       dr
+-08282122       5.00  1/0    5.00   0.00    0.00       dr
+-08282257       5.00  1/0    7.00   0.00    0.00       dr
+-08290030       5.00  1/0   10.00   0.00    0.00       dr
+-08290206       5.00  1/0   12.00   0.00    0.00       dr   eval via play_eval.py at FULL DR (pinned from step 0)
+-08290349       5.00  1/0    1.00   0.00    0.10       dr   arp fallback on d1 leader: eval 156 vs 127 steps, fall 0.932 — mild help, still bad
+-08290514       5.00  1/0    1.00   0.00    0.50       dr   arp too strong: over-damped, eval 24 steps, fall 1.000
+-08311840       5.00  1/0    5.00   0.00    0.00       dr   skrl [512,256,128,64] capacity A/B on torque d5; eval 9 steps, fall 1.0 — MUCH worse than [32,32] (212 steps)
+-
+-
+-
+-
+-
+-
+-
+--------------------------------------------------------------------------------
+-               5.00  1/0   10.00   2.50    0.00    no_dr   tune steer weight with drive : steer = 4 : 1
+-
+-08271209       5.00  1/0   5.00    1.25    0.00    no_dr   
+-
+-               5.00  1/0   5.00    0.00    0.00    no_dr   s0 anchor (d5): does any steer>0 beat s0 here?
+-               5.00  1/0   5.00    2.50    0.00    no_dr   (+1156 @ s1.25 -> d5 steer sweep {0, 1.25, 2.5})
+-
+-               5.00  1/0   8.00    0.00    0.00    no_dr   s0 anchor (d8)
+-               5.00  1/0   8.00    2.00    0.00    no_dr
+-
+-               5.00  1/0   12.00   1.50    0.00    no_dr   low-steer point (anchor 1826 @ s0 -> d12 steer sweep {0, 1.5, 3, 6})
+-               5.00  1/0   12.00   3.00    0.00    no_dr
+-               5.00  1/0   12.00   6.00    0.00    no_dr   single confirmatory high point (steer > survival 5); expect downslope
+-             
+-               5.00  1/0   12.00   0.00 0.00001    no_dr
+-               5.00  1/0   12.00   0.00  0.0001    no_dr
+-               5.00  1/0   12.00   0.00   0.001    no_dr
+-               5.00  1/0   12.00   0.00    0.01    no_dr   tune action rate penalty
+-               5.00  1/0   12.00   0.00    0.10    no_dr   
+-               5.00  1/0   12.00   0.00    0.50    no_dr
+-
+-
+---------------------------------------------------------------------------------
+-PHASE 2 (planned, gated on the Phase-1 grid) — ACTION-RATE PENALTY for chaos/jitter
+-  Prereq: DONE — `action_rate` term wired into BalanceRewardsCfg (weight 0 = off by
+-          default; func = balance_action_rate_penalty; returns -||a_t - a_{t-1}||_2,
+-          UNBOUNDED -> keep small), and --arp_w flag added to train.py /
+-          train_deterministic.py. Just pass --arp_w 0.1 (etc.) per run.
+-  Goal: does a SLIGHT smoothness penalty cut roll-RMS / action jitter WITHOUT
+-        shortening episodes? It penalizes action CHANGE, not motion -> smooths both
+-        motors, unlike steer_reward (which suppresses the steering the bike needs).
+-  Scope: apply only to the two LEADERS; arp=0 baselines already exist, so this is a
+-         controlled 1-var comparison. Do NOT cross arp with every grid cell.
+-
+-    survival  drive  steer   arp    arp=0 baseline   note
+-    5 1/0      12     0.00    0.10   1826             smoothness on the steer=0 leader
+-    5 1/0      12     0.00    0.50   1826
+-    5 1/0     <winning drive/steer from Phase-1 grid>  0.10   <that run>   smoothness on the steer>0 leader
+-    5 1/0     <winning drive/steer from Phase-1 grid>  0.50   <that run>
+-  Read: arp should LOWER roll-RMS / action-jitter with ~unchanged episode length.
+-        If 0.50 helps at no cost, bracket up to 1.0; if it SHORTENS episodes it is
+-        too strong (over-damping the corrective control).
+---------------------------------------------------------------------------------
+-
+-
+-================================================================================
+-SUMMARY   (survival pinned to BINARY; metric = mean episode length; all no_dr)
+-================================================================================
+-
+-GRID  — rows = drive weight, cols = steer weight; cell = run id / plan / -
+-  drive\steer   s0.0   s1.25  s1.5   s2.0   s2.5   s3.0   s6.0
+-  d5            plan   1156   -      -      plan   -      -
+-  d8            plan   -      -      plan   -      -      -
+-  d10           -      -      -      -      1122   -      -
+-  d11           2149   -      -      -      -      -      -
+-  d12           1826*  -      plan   -      -      plan   plan
+-  d13           1854   -      -      -      -      -      -
+-  d14           1901   -      -      -      -      -      -
+-  * = best confirmed so far (longest mean episode length, at steer=0)
+-  superseded exp-survival runs: 1136 (d12/s0), 1204 (d5/s1.25) — both lost to binary
+-
+-SETTLED
+-  1. Survival reward: BINARY (+1 while |roll|<30 deg) beats exp. Proven twice —
+-     1826 > 1136 (d12/s0) and 1156 > 1204 (d5/s1.25), both on mean episode length.
+-  2. At steer=0, drive sweep {11,12,13,14}: drive=12 gives the longest mean
+-     episode length (1826).  [single-seed — re-confirm on a 2nd seed]
+-
+-PENDING
+-  A. Does steer>0 help at all? -> steer sweeps at d5, d8, d12, each anchored at
+-     its s0 cell. Judge each steer>0 cell against the SAME-drive s0 cell.
+-  B. Drive x steer interaction: does the best steer weight depend on drive?
+-  C. Prediction to test (cheaply): steer weight >= survival (5), i.e. d12/s6,
+-     HURTS — steer_reward rewards a STILL steering motor, which opposes balancing
+-     (steering is the balancing actuator). Expect the d12 sweep {0,1.5,3,6} to
+-     peak at low steer, then decline.
+-  D. NOT STARTED, higher priority than fine steer tuning: robustness of the
+-     leading config under DR + kick. Every optimum above is for the easy (no_dr)
+-     task and may reshuffle once DR is on.
+-
+-METHOD NOTES
+-  - Single-seed + cudnn.deterministic=False -> nearby cells can differ by noise.
+-    Use train_deterministic.py for attributable comparisons; re-check any winner
+-    on a 2nd --seed.
+-  - Rank by episode length / roll RMS / fall rate (play_eval.py), NOT mean reward
+-    (not comparable across reward-weight or survival-type changes).
+-
+-================================================================================
+-V1 CAMPAIGN (NewBike-Balance-v1, hybrid: torque drive + position steering)
+-Reworked literature-based reward. Weights: surv / roll / drift / micro / act / rate.
+-act = act_penalty (-||a||), rate = rate_penalty (-||da/scale||, normed).
+-All runs: rsl_rl train_deterministic.py, seed 42, 4096 envs, 20k iters, DR ramp on.
+-Satisfactory = mean episode length > 1400 in play_eval.py WITH full DR.
+-timestamp     surv  roll   drift  micro   act    rate   dr?   comment
+---------------------------------------------------------------------------------
+-09010034      2.00  8.00   2.00   2.00   -0.10  -0.05   yes   initial literature weights (sigma 8deg, drift band 0.2m, micro 3rad/s)
+-09010034      2.00  8.00   2.00   2.00   -0.10  -0.05   yes   ITER1 RESULT: ep_len 134.9 (DR), timeout 3.2%, wheel 15/239 rad/s. NOT ok.
+-  -> iter2: micro_band Gaussian->plateau[0,3]+linear tail (const gradient, w 2->4); roll sigma 8->12deg; rate -0.05->-0.1
+-09011013      2.00  8.00   2.00   4.00   -0.10  -0.10   yes   ABORTED at 63%: SIGN ERROR. act/rate funcs return NEGATIVE
+-  values, so negative weights flipped them into REWARDS (TB iter1: act +0.074, rate +0.005, both net-positive).
+-  This also explains iter1's servo slamming (rate "penalty" rewarded action change). Weights fixed to +0.10.
+-09011132      2.00  8.00   2.00   4.00    0.10   0.10   yes   iter2 relaunched with corrected penalty signs
+-09011132      2.00  8.00   2.00   4.00    0.10   0.10   yes   ITER2 RESULT: ep_len 854.9 (DR), timeout 55.3%, fall 44.7%,
+-  rollRMS 4.9deg, drive 5.5/79, steer 1.5/36, drift max 2.0m (term firing). 6x over iter1, NOT ok yet.
+-  -> iter3: drift_band 2->5 (drift deaths); micro target 3->1.5 (constant rolling feeds drift);
+-     roll sigma 12->15deg (fall-zone gradient: value at 30deg 0.0016->0.135)
+-COLUMN CHANGE: new term yaw_band (ANTI-ORBITAL, w=2.0, sigma=0.4) added; column "yaw" inserted after drift
+-  from iter3 onward. Iter2 diagnosis was radial only: a constant steer+roll policy rides a CIRCLE around
+-  spawn — drift_band and the drifted termination are blind to orbital motion, and a circle inside the
+-  band survives to timeout (would satisfy the >1400 criterion by circling). play_eval now reports
+-  "yaw mean/max" and "turn/episode" (360 deg = one full circle). Iter3 aborted ~20min in to fix the objective.
+-09011356      2.00  8.00   5.00   2.00   1.50   0.10   0.10   yes   ITER3 RESULT: ep_len 769.0, timeout 45.2%,
+-  yaw mean/max 174.7/180 deg, turn/ep 282.5 deg -> STILL ORBITING. TB yaw_band=1.7e-12: Gaussian tail dead
+-  (gradient vanishes past ~0.8 rad), same failure as iter1 micro_band. Iter2 re-eval: turn/ep 256.5 deg ->
+-  iter2 was ALSO circling (its 854.9 contaminated). Roll RMS 4.94->6.51: sigma 15deg flattened precision.
+-  -> iter4: yaw_band -> PLATEAU+LINEAR TAIL (band 0.1, slope 1/(pi-0.1)=0.33, w 2->4); roll sigma 15->12deg;
+-     micro tail_slope 0.03->0.05 (drive still 6.1 rad/s vs target 1.5)
+-09011600      2.00  8.00   5.00   4.00   1.50   0.10   0.10   yes   ITER4 RESULT: ep_len 846.1, timeout 48.5%,
+-  yaw mean/max 174.7/180 deg, turn/ep 242.7 deg -> STILL ORBITING. TB yaw_band=0.075: the CLAMPED linear
+-  tail's value hits 0 exactly at |yaw|=pi -> the policy PARKED at the zero-gradient floor (yaw=174.7deg).
+-  -> iter5: (1) yaw_band UNCLAMPED (value -1 at pi, constant gradient everywhere, no parking spot);
+-     (2) NEW wheel_net term (user's net-wheel-angle idea): joint_pos WRAPS at +-pi (verified: write 10.0 ->
+-     read -2.5), so a custom env class NewBikeBalanceHybridEnv integrates joint_vel; plateau band 1.0 rad,
+-     slope 0.19, floor-capped at -1/step (cap prevents suicide-by-reset), w=1.0.
+-09011824      2.00  8.00   5.00   4.00   1.50   0.10   0.10   yes   ITER5 RESULT: ep_len 621.7, timeout 35.2%.
+-  MAJOR CORRECTION: yaw probe showed the bike SPAWNS at yaw ~+-180deg (USD root faces -x), so the
+-  absolute-yaw term/metrics measured against the WRONG baseline: "yaw pinned at 174.7deg" = the bike
+-  faces its spawn direction, NOT orbiting. Since iter3 yaw_band taxed upright bikes -4/step for facing
+-  spawn and its gradient rewarded TURNING AROUND. Real failure mode: policy balances by ROLLING FORWARD
+-  (drive 6.3 rad/s) and dies at the 2 m drift limit or falls. (User's visual "circling" = wide-arc rolling.)
+-  -> iter6: yaw_band + play_eval yaw metric now RELATIVE to per-env spawn yaw (env records spawn_yaw at
+-     reset; wrap-aware atan2 difference). Same weights otherwise (attribution-clean).
+-AUDIT (iter6, aborted 41min): full reward-term audit. FATAL: hand-rolled yaw formula assumed quat (w,x,y,z)
+-  but isaaclab stores (x,y,z,w) (quat_from_euler_xyz returns [qx,qy,qz,qw]; physx passthrough). On the
+-  identity spawn quat the formula returned pi -> "spawn facing backward" was an artifact; a true 5-deg
+-  turn read 0.0 relative -> iter6 yaw_band was INERT. FIX: use canonical asset.data.heading_w (kernels.py
+-  root_heading_w: base+x rotated to world, atan2(y,x)) in reward, env baseline, and play_eval metrics.
+-  Also flagged: rate_penalty divides dimensionless raw-action delta by physical scales (1/rad, 1/(N-m)
+-  mixed; steer biased 4:1); act_penalty name says torque but reads normalized actions. USD: steering
+-  limits +-89.999985deg match action scale 1.57 rad; rearwheel free revolute; fork at +x -> base+x = fwd.
+-0901xxxx      2.00  8.00   5.00   4.00   1.50   0.10   0.10   yes   iter6 relaunched with heading_w fix
+-TERMINATION CHANGE: v1 envelope tightened for the next run (user spec): drifted 2.0m -> 0.5m (wheel radius
+-  ~0.07m: 2.0m allowed orbiting inside); NEW yaw_deviation termination |heading-spawn|>60deg (1.0472 rad,
+-  heading_w is rad); NEW wheel_net termination |net wheel angle|>7.2 rad (wheel_net_angle is rad, unwrapped).
+-  These reset orbiting/rolling policies outright. Iter6 (heading_w fix, loose limits) aborted at 73%:
+-  training under loose limits + eval under tight = mismatched comparison.
+-  
+-  
+-  
+-  
+-  
+-  
+-  
+-  
+-  
+-  
+-  
+-  
+-  
+-  
+-  
+-  
+-  
+-  
+-
+-AUDIT2 (iter7 finished but TAINTED, skip eval): spawn_yaw was captured from kernel-cached heading_w in
+-  the post-reset window where _reset_pose() does NOT invalidate it -> baseline = dying bike's heading,
+-  yaw_deviation could false-fire, yaw_band mis-baselined. Project-wide stale-read audit + fixes:
+-  1) env: spawn_yaw from RAW root_quat_w + euler_xyz_from_quat (fresh in all windows)
+-  2) rewards.yaw_band + terminations.yaw_deviation: same raw-quat yaw
+-  3) observations.balance_imu_state: gravity + lin/ang vel from raw quat via quat_apply_inverse
+-     (first obs of a new episode no longer carries the dying pose's values)
+-  4) play_eval (rsl_rl + skrl): roll + yaw metrics from raw quat
+-  eval_logger already reads raw quat per call (xyzw helper) - no change. dynamic mdp - no stale reads.
+-0901xxxx      2.00  8.00   5.00   4.00   1.50   0.10   0.10   yes   iter8: first CLEAN run (fresh-baseline yaw)
+-09020158      2.00  0.00   0.00   0.00   0.00   0.10   0.10   yes   ITER8 (survival-only ablation, per user):
+-  5 shaping terms commented out in cfg (user edit 01:04). Trained WITH all freshness fixes (raw-quat spawn_yaw,
+-  fresh obs, fresh metrics). Terminations: drifted 0.5m, yaw 60deg, wheel_net 7.2rad. User's pre-fix duplicate
+-  run 01-10-04 killed at ~04:30 per user choice. Answers: does survival alone + envelope teach oscillation?
+-  ITER8 RESULT: ep_len 54.2 (DR), timeout 0.3%, fall 99.7%, yaw max 60deg + drift max 0.5m (envelope biting).
+-  SURVIVAL-ONLY VERDICT: does NOT learn oscillation — alive-time gradient too sparse to bootstrap under full DR.
+-  -> iter9: restore the 5 shaping terms (uncomment), same tightened terminations. Full 8-term set + all fixes.
+-TERMINATION CHANGE: yaw_deviation 60deg -> 30deg (0.5236 rad) per user: 60deg still leaves room to learn
+-  orbiting; 30deg forces oscillation. Iter9 (60deg) aborted at 42 min, relaunched with 30deg.
+-09021148      2.00  8.00   5.00   4.00   1.50   0.10   0.10   yes   ITER9 RESULT: ep_len 29.9, timeout 0%!
+-  Death breakdown (train end): fallen 54%, YAW_DEV 41% (30deg cap firing), wheel_net 9%, drifted 0.5%.
+-  The bike can't finish a recovery turn within 30deg of heading -> squeezed between yaw wall and fall wall.
+-  User's 15k duplicate (12-42-25): ep_len 29.4, fallen 65%, yaw 27% — same picture.
+-  -> iter10: KEEP 30deg envelope (user design) but make resets survivable: initial roll +-0.15->0.10,
+-     rollrate +-0.5->0.25; survival 2->5 (alive-time gradient must dominate while episodes are short).
+-09021627      5.00  8.00   5.00   4.00   1.50   0.10   0.10   yes   ITER10 RESULT: ep_len 37.9 (user 15k dup: 19.4),
+-  timeout 0%, fall 100%. Death breakdown (train end): YAW_DEV 50%, fallen 33%, drifted 18%, wheel 1%.
+-  Even with gentle resets (+-0.10 roll / +-0.25 rollrate, verified in params), HALF of all episodes die by the
+-  30-deg heading cap — recovery at this bike's geometry inherently swings >30deg. 30deg is unlearnable from
+-  scratch under full DR.
+-  -> iter11: yaw cap 30->60deg (data-driven: learn balance first, tighten later). Keep survival 5, resets gentle.
+-CORRECTION (user): the 17-47-42 run was trained with --no_dr (dr_ramp end_step=1e9, alpha~0 forever),
+-  NOT the DR ramp — my earlier "same cfg" claim was wrong (reward weights identical; DR regime completely
+-  different). Its fair eval is NO-DR: ep_len 1306.9, timeout 53.9%, rollRMS 1.45deg, yaw max 36deg,
+-  drive mean 1.4 rad/s -> the FIRST real trackstand of the campaign (no-DR). Under full DR it collapses
+-  to 19.4 (67x). Confirms the DR-regime verdict with a much stronger policy: the full-DR criterion is
+-  the wall, not the reward design. Next lever: shrink DR ranges (mass/friction), not more reward tuning.
+-09022102      5.00  5.00   2.50   1.00   2.50   0.10   0.10   yes   ITER11 (user weights, yaw 60deg,
+-  DR ramp, 20k): DR eval ep_len 32.9, timeout 0%. Rebalanced weights did NOT break the full-DR wall.
+-09022132      5.00  5.00   2.50   1.00   2.50   0.10   0.10   no_dr ITER12 (user run: yaw 30deg, NO DR, 15k):
+-  no-DR eval ep_len 977.3, rollRMS 0.38deg (!), worst lean 1.97deg, yaw max 29.98deg (cap holds).
+-  BEST balance quality of the campaign — user's rebalance validated. Failure mode shifted: deaths mostly by
+-  the 30deg heading cap after ~20s (turn/ep 113.8deg slow heading wander), not by falling.
+-  Full-DR eval: 20.0 steps (49x collapse) — DR wall confirmed again.
+-LOOP STOPPED per user. Next step agreed: shrink DR ranges (mass 0.8-1.2, friction 0.8-1.2) and retrain.
+-
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+-
+-Reworked termination conditions (roll, drift, yaw, drive motor angle). After control target rework (from emphasizing steering violently to slight rear wheel oscillation with almost fixed steering angle), test different reward terms' effect on a no_dr environment with max_iterations = 60000. After finding the best reward function combination with no_dr, introduce domain randomization. First train for 60000 iters (long enough for policy to converge) and randomize with only one factor at a time to find what terms in the DR influences policy performance the most.
+-
+-timestamp       survival_rew  act_pen  rate_pen  roll_rew  wheel_rew  yaw_rew  micro_rew  drift_rew  DR?  comments
+-
+-09030111              5.0        \         \         \          \        \          \          \      n
+-09030123              5.0        \       0.1         \          \        \          \          \      n   -> longest mean episode length and smallest mean joint velocity. However, during evaluation, 31% of the environments die of drive motor angle exceeding limit (which indicates a drift), and 0.8% die of drift distance exceeding limit. Others die of timeout, meaning they perfectly balancing until the maximum survival steps allowed.
+-09030125              5.0      0.1       0.1         \          \        \          \          \      n
+-09030113              5.0        \       0.5         \          \        \          \          \      n
+-
+-Given survival weight 5 + rate penalty weight 0.1 performs best, add two more rewards, based on what 09030123 fail most on.
+-
+-timestamp       survival_rew  act_pen  rate_pen  roll_rew  wheel_rew  yaw_rew  micro_rew  drift_rew  DR?  comments
+-
+-09031700              5.0        \       0.1         \        1.0        \          \          \      n   wheel reward and drift reward implemented in band. -> better than 09030123. longest mean episode length at 44200 iterations. 8.4% wheel net deaths and 22.9% drift deaths. Others are timeout.
+-09031702              5.0        \       0.1         \          \        \          \        1.5      n
+-
+-Based on 09031700, try to penalize large drive motor angle and drift, instead of rewarding within a band. This may really force the bike to minimize large drive motor angle and drift.
+-
+-timestamp       survival_rew  act_pen  rate_pen  roll_rew  wheel_pen  yaw_rew  micro_rew  drift_pen  DR?  comments
+-
+-09041212              5.0        \       0.1         \        1.0        \          \          \      n   wheel penalty and drift penalty implemented in quadratic.
+-09041213              5.0        \       0.1         \          \        \          \        1.0      n
+-09041214              5.0        \       0.1         \        1.0        \          \        1.0      n
+-
+-Both quadratic penalties performed worse than 09031700. So 09031700 is still best. Now explore switching wheel_net and drift bands to gaussian (normal distribution reward). Gaussian wheel_rew and drift_rew have larger weight than band ones because Gaussian decreases fast.
+-
+-timestamp       survival_rew  rate_pen  wheel_rew  drift_rew  DR?  comments
+-09050126              5.0       0.1        2.0          \      n   both wheel_rew and drift_rew are gaussian
+-09051133              5.0       0.1          \        2.0      n   result: almost same mean epi len as 09031700, but less drift and more timeout.
+-09050127              5.0       0.1        2.0        1.5      n
+-
+-09051133 is the new best. Explore how each domain randomization term affects policy learning curve, by using baseline 09050127 temporarily (09051133 hasn't finished training at this time). To quickly observe their impact, first run max_iterations=15000. Since only want to change dr terms, which baseline doesn't matter, as long as the selection is consistent for all dr term changes. But after the affect of dr terms is fully revealed, we should use 09051133 as the baseline, and add dr upon that.
+-
+-timestamp       survival_rew  rate_pen  wheel_rew  drift_rew  DR?          comments
+-
+-09050138              5.0       0.1        2.0        1.5      imu_noise   result: great harm for policy learning
+-09050151              5.0       0.1        2.0        1.5      roll_angle  result: great accelerator
+-09050152              5.0       0.1        2.0        1.5      roll_vel    result: great accelerator
+-09050156              5.0       0.1        2.0        1.5      friction    result: great accelerator
+-09051025              5.0       0.1        2.0        1.5      mass        result: great accelerator
+-09051029              5.0       0.1        2.0        1.5      com_pos     result: great harm
+-
+-Now try max_iterations=60000 to see long-term impact of imu_noise and com_pos have on policy learning, since we observed increase pattern of learning curve on imu_noise and com_pos. We want to see whether the policy could ultimately achieve high mean episode length.
+-
+-timestamp       survival_rew  rate_pen  wheel_rew  drift_rew  DR?          comments
+-
+-09051101              5.0       0.1        2.0        1.5      imu_noise   result: recovered to some extent (mean epi len 1129)
+-09051716              5.0       0.1        2.0        1.5      com_pos     result: still great harm for policy (mean epi len 500 during eval)
+-
+-Imu_noise is tolerable. However, center of mass randomization truly harms the policy. But since com randomization concerns xyz directions, we have to figure out which affected policy the most.
+-
+-Best no_dr reward function cfg has been found: 09051133. For following train with dr, all take BASELINE 09051133 as best reward function cfg. First find which direction of com randomization affects policy the most. Also, explore randomize actuator.
+-
+-timestamp       survival_rew  rate_pen  drift_rew  DR?          comments
+-
+-09060206              5.0       0.1        2.0      com_x       result: a great accelerator for policy(mean epi len 1500)
+-09060207              5.0       0.1        2.0      com_y       domain +-0.02 (2cm deviation from center). result: a great harm to the policy (mean epi len 620), learning curve fluctuated around mean epi len 500, hardly any learning.
+-09060208              5.0       0.1        2.0      com_z       result: a great accelerator (mean epi len 1496)
+-09061147              5.0       0.1        2.0      actuator    result: a great accelerator (mean epi len 1489 at raw 350)
+-
+-For com_y randomization, explore why it harms policy: randomization region too large or inherently unstable? Find the largest domain of com_y the policy can stand. Try with a smaller domain: +-0.005 and +-0.01. For imu noise, explor which part of it affects policy the most: gyro bias, tilt bias, or sensory latency? (imu_noise has these three implemented)
+-
+-timestamp       survival_rew  rate_pen  drift_rew  DR?          comments
+-
+-09061551              5.0       0.1        2.0      com_y       domain +-0.005, result: great accelerator for policy (mean epi pen 1500 at model 27250)
+-09061552              5.0       0.1        2.0      com_y       domain +-0.01, result: some harm (mean epi len 1290 at 24450)
+-09061811              5.0       0.1        2.0      imu_gyro    gyro bias is sampled from N(0, 0.03), result: great harm for policy (mean epi len 672 at 53750)
+-09061813              5.0       0.1        2.0      imu_tilt    tilt bias is sample from N(0, 0.02), result: great accelerator (mean epi len 1500 at 55050)
+-09061814              5.0       0.1        2.0      imu_sensory sensory latency is sampled from (20ms, 40ms, 60ms), result: some harm (mean epi len 1117 at 39550)
+-
+-2026.9.6 In all dr terms, only com_y, imu-gyro and imu-sensory have harm to policy. As com_y tends to a wider domain, its effect shifts from a great accelerator to a great harm. Variant domains have not been tested for imu_gyro, imu_tilt and imu_sensory yet. Next step: find the imu hardware's metrics to pin down the exact domain for three imu bias components, and then test.
+-
+-2026.9.6 Suggestions from surpervisor: 1. Invetigate more on imu's noise origin. Find the hardware imu's real noise level, and adjust the noise level accordingly. Also, add a state estimator to compute the estimated state after the delay. 2. For com randomization, try to align with bike model's scale, instead of setting explicit number. Also, introduce the idea of a "payload" to better calculate com deviation. Third, 2cm is way too large, PER THE BIKE.
+-
+-2026.9.8 After a little research on imu latency, major components are listed below from #1 ~ #11. As other terms are either negligible or can be fully eliminated by calibration, rl only focuses on #1: post-calibration initial bias (aka initial bias residual) and #8: white noise. Both the gyroscope and accelerometer have their #1 and #8 counterparts, in which the magnitude of #8 can be read from imu manual, but #1 have to be measured manually. Currently #8 is precisely set in code following imu datasheet, but #1 is only a reasonable prior placeholder (also noted in code comment). Thus, first find out how initial bias residual and white noise of imu affect the policy. #8 should take effect every run onwards, while #1 is still an adjustable dr term.
+-
+-timestamp       survival_rew  rate_pen  drift_rew  DR?          comments
+-
+-09082242              5.0       0.1        2.0     \            #8 sensor white noise on for all the following runs, including this. Result: mean epilen 468, very low.
+-09082246              5.0       0.1        2.0     imu #1-gyro  Result: mean epi len 658, very low.
+-09082248              5.0       0.1        2.0     imu #1-accel Result: mean epi len 764, very low.
+-
+-2026.9.9 All above three runs produced unsatisfactory results. One suspect is that I removed 4 observation terms before training and instead of observation dimension = 13 for previous runs, the observation is 9-dim for the above three. The removal of 4 obs terms (steer_pos, steer_vel, drive_pos, drive_vel) were supported by ablation tests on evaluating 1133. However, the 9-dim version proved quite inferior, supported by the above 3 runs. Thus, run two additional tests to study the effect of observation dimensions on the policy.
+-
+-timestamp       survival_rew  rate_pen  drift_rew  DR?          comments
+-
+-09090950              5.0       0.1        2.0     \            with imu white noise (class NewBikeBalanceObservationsCfg(ObservationGroupCfg)), 13-dim observation. Result: mean epi len of 1500 at model 500.
+-09090944              5.0       0.1        2.0     \            without imu white noise, 9-dim observation. Result: mean epi len 438.2
+-
+-2026.9.9 New best baseline found: 09090950. Conclusion: full 13-dim observations are vital. Now see how imu initial bias residual affects the policy.
+-
+-timestamp       survival_rew  rate_pen  drift_rew  DR?          comments
+-
+-09091549              5.0       0.1        2.0     imu #1-gyro  Result: mean epi len 1500 at model 3600
+-09091550              5.0       0.1        2.0     imu #1-accel Result: mean epi len 1500 at model 350
+-
+-2026.9.9 All good. Now combine all helpful dr terms to observe a full dr's effect on policy learning: is it additive, or multiple helpful dr terms will interfere with each other, harming the policy?
+-timestamp       survival_rew  rate_pen  drift_rew  DR?          comments
+-
+-09092244              5.0       0.1        2.0     all          max_iterations=60000. Result: mean epi len 791 at model 56650
+-09101210              5.0       0.1        2.0     all          Continues the last model of 09092244 with max_iterations=200000 Result: unsatisfactory -- mean epi len < 1000.
+-09110138              5.0       0.1        2.0     all          Continues the last model of 09101210 with max_iterations=500000 Result: unsatisfactory -- mean epi len < 1000.
+-
+-2026.9.11 Attempted to transfer 09090950 model 500 (mean epi len 1500) to mujoco for sim-to-sim verification. However, discovered large gap between isaaclab and mujoco simulation environments. First, the minimum physical step dt is different between them. However, the upstream policy inference frequency are aligned to 50Hz. Second, collision meshes are implemented differently. In isaaclab, due to a lack of pre-defined collision configuration in usda file, convex hulls were employed to handle collision. However, mujoco only supports primitive collision shapes (cuboids, spheres, cylinders......). Third, groun/wheel friction, motor dynamics, bike inertia, initial condition, observation consistency remain largely unexplored.
+-
+-2026.9.12 So the next step is: First, verify mujoco and isaaclab simulation environment consistency (simulator metrics). Second, perform a simplest baseline test of free fall across the two simulators, and measure the average time to determine bike model consistency. Can probably also use the bike model from Tsinghua University, and check the differences between theirs and ours, since their model work find on a lqr task in mujoco, and ours are modified. Third, verify evaluation metric consistency based on the Tsinghua bike model.
+-
+-2026.9.13 Ran simple gravity test on tsinghua's orange bike in mujoco. Physic worked normally. Fixed newbike's collision meshes based on orange bike's ellipsoid collision meshes. Result improved: balance ~60 steps -> 200+ steps. But still far from 09090950 model 500's play_eval performance. Found a few other problems. 1. NewBike-Balance-v1 and deploy_sim use different wheel collision meshes: convex hull and ellipsoid. However, isaaclab doesn't have ellipsoid, and mujoco doesn't have convex hull. Pending solution: use SDF collider (supported by both simulators). 2. solver_velocity_iteration_count is too small in isaaclab, causing the actuator force not fully impacting the bike. (Force didn't propogate to every link). Consequently, x24.5 is needed on rear wheel rotational inertia to compensate for the deficiency. Running 09131837 with improved position iteration count=16, velocity iteration count = 8 to address this (other config same as 09090950). After finish, verity on mujoco. Pending result. 3. Exported our newest bike model (with hardware modifications) to both urdf -- for isaaclab, and xml (mjcf) -- for mujoco. However, opening urdf, discoverd when the bike intends a free fall, all components break apart. Opening xml, discovered the geometry mesh for base link is too complicated and exceeded mujoco cap. Solution for mujoco: downgrade export quality (already done, exported file in usb). Solution for isaaclab still pending.
+-
+-timestamp       survival_rew  rate_pen  drift_rew  DR?          comments
+-
+-09131837              5.0       0.1        2.0     \            solver position/velocity iteration count = 16/8 Result: mean epi len 1312.
+-
+-2026.9.14 09131837 evaluation on isaaclab is ok, but in mujoco deploy_sim without x24.5 compensation, only 30-40 steps, even worse than 0950 policy with x24.5 compensation. Demonsrates the deficiency brought about by different collision meshes. Main center of work put to aligning physical consistency between isaaclab and mujoco. Now export the newest bike model both to mujoco (.xml) and isaaclab (.urdf). Today's main focus is to ensure consistency in every single aspect of the physics configuration.  Exported trackstand_rl_0914_description/ (isaaclab) and trackstand_rl_bike_0914 (mujoco). Here is the checkpoint:
+-
+-2026.9.14 1. Mass, 2. center of mass coordinate, 3. friction coefficient (ground-wheel relative), 4. collision mesh (MOST IMPORTANT FOCUS), 5. joint stiffness & damping, 6. actuator enabled normally (can give command and turn) 7. pass gravity free-fall test, 8. 
+-
+-2026.9.14 Already verified: 1, 2, 5 (.xml have actuator configs, but .urdf does not. Instead, it is achieved in bicycle_cfg.py manually.)
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-0903 SWEEP (user, 4 runs, all: no DR [end_step 1e9], 60k iters, envelope 30deg/0.5m/7.2rad, eval.txt autosaved):
+-  01-11-02  surv5 only           : ep 1329.1, timeout 45.4%, rollRMS 0.73, drive 1.45/78, steer 2.07/24
+-  01-13-58  surv5 + rate0.5      : ep  643.7, timeout  0.0%, rollRMS 1.26, drive 3.01/95, steer 2.42/33  <- rate 0.5 kills it
+-  01-23-30  surv5 + rate0.1      : ep 1354.3, timeout 68.2%, rollRMS 0.61, drive 1.26/77, steer 1.54/26  <- WINNER
+-  01-25-33  surv5 + rate0.1+act0.1: ep 1142.8, timeout 50.4%, rollRMS 0.91, drive 1.59/62, steer 1.39/24
+-  VERDICT: 01-23-30 (survival 5.0 + rate_penalty 0.1) — wins ep_len, timeout, rollRMS, drive mean
+-  simultaneously; only 0.15 rad/s worse steer mean than 01-25-33. Survival-only now PROVEN learnable at
+-  60k iters no-DR (revises the iter8 verdict, which failed due to DR+20k, not the reward).
+-09031700      A/B vs 01-23 baseline (surv5+rate0.1, no DR, 60k iters, envelope 30/0.5m/7.2rad):
+-  Run A 17-00-37: surv5 + wheel_net1.0 + rate0.1   (attacks the 31% eval-side wheel_net death mode)
+-  Run B 17-02-14: surv5 + drift_band1.5 + rate0.1  (attacks the 0.8% eval-side drifted deaths)
+-  Baseline 01-23-30: ep 1354.3, timeout 68.2%, rollRMS 0.61, drive 1.26/77, steer 1.54/26
+-09031700      A/B RESULT (eval no-DR, 64 envs, death breakdown):
+-  Run A wheel_net1.0 : ep 1216.1, timeout 44.2%, wheel_net deaths 51.9% (UP from 31%), yaw 3.9%,
+-                       rollRMS 0.82, drive 1.39/79  -> REGRESSED vs baseline
+-  Run B drift_band1.5: ep 1143.8, timeout 30.7%, wheel_net deaths 65.7%, drifted 0.7%,
+-                       rollRMS 1.23, drive 1.38/112 -> REGRESSED worse
+-  BASELINE 01-23 (surv5+rate0.1, nothing else): ep 1354.3, timeout 68.2%, wheel 31.0%, rollRMS 0.61.
+-  VERDICT: the survival-only objective is a simple learnable landscape; EACH added shaping term
+-  perturbed it into a worse optimum at 60k iters — and the wheel_net reward even RAISED its own death
+-  mode (51.9%) while degrading roll (0.82). BEST REWARD CONFIG = survival 5.0 + rate_penalty 0.1 ONLY.
+-  Remaining 31% wheel_net deaths unsolved by reward shaping: candidates = relax wheel termination
+-  (7.2->10+ rad), much stronger wheel_net weight (2-3), or longer training on the baseline cfg.
+-09031700      A/B REVISED (peak-model evals, no-DR): final ckpts were late-training DEGRADATION, not the
+-  run's true performance. Peak models:
+-  A1 model_44200 (wheel_net1.0): ep 1404.4, timeout 68.7%, wheel deaths 8.4% (was 31%!), drift 22.9%,
+-      rollRMS 0.46, drive 1.15/61.6  -> BEATS baseline 01-23 (1354.3/68.2%/0.61) on every axis
+-  A2 model_44250: ep 1381.2, TIMEOUT 78.1% (best of campaign), wheel 15.6%, drift 6.2%, rollRMS 0.50,
+-      drive 1.09/61.6
+-  B1 model_51950 (drift_band1.5): ep 1254.1, timeout 42.6%, wheel 55.8% -> worse
+-  B2 model_34700: ep 1369.4, timeout 65.6%, rollRMS 1.54 -> marginal
+-  VERDICT v2: wheel_net(band) 1.0 WORKS at its peak — cuts its own death mode 31%->8% and beats baseline;
+-  drift then becomes the new dominant death (A1 22.9%), exactly as predicted. Runs degrade after ~44k —
+-  use early stopping (~45k) or fix late instability (quadratic variant has no plateau). Next: add the
+-  quadratic drift penalty to the A-config (sequencing confirmed).
+-090412xx      A/B/C QUADRATIC runs (surv5+rate0.1 base, no DR training, 60k iters):
+-  A=wheel_quad1.0  B=drift_quad1.0  C=both. FIRST eval round was INVALID: user had commented out dr_ramp,
+-  so --no_dr was a no-op and the evals ran under full un-ramped DR (all events active) -> ~19-step collapse.
+-  dr_ramp temporarily restored for re-eval (user's comment restored after).
+-  CORRECTED eval (no-DR, best raw+smoothed models):
+-  A RAW 25900 : ep 1355.9, timeout 62.5%, rollRMS 0.92, wheel 28.1%
+-  A SM 27000  : ep 1318.2, timeout 47.7%, rollRMS 0.97
+-  B RAW 31200 : ep 1297.0, timeout 65.4%, rollRMS 1.70
+-  B SM 44500  : ep 1413.8, timeout 73.6%, rollRMS 1.21, wheel 21.7%, drift 0.8%  <- best quad
+-  C RAW 15050 : ep 1289.8, timeout 56.2%, rollRMS 1.66
+-  C SM 16800  : ep 1249.9, timeout 47.0%, rollRMS 1.43
+-  VERDICT: quadratics did NOT beat the band wheel_net at its peak (A1: 1404.4/68.7%/0.46deg; A2: 1381.2/78.1%/0.50deg).
+-  The always-negative quadratic likely overtaxes the necessary oscillation (quad wheel deaths 28% vs band's 8.4%
+-  at peak). BEST REWARD CONFIG = survival 5 + rate 0.1 + wheel_net BAND 1.0, early-stop ~44k.
+-0905 FINDING (analysis, no evals): SOME DR TERMS HELP. With identical reward set
+-  (surv5 + wheel_gauss2.0 + drift_gauss1.5 + rate0.1), tire-friction DR (0.5-1.2, full from step 0,
+-  no ramp) learns DRAMATICALLY faster than no-DR: ep_len 1334 @iter500, 1486 @iter742 (near horizon),
+-  while no-DR G2 needed iter1000 for 871 and plateaus ~900; G1 (no drift_gauss) ~690@3k.
+-  Mechanism: dynamics diversity prunes the degenerate single-dynamics strategies (slow one-sided wheel
+-  bias -> 7.2rad deaths) — the only common solution across frictions is zero-mean oscillation, exactly
+-  what the reward asks; no-DR runs overfit nominal dynamics (their peak-then-degrade history fits).
+-  Reverses the old DR pessimism: FULL DR (all terms, wide) was the wall; single-term friction DR is a
+-  regularizer/accelerator. Next question: which of the 4 single-term DR runs helps vs burdens.
+-09050126      G1/G2 GAUSSIAN eval (no-DR, 64 envs; final + raw/smoothed TB peaks):
+-  G1 (wheel_gauss2.0) RAW30250: ep 1222.4, to 61.3%, roll 1.00; SM51350: ep 1278.4, to 49.2%, roll 0.69;
+-     FINAL: ep 1324.9, to 64.6%, rollRMS 0.65, wheel 32.3%
+-  G2 (+drift_gauss1.5) RAW49500: ep 1152.3, to 47.5%, roll 1.06; SM35750: ep 1308.3, to 60.5%, roll 0.79;
+-     FINAL: ep 1338.3, to 66.7%, rollRMS 0.78, wheel 27.1%
+-  NOTE: finals eval BEST here — TB mid-training "peaks" did NOT predict eval (opposite of the quad batch);
+-  training-side ep_len curves are completion-biased, trust eval.
+-  vs champions: band A1 1404.4/68.7%/0.46, A2 1381.2/78.1%/0.50, baseline 1354.3/68.2%/0.61.
+-  VERDICT: Gaussian wheel reward does NOT beat the band wheel (nor the plain baseline): lower ep_len,
+-  timeout and roll on every axis. Band plateau+tail remains the best wheel-net reward found.
+-0905 DR-TERM ABLATION (6 runs, G2 reward set [surv5+wheel_gauss2.0+drift_gauss1.5+rate0.1], 15k iters,
+-  each with ONE DR term at full strength, no ramp; eval = policy in its OWN DR env, --no_dr; 12 models):
+-  FRICTION 0.5-1.2 : RAW(250)  1500.0/100.0%; SMOOTH(13000) 1500.0/100.0%   <- PERFECT
+-  MASS 0.5-1.5     : RAW(600)  1494.8/ 97.7%; SMOOTH(14250) 1500.0/100.0%   <- PERFECT
+-  ROLL-POSE +-0.1  : RAW(12000)1500.0/100.0%; SMOOTH(14600) 1468.1/ 95.3%   <- PERFECT
+-  ROLL-VEL +-0.25  : RAW(5750) 1500.0/100.0%; SMOOTH(12500) 1364.1/ 77.9%   <- strong
+-  COM +-0.02/0.05  : RAW(13950)1138.3/ 65.5%; SMOOTH(14600) 1202.9/ 72.3%   <- hurts (drift deaths 17-28%)
+-  IMU noise+delay  : RAW(14550) 927.8/ 55.7%; SMOOTH(14600) 871.8/ 53.1%    <- hurts most (yaw 28%+fallen 11-17%)
+-  REFERENCE: no-DR G2 final (60k iters, same reward): 1338.3/66.7%.
+-  CONCLUSION: 4 of 6 DR terms HELP massively — each reached ~1500-step survival in 15k iters where 60k
+-  no-DR only reached 1338. Friction & mass = dynamics-diversity regularizer; roll-pose/roll-vel =
+-  disturbance-injection curriculum (every episode starts perturbed -> recovery learned from day 1).
+-  COM and IMU hurt at this budget (com: balance dynamics shift; IMU: delayed/noisy obs break the loop).
+-  Actuator-gains DR not yet tested. CAVEAT: evals are in-distribution (each policy in its own DR term);
+-  cross-term generalization untested.
+-09051101      IMU-60k EXTENSION (IMU noise+latency term only, full strength, G2 reward set, seed 42):
+-  ANSWER: YES — the IMU policy DOES ultimately achieve high ep_len with more training. 4x budget (15k->60k)
+-  flipped it from worst DR term to essentially perfect:
+-  FINAL 59999: ep 1474.7, timeout 94.5%, rollRMS 0.89, drive 0.14
+-  RAW 23150  : ep 1487.5, timeout 95.3%, rollRMS 1.14, drive 0.13
+-  SMOOTH 30750: ep 1500.0, TIMEOUT 100.0%, rollRMS 0.98, drive 0.13
+-  vs 15k IMU run: 927.8/55.7%. REVISES the ablation verdict: IMU "hurts the most" was a BUDGET ARTIFACT —
+-  sensor DR needs ~4x the training time, then reaches the horizon. Training curve's dip at 30k (~800) was
+-  transient. Implication: COM-60k (running) may likewise recover. All 6 single-DR terms can now reach
+-  ~1500 with enough budget; the budget, not the term, was the limit.
+-CRITICAL CORRECTION (eval-env bug in my patch script): the dr_ramp wrap in my patch drivers was NOT
+-  idempotent — patching an already-wrapped file nested the ''' pairs and re-ACTIVATED dr_ramp. Proven by
+-  simulation of the patch sequence. With dr_ramp active + --no_dr -> alpha=0 -> the single DR term was
+-  lerped to nominal -> the eval env had NO DR/noise. Consequences:
+-  1) IMU-60k: my three "perfect" evals (1500/100%, 1487.5/95.3%, 1474.7/94.5%) were NOISE-OFF artifacts.
+-     The user's eval env was CORRECT — TRUE IMU-60k result = 1129.7/72.6% (fallen 10.4%, yaw 17.0%),
+-     reproduced identically by 3 of my reruns (eval is deterministic). Still improves on 15k (927.8/55.7%)
+-     but NOT to the horizon. Bonus insight: without its sensor noise the same policy scores 1500/100% —
+-     the IMU noise costs ~25% of timeouts.
+-  2) DR-ablation evals: only the FIRST (IMU) ran in its true env (927.8/55.7% valid). The other five
+-     (rollpose/rollvel/friction/mass/com) ran with dr_ramp accidentally ACTIVE -> no-DR envs -> those
+-     numbers measure DR-trained policies' generalization to no-DR, NOT in-distribution. Training itself
+-     was always correct (no dr_ramp in the run snapshots). Re-evals pending with a fixed idempotent patch.
+-0905 DR-ABLATION CORRECTED RE-EVAL (14 evals, TRUE in-distribution: single DR term at full strength,
+-  no ramp, G2 reward set, idempotent patch, NO --no_dr flag):
+-  FRICTION: RAW(250) 1500.0/100.0% roll0.06; SMOOTH(13000) 1500.0/100.0% roll0.66   <- PERFECT
+-  MASS    : RAW(600) 1494.8/97.7% roll0.42; SMOOTH(14250) 1500.0/100.0% roll0.71   <- PERFECT
+-  ROLLPOSE: RAW(12000) 1465.7/96.9% roll0.72; SMOOTH(14600) 1474.5/95.3% roll0.88  <- strong
+-  ROLLVEL : RAW(5750) 1500.0/100.0% roll0.27; SMOOTH(12500) 1364.1/77.9% roll0.43  <- strong
+-  IMU-15k : RAW(14550) 927.8/55.7%; SMOOTH(14600) 871.8/53.1% (yaw28%, fallen11-17%)
+-  IMU-60k : RAW(23150) 1018.4/64.6%; SMOOTH(30750) 1129.7/72.6% (matches user's eval exactly)
+-  COM     : RAW(13950) 285.1/15.0%; SMOOTH(14600) 314.9/16.8% (yaw deaths 62-63%!)  <- DEVASTATING
+-  CORRECTED VERDICT: friction ~ mass > roll-pose ~ roll-vel >> IMU >> COM. The buggy no-DR evals had
+-  HIDDEN how bad com really is (buggy: 1138/65%; true: 285/15%) — com-trained policy fails in its own
+-  env. IMU improves with 4x budget (56%->72.6%) but pays ~25% timeout cost vs its no-noise score (1500/100%).
+-09051133      11-33 RESULT (drift_gauss 2.0 ONLY, no wheel term, full events at nominal -> friction 1.0,
+-  no DR, 60k iters, seed 42; eval env verified = training env): CATASTROPHIC FAILURE.
+-  FINAL 59999: ep 50.6, timeout 0%, rollRMS 5.70, yaw deaths 42.2%, drifted 20.5%
+-  RAW 50750  : ep 55.6, timeout 0%, yaw 68.2%
+-  SMOOTH 50800: ep 50.6, timeout 0%, yaw 63.4%
+-  This RESOLVES the 11-05 confound: the same drift-only reward at friction 0.5 (11-05-48) reached
+-  TB 1486@iter742; at friction 1.0 it collapses to ~50 steps. The stellar 11-05 performance was the
+-  FRICTION, not the reward. Drift-only reward is NOT a champion; friction is the dominant factor.
+-09051133      WITHDRAW previous 11-33 failure verdict (it was another wrong-env eval: the pipeline's
+-  dr_ramp guard greps the LINE which exists inside the ''' wrapper, and the events were the user's
+-  latest edit [only initial_state active] -> the eval ran initial-state DR ON, not the training's
+-  no-DR nominal env). CORRECTED EVAL (full events, dr_ramp active, --no_dr -> alpha 0, matches training):
+-  FINAL 59999: ep 1401.0, timeout 70.5%, rollRMS 0.97, drive 1.22, wheel deaths 8.5%  <- STRONG
+-  SMOOTH 50800: ep 1392.3, timeout 76.7%, rollRMS 1.61
+-  RAW 50750   : ep 1324.1, timeout 62.8%, rollRMS 1.46
+-  REVISED VERDICT: drift_gauss-only (surv5+drift2.0+rate0.1, no wheel term) at friction 1.0 is NOT a
+-  failure — it matches the band-wheel champions on ep_len/timeout (1401/70.5% vs A1 1404.4/68.7%) with
+-  worse roll (0.97 vs 0.46). It is the simplest champion: 3 terms. Friction confound re-read: BOTH
+-  factors are real (friction 0.5 accelerates AND the drift-only reward is strong on its own).
+-09051716      COM-60k RESULT (com-DR only, full strength, G2 reward set, 60k iters; eval env verified
+-  com-only + dr_ramp wrapped, NO --no_dr):
+-  FINAL 59999: ep 427.0, timeout 24.0%, rollRMS 3.66, yaw deaths 51.3%
+-  RAW 59200  : ep 435.8, timeout 24.9%, rollRMS 4.08, yaw 49.1%
+-  SMOOTH 29350: ep 506.9, timeout 27.6%, rollRMS 3.18, yaw 49.0%
+-  vs COM-15k (285-315 steps / 15-17%): 4x budget gives only a modest gain (427-507 / 24-28%). UNLIKE IMU,
+-  COM is NOT rescued by more training — yaw deaths stay ~50% (com shifts break the heading dynamics).
+-  FINAL VERDICT on DR terms: friction ~ mass >> roll-pose ~ roll-vel >> IMU (rescuable with 4x budget)
+-  >> COM (fundamentally damaging, avoid).
+-09060206/7/8  COM PER-AXIS ISOLATION (3x 60k runs, one com axis each at +-0.02, no dr_ramp -> full
+-  strength from step 0, reward set = 11-33 (survival 5.0 + drift_gauss 2.0 + rate 0.1), seed 42.
+-  Eval env per run verified from disk (axis-patched cfg, no --no_dr), cfg restored afterwards):
+-  X RAW(1600)     : ep 1485.0, timeout 96.9%, rollRMS 0.68, wheel deaths 3.1%      <- raw peak at ITER 1600!
+-  X SMOOTH(2050)  : ep 1496.0, timeout 97.7%, rollRMS 0.22, wheel deaths 2.3%      <- tightest roll of campaign
+-  Y RAW(21750)    : ep 571.3, timeout 31.2%, rollRMS 4.16, yaw 35.5% + drift 22.2% + wheel 10.3%
+-  Y SMOOTH(42800) : ep 620.8, timeout 28.2%, rollRMS 4.67, yaw 42.9% + drift 18.9% + wheel 8.0%
+-  Z RAW(5200)     : ep 1500.0, TIMEOUT 100.0%, rollRMS 0.62, zero deaths          <- PERFECT
+-  Z SMOOTH(34450) : ep 1500.0, TIMEOUT 100.0%, rollRMS 0.45, zero deaths          <- PERFECT
+-  CORRECTION of the old COM attribution: 09051716's env.yaml on disk shows com_range on ALL THREE
+-  axes (x +-0.02, y +-0.02, z +-0.05) — my earlier "x+z only" claim was WRONG. The per-axis isolation
+-  therefore explains the old failure exactly:
+-  - LATERAL (y +-0.02) IS THE POISON: 571-621 steps, 28-31% timeouts, yaw+drift deaths ~55-62% — the
+-    exact signature of the old COM run (yaw ~50%). A lateral com offset is a static lean bias the
+-    policy can't cancel; it compensates by steering, which accumulates yaw error and drift.
+-  - LONGITUDINAL (x +-0.02) is fine-to-beneficial: 97-98% timeouts, rollRMS 0.22-0.68, and the raw peak
+-    at iter 1600 means com-x DR ACCELERATED learning (same regularizer mechanism as friction/mass).
+-  - VERTICAL (z +-0.02) is the BEST RESULT OF THE WHOLE CAMPAIGN: 1500/100% with zero deaths on both
+-    models, rollRMS 0.45-0.62 — beats the no-DR 11-33 baseline (1401/70.5%/0.97).
+-  REVISED COM VERDICT: "COM fundamentally damaging" reduces to "LATERAL com is damaging". x/z com
+-  randomization at +-0.02 joins friction/mass as safe-to-beneficial DR. Caveats: (1) z at the old
+-  +-0.05 magnitude is still UNTESTED (these runs used +-0.02; the old run's z was 2.5x larger);
+-  (2) the old run also carried wheel_net_gauss 2.0 in its reward set — a confound vs these runs.
+-  If either of those is suspected, a z +-0.05 or x+z-combined run would disambiguate.
+-OBS-NOISE vs IMU-BIAS MECHANISM (audited from disk; two SEPARATE observation perturbations):
+-  1) gaussian observation noise — per-step, manager-applied AFTER the obs func (isaaclab
+-     observation_manager.py:400-401); gated ONLY by enable_corruption:
+-     "if not group_cfg.enable_corruption: term_cfg.noise = None" (observation_manager.py:548-549).
+-     NewBikeBalanceObservationsCfg never sets enable_corruption -> default False (manager_term_cfg.py:226)
+-     -> the gaussian noise is DEAD in all newbike balance runs (every run's env.yaml shows
+-     enable_corruption: false), regardless of authored std (0.01 current cfg / 0.0 for 11-33).
+-  2) reset_imu_turnon_residuals (renamed from reset_imu_sensor_model on 2026-09-08) — per-episode
+-     IMU bias + latency applied INSIDE balance_imu_state (observations.py:120-122), gated only by
+-     the event's buffers existing; enable_corruption does NOT touch it. Event: mode=reset,
+-     gyro_res_bias_std 0.03 / accel_res_bias_std 0.02 / delay 1-3 steps (20-60 ms), buffers written at
+-     events.py:96-100.
+-  enable_corruption controls ONLY the gaussian noise, not the IMU bias.
+-  Run-by-run status: 09051101 = bias ON at full strength (event present, no dr_ramp -> no ramp).
+-     11-33 = bias authored but ramp-zeroed (dr_ramp end_step=1e9 -> alpha~0 lerps bias std/delay to 0).
+-     09060206/7/8 = bias event ABSENT (only com event); gaussian noise dead in all three.
+-  Note: the OTHER task families set enable_corruption = True (thu_bike/cyclerl_env_cfg_thubike2.py:115,
+-     new_bike/cyclerl_env_cfg.py:105, xuan_bike/cyclerl_env_cfg.py:49) -> their gaussian noise IS live.
+-  STATUS UPDATE 2026-09-08: enable_corruption is now True in NewBikeBalanceObservationsCfg and the
+-     noise is per-channel via the custom PerChannelGaussianNoiseCfg — see the #1+#8 REIMPLEMENTATION
+-     entry below. This entry's historical "dead weight" verdict applied to every run BEFORE that.
+-GAUSSIAN OBS-NOISE CAMPAIGN-WIDE VERDICT (grep over all run dirs, from disk): EVERY one of the
+-  71 run env.yamls under newbike_balance_rsl (the whole balance family incl. all NewBike-Balance-v1
+-  runs) has enable_corruption: false; zero have true. With observation_manager.py:548-549
+-  (noise nulled when false), the per-step gaussian observation noise was 0 in EVERY run of the
+-  campaign, regardless of authored std (0.0 or 0.01). There is no other additive noise path
+-  (modifiers: null everywhere; the obs func adds only the event-driven IMU bias/latency).
+-  Precision: "observation noise" = the gaussian per-step term. IMU bias+latency
+-  (reset_imu_turnon_residuals, renamed 2026-09-08) is separate, NOT gated by enable_corruption,
+-  and WAS active in the IMU-DR runs (09050138, 09051101). HISTORICAL: applies to the 71 runs
+-  before the 2026-09-08 reimplementation (see below) — the first training after it will carry
+-  live per-channel noise.
+-09061551/52 + 09061811/13/14  RESULTS (TB raw+smoothed best models, eval env verified per run:
+-  com_y-magnitude sweep and IMU-term decomposition; reward set = 11-33 (survival 5 + drift_gauss 2
+-  + rate 0.1), no dr_ramp -> full strength from step 0; cfg restored after, verified by md5):
+-  COM-y MAGNITUDE SWEEP (with 0207's +-0.02 datapoint: 571-621/28-31%, roll 4.2-4.7):
+-    1551 y +-0.005: RAW(25500) 1497.6/99.2% roll1.21 wheel0.8%; SMOOTH(27250) 1500.0/100.0% roll1.19  <- SAFE
+-    1552 y +-0.01 : RAW(24450) 1290.3/78.4% roll2.44 yaw17.2%; SMOOTH(18450) 1237.4/80.9% roll2.41 yaw10.7% drift6.1%  <- DEGRADED
+-    VERDICT: sharp tolerance cliff — +-0.005 harmless (1500/100%), +-0.01 costs ~20% timeouts,
+-    +-0.02 near-fatal. Largest tolerable y-domain sits BETWEEN 0.005 and 0.01.
+-  IMU-TERM DECOMPOSITION (gyro vs tilt vs latency, each isolated at full strength):
+-    1811 gyro-only   : RAW(53100) 528.0/0.6% roll1.88 WHEEL_NET DEATHS 95.9%; SMOOTH(53750) 672.9/2.4% wheel87.0%  <- KILLER
+-    1813 tilt-only   : RAW(34550) 1484.8/97.7% roll1.67; SMOOTH(55050) 1500.0/100.0% roll0.89  <- NEARLY FREE
+-    1814 latency-only: RAW(39550) 1117.2/65.3% roll0.98 (fallen8.2% yaw16.3% wheel10.2%);
+-                      SMOOTH(37200) 1042.3/62.3% roll1.01 (fallen11.3% yaw11.3% wheel15.2%)  <- DEGRADED
+-    VERDICT: the IMU term's damage is almost entirely the GYRO bias — a constant roll-RATE offset
+-    makes the policy think the bike is rolling -> corrective drive -> net wheel rotation runs away
+-    (95.9% wheel_net deaths, the exact runaway mode). Tilt bias (angle-reading offset, ~1 deg) is
+-    nearly free; latency alone costs ~35% of timeouts with a mixed fall/yaw/wheel signature.
+-    CAVEAT: the old full-IMU runs (09050138/09051101, 1130/72.6% at 60k) used the G2 reward set
+-    (wheel_net_gauss 2.0 + drift_gauss 1.5) — wheel_net_gauss directly counteracts the wheel-runaway
+-    mode, so cross-comparison with these drift-only runs is confounded on exactly the term that matters.
+-    Caveat 2: TB-peak models, not finals.
+-INERTIAL-SENSOR ERROR MODEL (standard taxonomy; reference for the IMU DR rework)
+-
+-  1) DETERMINISTIC (calibratable):
+-  | #  | component                        | what it is                                              | removable?                            |
+-  |----|----------------------------------|---------------------------------------------------------|---------------------------------------|
+-  | 1  | turn-on / initial bias           | constant offset per power cycle (gyro: deg/s; accel: mg)| yes — stationary boot cal (residual ~ noise/√N) |
+-  | 2  | scale-factor error               | sensitivity error, % of reading (typ. ±0.5%)            | yes — factory/boot cal                |
+-  | 3  | nonlinearity                     | residual after scale cal                                | mostly — high-order cal               |
+-  | 4  | misalignment / cross-axis        | axes not orthogonal / not aligned to reference frame    | yes — factory or static-gravity cal   |
+-  | 5  | g-sensitivity (gyro)             | gyro output shifts under linear acceleration            | partly — needs g-matrix cal           |
+-  | 6  | vibration rectification (accel)  | vibration induces bias-like accel shift while riding    | NO — depends on ride vibration        |
+-  | 7  | quantization                     | ADC/FSR resolution floor                                | bounded by FSR choice                 |
+-
+-  2) STOCHASTIC (unremovable):
+-  | #  | component                            | what it is                                          | Allan curve signature          |
+-  |----|--------------------------------------|-----------------------------------------------------|--------------------------------|
+-  | 8  | white noise (ARW gyro / VRW accel)   | per-sample fluctuation; datasheet: 0.07 deg/s RMS gyro / 0.001 g RMS accel | slope −½ at small τ |
+-  | 9  | bias instability                     | slow 1/f random WANDER of the bias                  | FLAT MINIMUM of Allan deviation|
+-  | 10 | rate / accel random walk             | long-term integrated drift                           | rising at large τ              |
+-
+-  3) ENVIRONMENTAL:
+-  | #  | component           | what it is                                                   | removable?                       |
+-  |----|---------------------|--------------------------------------------------------------|----------------------------------|
+-  | 11 | temperature effects | bias & scale-factor drift with temp + power-on transient     | partly — temp comp + warm-up    |
+-
+-  MAPPING TO THE SIM'S IMU MECHANISMS + CURRENT DR CONFIG COMPARISON (from disk: imu event active
+-  with gyro 0.0 / tilt 0.0 / delay 1-3; enable_corruption false in every run):
+-  | sim mechanism       | real components modeled                                   | current status                                                                     |
+-  |---------------------|-----------------------------------------------------------|-------------------------------------------------------------------------------------|
+-  | gyro_res_bias_std       | #1 turn-on bias + calibration residual (#9 negligible at 30 s episodes) | 0.0 now; original 0.03 rad/s = 1.72 deg/s ~ uncalibrated scale; 300-1000x the post-cal residual (~1e-4..1e-5 rad/s) |
+-  | accel_res_bias_std       | accel #1 + #4 misalignment effect on the gravity reading  | 0.0 now; original 0.02 (~1 deg)                                                     |
+-  | min/max_delay_steps | sensor/loop pipeline latency (not an IMU error)           | active, 1-3 steps (20-60 ms)                                                        |
+-  | gaussian obs noise  | #8 white noise (ARW/VRW) + encoder/fusion noise floors    | NOW ACTIVE (2026-09-08): enable_corruption=True + PerChannelGaussianNoiseCfg tuple std (0.001 gravity / 0.0012 angvel / 0 elsewhere); previously DEAD in every campaign run; the old authored 0.01 uniform was 8-10x too big |
+-  | (not modeled)       | #2/3 scale-factor & nonlinearity, #5 g-sensitivity, #6 VRE, #10 rate RW, #11 thermal | second-order at 30 s trackstand scale                  |
+-
+-  ACTION ITEMS: (1) DONE — enable_corruption=True + per-channel noise. First attempt used the
+-  stock GaussianNoiseCfg with a tensor std (works functionally, but the tensor dumps as a binary
+-  blob in env.yaml — class_to_dict passes tensors through, pyyaml falls back to the reduce
+-  protocol). FINAL: custom PerChannelGaussianNoiseCfg in mdp/stationary/noise.py with a PLAIN
+-  TUPLE std (clean !!python/tuple dump); the dr_ramp helpers made float/tensor/tuple-aware.
+-  See the #1+#8 REIMPLEMENTATION entry. (2) measure turn-on residual spread over boot cycles ->
+-  gyro_res_bias_std/accel_res_bias_std; (3) Allan-variance bench test (1-3 h stationary log, allantools.adev,
+-  curve minimum) for bias instability; (4) optional gyro-bias magnitude sweep to locate the
+-  tolerance cliff below 0.03.
+-
+-IMU DR TERMS TO INCLUDE — DECISION (term / include? / at what magnitude / why):
+-  | term                      | include?          | at what magnitude                                        | why                                                                 |
+-  |---------------------------|-------------------|----------------------------------------------------------|---------------------------------------------------------------------|
+-  | #1 turn-on bias           | YES               | POST-CALIBRATION residual: measured per-boot spread after the firmware's calibration (~max(noise/√N, thermal)); uncalibrated scale (~0.03-class) only if the firmware does NOT calibrate | decomposition proved gyro bias is the killer term (0.03 -> 95.9% wheel_net deaths); the residual is the one number that can kill the policy — measure it most carefully |
+-  | #8 white noise            | YES (now wired)   | per-channel: 0.0012 rad/s angvel / 0.001 gravity; shrink by whatever filtering the real pipeline applies before the policy sees it | sensor noise cannot be filtered to zero; previously dead in every run (enable_corruption false) |
+-  | #9 bias instability       | NO (at 30 s scale)| —                                                        | ~1e-5..1e-4 rad/s wander per episode; confirm with the Allan-variance bench test; revisit if deployments reach minutes/continuous riding |
+-  | #10 rate/accel random walk| NO (at 30 s scale)| —                                                        | hours-scale term, invisible at trackstand length                              |
+-
+-  NEAR-TERM CHECKLIST: (1) measure per-boot bias residual -> set gyro/tilt bias stds; (2) verify the
+-  noise std against the real filtering chain; (3) run the Allan bench test once to CONFIRM #9 is
+-  negligible rather than assumed. Design lesson: of everything in the IMU error model, the #1-gyro
+-  magnitude deserves the most careful measurement — it alone can kill the policy.
+-#1 + #8 REIMPLEMENTATION (2026-09-08) — full arc, from the channel ablation to the smoke test:
+-  (1) CHANNEL ABLATION on Z SMOOTH 34450 (10 evals) showed the 4 joint channels unused (drive_pos
+-      harmful: zeroing it gave rollRMS 0.45->0.13) -> steer_pos/drive_pos/steer_vel/drive_vel
+-      COMMENTED OUT in balance_imu_state's cat (not deleted) -> obs 13 -> 9 dims, docstring updated.
+-  (2) RENAME: reset_imu_sensor_model -> reset_imu_turnon_residuals everywhere (events.py func +
+-      __all__, curriculums.py term lookups x2, observations.py comments, cfg registration) —
+-      semantics: per-episode POST-CALIBRATION turn-on/initial bias residual + latency. The stds
+-      should be set to the MEASURED residual spread, not the raw uncalibrated bias.
+-  (3) #8 FIRST ATTEMPT: enable_corruption=True + stock GaussianNoiseCfg with a 9-entry torch
+-      tensor std. FUNCTIONALLY CORRECT but the tensor dumps as an unreadable binary blob in
+-      env.yaml (class_to_dict passes tensors through; pyyaml falls back to the reduce protocol:
+-      !!python/object/apply:torch._utils._rebuild_tensor_v2 + base64). Also found: the dr_ramp
+-      noise helpers assumed SCALAR std — float(noise.std) would crash on a tensor, and
+-      _set_obs_noise_std would clobber the vector with a scalar.
+-  (4) FINAL #8: custom PerChannelGaussianNoiseCfg (NoiseCfg subclass) + per_channel_gaussian_noise
+-      in NEW mdp/stationary/noise.py; std as a PLAIN TUPLE -> clean !!python/tuple dump (parsers
+-      already handle it); tensor built at runtime (dtype/device from data); clear length-mismatch
+-      assert; add/scale/abs parity with stock. cfg wired: noise=PerChannelGaussianNoiseCfg(
+-      std=(0.001, 0.001, 0.0012, 0.0012, 0.0012, 0, 0, 0, 0)) [gravity/angvel from the user's IMU
+-      manual: 0.001 g RMS / 0.07 dps RMS; linvel/sin-cos 0 until measured]; import torch removed —
+-      cfg is torch-free again.
+-  (5) RAMP FIX: _get_obs_noise_std returns float/tensor-clone/tuple-as-is; _set_obs_noise_std
+-      accepts float|tensor|tuple; dr_ramp call site lerps element-wise for tuples. dr_ramp can now
+-      be active or wrapped with no crash and no clobbering in any std type.
+-  (6) VERIFICATION: runtime check under the isaac sim python — func string resolves to a callable,
+-      isinstance NoiseCfg, exact manager application path ran on a dummy tensor (zero channels stay
+-      zero, noisy channels nonzero), length assert fires, class_to_dict->yaml dump clean tuple.
+-      Smoke test zero_agent.py: env builds, policy group shape (9,), reset_imu_turnon_residuals
+-      registered, clean shutdown. (A second log.txt run was terminated by the user — not a bug.)
+-  CURRENT LIVE STATE (audit before the next training): events = reset_scene + ground_friction +
+-  reset_imu_turnon_residuals with gyro_res_bias_std 0.0 / accel_res_bias_std 0.0 / delay 1-3; dr_ramp
+-  wrapped -> full-strength authored values from step 0; rewards = survival 5.0 + drift_gauss 2.0 +
+-  rate_penalty 0.1. NOTE: bias stds are 0.0 — set the measured post-calibration residual values
+-  BEFORE training if the bias term is meant to be active; as-is the next run trains
+-  white-noise + latency only.
+-HOW TO DETERMINE gyro_res_bias_std AND accel_res_bias_std (both = the std, ACROSS POWER CYCLES,
+-  of the bias RESIDUAL left after the firmware's calibration — the measurement must include the
+-  real calibration, or you measure a value you will never experience):
+-  gyro_res_bias_std (rad/s):
+-    1. Replicate the firmware's calibration: stationary on the stand, average N samples over the
+-       same window the firmware would use (e.g. 2-5 s at the control rate) -> that mean is the
+-       boot's bias estimate, which calibration subtracts. If the firmware already calibrates,
+-       log its post-calibration output instead.
+-    2. Residual per boot = 0 - estimate (stationary -> true rate 0). Only the SPREAD across boots
+-       matters, not any single value.
+-    3. Repeat over 10-30 COLD power cycles, spread over hours/days to sample thermal variation.
+-    4. gyro_res_bias_std = std of the per-boot residuals, per axis (use the worst axis).
+-    5. SANITY: a working calibration lands near max(noise/sqrt(N), thermal) ~ 1e-4..1e-3 rad/s.
+-       If it comes out ~0.01-0.1 rad/s, the calibration is not doing its job — and that number
+-       is exactly the margin you lack (this is the killer term; the measurement earns its time).
+-  accel_res_bias_std (gravity units, dimensionless; 0.02 ~ 1.15 deg):
+-    1. Stationary, LEVELED on the stand, post warm-up, after the firmware's accel calibration.
+-    2. Record the accelerometer's gravity vector (g units); residual = measured - true, with
+-       true = the bike-frame vertical from the leveled stand.
+-    3. Per boot, take the gravity-component residual; across boots, accel_res_bias_std = its std
+-       (both channels share one std in the sim — use the conservative/worst component).
+-    4. Mount misalignment is a PER-UNIT constant: a gravity-referenced boot calibration absorbs
+-       it automatically (that is the point); if the fleet has several bikes, include several
+-       boards to sample unit-to-unit spread.
+-  SHORTCUTS until measured: (a) firmware does NOT calibrate -> use the manual's uncalibrated
+-    initial-bias spec (may exceed 0.03); (b) firmware DOES calibrate -> noise_RMS/sqrt(N)
+-    (~0.0012/sqrt(N) rad/s) as a conservative placeholder.
+-  ONE BENCH SESSION COVERS EVERYTHING: the long stationary log for the Allan-variance test
+-    yields the per-boot means (gyro residual), the gravity residuals (accel), AND the per-sample
+-    std (#8 verification) — three numbers, one afternoon. After filling the values in, re-run
+-    the gyro-bias magnitude sweep around the measured value to confirm the policy's tolerance
+-    cliff sits comfortably above the residual.
+-09082242/2246/2248  RESULTS (first runs with the reimplemented IMU model: 9-dim obs, 11-33
+-  reward set, seed 42, 60k; eval env verified per run [noimu/gyrores/accelres], cfg restored
+-  md5-verified; all three carried #8 noise ON — always-on policy):
+-    2242 #8-noise ONLY     : RAW(18950) 456.6/0.0% roll0.74 wheel87.4%+yaw10.0%;
+-                             SMOOTH(19050) 468.9/0.0% roll0.81 wheel92.0%+yaw7.0%
+-    2246 #8 + #1-gyro 2e-4 : RAW=SMOOTH(59750) 658.6/6.2% roll0.79 wheel81.1%+yaw11.5%
+-    2248 #8 + #1-accel .002: RAW(43150) 764.5/6.5% roll0.83 wheel77.6%+drift5.6%;
+-                             SMOOTH(48200) 452.1/0.0% roll0.77 wheel94.3%
+-  CONCLUSION: #8 white noise ALONE at the datasheet magnitudes (0.001 g / 0.0012 rad/s) is
+-    CATASTROPHIC — 0-6.5% timeouts with the WHEEL_NET runaway signature (~80-94% of deaths),
+-    the same signature as the old gyro-bias killer, via per-step jitter on angvel/gravity ->
+-    twitchy drive -> net wheel rotation -> the 7.2 rad envelope. The bike itself stays BALANCED
+-    (roll RMS 0.74-0.83 — good). The #1 bias residuals' marginal effects are SWAMPED by the
+-    noise (2246/2248 barely differ from 2242) — #1's effect is unmeasurable on top of #8.
+-  DISAMBIGUATION UNDERWAY (2x2: obs 13/9-dim x noise on/off; 11-33 = 13-dim noise-off
+-    1401/70.5%, 2242 = 9-dim noise-on 457/0%):
+-    09090944 = 9-dim, noise-off (zeroed tuple) — vs 11-33 isolates the TRIM; vs 2242 isolates
+-      the NOISE. 09090950 = 13-dim, noise-on (13-entry tuple, zeros on the restored channels)
+-      — vs 11-33 isolates the NOISE at 13-dim; vs 2242 isolates the TRIM at noise-on.
+-    EVAL-TIME TRAP (live shared obs func): 9-dim policies (0944, 2242/46/48) must be evaluated
+-      with the cat re-commented + 9-entry tuple; 13-dim (0950) with the current state.
+-  SUGGESTION: (1) measure the POST-FILTER effective noise (firmware averaging shrinks it ~sqrt(N),
+-    ~0.0004 rad/s at 10 samples/step) and run a noise-magnitude sweep around it — the harmless-vs-
+-    runaway cliff sits somewhere in this range; (2) the wheel-runaway signature makes the dropped
+-    DRIVE_VEL channel a prime suspect (no wheel feedback under noisy control) — the 2x2 cells will
+-    convict or exonerate it; (3) if noise stays at datasheet values, consider restoring
+-    wheel_net_gauss (the G2 term that counteracted runaway) or adding wheel-velocity feedback.
+-09090950 EVAL — 2x2 CLOSED (eval env verified: 13-dim obs, 13-entry noise tuple, no #1 event,
+-  no dr_ramp, cfg untouched md5-verified):
+-  model_500 (RAW TB 1500.00 @ iter 514): ep 1500.0, TIMEOUT 100.0%, rollRMS 0.38, maxRoll 3.00,
+-  turn 58.9 — zero deaths. PERFECT, and rollRMS 0.38 is among the campaign's best.
+-  CLOSED 2x2 (eval/TB): 11-33 13-dim off -> 1401/70.5% | 0944 9-dim off -> TB peak 911 |
+-    2242 9-dim on -> 457/0% | 0950 13-dim on -> 1500/100%.
+-  VERDICT: THE NOISE WAS NEVER THE KILLER — THE 9-DIM TRIM WAS. With the full 13-dim obs the
+-  policy absorbs the datasheet-magnitude white noise COMPLETELY (perfect at iter 514, holds
+-  in-distribution, beats the no-noise 11-33 baseline). The earlier "#8 catastrophic" verdict
+-  reduces to: catastrophic ONLY without the joint channels — prime suspect DRIVE_VEL (the wheel
+-  feedback the runaway mode needs). The frozen-policy channel ablation misled us: it measured
+-  reliance, not trainability — "unused by a frozen policy" != "safe to drop for training".
+-  DECISIONS: (1) architecture = 13-dim + always-on #8 noise (9-dim dead); (2) 0950's early
+-  model_500 is the champion (the 09061147 pattern: early peak > final); (3) 0944/0950 trainings
+-  no longer need to run to completion — 0944's cell documented by TB, 0950's by this eval;
+-  (4) next: combined helpful-DR run on the validated base (13-dim + noise + 11-33 rewards).
+-09090950 COMPLETION (60k full curve; eval env verified, cfg untouched): the curve HELD 1470-1500
+-  all the way to the end (unlike 09061147's late decline). Both best models perfect:
+-    model_500  (RAW 1500.00): ep 1500.0/100.0% rollRMS 0.38 maxRoll 3.00 turn 58.9  <- tighter average
+-    model_32400 (SMOOTH 1499.88): ep 1500.0/100.0% rollRMS 0.55 maxRoll 0.87 turn 21.7 <- tighter extremes
+-  Both zero-death 1500/100%. Champion pick for deployment: model_500 (average tightness matters
+-  for smoothness); model_32400 if extremes/orbiting matter more. Final model_59999 exists and the
+-  late curve suggests it is also perfect — evaluate if a fresher option is wanted.
+-  0950 STORY COMPLETE: the 13-dim + always-on #8 noise baseline trains perfect at iter 514 and
+-  holds it to 60k — the validated architecture. Committed as baseline 292390a.
+-
+-
+-## Engine audit for NewBike-Balance-v1 (2026-09-13) — sim-side problems
+-
+-Found against the run's logged params/env.yaml (2026-09-11_01-38-54), the USD
+-payloads (Physics/physics.usda, physx.usda, materials.usda), bicycle_cfg.py and
+-newbike_balance_env_cfg.py:
+-
+-1. solver_position/velocity_iteration_count = 4/2 (NEW_BIKE_BASE_CFG spawn
+-   articulation_props) — the ROOT CAUSE of the ~x24.5 sluggish drive: the TGS
+-   under-delivers the effort-actuated wheel per step. Probe-verified: 16/8
+-   restores the rigid response (the wheel slams the 61.6 rad/s limit).
+-2. enable_external_forces_every_iteration = False (env.yaml sim.physics) —
+-   CONFIRMED 2026-09-13 (in-air welded-root probe, /tmp/sim_extforce_probe.py):
+-   the PRIMARY cause of the sluggish drive. At 4/2 + False the wheel plateaus
+-   at 23.11 rad/s (a1>=0.6); flipping the flag True at the SAME 4/2 restores
+-   the rigid physics (61.60 rad/s = the velocity limit; effort follows the
+-   authored tau = 6.28*a1 - 0.05*w exactly, incl. 0.00 Nm at a1=0.2). The
+-   16/8 iteration fix and the flag flip are two independent repairs of the
+-   same truncation: the once-per-step force injection + 2 sweeps cannot
+-   propagate the impulse. The fall-probe log's "may cause noisy velocities"
+-   warning names exactly this.
+-3. Runtime mass ~+20% above the USD payload masses — the collision geometry
+-   contributes default-density mass (the USD colliders declare no density;
+-   measured in the inertia probe). The MuJoCo model carries only the payload
+-   masses (2.3996 kg total). Un-compensated.
+-4. DR active in this run on every reset: randomize_mass 0.5-1.5x,
+-   randomize_com, tire friction U(0.5, 1.2) (num_buckets 32),
+-   randomize_actuator_gains 0.9-1.1x. play_eval numbers are DR-averaged;
+-   any nominal-only comparison (e.g. the MuJoCo deploy) must use the nominal
+-   envelope, not the eval mean.
+-5. Reset state: the initial_state event resets root z=0, roll U(-0.1, 0.1)
+-   rad, roll rate U(-0.25, 0.25) rad/s every episode — NOT the fixed zeros
+-   the MuJoCo env comment assumes (that was 0950's protocol).
+-6. Friction reference values: ground pinned 1.0 (startup event); tire = the
+-   global physxMaterial 0.5/0.5 isotropic (the USD has no per-wheel physics
+-   material — materials.usda carries only the visual "silver"). The MuJoCo
+-   wheels now carry the sim's pair: sliding 0.75 (MuJoCo combines pair
+-   friction by MAX — verified empirically; MuJoCo's triple is
+-   sliding/torsional/rolling — the earlier 'anisotropic 1.0/0.005'
+-   phrasing misread the orange-bike triple).
+-7. Sim-side quirk: balance_wheel_net_termination reads with a one-step lag
+-   (its own docstring); the MuJoCo env checks immediately. Immaterial.
+-8. physx.usda sets maxJointVelocity 100 rad/s (5729.578 deg/s) on the
+-   steering joint — dominated by the actuator's velocity_limit_sim 23.9;
+-   no effect.
+-9. GPU patch-based friction (friction_offset_threshold 0.04,
+-   friction_correlation_distance 0.025) has no MuJoCo analog — model-level
+-   difference, no config translation.
+-
+-## Collision meshes in NewBike-Balance-v1 (2026-09-13)
+-
+-- The runtime wheel colliders = ONE CONVEX HULL per collision mesh: the URDF
+-  converter authored `token physics:approximation = "convexHull"` on every
+-  link's collision prim in payloads/instances.usda (with PhysicsCollisionAPI
+-  + MeshCollisionAPI). NEW_BIKE_BASE_CFG sets no mesh-collision override, so
+-  the USD's token stands — this is the provenance of the hull/vertex-walk
+-  contact the sim-to-sim campaign has been matching against.
+-- The cfg CAN override the approximation via mesh_approximation_name
+-  (boundingCube | boundingSphere | convexDecomposition | convexHull | none |
+-  meshSimplification | sdf — verified in isaaclab/sim/schemas/schemas.py).
+-  PhysX has NO ellipsoid/cylinder primitive collider.
+-- The MuJoCo deploy's collisions are hand-authored primitives (model.xml:
+-  frame box, fork box, wheel ellipsoids); its meshes are visual-only.
+-- Representation gap: the two engines' common wheel shapes do not overlap.
+-  Fix paths: boundingSphere on both (cheap, retrain), SDF on both (true
+-  geometry, plumbing, retrain), or keep fitting MuJoCo (status quo).
+diff --git a/scripts/rsl_rl/play_eval.py b/scripts/rsl_rl/play_eval.py
+index 524bde5..29d4933 100644
+--- a/scripts/rsl_rl/play_eval.py
++++ b/scripts/rsl_rl/play_eval.py
+@@ -227,8 +227,16 @@ def main(env_cfg, agent_cfg):
+         except Exception:
+             return None
+ 
+-    steer_idx = _joint_idx("steering_joint")
+-    drive_idx = _joint_idx("rearwheel_joint")
++    # joint names from the live env cfg: the drive joint is rear_wheel_joint
++    # (underscore) on Trackstand-Balance-v0 but rearwheel_joint on the NewBike
++    # tasks — hardcoding only worked for NewBike.
++    try:
++        _steer_name = env_cfg.actions.steering.joint_names[0]
++        _drive_name = env_cfg.actions.drive.joint_names[0]
++    except Exception:
++        _steer_name, _drive_name = "steering_joint", "rearwheel_joint"
++    steer_idx = _joint_idx(_steer_name)
++    drive_idx = _joint_idx(_drive_name)
+ 
+     # --- torque tracing: 3 random envs, per-step drive & steer applied torque ---
+     _torque_envs = random.sample(range(num_envs), min(3, num_envs))
+diff --git a/scripts/source/trackstand_rl/__init__.py b/scripts/source/trackstand_rl/__init__.py
+deleted file mode 100644
+index 95f5955..0000000
+--- a/scripts/source/trackstand_rl/__init__.py
++++ /dev/null
+@@ -1,25 +0,0 @@
+-"""Trackstand-rl-v0: standalone SDF-wheel trackstand balance task.
+-
+-Layout:
+-    trackstand_rl_cfg.py   robot ArticulationCfg (SDF-wheel USD, actuators)
+-    trackstand_rl_env.py   env class (wheel_net_angle + spawn_yaw bookkeeping)
+-    trackstand_rl_env_cfg.py  env configuration (rewards, events, terminations)
+-    agent_cfg.py           rsl_rl PPO runner config
+-    assets/trackstand_rl.usda + payloads/ + Textures/  the USD asset
+-"""
+-
+-from .agent_cfg import TrackstandRLPPORunnerCfg
+-from .trackstand_rl_env import TrackstandRLHybridEnv
+-from .trackstand_rl_env_cfg import (
+-    TrackstandRLEnvCfg,
+-    TrackstandRLHybridEnvCfg,
+-    TrackstandRLTorqueEnvCfg,
+-)
+-
+-__all__ = [
+-    "TrackstandRLPPORunnerCfg",
+-    "TrackstandRLHybridEnv",
+-    "TrackstandRLEnvCfg",
+-    "TrackstandRLHybridEnvCfg",
+-    "TrackstandRLTorqueEnvCfg",
+-]
+diff --git a/scripts/source/trackstand_rl/agent_cfg.py b/scripts/source/trackstand_rl/agent_cfg.py
+deleted file mode 100644
+index b4834a8..0000000
+--- a/scripts/source/trackstand_rl/agent_cfg.py
++++ /dev/null
+@@ -1,49 +0,0 @@
+-"""rsl_rl PPO config for Trackstand-rl-v0 — standalone.
+-
+-Same hyperparameters as the NewBike balance runner (tiny [32, 32] actor/critic,
+-KL-adaptive schedule, no obs normalization): entropy 0.005 (0.003 COLLAPSES the
+-action std — see the NewBike runs), initial LR 1e-3 with schedule="adaptive",
+-16 steps/env, save every 50 iterations.
+-"""
+-
+-from isaaclab.utils.configclass import configclass
+-
+-from isaaclab_rl.rsl_rl import (
+-    RslRlMLPModelCfg,
+-    RslRlOnPolicyRunnerCfg,
+-    RslRlPpoAlgorithmCfg,
+-)
+-
+-
+-@configclass
+-class TrackstandRLPPORunnerCfg(RslRlOnPolicyRunnerCfg):
+-    num_steps_per_env = 16
+-    max_iterations = 15000
+-    save_interval = 50
+-    experiment_name = "trackstand_rl_rsl"
+-    obs_groups = {"actor": ["policy"], "critic": ["policy"]}
+-    actor = RslRlMLPModelCfg(
+-        hidden_dims=[32, 32],
+-        activation="elu",
+-        obs_normalization=False,
+-        distribution_cfg=RslRlMLPModelCfg.GaussianDistributionCfg(init_std=1.0),
+-    )
+-    critic = RslRlMLPModelCfg(
+-        hidden_dims=[32, 32],
+-        activation="elu",
+-        obs_normalization=False,
+-    )
+-    algorithm = RslRlPpoAlgorithmCfg(
+-        value_loss_coef=1.0,
+-        use_clipped_value_loss=True,
+-        clip_param=0.2,
+-        entropy_coef=0.005,
+-        num_learning_epochs=5,
+-        num_mini_batches=4,
+-        learning_rate=1.0e-3,
+-        schedule="adaptive",
+-        gamma=0.99,
+-        lam=0.95,
+-        desired_kl=0.01,
+-        max_grad_norm=1.0,
+-    )
+diff --git a/scripts/source/trackstand_rl/assets/payloads/Physics/mujoco.usda b/scripts/source/trackstand_rl/assets/payloads/Physics/mujoco.usda
+deleted file mode 100644
+index d43185d..0000000
+--- a/scripts/source/trackstand_rl/assets/payloads/Physics/mujoco.usda
++++ /dev/null
+@@ -1,128 +0,0 @@
+-#usda 1.0
+-(
+-    customLayerData = {
+-        string creator = "URDF USD Converter v0.1.2"
+-    }
+-    defaultPrim = "trackstand_rl_0914"
+-    doc = """Generated from Composed Stage of root layer /tmp/tmp0dzzpiwm/trackstand_rl_0914.usdc
+-
+-
+-Generated from Composed Stage of root layer /tmp/urdf_import_trackstand_rl_0914_pc64b4vf/usdex_trackstand_rl_0914/trackstand_rl_0914.usdc
+-
+-
+-Generated from Composed Stage of root layer /tmp/urdf_import_trackstand_rl_0914_pc64b4vf/temp_trackstand_rl_0914/trackstand_rl_0914.usd
+-
+-
+-Generated from Composed Stage of root layer /home/lmbike/lmbike_cyclerl-mod/trackstand_rl_0914_description_sdf/urdf/trackstand_rl_0914/payloads/base.usd
+-"""
+-    kilogramsPerUnit = 1
+-    metersPerUnit = 1
+-    subLayers = [
+-        @./physics.usda@
+-    ]
+-    upAxis = "Z"
+-)
+-
+-over "trackstand_rl_0914"
+-{
+-    over "Physics"
+-    {
+-        def MjcActuator "rear_wheel_joint_actuator"
+-        {
+-            uniform double mjc:forceRange:max = inf
+-            uniform double mjc:forceRange:min = -inf
+-            custom rel mjc:target
+-            prepend rel mjc:target = </trackstand_rl_0914/Physics/rear_wheel_joint>
+-        }
+-
+-        def MjcActuator "steering_joint_actuator"
+-        {
+-            uniform double mjc:forceRange:max = 100
+-            uniform double mjc:forceRange:min = -100
+-            custom rel mjc:target
+-            prepend rel mjc:target = </trackstand_rl_0914/Physics/steering_joint>
+-        }
+-
+-        def MjcActuator "front_wheel_joint_actuator"
+-        {
+-            uniform double mjc:forceRange:max = inf
+-            uniform double mjc:forceRange:min = -inf
+-            custom rel mjc:target
+-            prepend rel mjc:target = </trackstand_rl_0914/Physics/front_wheel_joint>
+-        }
+-
+-        over "rear_wheel_joint" (
+-            delete apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+-        )
+-        {
+-        }
+-
+-        over "steering_joint" (
+-            delete apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+-        )
+-        {
+-        }
+-
+-        over "front_wheel_joint" (
+-            delete apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+-        )
+-        {
+-        }
+-    }
+-
+-    over "Geometry"
+-    {
+-        over "base_link"
+-        {
+-            over "rear_wheel_link_1"
+-            {
+-                over "rear_wheel_link_1"
+-                {
+-                }
+-
+-                over "rear_wheel_link_1_1"
+-                {
+-                }
+-            }
+-
+-            over "steering_link_1"
+-            {
+-                over "front_wheel_link_1"
+-                {
+-                    over "front_wheel_link_1"
+-                    {
+-                    }
+-
+-                    over "front_wheel_link_1_1"
+-                    {
+-                    }
+-                }
+-
+-                over "steering_link_1"
+-                {
+-                }
+-
+-                over "steering_link_1_1"
+-                {
+-                }
+-            }
+-
+-            over "base_link"
+-            {
+-            }
+-
+-            over "base_link_1"
+-            {
+-            }
+-        }
+-    }
+-
+-    over "Materials"
+-    {
+-    }
+-
+-    over "VisualMaterials"
+-    {
+-    }
+-}
+-
+diff --git a/scripts/source/trackstand_rl/assets/payloads/Physics/physics.usda b/scripts/source/trackstand_rl/assets/payloads/Physics/physics.usda
+deleted file mode 100644
+index 1084255..0000000
+--- a/scripts/source/trackstand_rl/assets/payloads/Physics/physics.usda
++++ /dev/null
+@@ -1,122 +0,0 @@
+-#usda 1.0
+-(
+-    customLayerData = {
+-        string creator = "URDF USD Converter v0.1.2"
+-    }
+-    defaultPrim = "trackstand_rl_0914"
+-    doc = """Generated from Composed Stage of root layer /tmp/tmp0dzzpiwm/trackstand_rl_0914.usdc
+-
+-
+-Generated from Composed Stage of root layer /tmp/urdf_import_trackstand_rl_0914_pc64b4vf/usdex_trackstand_rl_0914/trackstand_rl_0914.usdc
+-
+-
+-Generated from Composed Stage of root layer /tmp/urdf_import_trackstand_rl_0914_pc64b4vf/temp_trackstand_rl_0914/trackstand_rl_0914.usd
+-
+-
+-Generated from Composed Stage of root layer /home/lmbike/lmbike_cyclerl-mod/trackstand_rl_0914_description_sdf/urdf/trackstand_rl_0914/payloads/base.usd
+-"""
+-    kilogramsPerUnit = 1
+-    metersPerUnit = 1
+-    upAxis = "Z"
+-)
+-
+-over "trackstand_rl_0914"
+-{
+-    over "Geometry"
+-    {
+-        over "base_link" (
+-            prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsArticulationRootAPI", "NewtonArticulationRootAPI", "PhysicsMassAPI"]
+-        )
+-        {
+-            bool newton:selfCollisionEnabled = 0
+-            point3f physics:centerOfMass = (0.15570563, -0.042488232, 0.16299923)
+-            float3 physics:diagonalInertia = (0.0039133737, 0.016144622, 0.018534005)
+-            float physics:mass = 2.0267928
+-            quatf physics:principalAxes = (-0.6686647, 0.6709083, -0.21506913, 0.23772849)
+-
+-            over "rear_wheel_link_1" (
+-                prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+-            )
+-            {
+-                point3f physics:centerOfMass = (0.00017552167, -0.018247312, 0.000019991758)
+-                float3 physics:diagonalInertia = (0.00017797352, 0.000178, 0.0003290265)
+-                float physics:mass = 0.12332977
+-                quatf physics:principalAxes = (-0.7070913, 0.7070913, 0.004681697, 0.004681697)
+-            }
+-
+-            over "steering_link_1" (
+-                prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+-            )
+-            {
+-                point3f physics:centerOfMass = (0.007789201, 0.000041259795, -0.04158901)
+-                float3 physics:diagonalInertia = (0.00004079679, 0.00013461788, 0.00016058533)
+-                float physics:mass = 0.10929162
+-                quatf physics:principalAxes = (0.63610125, 0.04054063, 0.7691941, 0.045519605)
+-
+-                over "front_wheel_link_1" (
+-                    prepend apiSchemas = ["PhysicsRigidBodyAPI", "PhysicsMassAPI"]
+-                )
+-                {
+-                    point3f physics:centerOfMass = (2.56418e-8, 2.6848375e-7, 3.3427133e-7)
+-                    float3 physics:diagonalInertia = (0.00022776915, 0.00022805772, 0.00045317315)
+-                    float physics:mass = 0.16491532
+-                    quatf physics:principalAxes = (0.5145304, 0.56513494, 0.40611482, 0.5009508)
+-                }
+-            }
+-        }
+-    }
+-
+-    over "Physics"
+-    {
+-        def PhysicsRevoluteJoint "rear_wheel_joint" (
+-            prepend apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+-        )
+-        {
+-            uniform token physics:axis = "X"
+-            custom rel physics:body0
+-            prepend rel physics:body0 = </trackstand_rl_0914/Geometry/base_link>
+-            custom rel physics:body1
+-            prepend rel physics:body1 = </trackstand_rl_0914/Geometry/base_link/rear_wheel_link_1>
+-            point3f physics:localPos0 = (0.029465, -0.025495, 0.085946)
+-            point3f physics:localPos1 = (0, 0, 0)
+-            quatf physics:localRot0 = (0.70240194, 0, 0.001057087, 0.7117798)
+-            quatf physics:localRot1 = (0.70240194, 0, 0.001057087, 0.7117798)
+-        }
+-
+-        def PhysicsRevoluteJoint "steering_joint" (
+-            prepend apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+-        )
+-        {
+-            float drive:angular:physics:maxForce = 100
+-            uniform token physics:axis = "X"
+-            custom rel physics:body0
+-            prepend rel physics:body0 = </trackstand_rl_0914/Geometry/base_link>
+-            custom rel physics:body1
+-            prepend rel physics:body1 = </trackstand_rl_0914/Geometry/base_link/steering_link_1>
+-            point3f physics:localPos0 = (0.28776, -0.039873, 0.219057)
+-            point3f physics:localPos1 = (0, 0, 0)
+-            quatf physics:localRot0 = (0.7694443, 0, 0.6387136, 0.00063812296)
+-            quatf physics:localRot1 = (0.7694443, 0, 0.6387136, 0.00063812296)
+-            float physics:lowerLimit = -89.999985
+-            float physics:upperLimit = 89.999985
+-            custom float urdf:limit:effort = 100
+-            custom float urdf:limit:velocity = 100
+-        }
+-
+-        def PhysicsRevoluteJoint "front_wheel_joint" (
+-            prepend apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+-        )
+-        {
+-            uniform token physics:axis = "X"
+-            custom rel physics:body0
+-            prepend rel physics:body0 = </trackstand_rl_0914/Geometry/base_link/steering_link_1>
+-            custom rel physics:body1
+-            prepend rel physics:body1 = </trackstand_rl_0914/Geometry/base_link/steering_link_1/front_wheel_link_1>
+-            point3f physics:localPos0 = (0.024852, 0.000132, -0.132693)
+-            point3f physics:localPos1 = (0, 0, 0)
+-            quatf physics:localRot0 = (0.65496296, 0, 0.021064555, -0.75536734)
+-            quatf physics:localRot1 = (0.65496296, 0, 0.021064555, -0.75536734)
+-        }
+-    }
+-}
+-
+diff --git a/scripts/source/trackstand_rl/assets/payloads/Physics/physx.usda b/scripts/source/trackstand_rl/assets/payloads/Physics/physx.usda
+deleted file mode 100644
+index ce8e846..0000000
+--- a/scripts/source/trackstand_rl/assets/payloads/Physics/physx.usda
++++ /dev/null
+@@ -1,50 +0,0 @@
+-#usda 1.0
+-(
+-    customLayerData = {
+-        string creator = "URDF USD Converter v0.1.2"
+-    }
+-    defaultPrim = "trackstand_rl_0914"
+-    doc = """Generated from Composed Stage of root layer /tmp/tmp0dzzpiwm/trackstand_rl_0914.usdc
+-
+-
+-Generated from Composed Stage of root layer /tmp/urdf_import_trackstand_rl_0914_pc64b4vf/usdex_trackstand_rl_0914/trackstand_rl_0914.usdc
+-
+-
+-Generated from Composed Stage of root layer /tmp/urdf_import_trackstand_rl_0914_pc64b4vf/temp_trackstand_rl_0914/trackstand_rl_0914.usd
+-
+-
+-Generated from Composed Stage of root layer /home/lmbike/lmbike_cyclerl-mod/trackstand_rl_0914_description_sdf/urdf/trackstand_rl_0914/payloads/base.usd
+-"""
+-    kilogramsPerUnit = 1
+-    metersPerUnit = 1
+-    subLayers = [
+-        @./physics.usda@
+-    ]
+-    upAxis = "Z"
+-)
+-
+-over "trackstand_rl_0914"
+-{
+-    over "Physics"
+-    {
+-        over "rear_wheel_joint" (
+-            prepend apiSchemas = ["PhysxJointAPI"]
+-        )
+-        {
+-        }
+-
+-        over "steering_joint" (
+-            prepend apiSchemas = ["PhysxJointAPI"]
+-        )
+-        {
+-            float physxJoint:maxJointVelocity = 5729.578
+-        }
+-
+-        over "front_wheel_joint" (
+-            prepend apiSchemas = ["PhysxJointAPI"]
+-        )
+-        {
+-        }
+-    }
+-}
+-
+diff --git a/scripts/source/trackstand_rl/assets/payloads/base.usda b/scripts/source/trackstand_rl/assets/payloads/base.usda
+deleted file mode 100644
+index cf273e7..0000000
+--- a/scripts/source/trackstand_rl/assets/payloads/base.usda
++++ /dev/null
+@@ -1,170 +0,0 @@
+-#usda 1.0
+-(
+-    customLayerData = {
+-        string creator = "URDF USD Converter v0.1.2"
+-    }
+-    defaultPrim = "trackstand_rl_0914"
+-    doc = """Generated from Composed Stage of root layer /tmp/tmp0dzzpiwm/trackstand_rl_0914.usdc
+-
+-
+-Generated from Composed Stage of root layer /tmp/urdf_import_trackstand_rl_0914_pc64b4vf/usdex_trackstand_rl_0914/trackstand_rl_0914.usdc
+-
+-
+-Generated from Composed Stage of root layer /tmp/urdf_import_trackstand_rl_0914_pc64b4vf/temp_trackstand_rl_0914/trackstand_rl_0914.usd
+-
+-
+-Generated from Composed Stage of root layer /home/lmbike/lmbike_cyclerl-mod/trackstand_rl_0914_description_sdf/urdf/trackstand_rl_0914/payloads/base.usd
+-"""
+-    kilogramsPerUnit = 1
+-    metersPerUnit = 1
+-    subLayers = [
+-        @./robot.usda@
+-    ]
+-    upAxis = "Z"
+-)
+-
+-def Xform "trackstand_rl_0914" (
+-    prepend apiSchemas = ["GeomModelAPI"]
+-    assetInfo = {
+-        string name = "trackstand_rl_0914"
+-    }
+-    kind = "component"
+-)
+-{
+-    float3[] extentsHint = [(-0.040249083, -0.09044426, 0.015988149), (0.38186717, 0.006162019, 0.26727396), (3.4028235e38, 3.4028235e38, 3.4028235e38), (-3.4028235e38, -3.4028235e38, -3.4028235e38), (3.4028235e38, 3.4028235e38, 3.4028235e38), (-3.4028235e38, -3.4028235e38, -3.4028235e38), (-0.040249083, -0.09044426, 0.015988149), (0.38186717, 0.006162019, 0.26727396)]
+-
+-    def Scope "Materials"
+-    {
+-    }
+-
+-    def Scope "Geometry"
+-    {
+-        def Xform "base_link"
+-        {
+-            def Xform "base_link" (
+-                instanceable = true
+-                prepend references = @./instances.usda@</Instances/base_link>
+-            )
+-            {
+-                quatd xformOp:orient = (1, 0, 0, 0)
+-                double3 xformOp:scale = (0.001000000047, 0.001000000047, 0.001000000047)
+-                double3 xformOp:translate = (0, 0, 0)
+-                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+-            }
+-
+-            def Xform "rear_wheel_link_1"
+-            {
+-                quatf xformOp:orient = (1, 0, 0, 0)
+-                float3 xformOp:scale = (1, 1, 1)
+-                double3 xformOp:translate = (0.029465, -0.025495, 0.085946)
+-                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+-
+-                def Xform "rear_wheel_link_1" (
+-                    instanceable = true
+-                    prepend references = @./instances.usda@</Instances/rear_wheel_link_1>
+-                )
+-                {
+-                    quatd xformOp:orient = (1, 0, 0, 0)
+-                    double3 xformOp:scale = (0.001000000047, 0.001000000047, 0.001000000047)
+-                    double3 xformOp:translate = (-0.029465, 0.025495, -0.085946)
+-                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+-                }
+-
+-                def Xform "rear_wheel_link_1_1" (
+-                    displayName = "rear_wheel_link_1"
+-                    instanceable = true
+-                    prepend references = @./instances.usda@</Instances/rear_wheel_link_1_1>
+-                )
+-                {
+-                    quatd xformOp:orient = (1, 0, 0, 0)
+-                    double3 xformOp:scale = (0.001000000047, 0.001000000047, 0.001000000047)
+-                    double3 xformOp:translate = (-0.029465, 0.025495, -0.085946)
+-                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+-                }
+-            }
+-
+-            def Xform "steering_link_1"
+-            {
+-                quatf xformOp:orient = (1, 0, 0, 0)
+-                float3 xformOp:scale = (1, 1, 1)
+-                double3 xformOp:translate = (0.28776, -0.039873, 0.219057)
+-                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+-
+-                def Xform "steering_link_1" (
+-                    instanceable = true
+-                    prepend references = @./instances.usda@</Instances/steering_link_1>
+-                )
+-                {
+-                    quatd xformOp:orient = (1, 0, 0, 0)
+-                    double3 xformOp:scale = (0.001000000047, 0.001000000047, 0.001000000047)
+-                    double3 xformOp:translate = (-0.28776, 0.039873, -0.219057)
+-                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+-                }
+-
+-                def Xform "front_wheel_link_1"
+-                {
+-                    quatf xformOp:orient = (1, 0, 0, 0)
+-                    float3 xformOp:scale = (1, 1, 1)
+-                    double3 xformOp:translate = (0.024852, 0.000132, -0.132693)
+-                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+-
+-                    def Xform "front_wheel_link_1" (
+-                        instanceable = true
+-                        prepend references = @./instances.usda@</Instances/front_wheel_link_1>
+-                    )
+-                    {
+-                        quatd xformOp:orient = (1, 0, 0, 0)
+-                        double3 xformOp:scale = (0.001000000047, 0.001000000047, 0.001000000047)
+-                        double3 xformOp:translate = (-0.312612, 0.039741, -0.086364)
+-                        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+-                    }
+-
+-                    def Xform "front_wheel_link_1_1" (
+-                        displayName = "front_wheel_link_1"
+-                        instanceable = true
+-                        prepend references = @./instances.usda@</Instances/front_wheel_link_1_1>
+-                    )
+-                    {
+-                        quatd xformOp:orient = (1, 0, 0, 0)
+-                        double3 xformOp:scale = (0.001000000047, 0.001000000047, 0.001000000047)
+-                        double3 xformOp:translate = (-0.312612, 0.039741, -0.086364)
+-                        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+-                    }
+-                }
+-
+-                def Xform "steering_link_1_1" (
+-                    displayName = "steering_link_1"
+-                    instanceable = true
+-                    prepend references = @./instances.usda@</Instances/steering_link_1_1>
+-                )
+-                {
+-                    quatd xformOp:orient = (1, 0, 0, 0)
+-                    double3 xformOp:scale = (0.001000000047, 0.001000000047, 0.001000000047)
+-                    double3 xformOp:translate = (-0.28776, 0.039873, -0.219057)
+-                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+-                }
+-            }
+-
+-            def Xform "base_link_1" (
+-                displayName = "base_link"
+-                instanceable = true
+-                prepend references = @./instances.usda@</Instances/base_link_1>
+-            )
+-            {
+-                quatd xformOp:orient = (1, 0, 0, 0)
+-                double3 xformOp:scale = (0.001000000047, 0.001000000047, 0.001000000047)
+-                double3 xformOp:translate = (0, 0, 0)
+-                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+-            }
+-        }
+-    }
+-
+-    def Scope "Physics"
+-    {
+-    }
+-
+-    def Scope "VisualMaterials"
+-    {
+-    }
+-}
+-
+diff --git a/scripts/source/trackstand_rl/assets/payloads/geometries.usd b/scripts/source/trackstand_rl/assets/payloads/geometries.usd
+deleted file mode 100644
+index 0b298fc..0000000
+Binary files a/scripts/source/trackstand_rl/assets/payloads/geometries.usd and /dev/null differ
+diff --git a/scripts/source/trackstand_rl/assets/payloads/instances.usda b/scripts/source/trackstand_rl/assets/payloads/instances.usda
+deleted file mode 100644
+index b275cce..0000000
+--- a/scripts/source/trackstand_rl/assets/payloads/instances.usda
++++ /dev/null
+@@ -1,172 +0,0 @@
+-#usda 1.0
+-(
+-    customLayerData = {
+-        string creator = "URDF USD Converter v0.1.2"
+-    }
+-    doc = """Generated from Composed Stage of root layer /tmp/tmp0dzzpiwm/trackstand_rl_0914.usdc
+-
+-
+-Generated from Composed Stage of root layer /tmp/urdf_import_trackstand_rl_0914_pc64b4vf/usdex_trackstand_rl_0914/trackstand_rl_0914.usdc
+-
+-
+-Generated from Composed Stage of root layer /tmp/urdf_import_trackstand_rl_0914_pc64b4vf/temp_trackstand_rl_0914/trackstand_rl_0914.usd
+-
+-
+-Generated from Composed Stage of root layer /home/lmbike/lmbike_cyclerl-mod/trackstand_rl_0914_description_sdf/urdf/trackstand_rl_0914/payloads/base.usd
+-"""
+-    kilogramsPerUnit = 1
+-    metersPerUnit = 1
+-    upAxis = "Z"
+-)
+-
+-def Scope "Instances"
+-{
+-    def Xform "base_link" (
+-        prepend references = @./geometries.usd@</Geometries/base_link>
+-    )
+-    {
+-        over "base_link" (
+-            apiSchemas = ["MaterialBindingAPI"]
+-        )
+-        {
+-            custom rel material:binding
+-            prepend rel material:binding = </Instances/base_link/VisualMaterials/silver>
+-        }
+-
+-        def Scope "VisualMaterials"
+-        {
+-            def Material "silver" (
+-                instanceable = true
+-                prepend references = @./materials.usda@</Materials/silver>
+-            )
+-            {
+-            }
+-        }
+-    }
+-
+-    def Xform "base_link_1" (
+-        prepend references = @./geometries.usd@</Geometries/base_link>
+-    )
+-    {
+-        over "base_link" (
+-            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+-        )
+-        {
+-            token physics:approximation = "convexHull"
+-            token purpose = "guide"
+-        }
+-    }
+-
+-    def Xform "rear_wheel_link_1" (
+-        prepend references = @./geometries.usd@</Geometries/rear_wheel_link_1>
+-    )
+-    {
+-        over "rear_wheel_link_1" (
+-            apiSchemas = ["MaterialBindingAPI"]
+-        )
+-        {
+-            custom rel material:binding
+-            prepend rel material:binding = </Instances/rear_wheel_link_1/VisualMaterials/silver>
+-        }
+-
+-        def Scope "VisualMaterials"
+-        {
+-            def Material "silver" (
+-                instanceable = true
+-                prepend references = @./materials.usda@</Materials/silver>
+-            )
+-            {
+-            }
+-        }
+-    }
+-
+-    def Xform "rear_wheel_link_1_1" (
+-        prepend references = @./geometries.usd@</Geometries/rear_wheel_link_1>
+-    )
+-    {
+-        over "rear_wheel_link_1" (
+-            prepend apiSchemas = ["PhysxSDFMeshCollisionAPI", "PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+-        )
+-        {
+-            token physics:approximation = "sdf"
+-            float physxSDFMeshCollision:sdfMargin = 0.01
+-            int physxSDFMeshCollision:sdfResolution = 256
+-            token purpose = "guide"
+-        }
+-    }
+-
+-    def Xform "steering_link_1" (
+-        prepend references = @./geometries.usd@</Geometries/steering_link_1>
+-    )
+-    {
+-        over "steering_link_1" (
+-            apiSchemas = ["MaterialBindingAPI"]
+-        )
+-        {
+-            custom rel material:binding
+-            prepend rel material:binding = </Instances/steering_link_1/VisualMaterials/silver>
+-        }
+-
+-        def Scope "VisualMaterials"
+-        {
+-            def Material "silver" (
+-                instanceable = true
+-                prepend references = @./materials.usda@</Materials/silver>
+-            )
+-            {
+-            }
+-        }
+-    }
+-
+-    def Xform "steering_link_1_1" (
+-        prepend references = @./geometries.usd@</Geometries/steering_link_1>
+-    )
+-    {
+-        over "steering_link_1" (
+-            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+-        )
+-        {
+-            token physics:approximation = "convexHull"
+-            token purpose = "guide"
+-        }
+-    }
+-
+-    def Xform "front_wheel_link_1" (
+-        prepend references = @./geometries.usd@</Geometries/front_wheel_link_1>
+-    )
+-    {
+-        over "front_wheel_link_1" (
+-            apiSchemas = ["MaterialBindingAPI"]
+-        )
+-        {
+-            custom rel material:binding
+-            prepend rel material:binding = </Instances/front_wheel_link_1/VisualMaterials/silver>
+-        }
+-
+-        def Scope "VisualMaterials"
+-        {
+-            def Material "silver" (
+-                instanceable = true
+-                prepend references = @./materials.usda@</Materials/silver>
+-            )
+-            {
+-            }
+-        }
+-    }
+-
+-    def Xform "front_wheel_link_1_1" (
+-        prepend references = @./geometries.usd@</Geometries/front_wheel_link_1>
+-    )
+-    {
+-        over "front_wheel_link_1" (
+-            prepend apiSchemas = ["PhysxSDFMeshCollisionAPI", "PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+-        )
+-        {
+-            token physics:approximation = "sdf"
+-            float physxSDFMeshCollision:sdfMargin = 0.01
+-            int physxSDFMeshCollision:sdfResolution = 256
+-            token purpose = "guide"
+-        }
+-    }
+-}
+-
+diff --git a/scripts/source/trackstand_rl/assets/payloads/materials.usda b/scripts/source/trackstand_rl/assets/payloads/materials.usda
+deleted file mode 100644
+index 48eed92..0000000
+--- a/scripts/source/trackstand_rl/assets/payloads/materials.usda
++++ /dev/null
+@@ -1,57 +0,0 @@
+-#usda 1.0
+-(
+-    customLayerData = {
+-        string creator = "URDF USD Converter v0.1.2"
+-    }
+-    doc = """Generated from Composed Stage of root layer /tmp/tmp0dzzpiwm/trackstand_rl_0914.usdc
+-
+-
+-Generated from Composed Stage of root layer /tmp/urdf_import_trackstand_rl_0914_pc64b4vf/usdex_trackstand_rl_0914/trackstand_rl_0914.usdc
+-
+-
+-Generated from Composed Stage of root layer /tmp/urdf_import_trackstand_rl_0914_pc64b4vf/temp_trackstand_rl_0914/trackstand_rl_0914.usd
+-
+-
+-Generated from Composed Stage of root layer /home/lmbike/lmbike_cyclerl-mod/trackstand_rl_0914_description_sdf/urdf/trackstand_rl_0914/payloads/base.usd
+-"""
+-    kilogramsPerUnit = 1
+-    metersPerUnit = 1
+-    upAxis = "Z"
+-)
+-
+-def Scope "Materials"
+-{
+-    def Material "silver"
+-    {
+-        color3f inputs:diffuseColor = (0, 0, 0)
+-        float inputs:metallic = 0
+-        float inputs:opacity = 0
+-        float inputs:roughness = 0.5
+-        token inputs:wrapMode = "repeat"
+-        token outputs:displacement (
+-            displayGroup = "Outputs"
+-        )
+-        prepend token outputs:displacement.connect = </Materials/silver/PreviewSurface.outputs:displacement>
+-        token outputs:surface (
+-            displayGroup = "Outputs"
+-        )
+-        prepend token outputs:surface.connect = </Materials/silver/PreviewSurface.outputs:surface>
+-        token outputs:volume (
+-            displayGroup = "Outputs"
+-        )
+-
+-        def Shader "PreviewSurface" (
+-            apiSchemas = ["NodeDefAPI"]
+-        )
+-        {
+-            token info:id = "UsdPreviewSurface"
+-            prepend color3f inputs:diffuseColor.connect = </Materials/silver.inputs:diffuseColor>
+-            prepend float inputs:metallic.connect = </Materials/silver.inputs:metallic>
+-            prepend float inputs:opacity.connect = </Materials/silver.inputs:opacity>
+-            prepend float inputs:roughness.connect = </Materials/silver.inputs:roughness>
+-            token outputs:displacement
+-            token outputs:surface
+-        }
+-    }
+-}
+-
+diff --git a/scripts/source/trackstand_rl/assets/payloads/robot.usda b/scripts/source/trackstand_rl/assets/payloads/robot.usda
+deleted file mode 100644
+index 698b34b..0000000
+--- a/scripts/source/trackstand_rl/assets/payloads/robot.usda
++++ /dev/null
+@@ -1,83 +0,0 @@
+-#usda 1.0
+-(
+-    customLayerData = {
+-        string creator = "URDF USD Converter v0.1.2"
+-    }
+-    defaultPrim = "trackstand_rl_0914"
+-    doc = """Generated from Composed Stage of root layer /tmp/tmp0dzzpiwm/trackstand_rl_0914.usdc
+-
+-
+-Generated from Composed Stage of root layer /tmp/urdf_import_trackstand_rl_0914_pc64b4vf/usdex_trackstand_rl_0914/trackstand_rl_0914.usdc
+-
+-
+-Generated from Composed Stage of root layer /tmp/urdf_import_trackstand_rl_0914_pc64b4vf/temp_trackstand_rl_0914/trackstand_rl_0914.usd
+-"""
+-    kilogramsPerUnit = 1
+-    metersPerUnit = 1
+-    upAxis = "Z"
+-)
+-
+-over "trackstand_rl_0914" (
+-    prepend apiSchemas = ["IsaacRobotAPI"]
+-)
+-{
+-    prepend rel isaac:physics:robotJoints = [
+-        </trackstand_rl_0914/Physics/rear_wheel_joint>,
+-        </trackstand_rl_0914/Physics/steering_joint>,
+-        </trackstand_rl_0914/Physics/front_wheel_joint>,
+-    ]
+-    prepend rel isaac:physics:robotLinks = [
+-        </trackstand_rl_0914/Geometry/base_link>,
+-        </trackstand_rl_0914/Geometry/base_link/rear_wheel_link_1>,
+-        </trackstand_rl_0914/Geometry/base_link/steering_link_1>,
+-        </trackstand_rl_0914/Geometry/base_link/steering_link_1/front_wheel_link_1>,
+-    ]
+-    token isaac:robotType = "Default"
+-
+-    over "Geometry"
+-    {
+-        over "base_link" (
+-            prepend apiSchemas = ["IsaacLinkAPI"]
+-        )
+-        {
+-            over "rear_wheel_link_1" (
+-                prepend apiSchemas = ["IsaacLinkAPI"]
+-            )
+-            {
+-            }
+-
+-            over "steering_link_1" (
+-                prepend apiSchemas = ["IsaacLinkAPI"]
+-            )
+-            {
+-                over "front_wheel_link_1" (
+-                    prepend apiSchemas = ["IsaacLinkAPI"]
+-                )
+-                {
+-                }
+-            }
+-        }
+-    }
+-
+-    over "Physics"
+-    {
+-        over "rear_wheel_joint" (
+-            prepend apiSchemas = ["IsaacJointAPI"]
+-        )
+-        {
+-        }
+-
+-        over "steering_joint" (
+-            prepend apiSchemas = ["IsaacJointAPI"]
+-        )
+-        {
+-        }
+-
+-        over "front_wheel_joint" (
+-            prepend apiSchemas = ["IsaacJointAPI"]
+-        )
+-        {
+-        }
+-    }
+-}
+-
+diff --git a/scripts/source/trackstand_rl/assets/trackstand_rl.usda b/scripts/source/trackstand_rl/assets/trackstand_rl.usda
+deleted file mode 100644
+index d975b96..0000000
+--- a/scripts/source/trackstand_rl/assets/trackstand_rl.usda
++++ /dev/null
+@@ -1,296 +0,0 @@
+-#usda 1.0
+-(
+-    customLayerData = {
+-        dictionary cameraSettings = {
+-            dictionary Front = {
+-                double3 position = (5, 0, 0)
+-                double radius = 5
+-            }
+-            dictionary Perspective = {
+-                double3 position = (0.8004949563017336, 0.8004949563017355, 0.8004950565364874)
+-                double3 target = (-3.6337181878462568, -3.633718187846253, -3.633717981774682)
+-            }
+-            dictionary Right = {
+-                double3 position = (0, -5, 0)
+-                double radius = 5
+-            }
+-            dictionary Top = {
+-                double3 position = (0, 0, 5)
+-                double radius = 5
+-            }
+-            string boundCamera = "/OmniverseKit_Persp"
+-        }
+-        string creator = "URDF USD Converter v0.1.2"
+-        dictionary omni_layer = {
+-            string authoring_layer = "./trackstand_rl_0914.usda"
+-        }
+-        dictionary renderSettings = {
+-        }
+-    }
+-    defaultPrim = "trackstand_rl_0914"
+-    doc = """Generated from Composed Stage of root layer /tmp/tmp0dzzpiwm/trackstand_rl_0914.usdc
+-
+-
+-Generated from Composed Stage of root layer /tmp/urdf_import_trackstand_rl_0914_pc64b4vf/usdex_trackstand_rl_0914/trackstand_rl_0914.usdc
+-
+-
+-Generated from Composed Stage of root layer /tmp/urdf_import_trackstand_rl_0914_pc64b4vf/temp_trackstand_rl_0914/trackstand_rl_0914.usd
+-
+-
+-Generated from Composed Stage of root layer /home/lmbike/lmbike_cyclerl-mod/trackstand_rl_0914_description_sdf/urdf/trackstand_rl_0914/payloads/base.usd
+-"""
+-    kilogramsPerUnit = 1
+-    metersPerUnit = 1
+-    upAxis = "Z"
+-)
+-
+-def Xform "trackstand_rl_0914" (
+-    prepend references = @./payloads/base.usda@
+-    variants = {
+-        string Physics = "physx"
+-    }
+-    append variantSets = "Physics"
+-)
+-{
+-    over "Geometry"
+-    {
+-        over "base_link"
+-        {
+-            over "rear_wheel_link_1"
+-            {
+-            }
+-
+-            over "steering_link_1"
+-            {
+-                over "front_wheel_link_1"
+-                {
+-                }
+-            }
+-        }
+-    }
+-
+-    over "Physics"
+-    {
+-        over "rear_wheel_joint"
+-        {
+-            float state:angular:physics:position = 0
+-            float state:angular:physics:velocity = 0
+-        }
+-
+-        over "steering_joint"
+-        {
+-            float state:angular:physics:position = 0
+-            float state:angular:physics:velocity = 0
+-        }
+-
+-        over "front_wheel_joint"
+-        {
+-            float state:angular:physics:position = 0
+-            float state:angular:physics:velocity = 0
+-        }
+-    }
+-    variantSet "Physics" = {
+-        "mujoco" (
+-            prepend payload = @./payloads/Physics/mujoco.usda@
+-        ) {
+-
+-        }
+-        "none" {
+-
+-        }
+-        "physics" (
+-            prepend payload = @./payloads/Physics/physics.usda@
+-        ) {
+-
+-        }
+-        "physx" (
+-            prepend payload = @./payloads/Physics/physx.usda@
+-        ) {
+-
+-        }
+-    }
+-}
+-
+-def "Render" (
+-    hide_in_stage_window = true
+-    no_delete = true
+-)
+-{
+-    def "OmniverseKit"
+-    {
+-        def "HydraTextures" (
+-            hide_in_stage_window = true
+-            no_delete = true
+-        )
+-        {
+-            def RenderProduct "omni_kit_widget_viewport_ViewportTexture_0" (
+-                prepend apiSchemas = ["OmniRtxSettingsCommonAdvancedAPI_1", "OmniRtxSettingsRtAdvancedAPI_1", "OmniRtxSettingsPtAdvancedAPI_1", "OmniRtxPostColorGradingAPI_1", "OmniRtxPostChromaticAberrationAPI_1", "OmniRtxPostBloomPhysicalAPI_1", "OmniRtxPostMatteObjectAPI_1", "OmniRtxPostCompositingAPI_1", "OmniRtxPostDofAPI_1", "OmniRtxPostMotionBlurAPI_1", "OmniRtxPostTvNoiseAPI_1", "OmniRtxPostTonemapIrayReinhardAPI_1", "OmniRtxPostDebugSettingsAPI_1", "OmniRtxDebugSettingsAPI_1"]
+-                hide_in_stage_window = true
+-                no_delete = true
+-            )
+-            {
+-                rel camera = </OmniverseKit_Persp>
+-                token omni:rtx:ambientOcclusion:denoiserMode = "none"
+-                token omni:rtx:background:source:texture:textureMode = "repeatMirrored"
+-                token omni:rtx:background:source:type = "domeLight"
+-                bool omni:rtx:debug:view:pixelDebug:enableFixedTextPos = 1
+-                token omni:rtx:directLighting:sampledLighting:denoisingTechnique = "None"
+-                bool omni:rtx:dlss:frameGeneration = 0
+-                float3 omni:rtx:domeLight:rotationAxis = (0, 0, 1)
+-                bool omni:rtx:indirectDiffuse:denoiser:enabled = 0
+-                bool omni:rtx:material:db:syncLoads = 1
+-                token omni:rtx:post:dlss:execMode = "performance"
+-                bool omni:rtx:post:registeredCompositing:invertColorCorrection = 1
+-                bool omni:rtx:post:registeredCompositing:invertToneMap = 1
+-                bool omni:rtx:pt:adaptiveSampling:filterError = 0
+-                uint omni:rtx:pt:adaptiveSampling:fixedSppIterations = 2
+-                uint omni:rtx:pt:maxSamplesPerLaunch = 2073600
+-                uint omni:rtx:pt:mgpu:maxPixelsPerRegionExponent = 12
+-                bool omni:rtx:reflections:denoiser:enabled = 0
+-                token omni:rtx:rendermode = "RealTimePathTracing"
+-                color3f omni:rtx:rt:ambientLight:color = (0.1, 0.1, 0.1)
+-                bool omni:rtx:rt:demoire = 0
+-                bool omni:rtx:rt:ecoMode:enabled
+-                bool omni:rtx:rt:lightcache:spatialCache:dontResolveConflicts = 1
+-                int omni:rtx:rt:sss:samples = 1
+-                uint omni:rtx:rtpt:maxVolumeBounces = 15
+-                float omni:rtx:rtpt:modulatingRoughnessThreshold = 0.08
+-                bool omni:rtx:scene:hydra:materialSyncLoads = 1
+-                bool omni:rtx:scene:hydra:mdlMaterialWarmup = 1
+-                rel orderedVars = </Render/Vars/LdrColor>
+-                custom bool overrideClipRange = 0
+-                uniform int2 resolution = (1280, 720)
+-            }
+-        }
+-    }
+-
+-    def RenderSettings "OmniverseGlobalRenderSettings" (
+-        prepend apiSchemas = ["OmniRtxSettingsGlobalRtAdvancedAPI_1", "OmniRtxSettingsGlobalPtAdvancedAPI_1"]
+-        no_delete = true
+-    )
+-    {
+-        rel products = </Render/OmniverseKit/HydraTextures/omni_kit_widget_viewport_ViewportTexture_0>
+-    }
+-
+-    def "Vars"
+-    {
+-        def RenderVar "LdrColor" (
+-            hide_in_stage_window = true
+-            no_delete = true
+-        )
+-        {
+-            uniform string sourceName = "LdrColor"
+-            uniform token sourceType = "raw"
+-        }
+-    }
+-}
+-
+-over "OmniverseKit_Persp" (
+-    prepend apiSchemas = ["OmniRtxCameraAutoExposureAPI_1", "OmniRtxCameraExposureAPI_1"]
+-    customData = {
+-        dictionary omni = {
+-            dictionary kit = {
+-                bool hide_in_stage_window = 1
+-                bool no_delete = 1
+-            }
+-        }
+-    }
+-    hide_in_stage_window = true
+-    kind = "component"
+-    no_delete = true
+-)
+-{
+-    float2 clippingRange = (0.01, 10000000)
+-    float exposure:fStop = 5
+-    float exposure:responsivity = 1.1026709
+-    float exposure:time = 0.02
+-    float focalLength = 18.147562
+-    float focusDistance = 400
+-    custom uniform vector3d omni:kit:centerOfInterest = (0, 0, -7.680282396149139)
+-    float3 xformOp:rotateXYZ = (54.73561, -6.3611094e-15, 135)
+-    float3 xformOp:scale = (1, 1, 1)
+-    double3 xformOp:translate = (0.8004949563017336, 0.8004949563017355, 0.8004950565364874)
+-    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+-}
+-
+-def PhysicsScene "PhysicsScene" (
+-    prepend apiSchemas = ["NewtonSceneAPI", "PhysxSceneAPI"]
+-)
+-{
+-}
+-
+-over "OmniverseKit_Front" (
+-    customData = {
+-        dictionary omni = {
+-            dictionary kit = {
+-                bool hide_in_stage_window = 1
+-                bool no_delete = 1
+-            }
+-        }
+-    }
+-    hide_in_stage_window = true
+-    kind = "component"
+-    no_delete = true
+-)
+-{
+-    float2 clippingRange = (1, 10000000)
+-    float horizontalAperture = 50
+-    custom uniform vector3d omni:kit:centerOfInterest = (0, 0, -5)
+-    token projection = "orthographic"
+-    float verticalAperture = 50
+-    float3 xformOp:rotateXYZ = (90, -1.2722219e-14, 90)
+-    float3 xformOp:scale = (1, 1, 1)
+-    double3 xformOp:translate = (5, 0, 0)
+-    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+-}
+-
+-over "OmniverseKit_Right" (
+-    customData = {
+-        dictionary omni = {
+-            dictionary kit = {
+-                bool hide_in_stage_window = 1
+-                bool no_delete = 1
+-            }
+-        }
+-    }
+-    hide_in_stage_window = true
+-    kind = "component"
+-    no_delete = true
+-)
+-{
+-    float2 clippingRange = (1, 10000000)
+-    float horizontalAperture = 50
+-    custom uniform vector3d omni:kit:centerOfInterest = (0, 0, -5)
+-    token projection = "orthographic"
+-    float verticalAperture = 50
+-    float3 xformOp:rotateXYZ = (90, -1.41245e-30, 1.2722219e-14)
+-    float3 xformOp:scale = (1, 1, 1)
+-    double3 xformOp:translate = (0, -5, 0)
+-    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+-}
+-
+-over "OmniverseKit_Top" (
+-    customData = {
+-        dictionary omni = {
+-            dictionary kit = {
+-                bool hide_in_stage_window = 1
+-                bool no_delete = 1
+-            }
+-        }
+-    }
+-    hide_in_stage_window = true
+-    kind = "component"
+-    no_delete = true
+-)
+-{
+-    float2 clippingRange = (1, 10000000)
+-    float horizontalAperture = 50
+-    custom uniform vector3d omni:kit:centerOfInterest = (0, 0, -5)
+-    token projection = "orthographic"
+-    float verticalAperture = 50
+-    float3 xformOp:rotateXYZ = (-1.2722219e-14, -7.016709e-15, -90)
+-    float3 xformOp:scale = (1, 1, 1)
+-    double3 xformOp:translate = (0, 0, 5)
+-    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+-}
+-
+diff --git a/scripts/source/trackstand_rl/trackstand_rl_cfg.py b/scripts/source/trackstand_rl/trackstand_rl_cfg.py
+deleted file mode 100644
+index a0f32e7..0000000
+--- a/scripts/source/trackstand_rl/trackstand_rl_cfg.py
++++ /dev/null
+@@ -1,105 +0,0 @@
+-"""Robot ArticulationCfg for the SDF-wheel trackstand bike — standalone.
+-
+-The trackstand_rl_0914 import whose wheels carry SDF collision
+-(physics:approximation = "sdf" + PhysxSDFMeshCollisionAPI, sdfResolution 256,
+-sdfMargin 0.01). Joints: steering_joint (revolute, limited), rear_wheel_joint
+-(continuous, drive), front_wheel_joint (continuous, unactuated).
+-
+-Actuator contract mirrors the real motors (config/motor_contract.yaml):
+-steering = GIM4310-10 (stall 5.6 Nm, 228 RPM), drive = GIM3510-8 (stall
+-6.28 Nm, 588 RPM). Independent of the NewBike cfg module.
+-"""
+-
+-import os
+-
+-import isaaclab.sim as sim_utils
+-from isaaclab.actuators import ImplicitActuatorCfg
+-from isaaclab.assets import ArticulationCfg
+-
+-CURRENT_DIR = os.path.dirname(os.path.realpath(__file__))
+-TRACKSTAND_USD_PATH = os.path.join(CURRENT_DIR, "assets", "trackstand_rl.usda")
+-
+-TRACKSTAND_BASE_CFG = ArticulationCfg(
+-    spawn=sim_utils.UsdFileCfg(
+-        usd_path=TRACKSTAND_USD_PATH,
+-        rigid_props=sim_utils.RigidBodyPropertiesCfg(
+-            disable_gravity=False,
+-            max_depenetration_velocity=1.0,
+-        ),
+-        articulation_props=sim_utils.ArticulationRootPropertiesCfg(
+-            enabled_self_collisions=False,
+-            # the probe-verified TGS fix from the engine audit (2026-09-13):
+-            # 16/8 delivers the effort-actuated drive rigidly (see cfg_record.txt)
+-            solver_position_iteration_count=16,
+-            solver_velocity_iteration_count=8,
+-        ),
+-    ),
+-    init_state=ArticulationCfg.InitialStateCfg(
+-        pos=(0.0, 0.0, 0.02),
+-        rot=(0.0, 0.0, 0.0, 1.0),  # (x, y, z, w)
+-        joint_pos={".*": 0.0},
+-        joint_vel={".*": 0.0},
+-    ),
+-    actuators={},
+-)
+-
+-# position steering + velocity drive (the base-scene placeholder, swapped
+-# for the hybrid cfg in TrackstandRLHybridEnvCfg.__post_init__)
+-TRACKSTAND_STANDARD_CFG = TRACKSTAND_BASE_CFG.replace(
+-    actuators={
+-        "steering": ImplicitActuatorCfg(
+-            joint_names_expr=["steering_joint"],
+-            effort_limit_sim=5.6,   # GIM4310-10 V1.1 stall (N·m)
+-            velocity_limit_sim=23.9,    # 228 RPM
+-            stiffness=10.0,         # same SI PD as MIT kp
+-            damping=0.2,            # same SI PD as MIT kd
+-        ),
+-        "drive": ImplicitActuatorCfg(
+-            joint_names_expr=["rear_wheel_joint"],
+-            effort_limit_sim=6.28,  # GIM3510-8 stall (N·m)
+-            velocity_limit_sim=61.6,    # 588 RPM
+-            stiffness=0.0,          # velocity mode: τ = Kd*(ω*−ω)
+-            damping=5.0,
+-        ),
+-    }
+-)
+-
+-# hybrid: position steering + torque drive — the Trackstand-rl-v0 robot cfg
+-TRACKSTAND_HYBRID_CFG = TRACKSTAND_BASE_CFG.replace(
+-    actuators={
+-        "steering": ImplicitActuatorCfg(
+-            joint_names_expr=["steering_joint"],
+-            effort_limit_sim=5.6,   # GIM4310-10 V1.1 stall (N·m)
+-            velocity_limit_sim=23.9,    # 228 RPM
+-            stiffness=10.0,         # position servo: same SI PD as MIT kp
+-            damping=0.2,            # same SI PD as MIT kd
+-        ),
+-        "drive": ImplicitActuatorCfg(
+-            joint_names_expr=["rear_wheel_joint"],
+-            effort_limit_sim=6.28,  # GIM3510-8 stall (N·m)
+-            velocity_limit_sim=61.6,    # 588 RPM
+-            stiffness=0.0,          # torque control: no position servo
+-            damping=0.05,           # light bearing friction; tune
+-        ),
+-    }
+-)
+-
+-# direct torque on both motors (A/B variant; unused until a torque task exists)
+-TRACKSTAND_TORQUE_CFG = TRACKSTAND_BASE_CFG.replace(
+-    actuators={
+-        "steering": ImplicitActuatorCfg(
+-            joint_names_expr=["steering_joint"],
+-            effort_limit_sim=5.6,       # GIM4310-10 V1.1 stall (N·m)
+-            velocity_limit_sim=23.9,    # 228 RPM
+-            stiffness=0.0,              # torque control: no position servo
+-            damping=0.2,                # light bearing friction; tune to real motor
+-        ),
+-        "drive": ImplicitActuatorCfg(
+-            joint_names_expr=["rear_wheel_joint"],
+-            effort_limit_sim=6.28,      # GIM3510-8 stall (N·m)
+-            velocity_limit_sim=61.6,    # 588 RPM
+-            stiffness=0.0,              # torque control: no position servo
+-            damping=0.05,               # wheel spins near-freely; tune
+-        ),
+-    }
+-)
+diff --git a/scripts/source/trackstand_rl/trackstand_rl_env.py b/scripts/source/trackstand_rl/trackstand_rl_env.py
+deleted file mode 100644
+index 40d8e39..0000000
+--- a/scripts/source/trackstand_rl/trackstand_rl_env.py
++++ /dev/null
+@@ -1,59 +0,0 @@
+-"""Env class for Trackstand-rl-v0 — standalone.
+-
+-Maintains per-episode state that reward functions cannot compute statelessly:
+-
+-- ``wheel_net_angle`` (num_envs,): the drive wheel's ACCUMULATED rotation since
+-  reset. ``joint_pos`` WRAPS at +-pi in this stack (verified empirically: write
+-  10.0 rad, read back -2.5 rad), so the integration lives here.
+-- ``spawn_yaw`` (num_envs,): the robot's heading at (post-)reset, via the
+-  canonical ``heading_w`` (base-frame +x rotated to world). "Heading vs spawn"
+-  terms MUST be relative to this per-env baseline.
+-
+-The drive-joint index is resolved from the ACTION config (no hardcoded joint
+-names), so this class works for any robot spelling of the drive joint.
+-"""
+-
+-import torch
+-import isaaclab.utils.math as math_utils
+-
+-from isaaclab.envs import ManagerBasedRLEnv
+-
+-
+-class TrackstandRLHybridEnv(ManagerBasedRLEnv):
+-    """ManagerBasedRLEnv + per-env net wheel angle and spawn-yaw baselines."""
+-
+-    def __init__(self, cfg, render_mode=None, **kwargs):
+-        super().__init__(cfg, render_mode, **kwargs)
+-        self.wheel_net_angle = torch.zeros(self.num_envs, device=self.device)
+-        self.spawn_yaw = torch.zeros(self.num_envs, device=self.device)
+-        drive_joint_name = self.cfg.actions.drive.joint_names[0]
+-        self._drive_idx = self.scene["robot"].find_joints(drive_joint_name)[0][0]
+-
+-    def _heading_of(self):
+-        """Yaw of the base frame, computed from the RAW root quaternion.
+-
+-        The raw pose buffer is updated synchronously by the reset-write kernels
+-        (write_root_link_pose_to_sim_index writes into the data buffer directly),
+-        so this is fresh in EVERY window — unlike ``data.heading_w``, whose
+-        kernel cache is NOT invalidated by ``_reset_pose()`` and which returns
+-        the pre-reset heading until the next physics step.
+-        """
+-        quat = self.scene["robot"].data.root_quat_w.torch  # (N, 4) xyzw, raw buffer
+-        return math_utils.euler_xyz_from_quat(quat)[2]
+-
+-    def step(self, action):
+-        obs, rew, term, trunc, extras = super().step(action)
+-        # integrate this step's drive-wheel rotation; zero for envs that just reset
+-        dv = self.scene["robot"].data.joint_vel[:, self._drive_idx]
+-        self.wheel_net_angle = self.wheel_net_angle + dv * self.step_dt
+-        # capture the post-reset heading as each resetting env's new episode baseline
+-        yaw = self._heading_of()
+-        self.spawn_yaw[self.reset_terminated] = yaw[self.reset_terminated]
+-        self.wheel_net_angle[self.reset_terminated] = 0.0
+-        return obs, rew, term, trunc, extras
+-
+-    def reset(self, seed=None, options=None):
+-        obs, extras = super().reset(seed=seed, options=options)
+-        self.wheel_net_angle.zero_()
+-        self.spawn_yaw = self._heading_of().clone()
+-        return obs, extras
+diff --git a/scripts/source/trackstand_rl/trackstand_rl_env_cfg.py b/scripts/source/trackstand_rl/trackstand_rl_env_cfg.py
+deleted file mode 100644
+index 7d87246..0000000
+--- a/scripts/source/trackstand_rl/trackstand_rl_env_cfg.py
++++ /dev/null
+@@ -1,531 +0,0 @@
+-"""Stationary balancing environment for the SDF-wheel trackstand bike.
+-
+-Goal: keep the bicycle upright at its spawn position using steering and drive,
+-with a strong position-keeping penalty to prevent drift.
+-
+-Standalone task (Trackstand-rl-v0): self-contained robot cfg (trackstand_rl_cfg),
+-env class (trackstand_rl_env) and agent cfg (agent_cfg) live in this package.
+-The only shared dependency is the stationary MDP term library
+-(CycleRL...mdp.stationary), which is bike-agnostic. No imports from the
+-NewBike task package.
+-"""
+-
+-from isaaclab.envs import ManagerBasedRLEnvCfg
+-from isaaclab.managers import (
+-    CurriculumTermCfg,
+-    ObservationGroupCfg,
+-    ObservationTermCfg,
+-    RewardTermCfg,
+-    TerminationTermCfg,
+-    EventTermCfg,
+-    SceneEntityCfg,
+-)
+-from isaaclab.assets import AssetBaseCfg
+-from isaaclab.scene import InteractiveSceneCfg
+-from isaaclab.terrains import TerrainImporterCfg
+-from isaaclab.sim import DomeLightCfg
+-from isaaclab.envs.mdp.actions import JointEffortActionCfg, JointPositionActionCfg, JointVelocityActionCfg
+-import isaaclab.envs.mdp as mdp
+-from isaaclab.utils.configclass import configclass
+-
+-from CycleRL.tasks.manager_based.cyclerl.mdp.stationary.noise import PerChannelGaussianNoiseCfg
+-
+-from .trackstand_rl_cfg import TRACKSTAND_HYBRID_CFG, TRACKSTAND_STANDARD_CFG, TRACKSTAND_TORQUE_CFG
+-from CycleRL.tasks.manager_based.cyclerl.mdp.stationary import curriculums as custom_curriculums
+-from CycleRL.tasks.manager_based.cyclerl.mdp.stationary import events as custom_events
+-from CycleRL.tasks.manager_based.cyclerl.mdp.stationary.observations import balance_imu_state
+-from CycleRL.tasks.manager_based.cyclerl.mdp.stationary.rewards import (
+-    balance_action_rate_penalty,
+-    balance_action_rate_penalty_norm,
+-    balance_displacement_band,
+-    balance_drive_reward,
+-    balance_drift_gaussian,
+-    balance_joint_acc_penalty,
+-    balance_joint_torque_penalty,
+-    balance_micro_motion_band,
+-    balance_position_penalty,
+-    # balance_stability_reward,  # disabled below (kept in rewards.py)
+-    balance_roll_shaping,
+-    balance_steer_reward,
+-    balance_survival_reward,
+-    balance_survival_reward_binary,
+-    balance_termination_penalty,
+-    balance_wheel_net_angle_band,
+-    balance_wheel_net_gaussian,
+-    balance_yaw_band,
+-    balance_drift_penalty_quadratic,
+-    balance_wheel_net_angle_penalty,
+-)
+-from CycleRL.tasks.manager_based.cyclerl.mdp.stationary.terminations import (
+-    balance_drift_termination,
+-    balance_wheel_net_termination,
+-    balance_yaw_deviation_termination,
+-    nonfinite_or_extreme_state,
+-    thubike_fallen_termination,
+-)
+-
+-
+-# ===========================================================================
+-# Config classes
+-# ===========================================================================
+-
+-
+-@configclass
+-class TrackstandRLSceneCfg(InteractiveSceneCfg):
+-    terrain = TerrainImporterCfg(prim_path="/World/ground", terrain_type="plane")
+-    robot = TRACKSTAND_STANDARD_CFG.replace(prim_path="{ENV_REGEX_NS}/Robot")
+-    dome_light = AssetBaseCfg(
+-        prim_path="/World/DomeLight",
+-        spawn=DomeLightCfg(intensity=2000.0, color=(0.75, 0.75, 0.75)),
+-    )
+-
+-
+-@configclass
+-class TrackstandRLActionsCfg:
+-    steering = JointPositionActionCfg(
+-        asset_name="robot", joint_names=["steering_joint"], scale=1.57  # ±90°
+-    )
+-    drive = JointVelocityActionCfg(
+-        asset_name="robot", joint_names=["rear_wheel_joint"], scale=10.0,
+-        # ponytail: cap the velocity target so the Gaussian policy can't command a
+-        # blow-up wheel speed (clip == scale, per this repo's convention). Tune.
+-        clip={"rear_wheel_joint": (-10.0, 10.0)},
+-    )
+-
+-
+-@configclass
+-class TrackstandRLObservationsCfg(ObservationGroupCfg):
+-    enable_corruption = True  # turns ON the per-step gaussian obs noise (term #8 white noise)
+-
+-    imu = ObservationTermCfg(
+-        func=balance_imu_state,
+-        params={"steer_joint_name": "steering_joint", "drive_joint_name": "rear_wheel_joint"},
+-        # per-channel std matching the 9-dim obs [gravity_y, gravity_z, angvel*3, linvel*2, sin, cos]:
+-        #   gravity: 0.001 (g units; accel noise 0.001 g RMS from the IMU manual)
+-        #   ang_vel: 0.0012 (rad/s; gyro noise 0.07 deg/s RMS from the IMU manual)
+-        #   lin_vel / sin-cos: fusion- and encoder-derived, not in the manual -> 0 until measured
+-        noise=PerChannelGaussianNoiseCfg(std=(0.001, 0.001, 0.0012, 0.0012, 0.0012, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)),
+-    ) #                                       0.001, 0.001, 0.0012, 0.0012, 0.0012, 0.0, 0.0, 0.0, 0.0
+-
+-
+-# ---------------------------------------------------------------------------
+-# Shared reward, termination, and event configs (bike-agnostic)
+-# ---------------------------------------------------------------------------
+-
+-
+-@configclass
+-class BalanceRewardsCfg:
+-    # exponential survival (commented — flip back by swapping which line is active):
+-    #survival = RewardTermCfg(func=balance_survival_reward, weight=5.0)  # exp reward peaks at 1.0 (vertical), so weight == peak survival = 5.0.
+-    survival = RewardTermCfg(func=balance_survival_reward_binary, weight=5.0)  # binary +1 while |roll|<30°, else 0 (flat alive bonus, no shaping). Dominates drive(1.0)/steer(0.25).
+-    # action-rate (smoothness) penalty: -||a_t - a_{t-1}||. weight 0.0 = OFF by default
+-    # (contributes nothing, so no-flag runs are unchanged); set per-run with --arp_w
+-    # (e.g. 0.1) to damp motor jitter/chaos. Unbounded -> keep the weight small.
+-    action_rate = RewardTermCfg(func=balance_action_rate_penalty, weight=0.0)
+-    #termination_pen = RewardTermCfg(func=balance_termination_penalty, weight=10.0)  # one-time -1 on failure termination (fallen/diverged)
+-    # stability disabled: it penalises angular velocity, which fights the active
+-    # corrective motion the bike needs. Function kept in rewards.py.
+-    # stability = RewardTermCfg(func=balance_stability_reward, weight=1.0)
+-    #position = RewardTermCfg(func=balance_position_penalty, weight=0.01)
+-    # Quadratic (-v^2) velocity penalties; weights lowered so the motors aren't
+-    # frozen. Unbounded but polynomial (no overflow) — see rewards.py.
+-    drive_reward = RewardTermCfg(
+-        func=balance_drive_reward,
+-        weight=12.0,  # bounded reward peaks ~1.0; set to desired peak. Keep < survival (5) so balance stays primary.
+-        params={"drive_joint_name": "rear_wheel_joint"},
+-    )
+-
+-    '''
+-    
+-    '''
+-    steer_reward = RewardTermCfg(
+-            func=balance_steer_reward,
+-            weight=5.0,  # peaks ~1.0; keep SMALL — steering is the main balancing actuator, over-rewarding stillness suppresses corrective steering.
+-            params={"steer_joint_name": "steering_joint"},
+-    )
+-    '''
+-    
+-    '''
+-    
+-    #joint_acc = RewardTermCfg(func=balance_joint_acc_penalty, weight=0.01)
+-
+-
+-@configclass
+-class BalanceTerminationsCfg:
+-    time_out = TerminationTermCfg(func=mdp.time_out, time_out=True)
+-    fallen = TerminationTermCfg(
+-        func=thubike_fallen_termination,
+-        params={"limit_angle": 0.5236},  # 30°
+-        time_out=False,
+-    )
+-    # Containment: reset a diverging env before a NaN can poison the shared policy.
+-    diverged = TerminationTermCfg(
+-        func=nonfinite_or_extreme_state,
+-        # max_joint_vel: root-only checks miss a runaway wheel under torque control
+-        # (see terminations.py). Loose on purpose — 5x the drive motor's limit, so it
+-        # only fires on real divergence, not on ordinary velocity-limit overshoot.
+-        params={"max_lin_vel": 20.0, "max_ang_vel": 50.0, "max_joint_vel": 300.0},
+-        time_out=False,
+-    )
+-
+-
+-@configclass
+-class BalanceEventsCfg:
+-    reset_scene = EventTermCfg(func=mdp.reset_scene_to_default, mode="reset")
+-
+-    # --- Ground friction (startup): pinned to a fixed nominal, so it's DR-free.
+-    # The shared ground can't be ramped reliably mid-sim (USD material writes), so
+-    # friction DR is carried entirely by the per-env robot tire
+-    # (randomize_material below), which updates reliably at reset. ---
+-    randomize_ground_friction = EventTermCfg(
+-        func=custom_events.randomize_ground_plane_material,
+-        mode="startup",
+-        params={
+-            "asset_cfg": SceneEntityCfg("terrain"),
+-            "static_friction_range": (1.0, 1.0),   # pinned nominal; tune if needed
+-            "dynamic_friction_range": (1.0, 1.0),
+-            "restitution_range": (0.0, 0.0),
+-            "make_consistent": True,
+-        },
+-    )
+-    '''
+-    # --- Robot dynamics (reset) ---
+-    randomize_mass = EventTermCfg(
+-        func=mdp.randomize_rigid_body_mass,
+-        mode="reset",
+-        params={
+-            "asset_cfg": SceneEntityCfg("robot"),
+-            "operation": "scale",
+-            "mass_distribution_params": (0.5, 1.5),
+-        },
+-    )
+-    
+-    randomize_com = EventTermCfg(
+-        func=mdp.randomize_rigid_body_com,
+-        mode="reset",
+-        params={
+-            "asset_cfg": SceneEntityCfg("robot"),
+-            "com_range": {
+-                "x": (-0.0, 0.0), # 0.02
+-                "y": (-0.01, 0.01), # 0.02
+-                "z": (-0.0, 0.0), # 0.02
+-            },
+-        },
+-    )
+-    
+-    randomize_material = EventTermCfg(
+-        func=mdp.randomize_rigid_body_material,
+-        mode="reset",
+-        params={
+-            "asset_cfg": SceneEntityCfg("robot"),
+-            "static_friction_range": (0.5, 1.2),
+-            "dynamic_friction_range": (0.5, 1.2),
+-            "restitution_range": (0.0, 0.0),
+-            "num_buckets": 32,
+-            "make_consistent": True,
+-        },
+-    )
+-    
+-    randomize_actuator_gains = EventTermCfg(
+-        func=mdp.randomize_actuator_gains,
+-        mode="reset",
+-        params={
+-            "asset_cfg": SceneEntityCfg("robot"),
+-            "stiffness_distribution_params": (0.9, 1.1),
+-            "damping_distribution_params": (0.9, 1.1),
+-            "operation": "scale",
+-        },
+-    )
+-    
+-    initial_state = EventTermCfg(
+-        func=mdp.reset_root_state_uniform,
+-        mode="reset",
+-        params={
+-            "asset_cfg": SceneEntityCfg("robot"),
+-            "pose_range": {
+-                "x": (0.0, 0.0),
+-                "y": (0.0, 0.0),
+-                "z": (0.0, 0.0),
+-                "roll": (-0.10, 0.10),  # iter10: gentler starts — recovery must fit inside the 30-deg heading cap
+-                "pitch": (0.0, 0.0),
+-                "yaw": (0.0, 0.0),
+-            },
+-            "velocity_range": {
+-                "x": (0.0, 0.0),  # stationary balancing: no initial forward momentum
+-                "y": (0.0, 0.0),
+-                "z": (0.0, 0.0),
+-                "roll": (-0.25, 0.25),  # iter10: 0.5 swung heading past 30 deg during recovery (41% yaw deaths)
+-                "pitch": (0.0, 0.0),
+-                "yaw": (0.0, 0.0),
+-            },
+-        },
+-    )
+-    
+-    # --- IMU turn-on residuals: per-episode post-calibration bias residual (reset) ---
+-    #     Turn-on residual is #1 error mentioned in cfg_record.txt. It can be largely eliminated
+-    #     by calibration, but the post-calibration residual is non-zero and un-negligible.
+-    #     (The 20-60 ms sensor/loop latency params were REMOVED on 2026-09-08.)
+-    reset_imu_turnon_residuals = EventTermCfg(
+-        func=custom_events.reset_imu_turnon_residuals,
+-        mode="reset",
+-        params={
+-            "gyro_res_bias_std": 0.0000,  # 0.03 original | PLACEHOLDER 2e-4 rad/s (= calibration floor noise/sqrt(N) ~1e-4 + thermal allowance) — REPLACE with the MEASURED per-boot residual spread
+-            "accel_res_bias_std": 0.002,  # 0.02 original | PLACEHOLDER 0.002 g (~0.11 deg, stand-leveling dominated) — REPLACE with the MEASURED accel residual
+-        },
+-    )
+-    
+-    '''
+-
+-
+-@configclass
+-class BalanceCurriculumsCfg:
+-    # Diagnostics only: logs motor speeds to TensorBoard (Curriculum/...).
+-    motor_speeds = CurriculumTermCfg(func=custom_curriculums.log_motor_speeds)
+-    # Gradual DR ramp: OFF at step 0 -> full authored ranges by step 50k.
+-    # alpha logged as Curriculum/dr_ramp. (Ground friction is pinned/DR-free;
+-    # the per-env robot tire material carries the friction DR.)
+-    # no dr_ramp for evaluating different DR terms' effects on policy learning curve
+-    '''
+-    dr_ramp = CurriculumTermCfg(
+-        func=custom_curriculums.ramp_domain_randomization,
+-        params={"start_step": 0, "end_step": 50000},
+-    )
+-    '''
+-    
+-
+-
+-@configclass
+-class TrackstandRLEnvCfg(ManagerBasedRLEnvCfg):
+-    decimation = 2
+-    scene = TrackstandRLSceneCfg(num_envs=4096, env_spacing=2.5)
+-    actions = TrackstandRLActionsCfg()
+-    observations = {"policy": TrackstandRLObservationsCfg()}
+-    rewards = BalanceRewardsCfg()
+-    terminations = BalanceTerminationsCfg()
+-    events = BalanceEventsCfg()
+-    curriculum = BalanceCurriculumsCfg()
+-    # No commands — pure stationary balancing with position-keeping
+-
+-    def __post_init__(self):
+-        self.viewer.eye = [5.0, 5.0, 2.0]
+-        # 50 Hz control. step_dt is a READ-ONLY property on the env
+-        # (= sim.dt * decimation), NOT a cfg field — assigning `self.step_dt`
+-        # silently does nothing and left the policy running at 30 Hz
+-        # (sim.dt default 1/60 * decimation 2 = 33.3 ms). Set sim.dt instead.
+-        self.sim.dt = 0.01  # * decimation(2) -> step_dt = 0.02 s = 50 Hz
+-        self.episode_length_s = 30.0  # 30 s of balancing per episode -> 1500 steps
+-
+-
+-# ===========================================================================
+-# Torque-controlled variant (A/B against the position/velocity setup above)
+-# ===========================================================================
+-
+-
+-@configclass
+-class TrackstandRLTorqueActionsCfg:
+-    """Direct torque control: the policy outputs a torque per motor (like the
+-    well-balanced lmbike_rl setup and the GM4310/GIM3510 CAN torque interface).
+-    Scale = the motor stall torque; the actuator effort_limit clips beyond it."""
+-
+-    steering = JointEffortActionCfg(
+-        asset_name="robot", joint_names=["steering_joint"], scale=5.6  # ±stall N·m
+-    )
+-    drive = JointEffortActionCfg(
+-        asset_name="robot", joint_names=["rear_wheel_joint"], scale=6.28  # ±stall N·m
+-    )
+-
+-
+-@configclass
+-class TrackstandRLHybridActionsCfg:
+-    """Hybrid control: steering = joint POSITION (servo), drive = joint EFFORT (torque).
+-
+-    Action vector is 2-dim: [steer_target, drive_torque], each in [-1, 1] before scaling.
+-    """
+-
+-    steering = JointPositionActionCfg(
+-        asset_name="robot", joint_names=["steering_joint"], scale=1.57  # ±90°
+-    )
+-    drive = JointEffortActionCfg(
+-        asset_name="robot", joint_names=["rear_wheel_joint"], scale=6.28  # ±stall N·m
+-    )
+-
+-
+-@configclass
+-class TrackstandRLHybridRewardsCfg:
+-    """Literature-based reward for the hybrid (torque drive + servo steering) track stand.
+-
+-    Reworked per the static-balance survey: the old drive_reward/steer_reward paid
+-    for a *still* wheel, which contradicts the trackstand mechanism (Brockett: no
+-    static feedback law — micro-motion is necessary; Wang 2024: balance torque
+-    comes from torque-level rear-wheel micro-motion). Term-by-term:
+-
+-    - survival (w=2.0): flat alive bonus while |roll|<30° — just enough to make
+-      falling strictly worse than wobbling; no shaping so it can't paper over
+-      bad uprightness.
+-    - roll_shaping (w=8.0): exp(-roll²/2σ²), σ=12° — the main gradient term,
+-      pushes upright inside the survival band (survival alone pays 29° == 0°).
+-    - drift_band (w=5.0): tolerance band ±0.2 m around spawn, Gaussian decay
+-      beyond — position-keeping WITHOUT fighting the necessary micro-motion.
+-    - yaw_band (w=4.0): ANTI-ORBITAL plateau+linear tail on |yaw| vs spawn
+-      heading — a circling policy earns nothing for holding a circle.
+-    - micro_band (w=4.0): plateau up to |ω_drive|=1.5 rad/s, linear tail beyond —
+-      rewards micro-motion, with CONSTANT gradient against runaway spin.
+-    - act_penalty (w=0.1): -‖a‖₂ on the 2-dim action — light effort cost.
+-      (Func returns negative; weight stays positive so it remains a penalty.)
+-    - rate_penalty (w=0.1): per-joint-normalised -‖Δa/scale‖₂ — damps jitter
+-      without over-penalising the necessary oscillation frequency.
+-    """
+-
+-    survival = RewardTermCfg(func=balance_survival_reward_binary, weight=5.0)  # iter10: episodes die in <1s; alive-time gradient must dominate
+-
+-    
+-    '''
+-    roll_shaping = RewardTermCfg(
+-        func=balance_roll_shaping,
+-        weight=5.0,
+-        params={"sigma": 0.2094},  # 12 deg: iter3's 15 deg flattened precision (roll RMS 4.94->6.51)
+-    )
+-    drift_band = RewardTermCfg( # Can we delete this, because yaw_band, wheel_net and micro_band already penalize drift?
+-        func=balance_displacement_band,
+-        weight=1.5,  # iter2 2.0: drift deaths (max 2.0 m, term firing). Position-keeping = first-class objective.
+-        params={"band": 0.2, "sigma": 0.3},
+-    )
+-    yaw_band = RewardTermCfg(
+-        func=balance_yaw_band,
+-        weight=2.5,  # ANTI-ORBITAL. iter3 Gaussian inert; iter4 CLAMPED tail -> policy parked AT the pi floor
+-        params={"band": 0.1, "tail_slope": 0.66},  # NO clamp: value ~ -1 at pi, constant gradient everywhere
+-    )
+-    wheel_net = RewardTermCfg(
+-        func=balance_wheel_net_angle_band,
+-        weight=1.0,  # anti-orbit/anti-roll backstop in wheel space (net rotation since reset)
+-        params={"band": 1.0ate_penalty = RewardTermCfg(
+-        func=balance_action_rate_penalty_norm,
+-        weight=0.1,  # iter1 -0.05 SIGN WRONG (rewarded slamming); 0.1 damps servo slam (steer max 151 rad/s)
+-        params={"action_scales": (1.57, 6.28)},  # steer rad, drive N-m
+-    ), "tail_slope": 0.19, "penalty_floor": -1.0},  # floor-capped: no suicide pressure
+-    )
+-    micro_band = RewardTermCfg(
+-        func=balance_micro_motion_band,
+-        weight=2.5,
+-        # iter3: drive still 6.1 rad/s vs target 1.5 -> tail gradient (0.03) too weak. Steepen to 0.05.
+-        params={"target": 1.5, "tail_slope": 0.05, "drive_joint_name": "rear_wheel_joint"},
+-    )
+-    drift_quad = RewardTermCfg(
+-            func=balance_drift_penalty_quadratic,
+-            weight=1.0
+-        )
+-    wheel_net_quad = RewardTermCfg(
+-            func=balance_wheel_net_angle_penalty,
+-            weight=1.0,
+-        )
+-
+-    # --- gaussian reward variants (EXPERIMENTAL — NOT active; import
+-    #     balance_drift_gaussian, balance_wheel_net_gaussian from ..mdp.stationary.rewards) ---
+-    # Gaussian wheel-net: positive, gradient everywhere incl. the band's dead zone;
+-    # wide sigma keeps the tail alive out to the 7.2 rad termination cap.
+-    
+-    # Gaussian drift: d bounded by the 0.5 m drifted termination -> gradient over
+-    # the whole range; ~0.83 at the 0.15 m operating point (barely perturbs the optimum).
+-    wheel_net_gauss = RewardTermCfg(
+-        func=balance_wheel_net_gaussian,
+-        weight=2.0,  # peak per-step contribution
+-        params={"sigma": 3.0},  # rad
+-    )
+-    '''
+-    
+-    drift_gauss = RewardTermCfg(
+-        func=balance_drift_gaussian,
+-        weight=2.0,  # peak per-step contribution
+-        params={"sigma": 0.25},  # m
+-    )
+-
+-    # NOTE: both penalty funcs RETURN NEGATIVE values (see rewards.py), so the
+-    # weights must be POSITIVE to stay penalties — negative weight would flip
+-    # them into rewards (reward manager: value * weight). Iter1 had the sign
+-    # wrong (TB confirmed net-positive contributions); fixed in iter2.
+-    '''
+-    
+-    act_penalty = RewardTermCfg(func=balance_joint_torque_penalty, weight=0.1)
+-
+-    '''
+-    rate_penalty = RewardTermCfg(
+-        func=balance_action_rate_penalty_norm,
+-        weight=0.1,  # iter1 -0.05 SIGN WRONG (rewarded slamming); 0.1 damps servo slam (steer max 151 rad/s)
+-        params={"action_scales": (1.57, 6.28)},  # steer rad, drive N-m
+-    )
+-    
+-
+-@configclass
+-class TrackstandRLHybridTerminationsCfg(BalanceTerminationsCfg):
+-    """v1 terminations: parent's (time_out / fallen 30° / diverged) plus three
+-    trackstand-envelope terms:
+-
+-    drifted (0.5 m): position envelope around spawn. 2 m let the bike orbit
+-    inside the limit with a ~0.07 m wheel radius; 0.5 m keeps the stand local.
+-    yaw_deviation (60°): heading envelope vs spawn heading — a circling bike
+-    accumulates yaw and gets reset.
+-    wheel_net (7.2 rad): net rear-wheel rotation envelope — constant rolling
+-    or sustained in-place spin accumulates it; micro-motion oscillates ~0.
+-    """
+-
+-    drifted = TerminationTermCfg(
+-        func=balance_drift_termination,
+-        params={"max_dist": 0.5},  # m; wheel radius ~0.07 m, so 2.0 m allowed orbiting inside
+-        time_out=False,
+-    )
+-    yaw_deviation = TerminationTermCfg(
+-        func=balance_yaw_deviation_termination,
+-        params={"limit_angle": 0.5236},  # 30 deg
+-        time_out=False,
+-    )
+-    wheel_net = TerminationTermCfg(
+-        func=balance_wheel_net_termination,
+-        params={"limit_angle": 7.2},  # rad of net rotation since reset
+-        time_out=False,
+-    )
+-
+-
+-@configclass
+-class TrackstandRLHybridEnvCfg(TrackstandRLEnvCfg):
+-    """NewBike-Balance-v1: same task as v0, hybrid control.
+-
+-    Drive = direct torque (like the Torque variant); steering = position servo
+-    (like v0). Rewards/terminations are the literature-based v1 set; events,
+-    curriculum and observations are inherited unchanged.
+-    """
+-
+-    actions = TrackstandRLHybridActionsCfg()
+-    rewards = TrackstandRLHybridRewardsCfg()
+-    terminations = TrackstandRLHybridTerminationsCfg()
+-
+-    def __post_init__(self):
+-        super().__post_init__()
+-        # steering servo gains + torque-mode drive (stiffness=0)
+-        self.scene.robot = TRACKSTAND_HYBRID_CFG.replace(prim_path="{ENV_REGEX_NS}/Robot")
+-        # apply actuator/external forces EVERY TGS solver iteration: with the
+-        # flag off the drive torque is injected once per step and the velocity
+-        # sweeps can't propagate it (the x24.5 sluggish-drive root cause,
+-        # confirmed by the in-air probe 2026-09-13; see cfg_record.txt).
+-        # The default None physics cfg uses the engine defaults -- assigning an
+-        # explicit PhysxCfg with only this flag keeps everything else default.
+-        from isaaclab_physx.physics.physx_manager_cfg import PhysxCfg
+-        self.sim.physics = PhysxCfg(enable_external_forces_every_iteration=True)
+-
+-
+-@configclass
+-class TrackstandRLTorqueEnvCfg(TrackstandRLEnvCfg):
+-    """Torque-controlled A/B variant of the NewBike balance task.
+-
+-    Both motors are driven by direct effort/torque instead of the parent's
+-    position (steering) + velocity (drive). Everything else — rewards,
+-    terminations, events, curriculum, observations — is inherited unchanged, so
+-    the only difference under test is the control mode.
+-    """
+-
+-    actions = TrackstandRLTorqueActionsCfg()
+-
+-    def __post_init__(self):
+-        super().__post_init__()
+-        # swap in the torque actuators (stiffness=0 so the effort action isn't
+-        # fought by a PD servo)
+-        self.scene.robot = TRACKSTAND_TORQUE_CFG.replace(prim_path="{ENV_REGEX_NS}/Robot")
+diff --git a/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/__init__.py b/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/__init__.py
+index 22a51ac..e7d7298 100644
+--- a/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/__init__.py
++++ b/source/CycleRL/CycleRL/tasks/manager_based/cyclerl/__init__.py
+@@ -23,9 +23,10 @@ from .new_bike.newbike_balance_env_cfg import (
+     NewBikeBalanceTorqueEnvCfg,
+ )
+ 
+-# TRACKSTAND-RL (SDF-wheel) task — standalone package under scripts/source/
+-from scripts.source.trackstand_rl.trackstand_rl_env import TrackstandRLHybridEnv
+-from scripts.source.trackstand_rl.trackstand_rl_env_cfg import TrackstandRLHybridEnvCfg
++# TRACKSTAND-RL (SDF-wheel) task: a fully standalone task package under
++# source/trackstand_rl (mirrors this package's layout). Importing it
++# registers its gym environments (Trackstand-Balance-v0).
++import source.trackstand_rl.trackstand_rl.tasks  # noqa: F401
+ 
+ 
+ # Register the environment with the gym registry
+@@ -138,17 +139,4 @@ gym.register(
+         "env_cfg_entry_point": TrackstandEnvCfg,
+         "skrl_cfg_entry_point": f"{__name__}.agents:skrl_ppo_cfg.yaml",
+     },
+-)
+-
+-gym.register(
+-    id="Trackstand-rl-v0",
+-    # standalone task package (scripts/source/trackstand_rl): own env class,
+-    # own robot cfg (SDF-wheel USD), own agent cfg — no NewBike-task imports
+-    entry_point="scripts.source.trackstand_rl.trackstand_rl_env:TrackstandRLHybridEnv",
+-    disable_env_checker=True,
+-    kwargs={
+-        "env_cfg_entry_point": TrackstandRLHybridEnvCfg,
+-        "skrl_cfg_entry_point": f"{__name__}.agents:skrl_ppo_small_cfg.yaml",
+-        "rsl_rl_cfg_entry_point": "scripts.source.trackstand_rl.agent_cfg:TrackstandRLPPORunnerCfg",
+-    },
+ )
+\ No newline at end of file

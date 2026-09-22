@@ -227,8 +227,16 @@ def main(env_cfg, agent_cfg):
         except Exception:
             return None
 
-    steer_idx = _joint_idx("steering_joint")
-    drive_idx = _joint_idx("rearwheel_joint")
+    # joint names from the live env cfg: the drive joint is rear_wheel_joint
+    # (underscore) on Trackstand-Balance-v0 but rearwheel_joint on the NewBike
+    # tasks — hardcoding only worked for NewBike.
+    try:
+        _steer_name = env_cfg.actions.steering.joint_names[0]
+        _drive_name = env_cfg.actions.drive.joint_names[0]
+    except Exception:
+        _steer_name, _drive_name = "steering_joint", "rearwheel_joint"
+    steer_idx = _joint_idx(_steer_name)
+    drive_idx = _joint_idx(_drive_name)
 
     # --- torque tracing: 3 random envs, per-step drive & steer applied torque ---
     _torque_envs = random.sample(range(num_envs), min(3, num_envs))
