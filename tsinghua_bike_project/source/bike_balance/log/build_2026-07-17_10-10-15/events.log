@@ -1,0 +1,72 @@
+[0.000000] (-) TimerEvent: {}
+[0.000372] (bike_balance) JobQueued: {'identifier': 'bike_balance', 'dependencies': OrderedDict()}
+[0.000743] (bike_balance) JobStarted: {'identifier': 'bike_balance'}
+[0.099715] (-) TimerEvent: {}
+[0.200032] (-) TimerEvent: {}
+[0.300754] (-) TimerEvent: {}
+[0.401526] (-) TimerEvent: {}
+[0.501821] (-) TimerEvent: {}
+[0.602107] (-) TimerEvent: {}
+[0.702405] (-) TimerEvent: {}
+[0.802702] (-) TimerEvent: {}
+[0.902995] (-) TimerEvent: {}
+[1.003349] (-) TimerEvent: {}
+[1.022495] (bike_balance) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'egg_info', '--egg-base', 'build/bike_balance', 'build', '--build-base', '/home/ubuntu/bike_ws/source/bike_balance/build/bike_balance/build', 'install', '--record', '/home/ubuntu/bike_ws/source/bike_balance/build/bike_balance/install.log', '--install-scripts', '$base/lib/bike_balance', '--single-version-externally-managed', 'install_data'], 'cwd': '/home/ubuntu/bike_ws/source/bike_balance', 'env': {'USER': 'ubuntu', 'SSH_CLIENT': '192.168.245.233 62778 22', 'XDG_SESSION_TYPE': 'tty', 'GIT_ASKPASS': '/home/ubuntu/.vscode-server/cli/servers/Stable-5264f2156cbcd7aea5fd004d29eaa10209155d66/server/extensions/git/dist/askpass.sh', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/opt/ros/jazzy/lib/aarch64-linux-gnu:/opt/ros/jazzy/lib', 'BROWSER': '/home/ubuntu/.vscode-server/cli/servers/Stable-5264f2156cbcd7aea5fd004d29eaa10209155d66/server/bin/helpers/browser.sh', 'HOME': '/home/ubuntu', 'OLDPWD': '/home/ubuntu/bike_ws/source', 'TERM_PROGRAM_VERSION': '1.128.1', 'VSCODE_IPC_HOOK_CLI': '/run/user/1000/vscode-ipc-a5967028-07fc-4859-9fae-56f078e25b46.sock', 'ROS_PYTHON_VERSION': '3', 'VSCODE_GIT_ASKPASS_MAIN': '/home/ubuntu/.vscode-server/cli/servers/Stable-5264f2156cbcd7aea5fd004d29eaa10209155d66/server/extensions/git/dist/askpass-main.js', 'VSCODE_GIT_ASKPASS_NODE': '/home/ubuntu/.vscode-server/cli/servers/Stable-5264f2156cbcd7aea5fd004d29eaa10209155d66/server/node', 'VSCODE_PYTHON_AUTOACTIVATE_GUARD': '1', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'COLORTERM': 'truecolor', 'ROS_DISTRO': 'jazzy', 'LOGNAME': 'ubuntu', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'XDG_SESSION_CLASS': 'user', 'TERM': 'xterm-256color', 'XDG_SESSION_ID': '1', 'PATH': '/home/ubuntu/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand:/home/ubuntu/.vscode-server/data/User/globalStorage/github.copilot-chat/copilotCli:/home/ubuntu/.vscode-server/cli/servers/Stable-5264f2156cbcd7aea5fd004d29eaa10209155d66/server/bin/remote-cli:/opt/ros/jazzy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin', 'XDG_RUNTIME_DIR': '/run/user/1000', 'LANG': 'C.UTF-8', 'VSCODE_GIT_IPC_HANDLE': '/run/user/1000/vscode-git-99220ed980.sock', 'TERM_PROGRAM': 'vscode', 'AMENT_PREFIX_PATH': '/opt/ros/jazzy', 'SHELL': '/bin/bash', 'ROS_AUTOMATIC_DISCOVERY_RANGE': 'SUBNET', 'VSCODE_GIT_ASKPASS_EXTRA_ARGS': '', 'PWD': '/home/ubuntu/bike_ws/source/bike_balance/build/bike_balance', 'COPILOT_DEBUG_NONCE': '034d2ce5484c59da79e07c32be6a5dc9', 'SSH_CONNECTION': '192.168.245.233 62778 192.168.245.166 22', 'PYTHONPATH': '/home/ubuntu/bike_ws/source/bike_balance/build/bike_balance/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ubuntu/bike_ws/source/bike_balance/install/bike_balance/lib/python3.12/site-packages:/opt/ros/jazzy/lib/python3.12/site-packages', 'COLCON': '1'}, 'shell': False}
+[1.103415] (-) TimerEvent: {}
+[1.203816] (-) TimerEvent: {}
+[1.304097] (-) TimerEvent: {}
+[1.324904] (bike_balance) StdoutLine: {'line': b'running egg_info\n'}
+[1.325378] (bike_balance) StdoutLine: {'line': b'creating build/bike_balance/bike_balance.egg-info\n'}
+[1.343645] (bike_balance) StdoutLine: {'line': b'writing build/bike_balance/bike_balance.egg-info/PKG-INFO\n'}
+[1.343973] (bike_balance) StdoutLine: {'line': b'writing dependency_links to build/bike_balance/bike_balance.egg-info/dependency_links.txt\n'}
+[1.344230] (bike_balance) StdoutLine: {'line': b'writing entry points to build/bike_balance/bike_balance.egg-info/entry_points.txt\n'}
+[1.344426] (bike_balance) StdoutLine: {'line': b'writing requirements to build/bike_balance/bike_balance.egg-info/requires.txt\n'}
+[1.344561] (bike_balance) StdoutLine: {'line': b'writing top-level names to build/bike_balance/bike_balance.egg-info/top_level.txt\n'}
+[1.344722] (bike_balance) StdoutLine: {'line': b"writing manifest file 'build/bike_balance/bike_balance.egg-info/SOURCES.txt'\n"}
+[1.382424] (bike_balance) StdoutLine: {'line': b"reading manifest file 'build/bike_balance/bike_balance.egg-info/SOURCES.txt'\n"}
+[1.383336] (bike_balance) StdoutLine: {'line': b"writing manifest file 'build/bike_balance/bike_balance.egg-info/SOURCES.txt'\n"}
+[1.383591] (bike_balance) StdoutLine: {'line': b'running build\n'}
+[1.383749] (bike_balance) StdoutLine: {'line': b'running build_py\n'}
+[1.383867] (bike_balance) StdoutLine: {'line': b'creating /home/ubuntu/bike_ws/source/bike_balance/build/bike_balance/build\n'}
+[1.384016] (bike_balance) StdoutLine: {'line': b'creating /home/ubuntu/bike_ws/source/bike_balance/build/bike_balance/build/lib\n'}
+[1.384180] (bike_balance) StdoutLine: {'line': b'creating /home/ubuntu/bike_ws/source/bike_balance/build/bike_balance/build/lib/bike_balance\n'}
+[1.384347] (bike_balance) StdoutLine: {'line': b'copying bike_balance/bicycle_model.py -> /home/ubuntu/bike_ws/source/bike_balance/build/bike_balance/build/lib/bike_balance\n'}
+[1.384505] (bike_balance) StdoutLine: {'line': b'copying bike_balance/balance_node.py -> /home/ubuntu/bike_ws/source/bike_balance/build/bike_balance/build/lib/bike_balance\n'}
+[1.384769] (bike_balance) StdoutLine: {'line': b'copying bike_balance/calibration_node.py -> /home/ubuntu/bike_ws/source/bike_balance/build/bike_balance/build/lib/bike_balance\n'}
+[1.384958] (bike_balance) StdoutLine: {'line': b'copying bike_balance/__init__.py -> /home/ubuntu/bike_ws/source/bike_balance/build/bike_balance/build/lib/bike_balance\n'}
+[1.385134] (bike_balance) StdoutLine: {'line': b'copying bike_balance/controller.py -> /home/ubuntu/bike_ws/source/bike_balance/build/bike_balance/build/lib/bike_balance\n'}
+[1.385520] (bike_balance) StdoutLine: {'line': b'running install\n'}
+[1.394554] (bike_balance) StdoutLine: {'line': b'running install_lib\n'}
+[1.404176] (-) TimerEvent: {}
+[1.413593] (bike_balance) StdoutLine: {'line': b'creating /home/ubuntu/bike_ws/source/bike_balance/install/bike_balance/lib/python3.12/site-packages/bike_balance\n'}
+[1.413847] (bike_balance) StdoutLine: {'line': b'copying /home/ubuntu/bike_ws/source/bike_balance/build/bike_balance/build/lib/bike_balance/bicycle_model.py -> /home/ubuntu/bike_ws/source/bike_balance/install/bike_balance/lib/python3.12/site-packages/bike_balance\n'}
+[1.414003] (bike_balance) StdoutLine: {'line': b'copying /home/ubuntu/bike_ws/source/bike_balance/build/bike_balance/build/lib/bike_balance/balance_node.py -> /home/ubuntu/bike_ws/source/bike_balance/install/bike_balance/lib/python3.12/site-packages/bike_balance\n'}
+[1.414276] (bike_balance) StdoutLine: {'line': b'copying /home/ubuntu/bike_ws/source/bike_balance/build/bike_balance/build/lib/bike_balance/calibration_node.py -> /home/ubuntu/bike_ws/source/bike_balance/install/bike_balance/lib/python3.12/site-packages/bike_balance\n'}
+[1.414501] (bike_balance) StdoutLine: {'line': b'copying /home/ubuntu/bike_ws/source/bike_balance/build/bike_balance/build/lib/bike_balance/__init__.py -> /home/ubuntu/bike_ws/source/bike_balance/install/bike_balance/lib/python3.12/site-packages/bike_balance\n'}
+[1.414700] (bike_balance) StdoutLine: {'line': b'copying /home/ubuntu/bike_ws/source/bike_balance/build/bike_balance/build/lib/bike_balance/controller.py -> /home/ubuntu/bike_ws/source/bike_balance/install/bike_balance/lib/python3.12/site-packages/bike_balance\n'}
+[1.415549] (bike_balance) StdoutLine: {'line': b'byte-compiling /home/ubuntu/bike_ws/source/bike_balance/install/bike_balance/lib/python3.12/site-packages/bike_balance/bicycle_model.py to bicycle_model.cpython-312.pyc\n'}
+[1.417424] (bike_balance) StdoutLine: {'line': b'byte-compiling /home/ubuntu/bike_ws/source/bike_balance/install/bike_balance/lib/python3.12/site-packages/bike_balance/balance_node.py to balance_node.cpython-312.pyc\n'}
+[1.425496] (bike_balance) StdoutLine: {'line': b'byte-compiling /home/ubuntu/bike_ws/source/bike_balance/install/bike_balance/lib/python3.12/site-packages/bike_balance/calibration_node.py to calibration_node.cpython-312.pyc\n'}
+[1.426989] (bike_balance) StdoutLine: {'line': b'byte-compiling /home/ubuntu/bike_ws/source/bike_balance/install/bike_balance/lib/python3.12/site-packages/bike_balance/__init__.py to __init__.cpython-312.pyc\n'}
+[1.427367] (bike_balance) StdoutLine: {'line': b'byte-compiling /home/ubuntu/bike_ws/source/bike_balance/install/bike_balance/lib/python3.12/site-packages/bike_balance/controller.py to controller.cpython-312.pyc\n'}
+[1.429966] (bike_balance) StdoutLine: {'line': b'running install_data\n'}
+[1.430131] (bike_balance) StdoutLine: {'line': b'creating /home/ubuntu/bike_ws/source/bike_balance/install/bike_balance/share/ament_index\n'}
+[1.430254] (bike_balance) StdoutLine: {'line': b'creating /home/ubuntu/bike_ws/source/bike_balance/install/bike_balance/share/ament_index/resource_index\n'}
+[1.430389] (bike_balance) StdoutLine: {'line': b'creating /home/ubuntu/bike_ws/source/bike_balance/install/bike_balance/share/ament_index/resource_index/packages\n'}
+[1.430490] (bike_balance) StdoutLine: {'line': b'copying resource/bike_balance -> /home/ubuntu/bike_ws/source/bike_balance/install/bike_balance/share/ament_index/resource_index/packages\n'}
+[1.430587] (bike_balance) StdoutLine: {'line': b'copying package.xml -> /home/ubuntu/bike_ws/source/bike_balance/install/bike_balance/share/bike_balance\n'}
+[1.430765] (bike_balance) StdoutLine: {'line': b'creating /home/ubuntu/bike_ws/source/bike_balance/install/bike_balance/share/bike_balance/launch\n'}
+[1.430874] (bike_balance) StdoutLine: {'line': b'copying launch/balance_launch.py -> /home/ubuntu/bike_ws/source/bike_balance/install/bike_balance/share/bike_balance/launch\n'}
+[1.431005] (bike_balance) StdoutLine: {'line': b'creating /home/ubuntu/bike_ws/source/bike_balance/install/bike_balance/share/bike_balance/config\n'}
+[1.431102] (bike_balance) StdoutLine: {'line': b'copying config/balance_params.yaml -> /home/ubuntu/bike_ws/source/bike_balance/install/bike_balance/share/bike_balance/config\n'}
+[1.431243] (bike_balance) StdoutLine: {'line': b'running install_egg_info\n'}
+[1.451997] (bike_balance) StdoutLine: {'line': b'Copying build/bike_balance/bike_balance.egg-info to /home/ubuntu/bike_ws/source/bike_balance/install/bike_balance/lib/python3.12/site-packages/bike_balance-0.1.0-py3.12.egg-info\n'}
+[1.453424] (bike_balance) StdoutLine: {'line': b'running install_scripts\n'}
+[1.504285] (-) TimerEvent: {}
+[1.591194] (bike_balance) StdoutLine: {'line': b'Installing balance_node script to /home/ubuntu/bike_ws/source/bike_balance/install/bike_balance/lib/bike_balance\n'}
+[1.591545] (bike_balance) StdoutLine: {'line': b'Installing calibrate_imu script to /home/ubuntu/bike_ws/source/bike_balance/install/bike_balance/lib/bike_balance\n'}
+[1.592073] (bike_balance) StdoutLine: {'line': b"writing list of installed files to '/home/ubuntu/bike_ws/source/bike_balance/build/bike_balance/install.log'\n"}
+[1.604412] (-) TimerEvent: {}
+[1.663956] (bike_balance) CommandEnded: {'returncode': 0}
+[1.675670] (bike_balance) JobEnded: {'identifier': 'bike_balance', 'rc': 0}
+[1.676952] (-) EventReactorShutdown: {}

@@ -1,0 +1,85 @@
+# ═══════════════════════════════════════════════════════════════════════
+# Default parameters for bike_balance / balance_node
+#
+# These are the tutorial 07 defaults.  Tune for your real bike following
+# DEPLOYMENT.md §10.
+# ═══════════════════════════════════════════════════════════════════════
+
+bike_balance:
+  ros__parameters:
+
+    # ── Operating mode ──────────────────────────────────────────────
+    # "sign_check" : publish corrected IMU only, NO motor commands
+    # "inner_loop" : steering PI only, subscribe /bike_balance/steer_rate_ref
+    # "full"       : complete dual-loop balance control
+    mode: "full"
+
+    # ── Control method: "pole" or "lqr" ─────────────────────────────
+    method: "pole"
+
+    # ── CAN interface ───────────────────────────────────────────────
+    can_interface: "can0"
+    # CAN ID convention (GIM V3.09b0): host→motor uses 1XX (prefix "1" + actual ID),
+    # motor→host feedback uses actual ID 0XX.  See assign_2 §3 自定义CAN通信协议.
+    steer_can_id: "101"            # Steering motor command CAN ID (host → motor)
+    drive_can_id: "102"            # Drive motor command CAN ID    (host → motor)
+    steer_feedback_id: "001"       # Steer encoder feedback CAN ID (motor → host)
+    drive_feedback_id: "002"       # Drive encoder feedback CAN ID (motor → host)
+    encoder_resolution: 16384      # counts per motor revolution
+    steer_gear_ratio: 1.0          # motor revs per steering rad
+    drive_gear_ratio: 1.0          # motor revs per wheel rev
+
+    # ── Speed profile ──────────────────────────────────────────────
+    wheel_radius: 0.07             # m
+    target_speed: 2.7              # m/s
+    acceleration_time: 1.5         # s  (ramp duration)
+
+    # ── Control tuning ─────────────────────────────────────────────
+    control_dt: 0.02               # 50 Hz
+    min_scheduling_speed: 1.0      # m/s  (avoid model degeneracy at v≈0)
+    max_steer_velocity: 10.0       # rad/s (outer-loop output clamp)
+    steer_kp: 0.01                 # PI proportional gain
+    steer_ki: 0.01                 # PI integral gain
+    steer_integral_limit: 10.0     # anti-windup
+    rear_kp: 0.1                   # Rear wheel P gain
+    rear_torque_limit: 2.0         # rear motor speed limit
+    steer_torque_limit: 5.0        # steer motor speed limit
+
+    # ── Pole-placement ─────────────────────────────────────────────
+    pole_wc: -5.0                  # all three closed-loop poles
+
+    # ── LQR ────────────────────────────────────────────────────────
+    lqr_Q_diag: [4.0, 100.0, 2.0]   # Q = diag(Q_delta, Q_phi, Q_phidot)
+    lqr_R_diag: [10.0]              # R = diag(R_steer_rate)
+
+    # ── IMU installation (tutorial 06) ─────────────────────────────
+    # R_BS: rotation from IMU sensor frame to bike body frame.
+    # [roll, pitch, yaw] in degrees (ZYX intrinsic).
+    # Populate after DEPLOYMENT.md §4.
+    sensor_to_bike_rpy_deg: [180.0, 180.0, 0.0]
+
+    # Gyro bias in IMU sensor frame, deg/s.
+    # Populate after DEPLOYMENT.md §3 (calibrate_imu node).
+    gyro_bias_dps: [0.0113, 0.0000, 0.0000]
+
+    # ── Bicycle physical model (tutorial defaults) ─────────────────
+    # Measure and update per DEPLOYMENT.md §10.
+    bike_mass: 2.2370               # kg
+    bike_wheelbase: 0.2900          # m, distance between two wheel centers
+    bike_rear_to_com: 0.1350        # em, distance from rear wheel center to centr of mass
+    bike_com_height: 0.1400         # m, height of center of mass
+    bike_trail: 0.0100              # m
+    bike_steering_axis_angle: 0.1745  # rad, the angle between the bike steering axis and the vertical axis
+    bike_roll_inertia: 0.0438        # kg·m²  (<0 ⇒ auto: 4/3 m h²), approximated by bike_mass * bike_com_height^2
+
+    # ── Motor command scaling ──────────────────────────────────────
+    # These convert rad/s (at the joint) to motor speed-command units.
+    # Tune so that a commanded value of ~1000 gives a visible speed.
+    steer_speed_scale: 1.0
+    drive_speed_scale: 1.0
+
+    # ── Safety ─────────────────────────────────────────────────────
+    max_roll_angle_deg: 30.0       # emergency stop threshold (roll)
+    steer_angle_limit_deg: 15.0   # mechanical soft limit (steering)
+    enable_on_start: false         # require explicit enable via /bike_balance/enable
+    balance_start_delay: 0.1       # s  (delay before outer loop engages)

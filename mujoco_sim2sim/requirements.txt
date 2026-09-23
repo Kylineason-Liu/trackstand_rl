@@ -1,0 +1,10 @@
+# Core (both required)
+mujoco>=3.2
+numpy
+
+# Policy inference — pick one:
+#   onnxruntime : runs the exact deployed ONNX artifact (recommended;
+#                 `pip install onnxruntime`)
+#   torch       : fallback that reconstructs the actor from the .pt checkpoint
+#                 (already in the system python on this machine)
+torch>=2.0

@@ -1,28 +1,13 @@
-# Python
+# runtime output (checkpoints, tensorboard events, deploy logs)
+/logs/
+**/logs/
 __pycache__/
-*.py[cod]
-*.egg-info/
-.eggs/
-build/
-dist/
-.venv/
-venv/
+*.pyc
+**/.trackstand_deploy_augmented.xml
 
-# logs/ is tracked for small provenance files (sweep records, run cfgs, git
-# diffs). Heavy regenerable artifacts stay ignored.
-logs/**/*.pt
-logs/**/events.out.tfevents.*
-
-# Hydra / Isaac Lab run output
-outputs/
-.hydra/
-
-# Experiment trackers
-wandb/
-runs/
-
-# Editors / OS
-.vscode/
-.idea/
-*.swp
-.DS_Store
+# large binaries / recorded data — stay on disk, not in git
+*.img.zst
+*.mcap
+tsinghua_bike_project/assign_2_Hardwares.zip
+tsinghua_bike_project/assign_2_Hardwares/assign_2_Hardwares/4.Remote Controller/Supplementary Materials/USB2SBUS/调参软件/插件/lv_virtual_tool.zip
+tsinghua_bike_project/assign_3_Assemble/assign_3_Assemble/bike model.STEP

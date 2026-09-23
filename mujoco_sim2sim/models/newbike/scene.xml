@@ -1,0 +1,18 @@
+<!--
+  Deployment-check scene: the NewBike robot on a flat plane.
+  Ground friction 1.0 matches the sim's pinned terrain friction
+  (NewBike-Balance-v1 0950 ran with friction DR off).
+  The ground itself (the floor geom + checker assets) now lives in
+  model.xml, so the model is self-contained like the orange_bike XML.
+-->
+<mujoco model="newbike_scene">
+  <include file="model.xml"/>
+
+  <statistic center="0 0 0.1" extent="1"/>
+
+  <visual>
+    <headlight diffuse="0.6 0.6 0.6" ambient="0.3 0.3 0.3" specular="0 0 0"/>
+    <rgba haze="0.15 0.25 0.35 1"/>
+    <global azimuth="120" elevation="-20"/>
+  </visual>
+</mujoco>

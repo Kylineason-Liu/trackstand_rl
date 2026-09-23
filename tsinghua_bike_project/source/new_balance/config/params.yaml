@@ -1,0 +1,207 @@
+# ═══════════════════════════════════════════════════════════════════════
+# Default parameters for new_balance multi-node architecture
+#
+# Each publisher node has its own parameter namespace (matched by node
+# name set in the node's constructor).
+# ═══════════════════════════════════════════════════════════════════════
+
+roll_info_publisher:
+  ros__parameters:
+
+    # Hardware
+    serial_port: "/dev/imu"      # YahBoom IMU USB serial device
+    publish_rate_hz: 200.0            # ROS topic publish rate
+
+    # IMU installation (tutorial 06)
+    # R_BS: rotation from IMU sensor frame to bike body frame.
+    # [roll, pitch, yaw] in degrees (ZYX intrinsic).
+    sensor_to_bike_rpy_deg: [180.0, 180.0, 0.0]
+
+    # Gyro bias in IMU sensor frame, deg/s.
+    gyro_bias_dps: [0.0113, 0.0, 0.0]
+
+    # Low-pass on the roll angle only:  y[n] = a·x[n] + (1−a)·y[n−1].
+    # a is the weight on the newest sample — 1.0 disables the filter,
+    # smaller smooths harder.  At 200 Hz, 0.5 ≈ 23 Hz cutoff, ~5 ms lag.
+    # /roll_info index 9 carries the unfiltered roll for comparison.
+    roll_lp_alpha: 0.5
+
+
+steer_info_publisher:
+  ros__parameters:
+
+    # CAN interface
+    can_interface: "can0"
+    steer_can_id: "101"              # Host → motor CAN ID
+    steer_feedback_id: "001"         # Motor → host CAN ID
+    # encoder_resolution removed: never declared, so it was silently ignored.
+    # 16384 counts/rev lives in steer_publisher._COUNTS_PER_REV.
+    steer_gear_ratio: 1.0            # motor revs per steering joint rev
+    poll_rate_hz: 200.0              # A3 query rate (= /steer_info publish rate)
+    zero_on_start: true              # latch current angle as zero offset
+
+
+rear_info_publisher:
+  ros__parameters:
+
+    # CAN interface
+    can_interface: "can0"
+    drive_can_id: "102"              # Host → motor CAN ID
+    drive_feedback_id: "002"         # Motor → host CAN ID
+    drive_gear_ratio: 1.0            # motor revs per wheel rev
+    poll_rate_hz: 200.0              # A2 query rate
+    # rear_rate_lp_alpha removed: never declared, so it never did anything.
+    # rear_publisher publishes the wheel rate raw.
+
+
+rc_publisher:
+  ros__parameters:
+
+    # SBUS receiver serial port
+    port: "/dev/sbus"             # SBUS receiver serial device
+    baudrate: 115200
+    # ⚠ 25 here, but rc_publisher.py's declare_parameter default is 35, and
+    # the node's own start-up log on the bike showed "frame_len=35" (it was
+    # launched without this file).  The two decoders are incompatible — the
+    # wrong one yields garbage channel values, not an error.  Confirm against
+    # the receiver before trusting either.
+    frame_len: 25                    # 25 or 35
+    steer_ch: 0                      # SBUS channel index for steer stick
+    throttle_ch: 2                   # SBUS channel index for throttle stick
+    servo_ch: 6                      # SBUS channel index for the servo switch
+    center_value: 992                # raw channel value at stick centre
+    publish_rate_hz: 200.0           # serial-read + /rc_info publish rate
+
+
+new_balance_node:
+  ros__parameters:
+
+    # ── Operating mode ──────────────────────────────────────────────
+    # "sign_check" : publish corrected IMU only, NO motor commands
+    # "steer_test" : bench mode — /new_balance/steer_rate_ref goes straight
+    #                to the steer motor as a C1 speed command
+    # "full"       : complete state-feedback balance control
+    mode: "full"
+
+    # ── Control method: "pole" or "lqr" ─────────────────────────────
+    method: "lqr"
+
+    # ── Velocity control: "fixed" or "rc" ────────────────────────────
+    #  "fixed" : use target_speed / acceleration_time ramp
+    #  "rc"    : use real-time speed from rc_publisher via /rc_info
+    vctrl: "rc"
+    rc_max_rpm: 368.0                # = 2.7 m/s / (2π × 0.07 m) × 60 s/min
+
+    # ── CAN (write only — reading is done by steer/rear publishers) ──
+    can_interface: "can0"
+    steer_can_id: "101"             # Steering motor command CAN ID (host → motor)
+    drive_can_id: "102"             # Drive motor command CAN ID    (host → motor)
+
+    # ── Speed profile ──────────────────────────────────────────────
+    wheel_radius: 0.07              # m
+    target_speed: 1.0               # m/s
+    acceleration_time: 1.5          # s  (ramp duration)
+    drive_direction_invert: true    # flip sign of rear wheel speed cmd
+    steer_direction_invert: true    # flip sign of steer motor speed cmd
+
+    # ── Loop rates ─────────────────────────────────────────────────
+    # control_hz drives the whole tick: state feedback, safety latches and
+    # both motors' C1 all happen in one timer callback.  Keep it at or below
+    # the sensor publish rates in this file, which are all 200 Hz.
+    #
+    # gain_update_hz decimates only the model reschedule + gain re-solve,
+    # which is by far the most expensive thing in the tick (~890 us for lqr
+    # against ~80 us for everything else).  It is applied as an integer tick
+    # count, N = round(control_hz / gain_update_hz), so 200/50 is an exact
+    # 4:1 — 4 control ticks per reschedule, first tick always rescheduling.
+    #
+    # Do not raise gain_update_hz to control_hz: at 200/200 the tick spent
+    # ~19% of its 5 ms budget in the Riccati solve, the single-threaded
+    # executor starved the subscription callbacks, and on the bike that
+    # showed up as a steer motor that could not be re-enabled after being
+    # hand-centered (method=lqr only; pole is 2.3x cheaper and worked).
+    #
+    # new_main_balance.py only.  main_balance.py does not declare
+    # gain_update_hz and will reschedule every tick regardless.
+    control_hz: 200.0
+    gain_update_hz: 50.0
+
+    # ── Control tuning ─────────────────────────────────────────────
+    # NOTE: the gains are a continuous-time design (solve_continuous_are /
+    # place_poles on the continuous A, Bu), so control_hz does not enter the
+    # gain computation — it only sets how often the law is evaluated.
+    min_scheduling_speed: 1.0       # m/s (avoid model degeneracy at v≈0)
+    max_steer_velocity: 10.0        # rad/s (control output clamp)
+
+    # ── Pole-placement ─────────────────────────────────────────────
+    # KEEP -8.0.  The declare_parameter() default of -15.0 is a landmine:
+    # at v = 1 m/s it places K = [-12.09, 104.64, 17.60] — a *negative*
+    # steering-angle gain, i.e. positive feedback on delta, so the wheel runs
+    # to the soft limit instead of self-limiting.  -8.0 gives [7.20, 45.38,
+    # 5.18].  Never run method:=pole without this file.
+    pole_wc: -8.0                   # all three closed-loop poles
+
+    # method=pole_distinct only.  6 values = [re1,im1, re2,im2, re3,im3];
+    # a real pole needs an explicit 0.0 imaginary part.  Solved from
+    # K = [3.80, 47.00, 3.13] at v = 1 m/s with the bike_* values below:
+    #     python3 k_to_poles.py --K 3.80 47.00 3.13
+    # WARNING the model loses controllability at v = 1.1705 m/s, right inside
+    # the operating range, and no finite gain places these poles there — the
+    # node computes K ~ 1e5 and flips sign across it.  Both pole methods are
+    # unusable in that band; lqr is not (see k_to_poles.py output).
+    poles_ctr: [-7.972585, 0.0, -2.991210, -9.624308, -2.991210, 9.624308]
+
+    # ── LQR ────────────────────────────────────────────────────────
+    # Synced to the declare_parameter() defaults in new_main_balance.py.
+    # These give K = [7.538, 51.510, 5.418] at v = 1 m/s, i.e. K_phi > 50,
+    # and a worst closed-loop maxRe of -6.64 over 1.0-2.7 m/s.  The previous
+    # [4, 100, 2] / [10] gave K_phi = 29.3 and a slowest mode at -1.15
+    # (0.87 s time constant) — too slow for this bike, and the likely other
+    # half of the "sometimes converges, sometimes diverges" behaviour.
+    # Re-check with:  python3 lqr_sweep.py --params-file config/params.yaml
+    lqr_Q_diag: [1.2961771265077047, 840.8586455916102, 4.692318728430152]
+    lqr_R_diag: [1.1828982163197082]
+
+    # ── Bicycle physical model ─────────────────────────────────────
+    # Kept identical to the declare_parameter() defaults in
+    # main_balance.py, so launching with or without this file uses the
+    # same model.  Change both together, and re-solve poles_ctr with
+    # k_to_poles.py afterwards -- a1/a2 shift with these values.
+    bike_mass: 2.44                  # kg
+    bike_wheelbase: 0.2900           # m
+    bike_rear_to_com: 0.1225         # m
+    bike_com_height: 0.1400          # m
+    bike_trail: 0.0135               # m
+    bike_steering_axis_angle: 0.1745 # rad
+    bike_roll_inertia: 0.0438        # kg·m² (<0 ⇒ auto: 4/3 m h²)
+
+    # ── Safety ─────────────────────────────────────────────────────
+    max_roll_angle_deg: 30.0        # emergency stop threshold (roll)
+    # KEEP 30.0.  The declare_parameter() default is 60.0 — taking that would
+    # double the soft limit and let the wheel travel twice as far past the
+    # mechanism before the fault latches.
+    steer_angle_limit_deg: 30.0     # mechanical soft limit (steering)
+    # Fraction of steer_angle_limit_deg the wheel must be hand-centered
+    # within to clear a steer fault (full mode only; steer_test uses a wide
+    # bench band).  0.01 is intentional — see _update_steer_fault.
+    steer_recovery_ratio: 0.01
+    enable_on_start: false          # require explicit enable
+    balance_start_delay: 0.1        # s  (delay before the control law engages)
+
+    # How long /steer_info or /roll_info may go quiet before the controller
+    # disarms and stops both motors.  Sized against the plant, not the link:
+    # the open-loop capsize mode is +sqrt(m g h / I) = 8.75 rad/s, a 114 ms
+    # time constant, so a 1 deg disturbance reaches max_roll_angle_deg in
+    # 389 ms.  The 0.5 s this replaces fired after the bike was already down.
+    # 0.15 s is 30 missed messages out of a 200 Hz stream — scheduling jitter
+    # was measured to drop at most 3 in a row — and 1.3 time constants.
+    # Raise it if an occasional Pi scheduling spike trips a nuisance disarm.
+    # NOTE new_main_balance.py only; main_balance.py does not declare it and
+    # will ignore this key.
+    stale_timeout_s: 0.15           # s
+
+    # ── Diagnostics ────────────────────────────────────────────────
+    # true = run the whole control pipeline but send no CAN at all.  The
+    # bus must still be up so can.interface.Bus() constructs; steer_c1 and
+    # drive_c1 in the status JSON still report what *would* have been sent.
+    dry_run: false

@@ -1,0 +1,22 @@
+running egg_info
+writing ../build/bike_balance/bike_balance.egg-info/PKG-INFO
+writing dependency_links to ../build/bike_balance/bike_balance.egg-info/dependency_links.txt
+writing entry points to ../build/bike_balance/bike_balance.egg-info/entry_points.txt
+writing requirements to ../build/bike_balance/bike_balance.egg-info/requires.txt
+writing top-level names to ../build/bike_balance/bike_balance.egg-info/top_level.txt
+reading manifest file '../build/bike_balance/bike_balance.egg-info/SOURCES.txt'
+writing manifest file '../build/bike_balance/bike_balance.egg-info/SOURCES.txt'
+running build
+running build_py
+running install
+running install_lib
+running install_data
+copying resource/bike_balance -> /home/ubuntu/bike_ws/source/install/bike_balance/share/ament_index/resource_index/packages
+copying config/balance_params.yaml -> /home/ubuntu/bike_ws/source/install/bike_balance/share/bike_balance/config
+running install_egg_info
+removing '/home/ubuntu/bike_ws/source/install/bike_balance/lib/python3.12/site-packages/bike_balance-0.1.0-py3.12.egg-info' (and everything under it)
+Copying ../build/bike_balance/bike_balance.egg-info to /home/ubuntu/bike_ws/source/install/bike_balance/lib/python3.12/site-packages/bike_balance-0.1.0-py3.12.egg-info
+running install_scripts
+Installing balance_node script to /home/ubuntu/bike_ws/source/install/bike_balance/lib/bike_balance
+Installing calibrate_imu script to /home/ubuntu/bike_ws/source/install/bike_balance/lib/bike_balance
+writing list of installed files to '/home/ubuntu/bike_ws/source/build/bike_balance/install.log'

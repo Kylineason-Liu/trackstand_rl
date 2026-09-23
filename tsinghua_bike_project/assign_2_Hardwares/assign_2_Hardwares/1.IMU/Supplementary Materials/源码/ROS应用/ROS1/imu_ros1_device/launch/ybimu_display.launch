@@ -1,0 +1,18 @@
+<launch>
+  <!-- 参数定义 -->
+  <arg name="rvizconfig" default="$(find imu_ros1_device)/rviz/ybimu.rviz" />
+  
+  <!-- 打印配置路径 -->
+  <param name="config_path" value="$(find imu_ros1_device)/rviz/ybimu.rviz" />
+  
+  <!-- RVIZ节点 -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" output="screen" />
+  
+  <!-- YBIMU设备节点 -->
+  <node name="imu_ros1_device" pkg="imu_ros1_device" type="ybimu_driver.py" output="screen" />
+  
+  <!-- IMU滤波器节点 -->
+  <node name="imu_filter" pkg="imu_filter_madgwick" type="imu_filter_node" output="screen">
+    <rosparam command="load" file="$(find imu_ros1_device)/config/imu_filter_param.yaml" />
+  </node>
+</launch>

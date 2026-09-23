@@ -1,0 +1,25 @@
+[2.673s] Invoking command in '/home/ubuntu/bike_ws/source/bike_balance': PYTHONPATH=/home/ubuntu/bike_ws/source/build/bike_balance/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ubuntu/bike_ws/source/install/bike_balance/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/bike_balance build --build-base /home/ubuntu/bike_ws/source/build/bike_balance/build install --record /home/ubuntu/bike_ws/source/build/bike_balance/install.log --install-scripts $base/lib/bike_balance --single-version-externally-managed install_data
+[3.082s] running egg_info
+[3.103s] writing ../build/bike_balance/bike_balance.egg-info/PKG-INFO
+[3.104s] writing dependency_links to ../build/bike_balance/bike_balance.egg-info/dependency_links.txt
+[3.104s] writing entry points to ../build/bike_balance/bike_balance.egg-info/entry_points.txt
+[3.106s] writing requirements to ../build/bike_balance/bike_balance.egg-info/requires.txt
+[3.109s] writing top-level names to ../build/bike_balance/bike_balance.egg-info/top_level.txt
+[3.156s] reading manifest file '../build/bike_balance/bike_balance.egg-info/SOURCES.txt'
+[3.156s] writing manifest file '../build/bike_balance/bike_balance.egg-info/SOURCES.txt'
+[3.157s] running build
+[3.157s] running build_py
+[3.157s] copying bike_balance/balance_node.py -> /home/ubuntu/bike_ws/source/build/bike_balance/build/lib/bike_balance
+[3.158s] running install
+[3.168s] running install_lib
+[3.191s] copying /home/ubuntu/bike_ws/source/build/bike_balance/build/lib/bike_balance/balance_node.py -> /home/ubuntu/bike_ws/source/install/bike_balance/lib/python3.12/site-packages/bike_balance
+[3.191s] byte-compiling /home/ubuntu/bike_ws/source/install/bike_balance/lib/python3.12/site-packages/bike_balance/balance_node.py to balance_node.cpython-312.pyc
+[3.201s] running install_data
+[3.202s] running install_egg_info
+[3.227s] removing '/home/ubuntu/bike_ws/source/install/bike_balance/lib/python3.12/site-packages/bike_balance-0.1.0-py3.12.egg-info' (and everything under it)
+[3.228s] Copying ../build/bike_balance/bike_balance.egg-info to /home/ubuntu/bike_ws/source/install/bike_balance/lib/python3.12/site-packages/bike_balance-0.1.0-py3.12.egg-info
+[3.230s] running install_scripts
+[3.410s] Installing balance_node script to /home/ubuntu/bike_ws/source/install/bike_balance/lib/bike_balance
+[3.411s] Installing calibrate_imu script to /home/ubuntu/bike_ws/source/install/bike_balance/lib/bike_balance
+[3.413s] writing list of installed files to '/home/ubuntu/bike_ws/source/build/bike_balance/install.log'
+[3.657s] Invoked command in '/home/ubuntu/bike_ws/source/bike_balance' returned '0': PYTHONPATH=/home/ubuntu/bike_ws/source/build/bike_balance/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ubuntu/bike_ws/source/install/bike_balance/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/bike_balance build --build-base /home/ubuntu/bike_ws/source/build/bike_balance/build install --record /home/ubuntu/bike_ws/source/build/bike_balance/install.log --install-scripts $base/lib/bike_balance --single-version-externally-managed install_data

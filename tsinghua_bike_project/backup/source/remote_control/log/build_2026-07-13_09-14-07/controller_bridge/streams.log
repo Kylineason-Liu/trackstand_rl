@@ -1,0 +1,33 @@
+[1.378s] Invoking command in '/home/ubuntu/bike_ws/source/remote_control/controller_bridge': PYTHONPATH=/home/ubuntu/bike_ws/source/remote_control/build/controller_bridge/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/controller_bridge build --build-base /home/ubuntu/bike_ws/source/remote_control/build/controller_bridge/build install --record /home/ubuntu/bike_ws/source/remote_control/build/controller_bridge/install.log --single-version-externally-managed install_data
+[1.687s] running egg_info
+[1.687s] creating ../build/controller_bridge/controller_bridge.egg-info
+[1.709s] writing ../build/controller_bridge/controller_bridge.egg-info/PKG-INFO
+[1.709s] writing dependency_links to ../build/controller_bridge/controller_bridge.egg-info/dependency_links.txt
+[1.709s] writing entry points to ../build/controller_bridge/controller_bridge.egg-info/entry_points.txt
+[1.709s] writing requirements to ../build/controller_bridge/controller_bridge.egg-info/requires.txt
+[1.710s] writing top-level names to ../build/controller_bridge/controller_bridge.egg-info/top_level.txt
+[1.711s] writing manifest file '../build/controller_bridge/controller_bridge.egg-info/SOURCES.txt'
+[1.748s] reading manifest file '../build/controller_bridge/controller_bridge.egg-info/SOURCES.txt'
+[1.749s] writing manifest file '../build/controller_bridge/controller_bridge.egg-info/SOURCES.txt'
+[1.750s] running build
+[1.750s] running build_py
+[1.750s] creating /home/ubuntu/bike_ws/source/remote_control/build/controller_bridge/build
+[1.750s] creating /home/ubuntu/bike_ws/source/remote_control/build/controller_bridge/build/lib
+[1.750s] creating /home/ubuntu/bike_ws/source/remote_control/build/controller_bridge/build/lib/controller_bridge
+[1.750s] copying controller_bridge/joy_to_cmd.py -> /home/ubuntu/bike_ws/source/remote_control/build/controller_bridge/build/lib/controller_bridge
+[1.751s] copying controller_bridge/__init__.py -> /home/ubuntu/bike_ws/source/remote_control/build/controller_bridge/build/lib/controller_bridge
+[1.751s] running install
+[1.761s] running install_lib
+[1.780s] creating /home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/lib/python3.12/site-packages/controller_bridge
+[1.780s] copying /home/ubuntu/bike_ws/source/remote_control/build/controller_bridge/build/lib/controller_bridge/joy_to_cmd.py -> /home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/lib/python3.12/site-packages/controller_bridge
+[1.780s] copying /home/ubuntu/bike_ws/source/remote_control/build/controller_bridge/build/lib/controller_bridge/__init__.py -> /home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/lib/python3.12/site-packages/controller_bridge
+[1.781s] byte-compiling /home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/lib/python3.12/site-packages/controller_bridge/joy_to_cmd.py to joy_to_cmd.cpython-312.pyc
+[1.782s] byte-compiling /home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/lib/python3.12/site-packages/controller_bridge/__init__.py to __init__.cpython-312.pyc
+[1.782s] running install_data
+[1.782s] copying package.xml -> /home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/share/controller_bridge
+[1.782s] running install_egg_info
+[1.803s] Copying ../build/controller_bridge/controller_bridge.egg-info to /home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/lib/python3.12/site-packages/controller_bridge-0.1.0-py3.12.egg-info
+[1.805s] running install_scripts
+[1.951s] Installing joy_to_cmd script to /home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/bin
+[1.951s] writing list of installed files to '/home/ubuntu/bike_ws/source/remote_control/build/controller_bridge/install.log'
+[2.055s] Invoked command in '/home/ubuntu/bike_ws/source/remote_control/controller_bridge' returned '0': PYTHONPATH=/home/ubuntu/bike_ws/source/remote_control/build/controller_bridge/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/controller_bridge build --build-base /home/ubuntu/bike_ws/source/remote_control/build/controller_bridge/build install --record /home/ubuntu/bike_ws/source/remote_control/build/controller_bridge/install.log --single-version-externally-managed install_data

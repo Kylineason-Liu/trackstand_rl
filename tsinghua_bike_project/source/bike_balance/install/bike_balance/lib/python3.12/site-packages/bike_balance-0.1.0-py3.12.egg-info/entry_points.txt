@@ -1,0 +1,3 @@
+[console_scripts]
+balance_node = bike_balance.balance_node:main
+calibrate_imu = bike_balance.calibration_node:main

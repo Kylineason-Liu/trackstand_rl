@@ -1,0 +1,158 @@
+[0.136s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build']
+[0.136s] DEBUG:colcon:Parsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='build', build_base='build', install_base='install', merge_install=False, symlink_install=False, test_result_base=None, continue_on_error=False, executor='parallel', parallel_workers=4, event_handlers=None, ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['.'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=None, packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, cmake_args=None, cmake_target=None, cmake_target_skip_unavailable=False, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, ament_cmake_args=None, catkin_cmake_args=None, catkin_skip_building_tests=False, verb_parser=<colcon_defaults.argument_parser.defaults.DefaultArgumentsDecorator object at 0xffff9c8631d0>, verb_extension=<colcon_core.verb.build.BuildVerb object at 0xffff9c7b0b90>, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0xffff9c7b0b90>>)
+[0.193s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[0.193s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[0.193s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[0.193s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[0.193s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[0.193s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[0.193s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/ubuntu/bike_ws/source/remote_control'
+[0.193s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.193s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[0.193s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[0.194s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[0.194s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[0.194s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[0.194s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[0.194s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[0.194s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[0.230s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(controller_bridge) by extensions ['ignore', 'ignore_ament_install']
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(controller_bridge) by extension 'ignore'
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(controller_bridge) by extension 'ignore_ament_install'
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(controller_bridge) by extensions ['colcon_pkg']
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(controller_bridge) by extension 'colcon_pkg'
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(controller_bridge) by extensions ['colcon_meta']
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(controller_bridge) by extension 'colcon_meta'
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(controller_bridge) by extensions ['ros']
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(controller_bridge) by extension 'ros'
+[0.235s] DEBUG:colcon.colcon_core.package_identification:Package 'controller_bridge' with type 'ros.ament_python' and name 'controller_bridge'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(remote_controller) by extensions ['ignore', 'ignore_ament_install']
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(remote_controller) by extension 'ignore'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(remote_controller) by extension 'ignore_ament_install'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(remote_controller) by extensions ['colcon_pkg']
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(remote_controller) by extension 'colcon_pkg'
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(remote_controller) by extensions ['colcon_meta']
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(remote_controller) by extension 'colcon_meta'
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(remote_controller) by extensions ['ros']
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(remote_controller) by extension 'ros'
+[0.237s] DEBUG:colcon.colcon_core.package_identification:Package 'remote_controller' with type 'ros.ament_python' and name 'remote_controller'
+[0.237s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[0.238s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[0.238s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[0.238s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[0.238s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[0.265s] Level 5:colcon.colcon_core.verb:set package 'controller_bridge' build argument 'cmake_args' from command line to 'None'
+[0.265s] Level 5:colcon.colcon_core.verb:set package 'controller_bridge' build argument 'cmake_target' from command line to 'None'
+[0.265s] Level 5:colcon.colcon_core.verb:set package 'controller_bridge' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.265s] Level 5:colcon.colcon_core.verb:set package 'controller_bridge' build argument 'cmake_clean_cache' from command line to 'False'
+[0.265s] Level 5:colcon.colcon_core.verb:set package 'controller_bridge' build argument 'cmake_clean_first' from command line to 'False'
+[0.265s] Level 5:colcon.colcon_core.verb:set package 'controller_bridge' build argument 'cmake_force_configure' from command line to 'False'
+[0.265s] Level 5:colcon.colcon_core.verb:set package 'controller_bridge' build argument 'ament_cmake_args' from command line to 'None'
+[0.265s] Level 5:colcon.colcon_core.verb:set package 'controller_bridge' build argument 'catkin_cmake_args' from command line to 'None'
+[0.265s] Level 5:colcon.colcon_core.verb:set package 'controller_bridge' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.265s] DEBUG:colcon.colcon_core.verb:Building package 'controller_bridge' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/ubuntu/bike_ws/source/remote_control/build/controller_bridge', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/ubuntu/bike_ws/source/remote_control/install/controller_bridge', 'merge_install': False, 'path': '/home/ubuntu/bike_ws/source/remote_control/controller_bridge', 'symlink_install': False, 'test_result_base': None}
+[0.266s] Level 5:colcon.colcon_core.verb:set package 'remote_controller' build argument 'cmake_args' from command line to 'None'
+[0.266s] Level 5:colcon.colcon_core.verb:set package 'remote_controller' build argument 'cmake_target' from command line to 'None'
+[0.266s] Level 5:colcon.colcon_core.verb:set package 'remote_controller' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.266s] Level 5:colcon.colcon_core.verb:set package 'remote_controller' build argument 'cmake_clean_cache' from command line to 'False'
+[0.266s] Level 5:colcon.colcon_core.verb:set package 'remote_controller' build argument 'cmake_clean_first' from command line to 'False'
+[0.266s] Level 5:colcon.colcon_core.verb:set package 'remote_controller' build argument 'cmake_force_configure' from command line to 'False'
+[0.266s] Level 5:colcon.colcon_core.verb:set package 'remote_controller' build argument 'ament_cmake_args' from command line to 'None'
+[0.266s] Level 5:colcon.colcon_core.verb:set package 'remote_controller' build argument 'catkin_cmake_args' from command line to 'None'
+[0.266s] Level 5:colcon.colcon_core.verb:set package 'remote_controller' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.266s] DEBUG:colcon.colcon_core.verb:Building package 'remote_controller' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/ubuntu/bike_ws/source/remote_control/build/remote_controller', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/ubuntu/bike_ws/source/remote_control/install/remote_controller', 'merge_install': False, 'path': '/home/ubuntu/bike_ws/source/remote_control/remote_controller', 'symlink_install': False, 'test_result_base': None}
+[0.266s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[0.268s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[0.268s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/ubuntu/bike_ws/source/remote_control/controller_bridge' with build type 'ament_python'
+[0.269s] Level 1:colcon.colcon_core.shell:create_environment_hook('controller_bridge', 'ament_prefix_path')
+[0.271s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[0.271s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/share/controller_bridge/hook/ament_prefix_path.dsv'
+[0.272s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/share/controller_bridge/hook/ament_prefix_path.sh'
+[0.273s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.279s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/ubuntu/bike_ws/source/remote_control/remote_controller' with build type 'ament_python'
+[0.279s] Level 1:colcon.colcon_core.shell:create_environment_hook('remote_controller', 'ament_prefix_path')
+[0.279s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/ubuntu/bike_ws/source/remote_control/install/remote_controller/share/remote_controller/hook/ament_prefix_path.dsv'
+[0.280s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/ubuntu/bike_ws/source/remote_control/install/remote_controller/share/remote_controller/hook/ament_prefix_path.sh'
+[0.281s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.597s] WARNING:colcon.colcon_ros.task.ament_python.build:Package 'controller_bridge' doesn't explicitly install a marker in the package index (colcon-ros currently does it implicitly but that fallback will be removed in the future)
+[0.597s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/ubuntu/bike_ws/source/remote_control/controller_bridge'
+[0.598s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.916s] WARNING:colcon.colcon_ros.task.ament_python.build:Package 'remote_controller' doesn't explicitly install a marker in the package index (colcon-ros currently does it implicitly but that fallback will be removed in the future)
+[0.917s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/ubuntu/bike_ws/source/remote_control/remote_controller'
+[0.917s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.825s] DEBUG:colcon.colcon_core.task.python.build:Available setuptools commands: build_scripts, setopt, extract_messages, bdist_wheel, saveopts, sdist, install_egg_info, bdist_dumb, install_scripts, install_lib, register, symlink_data, build_ext, bdist_egg, build_clib, clean, dist_info, init_catalog, upload_docs, test, bdist_rpm, editable_wheel, build_py, install, rotate, develop, build, alias, bdist, check, egg_info, install_data, install_headers, compile_catalog, easy_install, upload, update_catalog
+[1.835s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/ubuntu/bike_ws/source/remote_control/controller_bridge': PYTHONPATH=/home/ubuntu/bike_ws/source/remote_control/build/controller_bridge/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/controller_bridge build --build-base /home/ubuntu/bike_ws/source/remote_control/build/controller_bridge/build install --record /home/ubuntu/bike_ws/source/remote_control/build/controller_bridge/install.log --install-scripts $base/lib/controller_bridge --single-version-externally-managed install_data
+[1.836s] DEBUG:colcon.colcon_core.task.python.build:Available setuptools commands: build_scripts, setopt, extract_messages, bdist_wheel, saveopts, sdist, install_egg_info, bdist_dumb, install_scripts, install_lib, register, symlink_data, build_ext, bdist_egg, build_clib, clean, dist_info, init_catalog, upload_docs, test, bdist_rpm, editable_wheel, build_py, install, rotate, develop, build, alias, bdist, check, egg_info, install_data, install_headers, compile_catalog, easy_install, upload, update_catalog
+[1.841s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/ubuntu/bike_ws/source/remote_control/remote_controller': PYTHONPATH=/home/ubuntu/bike_ws/source/remote_control/build/remote_controller/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ubuntu/bike_ws/source/remote_control/install/remote_controller/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/remote_controller build --build-base /home/ubuntu/bike_ws/source/remote_control/build/remote_controller/build install --record /home/ubuntu/bike_ws/source/remote_control/build/remote_controller/install.log --install-scripts $base/lib/remote_controller --single-version-externally-managed install_data
+[2.553s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/ubuntu/bike_ws/source/remote_control/controller_bridge' returned '0': PYTHONPATH=/home/ubuntu/bike_ws/source/remote_control/build/controller_bridge/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/controller_bridge build --build-base /home/ubuntu/bike_ws/source/remote_control/build/controller_bridge/build install --record /home/ubuntu/bike_ws/source/remote_control/build/controller_bridge/install.log --install-scripts $base/lib/controller_bridge --single-version-externally-managed install_data
+[2.556s] Level 1:colcon.colcon_core.environment:checking '/home/ubuntu/bike_ws/source/remote_control/install/controller_bridge' for CMake module files
+[2.557s] Level 1:colcon.colcon_core.environment:checking '/home/ubuntu/bike_ws/source/remote_control/install/controller_bridge' for CMake config files
+[2.558s] Level 1:colcon.colcon_core.environment:checking '/home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/lib'
+[2.558s] Level 1:colcon.colcon_core.environment:checking '/home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/bin'
+[2.558s] Level 1:colcon.colcon_core.shell:create_environment_hook('controller_bridge', 'path')
+[2.559s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/share/controller_bridge/hook/path.dsv'
+[2.560s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/share/controller_bridge/hook/path.sh'
+[2.560s] Level 1:colcon.colcon_core.environment:checking '/home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/lib/pkgconfig/controller_bridge.pc'
+[2.561s] Level 1:colcon.colcon_core.environment:checking '/home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/lib/python3.12/site-packages'
+[2.561s] Level 1:colcon.colcon_core.shell:create_environment_hook('controller_bridge', 'pythonpath')
+[2.562s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/share/controller_bridge/hook/pythonpath.dsv'
+[2.563s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/share/controller_bridge/hook/pythonpath.sh'
+[2.564s] Level 1:colcon.colcon_core.environment:checking '/home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/bin'
+[2.565s] Level 1:colcon.colcon_core.shell:create_environment_hook('controller_bridge', 'pythonscriptspath')
+[2.565s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/share/controller_bridge/hook/pythonscriptspath.dsv'
+[2.568s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/share/controller_bridge/hook/pythonscriptspath.sh'
+[2.569s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(controller_bridge)
+[2.570s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/share/controller_bridge/package.dsv'
+[2.571s] INFO:colcon.colcon_core.shell:Creating package script '/home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/share/controller_bridge/package.sh'
+[2.572s] INFO:colcon.colcon_core.shell:Creating package script '/home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/share/controller_bridge/package.bash'
+[2.575s] INFO:colcon.colcon_core.shell:Creating package script '/home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/share/controller_bridge/package.zsh'
+[2.577s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/share/colcon-core/packages/controller_bridge)
+[2.579s] Level 1:colcon.colcon_core.environment:checking '/home/ubuntu/bike_ws/source/remote_control/install/remote_controller' for CMake module files
+[2.580s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/ubuntu/bike_ws/source/remote_control/remote_controller' returned '0': PYTHONPATH=/home/ubuntu/bike_ws/source/remote_control/build/remote_controller/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ubuntu/bike_ws/source/remote_control/install/remote_controller/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/remote_controller build --build-base /home/ubuntu/bike_ws/source/remote_control/build/remote_controller/build install --record /home/ubuntu/bike_ws/source/remote_control/build/remote_controller/install.log --install-scripts $base/lib/remote_controller --single-version-externally-managed install_data
+[2.581s] Level 1:colcon.colcon_core.environment:checking '/home/ubuntu/bike_ws/source/remote_control/install/remote_controller' for CMake config files
+[2.582s] Level 1:colcon.colcon_core.environment:checking '/home/ubuntu/bike_ws/source/remote_control/install/remote_controller/lib'
+[2.582s] Level 1:colcon.colcon_core.environment:checking '/home/ubuntu/bike_ws/source/remote_control/install/remote_controller/bin'
+[2.582s] Level 1:colcon.colcon_core.shell:create_environment_hook('remote_controller', 'path')
+[2.582s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/ubuntu/bike_ws/source/remote_control/install/remote_controller/share/remote_controller/hook/path.dsv'
+[2.583s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/ubuntu/bike_ws/source/remote_control/install/remote_controller/share/remote_controller/hook/path.sh'
+[2.584s] Level 1:colcon.colcon_core.environment:checking '/home/ubuntu/bike_ws/source/remote_control/install/remote_controller/lib/pkgconfig/remote_controller.pc'
+[2.585s] Level 1:colcon.colcon_core.environment:checking '/home/ubuntu/bike_ws/source/remote_control/install/remote_controller/lib/python3.12/site-packages'
+[2.585s] Level 1:colcon.colcon_core.shell:create_environment_hook('remote_controller', 'pythonpath')
+[2.585s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/ubuntu/bike_ws/source/remote_control/install/remote_controller/share/remote_controller/hook/pythonpath.dsv'
+[2.586s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/ubuntu/bike_ws/source/remote_control/install/remote_controller/share/remote_controller/hook/pythonpath.sh'
+[2.588s] Level 1:colcon.colcon_core.environment:checking '/home/ubuntu/bike_ws/source/remote_control/install/remote_controller/bin'
+[2.588s] Level 1:colcon.colcon_core.shell:create_environment_hook('remote_controller', 'pythonscriptspath')
+[2.588s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/ubuntu/bike_ws/source/remote_control/install/remote_controller/share/remote_controller/hook/pythonscriptspath.dsv'
+[2.589s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/ubuntu/bike_ws/source/remote_control/install/remote_controller/share/remote_controller/hook/pythonscriptspath.sh'
+[2.590s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(remote_controller)
+[2.590s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/ubuntu/bike_ws/source/remote_control/install/remote_controller/share/remote_controller/package.dsv'
+[2.591s] INFO:colcon.colcon_core.shell:Creating package script '/home/ubuntu/bike_ws/source/remote_control/install/remote_controller/share/remote_controller/package.sh'
+[2.592s] INFO:colcon.colcon_core.shell:Creating package script '/home/ubuntu/bike_ws/source/remote_control/install/remote_controller/share/remote_controller/package.bash'
+[2.593s] INFO:colcon.colcon_core.shell:Creating package script '/home/ubuntu/bike_ws/source/remote_control/install/remote_controller/share/remote_controller/package.zsh'
+[2.595s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/ubuntu/bike_ws/source/remote_control/install/remote_controller/share/colcon-core/packages/remote_controller)
+[2.596s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[2.596s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[2.596s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '0'
+[2.597s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[2.597s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[2.598s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/ubuntu/bike_ws/source/remote_control/install/local_setup.sh'
+[2.599s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/ubuntu/bike_ws/source/remote_control/install/_local_setup_util_sh.py'
+[2.600s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/ubuntu/bike_ws/source/remote_control/install/setup.sh'
+[2.605s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/ubuntu/bike_ws/source/remote_control/install/local_setup.bash'
+[2.606s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/ubuntu/bike_ws/source/remote_control/install/setup.bash'
+[2.607s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/ubuntu/bike_ws/source/remote_control/install/local_setup.zsh'
+[2.608s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/ubuntu/bike_ws/source/remote_control/install/setup.zsh'

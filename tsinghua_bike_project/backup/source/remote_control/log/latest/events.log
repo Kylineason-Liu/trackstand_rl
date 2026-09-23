@@ -1,0 +1,104 @@
+[0.000000] (-) TimerEvent: {}
+[0.000410] (controller_bridge) JobQueued: {'identifier': 'controller_bridge', 'dependencies': OrderedDict()}
+[0.000972] (remote_controller) JobQueued: {'identifier': 'remote_controller', 'dependencies': OrderedDict()}
+[0.001141] (controller_bridge) JobStarted: {'identifier': 'controller_bridge'}
+[0.010457] (remote_controller) JobStarted: {'identifier': 'remote_controller'}
+[0.099703] (-) TimerEvent: {}
+[0.200076] (-) TimerEvent: {}
+[0.300453] (-) TimerEvent: {}
+[0.400952] (-) TimerEvent: {}
+[0.501344] (-) TimerEvent: {}
+[0.601742] (-) TimerEvent: {}
+[0.702222] (-) TimerEvent: {}
+[0.802572] (-) TimerEvent: {}
+[0.902949] (-) TimerEvent: {}
+[1.003280] (-) TimerEvent: {}
+[1.103613] (-) TimerEvent: {}
+[1.203963] (-) TimerEvent: {}
+[1.304335] (-) TimerEvent: {}
+[1.404724] (-) TimerEvent: {}
+[1.505327] (-) TimerEvent: {}
+[1.507836] (remote_controller) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'egg_info', '--egg-base', '../build/remote_controller', 'build', '--build-base', '/home/ubuntu/bike_ws/source/remote_control/build/remote_controller/build', 'install', '--record', '/home/ubuntu/bike_ws/source/remote_control/build/remote_controller/install.log', '--install-scripts', '$base/lib/remote_controller', '--single-version-externally-managed', 'install_data'], 'cwd': '/home/ubuntu/bike_ws/source/remote_control/remote_controller', 'env': {'USER': 'ubuntu', 'SSH_CLIENT': '192.168.132.233 53347 22', 'XDG_SESSION_TYPE': 'tty', 'GIT_ASKPASS': '/home/ubuntu/.vscode-server/cli/servers/Stable-4fe60c8b1cdac1c4c174f2fb180d0d758272d713/server/extensions/git/dist/askpass.sh', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/opt/ros/jazzy/lib/aarch64-linux-gnu:/opt/ros/jazzy/lib', 'BROWSER': '/home/ubuntu/.vscode-server/cli/servers/Stable-4fe60c8b1cdac1c4c174f2fb180d0d758272d713/server/bin/helpers/browser.sh', 'HOME': '/home/ubuntu', 'OLDPWD': '/home/ubuntu/bike_ws/source', 'TERM_PROGRAM_VERSION': '1.127.0', 'VSCODE_IPC_HOOK_CLI': '/run/user/1000/vscode-ipc-551aea7b-e03c-4352-a6e5-f94f929642f5.sock', 'ROS_PYTHON_VERSION': '3', 'VSCODE_GIT_ASKPASS_MAIN': '/home/ubuntu/.vscode-server/cli/servers/Stable-4fe60c8b1cdac1c4c174f2fb180d0d758272d713/server/extensions/git/dist/askpass-main.js', 'VSCODE_GIT_ASKPASS_NODE': '/home/ubuntu/.vscode-server/cli/servers/Stable-4fe60c8b1cdac1c4c174f2fb180d0d758272d713/server/node', 'VSCODE_PYTHON_AUTOACTIVATE_GUARD': '1', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'COLORTERM': 'truecolor', 'ROS_DISTRO': 'jazzy', 'LOGNAME': 'ubuntu', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'XDG_SESSION_CLASS': 'user', 'TERM': 'xterm-256color', 'XDG_SESSION_ID': '1', 'PATH': '/home/ubuntu/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand:/home/ubuntu/.vscode-server/data/User/globalStorage/github.copilot-chat/copilotCli:/home/ubuntu/.vscode-server/cli/servers/Stable-4fe60c8b1cdac1c4c174f2fb180d0d758272d713/server/bin/remote-cli:/opt/ros/jazzy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin', 'XDG_RUNTIME_DIR': '/run/user/1000', 'LANG': 'C.UTF-8', 'VSCODE_GIT_IPC_HANDLE': '/run/user/1000/vscode-git-9a665d2efc.sock', 'TERM_PROGRAM': 'vscode', 'AMENT_PREFIX_PATH': '/opt/ros/jazzy', 'SHELL': '/bin/bash', 'ROS_AUTOMATIC_DISCOVERY_RANGE': 'SUBNET', 'VSCODE_GIT_ASKPASS_EXTRA_ARGS': '', 'PWD': '/home/ubuntu/bike_ws/source/remote_control/build/remote_controller', 'COPILOT_DEBUG_NONCE': '83cb71ee1e6980230e734d574d53da13', 'SSH_CONNECTION': '192.168.132.233 53347 192.168.132.166 22', 'PYTHONPATH': '/home/ubuntu/bike_ws/source/remote_control/build/remote_controller/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ubuntu/bike_ws/source/remote_control/install/remote_controller/lib/python3.12/site-packages:/opt/ros/jazzy/lib/python3.12/site-packages', 'COLCON': '1'}, 'shell': False}
+[1.529836] (controller_bridge) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'egg_info', '--egg-base', '../build/controller_bridge', 'build', '--build-base', '/home/ubuntu/bike_ws/source/remote_control/build/controller_bridge/build', 'install', '--record', '/home/ubuntu/bike_ws/source/remote_control/build/controller_bridge/install.log', '--install-scripts', '$base/lib/controller_bridge', '--single-version-externally-managed', 'install_data'], 'cwd': '/home/ubuntu/bike_ws/source/remote_control/controller_bridge', 'env': {'USER': 'ubuntu', 'SSH_CLIENT': '192.168.132.233 53347 22', 'XDG_SESSION_TYPE': 'tty', 'GIT_ASKPASS': '/home/ubuntu/.vscode-server/cli/servers/Stable-4fe60c8b1cdac1c4c174f2fb180d0d758272d713/server/extensions/git/dist/askpass.sh', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/opt/ros/jazzy/lib/aarch64-linux-gnu:/opt/ros/jazzy/lib', 'BROWSER': '/home/ubuntu/.vscode-server/cli/servers/Stable-4fe60c8b1cdac1c4c174f2fb180d0d758272d713/server/bin/helpers/browser.sh', 'HOME': '/home/ubuntu', 'OLDPWD': '/home/ubuntu/bike_ws/source', 'TERM_PROGRAM_VERSION': '1.127.0', 'VSCODE_IPC_HOOK_CLI': '/run/user/1000/vscode-ipc-551aea7b-e03c-4352-a6e5-f94f929642f5.sock', 'ROS_PYTHON_VERSION': '3', 'VSCODE_GIT_ASKPASS_MAIN': '/home/ubuntu/.vscode-server/cli/servers/Stable-4fe60c8b1cdac1c4c174f2fb180d0d758272d713/server/extensions/git/dist/askpass-main.js', 'VSCODE_GIT_ASKPASS_NODE': '/home/ubuntu/.vscode-server/cli/servers/Stable-4fe60c8b1cdac1c4c174f2fb180d0d758272d713/server/node', 'VSCODE_PYTHON_AUTOACTIVATE_GUARD': '1', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'COLORTERM': 'truecolor', 'ROS_DISTRO': 'jazzy', 'LOGNAME': 'ubuntu', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'XDG_SESSION_CLASS': 'user', 'TERM': 'xterm-256color', 'XDG_SESSION_ID': '1', 'PATH': '/home/ubuntu/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand:/home/ubuntu/.vscode-server/data/User/globalStorage/github.copilot-chat/copilotCli:/home/ubuntu/.vscode-server/cli/servers/Stable-4fe60c8b1cdac1c4c174f2fb180d0d758272d713/server/bin/remote-cli:/opt/ros/jazzy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin', 'XDG_RUNTIME_DIR': '/run/user/1000', 'LANG': 'C.UTF-8', 'VSCODE_GIT_IPC_HANDLE': '/run/user/1000/vscode-git-9a665d2efc.sock', 'TERM_PROGRAM': 'vscode', 'AMENT_PREFIX_PATH': '/opt/ros/jazzy', 'SHELL': '/bin/bash', 'ROS_AUTOMATIC_DISCOVERY_RANGE': 'SUBNET', 'VSCODE_GIT_ASKPASS_EXTRA_ARGS': '', 'PWD': '/home/ubuntu/bike_ws/source/remote_control/build/controller_bridge', 'COPILOT_DEBUG_NONCE': '83cb71ee1e6980230e734d574d53da13', 'SSH_CONNECTION': '192.168.132.233 53347 192.168.132.166 22', 'PYTHONPATH': '/home/ubuntu/bike_ws/source/remote_control/build/controller_bridge/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/lib/python3.12/site-packages:/opt/ros/jazzy/lib/python3.12/site-packages', 'COLCON': '1'}, 'shell': False}
+[1.605475] (-) TimerEvent: {}
+[1.705883] (-) TimerEvent: {}
+[1.718644] (remote_controller) StderrLine: {'line': b'/usr/lib/python3/dist-packages/setuptools/dist.py:744: SetuptoolsDeprecationWarning: Invalid dash-separated options\n'}
+[1.719006] (remote_controller) StderrLine: {'line': b'!!\n'}
+[1.719130] (remote_controller) StderrLine: {'line': b'\n'}
+[1.719291] (remote_controller) StderrLine: {'line': b'        ********************************************************************************\n'}
+[1.719398] (remote_controller) StderrLine: {'line': b"        Usage of dash-separated 'script-dir' will not be supported in future\n"}
+[1.719503] (remote_controller) StderrLine: {'line': b"        versions. Please use the underscore name 'script_dir' instead.\n"}
+[1.719609] (remote_controller) StderrLine: {'line': b'\n'}
+[1.719705] (remote_controller) StderrLine: {'line': b'        This deprecation is overdue, please update your project and remove deprecated\n'}
+[1.719801] (remote_controller) StderrLine: {'line': b'        calls to avoid build errors in the future.\n'}
+[1.719910] (remote_controller) StderrLine: {'line': b'\n'}
+[1.720008] (remote_controller) StderrLine: {'line': b'        See https://setuptools.pypa.io/en/latest/userguide/declarative_config.html for details.\n'}
+[1.720097] (remote_controller) StderrLine: {'line': b'        ********************************************************************************\n'}
+[1.720196] (remote_controller) StderrLine: {'line': b'\n'}
+[1.720308] (remote_controller) StderrLine: {'line': b'!!\n'}
+[1.720395] (remote_controller) StderrLine: {'line': b'  opt = self.warn_dash_deprecation(opt, section)\n'}
+[1.728598] (controller_bridge) StderrLine: {'line': b'/usr/lib/python3/dist-packages/setuptools/dist.py:744: SetuptoolsDeprecationWarning: Invalid dash-separated options\n'}
+[1.728848] (controller_bridge) StderrLine: {'line': b'!!\n'}
+[1.728957] (controller_bridge) StderrLine: {'line': b'\n'}
+[1.729052] (controller_bridge) StderrLine: {'line': b'        ********************************************************************************\n'}
+[1.729149] (controller_bridge) StderrLine: {'line': b"        Usage of dash-separated 'script-dir' will not be supported in future\n"}
+[1.729269] (controller_bridge) StderrLine: {'line': b"        versions. Please use the underscore name 'script_dir' instead.\n"}
+[1.729367] (controller_bridge) StderrLine: {'line': b'\n'}
+[1.729454] (controller_bridge) StderrLine: {'line': b'        This deprecation is overdue, please update your project and remove deprecated\n'}
+[1.729542] (controller_bridge) StderrLine: {'line': b'        calls to avoid build errors in the future.\n'}
+[1.729629] (controller_bridge) StderrLine: {'line': b'\n'}
+[1.729717] (controller_bridge) StderrLine: {'line': b'        See https://setuptools.pypa.io/en/latest/userguide/declarative_config.html for details.\n'}
+[1.729804] (controller_bridge) StderrLine: {'line': b'        ********************************************************************************\n'}
+[1.729892] (controller_bridge) StderrLine: {'line': b'\n'}
+[1.729979] (controller_bridge) StderrLine: {'line': b'!!\n'}
+[1.730066] (controller_bridge) StderrLine: {'line': b'  opt = self.warn_dash_deprecation(opt, section)\n'}
+[1.805988] (-) TimerEvent: {}
+[1.857600] (remote_controller) StdoutLine: {'line': b'running egg_info\n'}
+[1.868283] (controller_bridge) StdoutLine: {'line': b'running egg_info\n'}
+[1.877353] (remote_controller) StdoutLine: {'line': b'writing ../build/remote_controller/remote_controller.egg-info/PKG-INFO\n'}
+[1.877804] (remote_controller) StdoutLine: {'line': b'writing dependency_links to ../build/remote_controller/remote_controller.egg-info/dependency_links.txt\n'}
+[1.878786] (remote_controller) StdoutLine: {'line': b'writing entry points to ../build/remote_controller/remote_controller.egg-info/entry_points.txt\n'}
+[1.880222] (remote_controller) StdoutLine: {'line': b'writing requirements to ../build/remote_controller/remote_controller.egg-info/requires.txt\n'}
+[1.883826] (remote_controller) StdoutLine: {'line': b'writing top-level names to ../build/remote_controller/remote_controller.egg-info/top_level.txt\n'}
+[1.887592] (controller_bridge) StdoutLine: {'line': b'writing ../build/controller_bridge/controller_bridge.egg-info/PKG-INFO\n'}
+[1.887993] (controller_bridge) StdoutLine: {'line': b'writing dependency_links to ../build/controller_bridge/controller_bridge.egg-info/dependency_links.txt\n'}
+[1.888787] (controller_bridge) StdoutLine: {'line': b'writing entry points to ../build/controller_bridge/controller_bridge.egg-info/entry_points.txt\n'}
+[1.889400] (controller_bridge) StdoutLine: {'line': b'writing requirements to ../build/controller_bridge/controller_bridge.egg-info/requires.txt\n'}
+[1.890017] (controller_bridge) StdoutLine: {'line': b'writing top-level names to ../build/controller_bridge/controller_bridge.egg-info/top_level.txt\n'}
+[1.906093] (-) TimerEvent: {}
+[1.924973] (remote_controller) StdoutLine: {'line': b"reading manifest file '../build/remote_controller/remote_controller.egg-info/SOURCES.txt'\n"}
+[1.926061] (remote_controller) StdoutLine: {'line': b"writing manifest file '../build/remote_controller/remote_controller.egg-info/SOURCES.txt'\n"}
+[1.926358] (remote_controller) StdoutLine: {'line': b'running build\n'}
+[1.926531] (remote_controller) StdoutLine: {'line': b'running build_py\n'}
+[1.926944] (remote_controller) StdoutLine: {'line': b'running install\n'}
+[1.930764] (controller_bridge) StdoutLine: {'line': b"reading manifest file '../build/controller_bridge/controller_bridge.egg-info/SOURCES.txt'\n"}
+[1.932079] (controller_bridge) StdoutLine: {'line': b"writing manifest file '../build/controller_bridge/controller_bridge.egg-info/SOURCES.txt'\n"}
+[1.932406] (controller_bridge) StdoutLine: {'line': b'running build\n'}
+[1.932540] (controller_bridge) StdoutLine: {'line': b'running build_py\n'}
+[1.932893] (controller_bridge) StdoutLine: {'line': b'running install\n'}
+[1.937095] (remote_controller) StdoutLine: {'line': b'running install_lib\n'}
+[1.942695] (controller_bridge) StdoutLine: {'line': b'running install_lib\n'}
+[1.957708] (remote_controller) StdoutLine: {'line': b'running install_data\n'}
+[1.958018] (remote_controller) StdoutLine: {'line': b'running install_egg_info\n'}
+[1.962934] (controller_bridge) StdoutLine: {'line': b'running install_data\n'}
+[1.963192] (controller_bridge) StdoutLine: {'line': b'running install_egg_info\n'}
+[1.979840] (remote_controller) StdoutLine: {'line': b"removing '/home/ubuntu/bike_ws/source/remote_control/install/remote_controller/lib/python3.12/site-packages/remote_controller-0.1.0-py3.12.egg-info' (and everything under it)\n"}
+[1.981298] (remote_controller) StdoutLine: {'line': b'Copying ../build/remote_controller/remote_controller.egg-info to /home/ubuntu/bike_ws/source/remote_control/install/remote_controller/lib/python3.12/site-packages/remote_controller-0.1.0-py3.12.egg-info\n'}
+[1.981898] (remote_controller) StdoutLine: {'line': b'running install_scripts\n'}
+[1.985809] (controller_bridge) StdoutLine: {'line': b"removing '/home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/lib/python3.12/site-packages/controller_bridge-0.1.0-py3.12.egg-info' (and everything under it)\n"}
+[1.987298] (controller_bridge) StdoutLine: {'line': b'Copying ../build/controller_bridge/controller_bridge.egg-info to /home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/lib/python3.12/site-packages/controller_bridge-0.1.0-py3.12.egg-info\n'}
+[1.987834] (controller_bridge) StdoutLine: {'line': b'running install_scripts\n'}
+[2.006252] (-) TimerEvent: {}
+[2.106637] (-) TimerEvent: {}
+[2.135113] (remote_controller) StdoutLine: {'line': b'Installing motor_controller script to /home/ubuntu/bike_ws/source/remote_control/install/remote_controller/lib/remote_controller\n'}
+[2.135740] (remote_controller) StdoutLine: {'line': b'Installing sbus_reader script to /home/ubuntu/bike_ws/source/remote_control/install/remote_controller/lib/remote_controller\n'}
+[2.136776] (remote_controller) StdoutLine: {'line': b"writing list of installed files to '/home/ubuntu/bike_ws/source/remote_control/build/remote_controller/install.log'\n"}
+[2.140679] (controller_bridge) StdoutLine: {'line': b'Installing joy_to_cmd script to /home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/lib/controller_bridge\n'}
+[2.141831] (controller_bridge) StdoutLine: {'line': b"writing list of installed files to '/home/ubuntu/bike_ws/source/remote_control/build/controller_bridge/install.log'\n"}
+[2.206787] (-) TimerEvent: {}
+[2.293366] (remote_controller) CommandEnded: {'returncode': 0}
+[2.307058] (-) TimerEvent: {}
+[2.311392] (remote_controller) JobEnded: {'identifier': 'remote_controller', 'rc': 0}
+[2.313279] (controller_bridge) CommandEnded: {'returncode': 0}
+[2.329366] (controller_bridge) JobEnded: {'identifier': 'controller_bridge', 'rc': 0}
+[2.330682] (-) EventReactorShutdown: {}

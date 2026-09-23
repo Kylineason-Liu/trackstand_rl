@@ -1,0 +1,40 @@
+[1.489s] Invoking command in '/home/ubuntu/bike_ws/source/remote_control/remote_controller': PYTHONPATH=/home/ubuntu/bike_ws/source/remote_control/build/remote_controller/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ubuntu/bike_ws/source/remote_control/install/remote_controller/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/remote_controller build --build-base /home/ubuntu/bike_ws/source/remote_control/build/remote_controller/build install --record /home/ubuntu/bike_ws/source/remote_control/build/remote_controller/install.log --install-scripts $base/lib/remote_controller --single-version-externally-managed install_data
+[1.684s] /usr/lib/python3/dist-packages/setuptools/dist.py:744: SetuptoolsDeprecationWarning: Invalid dash-separated options
+[1.685s] !!
+[1.685s] 
+[1.685s]         ********************************************************************************
+[1.685s]         Usage of dash-separated 'script-dir' will not be supported in future
+[1.685s]         versions. Please use the underscore name 'script_dir' instead.
+[1.685s] 
+[1.686s]         This deprecation is overdue, please update your project and remove deprecated
+[1.687s]         calls to avoid build errors in the future.
+[1.688s] 
+[1.688s]         See https://setuptools.pypa.io/en/latest/userguide/declarative_config.html for details.
+[1.689s]         ********************************************************************************
+[1.689s] 
+[1.689s] !!
+[1.690s]   opt = self.warn_dash_deprecation(opt, section)
+[1.826s] running egg_info
+[1.845s] writing ../build/remote_controller/remote_controller.egg-info/PKG-INFO
+[1.846s] writing dependency_links to ../build/remote_controller/remote_controller.egg-info/dependency_links.txt
+[1.846s] writing entry points to ../build/remote_controller/remote_controller.egg-info/entry_points.txt
+[1.847s] writing requirements to ../build/remote_controller/remote_controller.egg-info/requires.txt
+[1.848s] writing top-level names to ../build/remote_controller/remote_controller.egg-info/top_level.txt
+[1.888s] reading manifest file '../build/remote_controller/remote_controller.egg-info/SOURCES.txt'
+[1.889s] writing manifest file '../build/remote_controller/remote_controller.egg-info/SOURCES.txt'
+[1.889s] running build
+[1.889s] running build_py
+[1.890s] copying remote_controller/motor_controller.py -> /home/ubuntu/bike_ws/source/remote_control/build/remote_controller/build/lib/remote_controller
+[1.890s] running install
+[1.900s] running install_lib
+[1.920s] copying /home/ubuntu/bike_ws/source/remote_control/build/remote_controller/build/lib/remote_controller/motor_controller.py -> /home/ubuntu/bike_ws/source/remote_control/install/remote_controller/lib/python3.12/site-packages/remote_controller
+[1.921s] byte-compiling /home/ubuntu/bike_ws/source/remote_control/install/remote_controller/lib/python3.12/site-packages/remote_controller/motor_controller.py to motor_controller.cpython-312.pyc
+[1.924s] running install_data
+[1.924s] running install_egg_info
+[1.946s] removing '/home/ubuntu/bike_ws/source/remote_control/install/remote_controller/lib/python3.12/site-packages/remote_controller-0.1.0-py3.12.egg-info' (and everything under it)
+[1.950s] Copying ../build/remote_controller/remote_controller.egg-info to /home/ubuntu/bike_ws/source/remote_control/install/remote_controller/lib/python3.12/site-packages/remote_controller-0.1.0-py3.12.egg-info
+[1.950s] running install_scripts
+[2.099s] Installing motor_controller script to /home/ubuntu/bike_ws/source/remote_control/install/remote_controller/lib/remote_controller
+[2.099s] Installing sbus_reader script to /home/ubuntu/bike_ws/source/remote_control/install/remote_controller/lib/remote_controller
+[2.104s] writing list of installed files to '/home/ubuntu/bike_ws/source/remote_control/build/remote_controller/install.log'
+[2.245s] Invoked command in '/home/ubuntu/bike_ws/source/remote_control/remote_controller' returned '0': PYTHONPATH=/home/ubuntu/bike_ws/source/remote_control/build/remote_controller/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ubuntu/bike_ws/source/remote_control/install/remote_controller/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/remote_controller build --build-base /home/ubuntu/bike_ws/source/remote_control/build/remote_controller/build install --record /home/ubuntu/bike_ws/source/remote_control/build/remote_controller/install.log --install-scripts $base/lib/remote_controller --single-version-externally-managed install_data

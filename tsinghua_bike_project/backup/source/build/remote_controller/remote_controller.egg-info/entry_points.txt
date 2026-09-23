@@ -1,0 +1,4 @@
+[console_scripts]
+motor_controller = remote_controller.motor_controller:main
+sbus_reader = remote_controller.sbus_reader:main
+servo_controller = remote_controller.servo_controller:main

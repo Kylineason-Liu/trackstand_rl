@@ -1,0 +1,35 @@
+{
+    "files.associations": {
+        "bsp_encoder.h": "c",
+        "bsp.h": "c",
+        "stdio.h": "c",
+        "stdint.h": "c",
+        "stm32f10x.h": "c",
+        "bsp_beep.h": "c",
+        "bsp_gpio.h": "c",
+        "bsp_timer.h": "c",
+        "bsp_io_i2c.h": "c",
+        "protocol.h": "c",
+        "bsp_imu.h": "c",
+        "bsp_spi.h": "c",
+        "app.h": "c"
+    },
+    "MicroPython.executeButton": [
+        {
+            "text": "▶",
+            "tooltip": "Run",
+            "alignment": "left",
+            "command": "extension.executeFile",
+            "priority": 3.5
+        }
+    ],
+    "MicroPython.syncButton": [
+        {
+            "text": "$(sync)",
+            "tooltip": "sync",
+            "alignment": "left",
+            "command": "extension.execute",
+            "priority": 4
+        }
+    ]
+}

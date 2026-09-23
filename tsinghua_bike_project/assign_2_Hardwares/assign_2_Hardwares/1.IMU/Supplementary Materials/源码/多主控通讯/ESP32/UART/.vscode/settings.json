@@ -1,0 +1,26 @@
+{
+    "C_Cpp.intelliSenseEngine": "default",
+    "idf.espIdfPathWin": "D:/Espressif/frameworks/esp-idf-v5.4/",
+    "idf.pythonInstallPath": "D:\\Espressif\\tools\\idf-python\\3.11.2\\python.exe",
+    "idf.openOcdConfigs": [
+        "board/esp32s3-builtin.cfg"
+    ],
+    "idf.toolsPathWin": "D:\\Espressif",
+    "files.associations": {
+        "sdkconfig.h": "c",
+        "i2c_master.h": "c",
+        "uart.h": "c",
+        "uart_module.h": "c",
+        "stdio.h": "c",
+        "freertos.h": "c",
+        "app_motor_uart.h": "c",
+        "task.h": "c",
+        "queue.h": "c",
+        "imu_uart_driver.h": "c"
+    },
+    "idf.flashType": "UART",
+    "idf.portWin": "COM13",
+    "idf.customExtraVars": {
+        "IDF_TARGET": "esp32s3"
+    }
+}

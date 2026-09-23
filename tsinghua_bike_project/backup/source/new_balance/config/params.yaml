@@ -1,0 +1,138 @@
+# ═══════════════════════════════════════════════════════════════════════
+# Default parameters for new_balance multi-node architecture
+#
+# Each publisher node has its own parameter namespace (matched by node
+# name set in the node's constructor).
+# ═══════════════════════════════════════════════════════════════════════
+
+roll_info_publisher:
+  ros__parameters:
+
+    # Hardware
+    serial_port: "/dev/imu"      # YahBoom IMU USB serial device
+    publish_rate_hz: 200.0            # ROS topic publish rate
+
+    # IMU installation (tutorial 06)
+    # R_BS: rotation from IMU sensor frame to bike body frame.
+    # [roll, pitch, yaw] in degrees (ZYX intrinsic).
+    sensor_to_bike_rpy_deg: [180.0, 180.0, 0.0]
+
+    # Gyro bias in IMU sensor frame, deg/s.
+    gyro_bias_dps: [0.0113, 0.0, 0.0]
+
+
+steer_info_publisher:
+  ros__parameters:
+
+    # CAN interface
+    can_interface: "can0"
+    steer_can_id: "101"              # Host → motor CAN ID
+    steer_feedback_id: "001"         # Motor → host CAN ID
+    encoder_resolution: 16384        # counts per motor revolution
+    steer_gear_ratio: 1.0            # motor revs per steering joint rev
+    poll_rate_hz: 500.0              # A3+A4 query rate (= /steer_info publish rate)
+    zero_on_start: true              # latch current angle as zero offset
+
+
+rear_info_publisher:
+  ros__parameters:
+
+    # CAN interface
+    can_interface: "can0"
+    drive_can_id: "102"              # Host → motor CAN ID
+    drive_feedback_id: "002"         # Motor → host CAN ID
+    drive_gear_ratio: 1.0            # motor revs per wheel rev
+    poll_rate_hz: 200.0              # A2 query rate
+    rear_rate_lp_alpha: 0.7          # low-pass filter for rate
+
+
+rc_publisher:
+  ros__parameters:
+
+    # SBUS receiver serial port
+    port: "/dev/sbus"             # SBUS receiver serial device
+    baudrate: 115200
+    frame_len: 25                    # 25 or 35
+    throttle_ch: 2                   # SBUS channel index for throttle stick
+    center_value: 992                # raw channel value at stick centre
+
+
+new_balance_node:
+  ros__parameters:
+
+    # ── Operating mode ──────────────────────────────────────────────
+    # "sign_check" : publish corrected IMU only, NO motor commands
+    # "inner_loop" : steering PI only, subscribe /new_balance/steer_rate_ref
+    # "full"       : complete dual-loop balance control
+    mode: "full"
+
+    # ── Control method: "pole" or "lqr" ─────────────────────────────
+    method: "lqr"
+
+    # ── Velocity control: "fixed" or "rc" ────────────────────────────
+    #  "fixed" : use target_speed / acceleration_time ramp
+    #  "rc"    : use real-time speed from rc_publisher via /rc_info
+    vctrl: "rc"
+    rc_max_rpm: 368.0                # = 2.7 m/s / (2π × 0.07 m) × 60 s/min
+
+    # ── CAN (write only — reading is done by steer/rear publishers) ──
+    can_interface: "can0"
+    steer_can_id: "101"             # Steering motor command CAN ID (host → motor)
+    drive_can_id: "102"             # Drive motor command CAN ID    (host → motor)
+
+    # ── Speed profile ──────────────────────────────────────────────
+    wheel_radius: 0.07              # m
+    target_speed: 1.0               # m/s
+    acceleration_time: 1.5          # s  (ramp duration)
+    drive_direction_invert: true    # flip sign of rear wheel speed cmd
+    steer_direction_invert: true    # flip sign of steer motor speed cmd
+
+    # ── Loop rates ─────────────────────────────────────────────────
+    # Outer = state-feedback (LQR/pole) on a ROS timer.
+    # Inner = steer-velocity PD in its own thread.
+    # Keep inner_hz <= steer_info_publisher.poll_rate_hz: running faster
+    # than the feedback updates adds command rate, not loop bandwidth.
+    # Feedback faster than the loop is fine — it just means fresher samples.
+    # inner_hz was lowered from 500 after the thread reported ~0.5% overruns
+    # on the Pi; 4 ms of period absorbs sleep wake-up jitter far better.
+    outer_hz: 50.0                  # state feedback controller
+    inner_hz: 250.0                 # inner PD thread (steer poll stays at 500)
+
+    # ── Control tuning ─────────────────────────────────────────────
+    control_dt: 0.02                # sign_check tick period only —
+                                    # outer loop uses outer_hz, and the
+                                    # gains are a continuous-time design
+                                    # (solve_continuous_are), so this does
+                                    # not enter the gain computation.
+    min_scheduling_speed: 1.0       # m/s (avoid model degeneracy at v≈0)
+    max_steer_velocity: 10.0        # rad/s (outer-loop output clamp)
+
+    # ── Pole-placement ─────────────────────────────────────────────
+    pole_wc: -8.0                   # all three closed-loop poles
+
+    # ── LQR ────────────────────────────────────────────────────────
+    lqr_Q_diag: [4.0, 100.0, 2.0]  # Q = diag(Q_delta, Q_phi, Q_phidot)
+    lqr_R_diag: [10.0]              # R = diag(R_steer_rate)
+
+    # ── Bicycle physical model ─────────────────────────────────────
+    # Kept identical to the declare_parameter() defaults in
+    # main_balance.py, so launching with or without this file uses the
+    # same model.  Change both together, and re-solve poles_ctr with
+    # k_to_poles.py afterwards -- a1/a2 shift with these values.
+    bike_mass: 2.44                  # kg
+    bike_wheelbase: 0.2900           # m
+    bike_rear_to_com: 0.1225         # m
+    bike_com_height: 0.1400          # m
+    bike_trail: 0.0135               # m
+    bike_steering_axis_angle: 0.1745 # rad
+    bike_roll_inertia: 0.0438        # kg·m² (<0 ⇒ auto: 4/3 m h²)
+
+    # ── Safety ─────────────────────────────────────────────────────
+    max_roll_angle_deg: 30.0        # emergency stop threshold (roll)
+    steer_angle_limit_deg: 30.0     # mechanical soft limit (steering)
+    # Fraction of steer_angle_limit_deg the wheel must be hand-centered
+    # within to clear a steer fault (full mode only; inner_loop uses a wide
+    # bench band).  0.01 is intentional — see _inner_loop for the rationale.
+    steer_recovery_ratio: 0.01
+    enable_on_start: false          # require explicit enable
+    balance_start_delay: 0.1        # s  (delay before outer loop engages)

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>bike_balance</name>
+  <version>0.1.0</version>
+  <description>Self-balancing bicycle controller — 50 Hz dual-loop
+  state feedback with pole-placement or LQR outer loop, PI steering
+  inner loop, and P rear-wheel speed control.</description>
+  <maintainer email="user@todo.todo">user</maintainer>
+  <license>MIT</license>
+
+  <depend>rclpy</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>geometry_msgs</depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

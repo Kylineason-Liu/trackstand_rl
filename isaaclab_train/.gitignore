@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+
+# logs/ is tracked for small provenance files (sweep records, run cfgs, git
+# diffs). Heavy regenerable artifacts stay ignored.
+logs/**/*.pt
+logs/**/events.out.tfevents.*
+
+# Hydra / Isaac Lab run output
+outputs/
+.hydra/
+
+# Experiment trackers
+wandb/
+runs/
+
+# Editors / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store

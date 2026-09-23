@@ -1,0 +1,36 @@
+[2.657s] Invoking command in '/home/ubuntu/bike_ws/source/remote_control/controller_bridge': PYTHONPATH=/home/ubuntu/bike_ws/source/build/controller_bridge/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ubuntu/bike_ws/source/install/controller_bridge/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/controller_bridge build --build-base /home/ubuntu/bike_ws/source/build/controller_bridge/build install --record /home/ubuntu/bike_ws/source/build/controller_bridge/install.log --install-scripts $base/lib/controller_bridge --single-version-externally-managed install_data
+[2.898s] /usr/lib/python3/dist-packages/setuptools/dist.py:744: SetuptoolsDeprecationWarning: Invalid dash-separated options
+[2.898s] !!
+[2.898s] 
+[2.898s]         ********************************************************************************
+[2.898s]         Usage of dash-separated 'script-dir' will not be supported in future
+[2.899s]         versions. Please use the underscore name 'script_dir' instead.
+[2.899s] 
+[2.899s]         This deprecation is overdue, please update your project and remove deprecated
+[2.899s]         calls to avoid build errors in the future.
+[2.899s] 
+[2.899s]         See https://setuptools.pypa.io/en/latest/userguide/declarative_config.html for details.
+[2.899s]         ********************************************************************************
+[2.899s] 
+[2.899s] !!
+[2.900s]   opt = self.warn_dash_deprecation(opt, section)
+[3.050s] running egg_info
+[3.070s] writing ../../build/controller_bridge/controller_bridge.egg-info/PKG-INFO
+[3.070s] writing dependency_links to ../../build/controller_bridge/controller_bridge.egg-info/dependency_links.txt
+[3.071s] writing entry points to ../../build/controller_bridge/controller_bridge.egg-info/entry_points.txt
+[3.072s] writing requirements to ../../build/controller_bridge/controller_bridge.egg-info/requires.txt
+[3.073s] writing top-level names to ../../build/controller_bridge/controller_bridge.egg-info/top_level.txt
+[3.116s] reading manifest file '../../build/controller_bridge/controller_bridge.egg-info/SOURCES.txt'
+[3.118s] writing manifest file '../../build/controller_bridge/controller_bridge.egg-info/SOURCES.txt'
+[3.118s] running build
+[3.118s] running build_py
+[3.119s] running install
+[3.132s] running install_lib
+[3.155s] running install_data
+[3.157s] running install_egg_info
+[3.184s] removing '/home/ubuntu/bike_ws/source/install/controller_bridge/lib/python3.12/site-packages/controller_bridge-0.1.0-py3.12.egg-info' (and everything under it)
+[3.184s] Copying ../../build/controller_bridge/controller_bridge.egg-info to /home/ubuntu/bike_ws/source/install/controller_bridge/lib/python3.12/site-packages/controller_bridge-0.1.0-py3.12.egg-info
+[3.187s] running install_scripts
+[3.361s] Installing joy_to_cmd script to /home/ubuntu/bike_ws/source/install/controller_bridge/lib/controller_bridge
+[3.361s] writing list of installed files to '/home/ubuntu/bike_ws/source/build/controller_bridge/install.log'
+[3.572s] Invoked command in '/home/ubuntu/bike_ws/source/remote_control/controller_bridge' returned '0': PYTHONPATH=/home/ubuntu/bike_ws/source/build/controller_bridge/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ubuntu/bike_ws/source/install/controller_bridge/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/controller_bridge build --build-base /home/ubuntu/bike_ws/source/build/controller_bridge/build install --record /home/ubuntu/bike_ws/source/build/controller_bridge/install.log --install-scripts $base/lib/controller_bridge --single-version-externally-managed install_data

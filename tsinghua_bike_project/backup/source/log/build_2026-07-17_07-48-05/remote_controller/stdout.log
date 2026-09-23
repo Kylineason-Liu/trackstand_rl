@@ -1,0 +1,21 @@
+running egg_info
+writing ../../build/remote_controller/remote_controller.egg-info/PKG-INFO
+writing dependency_links to ../../build/remote_controller/remote_controller.egg-info/dependency_links.txt
+writing entry points to ../../build/remote_controller/remote_controller.egg-info/entry_points.txt
+writing requirements to ../../build/remote_controller/remote_controller.egg-info/requires.txt
+writing top-level names to ../../build/remote_controller/remote_controller.egg-info/top_level.txt
+reading manifest file '../../build/remote_controller/remote_controller.egg-info/SOURCES.txt'
+writing manifest file '../../build/remote_controller/remote_controller.egg-info/SOURCES.txt'
+running build
+running build_py
+running install
+running install_lib
+running install_data
+running install_egg_info
+removing '/home/ubuntu/bike_ws/source/install/remote_controller/lib/python3.12/site-packages/remote_controller-0.1.0-py3.12.egg-info' (and everything under it)
+Copying ../../build/remote_controller/remote_controller.egg-info to /home/ubuntu/bike_ws/source/install/remote_controller/lib/python3.12/site-packages/remote_controller-0.1.0-py3.12.egg-info
+running install_scripts
+Installing motor_controller script to /home/ubuntu/bike_ws/source/install/remote_controller/lib/remote_controller
+Installing sbus_reader script to /home/ubuntu/bike_ws/source/install/remote_controller/lib/remote_controller
+Installing servo_controller script to /home/ubuntu/bike_ws/source/install/remote_controller/lib/remote_controller
+writing list of installed files to '/home/ubuntu/bike_ws/source/build/remote_controller/install.log'

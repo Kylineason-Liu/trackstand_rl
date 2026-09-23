@@ -1,0 +1,36 @@
+/usr/lib/python3/dist-packages/setuptools/dist.py:744: SetuptoolsDeprecationWarning: Invalid dash-separated options
+!!
+
+        ********************************************************************************
+        Usage of dash-separated 'script-dir' will not be supported in future
+        versions. Please use the underscore name 'script_dir' instead.
+
+        This deprecation is overdue, please update your project and remove deprecated
+        calls to avoid build errors in the future.
+
+        See https://setuptools.pypa.io/en/latest/userguide/declarative_config.html for details.
+        ********************************************************************************
+
+!!
+  opt = self.warn_dash_deprecation(opt, section)
+running egg_info
+writing ../../build/remote_controller/remote_controller.egg-info/PKG-INFO
+writing dependency_links to ../../build/remote_controller/remote_controller.egg-info/dependency_links.txt
+writing entry points to ../../build/remote_controller/remote_controller.egg-info/entry_points.txt
+writing requirements to ../../build/remote_controller/remote_controller.egg-info/requires.txt
+writing top-level names to ../../build/remote_controller/remote_controller.egg-info/top_level.txt
+reading manifest file '../../build/remote_controller/remote_controller.egg-info/SOURCES.txt'
+writing manifest file '../../build/remote_controller/remote_controller.egg-info/SOURCES.txt'
+running build
+running build_py
+running install
+running install_lib
+running install_data
+running install_egg_info
+removing '/home/ubuntu/bike_ws/source/install/remote_controller/lib/python3.12/site-packages/remote_controller-0.1.0-py3.12.egg-info' (and everything under it)
+Copying ../../build/remote_controller/remote_controller.egg-info to /home/ubuntu/bike_ws/source/install/remote_controller/lib/python3.12/site-packages/remote_controller-0.1.0-py3.12.egg-info
+running install_scripts
+Installing motor_controller script to /home/ubuntu/bike_ws/source/install/remote_controller/lib/remote_controller
+Installing sbus_reader script to /home/ubuntu/bike_ws/source/install/remote_controller/lib/remote_controller
+Installing servo_controller script to /home/ubuntu/bike_ws/source/install/remote_controller/lib/remote_controller
+writing list of installed files to '/home/ubuntu/bike_ws/source/build/remote_controller/install.log'

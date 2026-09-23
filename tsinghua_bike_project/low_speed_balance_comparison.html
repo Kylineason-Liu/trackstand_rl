@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Low-Speed Bicycle Self-Balancing — Two Approaches Compared</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; scroll-behavior: smooth; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: #0f172a; color: #e2e8f0;
+    overflow: hidden;
+    height: 100vh;
+  }
+
+  /* ── Slide Container ── */
+  .deck { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
+  .slide {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    padding: 3rem 5rem;
+    opacity: 0; transform: translateX(60px);
+    transition: opacity 0.45s ease, transform 0.45s ease;
+    pointer-events: none;
+    overflow-y: auto;
+  }
+  .slide.active { opacity: 1; transform: translateX(0); pointer-events: auto; z-index: 1; }
+  .slide.prev { opacity: 0; transform: translateX(-60px); }
+
+  /* ── Typography ── */
+  h1 { font-size: 2.6rem; font-weight: 700; color: #f8fafc; text-align: center; margin-bottom: 0.6rem; }
+  h2 { font-size: 1.9rem; font-weight: 600; color: #38bdf8; margin-bottom: 0.5rem; }
+  h3 { font-size: 1.35rem; font-weight: 600; color: #a5f3fc; margin: 1rem 0 0.5rem; }
+  h4 { font-size: 1.1rem; font-weight: 600; color: #cbd5e1; margin-bottom: 0.4rem; }
+  p, li { font-size: 1.05rem; line-height: 1.7; color: #cbd5e1; }
+  a { color: #38bdf8; }
+
+  .subtitle { font-size: 1.25rem; color: #94a3b8; text-align: center; margin-bottom: 1.5rem; }
+  .small { font-size: 0.9rem; color: #64748b; }
+  .note { background: #1e293b; border-left: 3px solid #38bdf8; padding: 0.6rem 1rem; border-radius: 0 8px 8px 0; font-size: 0.95rem; margin: 0.6rem 0; }
+
+  /* ── Cards & Boxes ── */
+  .card-row { display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center; width: 100%; max-width: 1100px; }
+  .card {
+    flex: 1 1 280px; max-width: 500px;
+    background: #1e293b; border-radius: 12px; padding: 1.5rem;
+    border: 1px solid #334155;
+  }
+  .card.red   { border-color: #ef4444; }
+  .card.green { border-color: #22c55e; }
+  .card.blue  { border-color: #3b82f6; }
+  .card h3 { margin-top: 0; }
+
+  /* ── Comparison Table ── */
+  table { width: 100%; max-width: 1000px; border-collapse: collapse; margin: 1rem 0; }
+  th, td { padding: 0.7rem 1rem; text-align: left; border-bottom: 1px solid #334155; }
+  th { background: #1e293b; color: #38bdf8; font-weight: 600; font-size: 0.95rem; }
+  td { font-size: 0.95rem; }
+  tr:hover td { background: #1e293b44; }
+  .col-thesis { color: #fbbf24; font-weight: 600; }
+  .col-ours  { color: #34d399; font-weight: 600; }
+
+  /* ── Equation box ── */
+  .eq-box {
+    background: #0f172a; border: 1px solid #334155; border-radius: 10px;
+    padding: 1.2rem 1.8rem; margin: 0.8rem 0;
+    font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+    font-size: 1.15rem; color: #facc15; text-align: center;
+    overflow-x: auto; white-space: nowrap;
+  }
+  .eq-box .var { color: #38bdf8; }
+  .eq-box .op  { color: #94a3b8; }
+  .eq-box .num { color: #f472b6; }
+
+  /* ── Diagram (CSS-drawn) ── */
+  .diagram {
+    display: flex; gap: 1rem; align-items: center; justify-content: center;
+    flex-wrap: wrap; margin: 1rem 0;
+  }
+  .block {
+    background: #1e293b; border: 1px solid #475569; border-radius: 8px;
+    padding: 0.6rem 1.2rem; text-align: center; font-size: 0.9rem; font-weight: 500;
+  }
+  .block.hilite { border-color: #38bdf8; background: #0f2744; }
+  .arrow { font-size: 1.5rem; color: #64748b; }
+  .arrow-label { font-size: 0.75rem; color: #64748b; text-align: center; }
+
+  /* ── Phase bars ── */
+  .phase-bars { display: flex; gap: 0.3rem; align-items: flex-end; height: 80px; margin: 0.5rem 0; }
+  .phase-bar { flex: 1; border-radius: 4px 4px 0 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 0.3rem; font-size: 0.7rem; font-weight: 600; }
+  .phase-bar.red  { background: #ef4444; }
+  .phase-bar.amber { background: #f59e0b; }
+  .phase-bar.green { background: #22c55e; }
+
+  /* ── Navigation ── */
+  .nav {
+    position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 0.6rem; align-items: center; z-index: 100;
+    background: #1e293bdd; backdrop-filter: blur(8px);
+    border-radius: 40px; padding: 0.4rem 0.8rem; border: 1px solid #334155;
+  }
+  .nav button {
+    background: transparent; border: none; color: #94a3b8; cursor: pointer;
+    font-size: 1.3rem; padding: 0.3rem 0.8rem; border-radius: 20px;
+    transition: all 0.2s;
+  }
+  .nav button:hover { color: #f8fafc; background: #334155; }
+  .nav button:disabled { color: #475569; cursor: default; background: transparent; }
+  .nav .dots { display: flex; gap: 0.3rem; }
+  .nav .dot {
+    width: 10px; height: 10px; border-radius: 50%; background: #475569;
+    cursor: pointer; transition: all 0.25s;
+  }
+  .nav .dot.active { background: #38bdf8; width: 26px; border-radius: 10px; }
+  .page-num { font-size: 0.8rem; color: #64748b; margin: 0 0.5rem; }
+
+  /* ── List styles ── */
+  ul { padding-left: 1.5rem; margin: 0.4rem 0; }
+  li { margin: 0.25rem 0; }
+  .pro { color: #34d399; }
+  .con { color: #f87171; }
+
+  /* ── Key insight box ── */
+  .insight {
+    background: linear-gradient(135deg, #1a2f4e, #0f2744);
+    border: 1px solid #38bdf8; border-radius: 12px;
+    padding: 1.5rem 2rem; margin: 0.8rem 0; text-align: center;
+    max-width: 900px;
+  }
+  .insight p { font-size: 1.15rem; color: #e2e8f0; }
+  .insight .big { font-size: 1.5rem; color: #facc15; font-weight: 700; }
+
+  /* ── Two Column ── */
+  .two-col { display: flex; gap: 2rem; width: 100%; max-width: 1100px; flex-wrap: wrap; justify-content: center; }
+  .two-col > div { flex: 1 1 400px; max-width: 520px; }
+
+  /* ── Title slide extra ── */
+  .title-slide h1 { font-size: 3.2rem; line-height: 1.2; }
+  .title-slide .subtitle { font-size: 1.35rem; margin: 1rem 0 2rem; }
+
+  /* ── Responsive ── */
+  @media (max-width: 800px) {
+    .slide { padding: 2rem 1.5rem; }
+    h1 { font-size: 1.8rem; }
+    h2 { font-size: 1.4rem; }
+    .card-row { flex-direction: column; }
+    .two-col { flex-direction: column; }
+    table { font-size: 0.8rem; }
+    th, td { padding: 0.4rem 0.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- ════════════════════════════════════════════════════════════════ Slide 1: Title ════ -->
+  <div class="slide active title-slide" data-index="0">
+    <h1>Low-Speed Bicycle Self‑Balancing<br>Two Approaches Compared</h1>
+    <p class="subtitle">Steering-based balance control at low velocity —<br>thesis method vs. <code>new_main_balance.py</code></p>
+    <p class="small">Based on: 余永超, "低速行驶时的转向平衡控制算法" (Tsinghua MSc Thesis, Ch. 4–5)<br>
+    &nbsp;&amp; the current <code>new_balance</code> ROS 2 node (LQR / pole-placement with gain-scheduled 3-state model)</p>
+    <p class="small" style="margin-top:1.5rem;">Use ← → arrow keys or click dots below to navigate</p>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════ Slide 2: The Problem ════ -->
+  <div class="slide" data-index="1">
+    <h2>1. Why Is Low‑Speed Balancing So Hard?</h2>
+
+    <div class="card-row">
+      <div class="card">
+        <h3>🏍️ The Physics</h3>
+        <p>When a bicycle turns, two moments act on the roll axis:</p>
+        <ul>
+          <li><strong>Centrifugal moment</strong> T<sub>vx</sub> ∝ v<sub>x</sub>² · δ — <em>vanishes as speed drops</em></li>
+          <li><strong>Front-fork additional moment</strong> T<sub>c</sub> ∝ c · δ — depends on <em>trail</em> (拖曳距 c)</li>
+        </ul>
+        <p style="margin-top:0.5rem;">At low speed, the centrifugal moment is <strong>too weak</strong> to counteract gravity.</p>
+      </div>
+
+      <div class="card red">
+        <h3>❌ The Current Bottleneck</h3>
+        <p><code>new_main_balance.py</code> clamps <code>min_scheduling_speed = 1.0 m/s</code>.</p>
+        <p>Below that, the 3-state linear model becomes <strong>degenerate</strong> — A(v), Bu(v) produce gains that don't work well.</p>
+        <p style="margin-top:0.8rem;"><strong>Result:</strong> The real bike can't balance below ~1.0–1.3 m/s with the current controller.</p>
+      </div>
+    </div>
+
+    <div class="insight" style="margin-top:1.2rem;">
+      <p class="big">The thesis asks: can we push the balance speed down to <strong>~0.58 m/s (2 km/h)</strong> — a walking pace?</p>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════ Slide 3: Trail ════ -->
+  <div class="slide" data-index="2">
+    <h2>2. Physical Insight — Trail (拖曳距 c) Is Everything</h2>
+
+    <div class="card-row">
+      <div class="card red">
+        <h3>Normal Bike: c ≈ +0.08 m (正拖曳距)</h3>
+        <div style="text-align:center; padding:1rem 0;">
+        <svg width="180" height="160" viewBox="0 0 180 160">
+          <line x1="40" y1="140" x2="150" y2="140" stroke="#94a3b8" stroke-width="2"/> <!-- ground -->
+          <!-- fork axis (tilted) -->
+          <line x1="55" y1="20" x2="75" y2="140" stroke="#f87171" stroke-width="2.5"/>
+          <!-- wheel at front contact -->
+          <circle cx="150" cy="125" r="18" fill="none" stroke="#e2e8f0" stroke-width="2"/>
+          <!-- trail: ground contact is BEHIND fork-ground intersection -->
+          <!-- fork-ground intersection -->
+          <circle cx="75" cy="140" r="3" fill="#f87171"/>
+          <!-- front contact -->
+          <circle cx="150" cy="140" r="3" fill="#38bdf8"/>
+          <!-- c arrow -->
+          <line x1="75" y1="148" x2="150" y2="148" stroke="#facc15" stroke-width="2" marker-end="url(#arrowR)"/>
+          <text x="100" y="158" fill="#facc15" font-size="11" text-anchor="middle">c &gt; 0</text>
+          <defs><marker id="arrowR" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#facc15"/></marker></defs>
+        </svg>
+        </div>
+        <p>Front wheel contact point is <strong>behind</strong> the steering axis intersection.</p>
+        <p style="margin-top:0.5rem;">T<sub>c</sub> <strong>opposes</strong> T<sub>vx</sub> → net steering moment is <em>weak</em> at low speed.</p>
+        <p class="con">Cannot balance below ~1.3 m/s</p>
+      </div>
+
+      <div class="card green">
+        <h3>Modified Bike: c = −0.09 m (负拖曳距)</h3>
+        <div style="text-align:center; padding:1rem 0;">
+        <svg width="180" height="160" viewBox="0 0 180 160">
+          <line x1="40" y1="140" x2="150" y2="140" stroke="#94a3b8" stroke-width="2"/>
+          <line x1="55" y1="20" x2="95" y2="140" stroke="#22c55e" stroke-width="2.5"/>
+          <circle cx="120" cy="125" r="18" fill="none" stroke="#e2e8f0" stroke-width="2"/>
+          <circle cx="95" cy="140" r="3" fill="#22c55e"/> <!-- fork-ground -->
+          <circle cx="120" cy="140" r="3" fill="#38bdf8"/> <!-- front contact -->
+          <line x1="95" y1="148" x2="120" y2="148" stroke="#facc15" stroke-width="2" marker-end="url(#arrowL)"/>
+          <text x="115" y="158" fill="#facc15" font-size="11" text-anchor="middle">c &lt; 0</text>
+          <defs><marker id="arrowL" markerWidth="8" markerHeight="6" refX="1" refY="3" orient="auto"><polygon points="8 0, 0 3, 8 6" fill="#facc15"/></marker></defs>
+        </svg>
+        </div>
+        <p>Front wheel contact point is <strong>ahead</strong> of the steering axis intersection.</p>
+        <p style="margin-top:0.5rem;">T<sub>c</sub> <strong>reinforces</strong> T<sub>vx</sub> → steering moment is <em>amplified</em>.</p>
+        <p class="pro">Balances down to 0.58 m/s ✓</p>
+      </div>
+    </div>
+
+    <p class="note" style="max-width:900px; margin-top:1rem;">
+      <strong>How to modify:</strong> Keep the steering axis fixed; move the front wheel forward.
+      Since b + c = constant (wheelbase + trail), increasing |c| in the negative direction also
+      increases the wheelbase b — this reduces turning agility but improves low-speed stability.
+    </p>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════ Slide 4: SISO model ════ -->
+  <div class="slide" data-index="3">
+    <h2>3. Simplified SISO Model &amp; the Key Parameter K<sub>F</sub></h2>
+
+    <div class="two-col">
+      <div>
+        <h3>From 3-state to 1-input 1-output</h3>
+        <p>The thesis simplifies the full dynamics by:</p>
+        <ol>
+          <li><strong>Ignoring forward dynamics</strong> — speed v<sub>x</sub> is treated as a constant parameter</li>
+          <li><strong>Ignoring steering dynamics</strong> — motor position control is fast enough that δ ≈ δ<sub>cmd</sub></li>
+          <li><strong>Small-angle linearization</strong> — sinφ≈φ, cosφ≈1, drop product terms</li>
+        </ol>
+        <p style="margin-top:0.8rem;">This gives a SISO system: <strong>δ → φ</strong> (steer angle → roll angle)</p>
+
+        <div class="eq-box" style="margin-top:0.8rem;">
+          G(s) = <span class="var">φ(s)</span> / <span class="var">δ(s)</span> =
+          <span class="num">−ahs<sub>λ</sub>v<sub>x</sub>·s + (acg − hv<sub>x</sub>²)·s<sub>λ</sub></span>
+          / <span class="num">(bh²·s² − gh·b)</span>
+        </div>
+      </div>
+
+      <div>
+        <h3>The Feedforward Coefficient K<sub>F</sub></h3>
+        <p>At steady-state equilibrium (φ̇ = 0, δ̇ = 0), the ratio of steer angle to roll angle is:</p>
+
+        <div class="eq-box">
+          K<sub>0</sub> = <span class="var">δ<sub>ss</sub></span> / <span class="var">φ<sub>ss</sub></span>
+          = <span class="num">gh·b</span> / <span class="num">(h·v<sub>x</sub>²·s<sub>λ</sub> − a·c·g·s<sub>λ</sub>)</span>
+        </div>
+
+        <div class="insight" style="margin-top:0.8rem;">
+          <p class="big">K<sub>F</sub> ≈ K<sub>0</sub> determines everything</p>
+          <p>Smaller |K<sub>F</sub>| → easier balance, better disturbance rejection<br>
+          Larger |K<sub>F</sub>| → harder, eventually <strong>impossible</strong></p>
+        </div>
+
+        <p class="note">
+          <strong>Critical speed</strong> v<sub>xc</sub> = √(acg/h) ≈ 0.7 m/s for c=0.08 m.
+          When v<sub>x</sub> → v<sub>xc</sub> from above, K<sub>F</sub> → +∞ (division by zero), then flips sign.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════ Slide 5: Thesis Controller ════ -->
+  <div class="slide" data-index="4">
+    <h2>4. Thesis Controller: PID + Feedforward on Roll Angle</h2>
+
+    <div class="eq-box" style="font-size:1.25rem;">
+      δ<sub>d</sub> = <span class="var">K<sub>P</sub></span>·(φ<sub>d</sub> − φ)
+                 − <span class="var">K<sub>D</sub></span>·φ̇
+                 + <span class="var">K<sub>I</sub></span>·∫(φ<sub>d</sub> − φ)dt
+                 + <span class="var">K<sub>F</sub></span>·φ<sub>d</sub>
+    </div>
+
+    <div style="max-width:950px; margin:0 auto;">
+    <h3 style="text-align:center; margin-bottom:0.8rem;">Control Architecture</h3>
+    <div class="diagram" style="font-size:0.85rem;">
+      <div class="block" style="min-width:70px;">φ<sub>d</sub><br><span class="small">target roll</span></div>
+      <div class="arrow">→</div>
+      <div class="block hilite" style="min-width:100px;">K<sub>F</sub> (feedforward)<br><span class="small">= δ<sub>ss</sub> / φ<sub>ss</sub></span></div>
+      <div class="arrow">↘</div>
+    </div>
+    <div class="diagram" style="font-size:0.85rem; margin-top:0;">
+      <div class="block" style="min-width:70px;">e = φ<sub>d</sub>−φ</div>
+      <div class="arrow">→</div>
+      <div class="block hilite" style="min-width:110px;">PID<br><span class="small">KP, KD, KI</span></div>
+      <div class="arrow">→</div>
+      <div style="display:flex; flex-direction:column; align-items:center;">
+        <div style="width:28px; height:28px; border-radius:50%; background:#38bdf8; text-align:center; line-height:28px; font-size:1.1rem; font-weight:700; color:#0f172a;">+</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="block" style="min-width:90px;">δ<sub>d</sub><br><span class="small">target steer angle</span></div>
+      <div class="arrow">→</div>
+      <div class="block" style="min-width:80px;">Steer motor<br>position P<br><span class="small">K<sub>p_s</sub>(δ<sub>d</sub>−δ)</span></div>
+      <div class="arrow">→</div>
+      <div class="block" style="min-width:80px;">Bike<br>dynamics<br><span class="small">δ → φ</span></div>
+      <div class="arrow">→</div>
+      <div class="block" style="min-width:70px;">φ<br><span class="small">actual roll</span></div>
+    </div>
+    <div class="diagram" style="font-size:0.85rem; margin-top:0;">
+      <div style="display:flex; flex-direction:column; align-items:center; gap:0.3rem;">
+        <div class="arrow" style="font-size:1rem;">← φ, φ̇ (feedback) ←</div>
+      </div>
+    </div>
+    </div>
+
+    <div class="card-row" style="margin-top:1rem;">
+      <div class="card blue">
+        <h4>K<sub>F</sub> — Feedforward</h4>
+        <p>Provides the "bulk" of the command. Theoretically computed from the linearized model. In practice ~20% error from model mismatch; the integrator cleans up the residual.</p>
+      </div>
+      <div class="card blue">
+        <h4>K<sub>P</sub>, K<sub>D</sub> — PD Feedback</h4>
+        <p>Stabilizes the open-loop unstable dynamics. K<sub>D</sub> suppresses overshoot. Stability requires |K<sub>P</sub> + K<sub>F</sub>| &gt; 0 and appropriate signs.</p>
+      </div>
+      <div class="card blue">
+        <h4>K<sub>I</sub> — Integral</h4>
+        <p>Eliminates residual steady-state error from model mismatch. <strong>Feedforward-first, integral-supplementary</strong> — avoids slow integrator dynamics dominating.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════ Slide 6: Gain Scheduling ════ -->
+  <div class="slide" data-index="5">
+    <h2>5. Speed-Dependent Gain Scheduling (Thesis)</h2>
+
+    <div class="two-col">
+      <div>
+        <h3>Piecewise-Constant Gains</h3>
+        <p>Since K<sub>F</sub>, K<sub>P</sub>, K<sub>D</sub>, K<sub>I</sub> all depend on v<sub>x</sub>, but gains can only be tuned at discrete speeds, the thesis:</p>
+        <ol>
+          <li><strong>Divides velocity into bands</strong> of ~0.25 m/s each</li>
+          <li><strong>Tunes four gains</strong> per band experimentally</li>
+          <li><strong>Smooths transitions</strong> with a 1st-order lag filter to avoid parameter jumps</li>
+        </ol>
+
+        <div style="margin-top:1rem; display:flex; gap:0.2rem; height:70px; align-items:flex-end;">
+          <div style="flex:1; background:#1e3a5f; border-radius:4px 4px 0 0; display:flex; align-items:flex-end; justify-content:center; padding-bottom:4px; font-size:0.7rem;">0.5</div>
+          <div style="flex:1; background:#1e4472; border-radius:4px 4px 0 0; display:flex; align-items:flex-end; justify-content:center; padding-bottom:4px; font-size:0.7rem;">0.75</div>
+          <div style="flex:1; background:#1d4e85; border-radius:4px 4px 0 0; display:flex; align-items:flex-end; justify-content:center; padding-bottom:4px; font-size:0.7rem;">1.0</div>
+          <div style="flex:1; background:#1c5898; border-radius:4px 4px 0 0; display:flex; align-items:flex-end; justify-content:center; padding-bottom:4px; font-size:0.7rem;">1.25</div>
+          <div style="flex:1; background:#1a62ab; border-radius:4px 4px 0 0; display:flex; align-items:flex-end; justify-content:center; padding-bottom:4px; font-size:0.7rem;">1.5</div>
+          <div style="flex:1; background:#186cbe; border-radius:4px 4px 0 0; display:flex; align-items:flex-end; justify-content:center; padding-bottom:4px; font-size:0.7rem;">1.75</div>
+          <div style="flex:1; background:#1676d1; border-radius:4px 4px 0 0; display:flex; align-items:flex-end; justify-content:center; padding-bottom:4px; font-size:0.7rem;">2.0</div>
+          <div style="flex:1; background:#1480e4; border-radius:4px 4px 0 0; display:flex; align-items:flex-end; justify-content:center; padding-bottom:4px; font-size:0.7rem;">2.25+</div>
+        </div>
+        <p class="small" style="text-align:center;">v<sub>x</sub> bands (m/s) → darker = higher speed, different KP/KD/KI/KF set</p>
+      </div>
+
+      <div>
+        <h3>Gain Trend vs. Speed</h3>
+        <p>As speed <strong>increases</strong>:</p>
+        <ul>
+          <li>|K<sub>F</sub>| <strong>decreases</strong> — centrifugal moment grows, less steer angle needed per roll angle</li>
+          <li>|K<sub>P</sub>| <strong>decreases</strong> — same reason; the system becomes "stiffer" aerodynamically</li>
+          <li>|K<sub>D</sub>| <strong>decreases</strong> — less damping needed when centrifugal effect is stronger</li>
+          <li>|K<sub>I</sub>| <strong>decreases</strong> — less residual error to clean up</li>
+        </ul>
+        <p style="margin-top:0.8rem;">All four gains' absolute values <strong>monotonically decrease</strong> with speed
+           — the faster you go, the easier balancing becomes.</p>
+
+        <div class="insight" style="margin-top:0.8rem;">
+          <p>At <strong>0.58 m/s</strong> with <strong>c=−0.09m</strong>:<br>
+          K<sub>F</sub> ≈ <strong>19.5</strong> (the highest K<sub>F</sub> that still permits stable control)</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════ Slide 7: new_main_balance ════ -->
+  <div class="slide" data-index="6">
+    <h2>6. <code>new_main_balance.py</code> — 3-State LQR / Pole‑Placement</h2>
+
+    <div class="eq-box" style="font-size:1.05rem;">
+      State: <span class="var">x</span> = [<span class="var">δ</span>, <span class="var">φ</span>, <span class="var">φ̇</span>]<sup>T</sup>&nbsp;&nbsp;&nbsp;
+      Input: <span class="var">u</span> = <span class="var">δ̇</span> (steering angular <strong>velocity</strong>)<br>
+      Model: <span class="var">ẋ</span> = <span class="var">A</span>(v)·<span class="var">x</span> + <span class="var">B<sub>u</sub></span>(v)·<span class="var">u</span>&nbsp;&nbsp;&nbsp;
+      Law: <span class="var">u</span> = <span class="var">u<sub>eq</sub></span> + <span class="var">K</span>·(<span class="var">x<sub>eq</sub></span> − <span class="var">x</span>)
+    </div>
+
+    <div class="card-row" style="margin-top:1rem;">
+      <div class="card">
+        <h4>🔧 Continuous Gain Scheduling</h4>
+        <p>Every tick (100 Hz): recompute <code>A(v), Bu(v)</code> from the nominal bike model, then update the LQR/pole gain K. <code>min_scheduling_speed = 1.0 m/s</code> clamps the model.</p>
+      </div>
+      <div class="card">
+        <h4>⚖️ Equilibrium + State Ref</h4>
+        <p><code>solve_equilibrium(steer_ref)</code> → <code>x_eq = [δ_eq, φ_eq, 0]</code>, then <code>step_with_state_reference(x_eq, state)</code>. The control law tracks toward the equilibrium state.</p>
+      </div>
+      <div class="card">
+        <h4>⚡ Output = Steer Velocity</h4>
+        <p>The controller directly outputs <strong>steering angular velocity</strong> (rad/s), sent as C1 speed commands to the GIM motor. No inner position loop — the motor runs in speed mode.</p>
+      </div>
+    </div>
+
+    <h3 style="text-align:center; margin-top:1.2rem;">LQR Cost Structure</h3>
+    <div style="display:flex; gap:2rem; justify-content:center; flex-wrap:wrap;">
+      <div class="eq-box" style="font-size:1rem;">
+        Q = diag([<span class="num">4</span>, <span class="num">100</span>, <span class="num">2</span>])
+        &nbsp; R = [<span class="num">10</span>]
+      </div>
+    </div>
+    <p style="text-align:center; max-width:800px; margin:0.5rem auto;">
+      State costs: δ=4 (moderate steer penalty), φ=<strong>100 (heavy roll penalty — safety)</strong>, φ̇=2 (light damping).
+      Control cost R=10 penalizes aggressive steering velocity.
+    </p>
+
+    <p class="note" style="max-width:900px; margin:1rem auto;">
+      <strong>Pole placement default:</strong> w<sub>c</sub> = −14.3 (all 3 closed-loop poles at −14.3).
+      This is significantly more aggressive than the thesis PID — the thesis PID's
+      dominant pole is typically much slower (the system is a physical bike, not a simulation).
+    </p>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════ Slide 8: Comparison Table ════ -->
+  <div class="slide" data-index="7">
+    <h2>7. Side‑by‑Side Comparison</h2>
+
+    <div style="overflow-x:auto; max-width:1050px;">
+    <table>
+      <thead>
+        <tr><th style="width:22%;">Aspect</th>
+            <th style="width:39%;"><span class="col-thesis">📘 Thesis (PID+FF)</span></th>
+            <th style="width:39%;"><span class="col-ours">💻 new_main_balance.py (LQR/Pole)</span></th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>System model</strong></td>
+          <td class="col-thesis">SISO: δ → φ (2nd-order). Forward + steer dynamics ignored.</td>
+          <td class="col-ours">3-state MIMO: [δ, φ, φ̇] with steer velocity input. Full linear model.</td>
+        </tr>
+        <tr>
+          <td><strong>Control output</strong></td>
+          <td class="col-thesis">Steer <em>angle</em> δ<sub>d</sub> → inner position-P loop → motor speed</td>
+          <td class="col-ours">Steer <em>angular velocity</em> δ̇ → direct C1 speed command to motor</td>
+        </tr>
+        <tr>
+          <td><strong>Controller type</strong></td>
+          <td class="col-thesis">PID + Feedforward (4 gains to tune)</td>
+          <td class="col-ours">LQR (3 gains, from Q/R) or Pole Placement (3 poles)</td>
+        </tr>
+        <tr>
+          <td><strong>Gain scheduling</strong></td>
+          <td class="col-thesis">Piecewise-constant by speed bands (~0.25 m/s). Gains tuned experimentally per band.</td>
+          <td class="col-ours">Continuous: A(v), Bu(v) recomputed every tick from bike params. Analytical.</td>
+        </tr>
+        <tr>
+          <td><strong>Model parameters</strong></td>
+          <td class="col-thesis">m=34kg, h=0.8m, a=0.5m, b+c=1.13m, λ=72°. Large bike.</td>
+          <td class="col-ours">m=2.24kg, h=0.14m, a=0.135m, b=0.29m. <strong>Much smaller bike!</strong></td>
+        </tr>
+        <tr>
+          <td><strong>Trail c</strong></td>
+          <td class="col-thesis"><strong>Modified to −0.09 m</strong> (negative trail). This is the key enabler.</td>
+          <td class="col-ours">c = +0.01 m (positive, default). Relies on model-based control.</td>
+        </tr>
+        <tr>
+          <td><strong>Min balance speed</strong></td>
+          <td class="col-thesis"><strong>0.58 m/s</strong> (2.1 km/h) ✓</td>
+          <td class="col-ours"><strong>~1.0–1.3 m/s</strong> (estimated, min_scheduling_speed = 1.0)</td>
+        </tr>
+        <tr>
+          <td><strong>Steer motor mode</strong></td>
+          <td class="col-thesis">Position control (servo has inner velocity + current loops)</td>
+          <td class="col-ours">Speed control (C1 commands, open-loop speed tracking)</td>
+        </tr>
+        <tr>
+          <td><strong>Drive motor</strong></td>
+          <td class="col-thesis">Voltage-controlled with speed measurement + brake for downhill</td>
+          <td class="col-ours">C1 speed commands (closed-loop speed control)</td>
+        </tr>
+        <tr>
+          <td><strong>Feedforward</strong></td>
+          <td class="col-thesis">Explicit K<sub>F</sub> from linearized physics: φ<sub>ss</sub>/δ<sub>ss</sub> ratio</td>
+          <td class="col-ours">Implicit via equilibrium solving: u<sub>eq</sub> = −B<sub>u</sub><sup>+</sup>·A·x<sub>eq</sub></td>
+        </tr>
+        <tr>
+          <td><strong>Sampling rate</strong></td>
+          <td class="col-thesis">1000 Hz (targeted)</td>
+          <td class="col-ours">100 Hz (control_dt = 0.01s)</td>
+        </tr>
+        <tr>
+          <td><strong>Disturbance handling</strong></td>
+          <td class="col-thesis">At c=−0.09m, v=0.58m/s: 1° roll disturbance → 22° steer correction</td>
+          <td class="col-ours">Emergency stop at |φ| > 30° (max_roll_angle_deg)</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════ Slide 9: Philosophy ════ -->
+  <div class="slide" data-index="8">
+    <h2>8. Two Different Control Philosophies</h2>
+
+    <div class="card-row">
+      <div class="card" style="border-color:#fbbf24;">
+        <h3 style="color:#fbbf24;">📘 Thesis: Physics-Aware Simplicity</h3>
+        <ul>
+          <li><strong>Change the plant first, then control it simply.</strong> The negative trail modification makes the bike <em>inherently easier</em> to balance at low speed.</li>
+          <li>"The feedforward coefficient K<sub>F</sub> is everything" — if |K<sub>F</sub>| is small, even a simple PD will work.</li>
+          <li>PID+FF is well-understood, easy to tune field-by-field, and naturally handles the "counter-steer first" transient.</li>
+          <li>Piecewise gain tables require <strong>experimental tuning per speed band</strong> — labor-intensive but robust to model errors.</li>
+          <li>Trade-off: negative trail reduces low-speed turning agility (larger turning radius).</li>
+        </ul>
+      </div>
+
+      <div class="card" style="border-color:#34d399;">
+        <h3 style="color:#34d399;">💻 Ours: Model-Based Optimality</h3>
+        <ul>
+          <li><strong>Trust the model, compute the optimal gains.</strong> LQR/pole-placement gives mathematically optimal feedback for the linearized model.</li>
+          <li>Continuous gain scheduling is elegant — no discretization artifacts.</li>
+          <li>But: the model <strong>is the weak link</strong>. When A(v), Bu(v) don't match reality (wrong params, unmodeled dynamics), optimal gains for the wrong model ≠ optimal for the real bike.</li>
+          <li>min_scheduling_speed = 1.0 m/s is a hack — the model degenerates below that speed, so we clamp it.</li>
+          <li>No physical trail modification considered.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="insight" style="margin-top:1.2rem;">
+      <p class="big">Core insight: "All models are wrong, but some are useful."</p>
+      <p>The thesis acknowledges model error explicitly and uses feedforward + integrator to compensate.
+         Our approach depends on the model being accurate — when the model fails (low speed),
+         there's no fallback except clamping.</p>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════ Slide 10: Results ════ -->
+  <div class="slide" data-index="9">
+    <h2>9. Experimental Results (from Thesis)</h2>
+
+    <div class="card-row">
+      <div class="card">
+        <h3>🏁 Minimum Balance Speed</h3>
+        <table style="font-size:0.9rem;">
+          <tr><th>Trail c</th><th>Min v<sub>x</sub></th><th>K<sub>F</sub> at min speed</th><th>Status</th></tr>
+          <tr><td>+0.08 m</td><td>1.3 m/s</td><td>~8.5</td><td class="pro">✓ balances</td></tr>
+          <tr><td>+0.08 m</td><td>0.58 m/s</td><td>→∞ (sing.)</td><td class="con">✗ impossible</td></tr>
+          <tr><td>−0.09 m</td><td>1.3 m/s</td><td>~6.6</td><td class="pro">✓ more stable</td></tr>
+          <tr><td>−0.09 m</td><td><strong>0.58 m/s</strong></td><td>~19.5</td><td class="pro"><strong>✓ lowest achieved</strong></td></tr>
+          <tr><td>−0.19 m</td><td>0.58 m/s</td><td>~10.7</td><td class="pro">✓ even more stable, less agile</td></tr>
+        </table>
+        <p class="small" style="margin-top:0.5rem;">c = −0.09m chosen as optimal — balances low-speed stability with turning agility.</p>
+      </div>
+
+      <div class="card">
+        <h3>🛡️ Disturbance Rejection</h3>
+        <table style="font-size:0.9rem;">
+          <tr><th>Trail c</th><th>Speed</th><th>Δδ/Δφ ratio</th></tr>
+          <tr><td>+0.08 m</td><td>1.3 m/s</td><td>~12.5</td></tr>
+          <tr><td>−0.09 m</td><td>1.3 m/s</td><td>~10.2 (better)</td></tr>
+          <tr><td>−0.19 m</td><td>1.3 m/s</td><td>~6.6 (best)</td></tr>
+          <tr><td>−0.09 m</td><td>0.58 m/s</td><td>~22 (harder at low speed)</td></tr>
+          <tr><td>−0.19 m</td><td>0.58 m/s</td><td>~13.5</td></tr>
+        </table>
+        <p class="small" style="margin-top:0.5rem;">Smaller ratio = less steer angle required to correct a roll disturbance.</p>
+      </div>
+
+      <div class="card">
+        <h3>🌍 Terrain Handling (c=−0.09m)</h3>
+        <ul>
+          <li><strong>Speed bumps:</strong> stable at ≥0.85 m/s (limited by motor torque, not balance)</li>
+          <li><strong>Grass (continuous bumps):</strong> stable at ≥0.9 m/s — roll oscillates but stays tracked</li>
+          <li><strong>Downhill (−4.5°):</strong> speed rises from 0.83→1.36 m/s, gains auto-switch, braking activates</li>
+          <li><strong>Uphill (+7.5°):</strong> speed drops from 1.67→0.9 m/s, gains auto-switch down</li>
+          <li><strong>Active speed change:</strong> 0.78→2.25 m/s ramp — balance maintained throughout</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════ Slide 11: Recommendations ════ -->
+  <div class="slide" data-index="10">
+    <h2>10. How to Improve Our Bike: A Hybrid Approach</h2>
+
+    <div class="card-row">
+      <div class="card" style="border-color:#38bdf8;">
+        <h3 style="color:#38bdf8;">🔧 Step 1: Measure Our Trail</h3>
+        <p>Our current bike has c=0.01m (nearly zero!). The thesis shows c > 0 is <strong>fundamentally limiting</strong> for low-speed balance. Consider:</p>
+        <ul>
+          <li>Measure actual trail on our physical bike</li>
+          <li>If possible, design an adjustable front fork to experiment with negative trail</li>
+          <li>Even c ≈ −0.05 m would substantially reduce K<sub>F</sub> at low speeds</li>
+        </ul>
+      </div>
+
+      <div class="card" style="border-color:#38bdf8;">
+        <h3 style="color:#38bdf8;">🧠 Step 2: Add Feedforward</h3>
+        <p>The biggest missing piece vs. the thesis. Add to the control law:</p>
+        <div class="eq-box" style="font-size:0.95rem;">
+          u = <span class="var">u<sub>eq</sub></span> + <span class="var">K</span>·(<span class="var">x<sub>eq</sub></span>−<span class="var">x</span>)
+            + <span class="var">K<sub>F</sub></span>·<span class="var">φ<sub>d</sub></span>
+        </div>
+        <p>This provides immediate, model-based feedforward that doesn't wait for error to build up. Compute K<sub>F</sub> from our bike params at each speed.</p>
+      </div>
+
+      <div class="card" style="border-color:#38bdf8;">
+        <h3 style="color:#38bdf8;">📊 Step 3: Validate &amp; Compare</h3>
+        <ul>
+          <li><strong>Simulation first:</strong> Add the simplified SISO model + PID+FF to our MuJoCo sim. Compare with LQR at v<sub>x</sub> ∈ [0.5, 1.5] m/s.</li>
+          <li><strong>If PID+FF wins at low speed:</strong> implement hybrid mode — LQR for v<sub>x</sub> > 1.5 m/s (optimal at speed), PID+FF for v<sub>x</sub> < 1.5 m/s.</li>
+          <li><strong>Hardware:</strong> If trail can't be modified, at minimum add the feedforward term to the existing LQR controller.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 style="text-align:center; margin-top:1.5rem;">Concrete Changes to <code>new_main_balance.py</code></h3>
+    <div style="max-width:950px; margin:0 auto;">
+      <ol>
+        <li><strong>Add <code>K_F</code> computation:</strong> from bike params + current speed, compute the theoretical feedforward gain and add <code>K_F * roll_target</code> to the steer rate command.</li>
+        <li><strong>Add <code>K_I</code> (integral):</strong> accumulate roll error and add to command. This compensates for systematic model mismatch.</li>
+        <li><strong>Reduce <code>min_scheduling_speed</code>:</strong> from 1.0 → 0.5 m/s. The model may be less accurate there, but feedforward + integrator can compensate.</li>
+        <li><strong>Consider PD on roll directly:</strong> as an alternative <code>method: pid_ff</code> alongside <code>pole</code> and <code>lqr</code>. This would mirror the thesis controller structure exactly.</li>
+        <li><strong>Steer position inner loop:</strong> wrap the steer motor in a P position controller (thesis style) to convert steer angle commands to motor speeds, rather than direct speed output.</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════ Slide 12: Summary ════ -->
+  <div class="slide" data-index="11">
+    <h2>Summary</h2>
+
+    <div class="insight">
+      <p class="big">Low-speed balancing is a <em>physics</em> problem before it is a <em>control</em> problem.</p>
+    </div>
+
+    <div class="card-row" style="margin-top:1.2rem;">
+      <div class="card" style="text-align:center;">
+        <h3 style="color:#fbbf24;">📘 Thesis Method</h3>
+        <p style="font-size:1.3rem; font-weight:700; color:#facc15;">Modify trail c → negative<br>+ PID + Feedforward</p>
+        <p style="margin-top:0.5rem;">Simple controller on a favorable plant<br>→ <strong>0.58 m/s</strong></p>
+      </div>
+      <div class="card" style="text-align:center;">
+        <h3 style="color:#34d399;">💻 Our Method</h3>
+        <p style="font-size:1.3rem; font-weight:700; color:#34d399;">3-state linear model<br>+ LQR / Pole Placement</p>
+        <p style="margin-top:0.5rem;">Optimal controller on a limited model<br>→ <strong>~1.0 m/s (estimated)</strong></p>
+      </div>
+    </div>
+
+    <div class="card-row" style="margin-top:1rem;">
+      <div class="card blue" style="text-align:center; max-width:700px;">
+        <h3 style="color:#38bdf8;">🎯 The Winning Combination</h3>
+        <p style="font-size:1.1rem;">The thesis <strong>changed the hardware</strong> to make the control problem easier.
+           We can <strong>combine both approaches</strong>: negative trail hardware + LQR/optimal control
+           software. Or at minimum: add feedforward + integrator to our existing controller.
+           The structural insights from the thesis are directly applicable to our bike.</p>
+      </div>
+    </div>
+
+    <p class="small" style="margin-top:1.5rem; text-align:center;">
+      Reference: 余永超, "低速行驶时的转向平衡控制算法" (Low-Speed Steering Balance Control Algorithm), Tsinghua University MSc Thesis, Chapters 4–5.<br>
+      Generated for the Tsinghua Bike Project — <code>d:\tsinghua_bike_project</code>
+    </p>
+  </div>
+
+</div> <!-- /deck -->
+
+<!-- ════════════════════════════════════════════════════════════════ Navigation ════ -->
+<div class="nav">
+  <button id="btnPrev" title="Previous slide (←)">◀</button>
+  <div class="dots" id="dots"></div>
+  <button id="btnNext" title="Next slide (→)">▶</button>
+  <span class="page-num" id="pageNum"></span>
+</div>
+
+<script>
+  (function() {
+    const slides = document.querySelectorAll('.slide');
+    const dotsContainer = document.getElementById('dots');
+    const btnPrev = document.getElementById('btnPrev');
+    const btnNext = document.getElementById('btnNext');
+    const pageNum = document.getElementById('pageNum');
+    let current = 0;
+    const total = slides.length;
+
+    // Build dots
+    for (let i = 0; i < total; i++) {
+      const dot = document.createElement('span');
+      dot.className = 'dot' + (i === 0 ? ' active' : '');
+      dot.addEventListener('click', () => goTo(i));
+      dotsContainer.appendChild(dot);
+    }
+
+    function goTo(idx) {
+      if (idx < 0 || idx >= total) return;
+      slides[current].classList.remove('active');
+      slides[current].classList.add('prev');
+      dotsContainer.children[current].classList.remove('active');
+
+      current = idx;
+      slides[current].classList.remove('prev');
+      slides[current].classList.add('active');
+      dotsContainer.children[current].classList.add('active');
+
+      pageNum.textContent = `${current + 1} / ${total}`;
+      btnPrev.disabled = current === 0;
+      btnNext.disabled = current === total - 1;
+
+      slides[current].scrollTop = 0;
+    }
+
+    btnPrev.addEventListener('click', () => goTo(current - 1));
+    btnNext.addEventListener('click', () => goTo(current + 1));
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+        e.preventDefault();
+        goTo(current + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        goTo(current - 1);
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        goTo(0);
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        goTo(total - 1);
+      }
+    });
+
+    // Touch swipe support
+    let touchStartX = 0;
+    document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+    document.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      if (Math.abs(dx) > 60) goTo(dx < 0 ? current + 1 : current - 1);
+    });
+
+    // Init
+    pageNum.textContent = `1 / ${total}`;
+    btnPrev.disabled = true;
+  })();
+</script>
+
+</body>
+</html>

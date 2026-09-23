@@ -1,0 +1,36 @@
+[1.499s] Invoking command in '/home/ubuntu/bike_ws/source/remote_control/controller_bridge': PYTHONPATH=/home/ubuntu/bike_ws/source/remote_control/build/controller_bridge/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/controller_bridge build --build-base /home/ubuntu/bike_ws/source/remote_control/build/controller_bridge/build install --record /home/ubuntu/bike_ws/source/remote_control/build/controller_bridge/install.log --install-scripts $base/lib/controller_bridge --single-version-externally-managed install_data
+[1.697s] /usr/lib/python3/dist-packages/setuptools/dist.py:744: SetuptoolsDeprecationWarning: Invalid dash-separated options
+[1.697s] !!
+[1.697s] 
+[1.697s]         ********************************************************************************
+[1.697s]         Usage of dash-separated 'script-dir' will not be supported in future
+[1.697s]         versions. Please use the underscore name 'script_dir' instead.
+[1.698s] 
+[1.698s]         This deprecation is overdue, please update your project and remove deprecated
+[1.698s]         calls to avoid build errors in the future.
+[1.698s] 
+[1.698s]         See https://setuptools.pypa.io/en/latest/userguide/declarative_config.html for details.
+[1.698s]         ********************************************************************************
+[1.698s] 
+[1.698s] !!
+[1.698s]   opt = self.warn_dash_deprecation(opt, section)
+[1.842s] running egg_info
+[1.865s] writing ../build/controller_bridge/controller_bridge.egg-info/PKG-INFO
+[1.866s] writing dependency_links to ../build/controller_bridge/controller_bridge.egg-info/dependency_links.txt
+[1.867s] writing entry points to ../build/controller_bridge/controller_bridge.egg-info/entry_points.txt
+[1.867s] writing requirements to ../build/controller_bridge/controller_bridge.egg-info/requires.txt
+[1.868s] writing top-level names to ../build/controller_bridge/controller_bridge.egg-info/top_level.txt
+[1.921s] reading manifest file '../build/controller_bridge/controller_bridge.egg-info/SOURCES.txt'
+[1.921s] writing manifest file '../build/controller_bridge/controller_bridge.egg-info/SOURCES.txt'
+[1.922s] running build
+[1.923s] running build_py
+[1.923s] running install
+[1.933s] running install_lib
+[1.956s] running install_data
+[1.956s] running install_egg_info
+[1.980s] removing '/home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/lib/python3.12/site-packages/controller_bridge-0.1.0-py3.12.egg-info' (and everything under it)
+[1.981s] Copying ../build/controller_bridge/controller_bridge.egg-info to /home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/lib/python3.12/site-packages/controller_bridge-0.1.0-py3.12.egg-info
+[1.982s] running install_scripts
+[2.143s] Installing joy_to_cmd script to /home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/lib/controller_bridge
+[2.144s] writing list of installed files to '/home/ubuntu/bike_ws/source/remote_control/build/controller_bridge/install.log'
+[2.274s] Invoked command in '/home/ubuntu/bike_ws/source/remote_control/controller_bridge' returned '0': PYTHONPATH=/home/ubuntu/bike_ws/source/remote_control/build/controller_bridge/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ubuntu/bike_ws/source/remote_control/install/controller_bridge/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/controller_bridge build --build-base /home/ubuntu/bike_ws/source/remote_control/build/controller_bridge/build install --record /home/ubuntu/bike_ws/source/remote_control/build/controller_bridge/install.log --install-scripts $base/lib/controller_bridge --single-version-externally-managed install_data

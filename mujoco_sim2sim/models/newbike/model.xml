@@ -1,0 +1,211 @@
+<!--
+  NewBike robot model for the sim-to-sim deployment check of the
+  CycleRL NewBike-Balance-v1 policy (09090950 model_500).
+
+  All numbers extracted from the Isaac Sim USD used by NewBike-Balance-v1:
+    source/CycleRL/CycleRL/tasks/manager_based/cyclerl/assets/new_bike2/payloads/Physics/physics.usda
+    (masses, CoMs, principal-axis inertias, joint anchors/axes)
+    + bicycle_cfg.py NEW_BIKE_HYBRID_CFG (actuator contract for Balance-v1:
+      steering = position servo kp10/kv0.2, +-5.6 Nm; drive = direct torque
+      +-6.28 Nm with -0.05*qvel damping).
+
+  Frame conventions: base frame = the USD base_link frame (z up, +x forward,
+  +y left). All positions/axes below are in the parent body frame, so the
+  policy's obs sign conventions carry over unchanged.
+-->
+<mujoco model="newbike">
+  <compiler angle="radian" meshdir="assets"/>
+
+  <!-- lighting carried by the model itself (like the orange_bike XML), so the
+       standalone window is lit without a scene file. In the env path (scene.xml
+       includes this file), scene.xml's own <visual> overrides these globals. -->
+  <visual>
+    <headlight diffuse="0.6 0.6 0.6" ambient="0.1 0.1 0.1" specular="0.9 0.9 0.9"/>
+  </visual>
+
+  <asset>
+    <!-- real link meshes extracted from the new_bike2 USD payloads
+         (geometries.usd), in meters and body-local frames -->
+    <mesh name="base_link_mesh" file="base_link.obj"/>
+    <mesh name="rear_wheel_mesh" file="rear_wheel_link_1.obj"/>
+    <mesh name="steering_mesh" file="steering_link_1.obj"/>
+    <mesh name="front_wheel_mesh" file="front_wheel_link_1.obj"/>
+    <!-- checker floor (moved here from scene.xml: the model now carries its
+         own ground, like the tutorial's orange_bike XML) -->
+    <texture name="texplane" type="2d" builtin="checker" rgb1="0.2 0.3 0.4" rgb2="0.1 0.2 0.3"
+             width="512" height="512" gridsize="10 10"/>
+    <material name="matplane" texture="texplane" texuniform="true" reflectance="0.2"/>
+  </asset>
+
+  <!-- 0.005 s substep (4 per 50 Hz control period): MuJoCo evaluates actuator
+       forces explicitly, and the steering servo's fast pole (kp=10 on a
+       2.7e-4 kg m^2 fork) is only stable at dt <= ~5 ms -->
+  <option timestep="0.0025" gravity="0 0 -9.81"/>
+
+  <default>
+    <joint armature="0" frictionloss="0" damping="0"/>
+    <!-- stiff, critically-damped ground contact (PhysX-like): little bounce,
+         quick settling of the ~3.6 cm spawn drop -->
+    <!-- friction = the sim's effective pair 0.75: the robot's global material
+         0.5 x the pinned ground 1.0 combined by PhysX's default AVERAGE.
+         MuJoCo combines pair friction by MAX (verified empirically), so every
+         ground-touching surface carries 0.75; torsional/rolling = 0 (the sim
+         has neither). -->
+    <geom friction="0.75 0 0" solref="0.005 1.5" solimp="0.9 0.95 0.001"/>
+  </default>
+
+  <!-- self-collisions OFF like the sim (enabled_self_collisions=False):
+       the fork/frame/wheel meshes overlap; exclude all bike-internal pairs -->
+  <contact>
+    <exclude body1="base_link" body2="rear_wheel_link"/>
+    <exclude body1="base_link" body2="steering_link"/>
+    <exclude body1="base_link" body2="front_wheel_link"/>
+    <exclude body1="rear_wheel_link" body2="steering_link"/>
+    <exclude body1="rear_wheel_link" body2="front_wheel_link"/>
+    <exclude body1="steering_link" body2="front_wheel_link"/>
+  </contact>
+
+  <worldbody>
+    <light pos="1 0 2.5" dir="0 0 -1" directional="true"/>
+
+    <!-- the ground: flat plane. friction = the sim's effective pair 0.75
+         (see the <default> note; 0950/09110138 pinned the ground at 1.0 and
+         the robot material is 0.5 — PhysX average -> 0.75, MuJoCo max rule) -->
+    <geom name="floor" type="plane" size="5 5 0.1" friction="0.75 0 0" material="matplane"/>
+
+    <body name="base_link" pos="0 0 0.05">
+      <!-- 6-DOF: the bike can roll, yaw, fall, and drift. The free-joint qpos
+           quat IS the USD base-frame orientation (w-first). -->
+      <freejoint name="base_free"/>
+
+      <!-- inertial in its principal frame (USD physics:principalAxes, same
+           ordering as MuJoCo w-first). NOTE: MuJoCo's framequat sensor on a
+           body returns the INERTIAL frame (body ⊗ iquat), so env.py reads the
+           base orientation from the free-joint qpos directly.
+           diaginertia = the USD values (iteration-6: the x3000 closed-loop
+           hack is retired -- it made the uncontrolled fall look like
+           slow-motion; the loop stability it bought is now provided by the
+           rear contact's rolling friction, the sim's measured rolling
+           resistance). -->
+      <inertial pos="0.15528731 -0.042502295 0.16388933" quat="-0.66917217 0.6710175 -0.21421957 0.2367574"
+                diaginertia="0.0037477487 0.016126279 0.018367972" mass="2.0020764"/>
+
+      <!-- frame: collision box over the base_link mesh's main triangle,
+           CLIPPED IN X to stay between the wheels (the full mesh bbox is
+           x 0.000..0.314 and swallowed both wheel footprints -- the frame
+           surrounds the wheels; the rear wheel x ends at 0.0995, the front
+           wheel x starts at 0.2426, so x 0.10..0.24 clears both).
+           rgba = semi-transparent red (the orange_bike collision style):
+           the collision prim is visible without hiding the real mesh -->
+      <geom name="frame" type="box" pos="0.17 -0.042 0.162" size="0.07 0.048 0.105"
+            rgba="1.0 0.3 0.3 0.5"/>
+      <!-- frame: visual = the real mesh (no collision) -->
+      <geom name="frame_vis" type="mesh" mesh="base_link_mesh" rgba="0.82 0.84 0.88 1"
+            contype="0" conaffinity="0"/>
+
+      <!-- imu site at the base-link origin: gyro + velocimeter (matches the
+           sim's root-link angular/linear velocity references). alpha 0 = not
+           rendered (sites draw as small spheres by default; the orange_bike
+           XML hides its imu_site the same way). Rendering only -- the sensors
+           attached to this site are unaffected. -->
+      <site name="imu" pos="0 0 0" rgba="0.5 0.5 0.5 0"/>
+
+      <!-- the rear ground contact lives on the WHEEL body (see below), NOT on
+           the base: the drive needs the wheel-to-ground rolling traction -->
+
+      <!-- ============ rear wheel (drive) ============ -->
+      <body name="rear_wheel_link" pos="0.029465 -0.025495 0.085946">
+        <joint name="rearwheel_joint" type="hinge" axis="-0.01326 0.99991 -0.00148"/>
+        <!-- diaginertia = the USD values (the x24.6 compensation is RETIRED
+             2026-09-14: the 39750-policy three-way test showed it is now
+             irrelevant -- the drive axis is closed; see the README.) -->
+        <inertial pos="0.000176 -0.013247 0.000020" quat="-0.7070913 0.7070913 0.004681697 0.004681697"
+                  diaginertia="0.00017797352 0.000178 0.0003290265" mass="0.12332977"/>
+        <!-- REAR WHEEL GROUND CONTACT: full-tire ellipsoid whose center is
+             laterally aligned with the base-link collision cuboid's center
+             (base-frame y -0.042, the bike's lateral mid-plane -> the local
+             y -0.0165; the wheel's own mesh bbox center sits at -0.0057,
+             ~1 cm right of the mid-plane). Half-width 0.0191 = the mesh's
+             measured half-width (the orange bike's 0.025 overhung our rim).
+             Friction 0.75 = the sim's effective pair (the robot's 0.5 material
+             x the pinned 1.0 ground, PhysX average; MuJoCo's max rule -- see
+             the <default> note); no torsional/rolling (the sim has neither).
+             Margin 0, priority 1, soft contact (solref 0.02 0.5) -- the
+             orange_bike tutorial's numbers. The quat maps the ellipsoid's
+             thin z-axis onto the spin axis (the local +y in the USD frame;
+             the orange bike's wheel bodies are pre-rotated so its ellipsoid
+             needs none). Replaces the fitted sidewall sphere (iteration 15). -->
+        <geom name="rear_wheel_contact" type="ellipsoid" size="0.07 0.07 0.0191"
+              rgba="1.0 0.3 0.3 0.5" pos="0.0002 -0.016505 0" quat="0.7071 0.7071 0 0"
+              friction="0.75 0 0"
+              priority="1" margin="0.0" gap="0" solimp="0.0 0.95 0.001 0.5 2"
+              solref="0.02 0.5"/>
+        <geom name="rear_wheel_vis" type="mesh" mesh="rear_wheel_mesh" rgba="0.15 0.15 0.17 1"
+              contype="0" conaffinity="0"/>
+      </body>
+
+      <!-- ============ steering assembly ============ -->
+      <body name="steering_link" pos="0.28776 -0.039873 0.219057">
+        <joint name="steering_joint" type="hinge" axis="0.18409 0.00098 -0.98291"
+               range="-1.5708 1.5708"/>
+        <!-- USD physics:diagonalInertia values (no scaling): the x30 scaling
+             (legacy line-contact-era hack) slowed the steering servo so much
+             that the policy's countersteer could not move the fork in time. -->
+        <inertial pos="0.007789 0.000041 -0.041589" quat="0.63793576 0 0.77008957 0"
+                  diaginertia="0.000040833565 0.000135 0.00016116643" mass="0.10929162"/>
+        <!-- fork tube down to the front wheel center (collision).
+             rgba = semi-transparent red like the other collision prims -->
+        <geom name="fork" type="box" pos="0.012 -0.0001 -0.07" size="0.015 0.02 0.07"
+              rgba="1.0 0.3 0.3 0.5"/>
+        <!-- steering assembly: visual = the real mesh (no collision) -->
+        <geom name="steering_vis" type="mesh" mesh="steering_mesh" rgba="0.82 0.84 0.88 1"
+              contype="0" conaffinity="0"/>
+
+        <!-- the steering->roll coupling now comes from the front wheel's own
+             rolling contact (the tilted-cylinder swing) -- the steering-body
+             point-contact sphere is removed (it was redundant: the closed
+             loop is identical with or without it) -->
+
+        <body name="front_wheel_link" pos="0.024852 0.000132 -0.132693">
+          <joint name="frontwheel_joint" type="hinge" axis="0.00492 -0.99999 -0.00008"/>
+          <inertial pos="0 0 0" quat="0.37473193 0.36875498 0.59964657 0.6033405"
+                    diaginertia="0.00022797778 0.000228 0.00045302222" mass="0.16491532"/>
+          <!-- FRONT WHEEL GROUND CONTACT: full-tire ellipsoid centered on the
+               axle, the orange_bike tutorial's exact config except the
+               friction (see the rear contact: 0.75 = the sim's pair).
+               Replaces the thin trail-offset cylinder. -->
+          <geom name="front_wheel" type="ellipsoid" size="0.07 0.07 0.025"
+                rgba="1.0 0.3 0.3 0.5" quat="0.7071 0.7071 0 0" friction="0.75 0 0"
+                priority="1" margin="0.0" gap="0" solimp="0.0 0.95 0.001 0.5 2"
+                solref="0.02 0.5"/>
+          <geom name="front_wheel_vis" type="mesh" mesh="front_wheel_mesh" rgba="0.15 0.15 0.17 1"
+                contype="0" conaffinity="0"/>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <sensor>
+    <gyro name="gyro" site="imu"/>
+    <velocimeter name="vel" site="imu"/>
+  </sensor>
+
+  <actuator>
+    <!-- steering: position servo, PD 10/0.2, +-5.6 Nm (GIM4310-10 stall).
+         ctrllimited gives the viewer's control slider the +-1.5708 rad target
+         range (the env writes the same range). -->
+    <position name="steering_act" joint="steering_joint" kp="10" kv="0.2"
+              ctrllimited="true" ctrlrange="-1.5708 1.5708" forcerange="-5.6 5.6"/>
+    <!-- drive: JointEffortAction (scale 6.28) on the implicit actuator
+         (stiffness 0, damping 0.05 authored) -- the torque contract per the
+         run's logged env.yaml. The damping is the AUTHORED 0.05: the
+         effective 0.2717 compensation is RETIRED 2026-09-14 (the 39750
+         three-way test showed it is now irrelevant; see the README).
+         MuJoCo general semantics (verified): y = gainprm[0]*(ctrl +
+         biasprm[0] + biasprm[2]*qvel). The env applies the +-61.6 rad/s
+         speed limit per substep. -->
+    <general name="drive_act" joint="rearwheel_joint" gaintype="fixed" gainprm="1"
+             biastype="affine" biasprm="0 0 -0.05" ctrllimited="true"
+             ctrlrange="-6.28 6.28" forcerange="-6.28 6.28"/>
+  </actuator>
+</mujoco>

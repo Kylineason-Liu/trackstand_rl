@@ -1,0 +1,562 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot name="yahboomcar_A1" xmlns:xacro="http://ros.org/wiki/xacro">
+  <link name="robot1/imu_link"/>
+  <link
+    name="robot1/base_link">
+    <inertial>
+      <origin
+        xyz="-0.0160219251591395 -3.55035646915717E-05 0.0443188739852392"
+        rpy="0 0 0" />
+      <mass
+        value="1.07256113901465" />
+      <inertia
+        ixx="0.00172072379660189"
+        ixy="-2.35223127379625E-07"
+        ixz="8.37341316711092E-05"
+        iyy="0.00329379390970044"
+        iyz="-2.59982782717492E-07"
+        izz="0.00445325810861736" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://yahboomcar_description/meshes/A1USBAckermann/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://yahboomcar_description/meshes/A1USBAckermann/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="robot1/left_steering_hinge_joint">
+    <inertial>
+      <origin
+        xyz="-0.00432772107986408 0.00342831189726796 -0.000372306089408943"
+        rpy="0 0 0" />
+      <mass
+        value="0.00410072639970501" />
+      <inertia
+        ixx="2.31077741860635E-07"
+        ixy="-1.07215901497977E-07"
+        ixz="-1.88915741168269E-08"
+        iyy="4.30040568759882E-07"
+        iyz="-7.54747758276883E-09"
+        izz="4.26845883673014E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://yahboomcar_description/meshes/A1USBAckermann/left_steering_hinge_joint.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.372549019607843 0.372549019607843 0.372549019607843 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://yahboomcar_description/meshes/A1USBAckermann/left_steering_hinge_joint.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="robot1/left_steering_hinge_joint"
+    type="revolute">
+    <origin
+      xyz="0.097 0.055 0.0146"
+      rpy="0 0 0" />
+    <parent
+      link="robot1/base_link" />
+    <child
+      link="robot1/left_steering_hinge_joint" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-0.5236"
+      upper="0.5236"
+      effort="0"
+      velocity="1" />
+  </joint>
+  <link
+    name="robot1/left_front_wheel_joint">
+    <inertial>
+      <origin
+        xyz="-3.41254080549191E-10 4.25527049982555E-06 -1.57588005145204E-11"
+        rpy="0 0 0" />
+      <mass
+        value="0.0556804524709551" />
+      <inertia
+        ixx="2.42162819571084E-05"
+        ixy="-8.02192454916149E-14"
+        ixz="5.34047350088356E-09"
+        iyy="4.23054199692737E-05"
+        iyz="-1.54995540465628E-15"
+        izz="2.42295994140218E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://yahboomcar_description/meshes/A1USBAckermann/left_front_wheel_joint.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://yahboomcar_description/meshes/A1USBAckermann/left_front_wheel_joint.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="robot1/left_front_wheel_joint"
+    type="continuous">
+    <origin
+      xyz="0 0.03185 0"
+      rpy="0 0 0" />
+    <parent
+      link="robot1/left_steering_hinge_joint" />
+    <child
+      link="robot1/left_front_wheel_joint" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      effort="0"
+      velocity="1" />
+  </joint>
+  <link
+    name="robot1/right_steering_hinge_joint">
+    <inertial>
+      <origin
+        xyz="-0.00432774166471593 -0.00342817202688872 -0.0003723602996958"
+        rpy="0 0 0" />
+      <mass
+        value="0.00410082931421253" />
+      <inertia
+        ixx="2.31084068665315E-07"
+        ixy="1.07219390383862E-07"
+        ixz="-1.88905122267278E-08"
+        iyy="4.30053430137022E-07"
+        iyz="7.54921132373203E-09"
+        izz="4.26857565562271E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://yahboomcar_description/meshes/A1USBAckermann/right_steering_hinge_joint.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.372549019607843 0.372549019607843 0.372549019607843 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://yahboomcar_description/meshes/A1USBAckermann/right_steering_hinge_joint.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="robot1/right_steering_hinge_joint"
+    type="revolute">
+    <origin
+      xyz="0.097 -0.055 0.0146"
+      rpy="0 0 0" />
+    <parent
+      link="robot1/base_link" />
+    <child
+      link="robot1/right_steering_hinge_joint" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-0.5236"
+      upper="0.5236"
+      effort="0"
+      velocity="1" />
+  </joint>
+  <link
+    name="robot1/right_front_wheel_joint">
+    <inertial>
+      <origin
+        xyz="3.41016742622102E-10 -4.25527049983943E-06 -2.02548030431293E-11"
+        rpy="0 0 0" />
+      <mass
+        value="0.0556804524709551" />
+      <inertia
+        ixx="2.42213371350958E-05"
+        ixy="-8.01918652649274E-14"
+        ixz="9.10069427989303E-09"
+        iyy="4.23054199692738E-05"
+        iyz="2.60702436477586E-15"
+        izz="2.42245442360345E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://yahboomcar_description/meshes/A1USBAckermann/right_front_wheel_joint.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://yahboomcar_description/meshes/A1USBAckermann/right_front_wheel_joint.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="robot1/right_front_wheel_joint"
+    type="continuous">
+    <origin
+      xyz="0 -0.03185 0"
+      rpy="0 0 0" />
+    <parent
+      link="robot1/right_steering_hinge_joint" />
+    <child
+      link="robot1/right_front_wheel_joint" />
+    <axis
+      xyz="0 -1 0" />
+    <limit
+      effort="0"
+      velocity="1" />
+  </joint>
+  <link
+    name="robot1/left_rear_wheel_hinge">
+    <inertial>
+      <origin
+        xyz="-4.4187181691413E-11 5.72846855563941E-05 8.15078352034426E-11"
+        rpy="0 0 0" />
+      <mass
+        value="0.0554418184842637" />
+      <inertia
+        ixx="2.42193835816297E-05"
+        ixy="-9.72977227662279E-15"
+        ixz="-7.58986126895097E-09"
+        iyy="4.23036027754325E-05"
+        iyz="1.38356120018902E-14"
+        izz="2.42115715562562E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://yahboomcar_description/meshes/A1USBAckermann/left_rear_wheel_hinge.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://yahboomcar_description/meshes/A1USBAckermann/left_rear_wheel_hinge.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="robot1/left_rear_wheel_hinge"
+    type="continuous">
+    <origin
+      xyz="-0.097 0.08685 0.0145"
+      rpy="0 0 0" />
+    <parent
+      link="robot1/base_link" />
+    <child
+      link="robot1/left_rear_wheel_hinge" />
+    <axis
+      xyz="0 1 0" />
+  </joint>
+  <link
+    name="robot1/right_rear_wheel_hinge">
+    <inertial>
+      <origin
+        xyz="-4.41872094469886E-11 -5.7284685556408E-05 -8.15078352034426E-11"
+        rpy="0 0 0" />
+      <mass
+        value="0.0554418184842638" />
+      <inertia
+        ixx="2.42062373800672E-05"
+        ixy="9.72976953991212E-15"
+        ixz="-1.01741973926838E-13"
+        iyy="4.23036027754325E-05"
+        iyz="1.38356144387176E-14"
+        izz="2.42247177578187E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://yahboomcar_description/meshes/A1USBAckermann/right_rear_wheel_hinge.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://yahboomcar_description/meshes/A1USBAckermann/right_rear_wheel_hinge.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="robot1/right_rear_wheel_hinge"
+    type="continuous">
+    <origin
+      xyz="-0.097 -0.08685 0.0145"
+      rpy="0 0 0" />
+    <parent
+      link="robot1/base_link" />
+    <child
+      link="robot1/right_rear_wheel_hinge" />
+    <axis
+      xyz="0 -1 0" />
+  </joint>
+  <link
+    name="robot1/laser">
+    <inertial>
+      <origin
+        xyz="8.01192970788925E-05 -0.000142837223458577 -0.0125536403657814"
+        rpy="0 0 0" />
+      <mass
+        value="0.00992629938318763" />
+      <inertia
+        ixx="1.91413177271348E-06"
+        ixy="-2.34516063221005E-08"
+        ixz="3.84281721110045E-09"
+        iyy="1.8985026286829E-06"
+        iyz="-1.82879279848488E-09"
+        izz="3.33334865875319E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://yahboomcar_description/meshes/A1USBAckermann/laser_joint.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.113725490196078 0.113725490196078 0.113725490196078 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://yahboomcar_description/meshes/A1USBAckermann/laser_joint.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="robot1/laser"
+    type="fixed">
+    <origin
+      xyz="0.0060585 0 0.14912"
+      rpy="3.1415 3.1415 0" />
+    <parent
+      link="robot1/base_link" />
+    <child
+      link="robot1/laser" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="robot1/camera_link">
+    <inertial>
+      <origin
+        xyz="0.0119555652128102 -0.00278949741223551 0.0182504648978518"
+        rpy="0 0 0" />
+      <mass
+        value="0.0101698310349898" />
+      <inertia
+        ixx="1.63281881756608E-06"
+        ixy="-1.44952065784131E-09"
+        ixz="-2.68839729159241E-07"
+        iyy="9.61381789713651E-07"
+        iyz="8.7282110277677E-09"
+        izz="1.37579718891045E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://yahboomcar_description/meshes/A1USBAckermann/camera_joint.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.298039215686275 0.298039215686275 0.298039215686275 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://yahboomcar_description/meshes/A1USBAckermann/camera_joint.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="robot1/camera_link"
+    type="revolute">
+    <origin
+      xyz="0.091521 0.0001 0.091136"
+      rpy="0 0 0" />
+    <parent
+      link="robot1/base_link" />
+    <child
+      link="robot1/camera_link" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="-1.5708"
+      upper="1.5708"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="robot1/camera2_link">
+    <inertial>
+      <origin
+        xyz="0.000155461697677956 0.00474162151415922 0.0151098565824489"
+        rpy="0 0 0" />
+      <mass
+        value="0.00926963873395908" />
+      <inertia
+        ixx="1.66433730312951E-06"
+        ixy="-3.29093619597752E-10"
+        ixz="-4.17461760561084E-09"
+        iyy="2.26058889309778E-06"
+        iyz="2.79109955725232E-07"
+        izz="2.31083206092727E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://yahboomcar_description/meshes/A1USBAckermann/camera2_joint.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.298039215686275 0.298039215686275 0.298039215686275 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://yahboomcar_description/meshes/A1USBAckermann/camera2_joint.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="robot1/camera2_link"
+    type="revolute">
+    <origin
+      xyz="0.016875 0 0.025108"
+      rpy="1.5708 0 1.5708" />
+    <parent
+      link="robot1/camera_link" />
+    <child
+      link="robot1/camera2_link" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="-1.5708"
+      upper="1.5708"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <joint name="robot1/base_imu" type="fixed">
+  <parent link="robot1/base_link"/>
+  <child link="robot1/imu_link"/>
+  <origin xyz="-0.025 -0.034 0.038" rpy="0 0 0"/>
+  </joint>
+
+  <link name="robot1/base_footprint"/>
+  <joint name="robot1/base_joint" type="fixed">
+    <parent link="robot1/base_footprint"/>
+    <child link="robot1/base_link"/>
+    <origin xyz="0.0 0.0 0.0215" rpy="0 0 0"/>
+  </joint>
+</robot>

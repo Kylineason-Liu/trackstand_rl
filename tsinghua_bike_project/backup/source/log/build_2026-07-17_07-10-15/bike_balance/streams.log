@@ -1,0 +1,47 @@
+[2.315s] Invoking command in '/home/ubuntu/bike_ws/source/bike_balance': PYTHONPATH=/home/ubuntu/bike_ws/source/build/bike_balance/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ubuntu/bike_ws/source/install/bike_balance/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/bike_balance build --build-base /home/ubuntu/bike_ws/source/build/bike_balance/build install --record /home/ubuntu/bike_ws/source/build/bike_balance/install.log --single-version-externally-managed install_data
+[2.679s] running egg_info
+[2.680s] creating ../build/bike_balance/bike_balance.egg-info
+[2.699s] writing ../build/bike_balance/bike_balance.egg-info/PKG-INFO
+[2.700s] writing dependency_links to ../build/bike_balance/bike_balance.egg-info/dependency_links.txt
+[2.700s] writing entry points to ../build/bike_balance/bike_balance.egg-info/entry_points.txt
+[2.700s] writing requirements to ../build/bike_balance/bike_balance.egg-info/requires.txt
+[2.701s] writing top-level names to ../build/bike_balance/bike_balance.egg-info/top_level.txt
+[2.701s] writing manifest file '../build/bike_balance/bike_balance.egg-info/SOURCES.txt'
+[2.742s] reading manifest file '../build/bike_balance/bike_balance.egg-info/SOURCES.txt'
+[2.743s] writing manifest file '../build/bike_balance/bike_balance.egg-info/SOURCES.txt'
+[2.744s] running build
+[2.744s] running build_py
+[2.744s] creating /home/ubuntu/bike_ws/source/build/bike_balance/build
+[2.745s] creating /home/ubuntu/bike_ws/source/build/bike_balance/build/lib
+[2.745s] creating /home/ubuntu/bike_ws/source/build/bike_balance/build/lib/bike_balance
+[2.746s] copying bike_balance/bicycle_model.py -> /home/ubuntu/bike_ws/source/build/bike_balance/build/lib/bike_balance
+[2.748s] copying bike_balance/balance_node.py -> /home/ubuntu/bike_ws/source/build/bike_balance/build/lib/bike_balance
+[2.748s] copying bike_balance/calibration_node.py -> /home/ubuntu/bike_ws/source/build/bike_balance/build/lib/bike_balance
+[2.748s] copying bike_balance/__init__.py -> /home/ubuntu/bike_ws/source/build/bike_balance/build/lib/bike_balance
+[2.749s] copying bike_balance/controller.py -> /home/ubuntu/bike_ws/source/build/bike_balance/build/lib/bike_balance
+[2.750s] running install
+[2.758s] running install_lib
+[2.780s] creating /home/ubuntu/bike_ws/source/install/bike_balance/lib/python3.12/site-packages/bike_balance
+[2.781s] copying /home/ubuntu/bike_ws/source/build/bike_balance/build/lib/bike_balance/bicycle_model.py -> /home/ubuntu/bike_ws/source/install/bike_balance/lib/python3.12/site-packages/bike_balance
+[2.781s] copying /home/ubuntu/bike_ws/source/build/bike_balance/build/lib/bike_balance/balance_node.py -> /home/ubuntu/bike_ws/source/install/bike_balance/lib/python3.12/site-packages/bike_balance
+[2.781s] copying /home/ubuntu/bike_ws/source/build/bike_balance/build/lib/bike_balance/calibration_node.py -> /home/ubuntu/bike_ws/source/install/bike_balance/lib/python3.12/site-packages/bike_balance
+[2.781s] copying /home/ubuntu/bike_ws/source/build/bike_balance/build/lib/bike_balance/__init__.py -> /home/ubuntu/bike_ws/source/install/bike_balance/lib/python3.12/site-packages/bike_balance
+[2.781s] copying /home/ubuntu/bike_ws/source/build/bike_balance/build/lib/bike_balance/controller.py -> /home/ubuntu/bike_ws/source/install/bike_balance/lib/python3.12/site-packages/bike_balance
+[2.782s] byte-compiling /home/ubuntu/bike_ws/source/install/bike_balance/lib/python3.12/site-packages/bike_balance/bicycle_model.py to bicycle_model.cpython-312.pyc
+[2.785s] byte-compiling /home/ubuntu/bike_ws/source/install/bike_balance/lib/python3.12/site-packages/bike_balance/balance_node.py to balance_node.cpython-312.pyc
+[2.796s] byte-compiling /home/ubuntu/bike_ws/source/install/bike_balance/lib/python3.12/site-packages/bike_balance/calibration_node.py to calibration_node.cpython-312.pyc
+[2.797s] byte-compiling /home/ubuntu/bike_ws/source/install/bike_balance/lib/python3.12/site-packages/bike_balance/__init__.py to __init__.cpython-312.pyc
+[2.797s] byte-compiling /home/ubuntu/bike_ws/source/install/bike_balance/lib/python3.12/site-packages/bike_balance/controller.py to controller.cpython-312.pyc
+[2.800s] running install_data
+[2.801s] copying package.xml -> /home/ubuntu/bike_ws/source/install/bike_balance/share/bike_balance
+[2.801s] creating /home/ubuntu/bike_ws/source/install/bike_balance/share/bike_balance/launch
+[2.801s] copying launch/balance_launch.py -> /home/ubuntu/bike_ws/source/install/bike_balance/share/bike_balance/launch
+[2.802s] creating /home/ubuntu/bike_ws/source/install/bike_balance/share/bike_balance/config
+[2.802s] copying config/balance_params.yaml -> /home/ubuntu/bike_ws/source/install/bike_balance/share/bike_balance/config
+[2.802s] running install_egg_info
+[2.826s] Copying ../build/bike_balance/bike_balance.egg-info to /home/ubuntu/bike_ws/source/install/bike_balance/lib/python3.12/site-packages/bike_balance-0.1.0-py3.12.egg-info
+[2.827s] running install_scripts
+[3.005s] Installing balance_node script to /home/ubuntu/bike_ws/source/install/bike_balance/bin
+[3.006s] Installing calibrate_imu script to /home/ubuntu/bike_ws/source/install/bike_balance/bin
+[3.008s] writing list of installed files to '/home/ubuntu/bike_ws/source/build/bike_balance/install.log'
+[3.197s] Invoked command in '/home/ubuntu/bike_ws/source/bike_balance' returned '0': PYTHONPATH=/home/ubuntu/bike_ws/source/build/bike_balance/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ubuntu/bike_ws/source/install/bike_balance/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/bike_balance build --build-base /home/ubuntu/bike_ws/source/build/bike_balance/build install --record /home/ubuntu/bike_ws/source/build/bike_balance/install.log --single-version-externally-managed install_data

@@ -1,0 +1,54 @@
+/usr/lib/python3/dist-packages/setuptools/dist.py:744: SetuptoolsDeprecationWarning: Invalid dash-separated options
+!!
+
+        ********************************************************************************
+        Usage of dash-separated 'script-dir' will not be supported in future
+        versions. Please use the underscore name 'script_dir' instead.
+
+        This deprecation is overdue, please update your project and remove deprecated
+        calls to avoid build errors in the future.
+
+        See https://setuptools.pypa.io/en/latest/userguide/declarative_config.html for details.
+        ********************************************************************************
+
+!!
+  opt = self.warn_dash_deprecation(opt, section)
+running egg_info
+creating ../../build/remote_controller/remote_controller.egg-info
+writing ../../build/remote_controller/remote_controller.egg-info/PKG-INFO
+writing dependency_links to ../../build/remote_controller/remote_controller.egg-info/dependency_links.txt
+writing entry points to ../../build/remote_controller/remote_controller.egg-info/entry_points.txt
+writing requirements to ../../build/remote_controller/remote_controller.egg-info/requires.txt
+writing top-level names to ../../build/remote_controller/remote_controller.egg-info/top_level.txt
+writing manifest file '../../build/remote_controller/remote_controller.egg-info/SOURCES.txt'
+reading manifest file '../../build/remote_controller/remote_controller.egg-info/SOURCES.txt'
+writing manifest file '../../build/remote_controller/remote_controller.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/ubuntu/bike_ws/source/build/remote_controller/build
+creating /home/ubuntu/bike_ws/source/build/remote_controller/build/lib
+creating /home/ubuntu/bike_ws/source/build/remote_controller/build/lib/remote_controller
+copying remote_controller/servo_controller.py -> /home/ubuntu/bike_ws/source/build/remote_controller/build/lib/remote_controller
+copying remote_controller/motor_controller.py -> /home/ubuntu/bike_ws/source/build/remote_controller/build/lib/remote_controller
+copying remote_controller/__init__.py -> /home/ubuntu/bike_ws/source/build/remote_controller/build/lib/remote_controller
+copying remote_controller/sbus_reader.py -> /home/ubuntu/bike_ws/source/build/remote_controller/build/lib/remote_controller
+running install
+running install_lib
+creating /home/ubuntu/bike_ws/source/install/remote_controller/lib/python3.12/site-packages/remote_controller
+copying /home/ubuntu/bike_ws/source/build/remote_controller/build/lib/remote_controller/servo_controller.py -> /home/ubuntu/bike_ws/source/install/remote_controller/lib/python3.12/site-packages/remote_controller
+copying /home/ubuntu/bike_ws/source/build/remote_controller/build/lib/remote_controller/motor_controller.py -> /home/ubuntu/bike_ws/source/install/remote_controller/lib/python3.12/site-packages/remote_controller
+copying /home/ubuntu/bike_ws/source/build/remote_controller/build/lib/remote_controller/__init__.py -> /home/ubuntu/bike_ws/source/install/remote_controller/lib/python3.12/site-packages/remote_controller
+copying /home/ubuntu/bike_ws/source/build/remote_controller/build/lib/remote_controller/sbus_reader.py -> /home/ubuntu/bike_ws/source/install/remote_controller/lib/python3.12/site-packages/remote_controller
+byte-compiling /home/ubuntu/bike_ws/source/install/remote_controller/lib/python3.12/site-packages/remote_controller/servo_controller.py to servo_controller.cpython-312.pyc
+byte-compiling /home/ubuntu/bike_ws/source/install/remote_controller/lib/python3.12/site-packages/remote_controller/motor_controller.py to motor_controller.cpython-312.pyc
+byte-compiling /home/ubuntu/bike_ws/source/install/remote_controller/lib/python3.12/site-packages/remote_controller/__init__.py to __init__.cpython-312.pyc
+byte-compiling /home/ubuntu/bike_ws/source/install/remote_controller/lib/python3.12/site-packages/remote_controller/sbus_reader.py to sbus_reader.cpython-312.pyc
+running install_data
+copying package.xml -> /home/ubuntu/bike_ws/source/install/remote_controller/share/remote_controller
+running install_egg_info
+Copying ../../build/remote_controller/remote_controller.egg-info to /home/ubuntu/bike_ws/source/install/remote_controller/lib/python3.12/site-packages/remote_controller-0.1.0-py3.12.egg-info
+running install_scripts
+Installing motor_controller script to /home/ubuntu/bike_ws/source/install/remote_controller/lib/remote_controller
+Installing sbus_reader script to /home/ubuntu/bike_ws/source/install/remote_controller/lib/remote_controller
+Installing servo_controller script to /home/ubuntu/bike_ws/source/install/remote_controller/lib/remote_controller
+writing list of installed files to '/home/ubuntu/bike_ws/source/build/remote_controller/install.log'

@@ -1,0 +1,48 @@
+[0.000000] (-) TimerEvent: {}
+[0.000269] (-) JobUnselected: {'identifier': 'controller_bridge'}
+[0.000477] (-) JobUnselected: {'identifier': 'remote_controller'}
+[0.001004] (bike_balance) JobQueued: {'identifier': 'bike_balance', 'dependencies': OrderedDict()}
+[0.001211] (bike_balance) JobStarted: {'identifier': 'bike_balance'}
+[0.099730] (-) TimerEvent: {}
+[0.200106] (-) TimerEvent: {}
+[0.300461] (-) TimerEvent: {}
+[0.400959] (-) TimerEvent: {}
+[0.501557] (-) TimerEvent: {}
+[0.601900] (-) TimerEvent: {}
+[0.702232] (-) TimerEvent: {}
+[0.802589] (-) TimerEvent: {}
+[0.902941] (-) TimerEvent: {}
+[1.003280] (-) TimerEvent: {}
+[1.103712] (-) TimerEvent: {}
+[1.143338] (bike_balance) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'egg_info', '--egg-base', '../build/bike_balance', 'build', '--build-base', '/home/ubuntu/bike_ws/source/build/bike_balance/build', 'install', '--record', '/home/ubuntu/bike_ws/source/build/bike_balance/install.log', '--install-scripts', '$base/lib/bike_balance', '--single-version-externally-managed', 'install_data'], 'cwd': '/home/ubuntu/bike_ws/source/bike_balance', 'env': {'AI_AGENT': 'github_copilot_vscode_agent', 'USER': 'ubuntu', 'SSH_CLIENT': '192.168.245.201 58052 22', 'GIT_EDITOR': ':', 'XDG_SESSION_TYPE': 'tty', 'GIT_ASKPASS': '/home/ubuntu/.vscode-server/cli/servers/Stable-4fe60c8b1cdac1c4c174f2fb180d0d758272d713/server/extensions/git/dist/askpass.sh', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/opt/ros/jazzy/lib/aarch64-linux-gnu:/opt/ros/jazzy/lib', 'COPILOT_AGENT': '1', 'BROWSER': '/home/ubuntu/.vscode-server/cli/servers/Stable-4fe60c8b1cdac1c4c174f2fb180d0d758272d713/server/bin/helpers/browser.sh', 'HOME': '/home/ubuntu', 'OLDPWD': '/home/ubuntu/bike_ws/source/bike_balance', 'TERM_PROGRAM_VERSION': '1.127.0', 'VSCODE_IPC_HOOK_CLI': '/run/user/1000/vscode-ipc-1d324824-239c-48fa-b100-b7044623898c.sock', 'ROS_PYTHON_VERSION': '3', 'VSCODE_GIT_ASKPASS_MAIN': '/home/ubuntu/.vscode-server/cli/servers/Stable-4fe60c8b1cdac1c4c174f2fb180d0d758272d713/server/extensions/git/dist/askpass-main.js', 'VSCODE_GIT_ASKPASS_NODE': '/home/ubuntu/.vscode-server/cli/servers/Stable-4fe60c8b1cdac1c4c174f2fb180d0d758272d713/server/node', 'VSCODE_PYTHON_AUTOACTIVATE_GUARD': '1', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'COLORTERM': 'truecolor', 'COLCON_PREFIX_PATH': '/home/ubuntu/bike_ws/source/install:/home/ubuntu/bike_ws/source/bike_balance/install', 'ROS_DISTRO': 'jazzy', 'LOGNAME': 'ubuntu', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'XDG_SESSION_CLASS': 'user', 'TERM': 'xterm-256color', 'XDG_SESSION_ID': '3', 'HISTCONTROL': 'ignorespace', 'PATH': '/home/ubuntu/bike_ws/source/bike_balance/install/bike_balance/bin:/home/ubuntu/bike_ws/source/install/bike_balance/bin:/home/ubuntu/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand:/home/ubuntu/.vscode-server/data/User/globalStorage/github.copilot-chat/copilotCli:/home/ubuntu/.vscode-server/cli/servers/Stable-4fe60c8b1cdac1c4c174f2fb180d0d758272d713/server/bin/remote-cli:/opt/ros/jazzy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin', 'XDG_RUNTIME_DIR': '/run/user/1000', 'LANG': 'C.UTF-8', 'VSCODE_GIT_IPC_HANDLE': '/run/user/1000/vscode-git-73bbb8e180.sock', 'TERM_PROGRAM': 'vscode', 'AMENT_PREFIX_PATH': '/home/ubuntu/bike_ws/source/bike_balance/install/bike_balance:/home/ubuntu/bike_ws/source/install/remote_controller:/home/ubuntu/bike_ws/source/install/controller_bridge:/home/ubuntu/bike_ws/source/install/bike_balance:/opt/ros/jazzy', 'DEBIAN_FRONTEND': 'noninteractive', 'SHELL': '/bin/bash', 'ROS_AUTOMATIC_DISCOVERY_RANGE': 'SUBNET', 'VSCODE_GIT_ASKPASS_EXTRA_ARGS': '', 'GIT_PAGER': 'cat', 'PWD': '/home/ubuntu/bike_ws/source/build/bike_balance', 'GIT_MERGE_AUTOEDIT': 'no', 'COPILOT_DEBUG_NONCE': '7847c23a6922916e68e37abca298ff64', 'SSH_CONNECTION': '192.168.245.201 58052 192.168.245.166 22', 'PYTHONPATH': '/home/ubuntu/bike_ws/source/build/bike_balance/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ubuntu/bike_ws/source/install/bike_balance/lib/python3.12/site-packages:/home/ubuntu/bike_ws/source/bike_balance/install/bike_balance/lib/python3.12/site-packages:/home/ubuntu/bike_ws/source/install/remote_controller/lib/python3.12/site-packages:/home/ubuntu/bike_ws/source/install/controller_bridge/lib/python3.12/site-packages:/home/ubuntu/bike_ws/source/install/bike_balance/lib/python3.12/site-packages:/opt/ros/jazzy/lib/python3.12/site-packages', 'COLCON': '1'}, 'shell': False}
+[1.203827] (-) TimerEvent: {}
+[1.304331] (-) TimerEvent: {}
+[1.405090] (-) TimerEvent: {}
+[1.478634] (bike_balance) StdoutLine: {'line': b'running egg_info\n'}
+[1.498753] (bike_balance) StdoutLine: {'line': b'writing ../build/bike_balance/bike_balance.egg-info/PKG-INFO\n'}
+[1.499217] (bike_balance) StdoutLine: {'line': b'writing dependency_links to ../build/bike_balance/bike_balance.egg-info/dependency_links.txt\n'}
+[1.505199] (-) TimerEvent: {}
+[1.506887] (bike_balance) StdoutLine: {'line': b'writing entry points to ../build/bike_balance/bike_balance.egg-info/entry_points.txt\n'}
+[1.515236] (bike_balance) StdoutLine: {'line': b'writing requirements to ../build/bike_balance/bike_balance.egg-info/requires.txt\n'}
+[1.522957] (bike_balance) StdoutLine: {'line': b'writing top-level names to ../build/bike_balance/bike_balance.egg-info/top_level.txt\n'}
+[1.574302] (bike_balance) StdoutLine: {'line': b"reading manifest file '../build/bike_balance/bike_balance.egg-info/SOURCES.txt'\n"}
+[1.575405] (bike_balance) StdoutLine: {'line': b"writing manifest file '../build/bike_balance/bike_balance.egg-info/SOURCES.txt'\n"}
+[1.575680] (bike_balance) StdoutLine: {'line': b'running build\n'}
+[1.575848] (bike_balance) StdoutLine: {'line': b'running build_py\n'}
+[1.576306] (bike_balance) StdoutLine: {'line': b'running install\n'}
+[1.585662] (bike_balance) StdoutLine: {'line': b'running install_lib\n'}
+[1.605302] (-) TimerEvent: {}
+[1.606916] (bike_balance) StdoutLine: {'line': b'running install_data\n'}
+[1.607272] (bike_balance) StdoutLine: {'line': b'running install_egg_info\n'}
+[1.628501] (bike_balance) StdoutLine: {'line': b"removing '/home/ubuntu/bike_ws/source/install/bike_balance/lib/python3.12/site-packages/bike_balance-0.1.0-py3.12.egg-info' (and everything under it)\n"}
+[1.628968] (bike_balance) StdoutLine: {'line': b'Copying ../build/bike_balance/bike_balance.egg-info to /home/ubuntu/bike_ws/source/install/bike_balance/lib/python3.12/site-packages/bike_balance-0.1.0-py3.12.egg-info\n'}
+[1.630101] (bike_balance) StdoutLine: {'line': b'running install_scripts\n'}
+[1.705415] (-) TimerEvent: {}
+[1.782607] (bike_balance) StdoutLine: {'line': b'Installing balance_node script to /home/ubuntu/bike_ws/source/install/bike_balance/lib/bike_balance\n'}
+[1.783034] (bike_balance) StdoutLine: {'line': b'Installing calibrate_imu script to /home/ubuntu/bike_ws/source/install/bike_balance/lib/bike_balance\n'}
+[1.790737] (bike_balance) StdoutLine: {'line': b"writing list of installed files to '/home/ubuntu/bike_ws/source/build/bike_balance/install.log'\n"}
+[1.805557] (-) TimerEvent: {}
+[1.888940] (bike_balance) CommandEnded: {'returncode': 0}
+[1.905628] (-) TimerEvent: {}
+[1.967321] (bike_balance) JobEnded: {'identifier': 'bike_balance', 'rc': 0}
+[1.974291] (-) EventReactorShutdown: {}

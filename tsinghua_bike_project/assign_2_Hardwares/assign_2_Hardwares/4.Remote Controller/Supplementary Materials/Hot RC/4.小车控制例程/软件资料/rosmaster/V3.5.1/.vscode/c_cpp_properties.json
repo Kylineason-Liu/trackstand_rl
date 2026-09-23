@@ -1,0 +1,33 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}\\Source\\BSP\\**",
+                "${workspaceFolder}\\Source\\APP\\**",
+                "${workspaceFolder}\\Source\\MEMS\\**",
+                "${workspaceFolder}\\CMSIS\\startup\\**",
+                "${workspaceFolder}\\FWlib\\inc\\**",
+                "${workspaceFolder}\\FreeRTOS\\inc\\**",
+                "${workspaceFolder}\\CMSIS\\**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE",
+                "__CC_ARM",
+                "MEMS_20648",
+                "MEMS_WEARABLE_DEVICE",
+                "MEMS_SECONDARY_DEVICE",
+                "MEMS_AUGMENTED_SENSORS"
+            ],
+            "windowsSdkVersion": "10.0.19041.0",
+            "compilerPath": "D:/MinGW/bin/cpp.exe",
+            "cStandard": "c99",
+            "cppStandard": "c++11",
+            "intelliSenseMode": "${default}"
+        }
+    ],
+    "version": 4
+}

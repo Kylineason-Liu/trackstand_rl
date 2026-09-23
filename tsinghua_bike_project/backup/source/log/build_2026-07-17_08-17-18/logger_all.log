@@ -1,0 +1,179 @@
+[0.136s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build', '--packages-select', 'bike_balance']
+[0.136s] DEBUG:colcon:Parsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='build', build_base='build', install_base='install', merge_install=False, symlink_install=False, test_result_base=None, continue_on_error=False, executor='parallel', parallel_workers=4, event_handlers=None, ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['.'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=['bike_balance'], packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, cmake_args=None, cmake_target=None, cmake_target_skip_unavailable=False, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, ament_cmake_args=None, catkin_cmake_args=None, catkin_skip_building_tests=False, verb_parser=<colcon_defaults.argument_parser.defaults.DefaultArgumentsDecorator object at 0xffffb6273e30>, verb_extension=<colcon_core.verb.build.BuildVerb object at 0xffffb6df6780>, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0xffffb6df6780>>)
+[0.193s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[0.193s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[0.193s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[0.193s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[0.193s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[0.193s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[0.193s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/ubuntu/bike_ws/source'
+[0.193s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.193s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[0.194s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[0.194s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[0.194s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[0.194s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[0.194s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[0.194s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[0.194s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[0.229s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[0.230s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[0.230s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[0.230s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[0.230s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[0.230s] Level 1:colcon.colcon_core.package_identification:_identify(bike_balance) by extensions ['ignore', 'ignore_ament_install']
+[0.230s] Level 1:colcon.colcon_core.package_identification:_identify(bike_balance) by extension 'ignore'
+[0.230s] Level 1:colcon.colcon_core.package_identification:_identify(bike_balance) by extension 'ignore_ament_install'
+[0.230s] Level 1:colcon.colcon_core.package_identification:_identify(bike_balance) by extensions ['colcon_pkg']
+[0.230s] Level 1:colcon.colcon_core.package_identification:_identify(bike_balance) by extension 'colcon_pkg'
+[0.230s] Level 1:colcon.colcon_core.package_identification:_identify(bike_balance) by extensions ['colcon_meta']
+[0.230s] Level 1:colcon.colcon_core.package_identification:_identify(bike_balance) by extension 'colcon_meta'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(bike_balance) by extensions ['ros']
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(bike_balance) by extension 'ros'
+[0.234s] DEBUG:colcon.colcon_core.package_identification:Package 'bike_balance' with type 'ros.ament_python' and name 'bike_balance'
+[0.234s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[0.234s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[0.234s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[0.234s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[0.234s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control) by extensions ['ignore', 'ignore_ament_install']
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control) by extension 'ignore'
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control) by extension 'ignore_ament_install'
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control) by extensions ['colcon_pkg']
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control) by extension 'colcon_pkg'
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control) by extensions ['colcon_meta']
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control) by extension 'colcon_meta'
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control) by extensions ['ros']
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control) by extension 'ros'
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control) by extensions ['cmake', 'python']
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control) by extension 'cmake'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control) by extension 'python'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control) by extensions ['python_setup_py']
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control) by extension 'python_setup_py'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control/build) by extensions ['ignore', 'ignore_ament_install']
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control/build) by extension 'ignore'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control/build) ignored
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control/controller_bridge) by extensions ['ignore', 'ignore_ament_install']
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control/controller_bridge) by extension 'ignore'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control/controller_bridge) by extension 'ignore_ament_install'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control/controller_bridge) by extensions ['colcon_pkg']
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control/controller_bridge) by extension 'colcon_pkg'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control/controller_bridge) by extensions ['colcon_meta']
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control/controller_bridge) by extension 'colcon_meta'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control/controller_bridge) by extensions ['ros']
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control/controller_bridge) by extension 'ros'
+[0.237s] DEBUG:colcon.colcon_core.package_identification:Package 'remote_control/controller_bridge' with type 'ros.ament_python' and name 'controller_bridge'
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control/install) by extensions ['ignore', 'ignore_ament_install']
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control/install) by extension 'ignore'
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control/install) ignored
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control/log) by extensions ['ignore', 'ignore_ament_install']
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control/log) by extension 'ignore'
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control/log) ignored
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control/remote_controller) by extensions ['ignore', 'ignore_ament_install']
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control/remote_controller) by extension 'ignore'
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control/remote_controller) by extension 'ignore_ament_install'
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control/remote_controller) by extensions ['colcon_pkg']
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control/remote_controller) by extension 'colcon_pkg'
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control/remote_controller) by extensions ['colcon_meta']
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control/remote_controller) by extension 'colcon_meta'
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control/remote_controller) by extensions ['ros']
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(remote_control/remote_controller) by extension 'ros'
+[0.239s] DEBUG:colcon.colcon_core.package_identification:Package 'remote_control/remote_controller' with type 'ros.ament_python' and name 'remote_controller'
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(servo_control) by extensions ['ignore', 'ignore_ament_install']
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(servo_control) by extension 'ignore'
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(servo_control) by extension 'ignore_ament_install'
+[0.240s] Level 1:colcon.colcon_core.package_identification:_identify(servo_control) by extensions ['colcon_pkg']
+[0.240s] Level 1:colcon.colcon_core.package_identification:_identify(servo_control) by extension 'colcon_pkg'
+[0.240s] Level 1:colcon.colcon_core.package_identification:_identify(servo_control) by extensions ['colcon_meta']
+[0.240s] Level 1:colcon.colcon_core.package_identification:_identify(servo_control) by extension 'colcon_meta'
+[0.240s] Level 1:colcon.colcon_core.package_identification:_identify(servo_control) by extensions ['ros']
+[0.240s] Level 1:colcon.colcon_core.package_identification:_identify(servo_control) by extension 'ros'
+[0.240s] Level 1:colcon.colcon_core.package_identification:_identify(servo_control) by extensions ['cmake', 'python']
+[0.240s] Level 1:colcon.colcon_core.package_identification:_identify(servo_control) by extension 'cmake'
+[0.240s] Level 1:colcon.colcon_core.package_identification:_identify(servo_control) by extension 'python'
+[0.240s] Level 1:colcon.colcon_core.package_identification:_identify(servo_control) by extensions ['python_setup_py']
+[0.240s] Level 1:colcon.colcon_core.package_identification:_identify(servo_control) by extension 'python_setup_py'
+[0.240s] Level 1:colcon.colcon_core.package_identification:_identify(servo_control/__pycache__) by extensions ['ignore', 'ignore_ament_install']
+[0.240s] Level 1:colcon.colcon_core.package_identification:_identify(servo_control/__pycache__) by extension 'ignore'
+[0.240s] Level 1:colcon.colcon_core.package_identification:_identify(servo_control/__pycache__) by extension 'ignore_ament_install'
+[0.240s] Level 1:colcon.colcon_core.package_identification:_identify(servo_control/__pycache__) by extensions ['colcon_pkg']
+[0.240s] Level 1:colcon.colcon_core.package_identification:_identify(servo_control/__pycache__) by extension 'colcon_pkg'
+[0.241s] Level 1:colcon.colcon_core.package_identification:_identify(servo_control/__pycache__) by extensions ['colcon_meta']
+[0.241s] Level 1:colcon.colcon_core.package_identification:_identify(servo_control/__pycache__) by extension 'colcon_meta'
+[0.241s] Level 1:colcon.colcon_core.package_identification:_identify(servo_control/__pycache__) by extensions ['ros']
+[0.241s] Level 1:colcon.colcon_core.package_identification:_identify(servo_control/__pycache__) by extension 'ros'
+[0.241s] Level 1:colcon.colcon_core.package_identification:_identify(servo_control/__pycache__) by extensions ['cmake', 'python']
+[0.241s] Level 1:colcon.colcon_core.package_identification:_identify(servo_control/__pycache__) by extension 'cmake'
+[0.241s] Level 1:colcon.colcon_core.package_identification:_identify(servo_control/__pycache__) by extension 'python'
+[0.241s] Level 1:colcon.colcon_core.package_identification:_identify(servo_control/__pycache__) by extensions ['python_setup_py']
+[0.241s] Level 1:colcon.colcon_core.package_identification:_identify(servo_control/__pycache__) by extension 'python_setup_py'
+[0.241s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[0.241s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[0.241s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[0.241s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[0.241s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[0.267s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'controller_bridge' in 'remote_control/controller_bridge'
+[0.267s] INFO:colcon.colcon_core.package_selection:Skipping not selected package 'remote_controller' in 'remote_control/remote_controller'
+[0.268s] Level 5:colcon.colcon_core.verb:set package 'bike_balance' build argument 'cmake_args' from command line to 'None'
+[0.268s] Level 5:colcon.colcon_core.verb:set package 'bike_balance' build argument 'cmake_target' from command line to 'None'
+[0.268s] Level 5:colcon.colcon_core.verb:set package 'bike_balance' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.268s] Level 5:colcon.colcon_core.verb:set package 'bike_balance' build argument 'cmake_clean_cache' from command line to 'False'
+[0.268s] Level 5:colcon.colcon_core.verb:set package 'bike_balance' build argument 'cmake_clean_first' from command line to 'False'
+[0.268s] Level 5:colcon.colcon_core.verb:set package 'bike_balance' build argument 'cmake_force_configure' from command line to 'False'
+[0.268s] Level 5:colcon.colcon_core.verb:set package 'bike_balance' build argument 'ament_cmake_args' from command line to 'None'
+[0.268s] Level 5:colcon.colcon_core.verb:set package 'bike_balance' build argument 'catkin_cmake_args' from command line to 'None'
+[0.268s] Level 5:colcon.colcon_core.verb:set package 'bike_balance' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.268s] DEBUG:colcon.colcon_core.verb:Building package 'bike_balance' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/ubuntu/bike_ws/source/build/bike_balance', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/ubuntu/bike_ws/source/install/bike_balance', 'merge_install': False, 'path': '/home/ubuntu/bike_ws/source/bike_balance', 'symlink_install': False, 'test_result_base': None}
+[0.268s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[0.270s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[0.270s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/ubuntu/bike_ws/source/bike_balance' with build type 'ament_python'
+[0.271s] Level 1:colcon.colcon_core.shell:create_environment_hook('bike_balance', 'ament_prefix_path')
+[0.273s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[0.273s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/ubuntu/bike_ws/source/install/bike_balance/share/bike_balance/hook/ament_prefix_path.dsv'
+[0.274s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/ubuntu/bike_ws/source/install/bike_balance/share/bike_balance/hook/ament_prefix_path.sh'
+[0.283s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.284s] WARNING:colcon.colcon_core.prefix_path.colcon:The path '/home/ubuntu/bike_ws/source/bike_balance/install' in the environment variable COLCON_PREFIX_PATH doesn't exist
+[0.284s] WARNING:colcon.colcon_ros.prefix_path.ament:The path '/home/ubuntu/bike_ws/source/bike_balance/install/bike_balance' in the environment variable AMENT_PREFIX_PATH doesn't exist
+[0.607s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/ubuntu/bike_ws/source/bike_balance'
+[0.608s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.412s] DEBUG:colcon.colcon_core.task.python.build:Available setuptools commands: symlink_data, alias, dist_info, setopt, bdist_wheel, install_scripts, rotate, egg_info, sdist, bdist_dumb, init_catalog, easy_install, install_lib, install_headers, check, saveopts, update_catalog, bdist_rpm, extract_messages, build_scripts, upload_docs, install_egg_info, develop, clean, editable_wheel, test, build_clib, compile_catalog, upload, build_py, build, build_ext, install_data, bdist, register, install, bdist_egg
+[1.419s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/ubuntu/bike_ws/source/bike_balance': PYTHONPATH=/home/ubuntu/bike_ws/source/build/bike_balance/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ubuntu/bike_ws/source/install/bike_balance/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/bike_balance build --build-base /home/ubuntu/bike_ws/source/build/bike_balance/build install --record /home/ubuntu/bike_ws/source/build/bike_balance/install.log --install-scripts $base/lib/bike_balance --single-version-externally-managed install_data
+[2.159s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/ubuntu/bike_ws/source/bike_balance' returned '0': PYTHONPATH=/home/ubuntu/bike_ws/source/build/bike_balance/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/ubuntu/bike_ws/source/install/bike_balance/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/bike_balance build --build-base /home/ubuntu/bike_ws/source/build/bike_balance/build install --record /home/ubuntu/bike_ws/source/build/bike_balance/install.log --install-scripts $base/lib/bike_balance --single-version-externally-managed install_data
+[2.161s] Level 1:colcon.colcon_core.environment:checking '/home/ubuntu/bike_ws/source/install/bike_balance' for CMake module files
+[2.162s] Level 1:colcon.colcon_core.environment:checking '/home/ubuntu/bike_ws/source/install/bike_balance' for CMake config files
+[2.163s] Level 1:colcon.colcon_core.environment:checking '/home/ubuntu/bike_ws/source/install/bike_balance/lib'
+[2.163s] Level 1:colcon.colcon_core.environment:checking '/home/ubuntu/bike_ws/source/install/bike_balance/bin'
+[2.163s] Level 1:colcon.colcon_core.shell:create_environment_hook('bike_balance', 'path')
+[2.164s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/ubuntu/bike_ws/source/install/bike_balance/share/bike_balance/hook/path.dsv'
+[2.164s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/ubuntu/bike_ws/source/install/bike_balance/share/bike_balance/hook/path.sh'
+[2.171s] Level 1:colcon.colcon_core.environment:checking '/home/ubuntu/bike_ws/source/install/bike_balance/lib/pkgconfig/bike_balance.pc'
+[2.172s] Level 1:colcon.colcon_core.environment:checking '/home/ubuntu/bike_ws/source/install/bike_balance/lib/python3.12/site-packages'
+[2.172s] Level 1:colcon.colcon_core.shell:create_environment_hook('bike_balance', 'pythonpath')
+[2.172s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/ubuntu/bike_ws/source/install/bike_balance/share/bike_balance/hook/pythonpath.dsv'
+[2.178s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/ubuntu/bike_ws/source/install/bike_balance/share/bike_balance/hook/pythonpath.sh'
+[2.188s] Level 1:colcon.colcon_core.environment:checking '/home/ubuntu/bike_ws/source/install/bike_balance/bin'
+[2.188s] Level 1:colcon.colcon_core.shell:create_environment_hook('bike_balance', 'pythonscriptspath')
+[2.189s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/ubuntu/bike_ws/source/install/bike_balance/share/bike_balance/hook/pythonscriptspath.dsv'
+[2.195s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/ubuntu/bike_ws/source/install/bike_balance/share/bike_balance/hook/pythonscriptspath.sh'
+[2.202s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(bike_balance)
+[2.203s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/ubuntu/bike_ws/source/install/bike_balance/share/bike_balance/package.dsv'
+[2.209s] INFO:colcon.colcon_core.shell:Creating package script '/home/ubuntu/bike_ws/source/install/bike_balance/share/bike_balance/package.sh'
+[2.216s] INFO:colcon.colcon_core.shell:Creating package script '/home/ubuntu/bike_ws/source/install/bike_balance/share/bike_balance/package.bash'
+[2.223s] INFO:colcon.colcon_core.shell:Creating package script '/home/ubuntu/bike_ws/source/install/bike_balance/share/bike_balance/package.zsh'
+[2.229s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/ubuntu/bike_ws/source/install/bike_balance/share/colcon-core/packages/bike_balance)
+[2.237s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[2.237s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[2.238s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '0'
+[2.238s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[2.244s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[2.244s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/ubuntu/bike_ws/source/install/local_setup.sh'
+[2.250s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/ubuntu/bike_ws/source/install/_local_setup_util_sh.py'
+[2.256s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/ubuntu/bike_ws/source/install/setup.sh'
+[2.262s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/ubuntu/bike_ws/source/install/local_setup.bash'
+[2.272s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/ubuntu/bike_ws/source/install/setup.bash'
+[2.286s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/ubuntu/bike_ws/source/install/local_setup.zsh'
+[2.295s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/ubuntu/bike_ws/source/install/setup.zsh'

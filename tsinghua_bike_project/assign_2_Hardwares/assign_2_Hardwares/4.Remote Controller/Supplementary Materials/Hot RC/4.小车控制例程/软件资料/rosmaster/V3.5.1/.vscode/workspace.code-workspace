@@ -1,0 +1,67 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"*.py": "python",
+			"bsp_encoder.h": "c",
+			"bsp.h": "c",
+			"stdio.h": "c",
+			"stdint.h": "c",
+			"stm32f10x.h": "c",
+			"bsp_beep.h": "c",
+			"bsp_gpio.h": "c",
+			"bsp_timer.h": "c",
+			"app.h": "c",
+			"yb_debug.h": "c",
+			"bsp_adc.h": "c",
+			"stdlib.h": "c",
+			"app_motion.h": "c",
+			"bsp_pwmservo.h": "c",
+			"invn_types.h": "c",
+			"int_types.h": "c",
+			"inttypes.h": "c",
+			"icm20948.h": "c",
+			"inv_mems.h": "c",
+			"bsp_usart.h": "c",
+			"string.h": "c",
+			"config.h": "c",
+			"bsp_common.h": "c",
+			"tool_pid.h": "c",
+			"protocol.h": "c",
+			"app_math.h": "c",
+			"app_ackerman.h": "c",
+			"xmemory": "c",
+			"xutility": "c",
+			"imu_math.h": "c",
+			"bsp_io_i2c.h": "c",
+			"log.h": "c",
+			"include.h": "c",
+			"bsp_mpu9250.h": "c",
+			"bsp_ssd1306.h": "c",
+			"app_fourwheel.h": "c",
+			"bsp_mpuiic.h": "c"
+		},
+		"MicroPython.executeButton": [
+			{
+				"text": "▶",
+				"tooltip": "Run",
+				"alignment": "left",
+				"command": "extension.executeFile",
+				"priority": 3.5
+			}
+		],
+		"MicroPython.syncButton": [
+			{
+				"text": "$(sync)",
+				"tooltip": "sync",
+				"alignment": "left",
+				"command": "extension.execute",
+				"priority": 4
+			}
+		]
+	}
+}

@@ -1,0 +1,118 @@
+<mujoco model="orange_bike">
+  <option timestep="0.0005" iterations="50" solver="Newton" tolerance="1e-10" integrator="RK4" cone="elliptic" sdf_iterations="10" sdf_initpoints="40"/>
+  <compiler angle="radian" meshdir="meshes" inertiafromgeom="auto" eulerseq="XYZ"/>
+
+  <visual>
+    <headlight diffuse="0.6 0.6 0.6" ambient="0.1 0.1 0.1" specular="0.9 0.9 0.9"/>
+    <rgba haze="0.15 0.25 0.35 1"/>
+    <global azimuth="-90" elevation="-20" realtime="0.1" offwidth="1920" offheight="1080"/>
+  </visual>
+
+  <extension>
+    <plugin plugin="mujoco.sdf.torus">
+      <instance name="torus">
+        <config key="radius1" value="0.065"/>
+        <config key="radius2" value="0.005"/>
+      </instance>
+    </plugin>
+  </extension>
+
+  <asset>
+    <texture type="skybox" name="sky" builtin="flat" rgb1="0.3 0.5 0.7" rgb2="0 0 0" width="512" height="512"/>
+    <texture type="2d" name="groundplane" builtin="checker" mark="edge" rgb1="0.2 0.3 0.4" rgb2="0.1 0.2 0.3" markrgb="0.8 0.8 0.8" width="512" height="512"/>
+    <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5" reflectance="0.2"/>
+    <mesh name="base_link" file="base_link.STL"/>
+    <mesh name="frontwheel" file="frontwheel.STL"/>
+    <mesh name="rearwheel" file="rearwheel.STL"/>
+    <mesh name="steer" file="steer.STL"/>
+
+    <mesh name="torus">
+      <plugin instance="torus"/>
+    </mesh>    
+  </asset>
+
+  <default class="main">
+    <default class="collision"> <!-- collision仅用于模拟碰撞，不用于显示，也不用于模拟质量 -->
+      <geom group="1" density="0.0" rgba="1.0 0.3 0.3 0.5"/>
+      <default class="collision_wheel">
+        <geom type="ellipsoid" size="0.07 0.07 0.025"
+          friction="1.0 0.005 0.0001" priority="1" margin="0.0" gap="0" solimp="0.0 0.95 0.001 0.5 2" solref="0.02 0.5"/>  <!--0.02 0.3-->
+      </default>
+    </default>
+    <default class="visual"> <!-- visual仅显示 -->
+      <geom group="2" density="0.0" contype="0" conaffinity="0"/>
+    </default>
+    <default class="inertial"> <!-- inertial模拟质量 -->
+      <geom group="2" contype="0" conaffinity="0" rgba="0.3 1.0 0.3 0.0"/>
+      <default class="inertial_wheel">
+        <geom type="cylinder" size="0.07 0.005"/> 
+      </default>
+    </default>
+
+
+  </default>
+
+  <worldbody>
+    <light pos="1 0 2.5" dir="0 0 -1" directional="true"/>
+    <geom name="floor" size="0 0 0.05" group="2" type="plane" material="groundplane" pos="0 0 -0.1"/>
+
+    <body name="base_link" pos="-0.0 0.0 0.1185">
+      <joint name="floating_base_joint" type="free"/>
+      <camera name="chasis_camera" mode="track" pos="0 -1.5 0.3" euler="1.57 0 0"/>
+      <site name="imu_site" pos="0 0 0" euler="0 0 0" rgba="0.5 0.5 0.5 0"/>
+
+      <!-- 车体估计1.7（去掉舵机），实测前轮0.13，后轮0.17，转向电机0.23，后轮电机0.26，估计转向 0.1，车架0.81 车体总质量1.7+0.46=2.16-->
+      <geom class="visual" type="mesh" rgba="0.3 0.3 0.3 1" mesh="base_link"/>
+      <geom class="collision" type="box" size="0.03 0.065 0.09" pos="0.025 0.0 0.015"/>
+      <geom class="inertial" name="chasis" mass="0.81" type="box" size="0.05 0.045 0.09" pos="0.025 0.0 0.015"/>
+      <geom class="inertial" name="steer_motor" mass="0.23" type="cylinder" size="0.027 0.022" pos="0.16455 -0.00020771 0.111216"/>
+      <geom class="inertial" name="rear_motor" mass="0.26" type="cylinder" size="0.024 0.028" pos="-0.11448 -0.0050771 -0.049045" zaxis="0 1 0"/>
+
+      <body name="rearwheel" pos="-0.11448 -0.00020771 -0.049045" quat="0.7071 -0.707102 -0.00285946 -0.00285947">
+        <joint name="rearwheel_joint" pos="0 0 0" axis="0 0 1"/>
+        <!-- <geom class="visual" type="mesh" rgba="1 0.54902 0 1" mesh="rearwheel"/> -->
+        <geom class="visual" type="sdf" mesh="torus" rgba="0.1 0.1 0.1 1" friction="1.0 0.005 0.0001" priority="1" solimp="0.9 0.95 0.001 0.5 2" solref="0.02 0.5">
+          <plugin instance="torus"/>
+        </geom>
+        <geom class="collision_wheel"/>
+        <geom class="inertial_wheel" mass="0.17"/>
+      </body>
+      <!--高度0.15 + 0.07 = 0.22-->
+      <body name="steer" pos="0.16455 -0.00020771 0.071216" quat="1 0 0 0">
+        <joint name="steering_joint" pos="0 0 0" axis="0 0 1" range="-0.7 0.7"/>
+        <!-- <joint name="steering_joint" pos="-0.056 0 0" axis="-0.42 0 0.9" range="-0.7 0.7"/> -->
+        <geom class="visual" type="mesh" rgba="0.3 1 0.3 1" mesh="steer"/>
+        <geom class="collision" type="box" size="0.015 0.025 0.09" pos="0.0 0.0 -0.05"/>
+        <geom class="inertial" mass="0.001" type="box" size="0.015 0.025 0.09" pos="0.0 0.0 -0.03"/>
+        <body name="frontwheel" pos="0 0 -0.120" quat="0.706534 -0.706536 -0.0284268 -0.0284269">
+          <joint name="frontwheel_joint" pos="0 0 0" axis="0 0 1"/>
+          <!-- <geom class="visual" type="mesh" rgba="1 0.54902 0 1" mesh="frontwheel"/> -->
+          <geom class="visual" type="sdf" mesh="torus" rgba="0.1 0.1 0.1 1" friction="1.0 0.005 0.0001" priority="1" solimp="0.9 0.95 0.001 0.5 2" solref="0.02 0.5">
+            <plugin instance="torus"/>
+          </geom>
+          <geom class="collision_wheel"/>
+          <geom class="inertial_wheel" mass="0.13"/>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <sensor>
+    <jointpos name="steering_joint_pos_sensor" joint="steering_joint"/>
+    <jointvel name="steering_joint_vel_sensor" joint="steering_joint"/>
+    <jointvel name="rearwheel_joint_vel_sensor" joint="rearwheel_joint"/>
+    <jointvel name="frontwheel_joint_vel_sensor" joint="frontwheel_joint"/>
+    <accelerometer name="acc_local" site="imu_site"/>
+    <gyro name="gyro_local" site="imu_site"/>
+    <framequat name="ori_global" objtype="site" objname="imu_site"/>
+    <framepos name="pos_global" objtype="site" objname="imu_site"/>
+    <framelinvel name="vel_global" objtype="site" objname="imu_site"/>
+  </sensor>
+
+  <actuator>
+    <!-- <velocity name="cmd_steering_v" joint="steering_joint" group="0" kv="10" ctrllimited="true" ctrlrange="-10 10" forcerange="-5 5"/> -->
+    <motor name="cmd_steering_f" joint="steering_joint" group="2" ctrllimited="true" ctrlrange="-5 5" forcerange="-5 5"/>
+    <motor name="cmd_rearwheel_f" joint="rearwheel_joint" group="2" ctrllimited="true" ctrlrange="-6 6" forcerange="-6 6"/>
+  </actuator>
+
+</mujoco>
