@@ -1,0 +1,273 @@
+--- git commit ---
+64c7a7d5ade38031980b92273b7b51310b345115
+
+
+--- git status ---
+On branch lmbike_4090
+Your branch is up to date with 'origin/lmbike_4090'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   logs/rsl_rl/cfg_record.txt
+	modified:   logs/rsl_rl/trackstand_rl_rsl/2026-09-18_20-31-56/eval.txt
+	modified:   logs/rsl_rl/trackstand_rl_rsl/2026-09-18_20-31-56/torque_profile.npz
+	modified:   logs/rsl_rl/trackstand_rl_rsl/2026-09-18_20-31-56/torque_profile.png
+	modified:   logs/rsl_rl/trackstand_rl_rsl/2026-09-19_01-25-26/eval.txt
+	modified:   logs/rsl_rl/trackstand_rl_rsl/2026-09-19_01-25-26/torque_profile.npz
+	modified:   logs/rsl_rl/trackstand_rl_rsl/2026-09-19_01-25-26/torque_profile.png
+	modified:   progress_record.md
+	modified:   source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/assets/payloads/base.usda
+	modified:   source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/trackstand_bike/trackstand_rl_env_cfg.py
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	logs/rsl_rl/trackstand_rl_rsl/2026-09-20_23-56-06/eval.txt
+	logs/rsl_rl/trackstand_rl_rsl/2026-09-20_23-56-06/torque_profile.npz
+	logs/rsl_rl/trackstand_rl_rsl/2026-09-20_23-56-06/torque_profile.png
+	logs/rsl_rl/trackstand_rl_rsl/2026-09-22_19-45-06/
+
+no changes added to commit (use "git add" and/or "git commit -a") 
+
+
+--- git diff ---
+diff --git a/logs/rsl_rl/cfg_record.txt b/logs/rsl_rl/cfg_record.txt
+index 29174af..afb0be5 100644
+--- a/logs/rsl_rl/cfg_record.txt
++++ b/logs/rsl_rl/cfg_record.txt
+@@ -398,8 +398,8 @@ timestamp       survival_rew  rate_pen  drift_rew  DR?          comments
+ timestamp       survival_rew  rate_pen  drift_rew  DR?          comments
+ 
+ 09182031              5.0       0.1        2.0     full         100Hz physic step, spawn in air 2cm 
+-(prevous configs. Didn't know why I set this config. Just weird. Should spawn on ground.)******
+-09190125              5.0       0.1        2.0     full         100Hz physic step, spawn directly on ground******
++(prevous configs. Didn't know why I set this config. Just weird. Should spawn on ground.) Result: mean epi len 721.1 at model 492400
++09190125              5.0       0.1        2.0     full         100Hz physic step, spawn directly on ground. Result: mean epi len xxxx at model 7850
+ 09202356              5.0       0.1        2.0     full         400Hz physic step, spawn directly on ground******
+ 
+ 2026.9.21 Still waiting for the results of the above three runs. Next step is sim-to-sim transfer of the above three policies, and verification of mujoco environment consistency on domain randomization and observation noise, which is not taken into account before.
+diff --git a/logs/rsl_rl/trackstand_rl_rsl/2026-09-18_20-31-56/eval.txt b/logs/rsl_rl/trackstand_rl_rsl/2026-09-18_20-31-56/eval.txt
+index a000562..eb05dcf 100644
+--- a/logs/rsl_rl/trackstand_rl_rsl/2026-09-18_20-31-56/eval.txt
++++ b/logs/rsl_rl/trackstand_rl_rsl/2026-09-18_20-31-56/eval.txt
+@@ -1,31 +1,31 @@
+ ================================================================
+-  EVAL SUMMARY  —  model_33300.pt
+-  64 envs x 3000 steps  |  162 completed episodes
++  EVAL SUMMARY  —  model_492400.pt
++  64 envs x 3000 steps  |  192 completed episodes
+ ================================================================
+-  mean_reward            :    135.732   (episodic return; not comparable across reward-weight changes)
+-  mean_episode_length    :      991.0 steps  ( 19.82 s)
+-  min_episode_length     :       15.0 steps  (  0.30 s)
++  mean_reward            :     98.971   (episodic return; not comparable across reward-weight changes)
++  mean_episode_length    :      721.1 steps  ( 14.42 s)
++  min_episode_length     :        8.0 steps  (  0.16 s)
+   max_episode_length     :     1500.0 steps  ( 30.00 s)
+-  std_episode_length     :      526.9 steps
+-  timeout_rate (survived):      0.302   (reached the horizon vs fell)
+-  fall_rate              :      0.698
++  std_episode_length     :      726.8 steps
++  timeout_rate (survived):      0.411   (reached the horizon vs fell)
++  fall_rate              :      0.589
+   ------------------------------------------------------------
+   death breakdown (share of completed episodes; a step may fire >1 term):
+-    time_out              :   30.2%
+-    fallen                :    3.1%
++    time_out              :   41.1%
++    fallen                :   44.8%
+     diverged              :    0.0%
+-    drifted               :    0.0%
+-    yaw_deviation         :   66.0%
+-    wheel_net             :    0.6%
++    drifted               :    0.5%
++    yaw_deviation         :   12.0%
++    wheel_net             :    1.6%
+   ------------------------------------------------------------
+-  mean_roll_angle        :       1.20 deg   (mean over all steps)
+-  max_roll_angle         :      29.68 deg
+-  roll_RMS               :       1.44 deg   (tightness of balance; lower = steadier)
+-  mean_worst_lean/episode:       5.13 deg
++  mean_roll_angle        :       1.35 deg   (mean over all steps)
++  max_roll_angle         :      31.18 deg
++  roll_RMS               :       1.85 deg   (tightness of balance; lower = steadier)
++  mean_worst_lean/episode:      14.99 deg
+   ------------------------------------------------------------
+-  drive_speed mean/max   :     0.62 /   99.93 rad/s
+-  steer_speed mean/max   :     1.47 /   24.95 rad/s
+-  drift mean/max         :    0.081 /   0.304 m   (position drift from spawn)
+-  yaw mean/max           :    12.30 /   30.74 deg (heading vs spawn)
+-  turn/episode mean      :    114.7 deg (orbiting detection: 360 deg = full circle)
++  drive_speed mean/max   :     0.37 /   75.33 rad/s
++  steer_speed mean/max   :     1.30 /   25.28 rad/s
++  drift mean/max         :    0.060 /   0.497 m   (position drift from spawn)
++  yaw mean/max           :     8.42 /   30.96 deg (heading vs spawn)
++  turn/episode mean      :     47.0 deg (orbiting detection: 360 deg = full circle)
+ ================================================================
+diff --git a/logs/rsl_rl/trackstand_rl_rsl/2026-09-18_20-31-56/torque_profile.npz b/logs/rsl_rl/trackstand_rl_rsl/2026-09-18_20-31-56/torque_profile.npz
+index d7d3f22..ad5a3f8 100644
+Binary files a/logs/rsl_rl/trackstand_rl_rsl/2026-09-18_20-31-56/torque_profile.npz and b/logs/rsl_rl/trackstand_rl_rsl/2026-09-18_20-31-56/torque_profile.npz differ
+diff --git a/logs/rsl_rl/trackstand_rl_rsl/2026-09-18_20-31-56/torque_profile.png b/logs/rsl_rl/trackstand_rl_rsl/2026-09-18_20-31-56/torque_profile.png
+index 10e0420..cf28819 100644
+Binary files a/logs/rsl_rl/trackstand_rl_rsl/2026-09-18_20-31-56/torque_profile.png and b/logs/rsl_rl/trackstand_rl_rsl/2026-09-18_20-31-56/torque_profile.png differ
+diff --git a/logs/rsl_rl/trackstand_rl_rsl/2026-09-19_01-25-26/eval.txt b/logs/rsl_rl/trackstand_rl_rsl/2026-09-19_01-25-26/eval.txt
+index 6741bf6..a18d086 100644
+--- a/logs/rsl_rl/trackstand_rl_rsl/2026-09-19_01-25-26/eval.txt
++++ b/logs/rsl_rl/trackstand_rl_rsl/2026-09-19_01-25-26/eval.txt
+@@ -1,31 +1,31 @@
+ ================================================================
+-  EVAL SUMMARY  —  model_306550.pt
++  EVAL SUMMARY  —  model_499999.pt
+   64 envs x 3000 steps  |  130 completed episodes
+ ================================================================
+-  mean_reward            :    181.876   (episodic return; not comparable across reward-weight changes)
+-  mean_episode_length    :     1308.3 steps  ( 26.17 s)
+-  min_episode_length     :       24.0 steps  (  0.48 s)
++  mean_reward            :    185.398   (episodic return; not comparable across reward-weight changes)
++  mean_episode_length    :     1337.9 steps  ( 26.76 s)
++  min_episode_length     :      106.0 steps  (  2.12 s)
+   max_episode_length     :     1500.0 steps  ( 30.00 s)
+-  std_episode_length     :      375.8 steps
+-  timeout_rate (survived):      0.738   (reached the horizon vs fell)
+-  fall_rate              :      0.262
++  std_episode_length     :      353.1 steps
++  timeout_rate (survived):      0.754   (reached the horizon vs fell)
++  fall_rate              :      0.246
+   ------------------------------------------------------------
+   death breakdown (share of completed episodes; a step may fire >1 term):
+-    time_out              :   73.8%
++    time_out              :   75.4%
+     fallen                :    0.0%
+     diverged              :    0.0%
+     drifted               :    0.0%
+-    yaw_deviation         :    7.7%
+-    wheel_net             :   18.5%
++    yaw_deviation         :    6.9%
++    wheel_net             :   17.7%
+   ------------------------------------------------------------
+-  mean_roll_angle        :       1.07 deg   (mean over all steps)
+-  max_roll_angle         :       6.98 deg
+-  roll_RMS               :       1.23 deg   (tightness of balance; lower = steadier)
+-  mean_worst_lean/episode:       4.27 deg
++  mean_roll_angle        :       1.17 deg   (mean over all steps)
++  max_roll_angle         :       6.26 deg
++  roll_RMS               :       1.33 deg   (tightness of balance; lower = steadier)
++  mean_worst_lean/episode:       4.09 deg
+   ------------------------------------------------------------
+-  drive_speed mean/max   :     0.26 /   47.76 rad/s
+-  steer_speed mean/max   :     0.93 /   25.03 rad/s
+-  drift mean/max         :    0.044 /   0.161 m   (position drift from spawn)
+-  yaw mean/max           :     8.36 /   30.69 deg (heading vs spawn)
+-  turn/episode mean      :     57.9 deg (orbiting detection: 360 deg = full circle)
++  drive_speed mean/max   :     0.33 /   40.65 rad/s
++  steer_speed mean/max   :     1.21 /   24.90 rad/s
++  drift mean/max         :    0.050 /   0.291 m   (position drift from spawn)
++  yaw mean/max           :     8.16 /   30.78 deg (heading vs spawn)
++  turn/episode mean      :     75.0 deg (orbiting detection: 360 deg = full circle)
+ ================================================================
+diff --git a/logs/rsl_rl/trackstand_rl_rsl/2026-09-19_01-25-26/torque_profile.npz b/logs/rsl_rl/trackstand_rl_rsl/2026-09-19_01-25-26/torque_profile.npz
+index 7c898a0..d523fed 100644
+Binary files a/logs/rsl_rl/trackstand_rl_rsl/2026-09-19_01-25-26/torque_profile.npz and b/logs/rsl_rl/trackstand_rl_rsl/2026-09-19_01-25-26/torque_profile.npz differ
+diff --git a/logs/rsl_rl/trackstand_rl_rsl/2026-09-19_01-25-26/torque_profile.png b/logs/rsl_rl/trackstand_rl_rsl/2026-09-19_01-25-26/torque_profile.png
+index 78c3802..be1410e 100644
+Binary files a/logs/rsl_rl/trackstand_rl_rsl/2026-09-19_01-25-26/torque_profile.png and b/logs/rsl_rl/trackstand_rl_rsl/2026-09-19_01-25-26/torque_profile.png differ
+diff --git a/progress_record.md b/progress_record.md
+index 1b18d3c..0b075fa 100644
+--- a/progress_record.md
++++ b/progress_record.md
+@@ -126,6 +126,29 @@ All main contents preserved; wording condensed only. **New progress entries are
+ - WHAT REMAINS (one family): bicycle_cfg.py = single TRACKSTAND_ROBOT_CFG (spawn/init_state + steering ImplicitActuator kp10/kd0.2 @5.6 Nm/23.9 rad/s + drive k0/d0.05 @6.28 Nm/61.6 rad/s); trackstand_rl_env_cfg.py = TrackstandRLEnvCfg (decimation 8, dt 0.0025, render_interval 8, episode 30 s, PhysxCfg enable_external_forces_every_iteration=True, full DR events); env wrapper renamed TrackstandRLHybridEnv → TrackstandRLEnv; registration/exports updated.
+ - AUDIT (37/37 PASS, headless Isaac): registration chain gym id → TrackstandRLEnv → TrackstandRLEnvCfg consistent; action types (JointPositionActionCfg 1.57 steering_joint / JointEffortActionCfg 6.28 rear_wheel_joint) and actuator gains verified live; 3 joints (front_wheel_joint unactuated, 2 != 3 expected); obs 13 / action 2; rewards/terminations/events key sets and values verified; 20 zero-action steps ran; PARITY vs the 09202356 saved env.yaml (the old Hybrid class): dt/render/physics flag/decimation/episode_length/actions/reward-keys/termination-keys/event-keys/robot actuator gains ALL identical. Known intentional cross-engine delta: MuJoCo's joint is rearwheel_joint (no underscore) — the deploy-contract rename.
+ 
++## 13. 100 Hz vs 400 Hz physics dt — effect on TRAINING (2026-09-22, deep investigation)
++- EXPERIMENT PAIR: 09190125 (100 Hz, ground spawn) vs 09202356 (400 Hz, ground spawn) — saved env.yamls differ in EXACTLY dt (0.01→0.0025), render_interval (1→8), decimation (2→8), log_dir; agent.yaml identical, same seed 42. 09190125 finished 500,000 iters (79.85 h); 09202356 still training (~126,750 @ 11:37).
++- LEARNING PER ITERATION — NO systematic difference: TB curves wander within the same envelope and cross repeatedly (100 Hz peak 205.4 @ 7.9k; 400 Hz peak 205.8 @ 95.4k; matched iterations: 25k 156 vs 169, 75k 161 vs 157, 120k 193 vs 190 — reward ±15 noise throughout). Matched-iteration deterministic evals (model_123850 both, in-domain, 64 envs × 3000): 100 Hz → timeout 50.3%, fallen 0.7%, yaw 46.9%, roll RMS 1.01°; 400 Hz → timeout 51.7%, fallen 4.0%, yaw 43.0%, roll RMS 1.40° — statistically indistinguishable. Reference (what more training buys): 100 Hz final model_499999 → timeout 75.4%, yaw 6.9%, wheel_net 17.7% — the 400 Hz run is on the same trajectory, just earlier.
++- WALL-CLOCK COST: direct interleaved A/B (4096 envs, contention-cancelled): 100 Hz 29.2 ms/env-step vs 400 Hz 51.6 ms/env-step = **1.77× per env-step** (the extra 6 physics substeps ≈ 3.7 ms each; the 50 Hz RL/obs/rew kernels are rate-independent). Measured solo 400 Hz training pace 6,094–6,229 iters/h (clean window after the other runs ended); the 100 Hz run never had a solo window (09182031 shared the GPU until 09-22 02:52, both 100 Hz runs at ~6.9-7.1k/h each while sharing → solo 100 Hz ≈ 10k+/h). NET: 400 Hz training reaches a given iteration count ~1.6-1.8× later in wall-clock, with the same learning per iteration → ~1.6-1.8× slower overall training for NO measured quality gain.
++- MECHANISM (library): dt → physxScene:timeStepsPerSecond = int(1/dt) = 400 (physx_manager.py:598-600); the TGS solver runs the full 4-position/2-velocity iteration set PER physics step → 4× the solver iterations per control period vs 100 Hz (8×4 vs 2×4); control/obs/noise/rewards stay at 50 Hz (decimation 2→8) — identical MDP, finer dynamics integration.
++- VERDICT: changing physics dt 100→400 Hz does NOT change what the policy learns (same envelope, same matched-iteration quality); it only buys finer contact/integration at ~1.6-1.8× the wall-clock training cost. No reason to train at 400 Hz for this task.
++
++## 14. Ground-wheel RELATIVE friction via min-combine (2026-09-22)
++- PROBLEM FOUND: randomize_material was the ONLY DR term deviating from the no-DR fixed value — it is a SET operation (Isaac Lab's stock function has no scale mode; buckets sampled once, assigned per reset via root_view.get/set_material_properties) → tire 0.5 replaced by U(0.8,1.2), pair (0.9,1.1) vs nominal 0.75, nominal never drawn.
++- SOLUTION (library trace): PhysX has NO pair-friction attribute — the pair is always derived from the two materials via the combine mode; PhysxRigidBodyMaterialCfg.friction_combine_mode ∈ {average,min,multiply,max}, and on mode conflict the HIGHER-priority mode wins (PxCombineMode order). With the ground pinned at 1.0: min (or multiply) on the tire → pair = min(μ_t, 1.0) = μ_t — the tire value IS the relative coefficient.
++- IMPLEMENTED: (1) base.usda tire sites: friction 0.5 → 0.75 + physxMaterial:frictionCombineMode="min" on the steering xform + front cylinder; (2) env cfg __post_init__: sim.physics_material = 0.75/0.75 + combine "min" (covers the rear/base shapes inheriting the scene default); (3) randomize_material ranges (0.8,1.2) → (0.6,0.9) = 0.75 × U(0.8,1.2) — the pair DR centered on the nominal, ±20%; (4) MuJoCo mirror: floor 0.75 → 0.1 pass-through, DR_FRICTION (0.6,0.9), tire = s directly.
++- VERIFIED: (a) box-on-plane probe (5 boxes × modes, stopping-distance μ): min(0.5)→0.48, min(0.9)→0.79, min(1.5)→0.86 (clamped by ground 1.0), average(0.5)→0.69≈0.75 (old-regime control), min(0.75)→0.69≈0.75 — the documented precedence rule CONFIRMED empirically and the no-DR pair preserved; (b) env probe: min attribute on the tire prims AND /physicsScene/defaultMaterial, DR draws ∈ (0.6,0.9) with per-episode redraw (readback is stale until the first physics step — probe pitfall), 20 steps ran; (c) MuJoCo: floor 0.1, tire = s ∈ (0.6,0.9), pair = tire (analytic slide check), nominal pair unchanged 0.75; (d) 41050 smoke: DR off 0/3 falls ×3 seeds (nominal unchanged), DR on 8/9 falls (the no-DR policy still dies under DR — expected, sim ground truth same regime).
++- NOTE: the running 09202356 and the finished 09182031/09190125 used the OLD average-combine friction DR; the new semantics apply to future runs.
++- RETARGETED TO THE REAL ENVIRONMENT (2026-09-22): no-DR relative friction 0.75 → **0.65** (the measured real-environment value, sim-to-real transfer) and DR range (0.6,0.9) → **(0.5, 0.8)**, both engines. Isaac: base.usda tire sites + sim.physics_material → 0.65 (min-combine kept), randomize_material → (0.5,0.8). MuJoCo: nominal tire → 0.65, DR_FRICTION → (0.5,0.8), floor 0.1 pass-through kept. VERIFIED: box probe min(0.5)→0.48, min(0.65)→0.61, min(0.8)→0.73, avg control 0.74≈0.825, min(1.5)→0.86 (clamp); env probe authored 0.65+min on tire prims AND defaultMaterial, DR draws ∈ (0.5,0.8) per-episode redraw (probe pitfalls found: float32 0.65 ≠ 1e-9 tolerance; wp.to_torch aliases the live buffer — clone before comparing); MuJoCo mirror ALL PASS (a real bug found en route: the 0916 export carries EXPLICIT friction="0.75" on the bike collision geoms, so the collision-default edit never applied — fixed by setting the geoms directly; the old 0.75 nominal checks had passed by coincidence). 41050 smoke: DR off 0/3 falls ×3 seeds (nominal 0.65 pair still balances), DR on 8/9 (no-DR policy dies under DR — expected).
++
++## 15. Full cross-engine suspicious-value audit (2026-09-22)
++- FINDING A (real, the same class as the explicit-friction bug): the 0916 export carries explicit solref="0.02 1" on ALL bike collision geoms, silently overriding the augmentation's intended stiff contact [0.005, 1.5] (which only reached the floor and the default class; solimp DID propagate). The validated newbike reference uses 0.005/1.5 as its standard contact (model.xml:54); the trackstand bike has been running — and was fully validated (9000-step balance, fall calibration, sim-to-sim closure) — on the 4× softer 0.02/1. NOT silently changed: fixing it (one loop in the augmentation) would shift the validated contact behavior and needs re-validation.
++- FINDING B (red herring, reported honestly): geom_solmix = 1.0 on every MuJoCo geom — empirically NOT restitution-in-effect (drop-bounce test at solmix 0/0.5/1 and default all show zero rebound), so no behavioral impact.
++- CONFIRMED CLEAN: mass parity EXACT (Isaac live 2.42433 kg == MuJoCo 2.4243 kg; per-body 2.02679/0.12333/0.10929/0.16492 identical to 5 decimals — an apparent 2.84 kg mismatch was just the mass-DR draw, ratios within U(0.8,1.2)); ground material pinned 1.0/restitution 0/combine average; scene defaultMaterial 0.65 + min; bike materials 0.65 + min; obs corruption ON (13-entry std); terminations/rewards/events key sets correct; MuJoCo floor 0.1 pass-through, tire 0.65, gravity −9.81 both, steering joint limited ±1.5708 both, drive continuous both, wheel radius 0.07 both; MuJoCo solimp propagated correctly; solver iterations 100 = MuJoCo default.
++- LESSON: the Fusion2Mujoco export carries explicit per-geom attrs (friction, solref) that silently override default-class edits in the augmentation — any default-class change must also loop over the explicit geoms.
++- SOLREF HARDNESS MEASURED (2026-09-22): [0.005, 1.5] is the harder wheel — empirical, NOT the naive 1/timeconst²=16×: sphere drop 0.2 m → peak penetration 13.52 mm (soft 0.02/1) vs 8.72 mm (stiff) = 1.55×; steady penetration 0.129 vs 0.080 mm = 1.62×; box: 13.37 vs 8.62 (1.55×) and 0.033 vs 0.020 mm (1.64×). Steady penetration is LOAD-INDEPENDENT (0.5/1/2 kg identical — the reference-acceleration formulation). Real bike under 41050: ride-height difference only 0.066 mm, both solrefs balance identically (0 falls, roll RMS 0.62 vs 0.61°) — the practical balance behavior is essentially indifferent; the solref choice matters ~1.6× for impact/deflection feel, negligible for the stand.
++- SOLREF FIXED (2026-09-22): the augmentation now sets solref [0.005, 1.5] explicitly on all non-floor geoms (same loop as the friction fix). VERIFIED: all 4 bike collision geoms [0.005, 1.5], floor unchanged, friction 0.65; 41050 re-validation on the stiff contact — 3 seeds × 3 × 500 steps 0 falls, and 3 × 1500-step full episodes all timeouts (roll RMS 0.61–0.70°) — the validated balance behavior survives the fix.
++
+ ---
+ 
+ # Part II — NewBike balance campaign (pre-trackstand, 2026-08 → 09)
+diff --git a/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/assets/payloads/base.usda b/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/assets/payloads/base.usda
+index ac82059..e6dbdfa 100644
+--- a/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/assets/payloads/base.usda
++++ b/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/assets/payloads/base.usda
+@@ -88,9 +88,10 @@ def Xform "trackstand_rl_0914" (
+ 
+             def Xform "steering_link_1"
+             {
+-                    float physics:staticFriction = 0.5
+-                    float physics:dynamicFriction = 0.5
++                    float physics:staticFriction = 0.65
++                    float physics:dynamicFriction = 0.65
+                     float physics:restitution = 0
++                    uniform token physxMaterial:frictionCombineMode = "min"
+                 quatf xformOp:orient = (1, 0, 0, 0)
+                 float3 xformOp:scale = (1, 1, 1)
+                 double3 xformOp:translate = (0.28776, -0.039873, 0.219057)
+@@ -129,9 +130,10 @@ def Xform "trackstand_rl_0914" (
+                         prepend apiSchemas = ["PhysicsCollisionAPI"]
+                     )
+                     {
+-                    float physics:staticFriction = 0.5
+-                    float physics:dynamicFriction = 0.5
++                    float physics:staticFriction = 0.65
++                    float physics:dynamicFriction = 0.65
+                     float physics:restitution = 0
++                    uniform token physxMaterial:frictionCombineMode = "min"
+                         uniform token axis = "Z"
+                         float3[] extent = [(-0.07, -0.07, -0.0005), (0.07, 0.07, 0.0005)]
+                         double height = 0.001
+diff --git a/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/trackstand_bike/trackstand_rl_env_cfg.py b/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/trackstand_bike/trackstand_rl_env_cfg.py
+index f808272..d497b89 100644
+--- a/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/trackstand_bike/trackstand_rl_env_cfg.py
++++ b/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/trackstand_bike/trackstand_rl_env_cfg.py
+@@ -208,8 +208,14 @@ class TrackstandRLEventsCfg:
+         mode="reset",
+         params={
+             "asset_cfg": SceneEntityCfg("robot"),
+-            "static_friction_range": (0.8, 1.2),
+-            "dynamic_friction_range": (0.8, 1.2),
++            # The tire material carries frictionCombineMode="min", and the ground
++            # is pinned at 1.0 -> the PAIR friction equals the tire value itself
++            # (min wins over the ground's average per the PhysX combine-mode
++            # precedence). So these ranges ARE the ground-wheel relative
++            # friction, centered on the nominal pair 0.65 (the measured
++            # real-environment value) — sim-to-real targeted.
++            "static_friction_range": (0.5, 0.8),
++            "dynamic_friction_range": (0.5, 0.8),
+             "restitution_range": (0.0, 0.0),
+             "num_buckets": 32,
+             "make_consistent": True,
+@@ -308,6 +314,14 @@ class TrackstandRLEnvCfg(ManagerBasedRLEnvCfg):
+         self.sim.dt = 0.0025
+         self.episode_length_s = 30.0  # 30 s of balancing per episode -> 1500 steps
+         self.sim.render_interval = self.decimation
++        # scene-default physics material (inherited by the robot shapes that
++        # carry no USD-authored material): nominal pair friction 0.65 (the
++        # measured real-environment value) with MIN-combine — pair = min(tire,
++        # ground 1.0) = tire, so the tire value IS the ground-wheel relative
++        # friction (see randomize_material).
++        self.sim.physics_material.static_friction = 0.65
++        self.sim.physics_material.dynamic_friction = 0.65
++        self.sim.physics_material.friction_combine_mode = "min"
+         # apply actuator/external forces EVERY TGS solver iteration: with the
+         # flag off the drive torque is injected once per step and the velocity
+         # sweeps can't propagate it (the x24.5 sluggish-drive root cause,

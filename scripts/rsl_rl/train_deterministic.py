@@ -139,7 +139,7 @@ from isaaclab_tasks.utils.hydra import hydra_task_config
 # import logger
 logger = logging.getLogger(__name__)
 
-import CycleRL.tasks  # noqa: F401
+import source.trackstand_rl.trackstand_rl.tasks  # noqa: F401  # registers Trackstand-Balance-v0 (CycleRL removed 2026-09-23)
 
 # --- DETERMINISM (the ONLY substantive difference from train.py) ---
 # train.py has: allow_tf32=True, cudnn.deterministic=False (fast, non-reproducible).

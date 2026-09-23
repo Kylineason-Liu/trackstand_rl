@@ -23,7 +23,7 @@ class PerChannelGaussianNoiseCfg(NoiseCfg):
     term func returns, with fresh i.i.d. draws every step (term #8 white noise).
     """
 
-    func: str = "CycleRL.tasks.manager_based.cyclerl.mdp.stationary.noise:per_channel_gaussian_noise"
+    func: str = "source.trackstand_rl.trackstand_rl.tasks.manager_based.trackstand.mdp.stationary.noise:per_channel_gaussian_noise"
     std: tuple = (0.0,)
 
 

@@ -208,8 +208,14 @@ class TrackstandRLEventsCfg:
         mode="reset",
         params={
             "asset_cfg": SceneEntityCfg("robot"),
-            "static_friction_range": (0.8, 1.2),
-            "dynamic_friction_range": (0.8, 1.2),
+            # The tire material carries frictionCombineMode="min", and the ground
+            # is pinned at 1.0 -> the PAIR friction equals the tire value itself
+            # (min wins over the ground's average per the PhysX combine-mode
+            # precedence). So these ranges ARE the ground-wheel relative
+            # friction, centered on the nominal pair 0.65 (the measured
+            # real-environment value) — sim-to-real targeted.
+            "static_friction_range": (0.5, 0.8),
+            "dynamic_friction_range": (0.5, 0.8),
             "restitution_range": (0.0, 0.0),
             "num_buckets": 32,
             "make_consistent": True,
@@ -308,6 +314,14 @@ class TrackstandRLEnvCfg(ManagerBasedRLEnvCfg):
         self.sim.dt = 0.0025
         self.episode_length_s = 30.0  # 30 s of balancing per episode -> 1500 steps
         self.sim.render_interval = self.decimation
+        # scene-default physics material (inherited by the robot shapes that
+        # carry no USD-authored material): nominal pair friction 0.65 (the
+        # measured real-environment value) with MIN-combine — pair = min(tire,
+        # ground 1.0) = tire, so the tire value IS the ground-wheel relative
+        # friction (see randomize_material).
+        self.sim.physics_material.static_friction = 0.65
+        self.sim.physics_material.dynamic_friction = 0.65
+        self.sim.physics_material.friction_combine_mode = "min"
         # apply actuator/external forces EVERY TGS solver iteration: with the
         # flag off the drive torque is injected once per step and the velocity
         # sweeps can't propagate it (the x24.5 sluggish-drive root cause,

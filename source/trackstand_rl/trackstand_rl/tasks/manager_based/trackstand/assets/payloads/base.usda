@@ -88,9 +88,10 @@ def Xform "trackstand_rl_0914" (
 
             def Xform "steering_link_1"
             {
-                    float physics:staticFriction = 0.5
-                    float physics:dynamicFriction = 0.5
+                    float physics:staticFriction = 0.65
+                    float physics:dynamicFriction = 0.65
                     float physics:restitution = 0
+                    uniform token physxMaterial:frictionCombineMode = "min"
                 quatf xformOp:orient = (1, 0, 0, 0)
                 float3 xformOp:scale = (1, 1, 1)
                 double3 xformOp:translate = (0.28776, -0.039873, 0.219057)
@@ -129,9 +130,10 @@ def Xform "trackstand_rl_0914" (
                         prepend apiSchemas = ["PhysicsCollisionAPI"]
                     )
                     {
-                    float physics:staticFriction = 0.5
-                    float physics:dynamicFriction = 0.5
+                    float physics:staticFriction = 0.65
+                    float physics:dynamicFriction = 0.65
                     float physics:restitution = 0
+                    uniform token physxMaterial:frictionCombineMode = "min"
                         uniform token axis = "Z"
                         float3[] extent = [(-0.07, -0.07, -0.0005), (0.07, 0.07, 0.0005)]
                         double height = 0.001

@@ -4,112 +4,86 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-CycleRL is an **Isaac Lab (3.x) manager-based RL extension** that trains bicycle
-self-balancing and locomotion policies (skrl PPO), then exports them to ONNX/TFLite
-for embedded deployment. It is developed as a standalone extension that runs against a
-separate Isaac Lab source checkout at `~/IsaacLab`.
+CycleRL was removed on 2026-09-23. The repo now centers on **Trackstand-Balance-v0**,
+a standalone Isaac Lab (3.x) manager-based RL extension that trains bicycle
+trackstand self-balancing policies (rsl_rl PPO), then exports them to ONNX for the
+MuJoCo deployment viewer (`~/newbike_mujoco_deploy/`, a separate project that mirrors
+the task's deploy contract).
 
-The extension package lives in `source/CycleRL/CycleRL/`. The `pyproject.toml` at the
-repo root is Isaac Lab's own dev pyproject (vendored config), **not** this project's —
-the project is installed with `pip install -e source/CycleRL`.
+The task package lives in `source/trackstand_rl/` and runs against the separate Isaac
+Lab source checkout at `~/IsaacLab`. It has ZERO imports from the removed CycleRL
+package (verified). The root `pyproject.toml` is Isaac Lab's own dev pyproject
+(vendored config), not this project's.
 
-The two PDFs and `README.md` are background/reference. The README is the stock Isaac Lab
-template and is **stale** (it references a `Template-` task prefix and bare `python
-scripts/...`); use the commands below instead.
+The `sim_pid_control/` directory holds standalone classical-control baselines
+(Isaac Sim scripts, independent of the RL stack). `progress_record.md` at the repo
+root is the consolidated progress log — new entries are appended there.
 
 ## Running things
 
-Everything runs through Isaac Lab's launcher, which supplies the Isaac Sim Python
-interpreter. `-p` runs a script with that interpreter:
+Everything runs through Isaac Lab's launcher from the repo root:
 
 ```bash
-# list registered CycleRL envs
-~/IsaacLab/isaaclab.sh -p scripts/list_envs.py
+# train (headless; deterministic seed 42)
+~/IsaacLab/isaaclab.sh -p scripts/rsl_rl/train_deterministic.py \
+    --task Trackstand-Balance-v0 --max_iterations 500000
 
-# train (headless is much faster; scale envs to your GPU)
-~/IsaacLab/isaaclab.sh -p scripts/skrl/train.py --task CycleRL-NewBike-v0 \
-    --headless --num_envs 4096 --terrain stairs --max_iterations 5000
+# deterministic eval of a checkpoint (full DR from step 0)
+~/IsaacLab/isaaclab.sh -p scripts/rsl_rl/play_eval.py --task Trackstand-Balance-v0 \
+    --checkpoint logs/rsl_rl/trackstand_rl_rsl/<run>/model_<N>.pt \
+    --num_envs 64 --num_steps 3000 --seed 42
 
-# play + full evaluation metrics (checkpoint is a skrl best_agent.pt)
-~/IsaacLab/isaaclab.sh -p scripts/skrl/play_with_metrics.py --task CycleRL-NewBike-v0 \
-    --checkpoint logs/skrl/cyclerl_logs/CycleRL-NewBike-v0/<run>/checkpoints/best_agent.pt \
-    --eval_suite nominal,kick,mass,friction,training --num_envs 64 --headless
-
-# sanity-check an env with dummy policies
-~/IsaacLab/isaaclab.sh -p scripts/zero_agent.py   --task CycleRL-NewBike-v0
-~/IsaacLab/isaaclab.sh -p scripts/random_agent.py --task CycleRL-NewBike-v0
-
-# export a trained policy for embedded use
-python scripts/deployment/export_onnx.py --checkpoint <best_agent.pt> --obs-dim 13 --action-dim 2
+# export an rsl_rl checkpoint for the MuJoCo deploy viewer
+~/IsaacLab/isaaclab.sh -p scripts/deployment/export_rsl_rl_onnx.py \
+    --checkpoint logs/rsl_rl/trackstand_rl_rsl/<run>/model_<N>.pt
 ```
 
-Training logs/checkpoints go to `logs/skrl/cyclerl_logs/<task>/<run_name>/checkpoints/`.
-
-`--terrain` (`flat` | `complex` | `stairs`) is a preset selector shared by train/play;
-`flat` is the default when omitted. `scripts/skrl/train.py` and the `play*.py` scripts
-carry a `DeprecationWarning` but are the working entry points.
-
-Lint/format (ruff, line length 120):
-
-```bash
-pre-commit run --all-files
-```
+Training logs/checkpoints go to `logs/rsl_rl/trackstand_rl_rsl/<run>/`; the saved
+`params/env.yaml` + `params/agent.yaml` and the `git/` diff snapshot record exactly
+what each run launched with. Hydra overrides use the `env.` node (e.g.
+`env.sim.dt=0.01 env.decimation=2`).
 
 ## Architecture
 
 ### Task registration
-`source/CycleRL/CycleRL/tasks/manager_based/cyclerl/__init__.py` registers every gym env
-(`CycleRL-NewBike-v0`, `NewBike-Balance-v0`, `CycleRL-THUBike-v0`, `THUBike-Balance-v0`,
-`THUBike-Trackstand-v0`, `CycleRL-Flywheel-v0`, …). All point at the stock
-`isaaclab.envs:ManagerBasedRLEnv` with a project `env_cfg_entry_point` and the single
-shared agent config `agents/skrl_ppo_cfg.yaml` (Gaussian MLP `[512,256,128,64]` ELU).
+`source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/__init__.py`
+registers `Trackstand-Balance-v0` (env class `TrackstandRLEnv`, cfg class
+`TrackstandRLEnvCfg`). Registration is triggered by
+`import source.trackstand_rl.trackstand_rl.tasks` — the training/eval scripts carry
+that import directly (it used to piggyback on CycleRL's aggregation import).
 
-### Two task families — this is the main structural axis
-- **Dynamic / locomotion** (`*/cyclerl_env_cfg.py`): the bike rides forward and tracks a
-  velocity + heading command. Has a `commands` manager, terrain curriculum, spawn velocity.
-- **Stationary / balance** (`*/*balance_env_cfg.py`, `thubike_trackstand_env_cfg.py`): keep
-  the bike upright in place, no commands, strong position-keeping penalty.
+### The single env config (no variants exist)
+`trackstand_bike/trackstand_rl_env_cfg.py` — `TrackstandRLEnvCfg`:
+- **Control contract (decided)**: steering = joint POSITION servo (kp 10 / kd 0.2,
+  action scale 1.57), drive = joint EFFORT torque (stiffness 0 / damping 0.05,
+  action scale 6.28). Robot cfg: `../bicycle_cfg.py` `TRACKSTAND_ROBOT_CFG`.
+- 400 Hz physics (dt 0.0025, decimation 8, render_interval 8), 50 Hz control,
+  30 s episodes, TGS solver 4/2 + `enable_external_forces_every_iteration=True`.
+- 13-dim obs with always-on per-channel white noise (`enable_corruption`);
+  rewards: survival 5.0 / drift_gauss 2.0 (σ 0.25) / rate_penalty 0.1.
+- Full per-episode DR: mass ×U(0.8,1.2), COM ±5 mm, actuator gains ×U(0.9,1.1),
+  initial state roll U(±0.10)/roll-rate U(±0.25), IMU turn-on residuals,
+  and **friction**: tire material carries `frictionCombineMode="min"` with the
+  ground pinned at 1.0, so the tire value IS the ground-wheel pair — nominal
+  **0.65** (measured real-environment value), DR U(**0.5, 0.8**), 32 buckets.
+- The mdp library lives in `mdp/` (stationary + dynamic — the mdp copy must stay
+  complete: `mdp/events.py`'s module-level `__getattr__` is probed with `__path__`
+  by the import machinery).
 
-The MDP terms mirror this split in `mdp/`:
-- `mdp/dynamic/` and `mdp/stationary/` each hold their own `events / rewards / observations
-  / terminations / curriculums`.
-- `mdp/__init__.py` re-exports all stock Isaac Lab mdp terms plus the few genuinely shared
-  helpers (`randomize_ground_plane_material`, `action_rate_penalty`). When adding an MDP
-  term, put it in the matching family package, not the shared top level.
+### MuJoCo deploy mirror
+`~/newbike_mujoco_deploy/` (separate project): `src/newbike_mujoco/env.py` mirrors
+the contract (including the DR terms behind `--dr`), and
+`scripts/run_deploy_viewer.py` augments the Fusion2Mujoco export (joint renames,
+actuators, timestep, floor 0.1 pass-through + tire 0.65, stiff solref 0.005/1.5).
+CAUTION: the export carries explicit per-geom friction/solref that override
+default-class edits — the augmentation must loop over the geoms explicitly.
 
-### Multiple bike hardware, one MDP codebase
-`bicycle_cfg.py` defines the robot `ArticulationCfg`s for each physical bike (Xuan bike
-variants, THU bike, New bike) — USD path, actuator PD gains, and effort/velocity limits
-tuned to real motors (e.g. GIM4310-10, GIM3510-8). Per-bike env configs live in sibling
-subpackages (`new_bike/`, `thu_bike/`, `xuan_bike/`). The bike-specific surface is just the
-`ArticulationCfg` + USD + joint names; reward/observation logic is shared across bikes.
-USD assets are under `.../cyclerl/assets/<bike>/` (payload-based `.usda`).
+### Deploy policies
+Exported ONNX files live in `scripts/deployment/` (naming:
+`trackstand_rl_rsl_<run>_model_<N>.onnx`). `export_rsl_rl_onnx.py` defaults to
+opset 18 (opset 13 fails under torch 2.10 dynamo).
 
-### Sim-to-real contract
-Getting the same policy to run on hardware drives several design choices:
-- `config/motor_contract.yaml` records real motor params; `eval_contract.py`
-  (`BikeEvalContract`) resolves joint names, action slices, scales, clips, and effort
-  limits **from the live env** rather than hardcoding USD joint names — so eval analyzers
-  work across bikes. Prefer this resolution path over string-matching joints.
-- Observations are aligned between the real motor and sim (see git history). A NewBike
-  policy is `obs-dim 13`, `action-dim 2` (steering = joint-position action, drive =
-  joint-velocity action).
-
-### Terrain
-`config/` holds custom terrain generators (`bicycle_terrain_stairs.py`,
-`bicycle_terrain_complex.py`, `blended_wave_terrain.py`) plus a custom
-`TriangleMeshTerrainImporter` and `terrain_presets.py` (maps `--terrain` → generator, and
-`complex_L0..L4` / `stairs_L0..L2` eval stages that pin every env to one difficulty row).
-Curriculum terms progressively expand spawn velocity, command-heading range, IMU noise, and
-terrain difficulty over training steps.
-
-### Evaluation framework
-`eval_*.py` in the cyclerl package is a substantial, bike-agnostic eval harness driven by
-`play_with_metrics.py`: `eval_logger.py` (`BicycleMetricsLogger`), `eval_scenarios.py`
-(named perturbation suites — kick, mass, friction, …), `eval_failure.py`, `eval_contract.py`,
-and `eval_csv_plots.py` / `scripts/analyze_eval_csv.py` for post-hoc CSV analysis.
-
-### `sim_pid_control/`
-Standalone Isaac Sim scripts (`cascade_2pid.py`, `cascade_3pid.py`, `pid_statespace.py`) —
-classical PID/state-space balance baselines. These launch Isaac Sim directly (not through
-the RL env stack) and are independent of the gym tasks.
+### Lint/format
+```bash
+pre-commit run --all-files
+```

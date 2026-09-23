@@ -1,31 +1,31 @@
 ================================================================
-  EVAL SUMMARY  —  model_33300.pt
-  64 envs x 3000 steps  |  162 completed episodes
+  EVAL SUMMARY  —  model_492400.pt
+  64 envs x 3000 steps  |  192 completed episodes
 ================================================================
-  mean_reward            :    135.732   (episodic return; not comparable across reward-weight changes)
-  mean_episode_length    :      991.0 steps  ( 19.82 s)
-  min_episode_length     :       15.0 steps  (  0.30 s)
+  mean_reward            :     98.971   (episodic return; not comparable across reward-weight changes)
+  mean_episode_length    :      721.1 steps  ( 14.42 s)
+  min_episode_length     :        8.0 steps  (  0.16 s)
   max_episode_length     :     1500.0 steps  ( 30.00 s)
-  std_episode_length     :      526.9 steps
-  timeout_rate (survived):      0.302   (reached the horizon vs fell)
-  fall_rate              :      0.698
+  std_episode_length     :      726.8 steps
+  timeout_rate (survived):      0.411   (reached the horizon vs fell)
+  fall_rate              :      0.589
   ------------------------------------------------------------
   death breakdown (share of completed episodes; a step may fire >1 term):
-    time_out              :   30.2%
-    fallen                :    3.1%
+    time_out              :   41.1%
+    fallen                :   44.8%
     diverged              :    0.0%
-    drifted               :    0.0%
-    yaw_deviation         :   66.0%
-    wheel_net             :    0.6%
+    drifted               :    0.5%
+    yaw_deviation         :   12.0%
+    wheel_net             :    1.6%
   ------------------------------------------------------------
-  mean_roll_angle        :       1.20 deg   (mean over all steps)
-  max_roll_angle         :      29.68 deg
-  roll_RMS               :       1.44 deg   (tightness of balance; lower = steadier)
-  mean_worst_lean/episode:       5.13 deg
+  mean_roll_angle        :       1.35 deg   (mean over all steps)
+  max_roll_angle         :      31.18 deg
+  roll_RMS               :       1.85 deg   (tightness of balance; lower = steadier)
+  mean_worst_lean/episode:      14.99 deg
   ------------------------------------------------------------
-  drive_speed mean/max   :     0.62 /   99.93 rad/s
-  steer_speed mean/max   :     1.47 /   24.95 rad/s
-  drift mean/max         :    0.081 /   0.304 m   (position drift from spawn)
-  yaw mean/max           :    12.30 /   30.74 deg (heading vs spawn)
-  turn/episode mean      :    114.7 deg (orbiting detection: 360 deg = full circle)
+  drive_speed mean/max   :     0.37 /   75.33 rad/s
+  steer_speed mean/max   :     1.30 /   25.28 rad/s
+  drift mean/max         :    0.060 /   0.497 m   (position drift from spawn)
+  yaw mean/max           :     8.42 /   30.96 deg (heading vs spawn)
+  turn/episode mean      :     47.0 deg (orbiting detection: 360 deg = full circle)
 ================================================================

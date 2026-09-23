@@ -398,18 +398,19 @@ timestamp       survival_rew  rate_pen  drift_rew  DR?          comments
 timestamp       survival_rew  rate_pen  drift_rew  DR?          comments
 
 09182031              5.0       0.1        2.0     full         100Hz physic step, spawn in air 2cm 
-(prevous configs. Didn't know why I set this config. Just weird. Should spawn on ground.)******
-09190125              5.0       0.1        2.0     full         100Hz physic step, spawn directly on ground******
-09202356              5.0       0.1        2.0     full         400Hz physic step, spawn directly on ground******
+(prevous configs. Didn't know why I set this config. Just weird. Should spawn on ground.) Result: mean epi len 721.1 at model 492400
+09190125              5.0       0.1        2.0     full         100Hz physic step, spawn directly on ground. Result: mean epi len xxxx at model 7850
+09202356              5.0       0.1        2.0     full         400Hz physic step, spawn directly on ground. Aborted because friction inconsistency.
 
 2026.9.21 Still waiting for the results of the above three runs. Next step is sim-to-sim transfer of the above three policies, and verification of mujoco environment consistency on domain randomization and observation noise, which is not taken into account before.
 
+2026.9.22 Discovered friction inconsistency between isaaclab & mujoco configuration and real world. Env was 0.8-1.2 but real world should be 0.6-0.8. Thus train domain randomization again. Still 400Hz physic step, spawn directly on ground. Next step: 1. wait for 09221945 to finish. 2. Write the deployment code. 3. Help teammate Joylin to figure out the claimed imu issue. 4. Track data of the 6% failed envs in mujoco to figure out the cause of such sim-to-sim failure.
 
+timestamp       survival_rew  rate_pen  drift_rew  DR?          comments
 
+09221945              5.0       0.1        2.0     full         adjusted friction to no dr 0.65 and dr 0.5-0.8.******
 
-
-
-
+2026.9.23 In order to write deployment code, I want to first reorganize the file structure. I want the isaaclab training, mujoco sim-to-sim verification, and deployment codes in one large folder. In order to do that, I have to 1. Remove lmbike_cyclerl-mod/source/Cyclerl and only keep trackstand_rl. 2. Move newbike_mujoco_deploy into lmbike_cyclerl-mod. 3. Move tsinghua_bike_project into lmbike_cyclerl-mod. 4. Write deployment code according to tsinghua_bike_project. Still waiting for 09221945 to complete.
 
 
 

@@ -15,7 +15,7 @@ The script:
   3. Bakes in observation normalization ONLY if the checkpoint carries one
      (``obs_normalizer.running_mean`` etc.). The 09090950 baseline has none
      (``obs_normalization: false``), so its ONNX takes raw 13-dim obs.
-  4. Exports ONNX (opset 13, dynamic batch) and verifies numeric fidelity
+  4. Exports ONNX (opset 18, dynamic batch) and verifies numeric fidelity
      PyTorch vs onnxruntime on random inputs.
 
 Action scaling is NOT baked in — the ONNX outputs raw policy means and the
@@ -56,7 +56,7 @@ def main():
     parser.add_argument("--checkpoint", type=str, required=True, help="Path to the rsl_rl model_*.pt checkpoint.")
     parser.add_argument("--output", type=str, default=None,
                         help="Output ONNX path. Default: scripts/deployment/<task>_<run>_<stem>.onnx")
-    parser.add_argument("--opset", type=int, default=13, help="ONNX opset version.")
+    parser.add_argument("--opset", type=int, default=18, help="ONNX opset version (13 fails under torch 2.10 dynamo: CastLike has no previous version).")
     args = parser.parse_args()
 
     # ---- 0. Derive output name ------------------------------------------------
