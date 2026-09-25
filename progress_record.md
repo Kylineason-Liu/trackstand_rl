@@ -1,8 +1,10 @@
-# CycleRL Bike Self-Balancing — Progress Record
+# Bike Self-Balancing — Progress Record (Trackstand-Balance-v0)
 
-Consolidated from every progress/finding file on disk (2026-09-21). Complete source inventory:
+Consolidated from every progress/finding file on disk (2026-09-21). Complete source inventory
+(paths as of the 2026-09-23 reorganization; the record itself now lives at the repo root
+`lmbike_cyclerl-mod/`):
 
-**Progress record files (inside `lmbike_cyclerl-mod/`):**
+**Progress record files (inside `lmbike_cyclerl-mod/isaaclab_train/`):**
 - `source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/cfg_record.txt` — the Trackstand-Balance-v0 record (→ Part I)
 - `logs/rsl_rl/cfg_record.txt` — the NewBike balance campaign record (→ Part II)
 
@@ -12,9 +14,12 @@ Consolidated from every progress/finding file on disk (2026-09-21). Complete sou
 **Session transcripts** (same Claude directory, raw chat JSONL — kept as history, not distilled into this synthesis):
 - `3f1b83a6-9374-4a36-bc28-3096f8c1da67.jsonl` (last written 2026-09-08)
 - `9174d6b9-f489-45d6-b0bd-02b2db87d276.jsonl` (last written 2026-08-28)
-- `bc7006b0-0085-4029-87f4-b0a82e11afd9.jsonl` (the current session; last written 2026-09-21)
+- `bc7006b0-0085-4029-87f4-b0a82e11afd9.jsonl` (the current session; last written 2026-09-23)
 
-All main contents preserved; wording condensed only. **New progress entries are appended directly to this file.**
+All main contents preserved; wording condensed only. Re-verified 2026-09-23: neither cfg_record.txt
+has entries newer than the consolidation (the trackstand one ends at the 400 Hz run matrix, the
+NewBike one at the representation-gap note), so Parts I–III remain complete; the post-consolidation
+work is appended directly below (§11 onward). **New progress entries are appended directly to this file.**
 
 ---
 
@@ -151,6 +156,23 @@ All main contents preserved; wording condensed only. **New progress entries are 
 
 ## 16. CycleRL package removed (2026-09-23)
 - source/CycleRL DELETED; the repo is trackstand_rl-only. Blocking dependency found before removal (proven live): trackstand_rl's mdp/stationary/noise.py:26 carried a func string pointing at CycleRL (a ResolvableString, called on EVERY obs computation by the observation manager) — fixed (user-approved, one line) to the module's own local path. The 3 rsl_rl scripts (train.py:118, train_deterministic.py:142, play_eval.py:105) had their `import CycleRL.tasks` registration hook replaced with `import source.trackstand_rl.trackstand_rl.tasks`. CycleRL's editable install uninstalled from the Isaac python (it lived there, not in system pip). CLAUDE.md rewritten for the trackstand_rl-only repo. Left in place per user: the CycleRL-only dead scripts (skrl/*, list_envs, inspect_joints, random_agent, zero_agent, verify_terrain, analyze_eval_csv). VERIFIED end-to-end with ZERO CycleRL imports: gym.spec registers Trackstand-Balance-v0, env reset + 10 steps OK (obs 13, finite rewards), noise func resolves to the trackstand module, scripts compile.
+
+## 19. Raspberry Pi trackstand deployment and hardware alignment (2026-09-23 → 25)
+- IMPLEMENTED `deploy/source/trackstand_deploy/` as a ROS 2 package for **stationary** balancing with the `09171946` run's `model_41050` ONNX export. Its five nodes handle IMU, CAN motor I/O, RC kickstand input, servo output, and 50 Hz policy inference. The RC steering/throttle sticks do not command the bike; kickstands start down, and a confirmed up request enables balancing only when sensor/motor data are ready. Down disables balancing; faults latch until a down/up cycle.
+- OBSERVATIONS/ACTIONS: the policy receives the task's 13 channels from IMU orientation/rates and steering/rear-wheel encoders; longitudinal speed is estimated as `0.07 m × rear-wheel rad/s`, and lateral speed is set to zero because no other sensor is available. A 200 Hz CAN loop applies the simulated steering position PD and rear torque/damping laws. The policy ONNX output was checked against its checkpoint over 128 seeded observations (maximum difference `9.537e-07`).
+- HARDWARE CONFIG matched to the active `ros2_ws` files: steering motor ID 2 (host `0x102`, feedback `0x002`), rear motor ID 1 (`0x101`/`0x001`); steering encoder/torque signs `+1/+1`, rear signs `-1/-1`. The CH340 IMU uses `/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0`, `imu_link`, 100 Hz, identity mounting transform, zero gyro bias, and 0.25 s source stale limit. The previous deployment settings came from `new_balance` and were superseded for this bike.
+- RC/SERVOS: the receiver is RadioMaster/ELRS CRSF on the CP2102 by-id UART at 420000 baud, with the `ros2_ws` port exclusions, baud candidates, soft CRC, and channel-range detection. Paired kickstands use CH7: high=up, low=down, middle=hold, eight matching frames to debounce. The `ros2_ws` signed servo angles convert to raw STS3250 targets: up `[1648, 2454]`, down `[1972, 2085]` for IDs `[1, 2]`. The obsolete SBUS reader was replaced by a CRSF parser.
+- VERIFIED: deployment pure tests `11 passed`; ROS 2 Humble package built with zero stderr. These checks establish code/config consistency, not physical sign or timing correctness. Before an unsupported balance test, verify IMU lean direction, motor directions and torque constants, CH7 states, and both servo poses with the stands down and motor `dry_run: true` (see `deploy/docs/HARDWARE_CHECKLIST.md`).
+
+## 20. Deployment library encapsulation and deep YbIMU audit (2026-09-24 → 25)
+- LIBRARY STRUCTURE: deployment now contains the Tsinghua hardware libraries as real Python subpackages instead of flat copies. `trackstand_deploy/YbImuLib/` contains byte-identical `YbImuSerialLib.py`, `YbImuI2cLib.py`, and `__init__.py`; the serial source matches the nominal Tsinghua file at SHA-256 `6c9c3208c8280900abd657889c3050d986dd1789c0cd543ebb402225a3f8dd96`. `trackstand_deploy/servo_control/sms_sts.py` is likewise the exact Tsinghua servo protocol implementation. Deployment-specific behavior stays in adapters (`imu_serial.py`, ROS publishers/drivers), `setup.py` uses `find_packages()`, and `smbus2` is declared. The obsolete flat `vendor_ybimu.py` and `sms_sts.py` duplicates were removed. Pure deployment tests: `11 passed`.
+- FRESHNESS FIX: the IMU adapter records a monotonic timestamp after a checksummed frame parses, and `imu_publisher` publishes at most once for each advancing timestamp. A completely stalled USB stream or dead RX thread therefore no longer republishes one cached quaternion/gyro forever with fresh ROS stamps; `/trackstand/imu` stops and the 50 Hz policy's 0.06 s IMU timeout fails closed on the next tick (about 60–80 ms after the last callback). Quaternion order is correct (`vendor [w,x,y,z]` → internal/ROS `[x,y,z,w]`), raw gyro scaling is correctly rad/s, configured bias is converted deg/s→rad/s once, zero/non-finite quaternions are rejected, and the `R_BS` mount/bias transform matches the earlier Tsinghua calculation.
+- CRITICAL LIMIT OF THE FIX: freshness is packet-global, not sample-specific. The wire protocol reports raw accel/gyro/mag (`0x04`), quaternion (`0x16`), Euler (`0x26`), barometer, version, and status in separate frames. The adapter advances the same timestamp after ANY parsed/unknown checksummed function. The publisher then reads quaternion and gyro from separate mutable caches. Thus new quaternion+old gyro, new gyro+old quaternion, or even an unrelated fresh frame with both policy fields stale can pass as a fresh IMU observation. The receive thread also writes components sequentially and the getters have no lock, so a timer callback can observe a torn quaternion or a cache mixture spanning packet cycles. The audit document's prior claim "new hardware sample" is therefore true only at the packet level, not for a coherent policy IMU sample.
+- FUSION/MODEL GAP REMAINS: deployment sets report rate but never calls `set_algo_type(6|9)`, so it inherits unverified persistent firmware state. The proprietary onboard AHRS remains opaque; its filter latency, convergence, acceleration-induced tilt error, possible nine-axis magnetic interference, and quaternion discontinuities are neither measured nor reproduced in training. The exact `model_41050` saved env models only small independent white noise (`0.001` gravity, `0.0012 rad/s` gyro), not serial/AHRS latency or split-frame skew. ROS stamps are publication time rather than acquisition/parse time.
+- ROBUSTNESS GAPS: the vendor parser checks the checksum but enforces only `length <= 40`, not a minimum or exact length per function; a checksummed short known frame can raise in `struct.unpack` and kill the unguarded daemon RX thread. Parsing uses native-endian `h/f` despite a little-endian protocol. USB/serial exceptions have no reconnect, restart, or explicit diagnostic; fail-closed behavior is safe but recovery requires restarting the node. There are no quaternion jump/norm-plausibility, gyro saturation/range, quaternion-vs-gyro, or quaternion-vs-acceleration checks. Corrected bike-frame data is published with `frame_id=imu_link`, which is harmless to the current policy (it ignores frame_id) but misleading to other ROS consumers.
+- CALIBRATION IS A HARDWARE GATE: deployment and the active `ros2_ws` use identity mounting and zero gyro bias, while older Tsinghua balance configs record `[180,180,0]` and `[0.0113,0,0] dps`. Disk evidence proves conflicting historical configurations, not which one matches the present physical mounting. No ride/calibration logs were found, so actual bias, packet skew, AHRS latency/noise, fusion mode, and dynamic tilt error remain unquantified. Complete the sign/bias/latency checks on the restrained bicycle before unsupported balance.
+- TEST GAP / NEXT FIX: existing tests cover only identity mount correction; none exercises parser lengths/checksums, unit endpoints, per-type freshness, selective raw/quaternion freezing, thread races, serial failure/reconnect, non-identity mounting, saturation, or quaternion jumps. The next implementation should keep locked per-type counters/timestamps and an immutable snapshot, publish only after BOTH raw gyro and quaternion advance within a bounded skew, select the firmware fusion mode explicitly, validate exact payload lengths, and add diagnostics/reconnect plus focused parser/freshness tests.
+- OTHER ENCAPSULATION AUDIT: the remaining strong library candidate is Tsinghua's `GIM_Motor_Driver/motor_driver_python` package. Do not switch motor I/O to it mechanically: its receive path matches only CAN arbitration ID, while deployment also matches the echoed command byte and drains stale responses—necessary with two interleaved motors. If vendored, preserve `motor_io.py` as the ROS/safety adapter and retain command-aware response matching, watchdogs, signs, gearing, torque-constant validation, and limits. SBUS/CRSF parsing is internal modularization rather than another reusable Tsinghua library; NumPy, ONNX Runtime, python-can, pyserial, smbus2, and ROS remain external dependencies.
 
 ---
 
@@ -338,12 +360,17 @@ All main contents preserved; wording condensed only. **New progress entries are 
 - Steering spawn-angle knob: init_state.joint_pos regex dict in trackstand/bicycle_cfg.py — add "steering_joint": <angle> AFTER ".*": 0.0; reset_scene_to_default restores it every episode.
 - Full record (historical): source/trackstand_rl/.../trackstand/cfg_record.txt and logs/rsl_rl/cfg_record.txt.
 
----
-
-# How to append (future convention)
-New entries go at the end of Part I (Trackstand) or Part II (NewBike) as dated `## N.` bullets, matching the existing style; cross-cutting lessons go into Part III. Keep every numeric result and verdict; condense prose only.
-
 ## 17. Repo reorganized into isaaclab_train/ (2026-09-23)
 - All of lmbike_cyclerl-mod's contents moved into lmbike_cyclerl-mod/isaaclab_train/ (source, scripts, logs, .git, papers, description dirs, docs). EXCEPTION (user-approved): the LIVE 09221945 run dir stays at its absolute path logs/rsl_rl/trackstand_rl_rsl/2026-09-22_19-45-06 under the old root — the training process writes there by absolute path. VERIFIED: checkpoints kept advancing after the move (model_113500 -> model_113550).
 - Stale absolute references fixed: ~/mujoco_sim2sim's run_deploy_viewer.py + the backup's two scripts (deploy ONNX/PT paths) now point at .../isaaclab_train/scripts/deployment. The USD payloads' /home/lmbike/... hits are provenance comments only — actual payload references are relative (@./...) — asset unaffected.
 - Note: new sessions opened at ~/lmbike_cyclerl-mod/isaaclab_train get a different .claude project dir than this one (keyed to -home-lmbike-lmbike-cyclerl-mod); the auto-memory there starts fresh.
+## 18. MuJoCo project cleanup, renames, root git (2026-09-23)
+- MUJOCO PROJECT MOVES/RENAMES: the deploy project moved from ~/newbike_mujoco_deploy to ~/mujoco_sim2sim (user move; all session edits carried over), then INTO lmbike_cyclerl-mod/mujoco_sim2sim. Model dirs renamed: trackstand_rl_0916 -> trackstand_rl_0916_bike, trackstand_rl_bike_0914 -> trackstand_rl_0914_bike (XML internal model names updated to match; all script/README/backup references updated; chain smoke 0 falls/300 steps). Deleted as unused: models/trackstand_rl_bike (superseded; only a commented viewer line + README history referenced it), models/empty.xml, the broken run_trackstand0910_viewer.py (pointed at a non-existent model).
+- ROOT GIT: .git moved from isaaclab_train/ to the lmbike_cyclerl-mod root (all 20 commits preserved; the repo now also tracks mujoco_sim2sim/ and tsinghua_bike_project/). Caught and fixed mid-flight: the first root commit swept in ~2.5 GB of new binaries (1.5 GB .img.zst, 561 MB zip, 156 MB zip, 76 MB STEP, 7 rosbags) — untracked (files stay on disk) + .gitignore rules added (*.img.zst, *.mcap, named zips/STEP, tsinghua_bike_project/rosbags/); pack back to 697 MiB. The embedded robot_localization git repo remains a gitlink (parity with the old history). ALL 22 commits rewritten to Kylineason-Liu <kylineason.lau@gmail.com> via filter-branch --env-filter (author+committer, dates preserved; the first rebase attempt stopped partway and was aborted; refs/original removed, gc'd). A user-made commit had previously carried author "lmbike" — also corrected.
+- Config: git user.name/user.email fixed globally + repo-locally (the old global config carried WZ0425 <u3638788@connect.hku.hk>).
+- LIVE RUN: 09221945 kept training through every move (its absolute log path preserved; checkpoints verified advancing at each step).
+
+---
+
+# How to append (future convention)
+New entries go at the end of Part I (Trackstand) or Part II (NewBike) as dated `## N.` bullets, matching the existing style; cross-cutting lessons go into Part III. Keep every numeric result and verdict; condense prose only.

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>trackstand_deploy</name>
+  <version>0.1.0</version>
+  <description>ROS 2 deployment of Trackstand-Balance-v0 on the Tsinghua bicycle.</description>
+  <maintainer email="user@todo.todo">user</maintainer>
+  <license>MIT</license>
+
+  <depend>rclpy</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+  <exec_depend>ament_index_python</exec_depend>
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>
