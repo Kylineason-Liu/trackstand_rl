@@ -20,7 +20,7 @@ class ImuPublisher(Node):
             "serial_port", "/dev/serial/by-id/usb-1a86_USB_Serial-if00-port0"
         )
         self.declare_parameter("frame_id", "imu_link")
-        self.declare_parameter("sensor_to_bike_rpy_deg", [0.0, 0.0, 0.0])
+        self.declare_parameter("sensor_to_bike_rpy_deg", [1.42, 0.0, 0.0])
         self.declare_parameter("gyro_bias_dps", [0.0, 0.0, 0.0])
         self.declare_parameter("publish_rate_hz", 100.0)
         self.declare_parameter("source_timeout_s", 0.25)

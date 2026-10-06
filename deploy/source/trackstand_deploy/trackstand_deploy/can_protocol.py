@@ -11,6 +11,23 @@ COUNTS_PER_REVOLUTION = 16384
 RADIANS_PER_COUNT = 2.0 * math.pi / COUNTS_PER_REVOLUTION
 
 
+def parse_current_feedback(payload: bytes) -> float:
+    """Decode measured Q-axis current from an A1 or C0 reply, in amperes."""
+    if len(payload) != 5 or payload[0] not in (0xA1, 0xC0):
+        raise ValueError("invalid A1/C0 current response")
+    return struct.unpack("<i", payload[1:5])[0] * 0.001
+
+
+def current_feedback_to_torque_nm(current_a: float, torque_constant: float, torque_sign: float) -> float:
+    """Estimate motor torque from measured current in the policy's sign convention."""
+    if not math.isfinite(current_a) or not math.isfinite(torque_constant) or torque_constant <= 0.0:
+        raise ValueError("current must be finite and torque constant must be positive and finite")
+    if torque_sign not in (-1.0, 1.0):
+        raise ValueError("torque_sign must be +/-1")
+    # Inverse of the command conversion; do not clip measured feedback.
+    return torque_sign * torque_constant * current_a
+
+
 def parse_a2_velocity(payload: bytes, gear_ratio: float, sign: float) -> float:
     """Parse A2's int32 speed field and return joint rad/s."""
     if len(payload) < 5 or payload[0] != 0xA2:

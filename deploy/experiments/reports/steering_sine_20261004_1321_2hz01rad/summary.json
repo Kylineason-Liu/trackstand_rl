@@ -1,0 +1,101 @@
+{
+  "source": "/home/lmbike/trackstand_rl/deploy/experiments/logs/motor_feedback_202610041321_2hz01rad.csv",
+  "source_sha256": "adff17173aa6d7c647f811dd5b98e1d87ec34ae373d680a35378296f2f6bedd0",
+  "total_rows": 13885,
+  "steering_feedback_rows": 5459,
+  "steering_c2_rows": 2967,
+  "collector_zero_count": 1348,
+  "radians_per_native_count_in_logged_coordinates": -0.0003834951969714103,
+  "recording_duration_s": 27.292521652999767,
+  "c2_observed_start_s": 5.283666254999844,
+  "c2_observed_end_s": 20.3296143929997,
+  "command_min_rad": -0.10009224640953808,
+  "command_max_rad": 0.10009224640953808,
+  "command_peak_to_peak_rad": 0.20018449281907616,
+  "period_median_s": 0.5000766783530111,
+  "period_crossing_count": 30,
+  "timestamp_semantics": "Host-receipt elapsed timestamps on one recorder monotonic clock; no phase shifts",
+  "traces": [
+    {
+      "name": "C2 position command",
+      "valid_samples": 2967,
+      "missing_values_at_known_times": 0,
+      "min": -0.10009224640953808,
+      "max": 0.10009224640953808,
+      "mean_observed_rate_hz": 197.129484482876,
+      "median_interval_ms": 5.057279500078948,
+      "max_interval_ms": 6.101480999859632,
+      "gaps_over_50_ms": []
+    },
+    {
+      "name": "A3 position feedback",
+      "valid_samples": 5458,
+      "missing_values_at_known_times": 0,
+      "min": -0.06289321230331128,
+      "max": 0.07209709703062514,
+      "mean_observed_rate_hz": 199.96299898884308,
+      "median_interval_ms": 4.999880000013945,
+      "max_interval_ms": 10.1431620000767,
+      "gaps_over_50_ms": []
+    },
+    {
+      "name": "A2 velocity feedback",
+      "valid_samples": 5457,
+      "missing_values_at_known_times": 0,
+      "min": -1.0168288222118964,
+      "max": 1.0922270458980514,
+      "mean_observed_rate_hz": 199.9258686897886,
+      "median_interval_ms": 5.000286499807771,
+      "max_interval_ms": 9.96736500019324,
+      "gaps_over_50_ms": []
+    },
+    {
+      "name": "A1 torque feedback",
+      "valid_samples": 5459,
+      "missing_values_at_known_times": 0,
+      "min": -0.32525998806953427,
+      "max": 0.33929998755455015,
+      "mean_observed_rate_hz": 199.99868435456872,
+      "median_interval_ms": 5.00027900011446,
+      "max_interval_ms": 6.956772999728855,
+      "gaps_over_50_ms": []
+    }
+  ],
+  "views": [
+    {
+      "label": "Full recording",
+      "xlim_s": [
+        0.0,
+        27.292521652999767
+      ]
+    },
+    {
+      "label": "C2 interval",
+      "xlim_s": [
+        5.283666254999844,
+        20.3296143929997
+      ]
+    },
+    {
+      "label": "First 1 s",
+      "xlim_s": [
+        5.283666254999844,
+        6.283666254999844
+      ]
+    },
+    {
+      "label": "Middle 1 s",
+      "xlim_s": [
+        12.306640323999773,
+        13.306640323999773
+      ]
+    },
+    {
+      "label": "Final 1 s",
+      "xlim_s": [
+        19.3296143929997,
+        20.3296143929997
+      ]
+    }
+  ]
+}

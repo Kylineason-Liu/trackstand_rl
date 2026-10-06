@@ -22,6 +22,13 @@ STEERING_VELOCITY_LIMIT_RAD_S = 23.9
 DRIVE_VELOCITY_LIMIT_RAD_S = 61.6
 
 
+def motor_fault_clear_allowed(
+    requested_enable: bool, steering_position_rad: float, clear_limit_rad: float
+) -> bool:
+    """Allow clearing a motor fault only while disabled and near steering zero."""
+    return not requested_enable and abs(steering_position_rad) < clear_limit_rad
+
+
 def wrap_to_pi(angle_rad: float) -> float:
     """Wrap an angle to [-pi, pi), matching the sim2sim contract."""
     return (float(angle_rad) + math.pi) % (2.0 * math.pi) - math.pi
@@ -150,17 +157,18 @@ def build_observation(
 
 
 def scale_policy_action(raw_action: np.ndarray, max_steering_target_rad: float) -> tuple[float, float]:
-    """Clamp raw actor output to actuator limits and apply Isaac action scales."""
+    """Apply Isaac's unclipped action scales, then the hardware steering target limit."""
     action = np.asarray(raw_action, dtype=np.float32)
     if action.shape != (ACTION_SIZE,) or not np.all(np.isfinite(action)):
         raise ValueError("policy action must contain two finite values")
-    bounded = np.clip(action, -1.0, 1.0)
+    if not math.isfinite(max_steering_target_rad) or max_steering_target_rad <= 0.0:
+        raise ValueError("steering target limit must be positive and finite")
     steering = float(np.clip(
-        bounded[0] * STEERING_ACTION_SCALE_RAD,
+        float(action[0]) * STEERING_ACTION_SCALE_RAD,
         -float(max_steering_target_rad),
         float(max_steering_target_rad),
     ))
-    drive = float(bounded[1] * DRIVE_ACTION_SCALE_NM)
+    drive = float(action[1]) * DRIVE_ACTION_SCALE_NM
     return steering, drive
 
 
@@ -195,4 +203,3 @@ class BalanceStateMachine:
     @property
     def enabled(self) -> bool:
         return self.mode == BalanceMode.BALANCING
-

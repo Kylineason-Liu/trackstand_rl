@@ -4,7 +4,7 @@ trackstand_imu_publisher:
     frame_id: "imu_link"
     publish_rate_hz: 100.0
     source_timeout_s: 0.25
-    sensor_to_bike_rpy_deg: [0.0, 0.0, 0.0]
+    sensor_to_bike_rpy_deg: [1.42, 0.0, 0.0]
     gyro_bias_dps: [0.0, 0.0, 0.0]
 
 trackstand_motor_io:
@@ -16,16 +16,18 @@ trackstand_motor_io:
     drive_feedback_id: "001"
     steering_gear_ratio: 1.0
     drive_gear_ratio: 1.0
-    # Match ros2_ws balance-assist coordinates and native motor directions.
-    steering_encoder_sign: 1.0
-    drive_encoder_sign: -1.0
-    steering_torque_sign: 1.0
+    # Bike C0/A2/A3 checks: native positive steer is left; native drive
+    # feedback is forward, while positive C0 drive current turns backward.
+    steering_encoder_sign: -1.0
+    drive_encoder_sign: 1.0
+    steering_torque_sign: -1.0
     drive_torque_sign: -1.0
     poll_rate_hz: 200.0
     control_rate_hz: 200.0
     command_timeout_s: 0.08
     feedback_timeout_s: 0.05
-    steering_limit_rad: 0.5235987756
+    steering_limit_rad: 1.5707963268
+    steering_fault_clear_rad: 0.0872664626
     dry_run: false
 
 trackstand_rc_kickstand:
@@ -79,5 +81,5 @@ trackstand_policy_controller:
     rc_timeout_s: 0.15
     wheel_radius_m: 0.07
     max_roll_rad: 0.5235987756
-    # Hardware's established 30-degree soft limit, narrower than simulation.
-    max_steering_target_rad: 0.5235987756
+    # Match the training steering-joint range; verify physical clearance before use.
+    max_steering_target_rad: 1.5707963268

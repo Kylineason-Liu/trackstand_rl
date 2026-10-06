@@ -21,12 +21,10 @@ Example:
         --checkpoint logs/skrl/cyclerl_logs/NewBike-Balance-v0/<run>/checkpoints/best_agent.pt \\
         --num_envs 64 --num_steps 3000 --headless
 
-Note: domain randomization is PINNED for eval, not ramped — by default the
-`dr_ramp` curriculum is set to FULL DR from step 0 (start_step = end_step = 0);
-pass --no_dr to disable DR entirely (alpha pinned to 0). Unlike training, there
-is no 50k-step ramp: eval should see the regime the policy must survive. Also:
-mean_reward is NOT comparable across reward-weight changes (the scale moves with
-the weights) — rank configs by episode length / roll metrics instead.
+Domain randomization is OFF by default. Pass --dr to enable the task's full
+per-episode randomization from the first reset; there is no DR ramp. Observation
+white noise is unchanged. mean_reward is NOT comparable across reward-weight
+changes — rank configs by episode length / roll metrics instead.
 """
 
 """Launch Isaac Sim Simulator first."""
@@ -83,9 +81,8 @@ parser.add_argument(
     "(must match the trained checkpoint), e.g. '512,256,128,64'.",
 )
 parser.add_argument(
-    "--no_dr", action="store_true", default=False,
-    help="Disable domain randomization entirely (dr_ramp alpha pinned to 0). "
-    "Without this flag, eval runs at FULL DR from step 0 (no ramp).",
+    "--dr", action="store_true", default=False,
+    help="Enable full per-episode domain randomization (off by default); observation white noise is unchanged.",
 )
 parser.add_argument(
     "--terrain",
@@ -260,21 +257,9 @@ def main():
     env_cfg.scene.num_envs = args_cli.num_envs if args_cli.num_envs is not None else env_cfg.scene.num_envs
     env_cfg.sim.device = args_cli.device if args_cli.device is not None else env_cfg.sim.device
 
-    # Pin DR for eval (play-only convention — training keeps its 50k-step ramp):
-    # default = FULL DR from step 0 (end_step <= start_step -> alpha = 1.0 on the
-    # ramp term's first call, before any reset events fire); --no_dr = alpha pinned
-    # to 0 (end_step = 10**9, same mechanism as train_deterministic.py's flag).
-    dr_ramp = getattr(getattr(env_cfg, "curriculum", None), "dr_ramp", None)
-    if dr_ramp is not None:
-        if args_cli.no_dr:
-            dr_ramp.params["end_step"] = 10**9
-            print("[INFO] --no_dr: domain randomization disabled (dr_ramp alpha pinned to 0).")
-        else:
-            dr_ramp.params["start_step"] = 0
-            dr_ramp.params["end_step"] = 0
-            print("[INFO] DR pinned to FULL from step 0 (no ramp); use --no_dr to disable.")
-    else:
-        print("[WARN] Task has no 'dr_ramp' curriculum term; --no_dr has nothing to disable.")
+    from scripts.domain_randomization import configure_domain_randomization
+
+    configure_domain_randomization(env_cfg, args_cli.dr)
 
     experiment_cfg["seed"] = args_cli.seed if args_cli.seed is not None else experiment_cfg["seed"]
     env_cfg.seed = experiment_cfg["seed"]

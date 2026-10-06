@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Source-grounded explanation of the bicycle model, LQR, cascaded PID, actuator commands, and implementation differences in tsinghua_bike_project.">
+  <title>Bicycle control · LQR and PID, from state to motor</title>
+  <style>
+    :root{--paper:#f5f4ef;--card:#fff;--ink:#192e35;--muted:#546770;--line:#d7dfdd;--teal:#08786e;--teal-light:#e9f6f1;--coral:#ad432c;--coral-light:#fff1e8;--blue:#315d91;--gold:#79520b;--mono:ui-monospace,SFMono-Regular,Consolas,monospace}
+    *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:90px}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif}
+    a{color:var(--teal);text-underline-offset:3px}a:hover{text-decoration-thickness:2px}button,input,select{font:inherit}button,a,input,select,summary{touch-action:manipulation}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+    .skip{position:absolute;top:-60px;left:12px;padding:10px;background:white;z-index:9}.skip:focus{top:10px}
+    header{position:sticky;top:0;z-index:5;background:#f5f4eff2;border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}.nav{max-width:1200px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:22px;padding:15px 28px}.brand{font-weight:750;letter-spacing:-.4px;white-space:nowrap}.brand span{display:inline-block;width:11px;height:11px;background:var(--teal);border-radius:50%;margin-right:9px}nav{display:flex;gap:20px;overflow-x:auto}nav a{font-size:13px;text-decoration:none;color:var(--muted);white-space:nowrap}nav a:hover{color:var(--ink)}
+    main{max-width:1200px;margin:auto;padding:0 28px 75px}.hero{padding:65px 0 35px;display:grid;grid-template-columns:1.3fr 1fr;gap:44px;align-items:center}.eyebrow{font:700 11px/1.5 var(--mono);letter-spacing:1.8px;text-transform:uppercase;color:var(--teal);margin:0 0 18px}h1{font-size:clamp(34px,4.6vw,62px);line-height:1.06;letter-spacing:-2px;margin:0 0 23px}h1 em{font-style:normal;color:var(--teal)}.lead{font-size:18px;color:var(--muted);max-width:630px}.meta{font:12px var(--mono);color:var(--muted);margin-top:26px}.tag{display:inline-block;background:#e7ece8;border:1px solid #cad5d0;border-radius:30px;padding:4px 10px;font-size:11px;font-weight:650;white-space:nowrap}.tag.lqr{background:var(--teal-light);color:var(--teal);border-color:#aed9c9}.tag.pid{background:var(--coral-light);color:var(--coral);border-color:#e8b6a1}
+    section{margin-top:56px}h2{font-size:29px;line-height:1.2;letter-spacing:-.8px;margin:0 0 16px}h3{font-size:19px;line-height:1.3;margin:0 0 12px}h4{font-size:15px;margin:0 0 8px}p{margin:0 0 15px}p:last-child{margin-bottom:0}.section-head{display:flex;gap:17px;align-items:baseline;margin-bottom:22px}.number{font:13px var(--mono);color:var(--muted)}.section-head h2{margin:0}.subtitle{color:var(--muted);max-width:920px;margin-bottom:24px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:22px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.card{padding:25px;background:var(--card);border:1px solid var(--line);border-radius:13px;min-width:0}.card.teal{border-top:3px solid var(--teal)}.card.coral{border-top:3px solid var(--coral)}.small{font-size:13px;color:var(--muted)}.micro{font-size:11px;color:var(--muted)}.callout{background:#fff8e8;border:1px solid #e6d7b1;border-left:4px solid var(--gold);border-radius:9px;padding:20px 24px;margin:22px 0}.callout h3{color:var(--gold);font-size:17px}.callout strong{color:#684607}.callout.diff{background:var(--ink);color:white;border:none;padding:29px}.diff h3{color:#9ce0cb;font-size:22px}.diff p{color:#d9e5e5}.source{font:11px/1.65 var(--mono);color:var(--muted);margin-top:15px}.source a{word-break:break-word}
+    .eq{font-family:var(--mono);font-size:15px;line-height:1.8;border-radius:8px;padding:15px 18px;background:#f0f4f3;overflow-x:auto;margin:12px 0;white-space:nowrap}.eq.teal{background:var(--teal-light)}.eq.coral{background:var(--coral-light)}.eq.big{font-size:19px;text-align:center}sub,sup{line-height:0}.matrices{display:flex;flex-wrap:wrap;gap:27px;align-items:center;justify-content:center;padding:15px 0}.mat-wrap{display:flex;gap:10px;align-items:center;font:17px var(--mono)}.matrix{display:inline-grid;gap:5px 17px;padding:9px 11px;position:relative;text-align:center;font:15px/1.8 var(--mono)}.matrix::before,.matrix::after{content:"";position:absolute;top:0;bottom:0;width:6px;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}.matrix::before{left:0;border-left:2px solid var(--ink)}.matrix::after{right:0;border-right:2px solid var(--ink)}.m3{grid-template-columns:repeat(3,auto)}.m1{grid-template-columns:1fr}.math{font-family:var(--mono)}
+    table{width:100%;border-collapse:collapse;text-align:left;font-size:14px}th,td{padding:12px 13px;border-bottom:1px solid var(--line);vertical-align:top}th{font-weight:650;background:#edf1ee;color:var(--ink)}th:first-child,td:first-child{padding-left:0}tr:last-child td{border-bottom:none}.table-scroll{overflow-x:auto}.compare{min-width:670px}.compare td:first-child{font-weight:650;width:22%}.compare th:nth-child(2){color:var(--teal)}.compare th:nth-child(3){color:var(--coral)}.state-table td:first-child{font:17px var(--mono);color:var(--teal)}
+    .overview{padding:28px;border:1px solid var(--line);border-radius:14px;background:var(--card);box-shadow:0 15px 35px #18313b08}.mini-row{display:flex;align-items:center;gap:9px;margin-bottom:12px}.mini-row:last-child{margin-bottom:0}.mini-box{border:1px solid var(--line);border-radius:8px;text-align:center;padding:11px 8px;flex:1;font-size:13px;line-height:1.5}.mini-box b{display:block}.mini-box.teal{background:var(--teal-light);border-color:#b8ddd2}.mini-box.coral{background:var(--coral-light);border-color:#efc8b8}.arrow{color:var(--muted);font-size:20px;text-align:center}.loop-line{font:11px var(--mono);text-align:center;color:var(--muted);border-bottom:1px dashed #9badaa;padding:6px 0 10px;margin-bottom:16px}.flow{display:grid;grid-template-columns:1fr 32px 1fr 32px 1fr;align-items:stretch;gap:5px;margin:22px 0 12px}.flow-box{border:1px solid var(--line);background:white;border-radius:9px;padding:18px;font-size:14px;line-height:1.65;min-width:0}.flow-box h4{font-size:17px;margin-top:7px}.flow-box.teal{background:var(--teal-light);border-color:#aad5c7}.flow-box.coral{background:var(--coral-light);border-color:#e8bca9}.flow .arrow{align-self:center}.flow .unit{font:11px var(--mono);color:var(--muted);margin-top:11px}.feedback{border:1px dashed #95aaa6;border-top:none;margin:0 20px;padding:9px 15px;text-align:center;font:12px var(--mono);color:var(--muted);border-radius:0 0 9px 9px}
+    .steps{list-style:none;margin:0;padding:0;counter-reset:step}.steps li{counter-increment:step;position:relative;padding:0 0 23px 48px}.steps li:last-child{padding-bottom:0}.steps li::before{content:counter(step,decimal-leading-zero);position:absolute;left:0;top:0;border:1px solid var(--line);border-radius:50%;width:30px;height:30px;display:grid;place-items:center;font:11px var(--mono);color:var(--teal)}.steps.coral li::before{color:var(--coral)}.steps p{font-size:14px;margin:6px 0 0}.steps code{font-size:12px}code{font-family:var(--mono);font-size:.9em;background:#edf2ef;padding:1px 4px;border-radius:4px;overflow-wrap:anywhere}pre{background:#162c34;color:#e0efed;padding:19px;border-radius:8px;overflow:auto;font:12px/1.75 var(--mono)}pre code{background:none;color:inherit;padding:0;font:inherit;overflow-wrap:normal}.fact{border-left:3px solid var(--line);padding:0 0 0 15px;margin:17px 0}.fact b{display:block;font-size:14px;margin-bottom:5px}details{border-top:1px solid var(--line);padding-top:15px;margin-top:16px}summary{cursor:pointer;font-size:14px;font-weight:650}details[open] summary{margin-bottom:16px}
+    .controls{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.control label{display:flex;justify-content:space-between;gap:12px;font-size:13px;font-weight:650}.control output{font:13px var(--mono);color:var(--teal)}input[type=range]{width:100%;accent-color:var(--teal);margin:13px 0 2px}input[type=number],select{width:100%;padding:8px 10px;background:#fff;border:1px solid #b5c5bf;border-radius:7px;color:var(--ink);font-size:13px;min-width:0}input[type=checkbox]{accent-color:var(--teal)}.control select{margin-top:9px}.flags{display:flex;flex-wrap:wrap;gap:10px 25px;margin-top:22px;padding-top:18px;border-top:1px solid var(--line);font-size:13px}.flags label{display:flex;gap:7px;align-items:center}.readout{background:#eef5f1;padding:18px;border-radius:9px;margin-top:18px}.readout.coral{background:var(--coral-light)}.readout .value{font:700 29px/1.2 var(--mono);margin:9px 0}.readout .label{font-size:12px;color:var(--muted)}.readout .unit{font-size:14px;font-weight:400}.readout pre{margin-bottom:0;font-size:11px}.probe-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:22px}.result-table{font:12px/1.65 var(--mono)}.result-table td{padding:7px 4px}.contribution{display:grid;grid-template-columns:85px 1fr 90px;gap:10px;align-items:center;margin:12px 0;font:12px var(--mono)}.bar-track{height:9px;background:#e0e9e4;border-radius:5px;position:relative;overflow:hidden}.bar{height:100%;border-radius:5px;background:var(--teal);min-width:0}.negative{background:#41668c}.contribution output{text-align:right}.button-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}button{border:1px solid #b5c5bf;background:white;color:var(--ink);padding:9px 14px;border-radius:7px;font-size:13px;cursor:pointer}button:hover{background:#edf3ef}button.primary{background:var(--teal);border-color:var(--teal);color:white}.gain-editor th,.gain-editor td{padding:8px 5px}.gain-editor input{max-width:150px}.status{font-size:12px;font-weight:650;margin-top:12px;color:var(--teal)}.status.warn{color:var(--coral)}.live-note{margin:13px 0;font-size:12px;color:var(--muted)}.source-list{font-size:13px;table-layout:fixed}.source-list th:first-child{width:47%}.source-list a{overflow-wrap:anywhere}.source-list code{font-size:11px}.footer{margin-top:52px;border-top:1px solid var(--line);padding-top:20px;color:var(--muted);font-size:12px;display:flex;justify-content:space-between;gap:20px}.scope{margin-top:25px;font-size:13px;color:var(--muted)}
+    @media(max-width:850px){.hero{grid-template-columns:1fr;gap:24px;padding-top:35px}.overview{max-width:600px}.grid3{grid-template-columns:1fr}.flow{grid-template-columns:1fr;gap:9px}.flow .arrow{transform:rotate(90deg);height:25px}.grid2,.probe-grid{grid-template-columns:1fr}.controls{grid-template-columns:1fr 1fr}.nav{padding:12px 20px;display:block}.brand{margin-bottom:8px}nav{gap:18px}main{padding:0 20px 50px}section{margin-top:42px}.hero h1{letter-spacing:-1px}.source-list{table-layout:auto}.footer{display:block}.footer p{margin-bottom:10px}}
+    @media(max-width:480px){.controls{grid-template-columns:1fr}.card{padding:19px}.callout{padding:18px}.eq{font-size:12px}.mat-wrap{font-size:15px}.matrix{font-size:13px}.contribution{grid-template-columns:65px 1fr 80px}.source-list th:first-child{width:auto}.gain-editor input{padding:7px 3px;font-size:11px}.gain-editor{font-size:12px}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}@media print{header,.skip,.button-row{display:none}body{background:white;font-size:11px}main{max-width:none;padding:0}.hero{padding-top:0}section{margin-top:24px}.card{break-inside:avoid;padding:16px}h1{font-size:34px}h2{font-size:22px}.grid2,.probe-grid{grid-template-columns:1fr 1fr}.callout.diff{background:#edf3f0;color:var(--ink)}.diff h3,.diff p{color:var(--ink)}a{color:inherit}.source-list{font-size:10px}.flow-box{break-inside:avoid}}
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header><div class="nav"><div class="brand"><span></span>BICYCLE / CONTROL NOTES</div><nav aria-label="Page sections"><a href="#plant">Plant &amp; state</a><a href="#lqr">LQR</a><a href="#pid">PID</a><a href="#comparison">Comparison</a><a href="#explorer">Signal explorer</a><a href="#sources">Source evidence</a></nav></div></header>
+  <main id="main">
+    <div class="hero">
+      <div><p class="eyebrow">tsinghua_bike_project · source review</p><h1>From bike state<br>to <em>motor command.</em></h1><p class="lead">The complete LQR and cascaded PID paths: the model they use, the errors they calculate, and the physical input that reaches the bicycle.</p><p class="meta">Read from local source · 02 October 2026<br>Self-contained HTML · works offline · no hardware connection</p></div>
+      <div class="overview" aria-label="Overview of the two feedback architectures">
+        <div class="mini-row"><div class="mini-box"><b>Sensors</b>Steering + IMU</div><span class="arrow" aria-hidden="true">→</span><div class="mini-box teal"><b>LQR</b>Three errors → one sum</div><span class="arrow" aria-hidden="true">→</span><div class="mini-box"><b>C1</b>Speed · rad/s</div></div>
+        <div class="loop-line">↖ bicycle motion → measured state → next tick ↵</div>
+        <div class="mini-row"><div class="mini-box"><b>Sensors</b>Steering rate + IMU</div><span class="arrow" aria-hidden="true">→</span><div class="mini-box coral"><b>Cascaded PID</b>Error → ref → ref → current</div><span class="arrow" aria-hidden="true">→</span><div class="mini-box"><b>C0</b>Current · A</div></div>
+        <p class="small" style="margin-top:18px">These are different actuator interfaces. The three-state model defines its input as steering <em>angular velocity</em>; PID’s final current needs motor dynamics before it becomes that velocity.</p>
+      </div>
+    </div>
+    <div class="callout diff"><h3>The largest algorithmic difference: one coupled decision versus a cascade.</h3><p>LQR uses the bike model to choose a joint gain vector, then adds all three state-error contributions at once. Cascaded PID closes three scalar error stages in sequence; one stage’s output becomes the next stage’s reference. In this repository, their final commands also differ: <strong style="color:#b5e9d8">LQR → steering speed</strong>; <strong style="color:#ffceb7">PID → steering current</strong>.</p></div>
+    <p class="small">The main comparison follows <code>source/new_balance/new_balance/main_balance.py</code> and <code>cascaded_main_balance.py</code>. The older <code>bike_balance</code> package, backup LQR + PD architecture, and teaching notebook’s LQR + PI architecture are distinguished below. This page describes source logic, including defects; it does not establish that these nodes run successfully on hardware.</p>
+
+    <section id="plant">
+      <div class="section-head"><span class="number">01 /</span><h2>The bicycle plant and its state</h2></div>
+      <p class="subtitle">The imported <code>nominal_bike_control.LinearBicycleModel</code> is a continuous-time, speed-scheduled, three-state roll–steer approximation. Its matrix named <code>Bu</code> is the B in x′ = Ax + Bu.</p>
+      <div class="grid2">
+        <div class="card"><h3>Three states. One model input.</h3>
+          <div class="matrices"><div class="mat-wrap">x = <div class="matrix m1"><span>δ</span><span>φ</span><span>ω<sub>φ</sub></span></div></div><div class="math">ω<sub>φ</sub> ≡ φ̇</div></div>
+          <table class="state-table"><thead><tr><th scope="col">Symbol</th><th scope="col">Meaning</th><th scope="col">Unit</th></tr></thead><tbody><tr><td>δ</td><td>Steering joint angle relative to its latched zero</td><td>rad</td></tr><tr><td>φ</td><td>Bike roll angle; upright is zero</td><td>rad</td></tr><tr><td>ω<sub>φ</sub></td><td>Euler roll-angle rate from corrected gyro data</td><td>rad/s</td></tr></tbody></table>
+          <div class="eq teal big">u<sub>model</sub> = δ̇<sub>commanded</sub> &nbsp; [rad/s]</div>
+          <p class="small">The model assumes actual δ̇ follows this input. The rear-wheel command is separate; forward speed v is a scheduling parameter, not a second component of u.</p>
+          <p class="source"><a href="#src-model">[1] bicycle_model.py:55–115</a> · <a href="#src-main">[3] main_balance.py:1180</a></p>
+        </div>
+        <div class="card"><h3>x′ = A(v)x + B(v)u</h3>
+          <div class="matrices"><div class="mat-wrap">A = <div class="matrix m3"><span>0</span><span>0</span><span>0</span><span>0</span><span>0</span><span>1</span><span>a<sub>2</sub></span><span>a<sub>4</sub></span><span>0</span></div></div><div class="mat-wrap">B = <div class="matrix m1"><span>1</span><span>0</span><span>a<sub>1</sub></span></div></div></div>
+          <div class="eq">δ̇ = u<br>φ̇ = ω<sub>φ</sub><br>ω̇<sub>φ</sub> = a<sub>2</sub>δ + a<sub>4</sub>φ + a<sub>1</sub>u</div>
+          <p class="small">Steering angle and steering rate affect roll acceleration. The positive gravity term a<sub>4</sub>φ drives the upright bike away from equilibrium.</p>
+          <div class="eq">a<sub>1</sub> = m a h v cos(λ) / (b I)<br>a<sub>2</sub> = (m v² h − m a c g) cos(λ) / (b I)<br>a<sub>4</sub> = m g h / I</div>
+          <p class="small">a<sub>1</sub> has units s⁻¹; a<sub>2</sub> and a<sub>4</sub> have units s⁻². <code>Cm = I₃</code>: all three states are measured directly. There is no state or disturbance observer in this controller.</p>
+        </div>
+      </div>
+      <details><summary>Physical parameters and a numerical matrix from the actual LQR configuration</summary>
+        <div class="grid2"><div class="card"><table><thead><tr><th>Symbol</th><th>Meaning</th><th>Current YAML value</th></tr></thead><tbody><tr><td>m</td><td>Total bike mass</td><td>2.44 kg</td></tr><tr><td>a</td><td>Rear contact to COM, horizontally</td><td>0.1225 m</td></tr><tr><td>b</td><td>Wheelbase</td><td>0.2900 m</td></tr><tr><td>c</td><td>Steering trail</td><td>0.0135 m</td></tr><tr><td>h</td><td>COM height</td><td>0.1400 m</td></tr><tr><td>λ</td><td>Steering-axis inclination from vertical</td><td>0.1745 rad</td></tr><tr><td>I</td><td>Equivalent roll inertia about the ground longitudinal axis</td><td>0.0438 kg·m²</td></tr><tr><td>g</td><td>Gravity, model default</td><td>9.81 m/s²</td></tr></tbody></table><p class="source"><a href="#src-config">[6] params.yaml:165–176</a> · when inertia is unspecified, the model uses I = 4mh²/3.</p></div>
+          <div class="card"><h3>At scheduled v = 1 m/s</h3><pre>A = [[ 0,          0,          0 ],
+     [ 0,          0,          1 ],
+     [23.415889,  76.509041,    0 ]]
+
+B = [[1], [0], [3.244411]]</pre><p class="small">Values were computed by importing the repository’s model. The node uses <code>v = max(0.07 × abs(rear_rate), 1.0)</code>. Even if the bike is stationary, it designs at 1 m/s; this is not a zero-speed trackstand model.</p><p class="small" style="margin-top:12px">The nominal package’s own defaults and the PID node’s defaults are different from this YAML. Values here and in the LQR explorer explicitly use the <code>new_balance_node</code> configuration.</p></div></div>
+      </details>
+      <div class="card" style="margin-top:22px"><h3>What happens before a state reaches either controller</h3>
+        <div class="flow"><div class="flow-box"><span class="tag">Raw interface</span><h4>IMU + encoders</h4>IMU SDK: quaternion wxyz and gyro rad/s.<br>Steer A3: multi-turn counts.<br>Rear A2: speed in 0.01 rpm.</div><span class="arrow" aria-hidden="true">→</span><div class="flow-box"><span class="tag">Coordinate &amp; unit correction</span><h4>Bike-frame signals</h4>Quaternion reordered to xyzw.<br>R<sub>WB</sub> = R<sub>WS</sub>R<sub>BS</sub>⁻¹.<br>ω<sub>B</sub> = R<sub>BS</sub>(ω<sub>S</sub> − bias<sub>S</sub>).</div><span class="arrow" aria-hidden="true">→</span><div class="flow-box teal"><span class="tag lqr">Controller measurements</span><h4>δ, φ, φ̇ and v</h4>φ̇ = p + sinφ tanθ q + cosφ tanθ r.<br>Filtered φ from <code>/roll_info[0]</code>.<br>Gyro-derived φ̇ from <code>[3]</code>.</div></div>
+        <p class="small">Steering angle is <code>−(counts − zero) × 2π / (16384 × gear)</code>; rear rate is <code>raw × 0.01 × 2π / (60 × gear)</code>. Roll publication is requested at 200 Hz while the IMU report rate is set to 100 Hz. The intended roll LPF uses α = 0.5; a ≥0.5 rad jump relative to the prior published roll is held at the prior value. The filtered angle and gyro-derived rate are separate signals, not an angle and its numerical derivative.</p>
+        <p class="source"><a href="#src-roll">[7] roll_publisher.py:70–95, 139, 168–202</a> · <a href="#src-steer">[8] steer_publisher.py:177–192</a> · <a href="#src-rear">[9] rear_publisher.py:43–64</a> · <a href="#src-imu">[13] IMU SDK:122–127</a></p>
+      </div>
+    </section>
+
+    <section id="lqr">
+      <div class="section-head"><span class="number">02 /</span><h2>LQR: a model-derived, full-state speed command</h2></div>
+      <p class="subtitle"><span class="tag lqr">balance_node → main_balance:main</span> The normal launch selects this executable. <code>method="lqr"</code> chooses continuous-time LQR; pole placement is another gain-design method for the same state-feedback law.</p>
+      <div class="flow"><div class="flow-box"><span class="tag">Measurement</span><h4>x and reference</h4>x = [δ, φ, φ̇]ᵀ<br>r = requested steer angle<br>v = wheel-speed estimate</div><span class="arrow" aria-hidden="true">→</span><div class="flow-box teal"><span class="tag lqr">One joint feedback law</span><h4>u = u<sub>eq</sub> + K(x<sub>eq</sub> − x)</h4>K = [k<sub>δ</sub>, k<sub>φ</sub>, k<sub>φ̇</sub>]<br>All three contributions are summed.<br>Clip to ±10 rad/s.</div><span class="arrow" aria-hidden="true">→</span><div class="flow-box"><span class="tag">Actuation</span><h4>C1 → motor speed loop</h4>Apply direction inversion.<br>Encode speed as int32.<br>Motor drives the steering joint.<div class="unit">controller output = rad/s</div></div></div>
+      <div class="feedback">↖ actual bike motion → steering encoder + IMU → next measured x ↵</div>
+      <div class="grid2" style="margin-top:24px"><div class="card teal"><h3>Design and rescheduling</h3><ol class="steps">
+        <li><h4>Build A(v) and B(v)</h4><p>Use the physical parameters and the speed schedule. Every fourth control tick, update the model and pass <code>bike.sys</code> into <code>update_system_and_gain</code>.</p></li>
+        <li><h4>Choose the quadratic costs</h4><p>Q weights steering, roll and roll rate; R weights steering-speed effort. The current YAML sets <code>Q = diag(1.296177, 840.858646, 4.692319)</code> and <code>R = [1.182898]</code>.</p><div class="eq teal">J = ∫₀∞ (eᵀQe + ΔuᵀRΔu) dt<br>e = x − x<sub>eq</sub>, &nbsp; Δu = u − u<sub>eq</sub></div></li>
+        <li><h4>Solve the continuous Riccati equation</h4><div class="eq">AᵀP + PA − PBR⁻¹BᵀP + Q = 0<br>K = R⁻¹BᵀP</div><p>The code calls <code>solve_continuous_are</code>, then solves <code>R K = B.T @ P</code>. The ideal unsaturated closed-loop matrix is A − BK.</p></li>
+      </ol><p class="source"><a href="#src-controller">[2] controller.py:185–205</a> · <a href="#src-main">[3] main_balance.py:1208–1218</a></p></div>
+      <div class="card teal"><h3>Every control tick: state → output</h3><ol class="steps">
+        <li><h4>Read the three measured states</h4><p>δ from <code>/steer_info[0]</code>; φ and φ̇ from <code>/roll_info[0]</code> and <code>[3]</code>. No prediction, integral state or numerical error differentiation is used in the LQR law.</p></li>
+        <li><h4>Solve a physically consistent equilibrium</h4><p>In the launched <code>main_balance.py</code>, <code>track_roll=False</code>, so C<sub>o</sub> = [1, 0, 0] and r is the steering-angle reference. It is RC <code>data[1]</code> in RC mode, or zero in fixed mode.</p><div class="eq">Ax<sub>eq</sub> + Bu<sub>eq</sub> = 0<br>C<sub>o</sub>x<sub>eq</sub> = r<br>x<sub>eq</sub> = [r, −(a<sub>2</sub>/a<sub>4</sub>)r, 0]ᵀ<br>u<sub>eq</sub> = 0</div></li>
+        <li><h4>Sum weighted errors, then clamp</h4><div class="eq teal">u* = k<sub>δ</sub>(δ<sub>eq</sub> − δ)<br>&nbsp; + k<sub>φ</sub>(φ<sub>eq</sub> − φ)<br>&nbsp; + k<sub>φ̇</sub>(0 − φ̇)<br>u = clip(u*, −10, +10) rad/s</div><p>The controller already clips to its limits; the ROS node clips again. Thus its <code>sat_outer</code> comparison uses an already-clipped value and can miss actual saturation.</p></li>
+        <li><h4>Pass the command through the output gates</h4><p>Send C1 steering speed only when armed; send the calculated speed only if the RC servo flag is 1. Otherwise the armed steering path sends C1 = 0. Apply <code>steer_direction_invert</code> (true in YAML) before encoding. <code>dry_run</code> skips CAN transmission.</p></li>
+      </ol></div></div>
+      <div class="grid2" style="margin-top:22px"><div class="card"><h3>Exactly what goes onto CAN</h3><div class="eq">s = −1 if inverted, otherwise +1<br>raw<sub>C1</sub> = round(s u × 60/(2π) × 100)<br>payload = [0xC1] + int32<sub>LE</sub>(raw<sub>C1</sub>)</div><p class="small">The steering host CAN ID is 0x101; motor feedback is 0x001. C1’s integer unit is 0.01 rpm. The built-in motor speed controller supplies the current/torque needed to follow this speed. Its internal gains and actual tracking performance are not determined by this LQR code.</p><p class="source"><a href="#src-main">[3] main_balance.py:891–912, 1248–1259</a> · <a href="#src-protocol">[12] protocol, C1</a></p></div>
+      <div class="card"><h3>Timing, rear drive and interruptions</h3><p class="small">Control, fault checks and C1 output: 200 Hz (5 ms). Model + gain update: 50 Hz, every four ticks. Gain computation uses continuous A and B, not a discrete Riccati equation.</p><p class="small" style="margin-top:12px">The rear motor receives its own C1 on 0x102: RC throttle RPM, or a fixed-speed ramp converted through the 0.07 m wheel radius. It influences the forward speed used by the balance model.</p><p class="small" style="margin-top:12px">Missing/stale roll or steer topics (0.15 s) disarm; excessive roll (&gt;30°) stops both motors. Steering beyond 30° in the supplied YAML latches CF on the steer motor; the rear may continue following its reference while that fault holds. Recovery requires centering within 0.3°. These are source thresholds, not guarantees of physical balance.</p></div></div>
+      <details><summary>The alternative new_main_balance.py changes what the RC reference means</summary><p>It uses the same A, B and K computation, but <code>track_roll=True</code> sets C<sub>o</sub> = [0, 1, 0]. Its callback stores half of RC <code>data[1]</code>; the feedback tick negates that stored value. Therefore φ<sub>ref</sub> = −0.5 × RC.data[1], and x<sub>eq</sub> = [−(a<sub>4</sub>/a<sub>2</sub>)φ<sub>ref</sub>, φ<sub>ref</sub>, 0]ᵀ. Its default speed clamp is 15 rad/s, while the supplied YAML says 10. <code>setup.py</code> does not register this file as <code>balance_node</code>.</p><p class="source"><a href="#src-alternative">[4] new_main_balance.py:690–693, 889, 1275</a> · <a href="#src-entry">[11] setup.py:23</a></p></details>
+    </section>
+
+    <section id="pid">
+      <div class="section-head"><span class="number">03 /</span><h2>PID: three scalar stages ending in motor current</h2></div>
+      <p class="subtitle"><span class="tag pid">cascaded_balance_node → cascaded_main_balance:main</span> This is a separate executable. The normal balance launch does not switch to it when <code>method</code> changes. Its <code>method="pole" | "lqr"</code> only chooses how to obtain K for initial PID gains.</p>
+      <div class="flow"><div class="flow-box coral"><span class="tag pid">Outer PID</span><h4>Stop steering motion</h4>e<sub>o</sub> = 0 − δ̇<sub>measured</sub><br>φ<sub>ref</sub> = PID<sub>o</sub>(e<sub>o</sub>)<div class="unit">output: roll reference · rad<br>limit: ±0.3 rad</div></div><span class="arrow" aria-hidden="true">→</span><div class="flow-box coral"><span class="tag pid">Middle PID</span><h4>Track the roll reference</h4>e<sub>m</sub> = φ<sub>ref</sub> − φ<br>φ̇<sub>ref</sub> = PID<sub>m</sub>(e<sub>m</sub>)<div class="unit">output: roll-rate reference · rad/s<br>limit: ±5 rad/s</div></div><span class="arrow" aria-hidden="true">→</span><div class="flow-box coral"><span class="tag pid">Inner PID</span><h4>Track the roll-rate reference</h4>e<sub>i</sub> = φ̇<sub>ref</sub> − φ̇<br>I<sub>q</sub> = PID<sub>i</sub>(e<sub>i</sub>)<div class="unit">output: Q-axis current · A<br>limit: ±2 A</div></div></div>
+      <div class="feedback">I<sub>q</sub> → direction sign → C0 → motor torque → steering &amp; bike motion → δ̇, φ, φ̇ ↵</div>
+      <div class="callout"><h3>Current wiring does not supply the measured steering rate</h3><p><code>cascaded_main_balance._steer_cb</code> reads <code>msg.data[1]</code> into <code>_steer_rate</code>. The current <code>steer_publisher</code> publishes <code>[steer_angle, time.time()]</code>. A timestamp is therefore treated as rad/s. The diagram above describes the intended inputs to the written PID algorithm; the actual pair of files violates that contract.</p><p class="source"><a href="#src-pid">[5] cascaded_main_balance.py:540–545</a> · <a href="#src-steer">[8] steer_publisher.py:187–192</a></p></div>
+      <div class="grid2"><div class="card coral"><h3>How each PID step is actually computed</h3><p class="small">The same <code>PID.step(error, dt)</code> is called once for each stage. Let S be stored integral and e<sub>prev</sub> the prior error.</p>
+        <div class="eq coral">S ← S + e × Δt<br>P = K<sub>p</sub>e<br>I = K<sub>i</sub>S<br>D = K<sub>d</sub>(e − e<sub>prev</sub>) / Δt<br>z* = P + I + D<br>z = clip(z*, z<sub>min</sub>, z<sub>max</sub>)<br>if clamped: S ← 0<br>e<sub>prev</sub> ← e</div>
+        <p class="small">Code guards the integral at Δt &gt; 0 and the derivative at Δt &gt; 10⁻⁹. It uses rectangular integration, an unfiltered backward error difference, and integral reset on saturation. Despite comments claiming trapezoidal integration and back-calculation, those algorithms are not implemented.</p>
+        <p class="small" style="margin-top:12px">Reset clears S and e<sub>prev</sub> to zero. If K<sub>d</sub> is enabled, the first nonzero error after reset creates a derivative step. All six K<sub>i</sub>/K<sub>d</sub> defaults are zero, so the default cascade performs only proportional calculations.</p><p class="source"><a href="#src-pid">[5] cascaded_main_balance.py:156–228, 285–302</a></p>
+      </div><div class="card coral"><h3>Initialization, then a complete tick</h3><ol class="steps coral">
+        <li><h4>Use the nominal model to obtain an initial K</h4><p>The constructor uses the model’s default 2 m/s. PID defaults: mass 2.237 kg, a = 0.135 m, trail = 0.010 m. It defaults to repeated pole placement at −14.3, with optional LQR Q = diag(4, 100, 2), R = [10].</p></li>
+        <li><h4>Convert K to three heuristic proportional gains</h4><div class="eq">K<sub>p,i</sub> = |k<sub>φ̇</sub>| × K<sub>t</sub><br>K<sub>p,m</sub> = clip(|k<sub>φ</sub>|/max(|k<sub>φ̇</sub>|, .01), .5, 50)<br>K<sub>p,o</sub> = clip(|k<sub>δ</sub>|/max(|k<sub>φ</sub>|, .01), .05, 10)</div><p>Nonnegative explicit gain overrides replace these defaults. K<sub>t</sub> defaults to 1 Nm/A; the node does not query B0 to establish it.</p></li>
+        <li><h4>Read measurements and run outer → middle → inner</h4><p>After freshness checks, the start delay and the armed condition, compute the three errors and pass each clamped result to the next stage. Δt defaults to 0.01 s, so the timer is 100 Hz, despite the “50 Hz” docstring.</p></li>
+        <li><h4>Apply fault decisions, encode current, send C0</h4><p>Apply the steering direction sign to I<sub>q</sub>; send on 0x101. Rear drive remains a separate C1 speed path on 0x102. Arm and steering-fault transitions reset the PID histories.</p></li>
+      </ol></div></div>
+      <div class="grid2" style="margin-top:22px"><div class="card"><h3>The physical plant input is different here</h3><div class="eq coral">u<sub>PID,physical</sub> = I<sub>q</sub> &nbsp; [A]<br>raw<sub>C0</sub> = round(s I<sub>q</sub> × 1000)<br>payload = [0xC0] + int32<sub>LE</sub>(raw<sub>C0</sub>)<br>τ<sub>steer</sub> = K<sub>t,actual</sub> × s I<sub>q</sub> &nbsp; [Nm]</div><p class="small">The current command produces torque, which accelerates the steering mechanism. Actual δ̇ depends on motor/steer inertia, friction, load and firmware behavior. The repository supplies no current-input A and B for this cascade. I<sub>q</sub> cannot be substituted into the velocity-input B above.</p><p class="source"><a href="#src-pid">[5] cascaded_main_balance.py:589–605, 867–873</a> · <a href="#src-protocol">[12] protocol, C0</a></p></div>
+      <div class="card"><h3>This mapping does not reproduce LQR</h3><p class="small">With only P terms and no clamps, write the three proportional gains as g<sub>o</sub>, g<sub>m</sub>, g<sub>i</sub>. Substituting the cascade gives:</p><div class="eq">I<sub>q</sub> = −g<sub>i</sub>g<sub>m</sub>g<sub>o</sub> δ̇<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; −g<sub>i</sub>g<sub>m</sub> φ −g<sub>i</sub> φ̇</div><p class="small">LQR instead feeds back δ, φ and φ̇ and outputs rad/s. This cascade feeds back steering <em>rate</em>, discards the signs of K during gain mapping, and outputs A. Neither the input units nor the first feedback variable match. The gain mapping is a heuristic, not an algebraic conversion of the LQR controller.</p></div></div>
+      <details><summary>Other concrete PID-path limitations in the source</summary>
+        <div class="fact"><b>The optional gain scheduler is disconnected from the updated model.</b><p class="small"><code>_tick_full</code> updates <code>self._bike.sys</code>, but <code>_update_cascaded_pids</code> calls only <code>self._ctrl.update_gain(wc=...)</code>. The controller copies A and B at construction, so pole-based updates remain at the constructor’s 2 m/s. In LQR mode that call replaces Q/R options with <code>wc</code> and raises <code>ValueError: 'Qc' and 'Rc' are required for lqr</code>. Scheduling defaults to false.</p></div>
+        <div class="fact"><b>No direct steering-angle reference or centering feedback in the normal PID law.</b><p class="small">δ is read for the soft limit, not fed into the three PID errors. Its outer target is zero steering rate, not zero steering angle. The RC callback consumes only drive RPM, unlike the LQR path’s steering reference.</p></div>
+        <div class="fact"><b>The same params.yaml does not configure the PID executable automatically.</b><p class="small">The YAML controller section is <code>new_balance_node</code>; this executable constructs <code>cascaded_balance_node</code>. It declares <code>control_dt</code>, not <code>control_hz</code>. References to <code>config/cascaded_params.yaml</code> appear in comments, but that file is absent in this checkout. The two controllers’ default geometries and gains differ.</p></div>
+        <div class="fact"><b>Fault behavior also differs.</b><p class="small">PID uses a fixed 0.5 s roll/steer topic timeout. Steering fault recovery uses 5% of its 30° limit (1.5°). In full mode its rear drive may continue during a steering fault. There is no declared <code>dry_run</code> path or RC servo-up output gate in this PID node.</p></div>
+        <p class="source"><a href="#src-pid">[5] cascaded_main_balance.py:503–520, 570–575, 734–871</a> · <a href="#src-controller">[2] controller.py:88–114, 155–160, 185–189</a></p>
+      </details>
+    </section>
+
+    <section id="comparison">
+      <div class="section-head"><span class="number">04 /</span><h2>Where the processes differ</h2></div>
+      <div class="card table-scroll"><table class="compare"><thead><tr><th scope="col">Aspect</th><th scope="col">LQR in main_balance</th><th scope="col">Cascaded PID</th></tr></thead><tbody>
+        <tr><td>How errors become an action</td><td>One weighted sum of all three state errors, using a jointly designed K.</td><td>Three serial scalar calculations; each output becomes the next setpoint.</td></tr>
+        <tr><td>Feedback variables</td><td>Steering angle δ, roll φ, roll rate φ̇.</td><td>Intended steering rate δ̇, roll φ, roll rate φ̇. δ is used for a limit only.</td></tr>
+        <tr><td>Model and tuning</td><td>A, B, Q and R determine K through a Riccati solve.</td><td>Initial gains are heuristically derived from pole/LQR K, or individually overridden.</td></tr>
+        <tr><td>Final controller output</td><td>Desired steering rate u, rad/s → C1. Firmware speed loop provides motor torque.</td><td>Q-axis current I<sub>q</sub>, A → C0. Motor dynamics convert torque into motion.</td></tr>
+        <tr><td>History within the feedback law</td><td>No integrator or previous-error state. Measured roll rate is already available.</td><td>Each PID stores an error integral and prior error. Ki = Kd = 0 by default.</td></tr>
+        <tr><td>Reference tracking</td><td>Solves a consistent equilibrium for RC steering angle, or zero in fixed mode.</td><td>Outer target is zero steering rate; roll and roll-rate references arise inside the cascade.</td></tr>
+        <tr><td>Limits</td><td>One nominal output clamp at ±10 rad/s, plus ROS faults and output gates.</td><td>Clamps after all three stages: ±0.3 rad, ±5 rad/s, ±2 A; resets integral on saturation.</td></tr>
+        <tr><td>Actual declared loop timing</td><td>200 Hz control, 50 Hz model/gain update.</td><td>100 Hz via control_dt = 0.01 s. Gain scheduling off by default and defective when enabled.</td></tr>
+        <tr><td>Current source integration</td><td>Reads current angle + timestamp layout correctly.</td><td>Reads the current timestamp field as steering rate.</td></tr>
+      </tbody></table></div>
+      <div class="callout diff"><h3>“D” in PID is not the same operation as LQR’s roll-rate term.</h3><p>LQR multiplies the already measured φ̇ by a feedback gain. PID’s D term differentiates a stage’s error over successive ticks. For the inner PID here, that error is a roll-rate error; its derivative is a roll-acceleration/reference-rate term. Setting PID Kd to zero still leaves roll-rate feedback through the inner PID’s P term.</p></div>
+      <div class="grid2"><div class="card"><h3>LQR and PID can also work together</h3><p class="small">The teaching notebook 07 combines an LQR (or pole-placement) outer law with a steering-speed PI inner loop:</p><div class="eq">x → LQR → δ̇<sub>ref</sub><br>e<sub>speed</sub> = δ̇<sub>ref</sub> − δ̇<sub>measured</sub><br>S = clip(S + e<sub>speed</sub> × .02, −10, 10)<br>τ<sub>steer</sub> = clip(.01 e<sub>speed</sub> + .01 S, −5, 5)</div><p class="small">Both loops run at 50 Hz. A separate rear-wheel P loop uses gain 0.1 and torque limit ±2 Nm. MuJoCo integrates at 0.5 ms; its XML takes two torque inputs. This PI closes steering-speed tracking, rather than replacing balance feedback with the three-stage PID above.</p><p class="source"><a href="#src-notebook">[14] notebook 07, cells 4, 6, 8</a></p></div>
+      <div class="card"><h3>The backup is a third architecture</h3><p class="small"><code>backup/source/new_balance/main_balance.py</code> combines a nominal state-feedback outer loop with a manual steering-speed PD inner loop that sends C0:</p><div class="eq">I<sub>q</sub> = clip(K<sub>p</sub>(δ̇<sub>ref</sub> − δ̇<sub>meas</sub>)<br>&nbsp; − K<sub>d</sub> d(δ̇<sub>meas</sub>)/dt, limits)</div><p class="small">Its D term acts on the measured steering rate, and the first derivative after reset is suppressed. That differs from the error-difference implementation in <code>cascaded_main_balance.PID</code>. The current source’s <code>inner_pid.py</code> is empty; it is not an active PID implementation.</p><p class="source"><a href="#src-backup">[15] backup main_balance.py:514–586, 1290–1390</a></p></div></div>
+    </section>
+
+    <section id="explorer">
+      <div class="section-head"><span class="number">05 /</span><h2>Follow the numbers through one tick</h2></div>
+      <p class="subtitle">Change a measured signal and see where it contributes. This is a calculation of the documented laws, with no simulated bicycle trajectory. LQR and PID outputs use different units and their source defaults differ, so their numbers are not a performance comparison.</p>
+      <noscript><div class="callout">JavaScript is disabled. All diagrams, equations and source evidence remain readable; the interactive calculations require JavaScript.</div></noscript>
+      <div class="card"><div class="controls">
+        <div class="control"><label for="delta">Steering angle δ <output id="delta-value" for="delta">0.0°</output></label><input id="delta" type="range" min="-20" max="20" step="0.1" value="0"></div>
+        <div class="control"><label for="phi">Measured roll φ <output id="phi-value" for="phi">2.0°</output></label><input id="phi" type="range" min="-10" max="10" step="0.1" value="2"></div>
+        <div class="control"><label for="omega">Measured roll rate φ̇ <output id="omega-value" for="omega">0.00 rad/s</output></label><input id="omega" type="range" min="-5" max="5" step="0.01" value="0"></div>
+        <div class="control"><label for="speed">LQR scheduled speed v</label><select id="speed"><option value="1">1.0 m/s (also used below 1 m/s)</option><option value="1.5">1.5 m/s</option><option value="2">2.0 m/s</option><option value="2.7">2.7 m/s</option></select></div>
+        <div class="control"><label for="reference">LQR steering reference r <output id="reference-value" for="reference">0.0°</output></label><input id="reference" type="range" min="-6" max="6" step="0.1" value="0"></div>
+        <div class="control"><label for="steer-rate">Supplied steering rate δ̇ <output id="steer-rate-value" for="steer-rate">0.00 rad/s</output></label><input id="steer-rate" type="range" min="-3" max="3" step="0.01" value="0"></div>
+      </div><div class="flags"><label><input id="enabled" type="checkbox" checked> Hypothetically armed</label><label><input id="servo-up" type="checkbox" checked> LQR RC servo flag = 1</label><label><input id="dry-run" type="checkbox"> LQR dry_run</label><label><input id="timestamp-input" type="checkbox"> PID: reproduce timestamp-as-rate mismatch</label></div><p class="live-note">Assumes fresh roll/steer messages, completed startup delay and no faults. The source starts disarmed. Direction inversion is true for both examples. With the mismatch selected, the PID rate input is a fixed illustrative timestamp of 1,790,000,000 s; otherwise it uses your explicitly supplied rate, which the current publisher does not provide.</p></div>
+      <div class="probe-grid">
+        <div class="card teal"><span class="tag lqr">LQR probe</span><h3 style="margin-top:13px">One sum, three simultaneous terms</h3><p id="gain-readout" class="small">K is loaded from source-derived numerical calculations.</p>
+          <div class="contribution"><span>δ error</span><div class="bar-track"><div id="delta-bar" class="bar"></div></div><output id="delta-term">—</output></div><div class="contribution"><span>φ error</span><div class="bar-track"><div id="phi-bar" class="bar"></div></div><output id="phi-term">—</output></div><div class="contribution"><span>φ̇ error</span><div class="bar-track"><div id="omega-bar" class="bar"></div></div><output id="omega-term">—</output></div>
+          <table class="result-table"><tbody><tr><td>x<sub>eq</sub> [rad, rad, rad/s]</td><td id="equilibrium-readout">—</td></tr><tr><td>Unclipped u*</td><td id="lqr-raw">—</td></tr><tr><td>Nominal δ̇ = u</td><td id="model-delta-dot">—</td></tr><tr><td>Nominal φ̇</td><td id="model-phi-dot">—</td></tr><tr><td>Nominal φ̈</td><td id="model-phi-ddot">—</td></tr></tbody></table>
+          <div class="readout"><div class="label">Calculated speed output, before sign and RC gate</div><div class="value"><output id="lqr-output">—</output> <span class="unit">rad/s</span></div><p id="lqr-status" class="status">—</p><pre id="lqr-frame">—</pre></div>
+          <p class="live-note">Derivatives use the ideal velocity-input model and the calculated control-law output. When a gate blocks transmission they are only hypothetical, not the physical bike’s derivative. Gains at the four selectable speeds were computed with the repository’s Python LQR implementation; no browser Riccati solve or interpolation is claimed.</p>
+        </div>
+        <div class="card coral"><span class="tag pid">PID probe</span><h3 style="margin-top:13px">Pass each result to the next stage</h3><p class="small">Default proportional gains: outer 0.348241, middle 9.576335, inner 4.337329. They were computed using the PID node’s pole −14.3, its own geometry, and its constructor’s 2 m/s.</p>
+          <table class="result-table"><thead><tr><th>Stage</th><th>Error</th><th>Clamped output</th></tr></thead><tbody><tr><td>Outer</td><td id="outer-error">—</td><td id="outer-output">—</td></tr><tr><td>Middle</td><td id="mid-error">—</td><td id="mid-output">—</td></tr><tr><td>Inner</td><td id="inner-error">—</td><td id="inner-output">—</td></tr></tbody></table>
+          <div class="readout coral"><div class="label">Calculated Q-axis current, before direction sign</div><div class="value"><output id="pid-output">—</output> <span class="unit">A</span></div><p id="pid-status" class="status">—</p><pre id="pid-frame">—</pre></div>
+          <details><summary>Enable I/D terms and inspect controller memory</summary><p class="small">These are explorer overrides, not the repository defaults. Preview reads the stored history without changing it; “Commit one PID tick” advances only PID memory at Δt = 0.01 s, holding the measured bike signals fixed.</p><table class="gain-editor"><thead><tr><th>Stage</th><th>Kp</th><th>Ki</th><th>Kd</th></tr></thead><tbody><tr><td>Outer</td><td><input id="outer-kp" type="number" step="0.01" min="0" max="100" value="0.3482406997389326" aria-label="Outer Kp"></td><td><input id="outer-ki" type="number" step="0.01" min="0" max="100" value="0" aria-label="Outer Ki"></td><td><input id="outer-kd" type="number" step="0.01" min="0" max="100" value="0" aria-label="Outer Kd"></td></tr><tr><td>Middle</td><td><input id="mid-kp" type="number" step="0.01" min="0" max="100" value="9.576334761794982" aria-label="Middle Kp"></td><td><input id="mid-ki" type="number" step="0.01" min="0" max="100" value="0" aria-label="Middle Ki"></td><td><input id="mid-kd" type="number" step="0.01" min="0" max="100" value="0" aria-label="Middle Kd"></td></tr><tr><td>Inner</td><td><input id="inner-kp" type="number" step="0.01" min="0" max="100" value="4.337328825033178" aria-label="Inner Kp"></td><td><input id="inner-ki" type="number" step="0.01" min="0" max="100" value="0" aria-label="Inner Ki"></td><td><input id="inner-kd" type="number" step="0.01" min="0" max="100" value="0" aria-label="Inner Kd"></td></tr></tbody></table><div class="button-row"><button id="step-pid" class="primary" type="button">Commit one PID tick</button><button id="reset-pid" type="button">Reset PID memory</button><button id="restore-gains" type="button">Restore source gains</button></div><pre id="pid-memory">—</pre><p id="pid-tick-note" class="live-note" role="status">No PID ticks committed.</p></details>
+          <p class="live-note">The output is current, so no x′ = Ax + B I<sub>q</sub> calculation is shown. Such a calculation would require a motor-inclusive current-input model that these source files do not provide.</p>
+        </div>
+      </div>
+      <div class="button-row"><button id="reset-all" type="button">Reset the signal explorer</button><button id="print-page" type="button">Print / save as PDF</button></div>
+    </section>
+
+    <section id="sources">
+      <div class="section-head"><span class="number">06 /</span><h2>Source evidence and the boundaries of this explanation</h2></div>
+      <p class="subtitle">Links below point to the checked-out files next to this HTML. The equations and diagrams are contained in the page; code links require the repository directory to remain available. Line references describe the snapshot read on 02 October 2026.</p>
+      <div class="callout"><h3>A missing local dependency also affects the publisher path</h3><p><code>roll_publisher.py</code> imports <code>new_balance.lpf.FirstOrderLPF</code>, but no <code>lpf.py</code> is present in this checked-out package. The configured IMU library path is also hard-coded to <code>/home/ubuntu/assign_2_Hardwares/...</code>. The page explains the written coordinate-correction and filter calls; it cannot establish successful startup from this tree.</p></div>
+      <div class="card table-scroll"><table class="source-list"><thead><tr><th>Checked source</th><th>What it establishes</th></tr></thead><tbody>
+        <tr id="src-model"><td>[1] <a href="assign4%265_bike_mujocosim_with_control/assign4%265_bike_mujocosim_with_control/nominal_bike_control/bicycle_model.py">nominal_bike_control/bicycle_model.py</a><br><span class="micro">55–145</span></td><td>State order, velocity input, speed clamp, A/B equations and controlled-output selection.</td></tr>
+        <tr id="src-controller"><td>[2] <a href="assign4%265_bike_mujocosim_with_control/assign4%265_bike_mujocosim_with_control/nominal_bike_control/controller.py">nominal_bike_control/controller.py</a><br><span class="micro">88–114, 155–253, 327–349</span></td><td>Copied model matrices, continuous LQR, equilibrium solver, feedback sign, output clipping, option replacement in update_gain.</td></tr>
+        <tr id="src-main"><td>[3] <a href="source/new_balance/new_balance/main_balance.py">new_balance/main_balance.py</a><br><span class="micro">529–670, 787–857, 891–935, 1036–1266</span></td><td>Launched controller path; state assembly, steering reference, scheduling, C1 packing, RC servo gate and fault behavior.</td></tr>
+        <tr id="src-alternative"><td>[4] <a href="source/new_balance/new_balance/new_main_balance.py">new_balance/new_main_balance.py</a><br><span class="micro">690–693, 889, 1275</span></td><td>Alternate roll-reference interpretation and actual −0.5 × RC reference scaling.</td></tr>
+        <tr id="src-pid"><td>[5] <a href="source/new_balance/new_balance/cascaded_main_balance.py">new_balance/cascaded_main_balance.py</a><br><span class="micro">156–228, 237–369, 439–526, 540–545, 589–605, 734–883</span></td><td>All three PID steps, gains, true 100 Hz default, rate-input mismatch, defective optional scheduling and C0 output.</td></tr>
+        <tr id="src-config"><td>[6] <a href="source/new_balance/config/params.yaml">new_balance/config/params.yaml</a><br><span class="micro">80–214</span></td><td>Actual node-scoped parameters: Q/R, geometry, limits, timing and direction inversion. Some comments are stale; executable declarations take precedence.</td></tr>
+        <tr id="src-roll"><td>[7] <a href="source/new_balance/new_balance/roll_publisher.py">new_balance/roll_publisher.py</a><br><span class="micro">53–95, 121–139, 168–202</span></td><td>Quaternion order, sensor mounting correction, bias, Euler roll rate, LPF call, spike hold and actual 10-field publication.</td></tr>
+        <tr id="src-steer"><td>[8] <a href="source/new_balance/new_balance/steer_publisher.py">new_balance/steer_publisher.py</a><br><span class="micro">49–71, 131–192</span></td><td>A3 position decoding, zero, gear ratio, sign and angle + timestamp layout. No measured steering rate.</td></tr>
+        <tr id="src-rear"><td>[9] <a href="source/new_balance/new_balance/rear_publisher.py">new_balance/rear_publisher.py</a><br><span class="micro">43–64, 132–153</span></td><td>A2 speed conversion and the rear-rate publication.</td></tr>
+        <tr id="src-rc"><td>[10] <a href="source/new_balance/new_balance/rc_publisher.py">new_balance/rc_publisher.py</a><br><span class="micro">118–133, 166</span></td><td>RC output order: drive RPM, steering-angle field, servo flag, timestamp.</td></tr>
+        <tr id="src-entry"><td>[11] <a href="source/new_balance/setup.py">new_balance/setup.py</a> and <a href="source/new_balance/launch/balance.launch.py">balance.launch.py</a><br><span class="micro">setup:23–30 · launch:61–66</span></td><td>Actual executable selection. PID has a separate entry point; normal launch selects main_balance.</td></tr>
+        <tr id="src-protocol"><td>[12] <a href="can_protocol.txt">can_protocol.txt</a><br><span class="micro">996–1044 · protocol page 13</span></td><td>C0 = Q-axis current, 0.001 A units; C1 = speed, 0.01 rpm units; torque = actual torque constant × current.</td></tr>
+        <tr id="src-imu"><td>[13] <a href="assign_2_Hardwares/assign_2_Hardwares/1.IMU/Driver/YbImuLib/YbImuLib/YbImuSerialLib.py">YbImuLib/YbImuSerialLib.py</a><br><span class="micro">114–127, 364–404</span></td><td>Raw gyro conversion to rad/s and quaternion getter order. Firmware attitude-fusion internals are not exposed by this SDK.</td></tr>
+        <tr id="src-notebook"><td>[14] <a href="assign4%265_bike_mujocosim_with_control/assign4%265_bike_mujocosim_with_control/tutorials/07_MuJoCo%E5%AE%9E%E6%88%98_50Hz%E5%8F%8C%E7%8E%AF%E8%87%AA%E8%A1%8C%E8%BD%A6%E5%B9%B3%E8%A1%A1.ipynb">Tutorial 07: MuJoCo, 50 Hz two-loop balance</a> and <a href="assign4%265_bike_mujocosim_with_control/assign4%265_bike_mujocosim_with_control/model/orange_bike/orange_bike_horizontal.xml">orange_bike_horizontal.xml</a></td><td>LQR/pole outer loop + steering-speed PI + rear P, both torque actuators and 0.5 ms simulation timestep. All seven tutorial notebooks were examined for context.</td></tr>
+        <tr id="src-backup"><td>[15] <a href="backup/source/new_balance/new_balance/main_balance.py">backup/new_balance/main_balance.py</a><br><span class="micro">514–586, 1290–1390</span></td><td>Historical LQR/pole + steering-speed PD architecture, derivative on measurement, C0 actuation.</td></tr>
+        <tr id="src-legacy"><td>[16] <a href="source/bike_balance/bike_balance/balance_node.py">bike_balance/balance_node.py</a>, <a href="source/bike_balance/bike_balance/bicycle_model.py">bicycle_model.py</a>, <a href="source/bike_balance/bike_balance/controller.py">controller.py</a></td><td>Older 50 Hz hardware integration and duplicate nominal model/controller. Its update_gain-only path also leaves controller matrices at their construction values.</td></tr>
+      </tbody></table></div>
+      <p class="scope">Review scope: the project tree was inventoried and searched for control implementations; the balance controllers, imported nominal package, sensor/RC publishers, launch/configuration, relevant motor protocol, tuning tools, legacy paths and tutorial code were inspected. Peripheral servo and RC code was also read for integration context. Generated build/install/log trees, CAD, binary archives and unrelated bundled firmware/third-party stacks were not audited line by line. This is a source-grounded control explanation, not a claim of an exhaustive audit of every vendor file.</p>
+      <p class="scope">Model limits: small-angle, approximately fixed-speed nominal dynamics omit actuator lag, tire slip and full contact/multibody behavior. LQR’s unconstrained continuous-time optimality does not transfer automatically to sampled, delayed or saturated hardware. The PID gain heuristic does not establish closed-loop stability. The explorer shows only algebraic controller results and nominal instantaneous derivatives.</p>
+    </section>
+    <div class="footer"><p>tsinghua_bike_project / LQR &amp; PID control process</p><p>Offline document · source snapshot: 2026-10-02</p></div>
+  </main>
+  <script>
+    "use strict";
+    // Gains computed with the on-disk nominal_bike_control implementation,
+    // scipy.linalg.solve_continuous_are, and new_balance/config/params.yaml.
+    const LQR_SCHEDULE = Object.freeze({
+      "1": {a1:3.244410680252614,a2:23.415888513210334,a4:76.50904109589041,K:[7.537971591607257,51.509743954721834,5.418002081209423]},
+      "1.5": {a1:4.866616020378921,a2:56.52211994435946,a4:76.50904109589041,K:[10.932034387089432,41.49706070078325,4.145239779660676]},
+      "2": {a1:6.488821360505228,a2:102.87084394796823,a4:76.50904109589041,K:[14.067572288419974,37.13566240383339,3.5637836676296097]},
+      "2.7": {a1:8.759908836682058,a2:190.00644507475272,a4:76.50904109589041,K:[18.298033813261306,34.03301690692123,3.132806159671799]}
+    });
+    const PID_DEFAULTS = Object.freeze([
+      {kp:0.3482406997389326,ki:0,kd:0,limit:0.3},
+      {kp:9.576334761794982,ki:0,kd:0,limit:5},
+      {kp:4.337328825033178,ki:0,kd:0,limit:2}
+    ]);
+    const illustrativeTimestamp = 1790000000;
+    const radians = degrees => degrees * Math.PI / 180;
+    const clip = (value, low, high) => Math.max(low, Math.min(high, value));
+    const newPidState = () => ({integral:0,previousError:0,lastOutput:0});
+    // Match Python round-to-nearest, ties-to-even for packed command integers.
+    function roundEven(value) {
+      const floor = Math.floor(value), fraction = value - floor;
+      if (fraction === 0.5) return floor % 2 === 0 ? floor : floor + 1;
+      return Math.round(value);
+    }
+    function canFrame(command, raw) {
+      const bytes = new Uint8Array(5);
+      bytes[0] = command;
+      new DataView(bytes.buffer).setInt32(1, raw, true);
+      return "101#" + Array.from(bytes, x => x.toString(16).padStart(2,"0").toUpperCase()).join("");
+    }
+    function lqrStep(model, state, reference) {
+      const equilibrium = [reference,-model.a2 / model.a4 * reference,0];
+      const terms = model.K.map((gain,index) => gain * (equilibrium[index] - state[index]));
+      const raw = terms.reduce((sum,value) => sum + value,0);
+      const output = clip(raw,-10,10);
+      const derivative = [output,state[2],model.a2*state[0]+model.a4*state[1]+model.a1*output];
+      return {equilibrium,terms,raw,output,derivative,saturated:raw > 10 || raw < -10};
+    }
+    function pidStep(error, dt, gains, history) {
+      let integral = history.integral + (dt > 0 ? error * dt : 0);
+      const p = gains.kp * error, i = gains.ki * integral;
+      const d = dt > 1e-9 ? gains.kd * (error-history.previousError) / dt : 0;
+      const raw = p+i+d, saturated = raw > gains.limit || raw < -gains.limit;
+      const output = clip(raw,-gains.limit,gains.limit);
+      if (saturated) integral = 0;
+      return {error,p,i,d,raw,output,saturated,state:{integral,previousError:error,lastOutput:output}};
+    }
+    function cascadeStep(steerRate, roll, rollRate, dt, gains, histories) {
+      const outer = pidStep(-steerRate,dt,gains[0],histories[0]);
+      const middle = pidStep(outer.output-roll,dt,gains[1],histories[1]);
+      const inner = pidStep(middle.output-rollRate,dt,gains[2],histories[2]);
+      return {stages:[outer,middle,inner],output:inner.output,histories:[outer.state,middle.state,inner.state]};
+    }
+    // Pure functions exposed for verification against repository Python code.
+    window.BikeControl = {LQR_SCHEDULE,PID_DEFAULTS,roundEven,canFrame,lqrStep,pidStep,cascadeStep,newPidState};
+    const byId = id => document.getElementById(id);
+    const setText = (id,value) => {byId(id).textContent = value;};
+    const finiteInput = (id,fallback=0) => {
+      const value = Number(byId(id).value);
+      return Number.isFinite(value) ? value : fallback;
+    };
+    const fixed = (value,places=4) => (Math.abs(value) < 0.5*10**(-places) ? 0 : value).toFixed(places);
+    const signed = value => (value >= 0 ? "+" : "") + fixed(value);
+    let histories = PID_DEFAULTS.map(newPidState), committedTicks = 0, lastCommitted = null;
+    function currentGains() {
+      return ["outer","mid","inner"].map((prefix,index) => ({
+        kp:clip(finiteInput(prefix+"-kp"),0,100),
+        ki:clip(finiteInput(prefix+"-ki"),0,100),
+        kd:clip(finiteInput(prefix+"-kd"),0,100),limit:PID_DEFAULTS[index].limit
+      }));
+    }
+    function sample() {
+      return {delta:radians(finiteInput("delta")),phi:radians(finiteInput("phi")),omega:finiteInput("omega"),
+        reference:radians(finiteInput("reference")),
+        steerRate:byId("timestamp-input").checked ? illustrativeTimestamp : finiteInput("steer-rate"),
+        enabled:byId("enabled").checked};
+    }
+    function pidPreview(values) {
+      if (!values.enabled) return {stages:[{error:0,output:0,saturated:false},{error:0,output:0,saturated:false},{error:0,output:0,saturated:false}],output:0,histories};
+      return cascadeStep(values.steerRate,values.phi,values.omega,.01,currentGains(),histories);
+    }
+    function render() {
+      const values = sample(), model = LQR_SCHEDULE[byId("speed").value];
+      ["delta","phi","reference"].forEach(id => setText(id+"-value",fixed(finiteInput(id),1)+"°"));
+      ["omega","steer-rate"].forEach(id => setText(id+"-value",fixed(finiteInput(id),2)+" rad/s"));
+      let lqr = lqrStep(model,[values.delta,values.phi,values.omega],values.reference);
+      if (!values.enabled) lqr = {...lqr,terms:[0,0,0],raw:0,output:0,derivative:[0,values.omega,model.a2*values.delta+model.a4*values.phi],saturated:false};
+      setText("gain-readout","K("+byId("speed").value+" m/s) = ["+model.K.map(x=>fixed(x,6)).join(", ")+"]");
+      const maxTerm = Math.max(.001,...lqr.terms.map(Math.abs));
+      ["delta","phi","omega"].forEach((prefix,index) => {
+        const value = lqr.terms[index];
+        setText(prefix+"-term",signed(value));
+        byId(prefix+"-bar").style.width = Math.abs(value)/maxTerm*100+"%";
+        byId(prefix+"-bar").classList.toggle("negative",value<0);
+      });
+      setText("equilibrium-readout",values.enabled ? "["+lqr.equilibrium.map(x=>fixed(x)).join(", ")+"]" : "not solved while disarmed");
+      setText("lqr-raw",fixed(lqr.raw)+" rad/s");
+      setText("lqr-output",fixed(lqr.output));
+      setText("model-delta-dot",fixed(lqr.derivative[0])+" rad/s");
+      setText("model-phi-dot",fixed(lqr.derivative[1])+" rad/s");
+      setText("model-phi-ddot",fixed(lqr.derivative[2])+" rad/s²");
+      const speedCommand = values.enabled && byId("servo-up").checked ? -lqr.output : 0;
+      const c1 = roundEven(speedCommand*60/(2*Math.PI)*100);
+      let lqrStatus = lqr.saturated ? "Output clamped at ±10 rad/s." : "Output inside the speed limit.";
+      if (!values.enabled) lqrStatus = "Disarmed: no steering C1; motor-stop logic uses CF.";
+      else if (!byId("servo-up").checked) lqrStatus += " RC servo flag = 0 → C1 = 0.";
+      if (byId("dry-run").checked) lqrStatus += " Dry run: nothing transmitted.";
+      setText("lqr-status",lqrStatus); byId("lqr-status").classList.toggle("warn",lqr.saturated);
+      setText("lqr-frame",!values.enabled ? "No steering C1 on this disarmed tick.\nCF is issued by motor-stop logic." :
+        (byId("dry-run").checked ? "Would encode (dry run):\n" : "Calculated frame (not transmitted by this page):\n")+
+        "direction-signed speed = "+fixed(speedCommand)+" rad/s\nraw C1 = "+c1+"\n"+canFrame(0xC1,c1));
+      const pid = pidPreview(values);
+      ["outer","mid","inner"].forEach((prefix,index) => {
+        setText(prefix+"-error",Math.abs(pid.stages[index].error)>1e6 ? pid.stages[index].error.toExponential(4) : fixed(pid.stages[index].error));
+        setText(prefix+"-output",fixed(pid.stages[index].output)+[" rad"," rad/s"," A"][index]);
+      });
+      setText("pid-output",fixed(pid.output));
+      const saturated = pid.stages.map((stage,index)=>stage.saturated ? ["outer","middle","inner"][index] : null).filter(Boolean);
+      let pidStatus = saturated.length ? "Clamped stages: "+saturated.join(", ")+". Integral reset there." : "All stages inside their limits.";
+      if (byId("timestamp-input").checked) pidStatus = "Timestamp consumed as steering rate. "+pidStatus;
+      if (!values.enabled) pidStatus = "Disarmed: PID calculations skipped; source sends C1 = 0.";
+      setText("pid-status",pidStatus);byId("pid-status").classList.toggle("warn",saturated.length>0 || byId("timestamp-input").checked);
+      const c0 = roundEven(-pid.output*1000);
+      setText("pid-frame",!values.enabled ? "Full-mode disarmed path sends steering speed zero:\n"+canFrame(0xC1,0) :
+        "Calculated frame (not transmitted by this page):\ncurrent after direction sign = "+fixed(-pid.output)+" A\nraw C0 = "+c0+"\n"+canFrame(0xC0,c0)+"\nnominal torque (Kt = 1) = "+fixed(-pid.output)+" Nm");
+      setText("pid-memory",["outer","middle","inner"].map((prefix,index)=>prefix+": S="+histories[index].integral.toExponential(4)+", e_prev="+histories[index].previousError.toExponential(4)).join("\n"));
+      setText("pid-tick-note",committedTicks ? committedTicks+" PID tick(s) committed; last committed Iq = "+fixed(lastCommitted)+" A. Table shows the next tick preview." : "No PID ticks committed. Table shows the next tick preview.");
+    }
+    function resetMemory() {histories=PID_DEFAULTS.map(newPidState);committedTicks=0;lastCommitted=null;}
+    function restoreGains() {
+      ["outer","mid","inner"].forEach((prefix,index)=>["kp","ki","kd"].forEach(key=>{byId(prefix+"-"+key).value=PID_DEFAULTS[index][key];}));
+    }
+    document.querySelectorAll("#explorer input, #explorer select").forEach(element=>element.addEventListener("input",render));
+    byId("step-pid").addEventListener("click",()=>{
+      const values=sample();
+      if (values.enabled) {const result=pidPreview(values);histories=result.histories;committedTicks++;lastCommitted=result.output;}
+      render();
+    });
+    byId("reset-pid").addEventListener("click",()=>{resetMemory();render();});
+    byId("restore-gains").addEventListener("click",()=>{restoreGains();resetMemory();render();});
+    byId("reset-all").addEventListener("click",()=>{
+      ["delta","omega","reference","steer-rate"].forEach(id=>{byId(id).value=0;});byId("phi").value=2;byId("speed").value="1";
+      byId("enabled").checked=true;byId("servo-up").checked=true;byId("dry-run").checked=false;byId("timestamp-input").checked=false;
+      restoreGains();resetMemory();render();
+    });
+    let collapsedBeforePrint = [];
+    window.addEventListener("beforeprint",()=>{
+      collapsedBeforePrint=Array.from(document.querySelectorAll("details:not([open])"));
+      collapsedBeforePrint.forEach(element=>{element.open=true;});
+    });
+    window.addEventListener("afterprint",()=>{
+      collapsedBeforePrint.forEach(element=>{element.open=false;});
+      collapsedBeforePrint=[];
+    });
+    byId("print-page").addEventListener("click",()=>window.print());
+    render();
+  </script>
+</body>
+</html>

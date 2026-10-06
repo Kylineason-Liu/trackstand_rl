@@ -45,6 +45,32 @@ python scripts/run_deploy_eval.py --episodes 64 --seed 42
 is used (identical mean-action policy, verified against the sim's ground truth:
 the torch fallback reproduces the sim's policy outputs to float32 precision).
 
+## Multi-environment Trackstand viewer
+
+```bash
+python3 scripts/run_deploy_viewer.py --task deploy_sim \
+  --mjcf models/trackstand_rl_0916_bike/trackstand_rl_0916.xml \
+  --onnx policies/trackstand_rl_rsl_2026-09-22_19-45-06_model_91850.onnx \
+  --num_envs 64 --seed 42 --dr
+```
+
+`--num_envs` defaults to **64** and must be positive. Use `--num_envs 1` for
+the original single-bike view. One window displays a row-major grid (1.5 m
+render spacing); these offsets do not change physics or observations. Each
+bike has independent model/data, reset state, and RNG (seed `--seed + index`).
+Grid copies are visual-only and cannot be dragged; GUI body interaction is
+available for environment zero only.
+Policy inference is batched where the ONNX export permits it; physics is
+stepped per environment on the CPU. The simulation control interval stays
+0.02 s, but wall-time playback may be slower than real time with many bikes.
+`--dr`, `--base_inertia`, and no-policy task settings apply to every bike.
+
+On closing `deploy_sim`, metrics aggregate completed episodes from all bikes.
+For multiple environments, the torque PNG includes all traces plus their mean;
+NPZ `drive`/`steer` arrays have shape `(control_steps, num_envs)`, with environment
+IDs, seeds, and reset events `(one-based global step, environment ID)`.
+No original MJCF geometry, observation terms, DR ranges, or terminations change.
+
 ## Status (2026-09-10)
 
 **Working:** the model loads, the deployment loop runs end-to-end, and the

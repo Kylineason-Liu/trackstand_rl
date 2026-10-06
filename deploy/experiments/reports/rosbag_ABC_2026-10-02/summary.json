@@ -1,0 +1,5401 @@
+{
+  "A": {
+    "counts": {
+      "/trackstand/motor_control": 25172,
+      "/trackstand/motor_fault": 25171,
+      "/trackstand/kickstands_up": 62237,
+      "/trackstand/imu": 12588,
+      "/trackstand/motor_state": 24562,
+      "/rosout": 18,
+      "/trackstand/motor_status": 252
+    },
+    "files": [
+      {
+        "path": "/home/lmbike/trackstand_rl/rosbags/rosbag2_2026_10_01-16_11_49/rosbag2_2026_10_01-16_11_49_0.mcap",
+        "sha256": "1a1846ec607e202c38e042c664e297cfe0eb529371392f5438047277631bec51",
+        "bytes": 66739245
+      }
+    ],
+    "metadata_duration_s": 126.68009795100001,
+    "count_differences": {
+      "/trackstand/motor_state": {
+        "metadata": 24720,
+        "decoded": 24562
+      },
+      "/trackstand/imu": {
+        "metadata": 12667,
+        "decoded": 12588
+      },
+      "/trackstand/motor_fault": {
+        "metadata": 25330,
+        "decoded": 25171
+      },
+      "/trackstand/kickstands_up": {
+        "metadata": 62634,
+        "decoded": 62237
+      },
+      "/trackstand/motor_control": {
+        "metadata": 25331,
+        "decoded": 25172
+      },
+      "/trackstand/motor_status": {
+        "metadata": 253,
+        "decoded": 252
+      }
+    },
+    "topics": {
+      "motor_control": {
+        "n": 25172,
+        "first_s": 0.0,
+        "last_s": 126.67988088000001,
+        "rate_over_present_span_hz": 198.69769236555976,
+        "record_interval_ms": {
+          "n": 25171,
+          "min": 0.0583509999998455,
+          "median": 5.003490999996529,
+          "p95": 5.322949499997343,
+          "p99": 5.511091199997508,
+          "max": 799.8939479999905,
+          "mean": 5.03277108100592,
+          "std": 5.016234513148372,
+          "rms": 7.1057296208560015
+        }
+      },
+      "motor_fault": {
+        "n": 25171,
+        "first_s": 0.005295154000000001,
+        "last_s": 126.679689327,
+        "rate_over_present_span_hz": 198.69840439596004,
+        "record_interval_ms": {
+          "n": 25170,
+          "min": 1.4404819999995766,
+          "median": 5.001769000003264,
+          "p95": 5.307134999997309,
+          "p99": 5.515527980001317,
+          "max": 799.9245040000034,
+          "mean": 5.0327530462058006,
+          "std": 5.015845880082367,
+          "rms": 7.105442499720409
+        }
+      },
+      "kickstands_up": {
+        "n": 62237,
+        "first_s": 0.009430397,
+        "last_s": 126.67949844,
+        "rate_over_present_span_hz": 491.3236486055497,
+        "record_interval_ms": {
+          "n": 62236,
+          "min": 0.0025929999978302476,
+          "median": 0.06527699999381298,
+          "p95": 9.896116749997574,
+          "p99": 10.248474050000045,
+          "max": 808.8676469999996,
+          "mean": 2.0353182730734622,
+          "std": 5.047901125132293,
+          "rms": 5.442777438203644
+        }
+      },
+      "imu": {
+        "n": 12588,
+        "first_s": 0.019074124,
+        "last_s": 126.67787461,
+        "rate_over_present_span_hz": 99.3772240989388,
+        "record_interval_ms": {
+          "n": 12587,
+          "min": 4.715012999994883,
+          "median": 10.002203999988524,
+          "p95": 10.340723899996362,
+          "p99": 10.500709400001398,
+          "max": 800.0067610000059,
+          "mean": 10.06266787050131,
+          "std": 7.045344727337774,
+          "rms": 12.283898688895377
+        }
+      },
+      "motor_state": {
+        "n": 24562,
+        "first_s": 0.02552954,
+        "last_s": 126.68009795100001,
+        "rate_over_present_span_hz": 193.9211534817947,
+        "record_interval_ms": {
+          "n": 24561,
+          "min": 3.1211999999999906,
+          "median": 5.00839800000108,
+          "p95": 5.380208000005382,
+          "p99": 10.028115000000783,
+          "max": 795.1217319999984,
+          "mean": 5.1567350030943375,
+          "std": 5.108890667481186,
+          "rms": 7.258972361458246
+        }
+      }
+    },
+    "motor": {
+      "dry_run_values": [
+        0.0
+      ],
+      "sequence_skips": 159,
+      "sequence_resets": 0,
+      "enabled_runs": [],
+      "fault_runs": [],
+      "statistics": {
+        "cycle_interval_ms": {
+          "n": 25172,
+          "min": 1.922715999171487,
+          "median": 5.0013429990940494,
+          "p95": 5.254057849742821,
+          "p99": 5.4271926204637575,
+          "max": 12.586819000716787,
+          "mean": 5.001181349753774,
+          "std": 0.1935235803750293,
+          "rms": 5.0049242021519325
+        },
+        "work_duration_ms": {
+          "n": 25172,
+          "min": 0.1500349990237737,
+          "median": 0.1943125007528579,
+          "p95": 0.269642649891466,
+          "p99": 0.3519404007238338,
+          "max": 3.1854949993430637,
+          "mean": 0.2028874190335996,
+          "std": 0.061145001468992266,
+          "rms": 0.21190095801283793
+        },
+        "command_age_ms": {
+          "n": 25172,
+          "min": 514834.5263289993,
+          "median": 577792.0039709997,
+          "p95": 635221.78277805,
+          "p99": 640256.0196970997,
+          "max": 641514.4651339997,
+          "mean": 577902.8416936087,
+          "std": 36526.840377315595,
+          "rms": 579056.0460831906
+        },
+        "steering_pair_age_ms": {
+          "n": 25172,
+          "min": 0.14477600052487105,
+          "median": 1.1581234994082479,
+          "p95": 4.245277748941588,
+          "p99": 5.318989219558717,
+          "max": 16.296973999487818,
+          "mean": 2.1884254145501196,
+          "std": 1.468071471857701,
+          "rms": 2.6352304721847957
+        },
+        "drive_pair_age_ms": {
+          "n": 25172,
+          "min": 0.15270200128725264,
+          "median": 2.9331934993024333,
+          "p95": 3.595507801037456,
+          "p99": 3.7863507298970944,
+          "max": 15.361430001576082,
+          "mean": 2.203757482365639,
+          "std": 1.2363508936166367,
+          "rms": 2.526877633212419
+        },
+        "steering_position_query_ms": {
+          "n": 25172,
+          "min": 0.45686500016017817,
+          "median": 0.6102329998611822,
+          "p95": 1.0934557497421336,
+          "p99": 1.2467838701741132,
+          "max": 9.487451001405134,
+          "mean": 0.7079841398022512,
+          "std": 0.27545190589946106,
+          "rms": 0.7596810479899964
+        },
+        "steering_velocity_query_ms": {
+          "n": 25172,
+          "min": 0.42245700024068356,
+          "median": 0.5907234999540378,
+          "p95": 2.2570616501070617,
+          "p99": 2.4898314293750445,
+          "max": 14.22464899951592,
+          "mean": 1.0396915882732551,
+          "std": 0.6788368062217052,
+          "rms": 1.2416835378660092
+        },
+        "drive_position_query_ms": {
+          "n": 25172,
+          "min": 0.46242000098573044,
+          "median": 1.5107674998944276,
+          "p95": 2.0725432995277515,
+          "p99": 2.189365270969575,
+          "max": 13.616748999993433,
+          "mean": 1.308992668324739,
+          "std": 0.6433218768389428,
+          "rms": 1.4585351702812996
+        },
+        "drive_velocity_query_ms": {
+          "n": 25172,
+          "min": 0.4412910002429271,
+          "median": 0.5550109999603592,
+          "p95": 0.9824093011047805,
+          "p99": 1.178910459930194,
+          "max": 8.66303600014362,
+          "mean": 0.6217293822548345,
+          "std": 0.20585811446704547,
+          "rms": 0.6549236505508909
+        },
+        "steering_position_rad": {
+          "n": 25172,
+          "min": -1.1677428747779444,
+          "median": -0.03796602450016984,
+          "p95": 0.8569008428727667,
+          "p99": 1.0584467436410927,
+          "max": 1.060747714822921,
+          "mean": -0.0609830795841837,
+          "std": 0.40950203317659895,
+          "rms": 0.41401793580875124
+        },
+        "steering_velocity_rad_s": {
+          "n": 25172,
+          "min": -0.9676105373056563,
+          "median": 0.0,
+          "p95": 0.34871678454846705,
+          "p99": 0.546637121724624,
+          "max": 1.3414600630828417,
+          "mean": -1.4102970358162212e-05,
+          "std": 0.17384135972836903,
+          "rms": 0.1738413603004244
+        },
+        "drive_position_rad": {
+          "n": 25172,
+          "min": -3.138524692014022,
+          "median": -0.5273058958356893,
+          "p95": 1.3326458094756504,
+          "p99": 2.657088656688086,
+          "max": 3.1408256631958498,
+          "mean": -0.22708033094231345,
+          "std": 0.9484437835664347,
+          "rms": 0.9752492436739875
+        },
+        "drive_velocity_rad_s": {
+          "n": 25172,
+          "min": -2.400176787342602,
+          "median": 0.0,
+          "p95": 0.8884947623127503,
+          "p99": 1.5205308443374597,
+          "max": 2.978229835603124,
+          "mean": 0.01678948220718533,
+          "std": 0.4240988483932001,
+          "rms": 0.4244310543789462
+        },
+        "steering_final_torque_nm": {
+          "n": 0
+        },
+        "drive_final_torque_nm": {
+          "n": 0
+        },
+        "requested_drive_target_nm": {
+          "n": 25172,
+          "min": 0.0,
+          "median": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0,
+          "mean": 0.0,
+          "std": 0.0,
+          "rms": 0.0
+        },
+        "requested_steering_target_rad": {
+          "n": 25172,
+          "min": 0.0,
+          "median": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0,
+          "mean": 0.0,
+          "std": 0.0,
+          "rms": 0.0
+        },
+        "steering_send_duration_ms": {
+          "n": 0
+        },
+        "drive_send_duration_ms": {
+          "n": 0
+        },
+        "steering_position_age_ms": {
+          "n": 25172,
+          "min": 0.6914169989613583,
+          "median": 1.7044224996425328,
+          "p95": 5.973074650864873,
+          "p99": 6.201024539841455,
+          "max": 19.91940900006739,
+          "mean": 3.242430432026302,
+          "std": 2.045119831783282,
+          "rms": 3.8335193012274704
+        },
+        "steering_velocity_age_ms": {
+          "n": 25172,
+          "min": 0.15247900046233553,
+          "median": 1.1734480003724457,
+          "p95": 4.257727999447524,
+          "p99": 5.33076873058235,
+          "max": 16.570747999139712,
+          "mean": 2.2034318306433014,
+          "std": 1.4681800228149318,
+          "rms": 2.6477659284168125
+        },
+        "drive_position_age_ms": {
+          "n": 25172,
+          "min": 1.0648190000210889,
+          "median": 3.5096494993922533,
+          "p95": 4.204881348960042,
+          "p99": 4.441908869412148,
+          "max": 15.936793000946636,
+          "mean": 2.8437799806931183,
+          "std": 1.1881724243364689,
+          "rms": 3.082018541239581
+        },
+        "drive_velocity_age_ms": {
+          "n": 25172,
+          "min": 0.16599800073890947,
+          "median": 2.95061899942084,
+          "p95": 3.610155099431722,
+          "p99": 3.8023788097052607,
+          "max": 15.38281900138827,
+          "mean": 2.2220505984382837,
+          "std": 1.2342362146679844,
+          "rms": 2.541819799989348
+        }
+      },
+      "flag_counts": {
+        "requested_enable": 0,
+        "gate_enabled": 0,
+        "fault_latched": 0,
+        "steering_target_clipped": 0,
+        "drive_target_clipped": 0,
+        "steering_slew_limited": 0,
+        "steering_torque_saturated": 0,
+        "drive_torque_saturated": 0,
+        "steering_send_attempted": 0,
+        "steering_send_success": 0,
+        "drive_send_attempted": 0,
+        "drive_send_success": 0,
+        "disable_attempted": 0
+      },
+      "query_failure_counters": {
+        "steering_position_query_failures": {
+          "first": 408.0,
+          "last": 421.0,
+          "increase": 13.0
+        },
+        "steering_velocity_query_failures": {
+          "first": 322.0,
+          "last": 377.0,
+          "increase": 55.0
+        },
+        "drive_position_query_failures": {
+          "first": 20.0,
+          "last": 20.0,
+          "increase": 0.0
+        },
+        "drive_velocity_query_failures": {
+          "first": 306.0,
+          "last": 311.0,
+          "increase": 5.0
+        }
+      }
+    },
+    "clock_checks": {
+      "motor_record_minus_tick_ms": {
+        "n": 25172,
+        "min": 0.26406414758639585,
+        "median": 0.3491196576566047,
+        "p95": 0.4506186114199284,
+        "p99": 0.6360267335748662,
+        "max": 4.79547664014035,
+        "mean": 0.362215710649769,
+        "std": 0.10293434560917004,
+        "rms": 0.3765576988291504
+      },
+      "imu_publication_interval_ms": {
+        "n": 12587,
+        "min": 4.64320182800293,
+        "median": 10.001659393310547,
+        "p95": 10.118961334228516,
+        "p99": 10.220799446105957,
+        "max": 799.9660968780518,
+        "mean": 10.062704342394852,
+        "std": 7.042252032540969,
+        "rms": 12.282155037788753
+      },
+      "imu_record_minus_publish_ms": {
+        "n": 12588,
+        "min": 0.17742116699537291,
+        "median": 0.26048441119996824,
+        "p95": 0.5201813289971824,
+        "p99": 0.6029248938523323,
+        "max": 5.359262790165076,
+        "mean": 0.3009412879603741,
+        "std": 0.1307672336066871,
+        "rms": 0.32812456199497575
+      },
+      "imu_publication_gaps_over_50ms": [
+        {
+          "before_record_s": 106.317740517,
+          "after_record_s": 107.11774727800001,
+          "before_publication_s": 106.31746792793274,
+          "after_publication_s": 107.11743402481079,
+          "gap_ms": 799.9660968780518
+        }
+      ]
+    },
+    "events": {
+      "rosout": [
+        {
+          "t": 0.095891742,
+          "stamp_s": 1790871109.752966,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Press SPACE for pausing/resuming",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "RecorderImpl",
+          "line": 223
+        },
+        {
+          "t": 0.09591076000000001,
+          "stamp_s": 1790871109.752998,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Event publisher thread: Started",
+          "file": "./src/rosbag2_transport/recorder_event_notifier_impl.hpp",
+          "function": "event_publisher_thread_main",
+          "line": 169
+        },
+        {
+          "t": 0.09591542700000001,
+          "stamp_s": 1790871109.7858267,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Starting recording to 'rosbag2_2026_10_01-16_11_49'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "record",
+          "line": 313
+        },
+        {
+          "t": 0.09591883400000001,
+          "stamp_s": 1790871109.9199264,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/trackstand/motor_torque'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 0.09592233400000001,
+          "stamp_s": 1790871109.9289272,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/trackstand/motor_status'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 0.095925519,
+          "stamp_s": 1790871109.9309409,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/trackstand/motor_event'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 0.095928334,
+          "stamp_s": 1790871109.9394746,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/trackstand/motor_control'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 0.09593129700000001,
+          "stamp_s": 1790871109.9437735,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/trackstand/kickstands_up'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 0.09593446300000001,
+          "stamp_s": 1790871109.9459074,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/trackstand/motor_fault'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 0.095973481,
+          "stamp_s": 1790871109.948238,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/trackstand/kickstands_status'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 0.095997944,
+          "stamp_s": 1790871109.9593582,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/trackstand/imu'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 0.096030425,
+          "stamp_s": 1790871109.961333,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/trackstand/motor_state'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 0.096030684,
+          "stamp_s": 1790871109.9689734,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/rosout'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 0.09603090700000001,
+          "stamp_s": 1790871109.9776652,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/parameter_events'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 0.096031166,
+          "stamp_s": 1790871109.98367,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/events/write_split'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 0.096031351,
+          "stamp_s": 1790871109.9839728,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Listening for topics...",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "record",
+          "line": 338
+        },
+        {
+          "t": 0.096031555,
+          "stamp_s": 1790871109.9840307,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Recording...",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "record",
+          "line": 347
+        },
+        {
+          "t": 0.09603174,
+          "stamp_s": 1790871109.9845474,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Topics discovery started.",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "topics_discovery",
+          "line": 638
+        }
+      ],
+      "motor_event": [],
+      "policy_event": [],
+      "parameter_events": []
+    },
+    "motor_status_unique": [
+      {
+        "drive_torque_constant_nm_per_a": 0.30000001192092896,
+        "dry_run": false,
+        "fault_latched": false,
+        "outputs_active": false,
+        "steering_torque_constant_nm_per_a": 0.7799999713897705,
+        "torque_feedback_source": "measured A1/C0 Q-axis current times B0 torque constant"
+      }
+    ],
+    "imu": {
+      "invalid_indices": [
+        10630
+      ],
+      "invalid_record_times_s": [
+        106.317740517
+      ],
+      "quaternion_norm": {
+        "n": 12587,
+        "min": 0.9999999999999998,
+        "median": 1.0,
+        "p95": 1.0,
+        "p99": 1.0000000000000002,
+        "max": 1.0000000000000002,
+        "mean": 1.0,
+        "std": 6.264101482041247e-17,
+        "rms": 1.0
+      },
+      "rpy_deg": {
+        "roll": {
+          "n": 12587,
+          "min": -35.95891347528015,
+          "median": -2.289704106549137,
+          "p95": 23.554396643650797,
+          "p99": 30.808824898362467,
+          "max": 31.48257733004448,
+          "mean": -2.045575853325468,
+          "std": 10.914655153788805,
+          "rms": 11.104687194956764
+        },
+        "pitch": {
+          "n": 12587,
+          "min": -2.762534538379262,
+          "median": 0.03974289777778361,
+          "p95": 3.89285953112254,
+          "p99": 4.5312786882197384,
+          "max": 5.584078879439421,
+          "mean": 0.48607699919729835,
+          "std": 1.4337194474326702,
+          "rms": 1.5138765811965293
+        },
+        "yaw": {
+          "n": 12587,
+          "min": 99.17672286319716,
+          "median": 100.5094407065958,
+          "p95": 104.25162469910707,
+          "p99": 105.46341941935638,
+          "max": 105.70062981476218,
+          "mean": 100.67545013432189,
+          "std": 1.3328647050022684,
+          "rms": 100.68427279406738
+        }
+      },
+      "gyro_rad_s": {
+        "x": {
+          "n": 12587,
+          "min": -0.3675274464784959,
+          "median": 0.0,
+          "p95": 0.16512102667874454,
+          "p99": 0.22158176483341202,
+          "max": 0.3622009617469235,
+          "mean": 0.0007744074885816726,
+          "std": 0.07997886539750522,
+          "rms": 0.07998261446858704
+        },
+        "y": {
+          "n": 12587,
+          "min": -0.12705719570350588,
+          "median": 0.0,
+          "p95": 0.029142253723563067,
+          "p99": 0.06214839755899569,
+          "max": 0.17752356781016523,
+          "mean": -0.0003067647268675156,
+          "std": 0.019537027493458932,
+          "rms": 0.01953943571032235
+        },
+        "z": {
+          "n": 12587,
+          "min": -0.2040524097248592,
+          "median": 0.0,
+          "p95": 0.025876066309692945,
+          "p99": 0.052590800551517165,
+          "max": 0.10117213043834278,
+          "mean": 0.0005685117318693949,
+          "std": 0.015536693356371567,
+          "rms": 0.015547091240460173
+        }
+      },
+      "covariance_first_values": [
+        [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      ]
+    },
+    "encoder_consistency": {
+      "steering": {
+        "n": 4659,
+        "correlation": 0.9912631644461053,
+        "gain": 0.9713877703680771,
+        "error_rms": 0.05413198303241178
+      },
+      "drive": {
+        "n": 3246,
+        "correlation": 0.9922440651749991,
+        "gain": 0.9802302590084473,
+        "error_rms": 0.14891986476843172
+      }
+    },
+    "imu_gyro_quaternion_consistency": {
+      "x": {
+        "n": 4632,
+        "correlation": 0.9783882092419077,
+        "gain": 0.9646888217032308,
+        "error_rms": 0.027584120141320223
+      },
+      "y": {
+        "n": 3680,
+        "correlation": 0.6996207611954638,
+        "gain": 0.49769919083556663,
+        "error_rms": 0.033032152968161206
+      },
+      "z": {
+        "n": 1884,
+        "correlation": 0.7028043598312886,
+        "gain": 0.5931926406632534,
+        "error_rms": 0.027719914684022746
+      }
+    }
+  },
+  "B": {
+    "counts": {
+      "/trackstand/policy_timing": 4750,
+      "/trackstand/motor_command": 31073,
+      "/trackstand/kickstands_command": 19,
+      "/rosout": 42,
+      "/trackstand/status": 190,
+      "/trackstand/kickstands_up": 215709,
+      "/trackstand/imu": 43577,
+      "/trackstand/policy_event": 20,
+      "/trackstand/motor_state": 76313,
+      "/trackstand/motor_control": 86897,
+      "/trackstand/motor_fault": 86897,
+      "/trackstand/motor_status": 870,
+      "/trackstand/observation": 1718,
+      "/trackstand/raw_action": 1718,
+      "/trackstand/motor_event": 21,
+      "/parameter_events": 2
+    },
+    "files": [
+      {
+        "path": "/home/lmbike/trackstand_rl/rosbags/rosbag2_2026_10_01-17_18_11/rosbag2_2026_10_01-17_18_11_0.mcap",
+        "sha256": "aa88cdb19ca0ff79718bbcdbe7c12d5ca2b7a803ef99301205b80c12721ea6cb",
+        "bytes": 233275149
+      }
+    ],
+    "metadata_duration_s": 436.351753078,
+    "count_differences": {},
+    "topics": {
+      "policy_timing": {
+        "n": 4750,
+        "first_s": 0.0,
+        "last_s": 95.012483742,
+        "rate_over_present_span_hz": 49.98290554002977,
+        "record_interval_ms": {
+          "n": 4749,
+          "min": 0.22014500000011594,
+          "median": 19.997257999999185,
+          "p95": 22.386046199999036,
+          "p99": 24.334465360000177,
+          "max": 354.89006399999965,
+          "mean": 20.006840122552116,
+          "std": 5.220783928839028,
+          "rms": 20.676804311135342
+        }
+      },
+      "motor_command": {
+        "n": 31073,
+        "first_s": 0.008181552,
+        "last_s": 95.014709767,
+        "rate_over_present_span_hz": 327.05120988827196,
+        "record_interval_ms": {
+          "n": 31072,
+          "min": 0.0005560000002624577,
+          "median": 1.9391029999979992,
+          "p95": 18.33120339999821,
+          "p99": 21.1301254500053,
+          "max": 344.276453,
+          "mean": 3.057625135652678,
+          "std": 4.642724227783526,
+          "rms": 5.559133001235282
+        }
+      },
+      "kickstands_up": {
+        "n": 215709,
+        "first_s": 0.32472825800000005,
+        "last_s": 436.351753078,
+        "rate_over_present_span_hz": 494.71245524070036,
+        "record_interval_ms": {
+          "n": 215708,
+          "min": 0.0005739999999754275,
+          "median": 0.051092000006747185,
+          "p95": 9.956437949985286,
+          "p99": 10.327228570009197,
+          "max": 346.4157559999999,
+          "mean": 2.0213762346320028,
+          "std": 3.934291198545189,
+          "rms": 4.423189925481969
+        }
+      },
+      "imu": {
+        "n": 43577,
+        "first_s": 0.566953114,
+        "last_s": 436.34711965500003,
+        "rate_over_present_span_hz": 99.995372313256,
+        "record_interval_ms": {
+          "n": 43576,
+          "min": 0.0002040000000036457,
+          "median": 9.999808999992865,
+          "p95": 10.707267750002636,
+          "p99": 11.808790250000811,
+          "max": 351.17424500000016,
+          "mean": 10.000462790090875,
+          "std": 1.7629962463384503,
+          "rms": 10.154674380825593
+        }
+      },
+      "motor_state": {
+        "n": 76313,
+        "first_s": 1.07777731,
+        "last_s": 436.35028352200004,
+        "rate_over_present_span_hz": 175.32005562242458,
+        "record_interval_ms": {
+          "n": 76312,
+          "min": 0.0002960000000662433,
+          "median": 5.02152600000727,
+          "p95": 10.122636199994872,
+          "p99": 16.995281260000077,
+          "max": 370.8495439999999,
+          "mean": 5.7038539969074336,
+          "std": 2.8121518179051863,
+          "rms": 6.359414144792297
+        }
+      },
+      "motor_control": {
+        "n": 86897,
+        "first_s": 1.146812994,
+        "last_s": 436.35006521,
+        "rate_over_present_span_hz": 199.6676255463086,
+        "record_interval_ms": {
+          "n": 86896,
+          "min": 0.02205500000007632,
+          "median": 5.000101999996787,
+          "p95": 5.816094249968984,
+          "p99": 7.228490249996613,
+          "max": 338.53186600000026,
+          "mean": 5.008323193426625,
+          "std": 1.2947940733604955,
+          "rms": 5.172986845355837
+        }
+      },
+      "motor_fault": {
+        "n": 86897,
+        "first_s": 1.159155006,
+        "last_s": 436.34989624900004,
+        "rate_over_present_span_hz": 199.6733656414794,
+        "record_interval_ms": {
+          "n": 86896,
+          "min": 0.0004080000000072914,
+          "median": 4.998806499997954,
+          "p95": 5.685000499999759,
+          "p99": 7.139129049999905,
+          "max": 340.7559459999998,
+          "mean": 5.008179217029554,
+          "std": 1.283671019160949,
+          "rms": 5.1700745019119845
+        }
+      },
+      "observation": {
+        "n": 1718,
+        "first_s": 5.513242034,
+        "last_s": 90.613798282,
+        "rate_over_present_span_hz": 20.176131340391233,
+        "record_interval_ms": {
+          "n": 1717,
+          "min": 14.669445000002668,
+          "median": 19.98365300001126,
+          "p95": 22.022780199999655,
+          "p99": 24.24185075999986,
+          "max": 14658.845816000003,
+          "mean": 49.563515578334304,
+          "std": 487.843834119368,
+          "rms": 490.3551249500399
+        }
+      },
+      "raw_action": {
+        "n": 1718,
+        "first_s": 5.513335570000001,
+        "last_s": 90.613909929,
+        "rate_over_present_span_hz": 20.176127046531676,
+        "record_interval_ms": {
+          "n": 1717,
+          "min": 14.096729000000252,
+          "median": 19.980005999997275,
+          "p95": 22.13188000000059,
+          "p99": 24.590903840000035,
+          "max": 14658.887667999998,
+          "mean": 49.56352612638324,
+          "std": 487.8222170142801,
+          "rms": 490.33361962525885
+        }
+      }
+    },
+    "motor": {
+      "dry_run_values": [
+        1.0
+      ],
+      "sequence_skips": 4,
+      "sequence_resets": 0,
+      "enabled_runs": [
+        {
+          "start_s": 5.517991579,
+          "end_s": 7.862744015999997,
+          "duration_s": 2.344752436999997,
+          "samples": 469,
+          "first_index": 842,
+          "last_index": 1310
+        },
+        {
+          "start_s": 13.721048906,
+          "end_s": 17.773232624,
+          "duration_s": 4.052183717999998,
+          "samples": 809,
+          "first_index": 2467,
+          "last_index": 3275
+        },
+        {
+          "start_s": 22.3410189,
+          "end_s": 26.330360717999998,
+          "duration_s": 3.989341817999996,
+          "samples": 795,
+          "first_index": 4177,
+          "last_index": 4971
+        },
+        {
+          "start_s": 31.820745385000002,
+          "end_s": 35.378129226,
+          "duration_s": 3.5573838409999965,
+          "samples": 706,
+          "first_index": 6055,
+          "last_index": 6760
+        },
+        {
+          "start_s": 42.030214901,
+          "end_s": 46.415575255,
+          "duration_s": 4.3853603539999995,
+          "samples": 869,
+          "first_index": 8069,
+          "last_index": 8937
+        },
+        {
+          "start_s": 61.055432014000004,
+          "end_s": 64.830076855,
+          "duration_s": 3.774644840999997,
+          "samples": 754,
+          "first_index": 11847,
+          "last_index": 12600
+        },
+        {
+          "start_s": 67.676674295,
+          "end_s": 72.51560801000001,
+          "duration_s": 4.83893371500001,
+          "samples": 968,
+          "first_index": 13170,
+          "last_index": 14137
+        },
+        {
+          "start_s": 78.54024449,
+          "end_s": 82.370006421,
+          "duration_s": 3.829761930999993,
+          "samples": 766,
+          "first_index": 15343,
+          "last_index": 16108
+        },
+        {
+          "start_s": 87.115003895,
+          "end_s": 90.630601205,
+          "duration_s": 3.515597310000004,
+          "samples": 703,
+          "first_index": 17058,
+          "last_index": 17760
+        }
+      ],
+      "fault_runs": [],
+      "statistics": {
+        "cycle_interval_ms": {
+          "n": 86897,
+          "min": 1.4838680003776972,
+          "median": 4.9996029997601,
+          "p95": 5.504244600069796,
+          "p99": 6.658439240036361,
+          "max": 33.17924800012406,
+          "mean": 5.008151392982497,
+          "std": 0.4688456713360492,
+          "rms": 5.030049367408145
+        },
+        "work_duration_ms": {
+          "n": 86897,
+          "min": 0.17081199985113926,
+          "median": 0.21301600008882815,
+          "p95": 0.5715146000511595,
+          "p99": 0.9949680002137029,
+          "max": 7.531580999966536,
+          "mean": 0.2756567923410592,
+          "std": 0.17448825087221442,
+          "rms": 0.3262404279916986
+        },
+        "command_age_ms": {
+          "n": 86897,
+          "min": 0.33527300001878757,
+          "median": 124082.50230399972,
+          "p95": 319603.53458279994,
+          "p99": 336982.8218724397,
+          "max": 341327.7591389997,
+          "mean": 134071.22860265922,
+          "std": 111949.77427770657,
+          "rms": 174664.9544123147
+        },
+        "steering_pair_age_ms": {
+          "n": 86897,
+          "min": 0.0,
+          "median": 2.691111999865825,
+          "p95": 6.620189799923536,
+          "p99": 13.555050600061774,
+          "max": 50.684155999988434,
+          "mean": 3.059085926428775,
+          "std": 2.3133374588679323,
+          "rms": 3.8353014097820446
+        },
+        "drive_pair_age_ms": {
+          "n": 86897,
+          "min": 0.12648000029003015,
+          "median": 3.323234000163211,
+          "p95": 6.58458320021964,
+          "p99": 13.252188599981242,
+          "max": 40.60955099976127,
+          "mean": 3.3621106276845247,
+          "std": 2.2150281571336548,
+          "rms": 4.02618151722996
+        },
+        "steering_position_query_ms": {
+          "n": 86897,
+          "min": 0.45217900014904444,
+          "median": 0.803156000074523,
+          "p95": 5.449803199917368,
+          "p99": 10.597723199934977,
+          "max": 36.36004800000592,
+          "mean": 1.5632941373809779,
+          "std": 2.034104723908824,
+          "rms": 2.5654376990677306
+        },
+        "steering_velocity_query_ms": {
+          "n": 86897,
+          "min": 0.42414299969095737,
+          "median": 0.5892699996365991,
+          "p95": 5.301872000018193,
+          "p99": 10.281936439860093,
+          "max": 35.31500799999776,
+          "mean": 1.3095754602000342,
+          "std": 2.0329017500258346,
+          "rms": 2.4181971406848186
+        },
+        "drive_position_query_ms": {
+          "n": 86897,
+          "min": 0.44240199986234074,
+          "median": 0.5672699999195174,
+          "p95": 5.409558200153682,
+          "p99": 10.559556999851338,
+          "max": 26.917439000044396,
+          "mean": 1.3024550224864713,
+          "std": 2.0734013584946727,
+          "rms": 2.448546973004151
+        },
+        "drive_velocity_query_ms": {
+          "n": 86897,
+          "min": 0.43058600022050086,
+          "median": 2.0317500002420275,
+          "p95": 5.391112000324938,
+          "p99": 10.228743639745499,
+          "max": 25.72688600002948,
+          "mean": 2.2456744683017185,
+          "std": 1.8174101664324065,
+          "rms": 2.888950247171812
+        },
+        "steering_position_rad": {
+          "n": 86897,
+          "min": -0.05522330836388312,
+          "median": 0.0003834951969712286,
+          "p95": 0.0007669903939429012,
+          "p99": 0.0007669903939429012,
+          "max": 0.0011504855909141298,
+          "mean": -0.008259191793568224,
+          "std": 0.01970932564137836,
+          "rms": 0.021369879885503314
+        },
+        "steering_velocity_rad_s": {
+          "n": 86897,
+          "min": -0.819955682586936,
+          "median": 0.0,
+          "p95": 0.03874630939427411,
+          "p99": 0.05445427266222308,
+          "max": 0.11519173063162576,
+          "mean": -0.000433728288262158,
+          "std": 0.024361656166679204,
+          "rms": 0.02436551685090094
+        },
+        "drive_position_rad": {
+          "n": 86897,
+          "min": -0.11466506389445152,
+          "median": -0.003067961575771161,
+          "p95": -0.0026844663787999323,
+          "p99": -0.0026844663787999323,
+          "max": -0.0026844663787999323,
+          "mean": -0.014069794756326798,
+          "std": 0.025662495734846996,
+          "rms": 0.02926641098300578
+        },
+        "drive_velocity_rad_s": {
+          "n": 86897,
+          "min": -0.8388052385084747,
+          "median": 0.0,
+          "p95": 0.029321531433504737,
+          "p99": 0.04293509959906051,
+          "max": 1.2053243814272838,
+          "mean": -3.335722547052467e-05,
+          "std": 0.022596955506647764,
+          "rms": 0.022596980127307053
+        },
+        "steering_final_torque_nm": {
+          "n": 6839,
+          "min": -0.575450429307605,
+          "median": -0.5527641893528573,
+          "p95": -0.5436657632451966,
+          "p99": -0.539870793379871,
+          "max": -0.53299672413112,
+          "mean": -0.5524338138349953,
+          "std": 0.004996586201973017,
+          "rms": 0.5524564096306169
+        },
+        "drive_final_torque_nm": {
+          "n": 6839,
+          "min": -0.007153004115553397,
+          "median": -0.00015926402548896234,
+          "p95": 0.001957070529460907,
+          "p99": 0.0029619015753269196,
+          "max": 0.005254027458824988,
+          "mean": -0.0001717230814103048,
+          "std": 0.0012766901404954198,
+          "rms": 0.0012881873045202958
+        },
+        "requested_drive_target_nm": {
+          "n": 86897,
+          "min": -0.005215688645839691,
+          "median": 0.0,
+          "p95": 0.0,
+          "p99": 0.0009887985736131344,
+          "max": 0.0035653944313526155,
+          "mean": -1.3950658195804587e-05,
+          "std": 0.0003070841048148163,
+          "rms": 0.0003074008267620848
+        },
+        "requested_steering_target_rad": {
+          "n": 86897,
+          "min": -0.055940601378679275,
+          "median": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0,
+          "mean": -0.00432403423334857,
+          "std": 0.014794498269950999,
+          "rms": 0.015413450331147579
+        },
+        "steering_send_duration_ms": {
+          "n": 6839,
+          "min": 0.011499999800435035,
+          "median": 0.02090800035148277,
+          "p95": 0.04405679978845,
+          "p99": 0.10224208012004961,
+          "max": 2.8032019999955082,
+          "mean": 0.026616035238878837,
+          "std": 0.04846865392520159,
+          "rms": 0.05529578415356997
+        },
+        "drive_send_duration_ms": {
+          "n": 6839,
+          "min": 0.0024630003281345125,
+          "median": 0.004351999905338744,
+          "p95": 0.0065739996443880955,
+          "p99": 0.025480139902356282,
+          "max": 1.3598880000245117,
+          "mean": 0.005327175901034636,
+          "std": 0.020291964348256294,
+          "rms": 0.020979576263391704
+        },
+        "steering_position_age_ms": {
+          "n": 86897,
+          "min": 0.6307699995886651,
+          "median": 3.3349739996992867,
+          "p95": 11.39112439996097,
+          "p99": 20.655292120027287,
+          "max": 57.92619200019544,
+          "mean": 4.389284699321658,
+          "std": 3.5751927948041207,
+          "rms": 5.66107972843684
+        },
+        "steering_velocity_age_ms": {
+          "n": 86897,
+          "min": 0.0,
+          "median": 2.7083160002803197,
+          "p95": 6.661537799936923,
+          "p99": 13.60193012003944,
+          "max": 50.712896999812074,
+          "mean": 3.0799559192140875,
+          "std": 2.317440407135053,
+          "rms": 3.8544336166192013
+        },
+        "drive_position_age_ms": {
+          "n": 86897,
+          "min": 0.6444539999392873,
+          "median": 5.488354000135587,
+          "p95": 11.419355799989713,
+          "p99": 20.397155559985514,
+          "max": 53.219414000068355,
+          "mean": 5.632734277051252,
+          "std": 3.2930156357557054,
+          "rms": 6.524695196957452
+        },
+        "drive_velocity_age_ms": {
+          "n": 86897,
+          "min": 0.14279400011218968,
+          "median": 3.3451039998908527,
+          "p95": 6.6239712002243305,
+          "p99": 13.300966999704503,
+          "max": 40.6479949997447,
+          "mean": 3.387571084294154,
+          "std": 2.2189087751593424,
+          "rms": 4.049591831731317
+        }
+      },
+      "active_statistics": {
+        "cycle_interval_ms": {
+          "n": 6839,
+          "min": 1.4838680003776972,
+          "median": 4.992894000224624,
+          "p95": 6.456578800180068,
+          "p99": 7.674174959674929,
+          "max": 12.308996000228944,
+          "mean": 5.01373745430617,
+          "std": 0.840653468181876,
+          "rms": 5.083725161166636
+        },
+        "work_duration_ms": {
+          "n": 6839,
+          "min": 0.27947799981120625,
+          "median": 0.5072339999969699,
+          "p95": 1.1273658997197331,
+          "p99": 1.7850464800085306,
+          "max": 5.026838000048883,
+          "mean": 0.5861688561222634,
+          "std": 0.29120376675594783,
+          "rms": 0.6545178085129045
+        },
+        "command_age_ms": {
+          "n": 6839,
+          "min": 0.39680899999439134,
+          "median": 9.083594999992783,
+          "p95": 19.910574199957395,
+          "p99": 21.75646163990677,
+          "max": 28.1285169999137,
+          "mean": 9.107693579175763,
+          "std": 5.965019681567773,
+          "rms": 10.887219210324108
+        },
+        "steering_pair_age_ms": {
+          "n": 6839,
+          "min": 0.1662390000092273,
+          "median": 2.0437869998204405,
+          "p95": 9.649514900047498,
+          "p99": 14.005650420131127,
+          "max": 30.583208000280138,
+          "mean": 3.239211995029099,
+          "std": 3.099420202828852,
+          "rms": 4.483179668766805
+        },
+        "drive_pair_age_ms": {
+          "n": 6839,
+          "min": 0.14999799986981088,
+          "median": 2.0906939998894813,
+          "p95": 9.521391399994169,
+          "p99": 14.546859220045006,
+          "max": 36.70480900018447,
+          "mean": 3.2635673428846137,
+          "std": 3.165616222653396,
+          "rms": 4.546646882117556
+        },
+        "steering_position_query_ms": {
+          "n": 6839,
+          "min": 0.47788200026843697,
+          "median": 1.8234570002277906,
+          "p95": 6.661222000275302,
+          "p99": 10.432745299794982,
+          "max": 18.728704000295693,
+          "mean": 2.5571395018265957,
+          "std": 2.231931131979646,
+          "rms": 3.394183113755343
+        },
+        "steering_velocity_query_ms": {
+          "n": 6839,
+          "min": 0.43238299986114725,
+          "median": 1.4584059999833698,
+          "p95": 6.838738999704219,
+          "p99": 10.736616399899498,
+          "max": 19.896020000032877,
+          "mean": 2.4607495129413137,
+          "std": 2.2744055972700172,
+          "rms": 3.3508519791739673
+        },
+        "drive_position_query_ms": {
+          "n": 6839,
+          "min": 0.47214100004566717,
+          "median": 1.8178089999310032,
+          "p95": 7.044827200297731,
+          "p99": 11.54147000033845,
+          "max": 21.08202399995207,
+          "mean": 2.5789632447787127,
+          "std": 2.2991567219693527,
+          "rms": 3.455021425417852
+        },
+        "drive_velocity_query_ms": {
+          "n": 6839,
+          "min": 0.4355119999672752,
+          "median": 1.4509059997180884,
+          "p95": 6.425469699843228,
+          "p99": 10.513038999761193,
+          "max": 20.89863700030037,
+          "mean": 2.42364261660645,
+          "std": 2.226220000242206,
+          "rms": 3.2909115792602766
+        },
+        "steering_position_rad": {
+          "n": 6839,
+          "min": 0.0,
+          "median": 0.0003834951969712286,
+          "p95": 0.0003834951969712286,
+          "p99": 0.0003834951969712286,
+          "max": 0.0003834951969712286,
+          "mean": 0.00031385036079075395,
+          "std": 0.00014784470556112217,
+          "rms": 0.0003469295402973655
+        },
+        "steering_velocity_rad_s": {
+          "n": 6839,
+          "min": -0.0879645943005142,
+          "median": 0.0,
+          "p95": 0.03874630939427411,
+          "p99": 0.05131268000863328,
+          "max": 0.09529497715889039,
+          "mean": -0.0006034516083149278,
+          "std": 0.02135698114408393,
+          "rms": 0.021365504848524744
+        },
+        "drive_position_rad": {
+          "n": 6839,
+          "min": -0.003067961575771161,
+          "median": -0.003067961575771161,
+          "p95": -0.0026844663787999323,
+          "p99": -0.0026844663787999323,
+          "max": -0.0026844663787999323,
+          "mean": -0.0030370643899938323,
+          "std": 0.00010437569763395289,
+          "rms": 0.0030388574160735457
+        },
+        "drive_velocity_rad_s": {
+          "n": 6839,
+          "min": -0.06387905062299246,
+          "median": 0.0,
+          "p95": 0.03256784384221362,
+          "p99": 0.03874630939427411,
+          "max": 0.06178465552059926,
+          "mean": -0.00011070680355536475,
+          "std": 0.013873105961533948,
+          "rms": 0.013873547672326002
+        },
+        "steering_final_torque_nm": {
+          "n": 6839,
+          "min": -0.575450429307605,
+          "median": -0.5527641893528573,
+          "p95": -0.5436657632451966,
+          "p99": -0.539870793379871,
+          "max": -0.53299672413112,
+          "mean": -0.5524338138349953,
+          "std": 0.004996586201973017,
+          "rms": 0.5524564096306169
+        },
+        "drive_final_torque_nm": {
+          "n": 6839,
+          "min": -0.007153004115553397,
+          "median": -0.00015926402548896234,
+          "p95": 0.001957070529460907,
+          "p99": 0.0029619015753269196,
+          "max": 0.005254027458824988,
+          "mean": -0.0001717230814103048,
+          "std": 0.0012766901404954198,
+          "rms": 0.0012881873045202958
+        },
+        "requested_drive_target_nm": {
+          "n": 6839,
+          "min": -0.005215688645839691,
+          "median": -0.0001705482602119446,
+          "p95": 0.0016940074414014817,
+          "p99": 0.002455416990816589,
+          "max": 0.0035653944313526155,
+          "mean": -0.00017725842158807306,
+          "std": 0.0010813165739598461,
+          "rms": 0.0010957490958901834
+        },
+        "requested_steering_target_rad": {
+          "n": 6839,
+          "min": -0.055940601378679275,
+          "median": -0.054895367473363876,
+          "p95": -0.054577408432960516,
+          "p99": -0.05426552034914494,
+          "max": -0.05397489815950394,
+          "mean": -0.05494160005487507,
+          "std": 0.0002543518330458498,
+          "rms": 0.05494218881192141
+        },
+        "steering_send_duration_ms": {
+          "n": 6839,
+          "min": 0.011499999800435035,
+          "median": 0.02090800035148277,
+          "p95": 0.04405679978845,
+          "p99": 0.10224208012004961,
+          "max": 2.8032019999955082,
+          "mean": 0.026616035238878837,
+          "std": 0.04846865392520159,
+          "rms": 0.05529578415356997
+        },
+        "drive_send_duration_ms": {
+          "n": 6839,
+          "min": 0.0024630003281345125,
+          "median": 0.004351999905338744,
+          "p95": 0.0065739996443880955,
+          "p99": 0.025480139902356282,
+          "max": 1.3598880000245117,
+          "mean": 0.005327175901034636,
+          "std": 0.020291964348256294,
+          "rms": 0.020979576263391704
+        },
+        "steering_position_age_ms": {
+          "n": 6839,
+          "min": 0.6618430002163223,
+          "median": 5.500185000073543,
+          "p95": 13.19835630006309,
+          "p99": 20.387399299806923,
+          "max": 35.4538080000566,
+          "mean": 5.735696214944887,
+          "std": 4.068892531707881,
+          "rms": 7.032360734825914
+        },
+        "steering_velocity_age_ms": {
+          "n": 6839,
+          "min": 0.18395999995846068,
+          "median": 2.087211999878491,
+          "p95": 9.70627750025413,
+          "p99": 14.023454420048434,
+          "max": 30.685595000250032,
+          "mean": 3.277640741190275,
+          "std": 3.102651914790705,
+          "rms": 4.513244701172845
+        },
+        "drive_position_age_ms": {
+          "n": 6839,
+          "min": 0.7483039998987806,
+          "median": 5.47888699975374,
+          "p95": 13.14819840013115,
+          "p99": 19.55688023979746,
+          "max": 45.42218899996442,
+          "mean": 5.725073211575278,
+          "std": 4.050551635929916,
+          "rms": 7.013090034587564
+        },
+        "drive_velocity_age_ms": {
+          "n": 6839,
+          "min": 0.17070099966076668,
+          "median": 2.128396999978577,
+          "p95": 9.596583600068694,
+          "p99": 14.579442759986703,
+          "max": 36.742586999935156,
+          "mean": 3.301541782569634,
+          "std": 3.168793084384232,
+          "rms": 4.576180476521268
+        }
+      },
+      "active_consecutive_steering_torque_step_nm": {
+        "n": 6830,
+        "min": 0.0,
+        "median": 0.0025132741228718336,
+        "p95": 0.011317768070643575,
+        "p99": 0.015917402778188317,
+        "max": 0.026131287453823315,
+        "mean": 0.00363825235143623,
+        "std": 0.003925913490607676,
+        "rms": 0.005352539295368751
+      },
+      "flag_counts": {
+        "requested_enable": 6839,
+        "gate_enabled": 6839,
+        "fault_latched": 0,
+        "steering_target_clipped": 0,
+        "drive_target_clipped": 0,
+        "steering_slew_limited": 0,
+        "steering_torque_saturated": 0,
+        "drive_torque_saturated": 0,
+        "steering_send_attempted": 0,
+        "steering_send_success": 0,
+        "drive_send_attempted": 0,
+        "drive_send_success": 0,
+        "disable_attempted": 0
+      },
+      "query_failure_counters": {
+        "steering_position_query_failures": {
+          "first": 89.0,
+          "last": 138.0,
+          "increase": 49.0
+        },
+        "steering_velocity_query_failures": {
+          "first": 86.0,
+          "last": 125.0,
+          "increase": 39.0
+        },
+        "drive_position_query_failures": {
+          "first": 94.0,
+          "last": 138.0,
+          "increase": 44.0
+        },
+        "drive_velocity_query_failures": {
+          "first": 88.0,
+          "last": 140.0,
+          "increase": 52.0
+        }
+      }
+    },
+    "clock_checks": {
+      "motor_record_minus_tick_ms": {
+        "n": 86897,
+        "min": 0.3040736390858001,
+        "median": 0.38520151844068096,
+        "p95": 1.3333877279801953,
+        "p99": 2.4199572417759807,
+        "max": 338.8889131110844,
+        "mean": 0.6796284668345915,
+        "std": 5.884441961692186,
+        "rms": 5.923559069803872
+      },
+      "imu_publication_interval_ms": {
+        "n": 43576,
+        "min": 3.647327423095703,
+        "median": 10.001659393310547,
+        "p95": 10.58107614517212,
+        "p99": 11.51210069656372,
+        "max": 21.006107330322266,
+        "mean": 10.000465467520234,
+        "std": 0.48815703788230164,
+        "rms": 10.01237268886345
+      },
+      "imu_record_minus_publish_ms": {
+        "n": 43577,
+        "min": 0.18949011621316458,
+        "median": 0.3165504508046979,
+        "p95": 1.0199353583065118,
+        "p99": 1.8799077473102672,
+        "max": 341.1423828354496,
+        "mean": 0.5677230157560118,
+        "std": 5.91942786371057,
+        "rms": 5.946590254615849
+      },
+      "imu_publication_gaps_over_50ms": []
+    },
+    "events": {
+      "rosout": [
+        {
+          "t": 0.10507521700000001,
+          "stamp_s": 1790875092.3018792,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Press SPACE for pausing/resuming",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "RecorderImpl",
+          "line": 223
+        },
+        {
+          "t": 0.105102976,
+          "stamp_s": 1790875092.3018916,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Event publisher thread: Started",
+          "file": "./src/rosbag2_transport/recorder_event_notifier_impl.hpp",
+          "function": "event_publisher_thread_main",
+          "line": 169
+        },
+        {
+          "t": 0.105107957,
+          "stamp_s": 1790875092.3524244,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Starting recording to 'rosbag2_2026_10_01-17_18_11'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "record",
+          "line": 313
+        },
+        {
+          "t": 0.105111957,
+          "stamp_s": 1790875092.463569,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/trackstand/status'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 0.10511642,
+          "stamp_s": 1790875092.4676206,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/trackstand/policy_event'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 0.10512043800000001,
+          "stamp_s": 1790875092.4880126,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/trackstand/policy_timing'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 0.105123142,
+          "stamp_s": 1790875092.4955065,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/trackstand/observation'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 0.105127179,
+          "stamp_s": 1790875092.499752,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/trackstand/motor_command'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 0.105130475,
+          "stamp_s": 1790875092.5035753,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/trackstand/kickstands_command'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 0.10513554900000001,
+          "stamp_s": 1790875092.5079756,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/trackstand/raw_action'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 0.105136327,
+          "stamp_s": 1790875092.5324905,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/rosout'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 0.105136531,
+          "stamp_s": 1790875092.5545075,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/parameter_events'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 0.105136697,
+          "stamp_s": 1790875092.5677388,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/events/write_split'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 0.10513729000000001,
+          "stamp_s": 1790875092.5681553,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Listening for topics...",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "record",
+          "line": 338
+        },
+        {
+          "t": 0.10513747500000001,
+          "stamp_s": 1790875092.5682395,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Recording...",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "record",
+          "line": 347
+        },
+        {
+          "t": 0.10513766000000001,
+          "stamp_s": 1790875092.568273,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Topics discovery started.",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "topics_discovery",
+          "line": 638
+        },
+        {
+          "t": 0.323891973,
+          "stamp_s": 1790875092.8178601,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/trackstand/kickstands_up'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 0.561607596,
+          "stamp_s": 1790875093.0555341,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/trackstand/imu'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 1.070980942,
+          "stamp_s": 1790875093.564664,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/trackstand/motor_state'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 1.112979337,
+          "stamp_s": 1790875093.606932,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/trackstand/motor_torque'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 1.1242488830000001,
+          "stamp_s": 1790875093.618163,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/trackstand/motor_status'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 1.132938298,
+          "stamp_s": 1790875093.6269019,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/trackstand/motor_event'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 1.14269744,
+          "stamp_s": 1790875093.6366334,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/trackstand/motor_control'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 1.1504741280000002,
+          "stamp_s": 1790875093.6444237,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/trackstand/motor_fault'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 5.4943600020000005,
+          "stamp_s": 1790875097.9877355,
+          "level": 20,
+          "node": "trackstand_policy_controller",
+          "message": "Kickstands commanded up",
+          "file": "/home/ubuntu/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/policy_controller.py",
+          "function": "_command_kickstands",
+          "line": 308
+        },
+        {
+          "t": 7.859696442000001,
+          "stamp_s": 1790875100.3527596,
+          "level": 20,
+          "node": "trackstand_policy_controller",
+          "message": "Kickstands commanded down",
+          "file": "/home/ubuntu/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/policy_controller.py",
+          "function": "_command_kickstands",
+          "line": 308
+        },
+        {
+          "t": 13.702212576,
+          "stamp_s": 1790875106.1954842,
+          "level": 20,
+          "node": "trackstand_policy_controller",
+          "message": "Kickstands commanded up",
+          "file": "/home/ubuntu/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/policy_controller.py",
+          "function": "_command_kickstands",
+          "line": 308
+        },
+        {
+          "t": 17.768391687,
+          "stamp_s": 1790875110.262145,
+          "level": 20,
+          "node": "trackstand_policy_controller",
+          "message": "Kickstands commanded down",
+          "file": "/home/ubuntu/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/policy_controller.py",
+          "function": "_command_kickstands",
+          "line": 308
+        },
+        {
+          "t": 22.317421301000003,
+          "stamp_s": 1790875114.810799,
+          "level": 20,
+          "node": "trackstand_policy_controller",
+          "message": "Kickstands commanded up",
+          "file": "/home/ubuntu/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/policy_controller.py",
+          "function": "_command_kickstands",
+          "line": 308
+        },
+        {
+          "t": 26.327239442000003,
+          "stamp_s": 1790875118.8207006,
+          "level": 20,
+          "node": "trackstand_policy_controller",
+          "message": "Kickstands commanded down",
+          "file": "/home/ubuntu/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/policy_controller.py",
+          "function": "_command_kickstands",
+          "line": 308
+        },
+        {
+          "t": 31.801405171000003,
+          "stamp_s": 1790875124.2951064,
+          "level": 20,
+          "node": "trackstand_policy_controller",
+          "message": "Kickstands commanded up",
+          "file": "/home/ubuntu/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/policy_controller.py",
+          "function": "_command_kickstands",
+          "line": 308
+        },
+        {
+          "t": 35.372165748,
+          "stamp_s": 1790875127.8658767,
+          "level": 20,
+          "node": "trackstand_policy_controller",
+          "message": "Kickstands commanded down",
+          "file": "/home/ubuntu/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/policy_controller.py",
+          "function": "_command_kickstands",
+          "line": 308
+        },
+        {
+          "t": 42.004994768,
+          "stamp_s": 1790875134.498662,
+          "level": 20,
+          "node": "trackstand_policy_controller",
+          "message": "Kickstands commanded up",
+          "file": "/home/ubuntu/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/policy_controller.py",
+          "function": "_command_kickstands",
+          "line": 308
+        },
+        {
+          "t": 46.412179464000005,
+          "stamp_s": 1790875138.906006,
+          "level": 20,
+          "node": "trackstand_policy_controller",
+          "message": "Kickstands commanded down",
+          "file": "/home/ubuntu/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/policy_controller.py",
+          "function": "_command_kickstands",
+          "line": 308
+        },
+        {
+          "t": 61.035714025000004,
+          "stamp_s": 1790875153.5290391,
+          "level": 20,
+          "node": "trackstand_policy_controller",
+          "message": "Kickstands commanded up",
+          "file": "/home/ubuntu/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/policy_controller.py",
+          "function": "_command_kickstands",
+          "line": 308
+        },
+        {
+          "t": 64.828663815,
+          "stamp_s": 1790875157.322556,
+          "level": 20,
+          "node": "trackstand_policy_controller",
+          "message": "Kickstands commanded down",
+          "file": "/home/ubuntu/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/policy_controller.py",
+          "function": "_command_kickstands",
+          "line": 308
+        },
+        {
+          "t": 67.662360158,
+          "stamp_s": 1790875160.155505,
+          "level": 20,
+          "node": "trackstand_policy_controller",
+          "message": "Kickstands commanded up",
+          "file": "/home/ubuntu/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/policy_controller.py",
+          "function": "_command_kickstands",
+          "line": 308
+        },
+        {
+          "t": 72.51084372000001,
+          "stamp_s": 1790875165.0045638,
+          "level": 20,
+          "node": "trackstand_policy_controller",
+          "message": "Kickstands commanded down",
+          "file": "/home/ubuntu/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/policy_controller.py",
+          "function": "_command_kickstands",
+          "line": 308
+        },
+        {
+          "t": 78.528015194,
+          "stamp_s": 1790875171.0217645,
+          "level": 20,
+          "node": "trackstand_policy_controller",
+          "message": "Kickstands commanded up",
+          "file": "/home/ubuntu/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/policy_controller.py",
+          "function": "_command_kickstands",
+          "line": 308
+        },
+        {
+          "t": 82.366693278,
+          "stamp_s": 1790875174.8604374,
+          "level": 20,
+          "node": "trackstand_policy_controller",
+          "message": "Kickstands commanded down",
+          "file": "/home/ubuntu/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/policy_controller.py",
+          "function": "_command_kickstands",
+          "line": 308
+        },
+        {
+          "t": 87.103274795,
+          "stamp_s": 1790875179.596472,
+          "level": 20,
+          "node": "trackstand_policy_controller",
+          "message": "Kickstands commanded up",
+          "file": "/home/ubuntu/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/policy_controller.py",
+          "function": "_command_kickstands",
+          "line": 308
+        },
+        {
+          "t": 90.62581424800001,
+          "stamp_s": 1790875183.1196885,
+          "level": 20,
+          "node": "trackstand_policy_controller",
+          "message": "Kickstands commanded down",
+          "file": "/home/ubuntu/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/policy_controller.py",
+          "function": "_command_kickstands",
+          "line": 308
+        }
+      ],
+      "motor_event": [
+        {
+          "t": 5.518011672,
+          "disable_reasons": [],
+          "disable_send_errors": [],
+          "dry_run": true,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": true,
+          "monotonic_time_s": 2384.144534573,
+          "outputs_active": true,
+          "ros_time_s": 1790875098.0109231,
+          "sequence": 61572
+        },
+        {
+          "t": 7.8622223700000005,
+          "disable_reasons": [
+            "enable_not_requested"
+          ],
+          "disable_send_errors": [],
+          "dry_run": true,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": false,
+          "monotonic_time_s": 2386.488218853,
+          "outputs_active": false,
+          "ros_time_s": 1790875100.3546205,
+          "sequence": 62041
+        },
+        {
+          "t": 13.721071832000002,
+          "disable_reasons": [],
+          "disable_send_errors": [],
+          "dry_run": true,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": true,
+          "monotonic_time_s": 2392.347514068,
+          "outputs_active": true,
+          "ros_time_s": 1790875106.2138927,
+          "sequence": 63197
+        },
+        {
+          "t": 17.773868611,
+          "disable_reasons": [
+            "enable_not_requested"
+          ],
+          "disable_send_errors": [],
+          "dry_run": true,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": false,
+          "monotonic_time_s": 2396.400309865,
+          "outputs_active": false,
+          "ros_time_s": 1790875110.2667,
+          "sequence": 64006
+        },
+        {
+          "t": 22.341636910000002,
+          "disable_reasons": [],
+          "disable_send_errors": [],
+          "dry_run": true,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": true,
+          "monotonic_time_s": 2400.967801686,
+          "outputs_active": true,
+          "ros_time_s": 1790875114.8342059,
+          "sequence": 64907
+        },
+        {
+          "t": 26.330215049000003,
+          "disable_reasons": [
+            "enable_not_requested"
+          ],
+          "disable_send_errors": [],
+          "dry_run": true,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": false,
+          "monotonic_time_s": 2404.957142482,
+          "outputs_active": false,
+          "ros_time_s": 1790875118.8235426,
+          "sequence": 65702
+        },
+        {
+          "t": 31.821436986000002,
+          "disable_reasons": [],
+          "disable_send_errors": [],
+          "dry_run": true,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": true,
+          "monotonic_time_s": 2410.447385007,
+          "outputs_active": true,
+          "ros_time_s": 1790875124.3137767,
+          "sequence": 66785
+        },
+        {
+          "t": 35.376244062000005,
+          "disable_reasons": [
+            "enable_not_requested"
+          ],
+          "disable_send_errors": [],
+          "dry_run": true,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": false,
+          "monotonic_time_s": 2414.00242382,
+          "outputs_active": false,
+          "ros_time_s": 1790875127.8688183,
+          "sequence": 67491
+        },
+        {
+          "t": 42.030740987,
+          "disable_reasons": [],
+          "disable_send_errors": [],
+          "dry_run": true,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": true,
+          "monotonic_time_s": 2420.657161649,
+          "outputs_active": true,
+          "ros_time_s": 1790875134.5235398,
+          "sequence": 68799
+        },
+        {
+          "t": 46.416924565,
+          "disable_reasons": [
+            "enable_not_requested"
+          ],
+          "disable_send_errors": [],
+          "dry_run": true,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": false,
+          "monotonic_time_s": 2425.043258321,
+          "outputs_active": false,
+          "ros_time_s": 1790875138.9096518,
+          "sequence": 69668
+        },
+        {
+          "t": 58.067664492000006,
+          "disable_reasons": [
+            "enable_not_requested",
+            "steering_feedback_missing_or_stale"
+          ],
+          "disable_send_errors": [],
+          "dry_run": true,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": false,
+          "monotonic_time_s": 2436.694328539,
+          "outputs_active": false,
+          "ros_time_s": 1790875150.56072,
+          "sequence": 71996
+        },
+        {
+          "t": 58.071553864,
+          "disable_reasons": [
+            "enable_not_requested"
+          ],
+          "disable_send_errors": [],
+          "dry_run": true,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": false,
+          "monotonic_time_s": 2436.697438756,
+          "outputs_active": false,
+          "ros_time_s": 1790875150.5638287,
+          "sequence": 71997
+        },
+        {
+          "t": 61.056037061000005,
+          "disable_reasons": [],
+          "disable_send_errors": [],
+          "dry_run": true,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": true,
+          "monotonic_time_s": 2439.682383687,
+          "outputs_active": true,
+          "ros_time_s": 1790875153.5487769,
+          "sequence": 72577
+        },
+        {
+          "t": 64.830352792,
+          "disable_reasons": [
+            "enable_not_requested"
+          ],
+          "disable_send_errors": [],
+          "dry_run": true,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": false,
+          "monotonic_time_s": 2443.457072894,
+          "outputs_active": false,
+          "ros_time_s": 1790875157.3235004,
+          "sequence": 73331
+        },
+        {
+          "t": 67.67701251300001,
+          "disable_reasons": [],
+          "disable_send_errors": [],
+          "dry_run": true,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": true,
+          "monotonic_time_s": 2446.303568061,
+          "outputs_active": true,
+          "ros_time_s": 1790875160.1699686,
+          "sequence": 73900
+        },
+        {
+          "t": 72.516108129,
+          "disable_reasons": [
+            "enable_not_requested"
+          ],
+          "disable_send_errors": [],
+          "dry_run": true,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": false,
+          "monotonic_time_s": 2451.142961766,
+          "outputs_active": false,
+          "ros_time_s": 1790875165.0093708,
+          "sequence": 74868
+        },
+        {
+          "t": 78.54063768900001,
+          "disable_reasons": [],
+          "disable_send_errors": [],
+          "dry_run": true,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": true,
+          "monotonic_time_s": 2457.167279366,
+          "outputs_active": true,
+          "ros_time_s": 1790875171.0336633,
+          "sequence": 76073
+        },
+        {
+          "t": 82.370562503,
+          "disable_reasons": [
+            "enable_not_requested"
+          ],
+          "disable_send_errors": [],
+          "dry_run": true,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": false,
+          "monotonic_time_s": 2460.997566027,
+          "outputs_active": false,
+          "ros_time_s": 1790875174.863944,
+          "sequence": 76839
+        },
+        {
+          "t": 87.115216336,
+          "disable_reasons": [],
+          "disable_send_errors": [],
+          "dry_run": true,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": true,
+          "monotonic_time_s": 2465.742038252,
+          "outputs_active": true,
+          "ros_time_s": 1790875179.6084266,
+          "sequence": 77788
+        },
+        {
+          "t": 90.631399117,
+          "disable_reasons": [
+            "enable_not_requested"
+          ],
+          "disable_send_errors": [],
+          "dry_run": true,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": false,
+          "monotonic_time_s": 2469.257706539,
+          "outputs_active": false,
+          "ros_time_s": 1790875183.1241148,
+          "sequence": 78491
+        },
+        {
+          "t": 95.10573492,
+          "disable_reasons": [
+            "enable_not_requested",
+            "command_timeout"
+          ],
+          "disable_send_errors": [],
+          "dry_run": true,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": false,
+          "monotonic_time_s": 2473.732153823,
+          "outputs_active": false,
+          "ros_time_s": 1790875187.5985293,
+          "sequence": 79378
+        }
+      ],
+      "policy_event": [
+        {
+          "t": 0.771862436,
+          "latched_fault_reasons": [],
+          "mode": "down",
+          "monotonic_time_s": 2379.398729036,
+          "readiness_reasons": [
+            "motor_state_timeout"
+          ],
+          "ready": false,
+          "ros_time_s": 1790875093.265313,
+          "sequence": 7333
+        },
+        {
+          "t": 1.055646619,
+          "latched_fault_reasons": [],
+          "mode": "down",
+          "monotonic_time_s": 2379.680078716,
+          "readiness_reasons": [],
+          "ready": true,
+          "ros_time_s": 1790875093.5471573,
+          "sequence": 7347
+        },
+        {
+          "t": 5.514061227,
+          "latched_fault_reasons": [],
+          "mode": "balancing",
+          "monotonic_time_s": 2384.138997613,
+          "readiness_reasons": [],
+          "ready": true,
+          "ros_time_s": 1790875098.007515,
+          "sequence": 7570
+        },
+        {
+          "t": 7.876524393,
+          "latched_fault_reasons": [],
+          "mode": "down",
+          "monotonic_time_s": 2386.501419502,
+          "readiness_reasons": [],
+          "ready": true,
+          "ros_time_s": 1790875100.3695776,
+          "sequence": 7688
+        },
+        {
+          "t": 13.714162372,
+          "latched_fault_reasons": [],
+          "mode": "balancing",
+          "monotonic_time_s": 2392.339377533,
+          "readiness_reasons": [],
+          "ready": true,
+          "ros_time_s": 1790875106.2074015,
+          "sequence": 7980
+        },
+        {
+          "t": 17.773852852,
+          "latched_fault_reasons": [],
+          "mode": "down",
+          "monotonic_time_s": 2396.39994987,
+          "readiness_reasons": [],
+          "ready": true,
+          "ros_time_s": 1790875110.2674372,
+          "sequence": 8183
+        },
+        {
+          "t": 22.334382047000002,
+          "latched_fault_reasons": [],
+          "mode": "balancing",
+          "monotonic_time_s": 2400.959890333,
+          "readiness_reasons": [],
+          "ready": true,
+          "ros_time_s": 1790875114.8279235,
+          "sequence": 8411
+        },
+        {
+          "t": 26.333705075,
+          "latched_fault_reasons": [],
+          "mode": "down",
+          "monotonic_time_s": 2404.959959054,
+          "readiness_reasons": [],
+          "ready": true,
+          "ros_time_s": 1790875118.8271654,
+          "sequence": 8611
+        },
+        {
+          "t": 31.817517726000002,
+          "latched_fault_reasons": [],
+          "mode": "balancing",
+          "monotonic_time_s": 2410.440651507,
+          "readiness_reasons": [],
+          "ready": true,
+          "ros_time_s": 1790875124.3109062,
+          "sequence": 8885
+        },
+        {
+          "t": 35.376357672000005,
+          "latched_fault_reasons": [],
+          "mode": "down",
+          "monotonic_time_s": 2414.001894938,
+          "readiness_reasons": [],
+          "ready": true,
+          "ros_time_s": 1790875127.8696828,
+          "sequence": 9063
+        },
+        {
+          "t": 42.014198104,
+          "latched_fault_reasons": [],
+          "mode": "balancing",
+          "monotonic_time_s": 2420.639488985,
+          "readiness_reasons": [],
+          "ready": true,
+          "ros_time_s": 1790875134.507797,
+          "sequence": 9395
+        },
+        {
+          "t": 46.414563876,
+          "latched_fault_reasons": [],
+          "mode": "down",
+          "monotonic_time_s": 2425.040997704,
+          "readiness_reasons": [],
+          "ready": true,
+          "ros_time_s": 1790875138.9081397,
+          "sequence": 9615
+        },
+        {
+          "t": 61.053206415000005,
+          "latched_fault_reasons": [],
+          "mode": "balancing",
+          "monotonic_time_s": 2439.679080436,
+          "readiness_reasons": [],
+          "ready": true,
+          "ros_time_s": 1790875153.5467734,
+          "sequence": 10346
+        },
+        {
+          "t": 64.832581465,
+          "latched_fault_reasons": [],
+          "mode": "down",
+          "monotonic_time_s": 2443.459213458,
+          "readiness_reasons": [],
+          "ready": true,
+          "ros_time_s": 1790875157.3261518,
+          "sequence": 10535
+        },
+        {
+          "t": 67.675383498,
+          "latched_fault_reasons": [],
+          "mode": "balancing",
+          "monotonic_time_s": 2446.299504061,
+          "readiness_reasons": [],
+          "ready": true,
+          "ros_time_s": 1790875160.1676123,
+          "sequence": 10677
+        },
+        {
+          "t": 72.512692528,
+          "latched_fault_reasons": [],
+          "mode": "down",
+          "monotonic_time_s": 2451.139326242,
+          "readiness_reasons": [],
+          "ready": true,
+          "ros_time_s": 1790875165.0063746,
+          "sequence": 10919
+        },
+        {
+          "t": 78.535921308,
+          "latched_fault_reasons": [],
+          "mode": "balancing",
+          "monotonic_time_s": 2457.160618401,
+          "readiness_reasons": [],
+          "ready": true,
+          "ros_time_s": 1790875171.0294023,
+          "sequence": 11220
+        },
+        {
+          "t": 82.372860027,
+          "latched_fault_reasons": [],
+          "mode": "down",
+          "monotonic_time_s": 2460.999359317,
+          "readiness_reasons": [],
+          "ready": true,
+          "ros_time_s": 1790875174.8663733,
+          "sequence": 11412
+        },
+        {
+          "t": 87.11462532600001,
+          "latched_fault_reasons": [],
+          "mode": "balancing",
+          "monotonic_time_s": 2465.739086014,
+          "readiness_reasons": [],
+          "ready": true,
+          "ros_time_s": 1790875179.6067734,
+          "sequence": 11649
+        },
+        {
+          "t": 90.63209208900001,
+          "latched_fault_reasons": [],
+          "mode": "down",
+          "monotonic_time_s": 2469.258727988,
+          "readiness_reasons": [],
+          "ready": true,
+          "ros_time_s": 1790875183.125699,
+          "sequence": 11825
+        }
+      ],
+      "parameter_events": [
+        {
+          "t": 59.473888348,
+          "node": "/_ros2cli_10625",
+          "new": {
+            "use_sim_time": false
+          },
+          "changed": {},
+          "deleted": []
+        },
+        {
+          "t": 59.478431304000004,
+          "node": "/_ros2cli_10625",
+          "new": {
+            "start_type_description_service": true
+          },
+          "changed": {},
+          "deleted": []
+        }
+      ]
+    },
+    "motor_status_unique": [
+      {
+        "drive_torque_constant_nm_per_a": 0.30000001192092896,
+        "dry_run": true,
+        "fault_latched": false,
+        "outputs_active": false,
+        "steering_torque_constant_nm_per_a": 0.7799999713897705,
+        "torque_feedback_source": "measured A1/C0 Q-axis current times B0 torque constant"
+      },
+      {
+        "drive_torque_constant_nm_per_a": 0.30000001192092896,
+        "dry_run": true,
+        "fault_latched": false,
+        "outputs_active": true,
+        "steering_torque_constant_nm_per_a": 0.7799999713897705,
+        "torque_feedback_source": "measured A1/C0 Q-axis current times B0 torque constant"
+      }
+    ],
+    "policy": {
+      "statistics": {
+        "cycle_interval_ms": {
+          "n": 4750,
+          "min": 12.333054999999149,
+          "median": 19.99507399978029,
+          "p95": 21.720172200025445,
+          "p99": 22.87533038996571,
+          "max": 33.471948000169505,
+          "mean": 20.004328143789422,
+          "std": 1.0882916238581453,
+          "rms": 20.033909332503367
+        },
+        "work_duration_ms": {
+          "n": 4750,
+          "min": 0.21288600009938818,
+          "median": 1.0493929999029206,
+          "p95": 2.9689398500977404,
+          "p99": 3.862692360162329,
+          "max": 6.088525999984995,
+          "mean": 1.3764338858947762,
+          "std": 0.8225603894878261,
+          "rms": 1.6034886456079938
+        },
+        "observation_build_ms": {
+          "n": 1718,
+          "min": 0.19503400017129024,
+          "median": 0.3746984998542757,
+          "p95": 0.8588613500251085,
+          "p99": 1.2590323200174673,
+          "max": 2.30368999973507,
+          "mean": 0.4506207828848509,
+          "std": 0.21932085097365536,
+          "rms": 0.5011593814741617
+        },
+        "inference_ms": {
+          "n": 1718,
+          "min": 0.1367019999634067,
+          "median": 0.28926499976478226,
+          "p95": 0.6079307499931017,
+          "p99": 0.8054670598176016,
+          "max": 1.593348999904265,
+          "mean": 0.3328006670603239,
+          "std": 0.14196011959207697,
+          "rms": 0.3618134319651405
+        },
+        "action_processing_ms": {
+          "n": 1718,
+          "min": 0.029536000056396006,
+          "median": 0.06407349997061829,
+          "p95": 0.1728954000327575,
+          "p99": 0.2463038699806924,
+          "max": 1.3383700002123078,
+          "mean": 0.08089251920602047,
+          "std": 0.05953997046777947,
+          "rms": 0.10044206164152768
+        },
+        "imu_age_ms": {
+          "n": 4750,
+          "min": 0.6277689999478753,
+          "median": 3.0413370000133,
+          "p95": 9.943190550120562,
+          "p99": 12.881599240245132,
+          "max": 20.443250999960583,
+          "mean": 3.4795713820998286,
+          "std": 2.3024915944270594,
+          "rms": 4.17239554039827
+        },
+        "motor_age_ms": {
+          "n": 4750,
+          "min": 0.3946799997720518,
+          "median": 4.942033999896012,
+          "p95": 16.726154899947694,
+          "p99": 26.332966370096095,
+          "max": 336.27343200032556,
+          "mean": 7.370495297049466,
+          "std": 12.773132164221531,
+          "rms": 14.74710501110299
+        },
+        "rc_age_ms": {
+          "n": 4750,
+          "min": 0.6913790002727183,
+          "median": 1.7372355000588868,
+          "p95": 4.3505821997087,
+          "p99": 5.892171169930409,
+          "max": 12.075889999778155,
+          "mean": 2.035296955785318,
+          "std": 1.0189093797323174,
+          "rms": 2.2760953456161452
+        }
+      },
+      "enabled_runs": [
+        {
+          "start_s": 5.5136559730000005,
+          "end_s": 7.874931471,
+          "duration_s": 2.3612754979999995,
+          "samples": 118,
+          "first_index": 275,
+          "last_index": 392
+        },
+        {
+          "start_s": 13.714153243,
+          "end_s": 17.773719352,
+          "duration_s": 4.059566109,
+          "samples": 203,
+          "first_index": 685,
+          "last_index": 887
+        },
+        {
+          "start_s": 22.334119718,
+          "end_s": 26.338178603000003,
+          "duration_s": 4.004058885000003,
+          "samples": 200,
+          "first_index": 1116,
+          "last_index": 1315
+        },
+        {
+          "start_s": 31.817504152,
+          "end_s": 35.375278572999996,
+          "duration_s": 3.557774420999994,
+          "samples": 178,
+          "first_index": 1590,
+          "last_index": 1767
+        },
+        {
+          "start_s": 42.014188104000006,
+          "end_s": 46.414171229,
+          "duration_s": 4.3999831249999914,
+          "samples": 220,
+          "first_index": 2100,
+          "last_index": 2319
+        },
+        {
+          "start_s": 61.052958622000006,
+          "end_s": 64.83459846900001,
+          "duration_s": 3.781639847000008,
+          "samples": 189,
+          "first_index": 3051,
+          "last_index": 3239
+        },
+        {
+          "start_s": 67.675371739,
+          "end_s": 72.514664069,
+          "duration_s": 4.839292330000006,
+          "samples": 242,
+          "first_index": 3382,
+          "last_index": 3623
+        },
+        {
+          "start_s": 78.53590871600001,
+          "end_s": 82.37511141600001,
+          "duration_s": 3.8392027000000013,
+          "samples": 192,
+          "first_index": 3925,
+          "last_index": 4116
+        },
+        {
+          "start_s": 87.112898016,
+          "end_s": 90.63443762400001,
+          "duration_s": 3.521539608000012,
+          "samples": 176,
+          "first_index": 4354,
+          "last_index": 4529
+        }
+      ],
+      "sequence_skips": 1,
+      "sequence_resets": 0,
+      "successes": 1718,
+      "active_statistics": {
+        "cycle_interval_ms": {
+          "n": 1718,
+          "min": 14.68840799998361,
+          "median": 19.983186999752434,
+          "p95": 21.403417450051165,
+          "p99": 22.413921640163608,
+          "max": 24.011832999804028,
+          "mean": 19.99838010826539,
+          "std": 0.8602093436105687,
+          "rms": 20.016872060077215
+        },
+        "work_duration_ms": {
+          "n": 1718,
+          "min": 1.0184490001847735,
+          "median": 2.0852400000421767,
+          "p95": 3.487228300218703,
+          "p99": 4.426604870009212,
+          "max": 6.088525999984995,
+          "mean": 2.223117107680963,
+          "std": 0.6863943991519573,
+          "rms": 2.3266686368391496
+        },
+        "observation_build_ms": {
+          "n": 1718,
+          "min": 0.19503400017129024,
+          "median": 0.3746984998542757,
+          "p95": 0.8588613500251085,
+          "p99": 1.2590323200174673,
+          "max": 2.30368999973507,
+          "mean": 0.4506207828848509,
+          "std": 0.21932085097365536,
+          "rms": 0.5011593814741617
+        },
+        "inference_ms": {
+          "n": 1718,
+          "min": 0.1367019999634067,
+          "median": 0.28926499976478226,
+          "p95": 0.6079307499931017,
+          "p99": 0.8054670598176016,
+          "max": 1.593348999904265,
+          "mean": 0.3328006670603239,
+          "std": 0.14196011959207697,
+          "rms": 0.3618134319651405
+        },
+        "action_processing_ms": {
+          "n": 1718,
+          "min": 0.029536000056396006,
+          "median": 0.06407349997061829,
+          "p95": 0.1728954000327575,
+          "p99": 0.2463038699806924,
+          "max": 1.3383700002123078,
+          "mean": 0.08089251920602047,
+          "std": 0.05953997046777947,
+          "rms": 0.10044206164152768
+        },
+        "imu_age_ms": {
+          "n": 1718,
+          "min": 0.6277689999478753,
+          "median": 2.7897484999357403,
+          "p95": 4.781322349981564,
+          "p99": 12.331719070029973,
+          "max": 14.582778999738366,
+          "mean": 3.0799696274702066,
+          "std": 1.9308201026525031,
+          "rms": 3.635145000539316
+        },
+        "motor_age_ms": {
+          "n": 1718,
+          "min": 0.3946799997720518,
+          "median": 4.071610499977396,
+          "p95": 12.055927800247444,
+          "p99": 15.475917419953472,
+          "max": 33.9413839997178,
+          "mean": 4.79012253550606,
+          "std": 3.591633446294332,
+          "rms": 5.987078145281144
+        },
+        "rc_age_ms": {
+          "n": 1718,
+          "min": 0.6913790002727183,
+          "median": 1.4427395001348486,
+          "p95": 5.0118418999090855,
+          "p99": 6.300466749730729,
+          "max": 7.135402000130853,
+          "mean": 1.9674703498202666,
+          "std": 1.2654644585897872,
+          "rms": 2.3393032880274043
+        }
+      }
+    },
+    "raw_action": {
+      "steering": {
+        "n": 1718,
+        "min": -0.035630956292152405,
+        "median": -0.03496522456407547,
+        "p95": -0.03476319164037704,
+        "p99": -0.03456403583288193,
+        "max": -0.03437891602516174,
+        "mean": -0.03499535869100111,
+        "std": 0.0001619301922228012,
+        "rms": 0.034995733329921515
+      },
+      "drive": {
+        "n": 1718,
+        "min": -0.000830523669719696,
+        "median": -2.7234666049480438e-05,
+        "p95": 0.00027089249342679975,
+        "p99": 0.0003922991640865798,
+        "max": 0.0005677379667758942,
+        "mean": -2.7837472446306206e-05,
+        "std": 0.00017235256780857245,
+        "rms": 0.00017458617500365665
+      }
+    },
+    "observation": [
+      {
+        "n": 1718,
+        "min": 0.02343922108411789,
+        "median": 0.02373521775007248,
+        "p95": 0.023894402664154768,
+        "p99": 0.023959317840635777,
+        "max": 0.024014921858906746,
+        "mean": 0.023739248470807658,
+        "std": 9.500203083558987e-05,
+        "rms": 0.023739438564224863
+      },
+      {
+        "n": 1718,
+        "min": -0.9997246265411377,
+        "median": -0.9997174739837646,
+        "p95": -0.9997137695550918,
+        "p99": -0.999712347984314,
+        "max": -0.9997110366821289,
+        "mean": -0.9997174219424566,
+        "std": 2.212485045510416e-06,
+        "rms": 0.9997174219449049
+      },
+      {
+        "n": 1718,
+        "min": 0.0,
+        "median": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0,
+        "mean": 0.0,
+        "std": 0.0,
+        "rms": 0.0
+      },
+      {
+        "n": 1718,
+        "min": 0.0,
+        "median": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0,
+        "mean": 0.0,
+        "std": 0.0,
+        "rms": 0.0
+      },
+      {
+        "n": 1718,
+        "min": 0.0,
+        "median": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0,
+        "mean": 0.0,
+        "std": 0.0,
+        "rms": 0.0
+      },
+      {
+        "n": 1718,
+        "min": -0.0038117989897727966,
+        "median": 0.0,
+        "p95": 0.002199114765971899,
+        "p99": 0.002712241606786847,
+        "max": 0.004324926063418388,
+        "mean": -4.522819820101936e-06,
+        "std": 0.0009427756561830846,
+        "rms": 0.0009427865048835663
+      },
+      {
+        "n": 1718,
+        "min": 0.0,
+        "median": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0,
+        "mean": 0.0,
+        "std": 0.0,
+        "rms": 0.0
+      },
+      {
+        "n": 1718,
+        "min": 0.0,
+        "median": 0.0003834952076431364,
+        "p95": 0.0003834952076431364,
+        "p99": 0.0003834952076431364,
+        "max": 0.0003834952076431364,
+        "mean": 0.00031184098083670637,
+        "std": 0.00014948151848443656,
+        "rms": 0.00034581717958715125
+      },
+      {
+        "n": 1718,
+        "min": -0.003067961661145091,
+        "median": -0.003067961661145091,
+        "p95": -0.0026844663079828024,
+        "p99": -0.0026844663079828024,
+        "max": -0.0026844663079828024,
+        "mean": -0.0030380499164863327,
+        "std": 0.00010284115233251692,
+        "rms": 0.0030397900581579135
+      },
+      {
+        "n": 1718,
+        "min": -0.07644542306661606,
+        "median": 0.0,
+        "p95": 0.03874630853533745,
+        "p99": 0.049040262214839384,
+        "max": 0.08168140798807144,
+        "mean": -0.0009149263560884698,
+        "std": 0.02117894672692493,
+        "rms": 0.021198699835107568
+      },
+      {
+        "n": 1718,
+        "min": -0.05445427447557449,
+        "median": 0.0,
+        "p95": 0.03141592815518379,
+        "p99": 0.03874630853533745,
+        "max": 0.06178465485572815,
+        "mean": -6.461175314743805e-05,
+        "std": 0.013468223683731734,
+        "rms": 0.01346837866536567
+      },
+      {
+        "n": 1718,
+        "min": 0.0,
+        "median": 0.0003834951785393059,
+        "p95": 0.0003834951785393059,
+        "p99": 0.0003834951785393059,
+        "max": 0.0003834951785393059,
+        "mean": 0.000311840957170786,
+        "std": 0.00014948150714013636,
+        "rms": 0.0003458171533427436
+      },
+      {
+        "n": 1718,
+        "min": 0.9999999403953552,
+        "median": 0.9999999403953552,
+        "p95": 1.0,
+        "p99": 1.0,
+        "max": 1.0,
+        "mean": 0.9999999515321951,
+        "std": 2.3233126860979934e-08,
+        "rms": 0.9999999515321955
+      }
+    ],
+    "imu": {
+      "invalid_indices": [],
+      "invalid_record_times_s": [],
+      "quaternion_norm": {
+        "n": 43577,
+        "min": 0.9999999999999998,
+        "median": 1.0,
+        "p95": 1.0,
+        "p99": 1.0000000000000002,
+        "max": 1.0000000000000002,
+        "mean": 1.0,
+        "std": 6.025546187111698e-17,
+        "rms": 1.0
+      },
+      "rpy_deg": {
+        "roll": {
+          "n": 43577,
+          "min": -70.09779940699116,
+          "median": -1.5055701602571625,
+          "p95": -1.3550622859086814,
+          "p99": -1.3490091881762476,
+          "max": 8.081178197520105,
+          "mean": -15.118684714338709,
+          "std": 23.76551592620803,
+          "rms": 28.16690211454619
+        },
+        "pitch": {
+          "n": 43577,
+          "min": -2.4036575351092644,
+          "median": 0.06524689667235573,
+          "p95": 1.5071717078504194,
+          "p99": 1.6804141087195112,
+          "max": 3.040746551006318,
+          "mean": 0.2456179845117553,
+          "std": 0.52573309674993,
+          "rms": 0.5802787979358612
+        },
+        "yaw": {
+          "n": 43577,
+          "min": 96.97404863190471,
+          "median": 99.50039073191748,
+          "p95": 100.98017854429433,
+          "p99": 101.05995110555087,
+          "max": 101.96979004073522,
+          "mean": 99.54585427912068,
+          "std": 0.698893442893283,
+          "rms": 99.54830765113212
+        }
+      },
+      "gyro_rad_s": {
+        "x": {
+          "n": 43577,
+          "min": -1.0205544745692727,
+          "median": 0.0,
+          "p95": 0.0,
+          "p99": 0.16299043278611558,
+          "max": 1.453065034772952,
+          "mean": -0.0002281574316715947,
+          "std": 0.07148616729853356,
+          "rms": 0.07148653139471488
+        },
+        "y": {
+          "n": 43577,
+          "min": -0.4386859669695048,
+          "median": 0.0,
+          "p95": 0.0,
+          "p99": 0.011714667734966006,
+          "max": 0.7660834693381029,
+          "mean": 5.68165434241564e-05,
+          "std": 0.012792078021257014,
+          "rms": 0.012792204197148098
+        },
+        "z": {
+          "n": 43577,
+          "min": -0.4805215702567999,
+          "median": 0.0,
+          "p95": 0.0,
+          "p99": 0.013844607323141644,
+          "max": 0.5684844686615068,
+          "mean": 7.94894646240752e-05,
+          "std": 0.014241638705699722,
+          "rms": 0.014241860538520612
+        }
+      },
+      "covariance_first_values": [
+        [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      ]
+    },
+    "commands": {
+      "unique_values": null,
+      "enabled_runs": [
+        {
+          "start_s": 5.513452087,
+          "end_s": 7.856855018999998,
+          "duration_s": 2.3434029319999983,
+          "samples": 118,
+          "first_index": 2499,
+          "last_index": 2616
+        },
+        {
+          "start_s": 13.714138465000001,
+          "end_s": 17.755648437999998,
+          "duration_s": 4.041509972999997,
+          "samples": 203,
+          "first_index": 5223,
+          "last_index": 5425
+        },
+        {
+          "start_s": 22.33410057,
+          "end_s": 26.320078745,
+          "duration_s": 3.9859781749999996,
+          "samples": 200,
+          "first_index": 7358,
+          "last_index": 7557
+        },
+        {
+          "start_s": 31.817470782,
+          "end_s": 35.357084031,
+          "duration_s": 3.5396132489999985,
+          "samples": 178,
+          "first_index": 9810,
+          "last_index": 9987
+        },
+        {
+          "start_s": 42.014173845,
+          "end_s": 46.395794338,
+          "duration_s": 4.381620493,
+          "samples": 220,
+          "first_index": 12933,
+          "last_index": 13152
+        },
+        {
+          "start_s": 61.052763198,
+          "end_s": 64.815955452,
+          "duration_s": 3.7631922539999962,
+          "samples": 189,
+          "first_index": 20638,
+          "last_index": 20826
+        },
+        {
+          "start_s": 67.675343776,
+          "end_s": 72.49570405600001,
+          "duration_s": 4.820360280000003,
+          "samples": 242,
+          "first_index": 22371,
+          "last_index": 22612
+        },
+        {
+          "start_s": 78.53588142000001,
+          "end_s": 82.355834277,
+          "duration_s": 3.81995285699999,
+          "samples": 192,
+          "first_index": 25878,
+          "last_index": 26069
+        },
+        {
+          "start_s": 87.11270588900001,
+          "end_s": 90.616049973,
+          "duration_s": 3.503344083999991,
+          "samples": 176,
+          "first_index": 28624,
+          "last_index": 28799
+        }
+      ],
+      "enabled_count": 1718
+    },
+    "encoder_consistency": {
+      "steering": {
+        "n": 20,
+        "correlation": 0.9766676005785171,
+        "gain": 0.992688492065994,
+        "error_rms": 0.04655294548080397
+      },
+      "drive": {
+        "n": 119,
+        "correlation": 0.9653664920694821,
+        "gain": 1.0121471201081438,
+        "error_rms": 0.11733048184667468
+      }
+    },
+    "imu_gyro_quaternion_consistency": {
+      "x": {
+        "n": 4013,
+        "correlation": 0.9718995165611323,
+        "gain": 0.9160001960656309,
+        "error_rms": 0.0591971474584168
+      },
+      "y": {
+        "n": 1098,
+        "correlation": 0.6892055765635381,
+        "gain": 0.5241882343217604,
+        "error_rms": 0.0753265807645513
+      },
+      "z": {
+        "n": 983,
+        "correlation": 0.7909541214749379,
+        "gain": 0.7915033465872415,
+        "error_rms": 0.060203836753800644
+      }
+    },
+    "policy_replay": {
+      "model": "trackstand_rl_rsl_2026-09-17_19-46-37_model_41050.onnx",
+      "sha256": "4de70e7cb3d183f265b3063298f41c0c82545e59bc23c071b0eaa54788e929b2",
+      "external_data_sha256": "207b77ba1454021dcbbdfb890cae14d305008800cd054e1e9ea107cae4c27d26",
+      "samples": 1718,
+      "max_absolute_action_error": 4.6566128730773926e-08,
+      "rms_action_error": 4.536117828655414e-09,
+      "max_absolute_scaling_error": 0.0,
+      "status_models": [
+        "trackstand_rl_rsl_2026-09-17_19-46-37_model_41050.onnx"
+      ]
+    }
+  },
+  "C": {
+    "counts": {
+      "/rosout": 19,
+      "/trackstand/motor_state": 21208,
+      "/trackstand/motor_control": 24264,
+      "/trackstand/motor_fault": 24263,
+      "/trackstand/motor_status": 243,
+      "/trackstand/imu": 11836,
+      "/trackstand/kickstands_up": 58475,
+      "/trackstand/motor_command": 371,
+      "/trackstand/motor_event": 14,
+      "/trackstand/motor_torque": 2590
+    },
+    "files": [
+      {
+        "path": "/home/lmbike/trackstand_rl/rosbags/rosbag2_2026_10_01-17_32_00/rosbag2_2026_10_01-17_32_00_0.mcap",
+        "sha256": "b43d35bd6089975403eac17734fdbf8a357515db65dd6720729a411ffae1efd7",
+        "bytes": 63805939
+      }
+    ],
+    "metadata_duration_s": 122.01145359,
+    "count_differences": {},
+    "topics": {
+      "motor_state": {
+        "n": 21208,
+        "first_s": 0.60111691,
+        "last_s": 122.010393992,
+        "rate_over_present_span_hz": 174.67363705391938,
+        "record_interval_ms": {
+          "n": 21207,
+          "min": 2.040178999997977,
+          "median": 5.047327999999851,
+          "p95": 10.078133800000266,
+          "p99": 11.29584004000007,
+          "max": 29.97947200000084,
+          "mean": 5.724962374781913,
+          "std": 1.9367718767224276,
+          "rms": 6.043697501954533
+        }
+      },
+      "motor_control": {
+        "n": 24264,
+        "first_s": 0.606424309,
+        "last_s": 122.01017468,
+        "rate_over_present_span_hz": 199.8537930323754,
+        "record_interval_ms": {
+          "n": 24263,
+          "min": 1.2563930000055734,
+          "median": 4.998439999994275,
+          "p95": 5.5339329999991795,
+          "p99": 6.356892739999298,
+          "max": 29.060354000002064,
+          "mean": 5.003657848205086,
+          "std": 0.45696902578488685,
+          "rms": 5.0244813217317414
+        }
+      },
+      "motor_fault": {
+        "n": 24263,
+        "first_s": 0.610430279,
+        "last_s": 122.00996738600001,
+        "rate_over_present_span_hz": 199.8524918477719,
+        "record_interval_ms": {
+          "n": 24262,
+          "min": 1.0600239999973837,
+          "median": 4.999726999994181,
+          "p95": 5.459628749991197,
+          "p99": 6.320064000001651,
+          "max": 28.470990999998946,
+          "mean": 5.0036904256450425,
+          "std": 0.42270080177429,
+          "rms": 5.021513102991218
+        }
+      },
+      "imu": {
+        "n": 11836,
+        "first_s": 3.1154003570000004,
+        "last_s": 122.00548508800001,
+        "rate_over_present_span_hz": 99.54572769274914,
+        "record_interval_ms": {
+          "n": 11835,
+          "min": 4.310504000002879,
+          "median": 9.998712999994552,
+          "p95": 10.700563899998983,
+          "p99": 11.179083939998886,
+          "max": 341.7159259999991,
+          "mean": 10.045634535783693,
+          "std": 3.6493621756300834,
+          "rms": 10.687966013954648
+        }
+      },
+      "kickstands_up": {
+        "n": 58475,
+        "first_s": 3.1204379810000002,
+        "last_s": 122.010793746,
+        "rate_over_present_span_hz": 491.83131485938486,
+        "record_interval_ms": {
+          "n": 58474,
+          "min": 0.0024810000027741808,
+          "median": 0.05748099999891565,
+          "p95": 9.897813649999975,
+          "p99": 10.198591129997386,
+          "max": 336.15082200000757,
+          "mean": 2.0332174259499944,
+          "std": 4.352425927166895,
+          "rms": 4.803913462236942
+        }
+      },
+      "motor_command": {
+        "n": 371,
+        "first_s": 49.147943213000005,
+        "last_s": 103.318690172,
+        "rate_over_present_span_hz": 6.830254718105335,
+        "record_interval_ms": {
+          "n": 370,
+          "min": 0.9146179999959259,
+          "median": 19.979954500001895,
+          "p95": 21.499422799997348,
+          "p99": 3027.7791354800283,
+          "max": 16035.702442000002,
+          "mean": 146.40742421351354,
+          "std": 1229.980258691861,
+          "rms": 1238.6632192151883
+        }
+      },
+      "motor_torque": {
+        "n": 2590,
+        "first_s": 51.288497058000004,
+        "last_s": 103.41011233600001,
+        "rate_over_present_span_hz": 49.67229020419077,
+        "record_interval_ms": {
+          "n": 2589,
+          "min": 0.008370000003310452,
+          "median": 2.222899999992478,
+          "p95": 6.050841999999078,
+          "p99": 7.335983160000408,
+          "max": 15368.006633000008,
+          "mean": 20.131948736191582,
+          "std": 456.885468276092,
+          "rms": 457.32879472189427
+        }
+      }
+    },
+    "motor": {
+      "dry_run_values": [
+        0.0
+      ],
+      "sequence_skips": 0,
+      "sequence_resets": 0,
+      "enabled_runs": [
+        {
+          "start_s": 51.28627860300001,
+          "end_s": 51.496168431,
+          "duration_s": 0.20988982799999434,
+          "samples": 41,
+          "first_index": 10131,
+          "last_index": 10171
+        },
+        {
+          "start_s": 60.676601695,
+          "end_s": 62.736176496,
+          "duration_s": 2.0595748009999966,
+          "samples": 410,
+          "first_index": 12007,
+          "last_index": 12416
+        },
+        {
+          "start_s": 71.637311588,
+          "end_s": 71.901671376,
+          "duration_s": 0.26435978799999305,
+          "samples": 52,
+          "first_index": 14195,
+          "last_index": 14246
+        },
+        {
+          "start_s": 72.173485537,
+          "end_s": 74.000982793,
+          "duration_s": 1.827497256000001,
+          "samples": 364,
+          "first_index": 14302,
+          "last_index": 14665
+        },
+        {
+          "start_s": 85.90737025,
+          "end_s": 86.971718627,
+          "duration_s": 1.0643483770000017,
+          "samples": 212,
+          "first_index": 17047,
+          "last_index": 17258
+        },
+        {
+          "start_s": 102.34149246000001,
+          "end_s": 103.407689828,
+          "duration_s": 1.0661973679999903,
+          "samples": 210,
+          "first_index": 20333,
+          "last_index": 20542
+        }
+      ],
+      "fault_runs": [],
+      "statistics": {
+        "cycle_interval_ms": {
+          "n": 24264,
+          "min": 1.464113000110956,
+          "median": 5.000199999813049,
+          "p95": 5.319338799836259,
+          "p99": 6.001372870018711,
+          "max": 28.275714999836055,
+          "mean": 5.003692563262459,
+          "std": 0.3476488309909245,
+          "rms": 5.0157550754933595
+        },
+        "work_duration_ms": {
+          "n": 24264,
+          "min": 0.15897899993433384,
+          "median": 0.2545800000461895,
+          "p95": 0.9371353999540519,
+          "p99": 2.6034514800676334,
+          "max": 8.659932999762532,
+          "mean": 0.36374399991645007,
+          "std": 0.4379328475510116,
+          "rms": 0.5692933131869335
+        },
+        "command_age_ms": {
+          "n": 24264,
+          "min": 0.3978290001214191,
+          "median": 9854.86886700005,
+          "p95": 68522.53126955016,
+          "p99": 73375.12179125998,
+          "max": 74611.60693700003,
+          "mean": 23613.906028699195,
+          "std": 23867.74171643962,
+          "rms": 33575.07487072677
+        },
+        "steering_pair_age_ms": {
+          "n": 24264,
+          "min": 0.13542399983634823,
+          "median": 2.7436985001259018,
+          "p95": 5.203417999928205,
+          "p99": 8.460889689995373,
+          "max": 26.03783700033091,
+          "mean": 2.597914064995852,
+          "std": 1.7735792445134044,
+          "rms": 3.1455906958267805
+        },
+        "drive_pair_age_ms": {
+          "n": 24264,
+          "min": 0.1289430001634173,
+          "median": 1.7383865001647791,
+          "p95": 5.256140000278719,
+          "p99": 8.67986441994617,
+          "max": 26.79840000018885,
+          "mean": 2.2192850406787756,
+          "std": 1.9224141663695316,
+          "rms": 2.93613731266759
+        },
+        "steering_position_query_ms": {
+          "n": 24264,
+          "min": 0.44834700020146556,
+          "median": 0.6379460000971449,
+          "p95": 2.37549589980972,
+          "p99": 3.666215000066586,
+          "max": 13.404840000021068,
+          "mean": 1.0290328487908942,
+          "std": 0.7706933503940394,
+          "rms": 1.2856425802812743
+        },
+        "steering_velocity_query_ms": {
+          "n": 24264,
+          "min": 0.40821699985826854,
+          "median": 0.7012420001046848,
+          "p95": 2.7561107998508305,
+          "p99": 3.562046409920185,
+          "max": 9.949825000148849,
+          "mean": 1.1789462134012003,
+          "std": 0.8956283420107413,
+          "rms": 1.4805621571234142
+        },
+        "drive_position_query_ms": {
+          "n": 24264,
+          "min": 0.4379940000944771,
+          "median": 0.6257054999423417,
+          "p95": 2.098893949914781,
+          "p99": 3.6596517301813933,
+          "max": 11.683971000366,
+          "mean": 0.8524450429436483,
+          "std": 0.6219568272057243,
+          "rms": 1.055221704736502
+        },
+        "drive_velocity_query_ms": {
+          "n": 24264,
+          "min": 0.4111060002287559,
+          "median": 0.6358160001127544,
+          "p95": 2.504540649783847,
+          "p99": 3.4904800700087417,
+          "max": 15.890846000274905,
+          "mean": 1.1735321631648958,
+          "std": 0.848737768105451,
+          "rms": 1.448286414004876
+        },
+        "steering_position_rad": {
+          "n": 24264,
+          "min": -0.40113597603209517,
+          "median": 0.0015339807878858025,
+          "p95": 0.20555342557667577,
+          "p99": 0.20555342557667577,
+          "max": 0.3842621873653531,
+          "mean": -0.030686570006256582,
+          "std": 0.11918963862866294,
+          "rms": 0.12307654339954524
+        },
+        "steering_velocity_rad_s": {
+          "n": 24264,
+          "min": -22.309496630692315,
+          "median": 0.0,
+          "p95": 0.04293509959906051,
+          "p99": 10.89514804240449,
+          "max": 22.097962725350605,
+          "mean": 0.003425316553258702,
+          "std": 2.5540165007333404,
+          "rms": 2.55401879766216
+        },
+        "drive_position_rad": {
+          "n": 24264,
+          "min": 0.9518350788830405,
+          "median": 0.9621894492012686,
+          "p95": 0.9621894492012686,
+          "p99": 0.9621894492012686,
+          "max": 0.9625729443982394,
+          "mean": 0.9606790180277701,
+          "std": 0.0029334702418864914,
+          "rms": 0.9606834967492991
+        },
+        "drive_velocity_rad_s": {
+          "n": 24264,
+          "min": -0.34348079679248406,
+          "median": 0.0,
+          "p95": 0.0460766922526503,
+          "p99": 0.07016223593017205,
+          "max": 0.268082573106329,
+          "mean": -0.0001810498568772555,
+          "std": 0.02925167615062072,
+          "rms": 0.029252236438800167
+        },
+        "steering_final_torque_nm": {
+          "n": 1289,
+          "min": -5.6,
+          "median": 0.04255752973148147,
+          "p95": 4.5723439011963025,
+          "p99": 5.549957625847357,
+          "max": 5.6,
+          "mean": 0.028270989531720837,
+          "std": 2.569789674870255,
+          "rms": 2.569945178776947
+        },
+        "drive_final_torque_nm": {
+          "n": 1289,
+          "min": -0.06340412865531646,
+          "median": 5.235987755982988e-05,
+          "p95": 0.051602212253330795,
+          "p99": 0.05503073703594841,
+          "max": 0.06717403983962421,
+          "mean": 0.00013806350479952353,
+          "std": 0.028985084530925166,
+          "rms": 0.028985413345271355
+        },
+        "requested_drive_target_nm": {
+          "n": 24264,
+          "min": -0.05,
+          "median": 0.0,
+          "p95": 0.05,
+          "p99": 0.05,
+          "max": 0.05,
+          "mean": 0.001370342894823607,
+          "std": 0.024632090158834285,
+          "rms": 0.024670178459880152
+        },
+        "requested_steering_target_rad": {
+          "n": 24264,
+          "min": -0.02,
+          "median": 0.0,
+          "p95": 0.02,
+          "p99": 0.02,
+          "max": 0.02,
+          "mean": -0.0005473128915265414,
+          "std": 0.009098708810113211,
+          "rms": 0.009115155150213458
+        },
+        "steering_send_duration_ms": {
+          "n": 1289,
+          "min": 0.07996199974513729,
+          "median": 1.0460429998602194,
+          "p95": 2.56476559998191,
+          "p99": 3.3542985197527733,
+          "max": 7.655592999981309,
+          "mean": 1.2032783126433921,
+          "std": 0.751494260042283,
+          "rms": 1.4186692075866125
+        },
+        "drive_send_duration_ms": {
+          "n": 1289,
+          "min": 0.019239999801357044,
+          "median": 0.06953699994483031,
+          "p95": 0.8930778002650184,
+          "p99": 2.234108800130338,
+          "max": 5.377935999604233,
+          "mean": 0.21627717687122167,
+          "std": 0.4343850129832861,
+          "rms": 0.4852485515072408
+        },
+        "steering_position_age_ms": {
+          "n": 24264,
+          "min": 0.6257519999053329,
+          "median": 3.3837094997579698,
+          "p95": 6.235179299687843,
+          "p99": 10.427801480068409,
+          "max": 27.266618000339804,
+          "mean": 3.788091330323115,
+          "std": 2.2209126275458866,
+          "rms": 4.391137532127857
+        },
+        "steering_velocity_age_ms": {
+          "n": 24264,
+          "min": 0.15657300036764354,
+          "median": 2.7624575002391794,
+          "p95": 5.2193463503499515,
+          "p99": 8.486013550054846,
+          "max": 26.091818000168132,
+          "mean": 2.616471125205594,
+          "std": 1.7743272077976768,
+          "rms": 3.161353853867948
+        },
+        "drive_position_age_ms": {
+          "n": 24264,
+          "min": 0.6168999998408253,
+          "median": 2.3047499998938292,
+          "p95": 6.179363799901691,
+          "p99": 10.67057734980608,
+          "max": 28.381752999848686,
+          "mean": 3.4073665929368415,
+          "std": 2.469182914894853,
+          "rms": 4.207969981579083
+        },
+        "drive_velocity_age_ms": {
+          "n": 24264,
+          "min": 0.1411459998053033,
+          "median": 1.7584234999503678,
+          "p95": 5.268980250093591,
+          "p99": 8.697098239786099,
+          "max": 26.832326000203466,
+          "mean": 2.2363415211415534,
+          "std": 1.9236613924796144,
+          "rms": 2.949863819246293
+        }
+      },
+      "active_statistics": {
+        "cycle_interval_ms": {
+          "n": 1289,
+          "min": 2.1706219999941823,
+          "median": 5.012402999909682,
+          "p95": 6.758333799825777,
+          "p99": 7.785772960178281,
+          "max": 12.00252199987517,
+          "mean": 5.038897872769558,
+          "std": 1.0110913386108864,
+          "rms": 5.139338232420156
+        },
+        "work_duration_ms": {
+          "n": 1289,
+          "min": 0.38158799998200266,
+          "median": 1.726293999581685,
+          "p95": 3.6219380000147727,
+          "p99": 5.2982803997474335,
+          "max": 8.659932999762532,
+          "mean": 1.9098632769444173,
+          "std": 0.9535998303867464,
+          "rms": 2.1346967871654514
+        },
+        "command_age_ms": {
+          "n": 1289,
+          "min": 0.3978290001214191,
+          "median": 9.839159999955882,
+          "p95": 26.246381399960224,
+          "p99": 69.2605933998129,
+          "max": 79.21319700017193,
+          "mean": 11.283677831656037,
+          "std": 11.714050494228855,
+          "rms": 16.26469687359556
+        },
+        "steering_pair_age_ms": {
+          "n": 1289,
+          "min": 0.14992500018706778,
+          "median": 3.7328070002331515,
+          "p95": 11.75011839977742,
+          "p99": 15.756624399909837,
+          "max": 24.81062800006839,
+          "mean": 4.546792403420384,
+          "std": 3.5671377389254206,
+          "rms": 5.779082350016071
+        },
+        "drive_pair_age_ms": {
+          "n": 1289,
+          "min": 0.129793999803951,
+          "median": 3.195201999915298,
+          "p95": 9.415145999992085,
+          "p99": 13.55467408027834,
+          "max": 23.99186100001316,
+          "mean": 3.8180847152914263,
+          "std": 3.107073648111292,
+          "rms": 4.922568186214349
+        },
+        "steering_position_query_ms": {
+          "n": 1289,
+          "min": 0.5071230002613447,
+          "median": 1.953495000179828,
+          "p95": 4.564312000002241,
+          "p99": 6.457207000003098,
+          "max": 8.733764999760751,
+          "mean": 2.1769526439250204,
+          "std": 1.2987567341613357,
+          "rms": 2.534934292722704
+        },
+        "steering_velocity_query_ms": {
+          "n": 1289,
+          "min": 0.4717910001090786,
+          "median": 1.866589000201202,
+          "p95": 4.19356440006595,
+          "p99": 6.277164039911438,
+          "max": 8.33390000025247,
+          "mean": 2.0366611799701992,
+          "std": 1.2015856288284545,
+          "rms": 2.3646980326047293
+        },
+        "drive_position_query_ms": {
+          "n": 1289,
+          "min": 0.5148280001776584,
+          "median": 1.8816810002135753,
+          "p95": 4.570945399973425,
+          "p99": 5.8889566399921,
+          "max": 8.96563399965089,
+          "mean": 2.144000408080325,
+          "std": 1.2364027717207426,
+          "rms": 2.4749605176178746
+        },
+        "drive_velocity_query_ms": {
+          "n": 1289,
+          "min": 0.4371980003270437,
+          "median": 1.6603130002295075,
+          "p95": 4.372558999875764,
+          "p99": 5.949409559943871,
+          "max": 12.817068999993353,
+          "mean": 1.9504498595786353,
+          "std": 1.262111981732782,
+          "rms": 2.3231834428567555
+        },
+        "steering_position_rad": {
+          "n": 1289,
+          "min": -0.40113597603209517,
+          "median": 0.01572330307582792,
+          "p95": 0.23700003172833162,
+          "p99": 0.30168800155346837,
+          "max": 0.3842621873653531,
+          "mean": -0.005126756582010313,
+          "std": 0.1403559344319766,
+          "rms": 0.14044953529052526
+        },
+        "steering_velocity_rad_s": {
+          "n": 1289,
+          "min": -22.309496630692315,
+          "median": 0.0,
+          "p95": 18.973334672090193,
+          "p99": 21.43688785523122,
+          "max": 22.097962725350605,
+          "mean": 0.11072184628198753,
+          "std": 11.041316117825891,
+          "rms": 11.041871260841882
+        },
+        "drive_position_rad": {
+          "n": 1289,
+          "min": 0.9518350788830405,
+          "median": 0.9614224588073252,
+          "p95": 0.9621894492012686,
+          "p99": 0.9621894492012686,
+          "max": 0.9625729443982394,
+          "mean": 0.9603279057975057,
+          "std": 0.002474488453056388,
+          "rms": 0.960331093814278
+        },
+        "drive_velocity_rad_s": {
+          "n": 1289,
+          "min": -0.34348079679248406,
+          "median": -0.0020943951023931952,
+          "p95": 0.07602654221687288,
+          "p99": 0.16755160819145565,
+          "max": 0.268082573106329,
+          "mean": -0.001209679715850841,
+          "std": 0.051318167369553226,
+          "rms": 0.05133242276752986
+        },
+        "steering_final_torque_nm": {
+          "n": 1289,
+          "min": -5.6,
+          "median": 0.04255752973148147,
+          "p95": 4.5723439011963025,
+          "p99": 5.549957625847357,
+          "max": 5.6,
+          "mean": 0.028270989531720837,
+          "std": 2.569789674870255,
+          "rms": 2.569945178776947
+        },
+        "drive_final_torque_nm": {
+          "n": 1289,
+          "min": -0.06340412865531646,
+          "median": 5.235987755982988e-05,
+          "p95": 0.051602212253330795,
+          "p99": 0.05503073703594841,
+          "max": 0.06717403983962421,
+          "mean": 0.00013806350479952353,
+          "std": 0.028985084530925166,
+          "rms": 0.028985413345271355
+        },
+        "requested_drive_target_nm": {
+          "n": 1289,
+          "min": -0.05,
+          "median": 0.0,
+          "p95": 0.05,
+          "p99": 0.05,
+          "max": 0.05,
+          "mean": 7.757951900698188e-05,
+          "std": 0.02860870334254757,
+          "rms": 0.028608808530305174
+        },
+        "requested_steering_target_rad": {
+          "n": 1289,
+          "min": -0.02,
+          "median": 0.0,
+          "p95": 0.02,
+          "p99": 0.02,
+          "max": 0.02,
+          "mean": -9.309542280837798e-05,
+          "std": 0.0160098114929977,
+          "rms": 0.01601008216090939
+        },
+        "steering_send_duration_ms": {
+          "n": 1289,
+          "min": 0.07996199974513729,
+          "median": 1.0460429998602194,
+          "p95": 2.56476559998191,
+          "p99": 3.3542985197527733,
+          "max": 7.655592999981309,
+          "mean": 1.2032783126433921,
+          "std": 0.751494260042283,
+          "rms": 1.4186692075866125
+        },
+        "drive_send_duration_ms": {
+          "n": 1289,
+          "min": 0.019239999801357044,
+          "median": 0.06953699994483031,
+          "p95": 0.8930778002650184,
+          "p99": 2.234108800130338,
+          "max": 5.377935999604233,
+          "mean": 0.21627717687122167,
+          "std": 0.4343850129832861,
+          "rms": 0.4852485515072408
+        },
+        "steering_position_age_ms": {
+          "n": 1289,
+          "min": 0.9790999997676408,
+          "median": 5.639987999984442,
+          "p95": 13.371332000042454,
+          "p99": 18.440138239984652,
+          "max": 26.230054999814456,
+          "mean": 6.491959804490699,
+          "std": 3.5813608901146354,
+          "rms": 7.41428944190646
+        },
+        "steering_velocity_age_ms": {
+          "n": 1289,
+          "min": 0.15657300036764354,
+          "median": 3.7602690003950556,
+          "p95": 11.763199599681684,
+          "p99": 15.78373867991095,
+          "max": 24.833386999944196,
+          "mean": 4.5721428758796305,
+          "std": 3.5663684224855916,
+          "rms": 5.798575187264475
+        },
+        "drive_position_age_ms": {
+          "n": 1289,
+          "min": 0.7003619998613431,
+          "median": 5.29928799960544,
+          "p95": 11.66900500002157,
+          "p99": 15.29520452015276,
+          "max": 28.381752999848686,
+          "mean": 5.7664949216436225,
+          "std": 3.2892636508779556,
+          "rms": 6.638653406100418
+        },
+        "drive_velocity_age_ms": {
+          "n": 1289,
+          "min": 0.1411459998053033,
+          "median": 3.2178690003092925,
+          "p95": 9.435916600159537,
+          "p99": 13.56244564003645,
+          "max": 24.009193999972922,
+          "mean": 3.8443727323507053,
+          "std": 3.106757317810125,
+          "rms": 4.942786940280594
+        }
+      },
+      "active_consecutive_steering_torque_step_nm": {
+        "n": 1283,
+        "min": 0.0,
+        "median": 0.007330382858376186,
+        "p95": 3.5152442344861066,
+        "p99": 5.020188205953713,
+        "max": 8.723073380097428,
+        "mean": 0.760912825547161,
+        "std": 1.2715505137755554,
+        "rms": 1.4818329990808825
+      },
+      "flag_counts": {
+        "requested_enable": 12823,
+        "gate_enabled": 1289,
+        "fault_latched": 0,
+        "steering_target_clipped": 0,
+        "drive_target_clipped": 0,
+        "steering_slew_limited": 3,
+        "steering_torque_saturated": 17,
+        "drive_torque_saturated": 0,
+        "steering_send_attempted": 1289,
+        "steering_send_success": 1289,
+        "drive_send_attempted": 1289,
+        "drive_send_success": 1289,
+        "disable_attempted": 6
+      },
+      "query_failure_counters": {
+        "steering_position_query_failures": {
+          "first": 6.0,
+          "last": 361.0,
+          "increase": 355.0
+        },
+        "steering_velocity_query_failures": {
+          "first": 26.0,
+          "last": 169.0,
+          "increase": 143.0
+        },
+        "drive_position_query_failures": {
+          "first": 13.0,
+          "last": 56.0,
+          "increase": 43.0
+        },
+        "drive_velocity_query_failures": {
+          "first": 14.0,
+          "last": 558.0,
+          "increase": 544.0
+        }
+      }
+    },
+    "clock_checks": {
+      "motor_record_minus_tick_ms": {
+        "n": 24264,
+        "min": 0.27980742530075986,
+        "median": 0.472878742371563,
+        "p95": 1.5013798084382286,
+        "p99": 3.0258215656982625,
+        "max": 9.039735172493124,
+        "mean": 0.6204473240231863,
+        "std": 0.5030514272603291,
+        "rms": 0.798758799861502
+      },
+      "imu_publication_interval_ms": {
+        "n": 11835,
+        "min": 4.389047622680664,
+        "median": 10.00070571899414,
+        "p95": 10.68258285522461,
+        "p99": 11.054186820983887,
+        "max": 336.1508846282959,
+        "mean": 10.045641668244762,
+        "std": 3.5828581666247064,
+        "rms": 10.665448381053876
+      },
+      "imu_record_minus_publish_ms": {
+        "n": 11836,
+        "min": 0.2061174101584129,
+        "median": 0.3256331565566484,
+        "p95": 0.6158564905405228,
+        "p99": 1.0778661351508816,
+        "max": 331.782467913456,
+        "mean": 0.4123006872627447,
+        "std": 3.6188325471968295,
+        "rms": 3.642243932161659
+      },
+      "imu_publication_gaps_over_50ms": [
+        {
+          "before_record_s": 51.276721366000004,
+          "after_record_s": 51.281456865,
+          "before_publication_s": 50.94493889808655,
+          "after_publication_s": 51.281089782714844,
+          "gap_ms": 336.1508846282959
+        },
+        {
+          "before_record_s": 102.087212527,
+          "after_record_s": 102.09495249000001,
+          "before_publication_s": 101.87504887580872,
+          "after_publication_s": 102.09295201301575,
+          "gap_ms": 217.90313720703125
+        }
+      ]
+    },
+    "events": {
+      "rosout": [
+        {
+          "t": 0.0,
+          "stamp_s": 1790875920.8713827,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Press SPACE for pausing/resuming",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "RecorderImpl",
+          "line": 223
+        },
+        {
+          "t": 0.000762824,
+          "stamp_s": 1790875920.8713925,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Event publisher thread: Started",
+          "file": "./src/rosbag2_transport/recorder_event_notifier_impl.hpp",
+          "function": "event_publisher_thread_main",
+          "line": 169
+        },
+        {
+          "t": 0.000769472,
+          "stamp_s": 1790875920.879116,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Starting recording to 'rosbag2_2026_10_01-17_32_00'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "record",
+          "line": 313
+        },
+        {
+          "t": 0.0007697870000000001,
+          "stamp_s": 1790875920.8848603,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/rosout'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 0.00077012,
+          "stamp_s": 1790875920.8869975,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/events/write_split'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 0.0007703240000000001,
+          "stamp_s": 1790875920.8874052,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Listening for topics...",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "record",
+          "line": 338
+        },
+        {
+          "t": 0.0007705090000000001,
+          "stamp_s": 1790875920.8874934,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Recording...",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "record",
+          "line": 347
+        },
+        {
+          "t": 0.000770713,
+          "stamp_s": 1790875920.8874443,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Topics discovery started.",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "topics_discovery",
+          "line": 638
+        },
+        {
+          "t": 0.257952349,
+          "stamp_s": 1790875921.212958,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/parameter_events'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 0.598450535,
+          "stamp_s": 1790875921.553429,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/trackstand/motor_state'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 0.601559405,
+          "stamp_s": 1790875921.5562804,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/trackstand/motor_control'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 0.6045081840000001,
+          "stamp_s": 1790875921.5595016,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/trackstand/motor_event'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 0.6080013270000001,
+          "stamp_s": 1790875921.5629911,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/trackstand/motor_fault'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 0.611229177,
+          "stamp_s": 1790875921.5662267,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/trackstand/motor_status'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 0.6175430080000001,
+          "stamp_s": 1790875921.5722802,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/trackstand/motor_torque'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 3.1093141710000003,
+          "stamp_s": 1790875924.0642285,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/trackstand/imu'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 3.1131378470000004,
+          "stamp_s": 1790875924.0678782,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/trackstand/kickstands_up'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 49.053898326,
+          "stamp_s": 1790875970.0088851,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Subscribed to topic '/trackstand/motor_command'",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "subscribe_topic",
+          "line": 739
+        },
+        {
+          "t": 122.01145359,
+          "stamp_s": 1790876042.9663193,
+          "level": 20,
+          "node": "rosbag2_recorder",
+          "message": "Topics discovery stopped.",
+          "file": "./src/rosbag2_transport/recorder.cpp",
+          "function": "topics_discovery",
+          "line": 680
+        }
+      ],
+      "motor_event": [
+        {
+          "t": 51.286638488,
+          "disable_reasons": [],
+          "disable_send_errors": [],
+          "dry_run": false,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": true,
+          "monotonic_time_s": 3258.370660771,
+          "outputs_active": true,
+          "ros_time_s": 1790875972.2370589,
+          "sequence": 67908
+        },
+        {
+          "t": 51.496008136,
+          "disable_reasons": [
+            "command_timeout"
+          ],
+          "disable_send_errors": [],
+          "dry_run": false,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": false,
+          "monotonic_time_s": 3258.583579618,
+          "outputs_active": false,
+          "ros_time_s": 1790875972.4499567,
+          "sequence": 67949
+        },
+        {
+          "t": 60.676719694000006,
+          "disable_reasons": [],
+          "disable_send_errors": [],
+          "dry_run": false,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": true,
+          "monotonic_time_s": 3267.763472944,
+          "outputs_active": true,
+          "ros_time_s": 1790875981.6298535,
+          "sequence": 69784
+        },
+        {
+          "t": 62.736050090000006,
+          "disable_reasons": [
+            "command_timeout"
+          ],
+          "disable_send_errors": [],
+          "dry_run": false,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": false,
+          "monotonic_time_s": 3269.823481073,
+          "outputs_active": false,
+          "ros_time_s": 1790875983.6898572,
+          "sequence": 70194
+        },
+        {
+          "t": 71.63751577100001,
+          "disable_reasons": [],
+          "disable_send_errors": [],
+          "dry_run": false,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": true,
+          "monotonic_time_s": 3278.723712343,
+          "outputs_active": true,
+          "ros_time_s": 1790875992.5901406,
+          "sequence": 71972
+        },
+        {
+          "t": 71.899407737,
+          "disable_reasons": [
+            "command_timeout"
+          ],
+          "disable_send_errors": [],
+          "dry_run": false,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": false,
+          "monotonic_time_s": 3278.986893848,
+          "outputs_active": false,
+          "ros_time_s": 1790875992.8532794,
+          "sequence": 72024
+        },
+        {
+          "t": 72.17350766700001,
+          "disable_reasons": [],
+          "disable_send_errors": [],
+          "dry_run": false,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": true,
+          "monotonic_time_s": 3279.259248725,
+          "outputs_active": true,
+          "ros_time_s": 1790875993.1256394,
+          "sequence": 72079
+        },
+        {
+          "t": 74.001287382,
+          "disable_reasons": [
+            "command_timeout"
+          ],
+          "disable_send_errors": [],
+          "dry_run": false,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": false,
+          "monotonic_time_s": 3281.088571237,
+          "outputs_active": false,
+          "ros_time_s": 1790875994.9549475,
+          "sequence": 72443
+        },
+        {
+          "t": 85.907506174,
+          "disable_reasons": [],
+          "disable_send_errors": [],
+          "dry_run": false,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": true,
+          "monotonic_time_s": 3292.993854078,
+          "outputs_active": true,
+          "ros_time_s": 1790876006.8603187,
+          "sequence": 74824
+        },
+        {
+          "t": 86.971719793,
+          "disable_reasons": [
+            "command_timeout"
+          ],
+          "disable_send_errors": [],
+          "dry_run": false,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": false,
+          "monotonic_time_s": 3294.058579653,
+          "outputs_active": false,
+          "ros_time_s": 1790876007.9250193,
+          "sequence": 75036
+        },
+        {
+          "t": 102.34162138500001,
+          "disable_reasons": [],
+          "disable_send_errors": [],
+          "dry_run": false,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": true,
+          "monotonic_time_s": 3309.428541059,
+          "outputs_active": true,
+          "ros_time_s": 1790876023.2949176,
+          "sequence": 78110
+        },
+        {
+          "t": 103.40822100700001,
+          "disable_reasons": [
+            "command_timeout"
+          ],
+          "disable_send_errors": [],
+          "dry_run": false,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": false,
+          "monotonic_time_s": 3310.495650804,
+          "outputs_active": false,
+          "ros_time_s": 1790876024.3620334,
+          "sequence": 78320
+        },
+        {
+          "t": 115.46592903000001,
+          "disable_reasons": [
+            "enable_not_requested"
+          ],
+          "disable_send_errors": [],
+          "dry_run": false,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": false,
+          "monotonic_time_s": 3322.554049894,
+          "outputs_active": false,
+          "ros_time_s": 1790876036.4204311,
+          "sequence": 80731
+        },
+        {
+          "t": 115.55024655700001,
+          "disable_reasons": [
+            "enable_not_requested",
+            "command_timeout"
+          ],
+          "disable_send_errors": [],
+          "dry_run": false,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": false,
+          "monotonic_time_s": 3322.63839555,
+          "outputs_active": false,
+          "ros_time_s": 1790876036.5047982,
+          "sequence": 80748
+        }
+      ],
+      "policy_event": [],
+      "parameter_events": []
+    },
+    "motor_status_unique": [
+      {
+        "drive_torque_constant_nm_per_a": 0.30000001192092896,
+        "dry_run": false,
+        "fault_latched": false,
+        "outputs_active": false,
+        "steering_torque_constant_nm_per_a": 0.7799999713897705,
+        "torque_feedback_source": "measured A1/C0 Q-axis current times B0 torque constant"
+      },
+      {
+        "drive_torque_constant_nm_per_a": 0.30000001192092896,
+        "dry_run": false,
+        "fault_latched": false,
+        "outputs_active": true,
+        "steering_torque_constant_nm_per_a": 0.7799999713897705,
+        "torque_feedback_source": "measured A1/C0 Q-axis current times B0 torque constant"
+      }
+    ],
+    "imu": {
+      "invalid_indices": [],
+      "invalid_record_times_s": [],
+      "quaternion_norm": {
+        "n": 11836,
+        "min": 0.9999999999999999,
+        "median": 1.0,
+        "p95": 1.0,
+        "p99": 1.0000000000000002,
+        "max": 1.0000000000000002,
+        "mean": 1.0,
+        "std": 4.81687465046392e-17,
+        "rms": 1.0
+      },
+      "rpy_deg": {
+        "roll": {
+          "n": 11836,
+          "min": -2.9691584460105944,
+          "median": -0.7029254670868066,
+          "p95": 0.40361118320188094,
+          "p99": 1.227367028570005,
+          "max": 1.7934682094503591,
+          "mean": -0.7028717249247297,
+          "std": 0.6848366476285629,
+          "rms": 0.9813408661794296
+        },
+        "pitch": {
+          "n": 11836,
+          "min": -6.639684974979193,
+          "median": -2.033359779717765,
+          "p95": 0.015499097692482798,
+          "p99": 0.522131057853493,
+          "max": 1.107585763253579,
+          "mean": -1.998902375523035,
+          "std": 1.3195960614145055,
+          "rms": 2.3951919489202336
+        },
+        "yaw": {
+          "n": 11836,
+          "min": 88.99308018749785,
+          "median": 92.37469189965536,
+          "p95": 93.06582948394328,
+          "p99": 93.29296715723007,
+          "max": 93.71274814902912,
+          "mean": 92.34288898081512,
+          "std": 0.4896441600398213,
+          "rms": 92.34418713014159
+        }
+      },
+      "gyro_rad_s": {
+        "x": {
+          "n": 11836,
+          "min": -0.22903884345761338,
+          "median": 0.0,
+          "p95": 0.056460738154667484,
+          "p99": 0.12320159184126933,
+          "max": 0.22158176483341202,
+          "mean": 0.002281711970768706,
+          "std": 0.039234702813592995,
+          "rms": 0.03930099380917118
+        },
+        "y": {
+          "n": 11836,
+          "min": -0.35906161759341265,
+          "median": 0.0,
+          "p95": 0.08953861145741811,
+          "p99": 0.1644404581840978,
+          "max": 0.3414221238249374,
+          "mean": -0.0004850210721308691,
+          "std": 0.0584449802085331,
+          "rms": 0.05844699271148378
+        },
+        "z": {
+          "n": 11836,
+          "min": -0.4176895475965088,
+          "median": 0.0,
+          "p95": 0.10050569824532664,
+          "p99": 0.22300950478840856,
+          "max": 0.4284790456567942,
+          "mean": 0.001057562560740402,
+          "std": 0.06760728149070201,
+          "rms": 0.06761555256842097
+        }
+      },
+      "covariance_first_values": [
+        [
+          0.0,
+          0.0,
+          -1.0
+        ]
+      ]
+    },
+    "commands": {
+      "unique_values": [
+        [
+          1.0,
+          -0.02,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          -0.05
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.05
+        ],
+        [
+          1.0,
+          0.02,
+          0.0
+        ]
+      ],
+      "enabled_runs": [
+        {
+          "start_s": 49.147943213000005,
+          "end_s": 50.12884079450001,
+          "duration_s": 0.9808975815000025,
+          "samples": 49,
+          "first_index": 0,
+          "last_index": 48
+        },
+        {
+          "start_s": 50.446498723000005,
+          "end_s": 51.4291881345,
+          "duration_s": 0.9826894114999973,
+          "samples": 51,
+          "first_index": 49,
+          "last_index": 99
+        },
+        {
+          "start_s": 60.669116193,
+          "end_s": 62.670208131500004,
+          "duration_s": 2.0010919385000037,
+          "samples": 100,
+          "first_index": 100,
+          "last_index": 199
+        },
+        {
+          "start_s": 71.63291521500001,
+          "end_s": 71.8339487545,
+          "duration_s": 0.20103353949998848,
+          "samples": 10,
+          "first_index": 200,
+          "last_index": 209
+        },
+        {
+          "start_s": 72.16635453,
+          "end_s": 73.93419365950001,
+          "duration_s": 1.767839129500004,
+          "samples": 90,
+          "first_index": 210,
+          "last_index": 299
+        },
+        {
+          "start_s": 85.902756694,
+          "end_s": 86.90345425150001,
+          "duration_s": 1.000697557500004,
+          "samples": 50,
+          "first_index": 300,
+          "last_index": 349
+        },
+        {
+          "start_s": 102.91917673900001,
+          "end_s": 103.3386701265,
+          "duration_s": 0.41949338749999754,
+          "samples": 21,
+          "first_index": 350,
+          "last_index": 370
+        }
+      ],
+      "enabled_count": 371
+    },
+    "torque_feedback": {
+      "steering": {
+        "n": 1295,
+        "min": -5.1604798107147225,
+        "median": 0.036659998655319215,
+        "p95": 3.8655238582134226,
+        "p99": 4.729436226525306,
+        "max": 5.23691980791092,
+        "mean": 0.020972663323391354,
+        "std": 2.0230198589454265,
+        "rms": 2.023128567910218
+      },
+      "drive": {
+        "n": 1295,
+        "min": -0.12000000476837158,
+        "median": 0.0021000000834465026,
+        "p95": 0.05448000216484067,
+        "p99": 0.0693540027558803,
+        "max": 0.0912000036239624,
+        "mean": 0.00035119692515222275,
+        "std": 0.031483904788660866,
+        "rms": 0.0314858634949353
+      }
+    },
+    "encoder_consistency": {
+      "steering": {
+        "n": 814,
+        "correlation": 0.9247415638902223,
+        "gain": 1.0060778492469156,
+        "error_rms": 5.195458186973837
+      },
+      "drive": {
+        "n": 0
+      }
+    },
+    "imu_gyro_quaternion_consistency": {
+      "x": {
+        "n": 7088,
+        "correlation": 0.48283213592336943,
+        "gain": 0.25986787415432483,
+        "error_rms": 0.0781963899673121
+      },
+      "y": {
+        "n": 8015,
+        "correlation": 0.6143314686193803,
+        "gain": 0.44604850493153325,
+        "error_rms": 0.0743854902985786
+      },
+      "z": {
+        "n": 6049,
+        "correlation": 0.8990715071889844,
+        "gain": 1.041582182010328,
+        "error_rms": 0.04029320726738773
+      }
+    },
+    "powered_segments": [
+      {
+        "start_s": 51.28627860300001,
+        "end_s": 51.496168431,
+        "duration_s": 0.20988982799999434,
+        "samples": 41,
+        "first_index": 10131,
+        "last_index": 10171,
+        "steering_target_rad": 0.0,
+        "drive_target_nm": 0.0,
+        "steering_position_rad": {
+          "n": 41,
+          "min": 0.0015339807878858025,
+          "median": 0.0015339807878858025,
+          "p95": 0.0015339807878858025,
+          "p99": 0.0015339807878858025,
+          "max": 0.0015339807878858025,
+          "mean": 0.0015339807878858025,
+          "std": 0.0,
+          "rms": 0.0015339807878858025
+        },
+        "steering_velocity_rad_s": {
+          "n": 41,
+          "min": -0.05235987755982988,
+          "median": 0.0,
+          "p95": 0.03769911184307751,
+          "p99": 0.044610615680975074,
+          "max": 0.04921828490624009,
+          "mean": 0.000153248422126332,
+          "std": 0.025427464761980306,
+          "rms": 0.025427926563143806
+        },
+        "steering_final_torque_nm": {
+          "n": 41,
+          "min": -0.025183464860106045,
+          "median": -0.015339807878858025,
+          "p95": -0.004867832366892047,
+          "p99": -0.004867832366892047,
+          "max": -0.004867832366892047,
+          "mean": -0.01537045756328329,
+          "std": 0.005085492952396062,
+          "rms": 0.016189910570276866
+        },
+        "steering_error_rad": {
+          "n": 41,
+          "min": -0.0015339807878858025,
+          "median": -0.0015339807878858025,
+          "p95": -0.0015339807878858025,
+          "p99": -0.0015339807878858025,
+          "max": -0.0015339807878858025,
+          "mean": -0.0015339807878858025,
+          "std": 0.0,
+          "rms": 0.0015339807878858025
+        },
+        "steering_position_start_rad": 0.0015339807878858025,
+        "steering_position_end_rad": 0.0015339807878858025,
+        "steering_position_delta_rad": 0.0,
+        "drive_velocity_rad_s": {
+          "n": 41,
+          "min": -0.03769911184307751,
+          "median": -0.009424777960769378,
+          "p95": 0.029321531433504737,
+          "p99": 0.03937462792499208,
+          "max": 0.039793506945470715,
+          "mean": -0.007790128124755178,
+          "std": 0.01968803234278837,
+          "rms": 0.021173207450237257
+        },
+        "drive_position_start_rad": 0.9621894492012686,
+        "drive_position_end_rad": 0.9621894492012686,
+        "drive_position_delta_rad": 0.0,
+        "drive_position_rad": {
+          "n": 41,
+          "min": 0.9618059540042969,
+          "median": 0.9621894492012686,
+          "p95": 0.9621894492012686,
+          "p99": 0.9621894492012686,
+          "max": 0.9621894492012686,
+          "mean": 0.962180095659879,
+          "std": 5.915698995928746e-05,
+          "rms": 0.9621800974784313
+        },
+        "steering_feedback_torque_nm": {
+          "n": 41,
+          "min": -0.07643999719619751,
+          "median": -0.011699999570846557,
+          "p95": 0.019499999284744263,
+          "p99": 0.019499999284744263,
+          "max": 0.019499999284744263,
+          "mean": -0.013963901926831505,
+          "std": 0.023757342011756326,
+          "rms": 0.027557246895975124
+        },
+        "drive_feedback_torque_nm": {
+          "n": 41,
+          "min": -0.021900000870227813,
+          "median": 0.0021000000834465026,
+          "p95": 0.015600000619888307,
+          "p99": 0.016500000655651097,
+          "max": 0.017100000679492952,
+          "mean": -0.001726829336910713,
+          "std": 0.008104411177390303,
+          "rms": 0.008286339366151037
+        }
+      },
+      {
+        "start_s": 60.676601695,
+        "end_s": 62.736176496,
+        "duration_s": 2.0595748009999966,
+        "samples": 410,
+        "first_index": 12007,
+        "last_index": 12416,
+        "steering_target_rad": 0.02,
+        "drive_target_nm": 0.0,
+        "steering_position_rad": {
+          "n": 410,
+          "min": 0.0015339807878858025,
+          "median": 0.01572330307582792,
+          "p95": 0.01572330307582792,
+          "p99": 0.01802427425765618,
+          "max": 0.020708740636456113,
+          "mean": 0.015539973664592805,
+          "std": 0.0017885830007637886,
+          "rms": 0.015642564068811066
+        },
+        "steering_velocity_rad_s": {
+          "n": 410,
+          "min": -0.3047344873982099,
+          "median": 0.0,
+          "p95": 0.04293509959906051,
+          "p99": 0.06806784082777885,
+          "max": 1.142492528355488,
+          "mean": 0.004380350732444306,
+          "std": 0.10459830275136159,
+          "rms": 0.10468998238133734
+        },
+        "steering_final_torque_nm": {
+          "n": 410,
+          "min": -0.15888687264137752,
+          "median": 0.04276696924172079,
+          "p95": 0.05323894475368677,
+          "p99": 0.1756136938226621,
+          "max": 0.19617936518430457,
+          "mean": 0.043724193207583126,
+          "std": 0.023702629697468464,
+          "rms": 0.04973549764734814
+        },
+        "steering_error_rad": {
+          "n": 410,
+          "min": -0.0007087406364561129,
+          "median": 0.004276696924172079,
+          "p95": 0.004276696924172079,
+          "p99": 0.01836247550893189,
+          "max": 0.018466019212114198,
+          "mean": 0.004460026335407199,
+          "std": 0.0017885830007637886,
+          "rms": 0.004805295418925558
+        },
+        "steering_position_start_rad": 0.0015339807878858025,
+        "steering_position_end_rad": 0.01572330307582792,
+        "steering_position_delta_rad": 0.014189322287942119,
+        "drive_velocity_rad_s": {
+          "n": 410,
+          "min": -0.06702064327658225,
+          "median": -0.003141592653589793,
+          "p95": 0.05141739976375285,
+          "p99": 0.07625692567813618,
+          "max": 0.09948376736367678,
+          "mean": -0.0029908983718322344,
+          "std": 0.029907261532507428,
+          "rms": 0.030056442993881147
+        },
+        "drive_position_start_rad": 0.9621894492012686,
+        "drive_position_end_rad": 0.9621894492012686,
+        "drive_position_delta_rad": 0.0,
+        "drive_position_rad": {
+          "n": 410,
+          "min": 0.9618059540042969,
+          "median": 0.9621894492012686,
+          "p95": 0.9621894492012686,
+          "p99": 0.9621894492012686,
+          "max": 0.9621894492012686,
+          "mean": 0.9621043319746237,
+          "std": 0.00015936469284680353,
+          "rms": 0.9621043451733509
+        },
+        "steering_feedback_torque_nm": {
+          "n": 410,
+          "min": -0.12557999539375306,
+          "median": 0.04679999828338623,
+          "p95": 0.10919999599456788,
+          "p99": 0.1370693949723243,
+          "max": 0.17627999353408813,
+          "mean": 0.04453038861053746,
+          "std": 0.03989427284123744,
+          "rms": 0.0597871935730101
+        },
+        "drive_feedback_torque_nm": {
+          "n": 410,
+          "min": -0.059400002360343936,
+          "median": 0.0021000000834465026,
+          "p95": 0.015600000619888307,
+          "p99": 0.017100000679492952,
+          "max": 0.017100000679492952,
+          "mean": -0.0001492682986143154,
+          "std": 0.010261926816149349,
+          "rms": 0.01026301237478433
+        }
+      },
+      {
+        "start_s": 71.637311588,
+        "end_s": 71.901671376,
+        "duration_s": 0.26435978799999305,
+        "samples": 52,
+        "first_index": 14195,
+        "last_index": 14246,
+        "steering_target_rad": -0.02,
+        "drive_target_nm": 0.0,
+        "steering_position_rad": {
+          "n": 52,
+          "min": -0.23891750771318865,
+          "median": 0.0026844663787999323,
+          "p95": 0.21585027161535789,
+          "p99": 0.2960467872060196,
+          "max": 0.30641266238015685,
+          "mean": -0.001519230972617499,
+          "std": 0.12170646217799425,
+          "rms": 0.12171594389656479
+        },
+        "steering_velocity_rad_s": {
+          "n": 52,
+          "min": -20.87169439289939,
+          "median": -0.03298672286269283,
+          "p95": 14.874551096829137,
+          "p99": 21.386915588088115,
+          "max": 21.386915588088115,
+          "mean": -0.30437199593818026,
+          "std": 9.573205758985694,
+          "rms": 9.57804316213851
+        },
+        "steering_final_torque_nm": {
+          "n": 52,
+          "min": -5.342250076119961,
+          "median": -0.1785119971232985,
+          "p95": 3.3614080159413584,
+          "p99": 3.9410184105851287,
+          "max": 4.544286372357211,
+          "mean": -0.12393329108618897,
+          "std": 2.2665831821502804,
+          "rms": 2.269968894554713
+        },
+        "steering_error_rad": {
+          "n": 52,
+          "min": -0.32641266238015687,
+          "median": -0.022684466378799933,
+          "p95": 0.21807381827985145,
+          "p99": 0.21891750771318866,
+          "max": 0.21891750771318866,
+          "mean": -0.0184807690273825,
+          "std": 0.12170646217799425,
+          "rms": 0.12310159121525201
+        },
+        "steering_position_start_rad": 0.01572330307582792,
+        "steering_position_end_rad": 0.03681553890925526,
+        "steering_position_delta_rad": 0.021092235833427342,
+        "drive_velocity_rad_s": {
+          "n": 52,
+          "min": -0.1392772743091475,
+          "median": -0.006283185307179586,
+          "p95": 0.12875293891962128,
+          "p99": 0.1811651763570114,
+          "max": 0.1811651763570114,
+          "mean": 0.0025575786346532297,
+          "std": 0.05987419527401727,
+          "rms": 0.05992879498357686
+        },
+        "drive_position_start_rad": 0.9621894492012686,
+        "drive_position_end_rad": 0.9618059540042969,
+        "drive_position_delta_rad": -0.00038349519697167267,
+        "drive_position_rad": {
+          "n": 52,
+          "min": 0.9614224588073252,
+          "median": 0.9618059540042969,
+          "p95": 0.9621894492012686,
+          "p99": 0.9621894492012686,
+          "max": 0.9621894492012686,
+          "mean": 0.9619755768798804,
+          "std": 0.00021815270978076134,
+          "rms": 0.9619756016157499
+        },
+        "steering_feedback_torque_nm": {
+          "n": 52,
+          "min": -4.89371982049942,
+          "median": -0.03236999881267548,
+          "p95": 2.5158509077191336,
+          "p99": 3.457911473164561,
+          "max": 4.165199847221374,
+          "mean": -0.15371999436158407,
+          "std": 1.7135645397224033,
+          "rms": 1.7204456598395017
+        },
+        "drive_feedback_torque_nm": {
+          "n": 51,
+          "min": -0.059400002360343936,
+          "median": 0.0015000000596046448,
+          "p95": 0.015600000619888307,
+          "p99": 0.016500000655651093,
+          "max": 0.016500000655651093,
+          "mean": -0.0020411765516973007,
+          "std": 0.012462700553138587,
+          "rms": 0.012628749217258206
+        }
+      },
+      {
+        "start_s": 72.173485537,
+        "end_s": 74.000982793,
+        "duration_s": 1.827497256000001,
+        "samples": 364,
+        "first_index": 14302,
+        "last_index": 14665,
+        "steering_target_rad": -0.02,
+        "drive_target_nm": 0.0,
+        "steering_position_rad": {
+          "n": 364,
+          "min": -0.3301893645923841,
+          "median": -0.04812864721991206,
+          "p95": 0.22756604988283477,
+          "p99": 0.2858228052547618,
+          "max": 0.3413107253045551,
+          "mean": -0.033148102698657894,
+          "std": 0.1619292535349502,
+          "rms": 0.16528726467246938
+        },
+        "steering_velocity_rad_s": {
+          "n": 364,
+          "min": -22.091679540043426,
+          "median": 0.018849555921538756,
+          "p95": 20.21431613013572,
+          "p99": 21.442417058301533,
+          "max": 21.84663531306342,
+          "mean": 0.1300855265726827,
+          "std": 13.213856101108233,
+          "rms": 13.21449640754497
+        },
+        "steering_final_torque_nm": {
+          "n": 364,
+          "min": -5.6,
+          "median": 0.03156851255458776,
+          "p95": 4.7857515153629215,
+          "p99": 5.567370563691333,
+          "max": 5.6,
+          "mean": 0.10180350671908268,
+          "std": 3.0874105983587254,
+          "rms": 3.089088564097521
+        },
+        "steering_error_rad": {
+          "n": 364,
+          "min": -0.3613107253045551,
+          "median": 0.028128647219912057,
+          "p95": 0.24110270485798482,
+          "p99": 0.29983499427415605,
+          "max": 0.3101893645923841,
+          "mean": 0.012985601291978803,
+          "std": 0.16179270699397805,
+          "rms": 0.16231298739581337
+        },
+        "steering_position_start_rad": -0.19865051203119055,
+        "steering_position_end_rad": -0.09855826562165237,
+        "steering_position_delta_rad": 0.10009224640953818,
+        "drive_velocity_rad_s": {
+          "n": 364,
+          "min": -0.16650441064025903,
+          "median": 0.003141592653589793,
+          "p95": 0.11728612573401895,
+          "p99": 0.17802358370342158,
+          "max": 0.19896753472735357,
+          "mean": 0.006639922934510295,
+          "std": 0.06214084812972037,
+          "rms": 0.06249458842857682
+        },
+        "drive_position_start_rad": 0.9618059540042969,
+        "drive_position_end_rad": 0.9610389636103545,
+        "drive_position_delta_rad": -0.0007669903939424572,
+        "drive_position_rad": {
+          "n": 364,
+          "min": 0.9606554684133828,
+          "median": 0.9614224588073252,
+          "p95": 0.9618059540042969,
+          "p99": 0.9621894492012686,
+          "max": 0.9625729443982394,
+          "mean": 0.9613602988715527,
+          "std": 0.00033720941321422064,
+          "rms": 0.961360358011807
+        },
+        "steering_dominant_frequency_hz": 14.246575342465754,
+        "steering_feedback_torque_nm": {
+          "n": 364,
+          "min": -5.058299814462662,
+          "median": 0.0,
+          "p95": 4.237544844567775,
+          "p99": 5.028823615543843,
+          "max": 5.138639811515808,
+          "mean": 0.0020442856393017507,
+          "std": 2.4547492266253443,
+          "rms": 2.4547500778534466
+        },
+        "drive_feedback_torque_nm": {
+          "n": 364,
+          "min": -0.06030000239610672,
+          "median": 0.0015000000596046448,
+          "p95": 0.016500000655651093,
+          "p99": 0.028833001145720485,
+          "max": 0.042900001704692846,
+          "mean": -0.0002876373740670443,
+          "std": 0.011988316029550465,
+          "rms": 0.011991766195324893
+        }
+      },
+      {
+        "start_s": 85.90737025,
+        "end_s": 86.971718627,
+        "duration_s": 1.0643483770000017,
+        "samples": 212,
+        "first_index": 17047,
+        "last_index": 17258,
+        "steering_target_rad": 0.0,
+        "drive_target_nm": 0.05,
+        "steering_position_rad": {
+          "n": 212,
+          "min": -0.383111701774439,
+          "median": 0.02876213977285591,
+          "p95": 0.29912625363769996,
+          "p99": 0.37309864218151534,
+          "max": 0.3842621873653531,
+          "mean": 0.01580289641859547,
+          "std": 0.1901438018225478,
+          "rms": 0.19079936296211578
+        },
+        "steering_velocity_rad_s": {
+          "n": 212,
+          "min": -22.309496630692315,
+          "median": -0.3502875808752619,
+          "p95": 19.774126639490234,
+          "p99": 21.921080586977983,
+          "max": 22.097962725350605,
+          "mean": -0.6590824285899035,
+          "std": 14.39528077912007,
+          "rms": 14.410360799000824
+        },
+        "steering_final_torque_nm": {
+          "n": 212,
+          "min": -5.6,
+          "median": -0.2443210061712101,
+          "p95": 4.615498663206396,
+          "p99": 5.594495338843208,
+          "max": 5.6,
+          "mean": -0.00797087479324203,
+          "std": 3.3603163600632855,
+          "rms": 3.3603258137499012
+        },
+        "steering_error_rad": {
+          "n": 212,
+          "min": -0.3842621873653531,
+          "median": -0.02876213977285591,
+          "p95": 0.23391289539271176,
+          "p99": 0.383111701774439,
+          "max": 0.383111701774439,
+          "mean": -0.015396984033799832,
+          "std": 0.18982988852720292,
+          "rms": 0.19045328481175475
+        },
+        "steering_position_start_rad": 0.20555342557667577,
+        "steering_position_end_rad": 0.15876701154616368,
+        "steering_position_delta_rad": -0.04678641403051209,
+        "drive_velocity_rad_s": {
+          "n": 212,
+          "min": -0.34348079679248406,
+          "median": -0.005759586531581287,
+          "p95": 0.057491145560693194,
+          "p99": 0.07796385768658663,
+          "max": 0.1864011641129944,
+          "mean": -0.015228820992165616,
+          "std": 0.055903136476740736,
+          "rms": 0.05794029389594538
+        },
+        "drive_position_start_rad": 0.9614224588073252,
+        "drive_position_end_rad": 0.9518350788830405,
+        "drive_position_delta_rad": -0.009587379924284711,
+        "drive_position_rad": {
+          "n": 212,
+          "min": 0.9518350788830405,
+          "median": 0.9581627496330687,
+          "p95": 0.9610389636103545,
+          "p99": 0.9614224588073252,
+          "max": 0.9614224588073252,
+          "mean": 0.9578425673223896,
+          "std": 0.002439300565024845,
+          "rms": 0.957845673353486
+        },
+        "steering_dominant_frequency_hz": 14.150943396226413,
+        "steering_feedback_torque_nm": {
+          "n": 212,
+          "min": -5.1604798107147225,
+          "median": -0.06239999771118164,
+          "p95": 4.002647853183746,
+          "p99": 5.026405615632528,
+          "max": 5.194019809484482,
+          "mean": 0.04520320588912604,
+          "std": 2.628739915072723,
+          "rms": 2.629128538302987
+        },
+        "drive_feedback_torque_nm": {
+          "n": 212,
+          "min": -0.0,
+          "median": 0.05040000200271607,
+          "p95": 0.07087500281631945,
+          "p99": 0.08567100340425964,
+          "max": 0.0912000036239624,
+          "mean": 0.05066745484353236,
+          "std": 0.013598860340057339,
+          "rms": 0.05246065175795833
+        }
+      },
+      {
+        "start_s": 102.34149246000001,
+        "end_s": 103.407689828,
+        "duration_s": 1.0661973679999903,
+        "samples": 210,
+        "first_index": 20333,
+        "last_index": 20542,
+        "steering_target_rad": 0.0,
+        "drive_target_nm": -0.05,
+        "steering_position_rad": {
+          "n": 210,
+          "min": -0.40113597603209517,
+          "median": -0.010929613113685344,
+          "p95": 0.24472745994730546,
+          "p99": 0.2729220268286437,
+          "max": 0.2761165418194156,
+          "mean": -0.020228458556439597,
+          "std": 0.18005317921649713,
+          "rms": 0.18118592075969267
+        },
+        "steering_velocity_rad_s": {
+          "n": 210,
+          "min": -21.955543858387866,
+          "median": 3.6882297753144173,
+          "p95": 20.405743842494456,
+          "p99": 21.45725584760199,
+          "max": 21.91784474654479,
+          "mean": 1.1862853326155287,
+          "std": 14.557248479892328,
+          "rms": 14.605504311584253
+        },
+        "steering_final_torque_nm": {
+          "n": 210,
+          "min": -5.581047530333137,
+          "median": -0.017756543477475795,
+          "p95": 4.915536285509796,
+          "p99": 5.6,
+          "max": 5.6,
+          "mean": -0.04655973715106324,
+          "std": 3.3641042548231685,
+          "rms": 3.364426436473671
+        },
+        "steering_error_rad": {
+          "n": 210,
+          "min": -0.2761165418194156,
+          "median": 0.010929613113685344,
+          "p95": 0.3045718854346937,
+          "p99": 0.3988350048502669,
+          "max": 0.40113597603209517,
+          "mean": 0.01978215698731529,
+          "std": 0.17969003645839562,
+          "rms": 0.1807756702034052
+        },
+        "steering_position_start_rad": -0.21322332951610434,
+        "steering_position_end_rad": 0.09510680884890954,
+        "steering_position_delta_rad": 0.3083301383650139,
+        "drive_velocity_rad_s": {
+          "n": 210,
+          "min": -0.16545721308906244,
+          "median": 0.0,
+          "p95": 0.09168214560726211,
+          "p99": 0.2055962952264278,
+          "max": 0.268082573106329,
+          "mean": 0.0031665259286182833,
+          "std": 0.057137119385586986,
+          "rms": 0.05722479618259406
+        },
+        "drive_position_start_rad": 0.9533690596709263,
+        "drive_position_end_rad": 0.9614224588073252,
+        "drive_position_delta_rad": 0.008053399136398909,
+        "drive_position_rad": {
+          "n": 210,
+          "min": 0.9533690596709263,
+          "median": 0.956437021246697,
+          "p95": 0.9602719732164111,
+          "p99": 0.961004449042627,
+          "max": 0.9614224588073252,
+          "mean": 0.9568095594380407,
+          "std": 0.0018311316859010896,
+          "rms": 0.9568113116363481
+        },
+        "steering_dominant_frequency_hz": 14.084507042253522,
+        "steering_feedback_torque_nm": {
+          "n": 210,
+          "min": -4.958459818124771,
+          "median": -0.024179999113082884,
+          "p95": 4.122689848780632,
+          "p99": 4.858963021774292,
+          "max": 5.23691980791092,
+          "mean": 0.01629828511646816,
+          "std": 2.6410005316735075,
+          "rms": 2.641050821623372
+        },
+        "drive_feedback_torque_nm": {
+          "n": 210,
+          "min": -0.12000000476837158,
+          "median": -0.059400002360343936,
+          "p95": -0.004500000178813934,
+          "p99": -0.0,
+          "max": 0.012600000500679017,
+          "mean": -0.047372859025285353,
+          "std": 0.02372576705371706,
+          "rms": 0.05298207050047031
+        }
+      }
+    ],
+    "current_response": {
+      "steering": {
+        "submitted_c0_count": 1295,
+        "feedback_count": 1295,
+        "receipt_minus_tick_start_ms": {
+          "n": 1295,
+          "min": 1.009225845336914,
+          "median": 3.616809844970703,
+          "p95": 6.231355667114258,
+          "p99": 7.590618133544921,
+          "max": 10.802507400512695,
+          "mean": 3.8436619011131494,
+          "std": 1.293862753563141,
+          "rms": 4.055590910721487
+        },
+        "same_order_command_feedback": {
+          "n": 1295,
+          "correlation": 0.8794843247229743,
+          "gain": 0.6939777457578322,
+          "error_rms": 1.2420364989576085
+        },
+        "preceding_command_feedback": {
+          "n": 1294,
+          "correlation": 0.9383766722226838,
+          "gain": 0.7404421264573834,
+          "error_rms": 0.965643306168617
+        }
+      },
+      "drive": {
+        "submitted_c0_count": 1295,
+        "feedback_count": 1295,
+        "receipt_minus_tick_start_ms": {
+          "n": 1295,
+          "min": 2.148151397705078,
+          "median": 4.6405792236328125,
+          "p95": 7.62650966644287,
+          "p99": 9.450726509094237,
+          "max": 14.934539794921875,
+          "mean": 4.877305859304303,
+          "std": 1.521248830100723,
+          "rms": 5.109042028432229
+        },
+        "same_order_command_feedback": {
+          "n": 1295,
+          "correlation": 0.8871006588612376,
+          "gain": 0.9657912772834178,
+          "error_rms": 0.014567534693908524
+        },
+        "preceding_command_feedback": {
+          "n": 1294,
+          "correlation": 0.8948416583282094,
+          "gain": 0.97421844150975,
+          "error_rms": 0.014080828723834132
+        }
+      }
+    },
+    "control_equation_check": {
+      "samples": 1289,
+      "steering_max_error_nm": 0.0,
+      "drive_max_error_nm": 0.0
+    },
+    "first_reversal_threshold_times_s": {
+      "5": 71.75959245300001,
+      "10": 71.830112106,
+      "15": 71.867753413
+    }
+  }
+}

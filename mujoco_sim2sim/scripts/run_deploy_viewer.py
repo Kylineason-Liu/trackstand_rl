@@ -28,8 +28,10 @@ env reads the base velocities straight from base_free's qvel (see env.py's
 observe()), so no imu site exists to render. deploy_sim on the augmented
 model defaults to the trackstand model_41050 policy export.
 
-Requires a display (local desktop or X forwarding). Close the window or
-press Esc to quit.
+Starts 64 independent environments by default, shown as a render-only grid in
+one window. Use --num_envs 1 for the original single-bike view. Physics is
+stepped on the CPU; 50 Hz is the simulated control rate, not a wall-time promise.
+Requires a display (local desktop or X forwarding). Close the window or press Esc to quit.
 
 Usage:
     python scripts/run_deploy_viewer.py --task deploy_sim --seed 42
@@ -61,9 +63,10 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "src"))
 
 from newbike_mujoco import BikeBalanceEnv, DeployedPolicy, compose_scene_xml  # noqa: E402
+from newbike_mujoco.viewer_envs import ViewerEnvGroup  # noqa: E402
 
 
-def write_metrics_log(ep_records, log_path):
+def write_metrics_log(ep_records, log_path, num_envs=1):
     """play_eval-style summary over the viewer's episodes, to a log file."""
     n = len(ep_records)
     lens = np.array([r[0] for r in ep_records], dtype=float)
@@ -86,6 +89,7 @@ def write_metrics_log(ep_records, log_path):
     lines = []
     add = lines.append
     add("===== DEPLOY_SIM METRICS (MuJoCo, play_eval-style) =====")
+    add(f"  environments           : {num_envs}")
     add(f"  episodes               : {n}")
     add(f"  mean_episode_length    : {np.mean(lens):9.1f} steps  ({np.mean(lens) * 0.02:6.2f} s)")
     add(f"  min/max episode length : {np.min(lens):9.1f} / {np.max(lens):9.1f}")
@@ -139,6 +143,44 @@ def _plot_torque_traces(tau_eps, drive_lim, steer_lim, out_base):
     plt.close(fig)
     np.savez(out_base + "_torque_profile.npz", steps=steps, boundaries=boundaries, drive=drive, steer=steer)
     print(f"[INFO] torque profile written to: {out_base}_torque_profile.png / .npz")
+
+
+def _plot_multi_torque_traces(traces, resets, drive_lim, steer_lim, out_base, seed):
+    """All environments on a shared control-step axis; preserve IDs in the NPZ."""
+    torque = np.asarray(traces)
+    steps = np.arange(len(torque))
+    fig, axes = plt.subplots(2, 1, figsize=(10, 8), sharex=True)
+    for ax, values, limit, name in (
+        (axes[0], torque[:, :, 0], drive_lim, "drive"),
+        (axes[1], torque[:, :, 1], steer_lim, "steer"),
+    ):
+        ax.plot(steps, values, color="#1f77b4", alpha=0.15, lw=0.5)
+        ax.plot(steps, values.mean(axis=1), color="black", lw=0.9, label="mean across environments")
+        ax.axhline(limit, color="gray", ls="--", lw=0.8)
+        ax.axhline(-limit, color="gray", ls="--", lw=0.8)
+        ax.set_ylim(-1.15 * limit, 1.15 * limit)
+        ax.set_ylabel(f"{name} torque (N m)")
+        ax.legend(fontsize=8)
+    axes[0].set_title(f"Applied motor torque — {torque.shape[1]} independent environments")
+    axes[-1].set_xlabel("global control step (0.02 s each)")
+    fig.tight_layout()
+    fig.savefig(out_base + "_torque_profile.png", dpi=150)
+    plt.close(fig)
+    np.savez(
+        out_base + "_torque_profile.npz", steps=steps,
+        drive=torque[:, :, 0], steer=torque[:, :, 1],
+        env_ids=np.arange(torque.shape[1]), seeds=seed + np.arange(torque.shape[1]),
+        reset_events=np.asarray(resets, dtype=int).reshape(-1, 2),
+        control_dt=BikeBalanceEnv.CTRL_DT,
+    )
+    print(f"[INFO] all-environment torque profile written: {out_base}_torque_profile.png / .npz")
+
+
+def _positive_int(value):
+    number = int(value)
+    if number < 1:
+        raise argparse.ArgumentTypeError("must be at least 1")
+    return number
 
 
 TRACKSTAND_EXPORT_ONNX = ("/home/lmbike/lmbike_cyclerl-mod/isaaclab_train/scripts/deployment/"
@@ -265,6 +307,9 @@ def main():
     ap.add_argument("--pt", default=None,
                     help="Deploy torch checkpoint (same defaulting as --onnx).")
     ap.add_argument("--seed", type=int, default=42)
+    ap.add_argument("--num_envs", type=_positive_int, default=64,
+                    help="Number of independent bikes shown in one viewer (default: 64); "
+                         "use 1 for the original single-bike view. CPU physics, seeds seed+i.")
     ap.add_argument("--dr", action="store_true",
                     help="enable the domain-randomization terms (the sim's BalanceEventsCfg): "
                          "per-episode mass/COM/tire-friction/actuator-gain randomization, "
@@ -285,19 +330,25 @@ def main():
         trackstand_mode = False
         print(f"[INFO] loading scene: {args.scene}")
         env = BikeBalanceEnv(scene_path=args.scene, seed=args.seed, enable_dr=args.dr)
+    group = ViewerEnvGroup(env, args.num_envs, args.seed)
+    print(f"[INFO] environments: {args.num_envs}; independent seeds {args.seed}.."
+          f"{args.seed + args.num_envs - 1}; CPU physics, batched policy inference")
     dr_state = ("ON (per-episode mass/COM/friction/gain DR + DR initial state + IMU residuals)"
                 if args.dr else "off")
     print(f"[INFO] domain randomization: {dr_state}")
     if args.base_inertia != 1.0:
-        m = env.model
-        m.body_inertia[mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_BODY, "base_link")] *= args.base_inertia
-        if args.dr:
-            env.refresh_dr_nominal()  # keep the scaled inertia as the DR baseline
+        for instance in group.envs:
+            m = instance.model
+            m.body_inertia[mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_BODY, "base_link")] *= args.base_inertia
+            if args.dr:
+                instance.refresh_dr_nominal()  # keep scaled inertia as the DR baseline
         print(f"[INFO] base inertia scaled x{args.base_inertia}")
 
     auto_reset = True
     tau_eps = []  # per-episode (drive, steer) applied-torque traces
     ep_tau = []
+    torque_traces = []  # per-global-step (num_envs, 2), drive then steering
+    reset_events = []  # (global step, environment ID)
     drive_lim = steer_lim = None
     if args.task == "deploy_sim":
         onnx_path = args.onnx if args.onnx is not None else (
@@ -310,7 +361,8 @@ def main():
         # deploy_sim terminations: the env's default envelope — time_out
         # (1500 steps, resets the episode) + fallen (roll limit); the other
         # terms (yaw / wheel-net / drift / diverged) were DELETED from the env
-        env.enabled_terms = {"time_out", "fallen"}
+        for instance in group.envs:
+            instance.enabled_terms = {"time_out", "fallen"}
         print("[INFO] terminations: time_out (1500 steps) + fallen (roll limit)")
         # torque tracing: data.actuator_force = the post-forcerange-clip applied
         # torque (the MuJoCo analog of the sim's applied_torque)
@@ -322,53 +374,66 @@ def main():
         policy = None
         print(f"[INFO] task={args.task}  (actuators disabled — free dynamics only)")
         # zero the actuator gains so even the servo/damping terms are inert
-        m = env.model
-        for i in range(m.nu):
-            m.actuator_gainprm[i, 0] = 0.0
-            m.actuator_gainprm[i, 1] = 0.0
-            m.actuator_biasprm[i, :] = 0.0
-        if args.dr:
-            env.refresh_dr_nominal()  # keep the zeroed gains as the DR baseline (0*scale = 0)
+        for instance in group.envs:
+            m = instance.model
+            m.actuator_gainprm[:, :2] = 0.0
+            m.actuator_biasprm[:, :] = 0.0
+            if args.dr:
+                instance.refresh_dr_nominal()  # zero remains zero after gain DR
         if args.lock_steer:
-            env.lock_steer = True
+            for instance in group.envs:
+                instance.lock_steer = True
+                instance.reset_ranges = ((-0.35, 0.35), (-1.5, 1.5))
             # strong initial lean so the bike topples within ~1 s, before any
             # forward roll-away can build up
-            env.reset_ranges = ((-0.35, 0.35), (-1.5, 1.5))
             print("[INFO] steering welded at 0 (--lock_steer), strong reset perturbation")
         if args.task == "free_fall":
             auto_reset = False
-            env.reset_ranges = ((-0.35, 0.35), (-1.5, 1.5))
+            for instance in group.envs:
+                instance.reset_ranges = ((-0.35, 0.35), (-1.5, 1.5))
             print("[INFO] free_fall: no auto-reset — the bike falls once and stays")
 
-    obs = env.reset()
-    ep = 1
-    announced = False
+    obs = group.reset()
+    episodes = np.ones(args.num_envs, dtype=int)
+    announced = np.zeros(args.num_envs, dtype=bool)
+    global_step = 0
     ep_records = []  # (length, death, EpisodeStats) for the metrics log
     t_next = time.perf_counter()
     with mujoco.viewer.launch_passive(env.model, env.data) as viewer:
+        with viewer.lock():
+            group.configure_camera(viewer.cam)
+            group.update_scene(viewer.user_scn, viewer.opt)
         print("[INFO] viewer open — close the window (or press Esc) to quit")
         while viewer.is_running():
-            action = policy.act(obs) if policy is not None else (0.0, 0.0)
-            obs, done = env.step(action)
+            actions = policy.act_batch(obs) if policy is not None else np.zeros((args.num_envs, 2))
+            obs, done, torque = group.step(actions)
+            global_step += 1
             if args.task == "deploy_sim":
-                d = env.data
-                ep_tau.append((float(d.actuator_force[drive_act.id]),
-                               float(d.actuator_force[steer_act.id])))
+                if args.num_envs == 1:
+                    ep_tau.append(tuple(torque[0]))
+                else:
+                    torque_traces.append(torque)
+            with viewer.lock():
+                group.update_scene(viewer.user_scn, viewer.opt)
             viewer.sync()
-            if done:
-                s = env.stats
+            for index in np.flatnonzero(done):
+                instance = group.envs[index]
+                s = instance.stats
                 if auto_reset:
-                    print(f"episode {ep:3d}: {s.length:5d} steps ({s.length * 0.02:5.2f} s)  "
+                    prefix = f"env {index:3d}: " if args.num_envs > 1 else ""
+                    print(f"{prefix}episode {episodes[index]:3d}: {s.length:5d} steps ({s.length * 0.02:5.2f} s)  "
                           f"{'timeout' if s.timeout else s.death}")
                     if args.task == "deploy_sim":
                         ep_records.append((s.length, s.death, s))
-                        tau_eps.append(np.array(ep_tau))
-                        ep_tau = []
-                    ep += 1
-                    obs = env.reset()
-                elif not announced:
-                    print(f"bike fell: {s.death} at step {s.length} — simulating on, no reset")
-                    announced = True
+                        reset_events.append((global_step, index))
+                        if args.num_envs == 1:
+                            tau_eps.append(np.array(ep_tau))
+                            ep_tau = []
+                    episodes[index] += 1
+                    obs[index] = instance.reset()
+                elif not announced[index]:
+                    print(f"env {index}: bike fell: {s.death} at step {s.length} — simulating on, no reset")
+                    announced[index] = True
             # pace to (approximately) real time: 0.02 s per control step
             t_next += 0.02 / args.speed
             delay = t_next - time.perf_counter()
@@ -380,11 +445,14 @@ def main():
     if args.task == "deploy_sim":
         if ep_tau:
             tau_eps.append(np.array(ep_tau))  # the partial episode before the window closed
-        out_base = os.path.join(ROOT, "logs", f"deploy_sim_{time.strftime('%m%d%H%M')}")
+        out_base = os.path.join(ROOT, "logs", f"deploy_sim_{time.strftime('%m%d%H%M%S')}")
+        os.makedirs(os.path.dirname(out_base), exist_ok=True)
         if ep_records:
-            write_metrics_log(ep_records, out_base + ".log")
+            write_metrics_log(ep_records, out_base + ".log", num_envs=args.num_envs)
         if tau_eps:
             _plot_torque_traces(tau_eps, drive_lim, steer_lim, out_base)
+        if torque_traces:
+            _plot_multi_torque_traces(torque_traces, reset_events, drive_lim, steer_lim, out_base, args.seed)
 
 
 if __name__ == "__main__":

@@ -6,7 +6,7 @@
 """Deterministic variant of train.py for skrl.
 
 Same CLI surface as scripts/skrl/train.py, plus the sweep flags mirrored from
-scripts/rsl_rl/train_deterministic.py (--no_dr, --survival_w/--drive_w/
+scripts/rsl_rl/train_deterministic.py (--dr, --survival_w/--drive_w/
 --steer_w/--arp_w, --run_name). Unlike train.py, determinism is ALWAYS on:
 TF32 off, cuDNN deterministic, torch.use_deterministic_algorithms(True) and
 configure_seed(seed, torch_deterministic=True), so with a fixed --seed two runs
@@ -88,8 +88,8 @@ parser.add_argument(
 )
 # -- sweep flags (mirror scripts/rsl_rl/train_deterministic.py) ---------------
 parser.add_argument(
-    "--no_dr", action="store_true", default=False,
-    help="Disable domain randomization by pinning the dr_ramp curriculum to alpha=0.",
+    "--dr", action="store_true", default=False,
+    help="Enable full per-episode domain randomization (off by default); observation white noise is unchanged.",
 )
 parser.add_argument("--survival_w", type=float, default=None,
     help="Override the survival reward weight (kept at the env-cfg value if omitted). 0 disables the term.")
@@ -256,16 +256,9 @@ def main():
 
     apply_terrain_preset(env_cfg, args_cli.terrain)
 
-    # --no_dr: pin the DR ramp to alpha=0 (all randomized terms stay nominal).
-    # Same mechanism as editing dr_ramp's end_step, but per-run. No-op if the
-    # task has no dr_ramp curriculum term.
-    if args_cli.no_dr:
-        dr_ramp = getattr(getattr(env_cfg, "curriculum", None), "dr_ramp", None)
-        if dr_ramp is not None:
-            dr_ramp.params["end_step"] = 10**9
-            print("[INFO] --no_dr: domain randomization disabled (dr_ramp alpha pinned to 0).")
-        else:
-            print("[WARN] --no_dr: task has no 'dr_ramp' curriculum term; nothing to disable.")
+    from scripts.domain_randomization import configure_domain_randomization
+
+    configure_domain_randomization(env_cfg, args_cli.dr)
 
     # --survival_w / --drive_w / --steer_w / --arp_w: per-run overrides of reward-term
     # weights. A weight of 0 disables the term entirely (set to None so its func isn't

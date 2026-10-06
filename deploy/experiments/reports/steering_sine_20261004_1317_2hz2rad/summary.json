@@ -1,0 +1,128 @@
+{
+  "source": "/home/lmbike/trackstand_rl/deploy/experiments/logs/motor_feedback_202610041317_2hz2rad.csv",
+  "source_sha256": "89e762817ee74b96fab25d39483cee404ef1955ab71eb86928f5ffdb1a168f77",
+  "total_rows": 15574,
+  "steering_feedback_rows": 5812,
+  "steering_c2_rows": 3950,
+  "collector_zero_count": -1113,
+  "radians_per_native_count_in_logged_coordinates": -0.0003834951969714103,
+  "recording_duration_s": 29.494574449000083,
+  "c2_observed_start_s": 4.498764208000011,
+  "c2_observed_end_s": 24.534536594999736,
+  "command_min_rad": -1.9999274522059047,
+  "command_max_rad": 1.9999274522059047,
+  "command_peak_to_peak_rad": 3.9998549044118095,
+  "period_median_s": 0.4999368650150995,
+  "period_crossing_count": 40,
+  "timestamp_semantics": "Host-receipt elapsed timestamps on one recorder monotonic clock; no phase shifts",
+  "traces": [
+    {
+      "name": "C2 position command",
+      "valid_samples": 3950,
+      "missing_values_at_known_times": 0,
+      "min": -1.9999274522059047,
+      "max": 1.9999274522059047,
+      "mean_observed_rate_hz": 197.09746765551805,
+      "median_interval_ms": 5.05705899968234,
+      "max_interval_ms": 6.243462999918847,
+      "gaps_over_50_ms": []
+    },
+    {
+      "name": "A3 position feedback",
+      "valid_samples": 5812,
+      "missing_values_at_known_times": 0,
+      "min": -1.3268933815210797,
+      "max": 1.4427089310064456,
+      "mean_observed_rate_hz": 197.0355614858327,
+      "median_interval_ms": 5.001408000225638,
+      "max_interval_ms": 341.74077399984526,
+      "gaps_over_50_ms": [
+        [
+          0.5556458840001142,
+          0.8973866579999594
+        ],
+        [
+          5.652610894999725,
+          5.758634764999897
+        ]
+      ]
+    },
+    {
+      "name": "A2 velocity feedback",
+      "valid_samples": 5812,
+      "missing_values_at_known_times": 0,
+      "min": -16.95203395877052,
+      "max": 16.899674081210694,
+      "mean_observed_rate_hz": 197.03612363610645,
+      "median_interval_ms": 5.001548000109324,
+      "max_interval_ms": 341.81200100010756,
+      "gaps_over_50_ms": [
+        [
+          0.5561171599997579,
+          0.8979291609998654
+        ],
+        [
+          5.6531046529999,
+          5.759154284000033
+        ]
+      ]
+    },
+    {
+      "name": "A1 torque feedback",
+      "valid_samples": 5811,
+      "missing_values_at_known_times": 0,
+      "min": -0.9461399652957917,
+      "max": 2.5817999053001404,
+      "mean_observed_rate_hz": 197.00214943287776,
+      "median_interval_ms": 5.0017715000194585,
+      "max_interval_ms": 341.86187500017695,
+      "gaps_over_50_ms": [
+        [
+          0.5566226969999661,
+          0.8984845720001431
+        ],
+        [
+          5.653598114000033,
+          5.759677247000127
+        ]
+      ]
+    }
+  ],
+  "views": [
+    {
+      "label": "Full recording",
+      "xlim_s": [
+        0.0,
+        29.494574449000083
+      ]
+    },
+    {
+      "label": "C2 interval",
+      "xlim_s": [
+        4.498764208000011,
+        24.534536594999736
+      ]
+    },
+    {
+      "label": "First 1 s",
+      "xlim_s": [
+        4.498764208000011,
+        5.498764208000011
+      ]
+    },
+    {
+      "label": "Middle 1 s",
+      "xlim_s": [
+        14.016650401499874,
+        15.016650401499874
+      ]
+    },
+    {
+      "label": "Final 1 s",
+      "xlim_s": [
+        23.534536594999736,
+        24.534536594999736
+      ]
+    }
+  ]
+}

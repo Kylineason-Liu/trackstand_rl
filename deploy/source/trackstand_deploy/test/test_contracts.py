@@ -8,6 +8,7 @@ from trackstand_deploy.contracts import (
     BalanceStateMachine,
     build_observation,
     correct_imu_sample,
+    motor_fault_clear_allowed,
     rpy_degrees_to_quaternion_xyzw,
     scale_policy_action,
 )
@@ -44,10 +45,39 @@ def test_imu_mount_correction_matches_identity_case():
     assert rates == pytest.approx([0.9, 1.8, 2.7])
 
 
-def test_action_scaling_enforces_hardware_steering_limit():
+def test_action_scaling_respects_narrower_configured_steering_limit():
     steering, drive = scale_policy_action(np.array([2.0, -2.0]), math.radians(30.0))
     assert steering == pytest.approx(math.radians(30.0))
-    assert drive == pytest.approx(-6.28)
+    assert drive == pytest.approx(-12.56)
+
+
+def test_action_scaling_preserves_90_degree_hardware_target_limit():
+    steering, drive = scale_policy_action(np.array([2.0, -2.0]), math.radians(90.0))
+    assert steering == pytest.approx(math.radians(90.0))
+    assert drive == pytest.approx(-12.56)
+    steering, drive = scale_policy_action(np.array([-2.0, 2.0]), math.radians(90.0))
+    assert steering == pytest.approx(-math.radians(90.0))
+    assert drive == pytest.approx(12.56)
+
+
+@pytest.mark.parametrize("raw_action", [[2.0, -2.0], [-2.0, 2.0], [0.5, -0.25]])
+def test_action_scaling_matches_unclipped_training_scales(raw_action):
+    # A nonbinding target limit isolates the action scaling from hardware safety.
+    steering, drive = scale_policy_action(np.array(raw_action), max_steering_target_rad=10.0)
+    assert steering == pytest.approx(raw_action[0] * 1.57)
+    assert drive == pytest.approx(raw_action[1] * 6.28)
+
+
+@pytest.mark.parametrize("raw_action", [[math.nan, 0.0], [0.0, math.inf], [-math.inf, 0.0], [0.0]])
+def test_action_scaling_rejects_invalid_policy_outputs(raw_action):
+    with pytest.raises(ValueError, match="policy action must contain two finite values"):
+        scale_policy_action(np.array(raw_action), math.radians(90.0))
+
+
+@pytest.mark.parametrize("limit", [0.0, -1.0, math.nan, math.inf])
+def test_action_scaling_rejects_invalid_target_limits(limit):
+    with pytest.raises(ValueError, match="steering target limit"):
+        scale_policy_action(np.zeros(2), limit)
 
 
 def test_state_machine_requires_down_cycle_after_fault():
@@ -58,3 +88,11 @@ def test_state_machine_requires_down_cycle_after_fault():
     assert machine.set_rc(False, ready=True) == BalanceMode.DOWN
     assert machine.set_rc(True, ready=True) == BalanceMode.BALANCING
 
+
+def test_motor_fault_clear_requires_disabled_and_steering_within_five_degrees():
+    limit = math.radians(5.0)
+    assert motor_fault_clear_allowed(False, math.radians(4.99), limit)
+    assert motor_fault_clear_allowed(False, math.radians(-4.99), limit)
+    assert not motor_fault_clear_allowed(False, limit, limit)
+    assert not motor_fault_clear_allowed(False, math.radians(-6.0), limit)
+    assert not motor_fault_clear_allowed(True, 0.0, limit)

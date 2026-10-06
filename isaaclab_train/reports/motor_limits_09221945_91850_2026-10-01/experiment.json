@@ -1,0 +1,19 @@
+{
+  "motor_order": [
+    "steering",
+    "drive"
+  ],
+  "num_envs": 64,
+  "policy_steps": 3000,
+  "seed": 42,
+  "dr": true,
+  "policy_dt_s": 0.02,
+  "physics_dt_s": 0.0025,
+  "decimation": 8,
+  "torque_semantics": "computed/applied are ImplicitActuator estimates, not measured motor torques",
+  "physx_effort_target_semantics": "feed-forward effort buffer submitted to PhysX; excludes implicit drive PD contribution",
+  "capture": "physics pre/post states captured before automatic reset; estimates captured after actuator.compute and before physics integration",
+  "checkpoint_sha256": "f77aadf7c021a1d20603a636daf757601dca2fe4faf264d5bba99c2dcf2b5c5e",
+  "captured_policy_steps": 3000,
+  "captured_physics_env_samples": 1536000
+}

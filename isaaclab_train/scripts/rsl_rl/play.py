@@ -35,11 +35,6 @@ parser.add_argument(
 )
 parser.add_argument("--real-time", action="store_true", default=False, help="Run in real-time, if possible.")
 parser.add_argument(
-    "--no_dr", action="store_true", default=False,
-    help="Disable domain randomization entirely (dr_ramp alpha pinned to 0). "
-    "Without this flag, play runs at FULL DR from step 0 (no ramp).",
-)
-parser.add_argument(
     "--num_steps", type=int, default=3000,
     help="Env steps to run (~2 episodes/env at the 1500-step / 30s cap).",
 )
@@ -49,6 +44,9 @@ cli_args.add_rsl_rl_args(parser)
 AppLauncher.add_app_launcher_args(parser)
 # parse the arguments
 args_cli, hydra_args = parser.parse_known_args()
+unknown_flags = [arg for arg in hydra_args if arg.startswith("-")]
+if unknown_flags:
+    parser.error(f"unrecognized arguments: {' '.join(unknown_flags)}")
 # always enable cameras to record video
 if args_cli.video:
     args_cli.enable_cameras = True
@@ -109,7 +107,8 @@ import isaaclab_tasks  # noqa: F401
 from isaaclab_tasks.utils import get_checkpoint_path
 from isaaclab_tasks.utils.hydra import hydra_task_config
 
-import CycleRL.tasks  # noqa: F401
+import source.trackstand_rl.trackstand_rl.tasks  # noqa: F401
+from scripts.domain_randomization import configure_domain_randomization
 
 
 @hydra_task_config(args_cli.task, args_cli.agent)
@@ -123,21 +122,7 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
     agent_cfg: RslRlBaseRunnerCfg = cli_args.update_rsl_rl_cfg(agent_cfg, args_cli)
     env_cfg.scene.num_envs = args_cli.num_envs if args_cli.num_envs is not None else env_cfg.scene.num_envs
 
-    # Pin DR for play (play-only convention — training keeps its 50k-step ramp):
-    # default = FULL DR from step 0 (end_step <= start_step -> alpha = 1.0 on the
-    # ramp term's first call, before any reset events fire); --no_dr = alpha pinned
-    # to 0 (end_step = 10**9, same mechanism as train_deterministic.py's flag).
-    dr_ramp = getattr(getattr(env_cfg, "curriculum", None), "dr_ramp", None)
-    if dr_ramp is not None:
-        if args_cli.no_dr:
-            dr_ramp.params["end_step"] = 10**9
-            print("[INFO] --no_dr: domain randomization disabled (dr_ramp alpha pinned to 0).")
-        else:
-            dr_ramp.params["start_step"] = 0
-            dr_ramp.params["end_step"] = 0
-            print("[INFO] DR pinned to FULL from step 0 (no ramp); use --no_dr to disable.")
-    else:
-        print("[WARN] Task has no 'dr_ramp' curriculum term; --no_dr has nothing to disable.")
+    configure_domain_randomization(env_cfg, args_cli.dr)
 
     # handle deprecated configurations
     agent_cfg = handle_deprecated_rsl_rl_cfg(agent_cfg, installed_version)

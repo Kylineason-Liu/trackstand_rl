@@ -29,6 +29,10 @@ parser.add_argument("--video", action="store_true", default=False, help="Record 
 parser.add_argument("--video_length", type=int, default=200, help="Length of the recorded video (in steps).")
 parser.add_argument("--num_envs", type=int, default=None, help="Number of environments to simulate.")
 parser.add_argument("--task", type=str, default=None, help="Name of the task.")
+parser.add_argument(
+    "--dr", action="store_true", default=False,
+    help="Enable full per-episode domain randomization (off by default); observation white noise is unchanged.",
+)
 parser.add_argument("--agent", type=str, default=None, help="Name of the RL agent configuration.")
 parser.add_argument(
     "--checkpoint",
@@ -142,6 +146,9 @@ def main():
     """Play with skrl agent."""
     # ponytail: plain registry load, no hydra composition (see train.py)
     env_cfg = parse_env_cfg(args_cli.task, device=args_cli.device, num_envs=args_cli.num_envs)
+    from scripts.domain_randomization import configure_domain_randomization
+
+    configure_domain_randomization(env_cfg, args_cli.dr)
     experiment_cfg = load_cfg_from_registry(args_cli.task, agent_cfg_entry_point)
     
     # Use the existing simulation app context

@@ -34,6 +34,10 @@ parser.add_argument("--video_interval", type=int, default=2000, help="Interval b
 parser.add_argument("--num_envs", type=int, default=None, help="Number of environments to simulate.")
 parser.add_argument("--task", type=str, default=None, help="Name of the task.")
 parser.add_argument(
+    "--dr", action="store_true", default=False,
+    help="Enable full per-episode domain randomization (off by default); observation white noise is unchanged.",
+)
+parser.add_argument(
     "--agent",
     type=str,
     default=None,
@@ -204,6 +208,9 @@ def main():
     # ponytail: plain registry load, no hydra composition — `key=value` CLI overrides
     # are not supported here. Use hydra_task_config if you ever need them.
     env_cfg = parse_env_cfg(args_cli.task, device=args_cli.device, num_envs=args_cli.num_envs)
+    from scripts.domain_randomization import configure_domain_randomization
+
+    configure_domain_randomization(env_cfg, args_cli.dr)
     agent_cfg = load_cfg_from_registry(args_cli.task, agent_cfg_entry_point)
     from CycleRL.tasks.manager_based.cyclerl.config.terrain_presets import apply_terrain_preset
 

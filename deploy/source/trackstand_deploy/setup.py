@@ -23,6 +23,8 @@ setup(
         "console_scripts": [
             "imu_publisher = trackstand_deploy.imu_publisher:main",
             "motor_io = trackstand_deploy.motor_io:main",
+            "motor_io_position = trackstand_deploy.motor_io_position:main",
+            "motor_mit_io = trackstand_deploy.motor_mit_io:main",
             "rc_kickstand = trackstand_deploy.rc_kickstand:main",
             "kickstand_driver = trackstand_deploy.kickstand_driver:main",
             "policy_controller = trackstand_deploy.policy_controller:main",

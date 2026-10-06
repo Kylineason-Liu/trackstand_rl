@@ -14,6 +14,8 @@ library (../mdp/stationary) all live inside this task package — no imports
 from CycleRL or the NewBike task.
 """
 
+from copy import deepcopy
+
 from isaaclab.envs import ManagerBasedRLEnvCfg
 from isaaclab.managers import (
     CurriculumTermCfg,
@@ -161,6 +163,8 @@ class TrackstandRLTerminationsCfg:
 
 @configclass
 class TrackstandRLEventsCfg:
+    """Full DR event templates; TrackstandRLEnvCfg disables DR unless opted in."""
+
     reset_scene = EventTermCfg(func=mdp.reset_scene_to_default, mode="reset")
 
     # --- Ground friction (startup): pinned to a fixed nominal, so it's DR-free.
@@ -276,14 +280,7 @@ class TrackstandRLEventsCfg:
 class TrackstandRLCurriculumsCfg:
     # Diagnostics only: logs motor speeds to TensorBoard (Curriculum/...).
     motor_speeds = CurriculumTermCfg(func=custom_curriculums.log_motor_speeds)
-    # Gradual DR ramp: OFF (commented) — the DR runs evaluate the DR terms'
-    # effect on the learning curve at full strength from step 0.
-    '''
-    dr_ramp = CurriculumTermCfg(
-        func=custom_curriculums.ramp_domain_randomization,
-        params={"start_step": 0, "end_step": 50000},
-    )
-    '''
+    # DR is controlled by the environment's opt-in switch, never a ramp.
 
 
 @configclass
@@ -291,7 +288,8 @@ class TrackstandRLEnvCfg(ManagerBasedRLEnvCfg):
     """THE trackstand env config: hybrid control (position steering + torque drive).
 
     No other trackstand env config exists — the control mode was decided
-    2026-09-22. 400 Hz physics / 50 Hz control / full per-episode DR.
+    2026-09-22. 400 Hz physics / 50 Hz control. DR is OFF by default;
+    --dr enables the existing full-strength, per-environment/per-episode DR.
     """
     # decimation = 2
     decimation = 8
@@ -302,7 +300,38 @@ class TrackstandRLEnvCfg(ManagerBasedRLEnvCfg):
     terminations = TrackstandRLTerminationsCfg()
     events = TrackstandRLEventsCfg()
     curriculum = TrackstandRLCurriculumsCfg()
+    domain_randomization: bool = False
     # No commands — pure stationary balancing with position-keeping
+
+    def set_domain_randomization(self, enabled: bool) -> None:
+        """Select nominal or full-DR reset events before constructing the env.
+
+        Keep the fixed shared-ground setup, reset_scene, observation white noise,
+        rewards, actuators, and termination envelope unchanged. Enabling restores
+        missing DR templates without replacing existing customized DR terms.
+        """
+        defaults = TrackstandRLEventsCfg()
+        for name in (
+            "randomize_mass",
+            "randomize_com",
+            "randomize_material",
+            "randomize_actuator_gains",
+            "reset_imu_turnon_residuals",
+        ):
+            if not enabled:
+                setattr(self.events, name, None)
+            elif getattr(self.events, name, None) is None:
+                setattr(self.events, name, deepcopy(getattr(defaults, name)))
+
+        # Nominal reset: upright with zero roll rate. Full DR restores the
+        # existing roll/roll-rate ranges; other root-reset settings are retained.
+        initial_state = self.events.initial_state
+        if initial_state is not None:
+            for key in ("pose_range", "velocity_range"):
+                initial_state.params[key]["roll"] = (
+                    defaults.initial_state.params[key]["roll"] if enabled else (0.0, 0.0)
+                )
+        self.domain_randomization = bool(enabled)
 
     def __post_init__(self):
         self.viewer.eye = [5.0, 5.0, 2.0]
@@ -330,3 +359,4 @@ class TrackstandRLEnvCfg(ManagerBasedRLEnvCfg):
         # explicit PhysxCfg with only this flag keeps everything else default.
         from isaaclab_physx.physics.physx_manager_cfg import PhysxCfg
         self.sim.physics = PhysxCfg(enable_external_forces_every_iteration=True)
+        self.set_domain_randomization(self.domain_randomization)

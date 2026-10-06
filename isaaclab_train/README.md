@@ -12,6 +12,26 @@ It allows you to develop in an isolated environment, outside of the core Isaac L
 
 **Keywords:** extension, template, isaaclab
 
+## Trackstand domain randomization
+
+`Trackstand-Balance-v0` uses nominal physics, upright/zero-roll-rate resets, and
+zero IMU residual biases by default. Observation white noise remains enabled.
+Add `--dr` to RSL-RL training, deterministic training, play, or evaluation to
+enable the existing full per-environment, per-episode randomization ranges:
+
+```bash
+python scripts/rsl_rl/train.py --task Trackstand-Balance-v0
+python scripts/rsl_rl/train.py --task Trackstand-Balance-v0 --dr
+python scripts/rsl_rl/play_eval.py --task Trackstand-Balance-v0 \
+  --checkpoint /path/to/model.pt --num_envs 64 --num_steps 3000 --seed 42 --dr
+```
+
+There is no DR ramp. The effective setting is saved as `domain_randomization`
+in the environment configuration. This switch does not change rewards,
+termination limits, observation white noise, or the 400 Hz physics/50 Hz policy
+timing. Omit `--dr` for nominal evaluation; append it when comparing with prior
+full-DR training/evaluation records.
+
 ## Installation
 
 - Install Isaac Lab by following the [installation guide](https://isaac-sim.github.io/IsaacLab/main/source/setup/installation/index.html).

@@ -14,7 +14,7 @@ import rclpy
 from rclpy.node import Node
 from rclpy.qos import DurabilityPolicy, QoSProfile, ReliabilityPolicy
 from sensor_msgs.msg import Imu
-from std_msgs.msg import Bool, Float32MultiArray, Float64MultiArray, String
+from std_msgs.msg import Bool, Float32MultiArray, Float64MultiArray, MultiArrayDimension, String
 
 from .contracts import (
     BalanceMode,
@@ -25,11 +25,14 @@ from .contracts import (
     scale_policy_action,
 )
 from .policy import OnnxPolicy
+from .telemetry import POLICY_TIMING_FIELDS, age_ms, telemetry_values
 
 
-MODEL_FILENAME = "trackstand_rl_rsl_2026-09-17_19-46-37_model_41050.onnx"
-MODEL_SHA256 = "4de70e7cb3d183f265b3063298f41c0c82545e59bc23c071b0eaa54788e929b2"
-MODEL_DATA_SHA256 = "207b77ba1454021dcbbdfb890cae14d305008800cd054e1e9ea107cae4c27d26"
+# This export embeds its weights; the ONNX checksum covers the complete policy.
+MODEL_FILENAME = "trackstand_rl_rsl_2026-09-22_19-45-06_model_91850.onnx"
+MODEL_SHA256 = "9232a0723df8806e8b5f6fb4e39a7a11ccb5af8bf058d9026eddb57dab8fd806"
+# MODEL_FILENAME = "trackstand_rl_rsl_2026-09-17_19-46-37_model_41050.onnx"
+# MODEL_SHA256 = "4de70e7cb3d183f265b3063298f41c0c82545e59bc23c071b0eaa54788e929b2"
 
 
 class PolicyController(Node):
@@ -45,7 +48,7 @@ class PolicyController(Node):
         self.declare_parameter("rc_timeout_s", 0.15)
         self.declare_parameter("wheel_radius_m", 0.07)
         self.declare_parameter("max_roll_rad", math.radians(30.0))
-        self.declare_parameter("max_steering_target_rad", math.radians(30.0))
+        self.declare_parameter("max_steering_target_rad", math.radians(90.0))
 
         model_path = str(self.get_parameter("model_path").value)
         policy_rate_hz = float(self.get_parameter("policy_rate_hz").value)
@@ -60,16 +63,17 @@ class PolicyController(Node):
         if policy_rate_hz != 50.0:
             raise ValueError("Trackstand-Balance-v0 policy_rate_hz must remain exactly 50.0")
         if (
-            min(self._imu_timeout_s, self._motor_timeout_s, self._rc_timeout_s) <= 0.0
+            not all(math.isfinite(value) for value in (
+                self._imu_timeout_s, self._motor_timeout_s, self._rc_timeout_s,
+                self._wheel_radius_m, self._max_roll_rad, self._max_steering_target_rad,
+            ))
+            or min(self._imu_timeout_s, self._motor_timeout_s, self._rc_timeout_s) <= 0.0
             or self._wheel_radius_m <= 0.0
             or min(self._max_roll_rad, self._max_steering_target_rad) <= 0.0
         ):
             raise ValueError("policy timeouts, wheel radius, and safety limits must be positive")
-        model_data_path = model_path + ".data"
         if self._sha256(model_path) != MODEL_SHA256:
             raise ValueError(f"model checksum mismatch for {model_path}")
-        if self._sha256(model_data_path) != MODEL_DATA_SHA256:
-            raise ValueError(f"model external-data checksum mismatch for {model_data_path}")
         self._policy = OnnxPolicy(model_path)
 
         self._world_from_bike: np.ndarray | None = None
@@ -83,6 +87,10 @@ class PolicyController(Node):
         self._last_kickstand_command: str | None = None
         self._last_observation = np.zeros(13, dtype=np.float32)
         self._last_raw_action = np.zeros(2, dtype=np.float32)
+        self._policy_sequence = 0
+        self._last_policy_monotonic = 0.0
+        self._last_policy_event_state = None
+        self._policy_fault_reasons: list[str] = []
 
         self._motor_publisher = self.create_publisher(
             Float64MultiArray, "/trackstand/motor_command", 10
@@ -102,6 +110,15 @@ class PolicyController(Node):
             Float32MultiArray, "/trackstand/raw_action", 10
         )
         self._status_publisher = self.create_publisher(String, "/trackstand/status", 10)
+        self._timing_publisher = self.create_publisher(
+            Float64MultiArray, "/trackstand/policy_timing",
+            QoSProfile(depth=50, reliability=ReliabilityPolicy.BEST_EFFORT),
+        )
+        self._policy_event_publisher = self.create_publisher(String, "/trackstand/policy_event", 100)
+        self._timing_dimension = MultiArrayDimension(
+            label="policy_timing_v1:" + ",".join(POLICY_TIMING_FIELDS),
+            size=len(POLICY_TIMING_FIELDS), stride=len(POLICY_TIMING_FIELDS),
+        )
         self.create_subscription(Imu, "/trackstand/imu", self._imu_callback, 10)
         self.create_subscription(
             Float64MultiArray, "/trackstand/motor_state", self._motor_callback, 10
@@ -151,6 +168,7 @@ class PolicyController(Node):
         up = bool(message.data)
         if not up:
             self._state_machine.set_rc(False, self._ready(time.monotonic()))
+            self._policy_fault_reasons = []
             self._publish_motor_command(False, 0.0, 0.0)
             self._command_kickstands(False)
             return
@@ -164,61 +182,118 @@ class PolicyController(Node):
         self._motor_fault = bool(message.data)
 
     def _ready(self, now: float) -> bool:
+        return not self._readiness_reasons(now)
+
+    def _readiness_reasons(self, now: float) -> list[str]:
+        reasons = []
         if (
             self._world_from_bike is None
             or self._body_rate_rad_s is None
             or self._motor_state is None
             or self._rc_monotonic <= 0.0
         ):
-            return False
-        if (
-            now - self._imu_monotonic > self._imu_timeout_s
-            or now - self._motor_monotonic > self._motor_timeout_s
-            or now - self._rc_monotonic > self._rc_timeout_s
-            or self._motor_fault
-        ):
-            return False
+            if self._world_from_bike is None or self._body_rate_rad_s is None:
+                reasons.append("imu_not_received")
+            if self._motor_state is None:
+                reasons.append("motor_state_not_received")
+            if self._rc_monotonic <= 0.0:
+                reasons.append("rc_not_received")
+            return reasons
+        # A stopped motor I/O node cannot publish a new motor_fault message.
+        if now - self._imu_monotonic > self._imu_timeout_s:
+            reasons.append("imu_timeout")
+        if now - self._motor_monotonic > self._motor_timeout_s:
+            reasons.append("motor_state_timeout")
+        if now - self._rc_monotonic > self._rc_timeout_s:
+            reasons.append("rc_timeout")
+        if self._motor_fault:
+            reasons.append("motor_fault")
+        if reasons:
+            return reasons
         gravity_body = rotate_vector_xyzw(
             quaternion_inverse_xyzw(self._world_from_bike), np.array([0.0, 0.0, -1.0])
         )
         fallen = abs(float(gravity_body[1])) > math.sin(self._max_roll_rad) or gravity_body[2] > 0.0
-        steering_over_limit = abs(float(self._motor_state[0])) > self._max_steering_target_rad
-        return not fallen and not steering_over_limit
+        return ["roll_or_inversion_safety"] if fallen else []
 
     def _policy_tick(self) -> None:
         now = time.monotonic()
-        self._state_machine.update_ready(self._ready(now))
-        if not self._state_machine.enabled:
-            self._publish_motor_command(False, 0.0, 0.0)
-            return
-        self._command_kickstands(True)
-        assert self._world_from_bike is not None
-        assert self._body_rate_rad_s is not None
-        assert self._motor_state is not None
+        self._policy_sequence += 1
+        interval_ms = age_ms(now, self._last_policy_monotonic)
+        self._last_policy_monotonic = now
+        reasons = self._readiness_reasons(now)
+        ready = not reasons
+        was_balancing = self._state_machine.enabled
+        observation_ms = inference_ms = processing_ms = math.nan
+        inference_success = False
         try:
-            observation = build_observation(
-                self._world_from_bike,
-                self._body_rate_rad_s,
-                steering_position_rad=self._motor_state[0],
-                rear_wheel_position_rad=self._motor_state[1],
-                steering_velocity_rad_s=self._motor_state[2],
-                rear_wheel_velocity_rad_s=self._motor_state[3],
-                wheel_radius_m=self._wheel_radius_m,
-            )
-            raw_action = self._policy.act(observation)
-            steering_target, drive_torque = scale_policy_action(
-                raw_action, self._max_steering_target_rad
-            )
-        except Exception as error:
-            self.get_logger().error(f"Policy inference fault: {error}")
-            self._state_machine.mode = BalanceMode.FAULT_LATCHED
-            self._publish_motor_command(False, 0.0, 0.0)
-            return
-        self._last_observation = observation
-        self._last_raw_action = raw_action
-        self._observation_publisher.publish(Float32MultiArray(data=observation.tolist()))
-        self._action_publisher.publish(Float32MultiArray(data=raw_action.tolist()))
-        self._publish_motor_command(True, steering_target, drive_torque)
+            self._state_machine.update_ready(ready)
+            if was_balancing and not self._state_machine.enabled:
+                self._policy_fault_reasons = reasons.copy()
+            if not self._state_machine.enabled:
+                self._publish_motor_command(False, 0.0, 0.0)
+                return
+            self._command_kickstands(True)
+            assert self._world_from_bike is not None
+            assert self._body_rate_rad_s is not None
+            assert self._motor_state is not None
+            try:
+                started = time.monotonic()
+                try:
+                    observation = build_observation(
+                        self._world_from_bike, self._body_rate_rad_s,
+                        steering_position_rad=self._motor_state[0], rear_wheel_position_rad=self._motor_state[1],
+                        steering_velocity_rad_s=self._motor_state[2], rear_wheel_velocity_rad_s=self._motor_state[3],
+                        wheel_radius_m=self._wheel_radius_m,
+                    )
+                finally:
+                    observation_ms = (time.monotonic() - started) * 1000.0
+                started = time.monotonic()
+                try:
+                    raw_action = self._policy.act(observation)
+                finally:
+                    inference_ms = (time.monotonic() - started) * 1000.0
+                started = time.monotonic()
+                try:
+                    steering_target, drive_torque = scale_policy_action(raw_action, self._max_steering_target_rad)
+                finally:
+                    processing_ms = (time.monotonic() - started) * 1000.0
+            except Exception as error:
+                self.get_logger().error(f"Policy inference fault: {error}")
+                self._state_machine.mode = BalanceMode.FAULT_LATCHED
+                self._policy_fault_reasons = ["policy_inference_error"]
+                self._publish_motor_command(False, 0.0, 0.0)
+                return
+            inference_success = True
+            self._last_observation = observation
+            self._last_raw_action = raw_action
+            self._observation_publisher.publish(Float32MultiArray(data=observation.tolist()))
+            self._action_publisher.publish(Float32MultiArray(data=raw_action.tolist()))
+            self._publish_motor_command(True, steering_target, drive_torque)
+        finally:
+            timing = Float64MultiArray()
+            timing.layout.dim = [self._timing_dimension]
+            ros_time_s = self.get_clock().now().nanoseconds * 1e-9
+            timing.data = telemetry_values(POLICY_TIMING_FIELDS, {
+                "sequence": self._policy_sequence, "ros_time_s": ros_time_s, "monotonic_time_s": now,
+                "cycle_interval_ms": interval_ms, "work_duration_ms": (time.monotonic() - now) * 1000.0,
+                "observation_build_ms": observation_ms, "inference_ms": inference_ms,
+                "action_processing_ms": processing_ms, "inference_success": inference_success,
+                "ready": ready, "policy_enabled": self._state_machine.enabled,
+                "imu_age_ms": age_ms(now, self._imu_monotonic), "motor_age_ms": age_ms(now, self._motor_monotonic),
+                "rc_age_ms": age_ms(now, self._rc_monotonic), "motor_fault": self._motor_fault,
+            })
+            self._timing_publisher.publish(timing)
+            event_state = (self._state_machine.mode, ready, tuple(reasons), tuple(self._policy_fault_reasons))
+            if event_state != self._last_policy_event_state:
+                event = String()
+                event.data = json.dumps({
+                    "sequence": self._policy_sequence, "ros_time_s": ros_time_s, "monotonic_time_s": now,
+                    "mode": self._state_machine.mode.value, "ready": ready,
+                    "readiness_reasons": reasons, "latched_fault_reasons": self._policy_fault_reasons,
+                }, sort_keys=True)
+                self._policy_event_publisher.publish(event)
+                self._last_policy_event_state = event_state
 
     def _publish_motor_command(self, enable: bool, steering_target: float, drive_torque: float) -> None:
         message = Float64MultiArray()

@@ -1,0 +1,45 @@
+{
+  "env": {
+    "allowed_differences": [
+      {
+        "field": "domain_randomization",
+        "saved": "<MISSING>",
+        "effective": true
+      },
+      {
+        "field": "log_dir",
+        "saved": "/home/lmbike/lmbike_cyclerl-mod/logs/rsl_rl/trackstand_rl_rsl/2026-09-22_19-45-06",
+        "effective": "/home/lmbike/trackstand_rl/isaaclab_train/reports/motor_limits_09221945_91850_2026-10-01"
+      },
+      {
+        "field": "scene.num_envs",
+        "saved": 4096,
+        "effective": 64
+      },
+      {
+        "field": "scene.terrain.num_envs",
+        "saved": 4096,
+        "effective": 64
+      }
+    ],
+    "unexpected_differences": [],
+    "normalized_relocations": [
+      "robot USD path",
+      "noise module path"
+    ]
+  },
+  "agent": {
+    "allowed_differences": [
+      {
+        "field": "load_checkpoint",
+        "saved": "model_.*.pt",
+        "effective": "/home/lmbike/trackstand_rl/isaaclab_train/reports/motor_limits_09221945_91850_2026-10-01/model_91850.pt"
+      }
+    ],
+    "unexpected_differences": [],
+    "normalized_relocations": [
+      "robot USD path",
+      "noise module path"
+    ]
+  }
+}

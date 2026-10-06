@@ -1,0 +1,65 @@
+{
+  "env": {
+    "allowed_differences": [
+      {
+        "field": "domain_randomization",
+        "saved": "<MISSING>",
+        "effective": true
+      },
+      {
+        "field": "log_dir",
+        "saved": "/home/lmbike/lmbike_cyclerl-mod/logs/rsl_rl/trackstand_rl_rsl/2026-09-22_19-45-06",
+        "effective": "/home/lmbike/trackstand_rl/isaaclab_train/reports/motor_limits_09221945_91850_2026-10-01"
+      },
+      {
+        "field": "scene.num_envs",
+        "saved": 4096,
+        "effective": 64
+      },
+      {
+        "field": "scene.terrain.num_envs",
+        "saved": 4096,
+        "effective": 1
+      }
+    ],
+    "unexpected_differences": [
+      {
+        "field": "scene.dome_light.spawn.spawn_path",
+        "saved": "/World/DomeLight",
+        "effective": null
+      },
+      {
+        "field": "scene.robot.prim_path",
+        "saved": "/World/envs/env_.*/Robot",
+        "effective": "{ENV_REGEX_NS}/Robot"
+      },
+      {
+        "field": "scene.robot.spawn.spawn_path",
+        "saved": "/World/envs/env_0/Robot",
+        "effective": null
+      },
+      {
+        "field": "scene.terrain.env_spacing",
+        "saved": 2.5,
+        "effective": null
+      },
+      {
+        "field": "video_recorder.eye",
+        "saved": [
+          5.0,
+          5.0,
+          2.0
+        ],
+        "effective": [
+          7.5,
+          7.5,
+          7.5
+        ]
+      }
+    ],
+    "normalized_relocations": [
+      "robot USD path",
+      "noise module path"
+    ]
+  }
+}

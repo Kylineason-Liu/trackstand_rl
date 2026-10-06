@@ -54,10 +54,24 @@ class DeployedPolicy:
     def act(self, obs: np.ndarray) -> np.ndarray:
         """Deterministic mean action for a (13,) observation -> (2,) raw action."""
         x = np.asarray(obs, dtype=np.float32).reshape(1, -1)
+        return self.act_batch(x)[0]
+
+    def act_batch(self, observations: np.ndarray) -> np.ndarray:
+        """Deterministic actions for (N, 13), retaining fixed-batch-one ONNX support."""
+        x = np.asarray(observations, dtype=np.float32)
+        if x.ndim != 2 or x.shape[1] != 13 or x.shape[0] < 1:
+            raise ValueError("Expected a nonempty (N, 13) observation batch")
         if self.backend == "onnxruntime":
-            out = self._ort_sess.run(None, {"observation": x})[0]
+            batch_dim = self._ort_sess.get_inputs()[0].shape[0]
+            if batch_dim == 1 and len(x) > 1:
+                # Older exports have a fixed input batch; do not change the artifact.
+                out = np.concatenate([
+                    self._ort_sess.run(None, {"observation": row[None, :]})[0] for row in x
+                ], axis=0)
+            else:
+                out = self._ort_sess.run(None, {"observation": x})[0]
         else:
             import torch
             with torch.no_grad():
                 out = self._torch_net(torch.from_numpy(x)).numpy()
-        return out[0]
+        return out

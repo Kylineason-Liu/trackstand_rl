@@ -21,6 +21,10 @@ def add_rsl_rl_args(parser: argparse.ArgumentParser):
     """
     # create a new argument group
     arg_group = parser.add_argument_group("rsl_rl", description="Arguments for RSL-RL agent.")
+    arg_group.add_argument(
+        "--dr", action="store_true", default=False,
+        help="Enable full per-episode domain randomization (off by default); observation white noise is unchanged.",
+    )
     # -- experiment arguments
     arg_group.add_argument(
         "--experiment_name", type=str, default=None, help="Name of the experiment folder where logs will be stored."

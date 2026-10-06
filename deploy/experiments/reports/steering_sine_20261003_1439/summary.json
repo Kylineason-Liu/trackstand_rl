@@ -1,0 +1,93 @@
+{
+  "source": "/home/lmbike/trackstand_rl/deploy/scripts/motor_feedback_202610031439.csv",
+  "source_sha256": "5da80914e54d38968e256da78e8c221467c531907d5c4aef1972fb6444781e98",
+  "total_rows": 16662,
+  "steering_feedback_rows": 6106,
+  "steering_c2_rows": 4450,
+  "collector_zero_count": -60758,
+  "radians_per_native_count_in_logged_coordinates": -0.0003834951969714103,
+  "recording_duration_s": 30.52833856899997,
+  "c2_observed_start_s": 3.7037229649995425,
+  "c2_observed_end_s": 26.268013980999967,
+  "command_min_rad": -2.000310947402876,
+  "command_max_rad": 1.9995439570089333,
+  "command_peak_to_peak_rad": 3.9998549044118095,
+  "period_median_s": 0.10001950348648059,
+  "period_crossing_count": 226,
+  "timestamp_semantics": "Host-receipt elapsed timestamps on one recorder monotonic clock; no phase shifts",
+  "traces": [
+    {
+      "name": "C2 position command",
+      "valid_samples": 4450,
+      "missing_values_at_known_times": 0,
+      "min": -2.000310947402876,
+      "max": 1.9995439570089333,
+      "mean_observed_rate_hz": 197.16994417618517,
+      "median_interval_ms": 5.056372000581177
+    },
+    {
+      "name": "A3 position feedback",
+      "valid_samples": 6106,
+      "missing_values_at_known_times": 0,
+      "min": -1.5615924420675826,
+      "max": 0.48703890015369106,
+      "mean_observed_rate_hz": 199.9931804847911,
+      "median_interval_ms": 4.999724000299466
+    },
+    {
+      "name": "A2 velocity feedback",
+      "valid_samples": 6106,
+      "missing_values_at_known_times": 0,
+      "min": -21.900042388174445,
+      "max": 22.063405206161114,
+      "mean_observed_rate_hz": 199.99298406922048,
+      "median_interval_ms": 5.000224000468734
+    },
+    {
+      "name": "A1 torque feedback",
+      "valid_samples": 6106,
+      "missing_values_at_known_times": 0,
+      "min": -4.857839821815491,
+      "max": 5.789159787654877,
+      "mean_observed_rate_hz": 199.99275148958156,
+      "median_interval_ms": 5.000852999728522
+    }
+  ],
+  "views": [
+    {
+      "label": "Full recording",
+      "xlim_s": [
+        0.0,
+        30.52833856899997
+      ]
+    },
+    {
+      "label": "C2 interval",
+      "xlim_s": [
+        3.7037229649995425,
+        26.268013980999967
+      ]
+    },
+    {
+      "label": "First 1 s",
+      "xlim_s": [
+        3.7037229649995425,
+        4.7037229649995425
+      ]
+    },
+    {
+      "label": "Middle 1 s",
+      "xlim_s": [
+        14.485868472999755,
+        15.485868472999755
+      ]
+    },
+    {
+      "label": "Final 1 s",
+      "xlim_s": [
+        25.268013980999967,
+        26.268013980999967
+      ]
+    }
+  ]
+}

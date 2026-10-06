@@ -1,0 +1,688 @@
+{
+  "method": {
+    "control_time": "host monotonic tick start",
+    "current_time": "host ROS receipt time relative to first enabled tick ROS timestamp",
+    "angles": "signed A3-derived motor coordinates; encoder resolution 360/16384 degree",
+    "settling": "All remaining recorded ticks in band, with at least .25 s confirmation tail",
+    "first_crossing": "Crosses a fraction of initial-to-target displacement; NOT settling",
+    "freshness": "Distinct reconstructed A3 host receipt timestamps, NOT firmware sampling timestamps",
+    "limits": "No control-rate sweep or powered policy run exists in these bags; cannot identify a sufficient rate"
+  },
+  "provenance": {
+    "A": {
+      "bags": [
+        {
+          "path": "/home/lmbike/trackstand_rl/rosbags/rosbag2_2026_10_01-16_11_49/rosbag2_2026_10_01-16_11_49_0.mcap",
+          "sha256": "1a1846ec607e202c38e042c664e297cfe0eb529371392f5438047277631bec51"
+        }
+      ],
+      "cache_sha256": "d59de7147abb1eace05ca16050026ee2e9a7e121d0fd1d1c36685c2a8e7d44c7",
+      "decoded_count": 150000,
+      "metadata_discrepancy": {
+        "/trackstand/motor_state": {
+          "metadata": 24720,
+          "decoded": 24562
+        },
+        "/trackstand/imu": {
+          "metadata": 12667,
+          "decoded": 12588
+        },
+        "/trackstand/motor_fault": {
+          "metadata": 25330,
+          "decoded": 25171
+        },
+        "/trackstand/kickstands_up": {
+          "metadata": 62634,
+          "decoded": 62237
+        },
+        "/trackstand/motor_control": {
+          "metadata": 25331,
+          "decoded": 25172
+        },
+        "/trackstand/motor_status": {
+          "metadata": 253,
+          "decoded": 252
+        }
+      }
+    },
+    "B": {
+      "bags": [
+        {
+          "path": "/home/lmbike/trackstand_rl/rosbags/rosbag2_2026_10_01-17_18_11/rosbag2_2026_10_01-17_18_11_0.mcap",
+          "sha256": "aa88cdb19ca0ff79718bbcdbe7c12d5ca2b7a803ef99301205b80c12721ea6cb"
+        }
+      ],
+      "cache_sha256": "eefd3b9e28130d00c6991cbbb6576c5579118c1aa4cefa08a3e6a2ab4ee01758",
+      "decoded_count": 549816,
+      "metadata_discrepancy": {}
+    },
+    "C": {
+      "bags": [
+        {
+          "path": "/home/lmbike/trackstand_rl/rosbags/rosbag2_2026_10_01-17_32_00/rosbag2_2026_10_01-17_32_00_0.mcap",
+          "sha256": "b43d35bd6089975403eac17734fdbf8a357515db65dd6720729a411ffae1efd7"
+        }
+      ],
+      "cache_sha256": "3a170f5b539d4f0518d76f91c7b6f732205659c5b236fdf000e7740662801697",
+      "decoded_count": 143283,
+      "metadata_discrepancy": {}
+    }
+  },
+  "C_segments": [
+    {
+      "segment": 1,
+      "start_bag_s": 51.28627860300001,
+      "sampled_enabled_duration_ms": 207.7719829999296,
+      "control_ticks": 41,
+      "successful_steering_sends": 41,
+      "target_deg": 0.0,
+      "initial_position_deg": 0.08789062500000924,
+      "position_range_deg": [
+        0.08789062500000924,
+        0.08789062500000924
+      ],
+      "first_changed_position_control_tick_ms": null,
+      "last_tick_before_20ms": {
+        "elapsed_ms": 13.425727000139887,
+        "ticks_before_deadline": 3,
+        "position_deg": 0.08789062500000924,
+        "position_receipt_age_ms": 4.5450740003616374
+      },
+      "first_10percent_crossing_ms": null,
+      "first_50percent_crossing_ms": null,
+      "first_90percent_crossing_ms": null,
+      "settling_within_target_plusminus_0p1deg_ms": null,
+      "settling_within_target_plusminus_0p3deg_ms": null,
+      "final_halfsecond_median_deg": 0.08789062500000924,
+      "final_halfsecond_std_deg": 0.0,
+      "final_median_target_error_deg": 0.08789062500000924,
+      "settling_around_observed_final_plusminus_one_encoder_count_ms": null,
+      "control_interval_ms": {
+        "n": 40,
+        "min": 2.8721690000566014,
+        "max": 7.772962000217376,
+        "median": 5.076938499769312,
+        "mean": 5.19429957499824,
+        "p95": 6.979183499947792,
+        "p99": 7.749418090024847
+      },
+      "observed_received_command_interval_ms": {
+        "n": 7,
+        "min": 16.06480600003124,
+        "max": 21.687073000066448,
+        "median": 17.980060999889247,
+        "mean": 18.499288142850542,
+        "p95": 21.29026660004456,
+        "p99": 21.60771172006207
+      },
+      "control_ticks_per_received_command_excluding_edge_groups": {
+        "3": 3,
+        "4": 3
+      },
+      "distinct_A3_receipt_timestamps": 28,
+      "fraction_ticks_reusing_A3_receipt_timestamp": 0.31707317073170727,
+      "distinct_A3_receipt_interval_ms": {
+        "n": 27,
+        "min": 2.60983899988787,
+        "max": 14.967820000038046,
+        "median": 7.006081999861635,
+        "mean": 7.782238370374991,
+        "p95": 12.917235300028551,
+        "p99": 14.460209780027068
+      },
+      "position_feedback_age_ms": {
+        "n": 41,
+        "min": 1.0623389998727362,
+        "max": 14.573380999991059,
+        "median": 5.7630789997347165,
+        "mean": 5.927099000007551,
+        "p95": 11.601120000250376,
+        "p99": 14.405804999933025
+      },
+      "speed_feedback_age_ms": {
+        "n": 41,
+        "min": 0.3176249997522973,
+        "max": 12.878474999979517,
+        "median": 4.588185999637062,
+        "mean": 4.495228268297069,
+        "p95": 10.584835999907227,
+        "p99": 12.331274199914334
+      },
+      "first_current_feedback_abs_atleast_0p01Nm_receipt_ms": 18.51177215576172,
+      "first150ms_commanded_torque_nm": {
+        "n": 29,
+        "min": -0.025183464860106045,
+        "max": -0.004867832366892047,
+        "median": -0.015339807878858025,
+        "mean": -0.01564313406610118,
+        "p95": -0.008721519355295535,
+        "p99": -0.0055715491212961635
+      },
+      "first150ms_measured_current_derived_torque_nm": {
+        "n": 28,
+        "min": -0.0740999972820282,
+        "max": 0.019499999284744263,
+        "median": -0.011699999570846557,
+        "mean": -0.01454142803805215,
+        "p95": 0.019499999284744263,
+        "p99": 0.019499999284744263
+      }
+    },
+    {
+      "segment": 2,
+      "start_bag_s": 60.676601695,
+      "sampled_enabled_duration_ms": 2055.091428999731,
+      "control_ticks": 410,
+      "successful_steering_sends": 410,
+      "target_deg": 1.1459155902616465,
+      "initial_position_deg": 0.08789062500000924,
+      "position_range_deg": [
+        0.08789062500000924,
+        1.1865234374999976
+      ],
+      "first_changed_position_control_tick_ms": 25.25839999998425,
+      "last_tick_before_20ms": {
+        "elapsed_ms": 16.928686000028392,
+        "ticks_before_deadline": 4,
+        "position_deg": 0.08789062500000924,
+        "position_receipt_age_ms": 9.511571000075492
+      },
+      "first_10percent_crossing_ms": 30.62670600002093,
+      "first_50percent_crossing_ms": 37.280588999692554,
+      "first_90percent_crossing_ms": 47.7156299998569,
+      "settling_within_target_plusminus_0p1deg_ms": null,
+      "settling_within_target_plusminus_0p3deg_ms": 47.7156299998569,
+      "final_halfsecond_median_deg": 0.9008789062500057,
+      "final_halfsecond_std_deg": 0.0,
+      "final_median_target_error_deg": -0.2450366840116408,
+      "settling_around_observed_final_plusminus_one_encoder_count_ms": 110.6751140000597,
+      "control_interval_ms": {
+        "n": 409,
+        "min": 2.55532100027267,
+        "max": 8.402083999953902,
+        "median": 5.010088000290125,
+        "mean": 5.02467342053724,
+        "p95": 6.567102600092766,
+        "p99": 7.719414520051951
+      },
+      "observed_received_command_interval_ms": {
+        "n": 99,
+        "min": 14.171033999900828,
+        "max": 26.521365999997215,
+        "median": 19.98770499994862,
+        "mean": 20.028236636362912,
+        "p95": 24.858608699969405,
+        "p99": 25.760223520010182
+      },
+      "control_ticks_per_received_command_excluding_edge_groups": {
+        "3": 15,
+        "4": 70,
+        "5": 13
+      },
+      "distinct_A3_receipt_timestamps": 283,
+      "fraction_ticks_reusing_A3_receipt_timestamp": 0.30975609756097566,
+      "distinct_A3_receipt_interval_ms": {
+        "n": 282,
+        "min": 1.711423999950057,
+        "max": 24.249430000054417,
+        "median": 6.213165999952253,
+        "mean": 7.308296386523864,
+        "p95": 14.854060149787074,
+        "p99": 18.798577449965702
+      },
+      "position_feedback_age_ms": {
+        "n": 410,
+        "min": 0.9924880000653502,
+        "max": 26.230054999814456,
+        "median": 5.517035999901054,
+        "mean": 6.480603446330062,
+        "p95": 13.784912549726865,
+        "p99": 19.40300841967199
+      },
+      "speed_feedback_age_ms": {
+        "n": 410,
+        "min": 0.15657300036764354,
+        "max": 24.833386999944196,
+        "median": 3.6436875000163127,
+        "mean": 4.597624156100964,
+        "p95": 11.94017765014905,
+        "p99": 18.150378569966925
+      },
+      "first_current_feedback_abs_atleast_0p01Nm_receipt_ms": 21.10767364501953,
+      "first150ms_commanded_torque_nm": {
+        "n": 30,
+        "min": -0.15888687264137752,
+        "max": 0.19617936518430457,
+        "median": 0.04624808297636341,
+        "mean": 0.052930362360703816,
+        "p95": 0.19617936518430457,
+        "p99": 0.19617936518430457
+      },
+      "first150ms_measured_current_derived_torque_nm": {
+        "n": 30,
+        "min": -0.12557999539375306,
+        "max": 0.17627999353408813,
+        "median": 0.04679999828338623,
+        "mean": 0.04339399840831758,
+        "p95": 0.16625699390172957,
+        "p99": 0.1746965935921669
+      }
+    },
+    {
+      "segment": 3,
+      "start_bag_s": 71.637311588,
+      "sampled_enabled_duration_ms": 258.1470469999658,
+      "control_ticks": 52,
+      "successful_steering_sends": 52,
+      "target_deg": -1.1459155902616465,
+      "initial_position_deg": 0.9008789062500057,
+      "position_range_deg": [
+        -13.688964843750002,
+        17.55615234375
+      ],
+      "first_changed_position_control_tick_ms": 25.81859700012501,
+      "last_tick_before_20ms": {
+        "elapsed_ms": 15.185651000138023,
+        "ticks_before_deadline": 4,
+        "position_deg": 0.9008789062500057,
+        "position_receipt_age_ms": 8.323919000304159
+      },
+      "first_10percent_crossing_ms": 35.738310999931855,
+      "first_50percent_crossing_ms": 46.91456599994126,
+      "first_90percent_crossing_ms": 46.91456599994126,
+      "settling_within_target_plusminus_0p1deg_ms": null,
+      "settling_within_target_plusminus_0p3deg_ms": null,
+      "final_halfsecond_median_deg": 0.15380859375000344,
+      "final_halfsecond_std_deg": 6.973266622267651,
+      "final_median_target_error_deg": 1.29972418401165,
+      "settling_around_observed_final_plusminus_one_encoder_count_ms": null,
+      "control_interval_ms": {
+        "n": 51,
+        "min": 2.497248000054242,
+        "max": 7.499910000206,
+        "median": 5.0430510000296636,
+        "mean": 5.061706803920899,
+        "p95": 7.269060499993429,
+        "p99": 7.408124000221505
+      },
+      "observed_received_command_interval_ms": {
+        "n": 9,
+        "min": 14.650971999799367,
+        "max": 26.611088000208838,
+        "median": 18.729866999819933,
+        "mean": 20.318445222225517,
+        "p95": 26.18185600022116,
+        "p99": 26.525241600211302
+      },
+      "control_ticks_per_received_command_excluding_edge_groups": {
+        "3": 3,
+        "4": 3,
+        "5": 2
+      },
+      "distinct_A3_receipt_timestamps": 35,
+      "fraction_ticks_reusing_A3_receipt_timestamp": 0.32692307692307687,
+      "distinct_A3_receipt_interval_ms": {
+        "n": 34,
+        "min": 2.587301999938063,
+        "max": 14.31282800012923,
+        "median": 6.982832999938182,
+        "mean": 7.594676205880044,
+        "p95": 13.10048435009321,
+        "p99": 14.03628536002998
+      },
+      "position_feedback_age_ms": {
+        "n": 52,
+        "min": 1.8653110000741435,
+        "max": 14.988856999934796,
+        "median": 6.302081500052736,
+        "mean": 6.742955230790288,
+        "p95": 11.892979900085264,
+        "p99": 14.664009440111842
+      },
+      "speed_feedback_age_ms": {
+        "n": 52,
+        "min": 0.3820699998868804,
+        "max": 13.985090999995009,
+        "median": 4.230930499943497,
+        "mean": 4.795550942285095,
+        "p95": 9.387250099916853,
+        "p99": 12.882739260057864
+      },
+      "first_current_feedback_abs_atleast_0p01Nm_receipt_ms": 14.052867889404297,
+      "first150ms_commanded_torque_nm": {
+        "n": 30,
+        "min": -1.8445595314919392,
+        "max": 1.5257512938177769,
+        "median": -0.14923055372105065,
+        "mean": 0.011737849791884851,
+        "p95": 1.5168064064066908,
+        "p99": 1.5257512938177769
+      },
+      "first150ms_measured_current_derived_torque_nm": {
+        "n": 30,
+        "min": -1.5592199428081512,
+        "max": 1.3681199498176575,
+        "median": 0.038219998598098756,
+        "mean": 0.07682999718189241,
+        "p95": 1.3461629506230355,
+        "p99": 1.3624649500250816
+      }
+    },
+    {
+      "segment": 4,
+      "start_bag_s": 72.173485537,
+      "sampled_enabled_duration_ms": 1824.262980000185,
+      "control_ticks": 364,
+      "successful_steering_sends": 364,
+      "target_deg": -1.1459155902616465,
+      "initial_position_deg": -11.381835937500002,
+      "position_range_deg": [
+        -18.918457031249993,
+        19.555664062499996
+      ],
+      "first_changed_position_control_tick_ms": 159.5963429999756,
+      "last_tick_before_20ms": {
+        "elapsed_ms": 16.29108199995244,
+        "ticks_before_deadline": 4,
+        "position_deg": -11.381835937500002,
+        "position_receipt_age_ms": 4.076395000083721
+      },
+      "first_10percent_crossing_ms": 165.24807099995087,
+      "first_50percent_crossing_ms": 170.1365120002265,
+      "first_90percent_crossing_ms": 180.30963100000008,
+      "settling_within_target_plusminus_0p1deg_ms": null,
+      "settling_within_target_plusminus_0p3deg_ms": null,
+      "final_halfsecond_median_deg": -1.8896484374999951,
+      "final_halfsecond_std_deg": 6.599907394458498,
+      "final_median_target_error_deg": -0.7437328472383486,
+      "settling_around_observed_final_plusminus_one_encoder_count_ms": null,
+      "control_interval_ms": {
+        "n": 363,
+        "min": 2.777096000045276,
+        "max": 12.00252199987517,
+        "median": 4.98999499995989,
+        "mean": 5.0255178512401795,
+        "p95": 6.781261199830622,
+        "p99": 7.819730159817481
+      },
+      "observed_received_command_interval_ms": {
+        "n": 88,
+        "min": 12.640367000130937,
+        "max": 27.483614000175294,
+        "median": 19.868872499955614,
+        "mean": 19.884134931818277,
+        "p95": 25.097381599948676,
+        "p99": 27.260735660038335
+      },
+      "control_ticks_per_received_command_excluding_edge_groups": {
+        "2": 2,
+        "3": 16,
+        "4": 52,
+        "5": 17
+      },
+      "distinct_A3_receipt_timestamps": 251,
+      "fraction_ticks_reusing_A3_receipt_timestamp": 0.31043956043956045,
+      "distinct_A3_receipt_interval_ms": {
+        "n": 250,
+        "min": 1.663850000113598,
+        "max": 20.435013999758667,
+        "median": 6.411256499859519,
+        "mean": 7.283790299999964,
+        "p95": 13.79380119999496,
+        "p99": 17.628235370116272
+      },
+      "position_feedback_age_ms": {
+        "n": 364,
+        "min": 1.0610250001263921,
+        "max": 22.334768999826338,
+        "median": 5.321528999957081,
+        "mean": 6.2941001428341155,
+        "p95": 13.000137949961752,
+        "p99": 16.20298791990081
+      },
+      "speed_feedback_age_ms": {
+        "n": 364,
+        "min": 0.20233100030964124,
+        "max": 20.057167000231857,
+        "median": 3.5170319999906496,
+        "mean": 4.432163250000415,
+        "p95": 11.600798900235523,
+        "p99": 14.939565110039442
+      },
+      "first_current_feedback_abs_atleast_0p01Nm_receipt_ms": 153.84602546691895,
+      "first150ms_commanded_torque_nm": {
+        "n": 29,
+        "min": 1.1851563430187517,
+        "max": 1.7942543821907604,
+        "median": 1.7837824066787944,
+        "mean": 1.7650611944740922,
+        "p95": 1.7936260636600425,
+        "p99": 1.7940784530021594
+      },
+      "first150ms_measured_current_derived_torque_nm": {
+        "n": 29,
+        "min": -0.0,
+        "max": 0.005459999799728394,
+        "median": 0.0,
+        "mean": 0.00018827585516304808,
+        "p95": -0.0,
+        "p99": 0.0039311998558044375
+      }
+    },
+    {
+      "segment": 5,
+      "start_bag_s": 85.90737025,
+      "sampled_enabled_duration_ms": 1059.4857860000957,
+      "control_ticks": 212,
+      "successful_steering_sends": 212,
+      "target_deg": 0.0,
+      "initial_position_deg": 11.777343749999991,
+      "position_range_deg": [
+        -21.950683593750007,
+        22.0166015625
+      ],
+      "first_changed_position_control_tick_ms": 25.74746900017999,
+      "last_tick_before_20ms": {
+        "elapsed_ms": 15.542146999905526,
+        "ticks_before_deadline": 4,
+        "position_deg": 11.777343749999991,
+        "position_receipt_age_ms": 14.817562999724032
+      },
+      "first_10percent_crossing_ms": 32.4055370001588,
+      "first_50percent_crossing_ms": 36.3550080001005,
+      "first_90percent_crossing_ms": 46.65894000027038,
+      "settling_within_target_plusminus_0p1deg_ms": null,
+      "settling_within_target_plusminus_0p3deg_ms": null,
+      "final_halfsecond_median_deg": 0.659179687499993,
+      "final_halfsecond_std_deg": 11.005439942723566,
+      "final_median_target_error_deg": 0.659179687499993,
+      "settling_around_observed_final_plusminus_one_encoder_count_ms": null,
+      "control_interval_ms": {
+        "n": 211,
+        "min": 2.1706219999941823,
+        "max": 9.169556999950146,
+        "median": 5.026253999858454,
+        "mean": 5.021259649289553,
+        "p95": 6.682539999928849,
+        "p99": 7.30084539973177
+      },
+      "observed_received_command_interval_ms": {
+        "n": 49,
+        "min": 14.623102000314248,
+        "max": 26.0750200000075,
+        "median": 19.72507799973755,
+        "mean": 20.02534512244633,
+        "p95": 24.8260355999264,
+        "p99": 25.96607055989807
+      },
+      "control_ticks_per_received_command_excluding_edge_groups": {
+        "3": 11,
+        "4": 28,
+        "5": 9
+      },
+      "distinct_A3_receipt_timestamps": 135,
+      "fraction_ticks_reusing_A3_receipt_timestamp": 0.3632075471698113,
+      "distinct_A3_receipt_interval_ms": {
+        "n": 134,
+        "min": 1.9355320000613574,
+        "max": 24.340208000012353,
+        "median": 6.736993499998789,
+        "mean": 7.8674557537329175,
+        "p95": 14.686084849972753,
+        "p99": 18.995420979899787
+      },
+      "position_feedback_age_ms": {
+        "n": 212,
+        "min": 1.0493580002730596,
+        "max": 21.28387399989151,
+        "median": 5.921669500139615,
+        "mean": 6.737166259422596,
+        "p95": 13.593887350043586,
+        "p99": 17.516871580046423
+      },
+      "speed_feedback_age_ms": {
+        "n": 212,
+        "min": 0.22503399986817385,
+        "max": 19.836094999845955,
+        "median": 3.953637999984494,
+        "mean": 4.651234820771777,
+        "p95": 12.005537499908312,
+        "p99": 14.648607860044649
+      },
+      "first_current_feedback_abs_atleast_0p01Nm_receipt_ms": 16.699790954589844,
+      "first150ms_commanded_torque_nm": {
+        "n": 30,
+        "min": -4.558670197346072,
+        "max": 4.3500062677931055,
+        "median": -0.9223783140431807,
+        "mean": -0.1925092003315756,
+        "p95": 3.9958155648419145,
+        "p99": 4.3500062677931055
+      },
+      "first150ms_measured_current_derived_torque_nm": {
+        "n": 30,
+        "min": -4.127759848594666,
+        "max": 4.006079853057861,
+        "median": 0.0,
+        "mean": 0.02729999899864195,
+        "p95": 3.6556648659110054,
+        "p99": 3.980293054003716
+      }
+    },
+    {
+      "segment": 6,
+      "start_bag_s": 102.34149246000001,
+      "sampled_enabled_duration_ms": 1060.4122149998148,
+      "control_ticks": 210,
+      "successful_steering_sends": 210,
+      "target_deg": 0.0,
+      "initial_position_deg": -12.216796875000012,
+      "position_range_deg": [
+        -22.9833984375,
+        15.82031250000001
+      ],
+      "first_changed_position_control_tick_ms": 20.21435000006022,
+      "last_tick_before_20ms": {
+        "elapsed_ms": 15.783384999849659,
+        "ticks_before_deadline": 4,
+        "position_deg": -12.216796875000012,
+        "position_receipt_age_ms": 9.55592299987984
+      },
+      "first_10percent_crossing_ms": 26.287092000075063,
+      "first_50percent_crossing_ms": 37.117128999852866,
+      "first_90percent_crossing_ms": 40.63510500009215,
+      "settling_within_target_plusminus_0p1deg_ms": null,
+      "settling_within_target_plusminus_0p3deg_ms": null,
+      "final_halfsecond_median_deg": -0.681152343750008,
+      "final_halfsecond_std_deg": 10.886930908583187,
+      "final_median_target_error_deg": -0.681152343750008,
+      "settling_around_observed_final_plusminus_one_encoder_count_ms": null,
+      "control_interval_ms": {
+        "n": 209,
+        "min": 2.918316999966919,
+        "max": 11.403826999867306,
+        "median": 4.998680999960925,
+        "mean": 5.073742655501506,
+        "p95": 6.7583337998257775,
+        "p99": 8.997883440351861
+      },
+      "observed_received_command_interval_ms": {
+        "n": 49,
+        "min": 11.26188300031572,
+        "max": 31.806173999939347,
+        "median": 19.987612000022636,
+        "mean": 20.100148326528885,
+        "p95": 25.908656199862882,
+        "p99": 31.77109031988948
+      },
+      "control_ticks_per_received_command_excluding_edge_groups": {
+        "2": 1,
+        "3": 9,
+        "4": 31,
+        "5": 6,
+        "6": 1
+      },
+      "distinct_A3_receipt_timestamps": 142,
+      "fraction_ticks_reusing_A3_receipt_timestamp": 0.32380952380952377,
+      "distinct_A3_receipt_interval_ms": {
+        "n": 141,
+        "min": 1.9273100001555576,
+        "max": 23.085094000180106,
+        "median": 6.279368999912549,
+        "mean": 7.4971468014168,
+        "p95": 13.963684999907855,
+        "p99": 17.860852399826392
+      },
+      "position_feedback_age_ms": {
+        "n": 210,
+        "min": 0.9790999997676408,
+        "max": 23.43801600000006,
+        "median": 5.778810500032705,
+        "mean": 6.657677833345588,
+        "p95": 13.330115000121614,
+        "p99": 19.252345790168874
+      },
+      "speed_feedback_age_ms": {
+        "n": 210,
+        "min": 0.2806630000122823,
+        "max": 22.472675000244635,
+        "median": 3.7940189999972063,
+        "mean": 4.6448764285936965,
+        "p95": 11.776664850231093,
+        "p99": 15.644449219926171
+      },
+      "first_current_feedback_abs_atleast_0p01Nm_receipt_ms": 14.623641967773438,
+      "first150ms_commanded_torque_nm": {
+        "n": 30,
+        "min": -5.581047530333137,
+        "max": 3.2412555899094952,
+        "median": 0.4183124702409813,
+        "mean": -0.2606286562329182,
+        "p95": 2.65369830348339,
+        "p99": 3.164388303502398
+      },
+      "first150ms_measured_current_derived_torque_nm": {
+        "n": 29,
+        "min": -4.541939833402634,
+        "max": 3.0809998869895936,
+        "median": 0.0,
+        "mean": -0.3089875748732994,
+        "p95": 2.001323926591873,
+        "p99": 2.7824470979404436
+      }
+    }
+  ],
+  "B_target_changes": {
+    "enabled_commands": 1718,
+    "within_contiguous_recorded_intervals_abs_target_change_deg": {
+      "n": 1709,
+      "min": 1.2063821621439605e-05,
+      "max": 0.09326976133611711,
+      "median": 0.010844035213135211,
+      "mean": 0.014509302424574776,
+      "p95": 0.04126282738937369,
+      "p99": 0.059170659097797486
+    },
+    "warning": "Dry run only; not a measured live policy-to-steering response or bandwidth requirement."
+  }
+}

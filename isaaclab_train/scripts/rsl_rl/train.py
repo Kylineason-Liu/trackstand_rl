@@ -27,10 +27,6 @@ parser.add_argument(
 )
 parser.add_argument("--seed", type=int, default=None, help="Seed used for the environment")
 parser.add_argument("--max_iterations", type=int, default=None, help="RL Policy training iterations.")
-parser.add_argument(
-    "--no_dr", action="store_true", default=False,
-    help="Disable domain randomization by pinning the dr_ramp curriculum to alpha=0.",
-)
 parser.add_argument("--survival_w", type=float, default=None,
     help="Override the survival reward weight (kept at the env-cfg value if omitted). 0 disables the term.")
 parser.add_argument("--drive_w", type=float, default=None,
@@ -51,6 +47,9 @@ cli_args.add_rsl_rl_args(parser)
 # append AppLauncher cli args
 AppLauncher.add_app_launcher_args(parser)
 args_cli, hydra_args = parser.parse_known_args()
+unknown_flags = [arg for arg in hydra_args if arg.startswith("-")]
+if unknown_flags:
+    parser.error(f"unrecognized arguments: {' '.join(unknown_flags)}")
 
 # always enable cameras to record video
 if args_cli.video:
@@ -116,6 +115,7 @@ from isaaclab_tasks.utils.hydra import hydra_task_config
 logger = logging.getLogger(__name__)
 
 import source.trackstand_rl.trackstand_rl.tasks  # noqa: F401  # registers Trackstand-Balance-v0 (CycleRL removed 2026-09-23)
+from scripts.domain_randomization import configure_domain_randomization
 
 torch.backends.cuda.matmul.allow_tf32 = True
 torch.backends.cudnn.allow_tf32 = True
@@ -133,16 +133,7 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
         args_cli.max_iterations if args_cli.max_iterations is not None else agent_cfg.max_iterations
     )
 
-    # --no_dr: pin the DR ramp to alpha=0 (all randomized terms stay nominal).
-    # Same mechanism as editing dr_ramp's end_step, but per-run. No-op if the
-    # task has no dr_ramp curriculum term.
-    if args_cli.no_dr:
-        dr_ramp = getattr(getattr(env_cfg, "curriculum", None), "dr_ramp", None)
-        if dr_ramp is not None:
-            dr_ramp.params["end_step"] = 10**9
-            print("[INFO] --no_dr: domain randomization disabled (dr_ramp alpha pinned to 0).")
-        else:
-            print("[WARN] --no_dr: task has no 'dr_ramp' curriculum term; nothing to disable.")
+    configure_domain_randomization(env_cfg, args_cli.dr)
 
     # --survival_w / --drive_w / --steer_w: per-run overrides of reward-term weights.
     # A weight of 0 disables the term entirely (set to None so its func isn't called);

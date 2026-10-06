@@ -1,0 +1,66 @@
+{
+  "bag": "/home/lmbike/trackstand_rl/rosbags/rosbag2_2026_10_02-11_01_09",
+  "files": [
+    {
+      "path": "/home/lmbike/trackstand_rl/rosbags/rosbag2_2026_10_02-11_01_09/rosbag2_2026_10_02-11_01_09_0.mcap",
+      "sha256": "8ea2b0f99f87dbd81cc7ae23760ce81a8c1a1bddc779713aa1fc7ac098d0d872",
+      "bytes": 27706706
+    }
+  ],
+  "duration_s": 54.249942340000004,
+  "topic_counts": {
+    "/trackstand/motor_torque": 21700,
+    "/trackstand/motor_fault": 10847,
+    "/trackstand/motor_control": 10847,
+    "/trackstand/motor_command": 2712,
+    "/trackstand/motor_state": 9222,
+    "/rosout": 17,
+    "/trackstand/motor_status": 108
+  },
+  "metadata_count_differences": {},
+  "time_axis": "MCAP log_time minus metadata bag start, seconds; no artificial time shift",
+  "command": {
+    "topic": "/trackstand/motor_command",
+    "field": "data[1]",
+    "units": "rad",
+    "samples": 2712,
+    "range": [
+      -0.9999999413263608,
+      0.9999999417663378
+    ]
+  },
+  "position_feedback": {
+    "topic": "/trackstand/motor_state",
+    "field": "data[0]",
+    "units": "rad",
+    "samples": 9222,
+    "range": [
+      -1.0511603348986354,
+      1.068417618762349
+    ]
+  },
+  "velocity_feedback": {
+    "topic": "/trackstand/motor_state",
+    "field": "data[2]",
+    "units": "rad/s",
+    "samples": 9222,
+    "range": [
+      -3.7667695916541617,
+      4.227536514180665
+    ]
+  },
+  "torque": {
+    "topic": "/trackstand/motor_torque",
+    "joint": "steering_joint",
+    "field": "effort[0]",
+    "units": "N m",
+    "samples": 10850,
+    "range": [
+      -0.26675999021530156,
+      0.2768999898433685
+    ]
+  },
+  "smoothing": "none",
+  "decimation": "none",
+  "original_bag_modified": false
+}

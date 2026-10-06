@@ -18,6 +18,7 @@ Faithful to the Isaac Sim task on the pieces the policy can observe/feel:
     inverted) ONLY — the yaw / wheel-net / drift / diverged terms were DELETED
 """
 
+import copy
 import os
 from dataclasses import dataclass, field
 
@@ -153,8 +154,11 @@ class BikeBalanceEnv:
     DR_ACCEL_RES = 0.002
 
     def __init__(self, scene_path: str | None = None, scene_xml: str | None = None,
-                 seed: int = 0, enable_dr: bool = False):
-        if scene_xml is not None:
+                 seed: int = 0, enable_dr: bool = False, model: mujoco.MjModel | None = None):
+        if model is not None:
+            # Independent mutable model: episode DR must never affect another bike.
+            self.model = copy.copy(model)
+        elif scene_xml is not None:
             self.model = mujoco.MjModel.from_xml_string(scene_xml)
         elif scene_path is not None:
             self.model = mujoco.MjModel.from_xml_path(scene_path)

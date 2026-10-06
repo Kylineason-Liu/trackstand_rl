@@ -1,0 +1,229 @@
+{
+  "experiment": {
+    "motor_order": [
+      "steering",
+      "drive"
+    ],
+    "num_envs": 64,
+    "policy_steps": 3000,
+    "seed": 42,
+    "dr": true,
+    "policy_dt_s": 0.02,
+    "physics_dt_s": 0.0025,
+    "decimation": 8,
+    "torque_semantics": "computed/applied are ImplicitActuator estimates, not measured motor torques",
+    "physx_effort_target_semantics": "feed-forward effort buffer submitted to PhysX; excludes implicit drive PD contribution",
+    "capture": "physics pre/post states captured before automatic reset; estimates captured after actuator.compute and before physics integration",
+    "checkpoint_sha256": "f77aadf7c021a1d20603a636daf757601dca2fe4faf264d5bba99c2dcf2b5c5e",
+    "captured_policy_steps": 3000,
+    "captured_physics_env_samples": 1536000
+  },
+  "metrics": [
+    {
+      "metric": "steering_position_target_outside_joint_range",
+      "count": 1265,
+      "samples": 192000,
+      "percent": 0.6588541666666667,
+      "max_abs": 237.68182373046875,
+      "units": "deg"
+    },
+    {
+      "metric": "drive_feedforward_target_above_effort_limit",
+      "count": 171,
+      "samples": 192000,
+      "percent": 0.0890625,
+      "max_abs": 132.00242614746094,
+      "units": "N m"
+    },
+    {
+      "metric": "steering_raw_action_above_one",
+      "count": 1280,
+      "samples": 192000,
+      "percent": 0.6666666666666667,
+      "max_abs": 2.6422488689422607,
+      "units": "dimensionless"
+    },
+    {
+      "metric": "steering_computed_torque_above_effort_limit",
+      "count": 4335,
+      "samples": 1536000,
+      "percent": 0.2822265625,
+      "max_abs": 48.2740364074707,
+      "units": "N m"
+    },
+    {
+      "metric": "steering_applied_torque_estimate_above_effort_limit",
+      "count": 0,
+      "samples": 1536000,
+      "percent": 0.0,
+      "max_abs": 5.599999904632568,
+      "units": "N m"
+    },
+    {
+      "metric": "steering_speed_above_configured_limit",
+      "count": 671,
+      "samples": 1536000,
+      "percent": 0.043684895833333334,
+      "max_abs": 24.27422332763672,
+      "units": "rad/s"
+    },
+    {
+      "metric": "steering_speed_above_limit_by_one_percent",
+      "count": 3,
+      "samples": 1536000,
+      "percent": 0.0001953125,
+      "max_abs": 24.27422332763672,
+      "units": "rad/s"
+    },
+    {
+      "metric": "drive_raw_action_above_one",
+      "count": 171,
+      "samples": 192000,
+      "percent": 0.0890625,
+      "max_abs": 21.019495010375977,
+      "units": "dimensionless"
+    },
+    {
+      "metric": "drive_computed_torque_above_effort_limit",
+      "count": 1368,
+      "samples": 1536000,
+      "percent": 0.0890625,
+      "max_abs": 132.00242614746094,
+      "units": "N m"
+    },
+    {
+      "metric": "drive_applied_torque_estimate_above_effort_limit",
+      "count": 0,
+      "samples": 1536000,
+      "percent": 0.0,
+      "max_abs": 6.28000020980835,
+      "units": "N m"
+    },
+    {
+      "metric": "drive_speed_above_configured_limit",
+      "count": 608,
+      "samples": 1536000,
+      "percent": 0.03958333333333333,
+      "max_abs": 92.51143646240234,
+      "units": "rad/s"
+    },
+    {
+      "metric": "drive_speed_above_limit_by_one_percent",
+      "count": 220,
+      "samples": 1536000,
+      "percent": 0.014322916666666666,
+      "max_abs": 92.51143646240234,
+      "units": "rad/s"
+    },
+    {
+      "metric": "steering_measured_position_outside_joint_range",
+      "count": 284,
+      "samples": 1536000,
+      "percent": 0.018489583333333334,
+      "max_abs": 90.00555419921875,
+      "units": "deg"
+    },
+    {
+      "metric": "steering_target_change_rate_above_speed_limit",
+      "count": 1385,
+      "samples": 191829,
+      "percent": 0.7219971954188366,
+      "max_abs": 236.44309997558594,
+      "units": "rad/s"
+    },
+    {
+      "metric": "steering_rate_needed_to_reach_target_in_one_policy_period",
+      "count": 1467,
+      "samples": 192000,
+      "percent": 0.7640625,
+      "max_abs": 199.8274383544922,
+      "units": "rad/s"
+    }
+  ],
+  "drive_excess_but_net_within": {
+    "excessive_feedforward_targets": 171,
+    "net_computed_torque_within_limit_first_substep": 0,
+    "percent_of_excessive_targets": 0.0
+  },
+  "law_reconstruction_max_error_nm": 0.0,
+  "estimate_clipping_max_error_nm": 0.0,
+  "position_limits_rad": [
+    [
+      -1.570796012878418,
+      1.570796012878418
+    ],
+    [
+      -3.4028234663852886e+38,
+      3.4028234663852886e+38
+    ]
+  ],
+  "velocity_limits_rad_s": [
+    23.899999618530273,
+    61.599998474121094
+  ],
+  "effort_limits_nm": [
+    5.599999904632568,
+    6.28000020980835
+  ],
+  "selected_trace_envs": {
+    "steering": 9,
+    "drive": 44
+  },
+  "tolerance": 1e-05,
+  "ranges": {
+    "stiffness_nm_per_rad": {
+      "steering": [
+        9.000904083251953,
+        10.995061874389648
+      ],
+      "drive": [
+        0.0,
+        0.0
+      ]
+    },
+    "damping_nm_s_per_rad": {
+      "steering": [
+        0.18045856058597565,
+        0.2197209596633911
+      ],
+      "drive": [
+        0.04530021548271179,
+        0.05493580922484398
+      ]
+    }
+  },
+  "physics_effort_target_exceedances": 1368,
+  "physics_effort_target_equals_policy_drive_max_error_nm": 0.0,
+  "environment_any_steering_target_excess": 64,
+  "environment_any_drive_target_excess": 64,
+  "episode_start_samples": 171,
+  "target_excess_by_episode_phase": {
+    "steering": {
+      "at_episode_start": 171,
+      "after_episode_start": 1094
+    },
+    "drive": {
+      "at_episode_start": 171,
+      "after_episode_start": 0
+    }
+  },
+  "drive_feedforward_range_at_episode_start_nm": [
+    63.88702392578125,
+    132.00242614746094
+  ],
+  "drive_feedforward_max_abs_after_episode_start_nm": 2.765089750289917,
+  "torque_statistics": {
+    "steering": {
+      "computed_max_abs_nm": 48.2740364074707,
+      "estimated_applied_mean_abs_nm": 0.09395426511764526,
+      "estimated_applied_rms_nm": 0.3833334445953369,
+      "estimated_applied_p99_abs_nm": 0.9929455518722534
+    },
+    "drive": {
+      "computed_max_abs_nm": 132.00242614746094,
+      "estimated_applied_mean_abs_nm": 0.04533330723643303,
+      "estimated_applied_rms_nm": 0.214357390999794,
+      "estimated_applied_p99_abs_nm": 0.5741521120071411
+    }
+  }
+}

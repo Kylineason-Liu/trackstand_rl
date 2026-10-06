@@ -1,0 +1,16 @@
+metric,count,samples,percent,max_abs,units
+steering_position_target_outside_joint_range,1265,192000,0.6588541666666667,237.68182373046875,deg
+drive_feedforward_target_above_effort_limit,171,192000,0.0890625,132.00242614746094,N m
+steering_raw_action_above_one,1280,192000,0.6666666666666667,2.6422488689422607,dimensionless
+steering_computed_torque_above_effort_limit,4335,1536000,0.2822265625,48.2740364074707,N m
+steering_applied_torque_estimate_above_effort_limit,0,1536000,0.0,5.599999904632568,N m
+steering_speed_above_configured_limit,671,1536000,0.043684895833333334,24.27422332763672,rad/s
+steering_speed_above_limit_by_one_percent,3,1536000,0.0001953125,24.27422332763672,rad/s
+drive_raw_action_above_one,171,192000,0.0890625,21.019495010375977,dimensionless
+drive_computed_torque_above_effort_limit,1368,1536000,0.0890625,132.00242614746094,N m
+drive_applied_torque_estimate_above_effort_limit,0,1536000,0.0,6.28000020980835,N m
+drive_speed_above_configured_limit,608,1536000,0.03958333333333333,92.51143646240234,rad/s
+drive_speed_above_limit_by_one_percent,220,1536000,0.014322916666666666,92.51143646240234,rad/s
+steering_measured_position_outside_joint_range,284,1536000,0.018489583333333334,90.00555419921875,deg
+steering_target_change_rate_above_speed_limit,1385,191829,0.7219971954188366,236.44309997558594,rad/s
+steering_rate_needed_to_reach_target_in_one_policy_period,1467,192000,0.7640625,199.8274383544922,rad/s

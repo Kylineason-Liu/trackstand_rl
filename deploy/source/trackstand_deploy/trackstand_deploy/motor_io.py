@@ -12,13 +12,17 @@ import can
 import numpy as np
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import Bool, Float64MultiArray, String
+from rclpy.qos import QoSProfile, ReliabilityPolicy
+from sensor_msgs.msg import JointState
+from std_msgs.msg import Bool, Float64MultiArray, MultiArrayDimension, String
 
 from .can_protocol import (
+    current_feedback_to_torque_nm,
     parse_a2_velocity,
     parse_a3_multi_turn_count,
     parse_a3_position,
     parse_b0_torque_constant,
+    parse_current_feedback,
     q_current_payload,
     query,
 )
@@ -30,6 +34,16 @@ from .contracts import (
     STEERING_KD_NM_S_PER_RAD,
     STEERING_KP_NM_PER_RAD,
     STEERING_VELOCITY_LIMIT_RAD_S,
+    motor_fault_clear_allowed,
+)
+from .telemetry import (
+    MOTOR_CONTROL_FIELDS,
+    DisableResult,
+    MotorSendResult,
+    age_ms,
+    motor_disable_reasons,
+    send_result_values,
+    telemetry_values,
 )
 
 
@@ -46,6 +60,13 @@ class ChannelState:
     velocity_rad_s: float = 0.0
     torque_constant_nm_per_a: float | None = None
     sample_monotonic: float = 0.0
+    torque_sample_monotonic: float = 0.0
+    position_sample_monotonic: float = 0.0
+    velocity_sample_monotonic: float = 0.0
+    position_query_ms: float = math.nan
+    velocity_query_ms: float = math.nan
+    position_query_failures: int = 0
+    velocity_query_failures: int = 0
     lock: threading.Lock = field(default_factory=threading.Lock)
 
 
@@ -59,15 +80,16 @@ class MotorIo(Node):
         self.declare_parameter("drive_feedback_id", "001")
         self.declare_parameter("steering_gear_ratio", 1.0)
         self.declare_parameter("drive_gear_ratio", 1.0)
-        self.declare_parameter("steering_encoder_sign", 1.0)
-        self.declare_parameter("drive_encoder_sign", -1.0)
-        self.declare_parameter("steering_torque_sign", 1.0)
+        self.declare_parameter("steering_encoder_sign", -1.0)
+        self.declare_parameter("drive_encoder_sign", 1.0)
+        self.declare_parameter("steering_torque_sign", -1.0)
         self.declare_parameter("drive_torque_sign", -1.0)
         self.declare_parameter("poll_rate_hz", 200.0)
         self.declare_parameter("control_rate_hz", 200.0)
         self.declare_parameter("command_timeout_s", 0.08)
         self.declare_parameter("feedback_timeout_s", 0.05)
-        self.declare_parameter("steering_limit_rad", math.radians(30.0))
+        self.declare_parameter("steering_limit_rad", math.radians(90.0))
+        self.declare_parameter("steering_fault_clear_rad", math.radians(5.0))
         self.declare_parameter("dry_run", False)
 
         self._can_interface = str(self.get_parameter("can_interface").value)
@@ -76,13 +98,21 @@ class MotorIo(Node):
         self._command_timeout_s = float(self.get_parameter("command_timeout_s").value)
         self._feedback_timeout_s = float(self.get_parameter("feedback_timeout_s").value)
         self._steering_limit_rad = float(self.get_parameter("steering_limit_rad").value)
+        self._steering_fault_clear_rad = float(self.get_parameter("steering_fault_clear_rad").value)
         self._dry_run = bool(self.get_parameter("dry_run").value)
         if (
-            min(self._poll_rate_hz, self._control_rate_hz) <= 0.0
+            not all(math.isfinite(value) for value in (
+                self._poll_rate_hz, self._control_rate_hz, self._command_timeout_s,
+                self._feedback_timeout_s, self._steering_limit_rad, self._steering_fault_clear_rad,
+            ))
+            or min(self._poll_rate_hz, self._control_rate_hz) <= 0.0
             or min(self._command_timeout_s, self._feedback_timeout_s) <= 0.0
             or self._steering_limit_rad <= 0.0
+            or not 0.0 < self._steering_fault_clear_rad < self._steering_limit_rad
         ):
-            raise ValueError("motor rates, timeouts, and steering limit must be positive")
+            raise ValueError(
+                "motor rates/timeouts must be positive; fault-clear angle must be within steering limit"
+            )
 
         def channel(prefix: str, name: str) -> ChannelState:
             return ChannelState(
@@ -97,7 +127,7 @@ class MotorIo(Node):
         self._steering = channel("steering", "steering")
         self._drive = channel("drive", "drive")
         for motor in (self._steering, self._drive):
-            if motor.gear_ratio <= 0.0 or motor.encoder_sign not in (-1.0, 1.0):
+            if not math.isfinite(motor.gear_ratio) or motor.gear_ratio <= 0.0 or motor.encoder_sign not in (-1.0, 1.0):
                 raise ValueError(f"invalid encoder configuration for {motor.name}")
             if motor.torque_sign not in (-1.0, 1.0):
                 raise ValueError(f"invalid torque sign for {motor.name}")
@@ -105,13 +135,19 @@ class MotorIo(Node):
         self._running = True
         self._requested_enable = False
         self._steering_target_rad = 0.0
+        self._requested_steering_target_rad = 0.0
         self._slewed_steering_target_rad = 0.0
         self._drive_target_nm = 0.0
+        self._requested_drive_target_nm = 0.0
         self._command_monotonic = 0.0
         self._fault_latched = False
+        self._fault_reason: str | None = None
         self._outputs_active = False
         self._command_lock = threading.Lock()
         self._last_published_sample_times = (0.0, 0.0)
+        self._control_sequence = 0
+        self._last_control_monotonic = 0.0
+        self._last_event_state = None
 
         self._tx_bus = can.interface.Bus(
             channel=self._can_interface, interface="socketcan", receive_own_messages=False
@@ -119,13 +155,37 @@ class MotorIo(Node):
         self._state_publisher = self.create_publisher(
             Float64MultiArray, "/trackstand/motor_state", 10
         )
+        self._torque_publisher = self.create_publisher(
+            JointState, "/trackstand/motor_torque",
+            QoSProfile(depth=100, reliability=ReliabilityPolicy.BEST_EFFORT),
+        )
+        self._control_publisher = self.create_publisher(
+            Float64MultiArray, "/trackstand/motor_control",
+            QoSProfile(depth=50, reliability=ReliabilityPolicy.BEST_EFFORT),
+        )
+        self._event_publisher = self.create_publisher(String, "/trackstand/motor_event", 100)
+        self._control_dimension = MultiArrayDimension(
+            label="motor_control_v1:" + ",".join(MOTOR_CONTROL_FIELDS),
+            size=len(MOTOR_CONTROL_FIELDS), stride=len(MOTOR_CONTROL_FIELDS),
+        )
         self._fault_publisher = self.create_publisher(Bool, "/trackstand/motor_fault", 10)
         self._status_publisher = self.create_publisher(String, "/trackstand/motor_status", 10)
         self._command_subscription = self.create_subscription(
             Float64MultiArray, "/trackstand/motor_command", self._command_callback, 10
         )
 
-        self._threads = [
+        # A separate receive-only socket sees feedback without consuming the
+        # encoder pollers' replies or adding CAN traffic/control-loop waits.
+        self._torque_bus = can.interface.Bus(
+            channel=self._can_interface,
+            interface="socketcan",
+            receive_own_messages=False,
+            can_filters=[
+                {"can_id": motor.feedback_id, "can_mask": 0x7FF, "extended": False}
+                for motor in (self._steering, self._drive)
+            ],
+        )
+        self._threads = [threading.Thread(target=self._receive_torque_feedback, daemon=True)] + [
             threading.Thread(target=self._poll_motor, args=(motor,), daemon=True)
             for motor in (self._steering, self._drive)
         ]
@@ -139,6 +199,48 @@ class MotorIo(Node):
             f"Motor I/O on {self._can_interface}: poll={self._poll_rate_hz:.0f} Hz, "
             f"control={self._control_rate_hz:.0f} Hz, dry_run={self._dry_run}"
         )
+
+    def _receive_torque_feedback(self) -> None:
+        while self._running:
+            try:
+                message = self._torque_bus.recv(timeout=0.05)
+            except can.CanError as error:
+                self.get_logger().error(f"Torque feedback listener stopped: {error}")
+                return
+            if message is not None:
+                self._publish_torque_feedback(message)
+
+    def _publish_torque_feedback(self, message: can.Message) -> None:
+        if message.is_extended_id or message.is_remote_frame or message.is_error_frame:
+            return
+        if not message.data or message.data[0] not in (0xA1, 0xC0):
+            return
+        if message.arbitration_id == self._steering.feedback_id:
+            motor, joint_name = self._steering, "steering_joint"
+        elif message.arbitration_id == self._drive.feedback_id:
+            motor, joint_name = self._drive, "rear_wheel_joint"
+        else:
+            return
+        # ROS receipt time, not a hardware acquisition timestamp. Each message
+        # contains one motor so asynchronous samples are not paired or repeated.
+        receipt_stamp = self.get_clock().now().to_msg()
+        try:
+            current_a = parse_current_feedback(bytes(message.data))
+            with motor.lock:
+                torque_constant = motor.torque_constant_nm_per_a
+            if torque_constant is None:
+                return  # No substituted constant and no fabricated zero torque.
+            torque_nm = current_feedback_to_torque_nm(current_a, torque_constant, motor.torque_sign)
+        except ValueError as error:
+            self.get_logger().warning(f"Invalid {motor.name} torque feedback: {error}", throttle_duration_sec=2.0)
+            return
+        sample = JointState()
+        sample.header.stamp = receipt_stamp
+        sample.name = [joint_name]
+        sample.effort = [torque_nm]
+        self._torque_publisher.publish(sample)
+        with motor.lock:
+            motor.torque_sample_monotonic = time.monotonic()
 
     def _poll_motor(self, motor: ChannelState) -> None:
         bus = can.interface.Bus(
@@ -176,12 +278,20 @@ class MotorIo(Node):
                             self.get_logger().error(str(error), throttle_duration_sec=2.0)
                     retry_b0_at = now + 1.0
 
+                position_started = time.monotonic()
                 position_payload = query(
                     bus, request_a3, motor.feedback_id, max(0.001, period_s * 0.35)
                 )
+                position_received = time.monotonic()
                 velocity_payload = query(
                     bus, request_a2, motor.feedback_id, max(0.001, period_s * 0.35)
                 )
+                velocity_received = time.monotonic()
+                with motor.lock:
+                    motor.position_query_ms = (position_received - position_started) * 1000.0
+                    motor.velocity_query_ms = (velocity_received - position_received) * 1000.0
+                    motor.position_query_failures += int(position_payload is None)
+                    motor.velocity_query_failures += int(velocity_payload is None)
                 if position_payload is not None and velocity_payload is not None:
                     try:
                         encoder_count = parse_a3_multi_turn_count(position_payload)
@@ -201,6 +311,8 @@ class MotorIo(Node):
                                 velocity_payload, motor.gear_ratio, motor.encoder_sign
                             )
                             motor.sample_monotonic = time.monotonic()
+                            motor.position_sample_monotonic = position_received
+                            motor.velocity_sample_monotonic = velocity_received
                     except (ValueError, IndexError) as error:
                         self.get_logger().warning(
                             f"Invalid {motor.name} A2/A3 response: {error}",
@@ -226,6 +338,8 @@ class MotorIo(Node):
             return
         with self._command_lock:
             self._requested_enable = bool(values[0] > 0.5)
+            self._requested_steering_target_rad = float(values[1])
+            self._requested_drive_target_nm = float(values[2])
             self._steering_target_rad = float(
                 np.clip(values[1], -self._steering_limit_rad, self._steering_limit_rad)
             )
@@ -234,17 +348,26 @@ class MotorIo(Node):
             )
             self._command_monotonic = time.monotonic()
 
-    def _snapshot(self, motor: ChannelState) -> tuple[float, float, float, float | None]:
+    def _snapshot(self, motor: ChannelState) -> tuple:
         with motor.lock:
             return (
                 motor.position_rad,
                 motor.velocity_rad_s,
                 motor.sample_monotonic,
                 motor.torque_constant_nm_per_a,
+                motor.position_sample_monotonic,
+                motor.velocity_sample_monotonic,
+                motor.position_query_ms,
+                motor.velocity_query_ms,
+                motor.position_query_failures,
+                motor.velocity_query_failures,
             )
 
     def _control_tick(self) -> None:
         now = time.monotonic()
+        self._control_sequence += 1
+        interval_ms = age_ms(now, self._last_control_monotonic)
+        self._last_control_monotonic = now
         steering = self._snapshot(self._steering)
         drive = self._snapshot(self._drive)
         with self._command_lock:
@@ -252,12 +375,15 @@ class MotorIo(Node):
             command_age = now - self._command_monotonic
             steering_target = self._steering_target_rad
             drive_target_nm = self._drive_target_nm
+            requested_steering = self._requested_steering_target_rad
+            requested_drive = self._requested_drive_target_nm
 
+        steering_fresh = steering[2] > 0.0 and now - steering[2] <= self._feedback_timeout_s
+        drive_fresh = drive[2] > 0.0 and now - drive[2] <= self._feedback_timeout_s
+        steering_ready = steering[3] is not None and steering_fresh
+        drive_ready = drive[3] is not None and drive_fresh
         feedback_ready = (
-            steering[3] is not None
-            and drive[3] is not None
-            and now - steering[2] <= self._feedback_timeout_s
-            and now - drive[2] <= self._feedback_timeout_s
+            steering_ready and drive_ready
         )
         command_ready = self._command_monotonic > 0.0 and command_age <= self._command_timeout_s
         over_limit = (
@@ -267,34 +393,134 @@ class MotorIo(Node):
         )
         if over_limit:
             self._fault_latched = True
-        if not requested_enable and abs(steering[0]) < self._steering_limit_rad * 0.5:
+            self._fault_reason = (
+                "steering_position_limit" if abs(steering[0]) > self._steering_limit_rad
+                else "steering_speed_limit" if abs(steering[1]) > STEERING_VELOCITY_LIMIT_RAD_S * 1.1
+                else "drive_speed_limit"
+            )
+        if motor_fault_clear_allowed(requested_enable, steering[0], self._steering_fault_clear_rad):
             self._fault_latched = False
+            self._fault_reason = None
 
         enabled = requested_enable and command_ready and feedback_ready and not self._fault_latched
+        reasons = motor_disable_reasons(
+            requested_enable, self._command_monotonic > 0.0, command_ready,
+            steering[3] is not None, drive[3] is not None, steering_fresh, drive_fresh, self._fault_latched,
+        )
+        diagnostics = {
+            "sequence": self._control_sequence,
+            "ros_time_s": self.get_clock().now().nanoseconds * 1e-9,
+            "monotonic_time_s": now, "cycle_interval_ms": interval_ms,
+            "dry_run": self._dry_run, "requested_enable": requested_enable, "gate_enabled": enabled,
+            "command_age_ms": age_ms(now, self._command_monotonic), "command_ready": command_ready,
+            "steering_feedback_ready": steering_ready, "drive_feedback_ready": drive_ready,
+            "steering_pair_age_ms": age_ms(now, steering[2]), "drive_pair_age_ms": age_ms(now, drive[2]),
+            "steering_position_rad": steering[0], "steering_velocity_rad_s": steering[1],
+            "drive_position_rad": drive[0], "drive_velocity_rad_s": drive[1],
+            "requested_steering_target_rad": requested_steering, "requested_drive_target_nm": requested_drive,
+            "bounded_steering_target_rad": steering_target, "bounded_drive_target_nm": drive_target_nm,
+            "steering_target_clipped": requested_steering != steering_target,
+            "drive_target_clipped": requested_drive != drive_target_nm,
+        }
+        for name, snapshot in (("steering", steering), ("drive", drive)):
+            diagnostics.update({
+                f"{name}_position_age_ms": age_ms(now, snapshot[4]),
+                f"{name}_velocity_age_ms": age_ms(now, snapshot[5]),
+                f"{name}_position_query_ms": snapshot[6],
+                f"{name}_velocity_query_ms": snapshot[7],
+                f"{name}_position_query_failures": snapshot[8],
+                f"{name}_velocity_query_failures": snapshot[9],
+            })
+        steering_send, drive_send = MotorSendResult(), MotorSendResult()
+        disable_result = DisableResult()
         if not enabled:
             self._slewed_steering_target_rad = steering[0]
-            self._disable_outputs()
+            disable_result = self._disable_outputs()
             fault = self._fault_latched or (requested_enable and not feedback_ready)
             self._fault_publisher.publish(Bool(data=bool(fault)))
+            diagnostics["slewed_steering_target_rad"] = self._slewed_steering_target_rad
+            self._publish_control_telemetry(now, diagnostics, reasons, steering_send, drive_send, disable_result)
             return
 
         max_step = STEERING_VELOCITY_LIMIT_RAD_S / self._control_rate_hz
         target_error = steering_target - self._slewed_steering_target_rad
         self._slewed_steering_target_rad += float(np.clip(target_error, -max_step, max_step))
-        steering_torque_nm = STEERING_KP_NM_PER_RAD * (
-            self._slewed_steering_target_rad - steering[0]
-        ) - STEERING_KD_NM_S_PER_RAD * steering[1]
+        error_rad = self._slewed_steering_target_rad - steering[0]
+        p_torque_nm = STEERING_KP_NM_PER_RAD * error_rad
+        d_torque_nm = -STEERING_KD_NM_S_PER_RAD * steering[1]
+        steering_unclipped_nm = p_torque_nm + d_torque_nm
+        steering_torque_nm = steering_unclipped_nm
         steering_torque_nm = float(
             np.clip(steering_torque_nm, -STEERING_EFFORT_LIMIT_NM, STEERING_EFFORT_LIMIT_NM)
         )
-        drive_torque_nm = drive_target_nm - DRIVE_DAMPING_NM_S_PER_RAD * drive[1]
+        drive_damping_nm = -DRIVE_DAMPING_NM_S_PER_RAD * drive[1]
+        drive_unclipped_nm = drive_target_nm + drive_damping_nm
+        drive_torque_nm = drive_unclipped_nm
         drive_torque_nm = float(
             np.clip(drive_torque_nm, -DRIVE_EFFORT_LIMIT_NM, DRIVE_EFFORT_LIMIT_NM)
         )
-        self._send_torque(self._steering, steering_torque_nm, float(steering[3]))
-        self._send_torque(self._drive, drive_torque_nm, float(drive[3]))
-        self._outputs_active = True
-        self._fault_publisher.publish(Bool(data=False))
+        diagnostics.update({
+            "slewed_steering_target_rad": self._slewed_steering_target_rad,
+            "steering_slew_limited": abs(target_error) > max_step,
+            "steering_error_rad": error_rad, "steering_p_torque_nm": p_torque_nm,
+            "steering_d_torque_nm": d_torque_nm, "steering_unclipped_torque_nm": steering_unclipped_nm,
+            "steering_final_torque_nm": steering_torque_nm,
+            "steering_torque_saturated": steering_torque_nm != steering_unclipped_nm,
+            "drive_damping_torque_nm": drive_damping_nm, "drive_unclipped_torque_nm": drive_unclipped_nm,
+            "drive_final_torque_nm": drive_torque_nm,
+            "drive_torque_saturated": drive_torque_nm != drive_unclipped_nm,
+        })
+        steering_send = self._send_torque(self._steering, steering_torque_nm, float(steering[3]))
+        if self._dry_run or steering_send.success:
+            drive_send = self._send_torque(self._drive, drive_torque_nm, float(drive[3]))
+        if self._fault_latched:
+            reasons = ["fault_latched", self._fault_reason or "can_send_failed"]
+            diagnostics["gate_enabled"] = False
+            disable_result = self._disable_outputs(force=True)
+            self._fault_publisher.publish(Bool(data=True))
+        else:
+            self._outputs_active = True
+            self._fault_publisher.publish(Bool(data=False))
+        self._publish_control_telemetry(now, diagnostics, reasons, steering_send, drive_send, disable_result)
+
+    def _publish_control_telemetry(
+        self, started: float, diagnostics: dict, reasons: list[str],
+        steering_send: MotorSendResult, drive_send: MotorSendResult, disable_result: DisableResult,
+    ) -> None:
+        diagnostics.update(send_result_values("steering", steering_send))
+        diagnostics.update(send_result_values("drive", drive_send))
+        diagnostics.update({
+            "outputs_active": self._outputs_active, "fault_latched": self._fault_latched,
+            "work_duration_ms": (time.monotonic() - started) * 1000.0,
+            "disable_attempted": disable_result.attempted,
+            "steering_zero_send_success": math.nan if disable_result.steering_zero_success is None
+            else disable_result.steering_zero_success,
+            "steering_disable_send_success": math.nan if disable_result.steering_disable_success is None
+            else disable_result.steering_disable_success,
+            "drive_zero_send_success": math.nan if disable_result.drive_zero_success is None
+            else disable_result.drive_zero_success,
+            "drive_disable_send_success": math.nan if disable_result.drive_disable_success is None
+            else disable_result.drive_disable_success,
+        })
+        if disable_result.errors:
+            reasons = list(dict.fromkeys(reasons + ["disable_send_failed"]))
+        message = Float64MultiArray()
+        message.layout.dim = [self._control_dimension]
+        message.data = telemetry_values(MOTOR_CONTROL_FIELDS, diagnostics)
+        self._control_publisher.publish(message)
+        event_state = (bool(diagnostics["gate_enabled"]), self._outputs_active, self._fault_latched,
+                       tuple(reasons), self._fault_reason, disable_result.errors)
+        if event_state != self._last_event_state:
+            event = String()
+            event.data = json.dumps({
+                "sequence": self._control_sequence, "ros_time_s": diagnostics["ros_time_s"],
+                "monotonic_time_s": started, "gate_enabled": bool(diagnostics["gate_enabled"]),
+                "outputs_active": self._outputs_active, "dry_run": self._dry_run,
+                "fault_latched": self._fault_latched, "fault_reason": self._fault_reason,
+                "disable_reasons": reasons, "disable_send_errors": list(disable_result.errors),
+            }, sort_keys=True)
+            self._event_publisher.publish(event)
+            self._last_event_state = event_state
 
     def _drain_tx(self) -> None:
         for _ in range(16):
@@ -304,46 +530,64 @@ class MotorIo(Node):
             except can.CanError:
                 break
 
-    def _send_torque(self, motor: ChannelState, torque_nm: float, torque_constant: float) -> None:
-        if self._dry_run:
-            return
-        current_a = motor.torque_sign * torque_nm / torque_constant
+    def _send_torque(self, motor: ChannelState, torque_nm: float, torque_constant: float) -> MotorSendResult:
+        result = MotorSendResult()
+        started = time.monotonic()
         try:
+            current_a = motor.torque_sign * torque_nm / torque_constant
+            payload = q_current_payload(current_a)
+            encoded_current = parse_current_feedback(payload)  # Decoding the command, not measured feedback.
+            result.current_command_a = current_a
+            result.encoded_current_a = encoded_current
+            result.encoded_torque_nm = current_feedback_to_torque_nm(
+                encoded_current, torque_constant, motor.torque_sign
+            )
+            if self._dry_run:
+                return result  # Calculated only; never report a simulated CAN send as success.
             self._drain_tx()
+            result.attempted = True
             self._tx_bus.send(
                 can.Message(
                     arbitration_id=motor.host_id,
-                    data=q_current_payload(current_a),
+                    data=payload,
                     is_extended_id=False,
                 )
             )
-        except can.CanError as error:
+            result.success = True
+        except (can.CanError, ValueError, OverflowError) as error:
             self._fault_latched = True
+            self._fault_reason = f"{motor.name}_can_send_failed"
+            result.error = str(error)
             self.get_logger().error(f"{motor.name} C0 send failed: {error}", throttle_duration_sec=1.0)
+        finally:
+            result.duration_ms = (time.monotonic() - started) * 1000.0
+        return result
 
-    def _disable_outputs(self, force: bool = False) -> None:
+    def _disable_outputs(self, force: bool = False) -> DisableResult:
+        result = DisableResult()
         if not force and not self._outputs_active:
-            return
+            return result
         if not self._dry_run:
+            result.attempted = True
+            errors = []
             for motor in (self._steering, self._drive):
-                try:
-                    self._tx_bus.send(
-                        can.Message(
-                            arbitration_id=motor.host_id,
-                            data=q_current_payload(0.0),
-                            is_extended_id=False,
-                        )
-                    )
-                    self._tx_bus.send(
-                        can.Message(
-                            arbitration_id=motor.host_id,
-                            data=bytes([0xCF]),
-                            is_extended_id=False,
-                        )
-                    )
-                except can.CanError:
-                    pass
-        self._outputs_active = False
+                for operation, payload in (("zero", q_current_payload(0.0)), ("disable", bytes([0xCF]))):
+                    try:
+                        self._tx_bus.send(can.Message(
+                            arbitration_id=motor.host_id, data=payload, is_extended_id=False,
+                        ))
+                        setattr(result, f"{motor.name}_{operation}_success", True)
+                    except can.CanError as error:
+                        setattr(result, f"{motor.name}_{operation}_success", False)
+                        errors.append(f"{motor.name}_{operation}: {error}")
+            result.errors = tuple(errors)
+            if errors:
+                self._fault_latched = True
+                self._fault_reason = "disable_send_failed"
+                self.get_logger().error("; ".join(errors), throttle_duration_sec=1.0)
+        # Keep retrying on subsequent disabled ticks if transport failed.
+        self._outputs_active = bool(result.errors)
+        return result
 
     def _publish_state(self) -> None:
         steering = self._snapshot(self._steering)
@@ -370,6 +614,14 @@ class MotorIo(Node):
     def _publish_status(self) -> None:
         steering = self._snapshot(self._steering)
         drive = self._snapshot(self._drive)
+        now = time.monotonic()
+        torque_ages_ms = {}
+        for motor in (self._steering, self._drive):
+            with motor.lock:
+                sample_time = motor.torque_sample_monotonic
+            torque_ages_ms[f"{motor.name}_torque_age_ms"] = (
+                None if sample_time <= 0.0 else round(max(0.0, now - sample_time) * 1000.0, 2)
+            )
         message = String()
         message.data = json.dumps(
             {
@@ -378,6 +630,8 @@ class MotorIo(Node):
                 "dry_run": self._dry_run,
                 "steering_torque_constant_nm_per_a": steering[3],
                 "drive_torque_constant_nm_per_a": drive[3],
+                "torque_feedback_source": "measured A1/C0 Q-axis current times B0 torque constant",
+                **torque_ages_ms,
             },
             sort_keys=True,
         )
@@ -388,6 +642,8 @@ class MotorIo(Node):
         self._disable_outputs(force=True)
         for thread in getattr(self, "_threads", []):
             thread.join(timeout=0.2)
+        if hasattr(self, "_torque_bus"):
+            self._torque_bus.shutdown()
         if hasattr(self, "_tx_bus"):
             self._tx_bus.shutdown()
         super().destroy_node()

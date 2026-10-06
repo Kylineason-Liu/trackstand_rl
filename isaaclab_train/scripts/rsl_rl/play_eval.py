@@ -21,12 +21,10 @@ Example:
         --checkpoint logs/rsl_rl/newbike_balance_rsl/<run>/model_14999.pt \\
         --num_envs 64 --num_steps 3000 --headless
 
-Note: domain randomization is PINNED for eval, not ramped — by default the
-`dr_ramp` curriculum is set to FULL DR from step 0 (start_step = end_step = 0);
-pass --no_dr to disable DR entirely (alpha pinned to 0). Unlike training, there
-is no 50k-step ramp: eval should see the regime the policy must survive. Also:
-mean_reward is NOT comparable across reward-weight changes (the scale moves with
-the weights) — rank configs by episode length / roll metrics instead.
+Domain randomization is OFF by default. Pass --dr to enable the task's full
+per-episode randomization from the first reset; there is no DR ramp. Observation
+white noise is unchanged. mean_reward is NOT comparable across reward-weight
+changes — rank configs by episode length / roll metrics instead.
 """
 
 """Launch Isaac Sim Simulator first."""
@@ -49,14 +47,12 @@ parser.add_argument(
     "--num_steps", type=int, default=3000,
     help="Env steps to run (~2 episodes/env at the 1500-step / 30s cap).",
 )
-parser.add_argument(
-    "--no_dr", action="store_true", default=False,
-    help="Disable domain randomization entirely (dr_ramp alpha pinned to 0). "
-    "Without this flag, eval runs at FULL DR from step 0 (no ramp).",
-)
 cli_args.add_rsl_rl_args(parser)
 AppLauncher.add_app_launcher_args(parser)
 args_cli, hydra_args = parser.parse_known_args()
+unknown_flags = [arg for arg in hydra_args if arg.startswith("-")]
+if unknown_flags:
+    parser.error(f"unrecognized arguments: {' '.join(unknown_flags)}")
 sys.argv = [sys.argv[0]] + hydra_args
 
 app_launcher = AppLauncher(args_cli)
@@ -103,6 +99,7 @@ from isaaclab_tasks.utils import get_checkpoint_path
 from isaaclab_tasks.utils.hydra import hydra_task_config
 
 import source.trackstand_rl.trackstand_rl.tasks  # noqa: F401  # registers Trackstand-Balance-v0 (CycleRL removed 2026-09-23)
+from scripts.domain_randomization import configure_domain_randomization
 
 installed_version = metadata.version("rsl-rl-lib")
 
@@ -164,21 +161,7 @@ def main(env_cfg, agent_cfg):
     agent_cfg = cli_args.update_rsl_rl_cfg(agent_cfg, args_cli)
     env_cfg.scene.num_envs = args_cli.num_envs if args_cli.num_envs is not None else env_cfg.scene.num_envs
 
-    # Pin DR for eval (play-only convention — training keeps its 50k-step ramp):
-    # default = FULL DR from step 0 (end_step <= start_step -> alpha = 1.0 on the
-    # ramp term's first call, before any reset events fire); --no_dr = alpha pinned
-    # to 0 (end_step = 10**9, same mechanism as train_deterministic.py's flag).
-    dr_ramp = getattr(getattr(env_cfg, "curriculum", None), "dr_ramp", None)
-    if dr_ramp is not None:
-        if args_cli.no_dr:
-            dr_ramp.params["end_step"] = 10**9
-            print("[INFO] --no_dr: domain randomization disabled (dr_ramp alpha pinned to 0).")
-        else:
-            dr_ramp.params["start_step"] = 0
-            dr_ramp.params["end_step"] = 0
-            print("[INFO] DR pinned to FULL from step 0 (no ramp); use --no_dr to disable.")
-    else:
-        print("[WARN] Task has no 'dr_ramp' curriculum term; --no_dr has nothing to disable.")
+    configure_domain_randomization(env_cfg, args_cli.dr)
 
     agent_cfg = handle_deprecated_rsl_rl_cfg(agent_cfg, installed_version)
     env_cfg.seed = agent_cfg.seed
