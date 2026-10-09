@@ -13,7 +13,6 @@ import numpy as np
 import rclpy
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, ReliabilityPolicy
-from sensor_msgs.msg import JointState
 from std_msgs.msg import Bool, Float64MultiArray, MultiArrayDimension, String
 
 from .can_protocol import (
@@ -38,9 +37,13 @@ from .contracts import (
 )
 from .telemetry import (
     MOTOR_CONTROL_FIELDS,
+    MOTOR_STATE_FIELDS,
+    MOTOR_STATE_LABEL,
     DisableResult,
+    MotorControlPublishGate,
     MotorSendResult,
     age_ms,
+    fresh_torque_feedback_nm,
     motor_disable_reasons,
     send_result_values,
     telemetry_values,
@@ -60,6 +63,7 @@ class ChannelState:
     velocity_rad_s: float = 0.0
     torque_constant_nm_per_a: float | None = None
     sample_monotonic: float = 0.0
+    torque_nm: float = math.nan
     torque_sample_monotonic: float = 0.0
     position_sample_monotonic: float = 0.0
     velocity_sample_monotonic: float = 0.0
@@ -71,26 +75,36 @@ class ChannelState:
 
 
 class MotorIo(Node):
+    _parameter_defaults = {
+        "can_interface": "can0", "steering_host_id": "102", "steering_feedback_id": "002",
+        "drive_host_id": "101", "drive_feedback_id": "001", "steering_gear_ratio": 1.0,
+        "drive_gear_ratio": 1.0, "steering_encoder_sign": -1.0, "drive_encoder_sign": 1.0,
+        "steering_torque_sign": -1.0, "drive_torque_sign": -1.0,
+        "poll_rate_hz": 200.0, "control_rate_hz": 200.0,
+        "command_timeout_s": 0.08, "feedback_timeout_s": 0.05,
+        "steering_limit_rad": math.radians(90.0), "steering_fault_clear_rad": math.radians(5.0),
+        "dry_run": False,
+    }
+    _channel_type = ChannelState
+    _control_fields = MOTOR_CONTROL_FIELDS
+    _control_label = "motor_control_v1"
+    _startup_label = "Motor I/O"
+    _track_multi_turn = False
+    _snapshot_fields = (
+        "position_rad", "velocity_rad_s", "sample_monotonic", "torque_constant_nm_per_a",
+        "position_sample_monotonic", "velocity_sample_monotonic", "position_query_ms",
+        "velocity_query_ms", "position_query_failures", "velocity_query_failures",
+    )
+
     def __init__(self) -> None:
         super().__init__("trackstand_motor_io")
-        self.declare_parameter("can_interface", "can0")
-        self.declare_parameter("steering_host_id", "102")
-        self.declare_parameter("steering_feedback_id", "002")
-        self.declare_parameter("drive_host_id", "101")
-        self.declare_parameter("drive_feedback_id", "001")
-        self.declare_parameter("steering_gear_ratio", 1.0)
-        self.declare_parameter("drive_gear_ratio", 1.0)
-        self.declare_parameter("steering_encoder_sign", -1.0)
-        self.declare_parameter("drive_encoder_sign", 1.0)
-        self.declare_parameter("steering_torque_sign", -1.0)
-        self.declare_parameter("drive_torque_sign", -1.0)
-        self.declare_parameter("poll_rate_hz", 200.0)
-        self.declare_parameter("control_rate_hz", 200.0)
-        self.declare_parameter("command_timeout_s", 0.08)
-        self.declare_parameter("feedback_timeout_s", 0.05)
-        self.declare_parameter("steering_limit_rad", math.radians(90.0))
-        self.declare_parameter("steering_fault_clear_rad", math.radians(5.0))
-        self.declare_parameter("dry_run", False)
+        self._setup_parameters()
+        self._initialize_command_state()
+        self._connect_legacy_io()
+
+    def _setup_parameters(self) -> None:
+        for name, default in self._parameter_defaults.items():
+            self.declare_parameter(name, default)
 
         self._can_interface = str(self.get_parameter("can_interface").value)
         self._poll_rate_hz = float(self.get_parameter("poll_rate_hz").value)
@@ -115,7 +129,7 @@ class MotorIo(Node):
             )
 
         def channel(prefix: str, name: str) -> ChannelState:
-            return ChannelState(
+            return self._channel_type(
                 name=name,
                 host_id=int(str(self.get_parameter(f"{prefix}_host_id").value), 16),
                 feedback_id=int(str(self.get_parameter(f"{prefix}_feedback_id").value), 16),
@@ -132,6 +146,7 @@ class MotorIo(Node):
             if motor.torque_sign not in (-1.0, 1.0):
                 raise ValueError(f"invalid torque sign for {motor.name}")
 
+    def _initialize_command_state(self) -> None:
         self._running = True
         self._requested_enable = False
         self._steering_target_rad = 0.0
@@ -148,31 +163,13 @@ class MotorIo(Node):
         self._control_sequence = 0
         self._last_control_monotonic = 0.0
         self._last_event_state = None
+        self._control_publish_gate = MotorControlPublishGate()
 
+    def _connect_legacy_io(self) -> None:
         self._tx_bus = can.interface.Bus(
             channel=self._can_interface, interface="socketcan", receive_own_messages=False
         )
-        self._state_publisher = self.create_publisher(
-            Float64MultiArray, "/trackstand/motor_state", 10
-        )
-        self._torque_publisher = self.create_publisher(
-            JointState, "/trackstand/motor_torque",
-            QoSProfile(depth=100, reliability=ReliabilityPolicy.BEST_EFFORT),
-        )
-        self._control_publisher = self.create_publisher(
-            Float64MultiArray, "/trackstand/motor_control",
-            QoSProfile(depth=50, reliability=ReliabilityPolicy.BEST_EFFORT),
-        )
-        self._event_publisher = self.create_publisher(String, "/trackstand/motor_event", 100)
-        self._control_dimension = MultiArrayDimension(
-            label="motor_control_v1:" + ",".join(MOTOR_CONTROL_FIELDS),
-            size=len(MOTOR_CONTROL_FIELDS), stride=len(MOTOR_CONTROL_FIELDS),
-        )
-        self._fault_publisher = self.create_publisher(Bool, "/trackstand/motor_fault", 10)
-        self._status_publisher = self.create_publisher(String, "/trackstand/motor_status", 10)
-        self._command_subscription = self.create_subscription(
-            Float64MultiArray, "/trackstand/motor_command", self._command_callback, 10
-        )
+        self._create_interfaces()
 
         # A separate receive-only socket sees feedback without consuming the
         # encoder pollers' replies or adding CAN traffic/control-loop waits.
@@ -196,8 +193,30 @@ class MotorIo(Node):
         self._status_timer = self.create_timer(0.5, self._publish_status)
         self._disable_outputs(force=True)
         self.get_logger().info(
-            f"Motor I/O on {self._can_interface}: poll={self._poll_rate_hz:.0f} Hz, "
+            f"{self._startup_label} on {self._can_interface}: poll={self._poll_rate_hz:.0f} Hz, "
             f"control={self._control_rate_hz:.0f} Hz, dry_run={self._dry_run}"
+        )
+
+    def _create_interfaces(self) -> None:
+        self._state_publisher = self.create_publisher(
+            Float64MultiArray, "/trackstand/motor_state", 10
+        )
+        self._state_dimension = MultiArrayDimension(
+            label=MOTOR_STATE_LABEL, size=len(MOTOR_STATE_FIELDS), stride=len(MOTOR_STATE_FIELDS),
+        )
+        self._control_publisher = self.create_publisher(
+            Float64MultiArray, "/trackstand/motor_control",
+            QoSProfile(depth=50, reliability=ReliabilityPolicy.BEST_EFFORT),
+        )
+        self._event_publisher = self.create_publisher(String, "/trackstand/motor_event", 100)
+        self._control_dimension = MultiArrayDimension(
+            label=self._control_label + ":" + ",".join(self._control_fields),
+            size=len(self._control_fields), stride=len(self._control_fields),
+        )
+        self._fault_publisher = self.create_publisher(Bool, "/trackstand/motor_fault", 10)
+        self._status_publisher = self.create_publisher(String, "/trackstand/motor_status", 10)
+        self._command_subscription = self.create_subscription(
+            Float64MultiArray, "/trackstand/motor_command", self._command_callback, 10
         )
 
     def _receive_torque_feedback(self) -> None:
@@ -208,22 +227,21 @@ class MotorIo(Node):
                 self.get_logger().error(f"Torque feedback listener stopped: {error}")
                 return
             if message is not None:
-                self._publish_torque_feedback(message)
+                self._update_torque_feedback(message)
 
-    def _publish_torque_feedback(self, message: can.Message) -> None:
+    def _update_torque_feedback(self, message: can.Message) -> None:
         if message.is_extended_id or message.is_remote_frame or message.is_error_frame:
             return
         if not message.data or message.data[0] not in (0xA1, 0xC0):
             return
         if message.arbitration_id == self._steering.feedback_id:
-            motor, joint_name = self._steering, "steering_joint"
+            motor = self._steering
         elif message.arbitration_id == self._drive.feedback_id:
-            motor, joint_name = self._drive, "rear_wheel_joint"
+            motor = self._drive
         else:
             return
-        # ROS receipt time, not a hardware acquisition timestamp. Each message
-        # contains one motor so asynchronous samples are not paired or repeated.
-        receipt_stamp = self.get_clock().now().to_msg()
+        # Keep each asynchronous torque reply's age separate from encoder age.
+        receipt_time = time.monotonic()
         try:
             current_a = parse_current_feedback(bytes(message.data))
             with motor.lock:
@@ -234,13 +252,9 @@ class MotorIo(Node):
         except ValueError as error:
             self.get_logger().warning(f"Invalid {motor.name} torque feedback: {error}", throttle_duration_sec=2.0)
             return
-        sample = JointState()
-        sample.header.stamp = receipt_stamp
-        sample.name = [joint_name]
-        sample.effort = [torque_nm]
-        self._torque_publisher.publish(sample)
         with motor.lock:
-            motor.torque_sample_monotonic = time.monotonic()
+            motor.torque_nm = torque_nm
+            motor.torque_sample_monotonic = receipt_time
 
     def _poll_motor(self, motor: ChannelState) -> None:
         bus = can.interface.Bus(
@@ -301,6 +315,8 @@ class MotorIo(Node):
                                 self.get_logger().info(
                                     f"{motor.name} encoder zero={encoder_count} counts"
                                 )
+                            if self._track_multi_turn:
+                                motor.multi_turn_count = encoder_count
                             motor.position_rad = parse_a3_position(
                                 position_payload,
                                 motor.zero_count,
@@ -350,18 +366,7 @@ class MotorIo(Node):
 
     def _snapshot(self, motor: ChannelState) -> tuple:
         with motor.lock:
-            return (
-                motor.position_rad,
-                motor.velocity_rad_s,
-                motor.sample_monotonic,
-                motor.torque_constant_nm_per_a,
-                motor.position_sample_monotonic,
-                motor.velocity_sample_monotonic,
-                motor.position_query_ms,
-                motor.velocity_query_ms,
-                motor.position_query_failures,
-                motor.velocity_query_failures,
-            )
+            return tuple(getattr(motor, name) for name in self._snapshot_fields)
 
     def _control_tick(self) -> None:
         now = time.monotonic()
@@ -487,27 +492,29 @@ class MotorIo(Node):
         self, started: float, diagnostics: dict, reasons: list[str],
         steering_send: MotorSendResult, drive_send: MotorSendResult, disable_result: DisableResult,
     ) -> None:
-        diagnostics.update(send_result_values("steering", steering_send))
-        diagnostics.update(send_result_values("drive", drive_send))
-        diagnostics.update({
-            "outputs_active": self._outputs_active, "fault_latched": self._fault_latched,
-            "work_duration_ms": (time.monotonic() - started) * 1000.0,
-            "disable_attempted": disable_result.attempted,
-            "steering_zero_send_success": math.nan if disable_result.steering_zero_success is None
-            else disable_result.steering_zero_success,
-            "steering_disable_send_success": math.nan if disable_result.steering_disable_success is None
-            else disable_result.steering_disable_success,
-            "drive_zero_send_success": math.nan if disable_result.drive_zero_success is None
-            else disable_result.drive_zero_success,
-            "drive_disable_send_success": math.nan if disable_result.drive_disable_success is None
-            else disable_result.drive_disable_success,
-        })
+        if self._control_publish_gate.due(started):
+            diagnostics.update(send_result_values("steering", steering_send))
+            diagnostics.update(send_result_values("drive", drive_send))
+            diagnostics.update({
+                "outputs_active": self._outputs_active, "fault_latched": self._fault_latched,
+                "work_duration_ms": (time.monotonic() - started) * 1000.0,
+                "disable_attempted": disable_result.attempted,
+                "steering_zero_send_success": math.nan if disable_result.steering_zero_success is None
+                else disable_result.steering_zero_success,
+                "steering_disable_send_success": math.nan if disable_result.steering_disable_success is None
+                else disable_result.steering_disable_success,
+                "drive_zero_send_success": math.nan if disable_result.drive_zero_success is None
+                else disable_result.drive_zero_success,
+                "drive_disable_send_success": math.nan if disable_result.drive_disable_success is None
+                else disable_result.drive_disable_success,
+            })
+            message = Float64MultiArray()
+            message.layout.dim = [self._control_dimension]
+            message.data = telemetry_values(self._control_fields, diagnostics)
+            self._control_publisher.publish(message)
         if disable_result.errors:
             reasons = list(dict.fromkeys(reasons + ["disable_send_failed"]))
-        message = Float64MultiArray()
-        message.layout.dim = [self._control_dimension]
-        message.data = telemetry_values(MOTOR_CONTROL_FIELDS, diagnostics)
-        self._control_publisher.publish(message)
+        # Events must still observe every control tick, including unsampled ones.
         event_state = (bool(diagnostics["gate_enabled"]), self._outputs_active, self._fault_latched,
                        tuple(reasons), self._fault_reason, disable_result.errors)
         if event_state != self._last_event_state:
@@ -518,9 +525,13 @@ class MotorIo(Node):
                 "outputs_active": self._outputs_active, "dry_run": self._dry_run,
                 "fault_latched": self._fault_latched, "fault_reason": self._fault_reason,
                 "disable_reasons": reasons, "disable_send_errors": list(disable_result.errors),
+                **self._event_details(),
             }, sort_keys=True)
             self._event_publisher.publish(event)
             self._last_event_state = event_state
+
+    def _event_details(self) -> dict:
+        return {}
 
     def _drain_tx(self) -> None:
         for _ in range(16):
@@ -606,8 +617,15 @@ class MotorIo(Node):
             or sample_times[1] <= self._last_published_sample_times[1]
         ):
             return
+        torques = []
+        for motor in (self._steering, self._drive):
+            with motor.lock:
+                torques.append(fresh_torque_feedback_nm(
+                    motor.torque_nm, motor.torque_sample_monotonic, time.monotonic(), self._feedback_timeout_s,
+                ))
         message = Float64MultiArray()
-        message.data = [steering[0], drive[0], steering[1], drive[1], time.time()]
+        message.layout.dim = [self._state_dimension]
+        message.data = [steering[0], drive[0], steering[1], drive[1], time.time(), *torques]
         self._state_publisher.publish(message)
         self._last_published_sample_times = sample_times
 

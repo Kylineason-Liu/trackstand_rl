@@ -1,0 +1,167 @@
+{
+  "source": "/home/lmbike/trackstand_rl/deploy/experiments/logs/202610071641_mit_10_01_5Hz.csv",
+  "source_sha256": "4b5c448e6236578e418895e0000d1e8cd4068f136b38764f3ab311d8e07fb6b6",
+  "total_rows": 50109,
+  "row_types": {
+    "can_tx": 15815,
+    "motor_status": 2,
+    "query_result": 15814,
+    "can_rx": 5,
+    "feedback": 15807,
+    "mit_feedback": 1332,
+    "event": 3,
+    "mit_target": 1331
+  },
+  "metadata": {
+    "motor_id": 2.0,
+    "gear_ratio": 1.0,
+    "encoder_sign": -1.0,
+    "torque_sign": -1.0,
+    "reference_epoch": 1.0,
+    "zero_count": 0.0,
+    "mit_zero_position_motor_rad": -4.57770656900891e-05,
+    "mit_position_max_rad": 3.0,
+    "mit_velocity_max_rad_s": 45.0,
+    "mit_torque_max_nm": 18.0,
+    "torque_constant_nm_per_a": 0.7799999713897705
+  },
+  "command_start_s": 0.004576747000101022,
+  "command_end_s": 26.75212254500002,
+  "recording_duration_s": 27.014478030000646,
+  "traces": [
+    {
+      "name": "MIT encoded position target",
+      "valid_samples": 1331,
+      "min": -0.9999542229343097,
+      "max": 0.9999542229343099,
+      "mean_rate_hz": 49.72418815708514,
+      "median_ms": 20.107165499666735,
+      "p99_ms": 20.213403180187015,
+      "max_ms": 20.27829100006784
+    },
+    {
+      "name": "A3 position feedback",
+      "valid_samples": 5269,
+      "min": -0.9288253670647557,
+      "max": 1.053461306080464,
+      "mean_rate_hz": 196.87437722711886,
+      "median_ms": 5.077803999938624,
+      "p99_ms": 5.5101802600074725,
+      "max_ms": 7.043524999971851
+    },
+    {
+      "name": "A2 velocity feedback",
+      "valid_samples": 5268,
+      "min": -20.583715066320327,
+      "max": 20.57324309080836,
+      "mean_rate_hz": 196.8731885515057,
+      "median_ms": 5.077146000076027,
+      "p99_ms": 5.681474880311726,
+      "max_ms": 7.807253999999375
+    },
+    {
+      "name": "A1 current-derived torque",
+      "valid_samples": 5268,
+      "min": -6.344519767284393,
+      "max": 6.35855976676941,
+      "mean_rate_hz": 196.87322248315883,
+      "median_ms": 5.075535999822023,
+      "p99_ms": 5.735062440471666,
+      "max_ms": 7.896105999861902
+    }
+  ],
+  "feedback_gaps_over_50_ms": {
+    "MIT encoded position target": [],
+    "A3 position feedback": [],
+    "A2 velocity feedback": [],
+    "A1 current-derived torque": []
+  },
+  "query_results": {
+    "0xA1/received": 5268,
+    "0xA2/late_reply": 1,
+    "0xA2/received": 5267,
+    "0xA3/received": 5268,
+    "0xA3/timed_out": 1
+  },
+  "query_round_trip_p99_ms": 0.8722806800142255,
+  "socket_dropped_frames_max": 0.0,
+  "f1_motion_active_rows": 1331,
+  "f1_motion_fault_rows": 0,
+  "status": [
+    {
+      "phase": "startup",
+      "elapsed_s": 0.0004785670007549925,
+      "payload_hex": "CFE4070000240000",
+      "mode": 0,
+      "fault": 0,
+      "voltage_v": 20.2,
+      "temperature_c": 36.0
+    },
+    {
+      "phase": "shutdown",
+      "elapsed_s": 26.765098335999937,
+      "payload_hex": "CFE3070B002C0500",
+      "mode": 5,
+      "fault": 0,
+      "voltage_v": 20.19,
+      "temperature_c": 44.0
+    }
+  ],
+  "events": [
+    {
+      "phase": "startup",
+      "elapsed_s": 0.003958256000260008,
+      "note": "B1/F0/A3/F1 verified; startup references fixed"
+    },
+    {
+      "phase": "motion",
+      "elapsed_s": 26.764363958000104,
+      "note": "Stopping: KeyboardInterrupt: "
+    },
+    {
+      "phase": "shutdown",
+      "elapsed_s": 27.014478030000646,
+      "note": "CF sent but disabled mode not confirmed before shutdown deadline"
+    }
+  ],
+  "shutdown_confirmed": false,
+  "wire_rows_checked": 18467,
+  "timestamp_caution": "Free steering/front wheel confirmed by user; not ground-loaded balancing. Host send/receive times, not wire, acquisition or execution times. Phase-equivalent lag is frequency-specific, not identified pure delay. A1 torque is Q-current times read B0 Kt, not an independent shaft sensor. C2 ran approximately 197 Hz and MIT approximately 50 Hz; different days and unrecorded C2 firmware gains/limits prevent a strictly controlled mode-only comparison. No identified C3 experimental record: C3 performance cannot be quantified here.",
+  "views": [
+    {
+      "label": "Full recording",
+      "xlim_s": [
+        0,
+        27.014478030000646
+      ]
+    },
+    {
+      "label": "MIT interval",
+      "xlim_s": [
+        0.004576747000101022,
+        26.75212254500002
+      ]
+    },
+    {
+      "label": "First 1 s",
+      "xlim_s": [
+        0.004576747000101022,
+        1.004576747000101
+      ]
+    },
+    {
+      "label": "Middle 1 s",
+      "xlim_s": [
+        12.87834964600006,
+        13.87834964600006
+      ]
+    },
+    {
+      "label": "Final 1 s",
+      "xlim_s": [
+        25.75212254500002,
+        26.75212254500002
+      ]
+    }
+  ]
+}

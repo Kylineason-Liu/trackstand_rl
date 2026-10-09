@@ -26,21 +26,8 @@ def unpack_rc_channels(payload: bytes) -> tuple[int, ...] | None:
     """Decode the 22-byte CRSF payload into sixteen 11-bit channels."""
     if len(payload) < 22:
         return None
-    channels: list[int] = []
-    bits = 0
-    bits_available = 0
-    byte_index = 0
-    for _ in range(16):
-        while bits_available < 11:
-            if byte_index >= len(payload):
-                return None
-            bits |= payload[byte_index] << bits_available
-            bits_available += 8
-            byte_index += 1
-        channels.append(bits & 0x07FF)
-        bits >>= 11
-        bits_available -= 11
-    return tuple(channels)
+    packed = int.from_bytes(payload[:22], "little")
+    return tuple((packed >> (11 * index)) & 0x07FF for index in range(16))
 
 
 def channels_look_like_crsf(channels: Sequence[int]) -> bool:
@@ -154,11 +141,7 @@ class BoolDebouncer:
     pending_count: int = 0
 
     def observe(self, state: bool | None) -> bool | None:
-        if state is None:
-            self.pending = None
-            self.pending_count = 0
-            return self.confirmed
-        if state == self.confirmed:
+        if state is None or state == self.confirmed:
             self.pending = None
             self.pending_count = 0
             return self.confirmed

@@ -69,17 +69,18 @@ class KickstandDriver(Node):
         if not self._servos.write_pos_ex(servo_id, position, speed, acceleration):
             self.get_logger().warning(f"No acknowledgement from kickstand servo {servo_id}")
 
-    def _command_down(self) -> None:
+    def _command_positions(self, positions) -> None:
+        # Enable BOTH servos before moving either, preserving the original order.
         for servo_id in self._servo_ids:
             self._servos.enable_torque(servo_id, 1)
-        for servo_id, position in zip(self._servo_ids, self._down_positions):
+        for servo_id, position in zip(self._servo_ids, positions):
             self._move(servo_id, position)
 
+    def _command_down(self) -> None:
+        self._command_positions(self._down_positions)
+
     def _command_up(self) -> None:
-        for servo_id in self._servo_ids:
-            self._servos.enable_torque(servo_id, 1)
-        for servo_id, position in zip(self._servo_ids, self._up_positions):
-            self._move(servo_id, position)
+        self._command_positions(self._up_positions)
 
     def _command_callback(self, message: String) -> None:
         command = message.data.strip().lower()

@@ -10,7 +10,7 @@ from types import SimpleNamespace
 import pytest
 
 
-SCRIPT = Path(__file__).resolve().parents[3] / "scripts" / "steering_sine_position.py"
+SCRIPT = Path(__file__).resolve().parents[3] / "experiments" / "steering_sine_position.py"
 
 
 @pytest.fixture

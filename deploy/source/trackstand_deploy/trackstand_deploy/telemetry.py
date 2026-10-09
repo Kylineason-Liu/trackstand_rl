@@ -4,6 +4,45 @@ from dataclasses import dataclass
 import math
 
 
+MOTOR_STATE_FIELDS = (
+    "steering_position_rad", "drive_position_rad", "steering_velocity_rad_s", "drive_velocity_rad_s",
+    "unix_time_s", "steering_torque_nm", "drive_torque_nm",
+)
+MOTOR_STATE_LABEL = "motor_state_v2:" + ",".join(MOTOR_STATE_FIELDS)
+
+
+def fresh_torque_feedback_nm(torque_nm: float, sample_time: float, now: float, timeout_s: float) -> float:
+    """Latest measured torque, or NaN if missing/stale; never substitute a command."""
+    if sample_time > 0.0 and 0.0 <= now - sample_time <= timeout_s:
+        return torque_nm
+    return math.nan
+
+
+MOTOR_CONTROL_RATE_HZ = 50.0
+
+
+class MotorControlPublishGate:
+    """Rate-limit diagnostics (50 Hz by default) without throttling control or events."""
+
+    def __init__(self, rate_hz: float = MOTOR_CONTROL_RATE_HZ) -> None:
+        if not math.isfinite(rate_hz) or rate_hz <= 0:
+            raise ValueError("diagnostic publication rate must be finite and positive")
+        self._period_s = 1.0 / rate_hz
+        self._next_publish_at: float | None = None
+
+    def due(self, now: float) -> bool:
+        period_s = self._period_s
+        if self._next_publish_at is None:
+            self._next_publish_at = now + period_s
+            return True
+        if now + 1e-9 < self._next_publish_at:
+            return False
+        # Retain the selected phase despite jitter; skip missed slots, never burst.
+        missed = math.floor(max(0.0, now - self._next_publish_at + 1e-9) / period_s)
+        self._next_publish_at += (missed + 1) * period_s
+        return True
+
+
 MOTOR_CONTROL_FIELDS = (
     "sequence", "ros_time_s", "monotonic_time_s", "cycle_interval_ms", "work_duration_ms",
     "dry_run", "requested_enable", "gate_enabled", "outputs_active", "fault_latched",

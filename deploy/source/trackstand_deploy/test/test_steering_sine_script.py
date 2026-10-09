@@ -9,7 +9,7 @@ from types import ModuleType, SimpleNamespace
 import pytest
 
 
-SCRIPT = Path(__file__).resolve().parents[3] / "scripts" / "steering_sine.py"
+SCRIPT = Path(__file__).resolve().parents[3] / "experiments" / "steering_sine.py"
 
 
 @pytest.fixture(scope="module")

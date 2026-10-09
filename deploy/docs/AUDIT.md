@@ -47,6 +47,8 @@ Removed the controller's `[-1, 1]` raw-action clipping to match Trackstand-Balan
 
 ## 2026-10-01 motor-current torque telemetry
 
+Historical interface: the separate torque topic described below was superseded on 2026-10-06 by the unified seven-field `motor_state_v2` message. See [TELEMETRY.md](TELEMETRY.md) for the current contract; the original validation record is retained here.
+
 Added a separate receive-only CAN listener for measured A1/C0 Q-axis current replies. `/trackstand/motor_torque` publishes individual timestamped `JointState` samples with the motor joint name and `effort` in N·m, calculated as `torque_sign × Kt × Iq`; no requested current or saturation is used for feedback. The existing motor-state layout, encoder polling, control laws, safety logic, and command rate are unchanged, and no additional CAN requests are sent. Torque-constant availability is required; missing replies remain gaps. The ROS timestamp denotes listener receipt, not hardware acquisition. This is an electrical torque estimate, not a calibrated shaft measurement. Physical firmware reply behavior and timing still require a secured hardware check.
 
 Verification: 51 pure tests passed, including reply decoding, torque signs, invalid/missing feedback, independent named samples, and a receive-only listener. ROS 2 Humble package build succeeded in temporary build/install directories. Real ROS `JointState` serialization/deserialization passed for both motor samples with synthetic CAN frames; no physical CAN or motor response was exercised.

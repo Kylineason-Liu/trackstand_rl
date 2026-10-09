@@ -170,7 +170,7 @@ class IntegratedMITTests(unittest.TestCase):
         args = combined.parse_args([])
         self.assertEqual(combined.COMMAND_RATE_HZ, 50)
         self.assertEqual((args.motor_id, args.sign, args.torque_sign, args.gear_ratio), (2, -1, -1, 1))
-        self.assertEqual((args.amplitude, args.period, args.feedback, args.feedback_rate), (1, 10, "extended", 200))
+        self.assertEqual((args.amplitude, args.period, args.feedback, args.feedback_rate), (1, 1, "extended", 200))
         self.assertFalse(args.include_drive)
 
     def test_payload_and_native_origin_match_proven_sender(self):
@@ -178,6 +178,7 @@ class IntegratedMITTests(unittest.TestCase):
         for p in (-3, -1, 0, 1, 3):
             self.assertEqual(combined.mit_payload(p, ranges), original.mit_payload(p, original.MITRanges(*ranges)))
         self.args.gear_ratio = 2
+        self.args.period = 10  # Explicit quarter-cycle test, independent of CLI defaults.
         self.assertEqual(combined.sine_position(self.args, 2.5, .4), -1.6)
 
     def test_cli_invalid_values_rejected(self):

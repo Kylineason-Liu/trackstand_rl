@@ -23,7 +23,7 @@ Run this from `~/trackstand_rl/deploy` in a separate terminal after sourcing `in
 ```bash
 mkdir -p ../rosbags
 ros2 bag record -o ../rosbags/diag_a_disabled \
-  /trackstand/imu /trackstand/motor_state /trackstand/motor_torque \
+  /trackstand/imu /trackstand/motor_state \
   /trackstand/motor_control /trackstand/motor_event \
   /trackstand/observation /trackstand/raw_action /trackstand/motor_command \
   /trackstand/policy_timing /trackstand/policy_event \
@@ -31,7 +31,7 @@ ros2 bag record -o ../rosbags/diag_a_disabled \
   /trackstand/kickstands_up /trackstand/kickstands_command /rosout
 ```
 
-Change `-o` for each stage. Recorder discovery must list the active high-rate topics. Verify recorded topic names and counts afterward using `ros2 bag info ../rosbags/diag_a_disabled`; a successful bag file alone does not prove the best-effort telemetry was captured. `/trackstand/motor_torque` can be empty with motors disabled or `dry_run=true`. Event topics may be quiet until a state change. The names and units of numeric telemetry fields are documented in [TELEMETRY.md](TELEMETRY.md).
+Change `-o` for each stage. Recorder discovery must list the active high-rate topics. Verify recorded topic names and counts afterward using `ros2 bag info ../rosbags/diag_a_disabled`; a successful bag file alone does not prove the best-effort telemetry was captured. Torque fields `motor_state.data[5]` and `[6]` can be `NaN` with motors disabled or `dry_run=true`; missing/stale current feedback is not zero torque. Event topics may be quiet until a state change. The names and units of numeric telemetry fields are documented in [TELEMETRY.md](TELEMETRY.md).
 
 ## 3. Stage A: disabled sensors, RC, and steering zero
 
@@ -69,7 +69,7 @@ ros2 param dump /trackstand_policy_controller
 ros2 param get /trackstand_policy_controller model_path
 ```
 
-Record a new bag. With CH7 down, confirm disabled timing messages but no raw actions. Briefly request CH7 up and then down while the bike remains restrained. Confirm the mode and events transition, the 50 Hz observation/raw-action/command stream appears only during the enabled interval, and the 200 Hz motor record shows computed steering/drive torque with `send_attempted=0`. Inspect `policy_timing` for large intervals or inference times, and `motor_control` for target clipping, steering slew, torque saturation, command gaps, and feedback ages. If kickstands actually move or a motor receives C0 current in this stage, stop and resolve the startup/parameter mismatch before proceeding.
+Record a new bag. With CH7 down, confirm disabled timing messages but no raw actions. Briefly request CH7 up and then down while the bike remains restrained. Confirm the mode and events transition, the 50 Hz observation/raw-action/command stream appears during the enabled interval, and the 50 Hz sampled motor record shows computed steering/drive torque with `send_attempted=0`. Disabled motor commands continue outside the enabled interval. Inspect `policy_timing` for large intervals or inference times, and `motor_control` for target clipping, steering slew, torque saturation, command gaps, and feedback ages. Its `cycle_interval_ms` should still reflect the 200 Hz control loop (about 5 ms), while record timestamps are about 20 ms apart; sequence gaps are intentional. Events and faults must respond on unsampled control ticks too. If kickstands actually move or a motor receives C0 current in this stage, stop and resolve the startup/parameter mismatch before proceeding.
 
 ## 5. Stage C: small powered motor commands, policy stopped
 
@@ -79,7 +79,7 @@ Only after reviewing Stages A and B, return CH7 down, stop `policy_controller`, 
 ros2 run trackstand_deploy motor_io --ros-args --params-file source/trackstand_deploy/config/params.yaml -p dry_run:=false
 ```
 
-Secure the bike independently; allow the rear wheel and steering to move freely in a controlled range. Start a fresh bag and verify there is no other publisher on `/trackstand/motor_command`. The following examples publish for about 2 seconds at 50 Hz. End each publisher before starting another; the 80 ms watchdog will then send zero-current and disable frames. In the first command, verify both joint names appear in `/trackstand/motor_torque`, their feedback ages remain fresh, and `*_send_success=1`. These commands send to **both** motors; zero rear torque still permits a small damping response if the wheel is moving.
+Secure the bike independently; allow the rear wheel and steering to move freely in a controlled range. Start a fresh bag and verify there is no other publisher on `/trackstand/motor_command`. The following examples publish for about 2 seconds at 50 Hz. End each publisher before starting another; the 80 ms watchdog will then send zero-current and disable frames. In the first command, verify finite steering/rear torque in `motor_state.data[5]` and `[6]`, fresh torque ages in `motor_status`, and `*_send_success=1`. These commands send to **both** motors; zero rear torque still permits a small damping response if the wheel is moving.
 
 ```bash
 ros2 topic pub --rate 50 --times 100 --qos-durability volatile \

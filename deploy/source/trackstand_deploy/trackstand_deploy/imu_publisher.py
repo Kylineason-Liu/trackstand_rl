@@ -74,13 +74,10 @@ class ImuPublisher(Node):
         message = Imu()
         message.header.stamp = self.get_clock().now().to_msg()
         message.header.frame_id = self._frame_id
-        message.orientation.x = float(quaternion[0])
-        message.orientation.y = float(quaternion[1])
-        message.orientation.z = float(quaternion[2])
-        message.orientation.w = float(quaternion[3])
-        message.angular_velocity.x = float(body_rate[0])
-        message.angular_velocity.y = float(body_rate[1])
-        message.angular_velocity.z = float(body_rate[2])
+        for axis, value in zip("xyzw", quaternion):
+            setattr(message.orientation, axis, float(value))
+        for axis, value in zip("xyz", body_rate):
+            setattr(message.angular_velocity, axis, float(value))
         message.linear_acceleration_covariance[0] = -1.0
         self._publisher.publish(message)
         self._last_source_time = source_time

@@ -1,9 +1,7 @@
 """C2 protocol, unit, safety, and regression checks; no ROS or hardware I/O."""
 
-import ast
 import json
 import math
-from pathlib import Path
 import struct
 import sys
 import threading
@@ -14,13 +12,19 @@ import numpy as np
 import pytest
 
 from trackstand_deploy.can_protocol import RADIANS_PER_COUNT, parse_current_feedback
+from trackstand_deploy.telemetry import MotorControlPublishGate
 
 
 @pytest.fixture
-def position_node(node_module):
+def position_node(node_module, monkeypatch):
     module = node_module("motor_io_position")
-    module.time = SimpleNamespace(monotonic=lambda: 100.0, time=lambda: 123456.0)
+    clock = SimpleNamespace(value=100.0)
+    module.time = SimpleNamespace(monotonic=lambda: clock.value, time=lambda: 123456.0)
+    monkeypatch.setattr(sys.modules[module.MotorIo.__module__], "time", SimpleNamespace(
+        monotonic=lambda: module.time.monotonic(), time=lambda: module.time.time(),
+    ))
     node = object.__new__(module.MotorIoPosition)
+    node._test_clock = clock
     node._steering = module.ChannelState("steering", 0x102, 0x002, 1.0, -1.0, -1.0)
     node._drive = module.ChannelState("drive", 0x101, 0x001, 1.0, 1.0, -1.0)
     for motor, constant in ((node._steering, 0.78), (node._drive, 0.3)):
@@ -52,12 +56,12 @@ def position_node(node_module):
     node._control_sequence = 0
     node._last_control_monotonic = 99.995
     node._last_event_state = None
+    node._control_publish_gate = MotorControlPublishGate()
     node._tx_bus = Mock()
     node._tx_bus.recv.return_value = None
     node._control_publisher = Mock()
     node._event_publisher = Mock()
     node._fault_publisher = Mock()
-    node._torque_publisher = Mock()
     node._status_publisher = Mock()
     node._control_dimension = SimpleNamespace()
     node.get_clock = Mock(return_value=SimpleNamespace(now=lambda: SimpleNamespace(
@@ -189,6 +193,7 @@ def test_startup_encoder_zero_is_added_to_absolute_command(position_node):
     original_target = telemetry(module, node)["steering_c2_target_count"]
     node._steering.zero_count += 100000
     node._steering.multi_turn_count += 100000
+    node._test_clock.value += 0.02
     node._control_tick()
     data = telemetry(module, node)
     assert data["steering_c2_zero_count"] == node._steering.zero_count
@@ -454,26 +459,19 @@ def test_zero_count_absent_gates_off_without_absolute_command(position_node):
 def test_a1_measured_torque_is_preserved_but_c2_reply_is_not_torque(position_node):
     _, node = position_node
     common = dict(arbitration_id=0x002, is_extended_id=False, is_remote_frame=False, is_error_frame=False)
-    node._publish_torque_feedback(SimpleNamespace(data=b"\xc2" + bytes(6), **common))
-    node._torque_publisher.publish.assert_not_called()
-    node._publish_torque_feedback(SimpleNamespace(data=b"\xa1" + struct.pack("<i", -100), **common))
-    sample = node._torque_publisher.publish.call_args.args[0]
-    assert sample.name == ["steering_joint"]
-    assert sample.effort == pytest.approx([0.078])
+    node._update_torque_feedback(SimpleNamespace(data=b"\xc2" + bytes(6), **common))
+    assert math.isnan(node._steering.torque_nm) and node._steering.torque_sample_monotonic == 0.0
+    node._update_torque_feedback(SimpleNamespace(data=b"\xa1" + struct.pack("<i", -100), **common))
+    assert node._steering.torque_nm == pytest.approx(0.078)
+    assert node._steering.torque_sample_monotonic == 100.0
 
 
-def test_original_nonsteering_methods_are_ast_equivalent():
-    root = Path(__file__).parents[1] / "trackstand_deploy"
-    methods = {}
-    for filename, class_name in (("motor_io.py", "MotorIo"), ("motor_io_position.py", "MotorIoPosition")):
-        tree = ast.parse((root / filename).read_text())
-        cls = next(item for item in tree.body if isinstance(item, ast.ClassDef) and item.name == class_name)
-        methods[filename] = {item.name: ast.dump(item, include_attributes=False) for item in cls.body
-                             if isinstance(item, ast.FunctionDef)}
+def test_nonsteering_methods_are_shared_not_copied(position_node):
+    module, _ = position_node
     for name in ("_command_callback", "_send_torque", "_disable_outputs", "_publish_state",
-                 "_receive_torque_feedback", "_publish_torque_feedback", "_drain_tx", "destroy_node",
+                 "_receive_torque_feedback", "_update_torque_feedback", "_drain_tx", "destroy_node",
                  "_publish_control_telemetry"):
-        assert methods["motor_io.py"][name] == methods["motor_io_position.py"][name], name
+        assert getattr(module.MotorIoPosition, name) is getattr(module.MotorIo, name), name
 
 
 @pytest.mark.parametrize("dry_run", [True, False])
@@ -513,6 +511,7 @@ def test_constructor_registers_correct_parameters_topics_and_timers(node_module,
     tx_bus, torque_bus = Mock(), Mock()
     module.can.interface = SimpleNamespace(Bus=Mock(side_effect=[tx_bus, torque_bus]))
     module.threading = SimpleNamespace(Thread=Mock, Lock=threading.Lock)
+    sys.modules[module.MotorIo.__module__].threading = module.threading
     node = module.MotorIoPosition()
     assert node._position_command_sign == node._steering.encoder_sign == -1.0
     assert "c3_current_reference_verified" not in node.params
@@ -521,7 +520,8 @@ def test_constructor_registers_correct_parameters_topics_and_timers(node_module,
     assert [interval for interval, _ in node.timers] == [0.005, 0.005, 0.5]
     assert node._steering.host_id == 0x102 and node._drive.host_id == 0x101
     assert node._command_timeout_s == 0.08 and node._feedback_timeout_s == 0.05
-    assert "/trackstand/motor_torque" in node.publishers
+    assert "/trackstand/motor_state" in node.publishers
+    assert "/trackstand/motor_torque" not in node.publishers
     if dry_run:
         tx_bus.send.assert_not_called()
     else:
@@ -534,12 +534,55 @@ def test_constructor_registers_correct_parameters_topics_and_timers(node_module,
 def test_rear_law_matches_original_for_500_seeded_inputs(position_node):
     module, node = position_node
     rng = np.random.default_rng(42)
-    for _ in range(500):
+    for index in range(500):
+        node._test_clock.value = 100.0 + index * 0.02
+        node._command_monotonic = node._test_clock.value
+        for motor in (node._steering, node._drive):
+            motor.sample_monotonic = motor.position_sample_monotonic = node._test_clock.value
         node._drive_target_nm = float(rng.uniform(-6.28, 6.28))
         node._drive.velocity_rad_s = float(rng.uniform(-20.0, 20.0))
         expected = float(np.clip(node._drive_target_nm - 0.05 * node._drive.velocity_rad_s, -6.28, 6.28))
         node._control_tick()
         assert telemetry(module, node)["drive_final_torque_nm"] == expected
+
+
+@pytest.mark.parametrize("dry_run", [False, True])
+def test_fifty_hz_telemetry_keeps_two_hundred_hz_c2_c0_and_faults(position_node, dry_run):
+    module, node = position_node
+    node._dry_run = dry_run
+    for index in range(200):
+        node._test_clock.value = 100 + index * .005
+        node._command_monotonic = node._test_clock.value
+        for motor in (node._steering, node._drive):
+            motor.sample_monotonic = motor.position_sample_monotonic = node._test_clock.value
+        node._control_tick()
+    assert node._control_publisher.publish.call_count == 50
+    assert node._fault_publisher.publish.call_count == node._control_sequence == 200
+    sent = frames(node)
+    assert sum(payload[0] == 0xC2 for _, payload in sent) == (0 if dry_run else 200)
+    assert sum(payload[0] == 0xC0 for _, payload in sent) == (0 if dry_run else 200)
+    assert telemetry(module, node)["cycle_interval_ms"] == pytest.approx(5.0)
+
+
+@pytest.mark.parametrize("cause", ["rc_down", "stale_feedback", "can_failure"])
+def test_unsampled_c2_tick_still_disables_and_reports_faults_and_events(position_node, cause):
+    _, node = position_node
+    node._control_tick()
+    node._tx_bus.reset_mock()
+    node._test_clock.value += .005
+    if cause == "rc_down":
+        node._requested_enable = False
+    elif cause == "stale_feedback":
+        node._steering.sample_monotonic = 99.0
+    else:
+        node._tx_bus.send.side_effect = [RuntimeError("injected failure"), None, None, None, None]
+    node._control_tick()
+    assert node._control_publisher.publish.call_count == 1
+    assert node._fault_publisher.publish.call_count == 2
+    assert node._fault_publisher.publish.call_args.args[0].data is (cause != "rc_down")
+    assert [payload[0] for _, payload in frames(node)[-4:]] == [0xC0, 0xCF, 0xC0, 0xCF]
+    event = json.loads(node._event_publisher.publish.call_args.args[0].data)
+    assert event["sequence"] == 2 and not event["gate_enabled"]
 
 
 def test_shutdown_is_idempotent_after_ros_signal(position_node, monkeypatch):

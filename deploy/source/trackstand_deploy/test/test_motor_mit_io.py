@@ -14,6 +14,56 @@ from trackstand_deploy.can_protocol import RADIANS_PER_COUNT, parse_current_feed
 from trackstand_deploy.mit_protocol import (
     MitRanges, f0_with_position, mit_motion_payload, parse_f0, parse_f1, parse_mit_motion,
 )
+from trackstand_deploy.telemetry import MotorControlPublishGate
+
+
+def test_mit_import_and_ros_handling_are_independent_of_legacy_nodes(node_module, monkeypatch):
+    import builtins
+
+    real_import = builtins.__import__
+    forbidden = {"motor_io", "motor_io_position", "motor_position_io", "can"}
+
+    def independent_import(name, *args, **kwargs):
+        if name.split(".")[-1] in forbidden or name.startswith("can."):
+            raise ImportError(f"MIT must not import legacy motor nodes or python-can: {name}")
+        return real_import(name, *args, **kwargs)
+
+    monkeypatch.setattr(builtins, "__import__", independent_import)
+    module = node_module("motor_mit_io")
+    assert module.MotorMitIo.__bases__ == (module.Node,)
+    assert module.ChannelState.__module__ == module.__name__
+    for name in (
+        "_initialize_command_state", "_create_interfaces", "_command_callback", "_snapshot",
+        "_publish_state", "_publish_control_telemetry", "_event_details",
+    ):
+        assert getattr(module.MotorMitIo, name).__module__ == module.__name__
+    node = object.__new__(module.MotorMitIo)
+    node._initialize_command_state()
+    assert not node._requested_enable and not node._outputs_active and not node._fault_latched
+    node.create_publisher = Mock()
+    node.create_subscription = Mock()
+    node._create_interfaces()
+    node._steering_limit_rad = math.pi / 2
+    node._command_callback(module.Float64MultiArray(data=[1.0, 0.1, -0.2]))
+    assert node._requested_enable and node._steering_target_rad == 0.1 and node._drive_target_nm == -0.2
+    motor = module.ChannelState("steering", 0x102, 2, 1, -1, -1)
+    assert len(node._snapshot(motor)) == 10
+    assert motor.zero_count is None and motor.torque_constant_nm_per_a is None
+
+
+def test_mit_owns_parameter_defaults_and_three_frequency_divisions(node_module):
+    module = node_module("motor_mit_io")
+    expected = {
+        "can_interface": "can0", "steering_host_id": "102", "steering_feedback_id": "002",
+        "drive_host_id": "101", "drive_feedback_id": "001", "steering_gear_ratio": 1.0,
+        "drive_gear_ratio": 1.0, "steering_encoder_sign": -1.0, "drive_encoder_sign": 1.0,
+        "steering_torque_sign": -1.0, "drive_torque_sign": -1.0,
+        "command_rate_hz": 50.0, "state_rate_hz": 100.0, "actuation_rate_hz": 200.0,
+        "command_timeout_s": 0.08, "feedback_timeout_s": 0.05,
+        "steering_limit_rad": math.pi / 2, "steering_fault_clear_rad": math.radians(5),
+        "dry_run": False, "mit_kp_nm_per_motor_rad": 10.0, "mit_kd_nm_s_per_motor_rad": 0.2,
+    }
+    assert list(module.MotorMitIo._parameter_defaults.items()) == list(expected.items())
 
 
 def feedback(ranges, position=0.0, velocity=0.0, torque=0.0, status=0):
@@ -62,12 +112,10 @@ def test_bad_motion_rejected(position, kp, kd):
 
 
 @pytest.fixture
-def mit_node(node_module, monkeypatch):
+def mit_node(node_module):
     module = node_module("motor_mit_io")
     clock = SimpleNamespace(value=100.0)
     module.time = SimpleNamespace(monotonic=lambda: clock.value, time=lambda: 123456.0)
-    # Inherited methods use their own module globals; share this deterministic clock.
-    monkeypatch.setattr(__import__("trackstand_deploy.motor_io", fromlist=["time"]), "time", module.time)
     node = object.__new__(module.MotorMitIo)
     node._steering = module.ChannelState("steering", 0x102, 2, 1, -1, -1)
     node._drive = module.ChannelState("drive", 0x101, 1, 1, 1, -1)
@@ -76,7 +124,7 @@ def mit_node(node_module, monkeypatch):
         motor.torque_constant_nm_per_a = 0.78 if motor is node._steering else 0.3
         motor.sample_monotonic = motor.position_sample_monotonic = motor.velocity_sample_monotonic = 99.99
     node._dry_run = False
-    node._control_rate_hz = node._poll_rate_hz = 200
+    node._command_rate_hz, node._poll_rate_hz, node._control_rate_hz = 50, 100, 200
     node._feedback_timeout_s = 0.05
     node._command_timeout_s = 0.08
     node._steering_limit_rad = math.pi / 2
@@ -91,7 +139,11 @@ def mit_node(node_module, monkeypatch):
     node._control_sequence = 0
     node._last_control_monotonic = 99.995
     node._last_event_state = None
+    node._control_publish_gate = MotorControlPublishGate(module.MIT_RATE_HZ)
+    node._feedback_gate_fault = False
     node._command_lock = threading.Lock()
+    node._disable_generation = 0
+    node._active_disable_generation = 0
     node._mit_ranges = MitRanges(3, 45, 18)
     node._mit_zero_rad = 0.002
     node._mit_feedback = None
@@ -102,6 +154,7 @@ def mit_node(node_module, monkeypatch):
     node._mit_f1_at = 99.99
     node._mit_last_sent_at = node._mit_first_sent_at = node._next_mit_at = 0
     node._mit_sent_this_enable = False
+    node._slew_last_at = 0.0
     node._disable_wait = {}
     node._disable_confirmed = True
     node._disable_deadline_at = node._next_disable_retry_at = 0
@@ -109,12 +162,14 @@ def mit_node(node_module, monkeypatch):
     node._pending = None
     node._poll_jobs = deque()
     node._next_poll_at = node._next_b0_at = node._next_f0_at = 0
-    node._last_steering_current_query_at = 0
     node._running = True
     node._tx_bus = Mock()
     node._tx_bus.receive.return_value = None
-    for name in ("control", "event", "fault", "status", "state", "torque"):
+    for name in ("control", "event", "fault", "status", "state"):
         setattr(node, f"_{name}_publisher", Mock())
+    node._state_dimension = module.MultiArrayDimension(
+        label=module.MOTOR_STATE_LABEL, size=len(module.MOTOR_STATE_FIELDS), stride=len(module.MOTOR_STATE_FIELDS),
+    )
     node._control_dimension = SimpleNamespace()
     node._last_published_sample_times = (0, 0)
     node.get_clock = Mock(return_value=SimpleNamespace(now=lambda: SimpleNamespace(
@@ -137,7 +192,55 @@ def confirm_disable(node, module):
         node._consume(frame(module, motor, bytes([0xCF]) + bytes(7)), module.time.monotonic())
 
 
-def test_mit_50hz_drive_200hz_and_exact_motor_signs(mit_node):
+@pytest.mark.parametrize("enable", [0.0, 0.5, 0.500001, 1.0])
+@pytest.mark.parametrize("target,drive", [(0.1, -0.2), (2.0, -8.0), (-2.0, 8.0)])
+def test_independent_command_callback_preserves_enable_clamps_and_requested_values(mit_node, enable, target, drive):
+    node, module, clock = mit_node
+    node._command_callback(module.Float64MultiArray(data=[enable, target, drive]))
+    assert node._requested_enable == (enable > 0.5)
+    assert node._requested_steering_target_rad == target and node._requested_drive_target_nm == drive
+    assert node._steering_target_rad == max(-math.pi / 2, min(math.pi / 2, target))
+    assert node._drive_target_nm == max(-6.28, min(6.28, drive))
+    assert node._command_monotonic == clock.value
+
+
+@pytest.mark.parametrize("data", [[], [1.0, 0.0], [1.0, 0.0, 0.0, 0.0]] + [
+    [bad if index == field else 0.0 for index in range(3)]
+    for field in range(3) for bad in (math.nan, math.inf, -math.inf)
+])
+def test_independent_callback_rejects_invalid_commands_without_refreshing_watchdog(mit_node, data):
+    node, module, _ = mit_node
+    names = ("_requested_enable", "_requested_steering_target_rad", "_requested_drive_target_nm",
+             "_steering_target_rad", "_drive_target_nm", "_command_monotonic")
+    before = tuple(getattr(node, name) for name in names)
+    node._command_callback(module.Float64MultiArray(data=data))
+    assert tuple(getattr(node, name) for name in names) == before
+
+
+@pytest.mark.parametrize("steering_at,drive_at,previous,expected", [
+    (0.0, 99.99, (0.0, 0.0), False), (99.99, 0.0, (0.0, 0.0), False),
+    (99.9, 99.99, (0.0, 0.0), False), (99.99, 99.9, (0.0, 0.0), False),
+    (99.99, 99.99, (99.99, 99.99), False), (100.0, 99.99, (99.99, 99.99), False),
+    (99.99, 100.0, (99.99, 99.99), False), (100.0, 100.0, (99.99, 99.99), True),
+])
+def test_independent_state_publisher_requires_two_fresh_new_pairs(mit_node, steering_at, drive_at, previous, expected):
+    node, _, _ = mit_node
+    node._steering.sample_monotonic, node._drive.sample_monotonic = steering_at, drive_at
+    node._last_published_sample_times = previous
+    node._steering.position_rad, node._drive.position_rad = 0.1, -0.2
+    node._steering.velocity_rad_s, node._drive.velocity_rad_s = 0.3, -0.4
+    node._publish_state()
+    assert node._state_publisher.publish.call_count == int(expected)
+    if expected:
+        message = node._state_publisher.publish.call_args.args[0]
+        assert message.data[:5] == [0.1, -0.2, 0.3, -0.4, 123456.0]
+        assert len(message.data) == 7 and all(math.isnan(value) for value in message.data[5:])
+        assert node._last_published_sample_times == (steering_at, drive_at)
+    else:
+        assert node._last_published_sample_times == previous
+
+
+def test_mit_and_drive_200hz_and_exact_motor_signs(mit_node):
     node, module, clock = mit_node
     node._drive.velocity_rad_s = 1.0
     for i in range(9):
@@ -148,7 +251,7 @@ def test_mit_50hz_drive_200hz_and_exact_motor_signs(mit_node):
     sends = node._tx_bus.send.call_args_list
     mit = [call for call in sends if call.args[0] == 0x502]
     drive = [call for call in sends if call.args[0] == 0x101]
-    assert len(mit) == 3 and len(drive) == 9
+    assert len(mit) == len(drive) == 9
     expected = mit_motion_payload(0.002 - 0.05, node._mit_ranges, 10, .2)
     assert mit[0].args[1] == expected
     assert parse_current_feedback(drive[0].args[1]) == pytest.approx(.167)
@@ -157,6 +260,255 @@ def test_mit_50hz_drive_200hz_and_exact_motor_signs(mit_node):
     assert math.isnan(data["steering_final_torque_nm"])
     assert math.isnan(data["steering_current_command_a"])
     assert node._mit_zero_rad == .002
+
+
+@pytest.mark.parametrize("dry_run", [False, True])
+def test_three_rate_divisions_keep_policy_state_and_actuation_independent(mit_node, dry_run):
+    node, module, clock = mit_node
+    node._dry_run = dry_run
+    for index in range(200):
+        clock.value = 100 + index * .005
+        if index % 4 == 0:
+            node._command_callback(module.Float64MultiArray(data=[1.0, .05, 0.0]))
+        node._mit_f1_at = clock.value
+        for motor in (node._steering, node._drive):
+            motor.sample_monotonic = clock.value
+        node._control_tick()
+        if index % 2 == 0:
+            node._publish_feedback()
+    assert node._control_publisher.publish.call_count == node._control_sequence == 200
+    assert node._fault_publisher.publish.call_count == node._status_publisher.publish.call_count == 100
+    assert node._state_publisher.publish.call_count == 100
+    sent = node._tx_bus.send.call_args_list
+    assert sum(call.args[0] == 0x502 for call in sent) == (0 if dry_run else 200)
+    assert sum(call.args[0] == 0x101 for call in sent) == (0 if dry_run else 200)
+    assert record(node, module)["cycle_interval_ms"] == pytest.approx(5.0)
+
+
+@pytest.mark.parametrize("cause", ["rc_down", "stale_feedback", "can_failure"])
+def test_between_feedback_ticks_control_still_disables_and_reports_events(mit_node, cause):
+    node, _, clock = mit_node
+    node._control_tick()
+    node._publish_feedback()
+    node._tx_bus.reset_mock()
+    clock.value += .005
+    if cause == "rc_down":
+        node._requested_enable = False
+    elif cause == "stale_feedback":
+        node._steering.sample_monotonic = 99.0
+    else:
+        node._tx_bus.send.side_effect = [OSError("injected failure"), None, None, None]
+    node._control_tick()
+    assert node._control_publisher.publish.call_count == 2
+    assert node._fault_publisher.publish.call_count == 1  # No off-phase fault publication.
+    clock.value += .005
+    node._publish_feedback()
+    assert node._fault_publisher.publish.call_count == 2
+    assert node._fault_publisher.publish.call_args.args[0].data is (cause != "rc_down")
+    assert [(call.args[0], call.args[1][0]) for call in node._tx_bus.send.call_args_list[-3:]] == [
+        (0x102, 0xCF), (0x101, 0xC0), (0x101, 0xCF),
+    ]
+    event = json.loads(node._event_publisher.publish.call_args.args[0].data)
+    assert event["sequence"] == 2 and not event["gate_enabled"]
+
+
+@pytest.mark.parametrize("cause", ["steering", "drive", "command", "constant"])
+def test_brief_active_watchdog_failure_latches_until_safe_rc_down(mit_node, cause):
+    node, module, clock = mit_node
+    node._control_tick()
+    node._publish_feedback()
+    clock.value += .005
+    if cause == "command":
+        node._command_monotonic = clock.value - .081
+    elif cause == "constant":
+        node._drive.torque_constant_nm_per_a = None
+    else:
+        getattr(node, f"_{cause}").sample_monotonic = clock.value - .051
+    node._control_tick()
+    assert node._fault_latched and node._disable_wait
+    clock.value += .001
+    confirm_disable(node, module)
+    for motor in (node._steering, node._drive):
+        motor.sample_monotonic = clock.value
+    node._drive.torque_constant_nm_per_a = .3
+    node._command_callback(module.Float64MultiArray(data=[1.0, .05, 0.0]))
+    node._tx_bus.reset_mock()
+    clock.value += .004
+    node._control_tick()
+    node._publish_feedback()
+    node._tx_bus.send.assert_not_called()
+    assert [c.args[0].data for c in node._fault_publisher.publish.call_args_list] == [False, True]
+    assert node._fault_latched and not node._hard_fault
+    node._command_callback(module.Float64MultiArray(data=[0.0, 0.0, 0.0]))
+    node._control_tick()
+    assert not node._fault_latched
+    node._command_callback(module.Float64MultiArray(data=[1.0, .05, 0.0]))
+    node._control_tick()
+    assert node._mit_sent_this_enable
+
+
+@pytest.mark.parametrize("cause", ["steering", "drive", "constant", "command"])
+def test_startup_incomplete_inputs_gate_without_latching(mit_node, cause):
+    node, _, clock = mit_node
+    if cause == "constant":
+        node._drive.torque_constant_nm_per_a = None
+    elif cause == "command":
+        node._command_monotonic = 0.0
+    else:
+        getattr(node, f"_{cause}").sample_monotonic = 0.0
+    node._control_tick()
+    node._tx_bus.send.assert_not_called()
+    assert not node._fault_latched
+    node._drive.torque_constant_nm_per_a = .3
+    node._command_monotonic = clock.value
+    for motor in (node._steering, node._drive):
+        motor.sample_monotonic = clock.value
+    node._control_tick()
+    assert node._mit_sent_this_enable
+
+
+@pytest.mark.parametrize("pause_at", ["diagnostic_clock", "mit_encoding", "between_motors", "drive_encoding"])
+@pytest.mark.parametrize("cause", ["stale", "disable", "disable_then_enable"])
+def test_pre_send_revalidation_rejects_stale_or_withdrawn_motion(mit_node, monkeypatch, pause_at, cause):
+    node, module, clock = mit_node
+    node._drive_target_nm = node._requested_drive_target_nm = .1
+
+    def pause():
+        clock.value += .09
+        if cause != "stale":
+            node._command_callback(module.Float64MultiArray(data=[0.0, 0.0, 0.0]))
+            if cause == "disable_then_enable":
+                node._command_callback(module.Float64MultiArray(data=[1.0, .05, .1]))
+                for motor in (node._steering, node._drive):
+                    motor.sample_monotonic = clock.value
+
+    if pause_at == "diagnostic_clock":
+        def ros_now():
+            pause()
+            return SimpleNamespace(nanoseconds=123456000000000)
+        node.get_clock = Mock(return_value=SimpleNamespace(now=ros_now))
+    elif pause_at in ("mit_encoding", "drive_encoding"):
+        name = "mit_motion_payload" if pause_at == "mit_encoding" else "q_current_payload"
+        original = getattr(module, name)
+        def encode(*args):
+            payload = original(*args)
+            # Do not inject delay into zero-current disable commands.
+            if pause_at == "mit_encoding" or args[0] != 0.0:
+                pause()
+            return payload
+        monkeypatch.setattr(module, name, encode)
+    else:
+        node._tx_bus.send.side_effect = lambda can_id, payload: pause() if can_id == 0x502 else None
+    node._control_tick()
+    sent = node._tx_bus.send.call_args_list
+    assert not any(c.args[0] == 0x101 and c.args[1][0] == 0xC0
+                   and parse_current_feedback(c.args[1]) != 0 for c in sent)
+    assert sum(c.args[0] == 0x502 for c in sent) == int(pause_at in ("between_motors", "drive_encoding"))
+    assert record(node, module)["gate_enabled"] == 0
+    assert node._fault_latched is (cause != "disable" or pause_at == "drive_encoding")
+    if cause == "disable" and pause_at == "drive_encoding":
+        assert node._fault_reason == "steering_mit_feedback_timeout"
+    if pause_at in ("between_motors", "drive_encoding"):
+        assert node._disable_wait  # A submitted MIT packet requires confirmed CF disable.
+
+
+@pytest.mark.parametrize("dry_run", [False, True])
+def test_slew_jitter_uses_logical_send_time_without_faking_wire_feedback(mit_node, dry_run):
+    node, module, clock = mit_node
+    node._dry_run = dry_run
+    node._requested_steering_target_rad = node._steering_target_rad = 1.0
+    node._control_tick()
+    clock.value += .008
+    node._control_tick()
+    assert record(node, module)["slewed_steering_target_rad"] == pytest.approx(.3107)
+    if dry_run:
+        assert node._mit_last_sent_at == 0 and not node._mit_sent_this_enable
+        assert math.isnan(record(node, module)["mit_actual_send_interval_ms"])
+        node._tx_bus.send.assert_not_called()
+
+
+def test_worker_failure_publishes_terminal_event_without_another_control_tick(mit_node, monkeypatch):
+    node, module, _ = mit_node
+    node._control_tick()
+    before = node._event_publisher.publish.call_count
+    bus = Mock()
+    bus.receive.side_effect = OSError("injected receive failure")
+    monkeypatch.setattr(module, "SocketCan", Mock(return_value=bus))
+    node._startup = Mock()
+    node._can_interface = "can0"
+    node._run_io()
+    event = json.loads(node._event_publisher.publish.call_args.args[0].data)
+    assert node._event_publisher.publish.call_count > before
+    assert not event["gate_enabled"] and event["fault_latched"]
+    assert "mit_io_stopped" in event["disable_reasons"]
+    assert event["fault_reason"].startswith("mit_io_error:OSError:")
+    bus.close.assert_called_once()
+    assert not node._running and node._tx_bus is None
+
+
+def test_disable_enable_between_ticks_cannot_skip_motor_disable(mit_node):
+    node, module, clock = mit_node
+    node._control_tick()
+    node._command_callback(module.Float64MultiArray(data=[0.0, 0.0, 0.0]))
+    node._command_callback(module.Float64MultiArray(data=[1.0, .05, .1]))
+    node._tx_bus.reset_mock()
+    clock.value += .005
+    node._control_tick()
+    assert node._fault_latched and node._disable_wait
+    assert all(c.args[0] != 0x502 for c in node._tx_bus.send.call_args_list)
+    assert node._fault_reason == "enable_withdrawn_during_control"
+
+
+@pytest.mark.parametrize("cause", ["stale", "disable", "disable_then_enable"])
+def test_pause_during_guard_snapshot_cannot_restore_stale_authorization(mit_node, cause):
+    node, module, clock = mit_node
+    original = node._snapshot
+    calls = 0
+    def snapshot(motor):
+        nonlocal calls
+        calls += 1
+        if calls == 3:  # First encoder snapshot in the final steering guard.
+            clock.value += .09
+            if cause != "stale":
+                node._command_callback(module.Float64MultiArray(data=[0.0, 0.0, 0.0]))
+                if cause == "disable_then_enable":
+                    node._command_callback(module.Float64MultiArray(data=[1.0, .05, .1]))
+                    for channel in (node._steering, node._drive):
+                        channel.sample_monotonic = clock.value
+        return original(motor)
+    node._snapshot = snapshot
+    node._control_tick()
+    assert not any(c.args[0] == 0x502 for c in node._tx_bus.send.call_args_list)
+    assert record(node, module)["gate_enabled"] == 0
+
+
+def test_close_failure_does_not_skip_terminal_event(mit_node, monkeypatch):
+    node, module, _ = mit_node
+    bus = Mock()
+    bus.close.side_effect = OSError("close failed")
+    monkeypatch.setattr(module, "SocketCan", Mock(return_value=bus))
+    node._startup = Mock(side_effect=RuntimeError("injected preflight failure"))
+    node._disable_outputs = Mock()
+    node._can_interface = "can0"
+    node._run_io()
+    assert node._tx_bus is None and node._hard_fault
+    event = json.loads(node._event_publisher.publish.call_args.args[0].data)
+    assert "mit_io_stopped" in event["disable_reasons"] and event["fault_latched"]
+
+
+def test_disable_confirmation_events_include_each_motor(mit_node):
+    node, module, clock = mit_node
+    node._control_tick()
+    node._command_callback(module.Float64MultiArray(data=[0.0, 0.0, 0.0]))
+    node._control_tick()
+    node._control_tick()  # Stabilize pending-disable reasons before acknowledging one motor.
+    before = node._event_publisher.publish.call_count
+    node._consume(frame(module, node._steering, bytes([0xCF]) + bytes(7)), clock.value)
+    clock.value += .005
+    node._control_tick()
+    assert node._event_publisher.publish.call_count == before + 1
+    event = json.loads(node._event_publisher.publish.call_args.args[0].data)
+    assert event["steering_disable_confirmed"] and not event["drive_disable_confirmed"]
 
 
 def test_delayed_control_never_bursts_catchup_mit(mit_node):
@@ -177,11 +529,11 @@ def test_mit_deadline_dispatch_does_not_add_a_rear_command(mit_node):
     assert [call.args[0] for call in node._tx_bus.send.call_args_list] == [0x502]
 
 
-def test_mit_slew_uses_50hz_target_interval(mit_node):
+def test_mit_slew_uses_200hz_actuation_interval(mit_node):
     node, module, _ = mit_node
     node._steering_target_rad = node._requested_steering_target_rad = 1.57
     node._control_tick()
-    assert record(node, module)["slewed_steering_target_rad"] == pytest.approx(23.9 / 50)
+    assert record(node, module)["slewed_steering_target_rad"] == pytest.approx(23.9 / 200)
     assert record(node, module)["steering_slew_limited"] == 1
 
 
@@ -307,14 +659,12 @@ def test_wrapped_observation_unwrapped_safety_and_fresh_pair(mit_node):
     assert node._fault_reason == "steering_position_limit"
 
 
-def test_actual_current_torque_has_receipt_stamp_and_no_clipping(mit_node):
+def test_actual_current_torque_keeps_kernel_receipt_time_and_no_clipping(mit_node):
     node, module, _ = mit_node
     motor = node._steering
-    node._consume(frame(module, motor, bytes([0xA1]) + struct.pack("<i", 20000)), 100.01)
-    sample = node._torque_publisher.publish.call_args.args[0]
-    assert sample.header.stamp == "receipt_stamp"
-    assert sample.name == ["steering_joint"]
-    assert sample.effort == pytest.approx([-15.6])
+    node._consume(frame(module, motor, bytes([0xA1]) + struct.pack("<i", 20000), stamp=99.995), 100.01)
+    assert motor.torque_nm == pytest.approx(-15.6)
+    assert motor.torque_sample_monotonic == 99.995  # Arrival time, not dequeue/publication time.
 
 
 def test_changed_f0_or_b1_and_other_can_writer_rejected(mit_node):
@@ -335,6 +685,19 @@ def test_status_unknown_values_are_json_null(mit_node):
     status = json.loads(raw)
     assert status["steering_torque_age_ms"] is None
     assert status["mit_f1_age_ms"] is None
+    assert status["policy_command_rate_hz"] == 50
+    assert status["state_query_rate_hz"] == status["state_status_fault_rate_hz"] == 100
+    assert status["mit_command_rate_hz"] == status["motor_control_rate_hz"] == status["drive_command_rate_hz"] == 200
+
+
+def test_fault_and_status_publish_even_without_fresh_state_or_running_worker(mit_node):
+    node, _, _ = mit_node
+    node._steering.sample_monotonic = node._drive.sample_monotonic = 0
+    node._fault("mit_io_error", hard=True)
+    node._publish_feedback()
+    node._state_publisher.publish.assert_not_called()
+    assert node._fault_publisher.publish.call_args.args[0].data
+    assert json.loads(node._status_publisher.publish.call_args.args[0].data)["mit_restart_required"]
 
 
 def test_normal_fault_clears_only_disabled_fresh_and_inside_five_degrees(mit_node):
@@ -405,6 +768,55 @@ def test_poll_timeout_does_not_publish_an_old_pair_as_fresh(mit_node):
     assert motor.sample_monotonic == 99.99
 
 
+def test_all_live_state_queries_use_100hz_not_mit_rate(mit_node):
+    node, module, clock = mit_node
+    node._next_b0_at = node._next_f0_at = math.inf
+    queries = []
+    for index in range(200):
+        clock.value = 100 + index / module.MIT_RATE_HZ
+        node._schedule_polls(clock.value)
+        # Finish this round without advancing its phase. CAN packets are
+        # serialized; 100 Hz is per query type, not the total packet rate.
+        while node._pending is not None:
+            queries.append((clock.value, node._pending[0].name, node._pending[1]))
+            node._pending = None
+            if not node._poll_jobs:
+                break
+            node._schedule_polls(clock.value)
+    for motor in ("steering", "drive"):
+        for opcode in (0xA3, 0xA2, 0xA1):
+            times = [stamp for stamp, name, op in queries if name == motor and op == opcode]
+            assert len(times) == 100
+            assert all(b - a == pytest.approx(.01) for a, b in zip(times, times[1:]))
+
+
+def test_poll_phase_skips_missed_rounds_without_bursts(mit_node):
+    node, _, clock = mit_node
+    node._next_b0_at = node._next_f0_at = math.inf
+    for stamp in (100, 100.031):
+        clock.value = stamp
+        node._schedule_polls(stamp)
+        node._pending = None
+        node._poll_jobs.clear()
+    assert node._next_poll_at == pytest.approx(100.04)
+    node._schedule_polls(clock.value)
+    assert node._pending is None and not node._poll_jobs
+
+
+def test_repeated_mit_sends_cannot_refresh_50hz_ros_command_watchdog(mit_node):
+    node, module, clock = mit_node
+    node._command_callback(module.Float64MultiArray(data=[1.0, .05, 0.0]))
+    for index in range(18):
+        clock.value = 100 + index * .005
+        for motor in (node._steering, node._drive):
+            motor.sample_monotonic = clock.value
+        node._mit_f1_at = clock.value
+        node._control_tick()
+    assert node._command_monotonic == 100
+    assert node._disable_wait and not record(node, module)["gate_enabled"]
+    assert "command_timeout" in json.loads(node._event_publisher.publish.call_args.args[0].data)["disable_reasons"]
+
+
 def test_late_encoder_reply_cannot_refresh_a_pair(mit_node):
     node, module, _ = mit_node
     motor = node._steering
@@ -421,7 +833,8 @@ def test_protocol_safety_constants_and_package_entrypoint():
 
 
 @pytest.mark.parametrize("dry_run", [False, True])
-def test_single_owner_loop_startup_polling_and_command_timing(mit_node, monkeypatch, dry_run):
+@pytest.mark.parametrize("send_work_s", [0.0, .00002])
+def test_single_owner_loop_startup_polling_and_command_timing(mit_node, monkeypatch, dry_run, send_work_s):
     node, module, clock = mit_node
     node._mit_config_ready = False
     node._requested_enable = False
@@ -430,25 +843,32 @@ def test_single_owner_loop_startup_polling_and_command_timing(mit_node, monkeypa
     node._send_mit = Mock(wraps=node._send_mit)
     target_times = []
     send_mit = node._send_mit
-    def record_target(target):
+    def record_target(target, **kwargs):
         target_times.append(clock.value)
-        return send_mit(target)
+        return send_mit(target, **kwargs)
     node._send_mit = record_target
     sent = []
     closed = []
+    runtime_queries = []
+    policy_times = []
+    feedback_times = []
 
     class Bus:
         def __init__(self, *args):
             self.replies = deque()
             self.f0 = bytes([0xF0]) + struct.pack("<HHH", 955, 4500, 1800)
+            self.next_policy = self.next_feedback = 100.0
 
         def send(self, can_id, payload):
             sent.append((clock.value, can_id, payload))
+            clock.value += send_work_s
             mid = can_id & 255
             if can_id & 0x400:
                 self.replies.append(module.CanReply(mid, feedback(parse_f0(self.f0), status=1), False, 0, clock.value))
                 return
             op = payload[0]
+            if node._mit_config_ready and op in (0xA1, 0xA2, 0xA3):
+                runtime_queries.append((clock.value, mid, op))
             if op == 0xF0:
                 if len(payload) == 7:
                     self.f0 = payload
@@ -466,8 +886,14 @@ def test_single_owner_loop_startup_polling_and_command_timing(mit_node, monkeypa
         def receive(self, timeout):
             clock.value += .00001 if self.replies else max(.00001, timeout)
             if node._mit_config_ready:
-                node._requested_enable = True
-                node._command_monotonic = clock.value
+                if clock.value >= self.next_policy:
+                    node._command_callback(module.Float64MultiArray(data=[1.0, .05, .1]))
+                    policy_times.append(clock.value)
+                    self.next_policy += 1.0 / module.COMMAND_RATE_HZ
+                if clock.value >= self.next_feedback:
+                    node._publish_feedback()
+                    feedback_times.append(clock.value)
+                    self.next_feedback += module.STATE_DT_S
             if clock.value >= 100.12:
                 node._running = False
             return self.replies.popleft() if self.replies else None
@@ -479,8 +905,16 @@ def test_single_owner_loop_startup_polling_and_command_timing(mit_node, monkeypa
     node._can_interface = "can0"
     node._run_io()
     assert closed == [True] and not node._hard_fault
-    assert len(target_times) >= 5
-    assert all(.020 - 1e-9 <= b - a <= .0201 for a, b in zip(target_times, target_times[1:]))
+    assert len(target_times) >= 20
+    assert all(.005 - 1e-9 <= b - a <= .0051 for a, b in zip(target_times, target_times[1:]))
+    assert len(policy_times) == 7 and len(feedback_times) == 13
+    assert node._fault_publisher.publish.call_count == node._status_publisher.publish.call_count == 13
+    assert node._control_publisher.publish.call_count == node._control_sequence
+    for motor_id in (1, 2):
+        for opcode in (0xA3, 0xA2, 0xA1):
+            times = [t for t, mid, op in runtime_queries if mid == motor_id and op == opcode]
+            assert 11 <= len(times) <= 13
+            assert all(.0097 <= b - a <= .0103 for a, b in zip(times, times[1:]))
     assert node._disable_confirmed and not node._disable_wait
     if dry_run:
         assert all(not (can_id & 0x400) and len(data) == 1 and data[0] in (0xF0, 0xF1, 0xA3, 0xA2, 0xA1, 0xB0)
@@ -490,8 +924,8 @@ def test_single_owner_loop_startup_polling_and_command_timing(mit_node, monkeypa
     mit_times = [t for t, can_id, data in sent if can_id == 0x502]
     drive_times = [t for t, can_id, data in sent if can_id == 0x101 and data[0] == 0xC0
                    and parse_current_feedback(data) != 0]
-    assert len(mit_times) >= 5 and len(drive_times) >= 20
-    assert all(.020 - 1e-9 <= b - a <= .0201 for a, b in zip(mit_times, mit_times[1:]))
+    assert len(mit_times) >= 20 and len(drive_times) >= 20
+    assert all(.005 - 1e-9 <= b - a <= .0051 for a, b in zip(mit_times, mit_times[1:]))
     assert all(.0049 <= b - a <= .0051 for a, b in zip(drive_times, drive_times[1:]))
     assert node._steering.position_query_failures == node._drive.velocity_query_failures == 0
 
@@ -525,15 +959,21 @@ def test_raw_socket_short_send_is_failure(mit_node):
         raw.send(0x502, bytes(8))
 
 
-def test_constructor_registers_existing_ros_contract_and_no_can_pollers(mit_node, monkeypatch):
-    _, module, _ = mit_node
+@pytest.fixture
+def mit_constructor(node_module, monkeypatch):
+    module = node_module("motor_mit_io")
     publishers = []
+    overrides = {}
 
     class FakeNode:
         def __init__(self, name):
             self.node_name = name
             values = {}
-            self.declare_parameter = lambda name, value: values.setdefault(name, value)
+            self.parameter_descriptors = {}
+            def declare(name, value, descriptor):
+                self.parameter_descriptors[name] = descriptor
+                return values.setdefault(name, overrides.get(name, value))
+            self.declare_parameter = declare
             self.get_parameter = lambda name: SimpleNamespace(value=values[name])
             self.create_publisher = lambda kind, topic, qos: publishers.append(topic) or Mock()
             self.create_subscription = Mock(return_value=Mock())
@@ -543,17 +983,49 @@ def test_constructor_registers_existing_ros_contract_and_no_can_pollers(mit_node
     fake_thread = Mock()
     monkeypatch.setattr(module, "Node", FakeNode)
     monkeypatch.setattr(module, "threading", SimpleNamespace(Lock=threading.Lock, Thread=Mock(return_value=fake_thread)))
-    node = module.MotorMitIo()
+
+    def construct(**parameters):
+        overrides.clear()
+        overrides.update(parameters)
+        return module.MotorMitIo()
+
+    return construct, publishers, fake_thread
+
+
+def test_constructor_registers_existing_ros_contract_and_no_can_pollers(mit_constructor):
+    construct, publishers, fake_thread = mit_constructor
+    node = construct()
     assert node.node_name == "trackstand_motor_io"
     assert node._steering.feedback_id == 2 and node._drive.feedback_id == 1
     assert node._steering.encoder_sign == -1 and node._drive.encoder_sign == 1
-    assert node._control_rate_hz == node._poll_rate_hz == 200
+    assert (node._command_rate_hz, node._poll_rate_hz, node._control_rate_hz) == (50, 100, 200)
+    assert node.create_timer.call_count == 1
+    assert node.create_timer.call_args.args == (.01, node._publish_feedback)
     assert node._mit_kp == 10 and node._mit_kd == .2
+    assert all(d.read_only for d in node.parameter_descriptors.values())
     assert set(publishers) == {f"/trackstand/{name}" for name in (
-        "motor_state", "motor_torque", "motor_control", "motor_event", "motor_fault", "motor_status")}
+        "motor_state", "motor_control", "motor_event", "motor_fault", "motor_status")}
     assert node.create_subscription.call_args.args[1] == "/trackstand/motor_command"
     fake_thread.start.assert_called_once()
     assert node._tx_bus is None  # The worker owns socket creation and closing.
+
+
+@pytest.mark.parametrize("parameter,value", [
+    ("command_rate_hz", 100.0), ("state_rate_hz", 200.0), ("actuation_rate_hz", 50.0),
+    ("command_rate_hz", math.nan), ("state_rate_hz", 0.0), ("actuation_rate_hz", math.inf),
+    ("command_timeout_s", .02), ("feedback_timeout_s", .01),
+])
+def test_constructor_rejects_profile_mismatches_and_too_short_watchdogs(mit_constructor, parameter, value):
+    construct, _, fake_thread = mit_constructor
+    with pytest.raises(ValueError):
+        construct(**{parameter: value})
+    fake_thread.start.assert_not_called()
+
+
+def test_legacy_shared_yaml_rate_keys_cannot_override_mit_divisions(mit_constructor):
+    construct, _, _ = mit_constructor
+    node = construct(poll_rate_hz=200.0, control_rate_hz=50.0)
+    assert (node._command_rate_hz, node._poll_rate_hz, node._control_rate_hz) == (50, 100, 200)
 
 
 def test_main_handles_ros_external_shutdown_and_uses_idempotent_shutdown(mit_node, monkeypatch):
@@ -606,6 +1078,7 @@ def test_disable_remains_unconfirmed_until_both_cf_acknowledgements(mit_node):
     clock.value += .005
     node._control_tick()
     node._tx_bus.send.assert_not_called()
+    node._publish_feedback()
     assert node._fault_publisher.publish.call_args.args[0].data
     node._consume(frame(module, node._drive, bytes([0xCF]) + bytes(7)), clock.value)
     assert not node._outputs_active and node._disable_confirmed
@@ -714,7 +1187,7 @@ def test_new_episode_slew_does_not_use_time_spent_disabled(mit_node):
     node._requested_enable = True
     node._steering_target_rad = node._requested_steering_target_rad = 1.57
     node._control_tick()
-    assert record(node, module)["slewed_steering_target_rad"] == pytest.approx(23.9 / 50)
+    assert record(node, module)["slewed_steering_target_rad"] == pytest.approx(23.9 / 200)
 
 
 @pytest.mark.parametrize("motor_name,speed,reason", [
@@ -726,6 +1199,7 @@ def test_present_speed_fault_cannot_clear_while_rc_is_down(mit_node, motor_name,
     motor.velocity_rad_s = speed
     node._control_tick()
     assert node._fault_latched and node._fault_reason == reason
+    node._publish_feedback()
     assert node._fault_publisher.publish.call_args.args[0].data
     motor.velocity_rad_s = 0
     clock.value += .005

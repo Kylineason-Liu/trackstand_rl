@@ -9,7 +9,7 @@ Position is absolute: verified F1 zero + sign * gear * joint sine. Kp=10,
 Kd=.2, requested target velocity/feedforward torque=0 (quantization is logged).
 The fixed 50 Hz is the host setpoint rate, not a claim about firmware PD rate.
 
-Default: can0, steering ID 2, sign -1, gear 1, amplitude 1 rad, period 10 s;
+Default: can0, steering ID 2, sign -1, gear 1, amplitude 1 rad, period 1 s;
 F1 replies plus nominal 200 Hz A3/A2/A1 read cycles. --feedback mit omits these
 extra motion-time reads. --include-drive adds read-only ID 1 collection; it
 never commands, disables, or resets that motor. Stop all other selected-motor

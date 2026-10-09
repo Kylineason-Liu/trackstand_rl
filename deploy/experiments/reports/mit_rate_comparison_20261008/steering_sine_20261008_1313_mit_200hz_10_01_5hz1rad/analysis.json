@@ -1,0 +1,588 @@
+{
+  "source": "/home/lmbike/trackstand_rl/deploy/experiments/logs/202610081313_200Hz_10_01_5Hz.csv",
+  "source_sha256": "0eaf6f0225a999327409dc57cba727a807546bc54d406d474cb01940f19f34ca",
+  "labels": {
+    "date": "20261008",
+    "clock": "1313",
+    "kp": 10,
+    "kd": 0.1,
+    "frequency_hz": 5,
+    "amplitude_rad": 1,
+    "report_name": "steering_sine_20261008_1313_mit_10_01_5hz1rad",
+    "requested_send_rate_hz": 200
+  },
+  "filename_verified": true,
+  "frequency_fit_hz": 5.000000053037294,
+  "requested_sine_fit": {
+    "amplitude": 0.9999953787029747,
+    "phase_rad": 0.001130055161533365,
+    "mean": 3.4797640719847443e-06,
+    "residual_rms": 0.00026232044741942786,
+    "r_squared": 0.9999998624758005,
+    "samples": 3448
+  },
+  "command_amplitude_rad": 0.9999953787029747,
+  "encoded_settings": {
+    "mit_kp_nm_per_motor_rad": 10.012210012210012,
+    "mit_kd_nm_s_per_motor_rad": 0.10012210012210013,
+    "mit_target_velocity_motor_rad_s": 0.01098901098901095,
+    "mit_feedforward_torque_motor_nm": 0.00439560439560438
+  },
+  "provenance": {
+    "source": "/home/lmbike/trackstand_rl/deploy/experiments/logs/202610081313_200Hz_10_01_5Hz.csv",
+    "source_sha256": "0eaf6f0225a999327409dc57cba727a807546bc54d406d474cb01940f19f34ca",
+    "total_rows": 40721,
+    "row_types": {
+      "can_tx": 11110,
+      "motor_status": 2,
+      "query_result": 11109,
+      "can_rx": 5,
+      "feedback": 11103,
+      "mit_feedback": 3695,
+      "event": 3,
+      "mit_target": 3694
+    },
+    "metadata": {
+      "motor_id": 2,
+      "gear_ratio": 1,
+      "encoder_sign": -1,
+      "torque_sign": -1,
+      "reference_epoch": 1,
+      "zero_count": 0,
+      "mit_zero_position_motor_rad": -4.57770656900891e-05,
+      "mit_position_max_rad": 3,
+      "mit_velocity_max_rad_s": 45,
+      "mit_torque_max_nm": 18,
+      "torque_constant_nm_per_a": 0.7799999713897705
+    },
+    "command_start_s": 0.004629022994777188,
+    "command_end_s": 18.81976297700021,
+    "recording_duration_s": 19.07139578499482,
+    "traces": [
+      {
+        "name": "MIT encoded position target",
+        "valid_samples": 3694,
+        "min": -0.9999542229343097,
+        "max": 0.9999542229343099,
+        "mean_rate_hz": 196.27816676871552,
+        "median_ms": 5.083885989733972,
+        "p99_ms": 5.212820168817416,
+        "max_ms": 7.908806001069024
+      },
+      {
+        "name": "A3 position feedback",
+        "valid_samples": 3701,
+        "min": -0.9541360500648688,
+        "max": 1.0377380030046361,
+        "mean_rate_hz": 196.6468950070054,
+        "median_ms": 5.080256501969416,
+        "p99_ms": 5.38586377253523,
+        "max_ms": 7.917565992102027
+      },
+      {
+        "name": "A2 velocity feedback",
+        "valid_samples": 3700,
+        "min": -20.528213596106905,
+        "max": 20.451768174869553,
+        "mean_rate_hz": 196.64486829735188,
+        "median_ms": 5.079349008155987,
+        "p99_ms": 5.478135023149662,
+        "max_ms": 7.807382004102692
+      },
+      {
+        "name": "A1 current-derived torque",
+        "valid_samples": 3700,
+        "min": -4.708859827280045,
+        "max": 4.856279821872711,
+        "mean_rate_hz": 196.64370929450425,
+        "median_ms": 5.079201000626199,
+        "p99_ms": 5.5787956368294545,
+        "max_ms": 10.123329004272819
+      }
+    ],
+    "feedback_gaps_over_50_ms": {
+      "MIT encoded position target": [],
+      "A3 position feedback": [],
+      "A2 velocity feedback": [],
+      "A1 current-derived torque": []
+    },
+    "query_results": {
+      "0xA1/late_reply": 2,
+      "0xA1/received": 3697,
+      "0xA1/timed_out": 1,
+      "0xA2/late_reply": 1,
+      "0xA2/received": 3699,
+      "0xA3/late_reply": 1,
+      "0xA3/received": 3696,
+      "0xA3/timed_out": 4
+    },
+    "query_round_trip_p99_ms": 1.0808910010382533,
+    "socket_dropped_frames_max": 0,
+    "f1_motion_active_rows": 3694,
+    "f1_motion_fault_rows": 0,
+    "status": [
+      {
+        "phase": "startup",
+        "elapsed_s": 0.0005334180023055524,
+        "payload_hex": "CFE4070000200000",
+        "mode": 0,
+        "fault": 0,
+        "voltage_v": 20.2,
+        "temperature_c": 32
+      },
+      {
+        "phase": "shutdown",
+        "elapsed_s": 18.822013571989373,
+        "payload_hex": "CFDE071000260500",
+        "mode": 5,
+        "fault": 0,
+        "voltage_v": 20.14,
+        "temperature_c": 38
+      }
+    ],
+    "events": [
+      {
+        "phase": "startup",
+        "elapsed_s": 0.004042328000650741,
+        "note": "B1/F0/A3/F1 verified; startup references fixed"
+      },
+      {
+        "phase": "motion",
+        "elapsed_s": 18.82129510199593,
+        "note": "Stopping: KeyboardInterrupt: "
+      },
+      {
+        "phase": "shutdown",
+        "elapsed_s": 19.07139578499482,
+        "note": "CF sent but disabled mode not confirmed before shutdown deadline"
+      }
+    ],
+    "shutdown_confirmed": false,
+    "wire_rows_checked": 18489,
+    "timestamp_caution": "Offline free-steering sine comparison, not a balancing trial. Yesterday steering was confirmed free; user confirms the same free steering, power supply and firmware speed/current limits today. Host send/receipt clocks, not motor acquisition timestamps. Phase-equivalent lag is frequency-specific, not pure firmware delay. A1 torque is current times B0 Kt, not calibrated shaft torque. F0 encoding ranges do not verify total PD limits. Different days/temperatures and one recording per condition limit causality. 200 Hz sends contain fresh sine samples, not repeated held 50 Hz policy targets.",
+    "views": [
+      {
+        "label": "Full recording",
+        "xlim_s": [
+          0,
+          19.07139578499482
+        ]
+      },
+      {
+        "label": "MIT interval",
+        "xlim_s": [
+          0.004629022994777188,
+          18.81976297700021
+        ]
+      },
+      {
+        "label": "First 1 s",
+        "xlim_s": [
+          0.004629022994777188,
+          1.0046290229947772
+        ]
+      },
+      {
+        "label": "Middle 1 s",
+        "xlim_s": [
+          8.912195999997493,
+          9.912195999997493
+        ]
+      },
+      {
+        "label": "Final 1 s",
+        "xlim_s": [
+          17.81976297700021,
+          18.81976297700021
+        ]
+      }
+    ]
+  },
+  "steady": {
+    "window_s": [
+      1.0046290229947772,
+      18.56976297700021
+    ],
+    "duration_s": 17.565133954005432,
+    "cycle_lengths": 87.82567070163432,
+    "fits": {
+      "command_samples": {
+        "amplitude": 0.9999948200721283,
+        "phase_rad": 0.0011297053614083852,
+        "mean": 3.329539624689383e-06,
+        "residual_rms": 0.00026351543531317074,
+        "r_squared": 0.9999998612198221,
+        "samples": 3448
+      },
+      "position": {
+        "amplitude": 0.8047322301722822,
+        "phase_rad": -1.1784127232630097,
+        "mean": -0.006268088756935741,
+        "residual_rms": 0.053068356234332245,
+        "r_squared": 0.9913633226641044,
+        "samples": 3454
+      },
+      "velocity": {
+        "amplitude": 24.84721402839389,
+        "phase_rad": 0.3327792937575504,
+        "mean": -0.003088361722446642,
+        "residual_rms": 4.939920014441491,
+        "r_squared": 0.9268510274501716,
+        "samples": 3454
+      },
+      "torque": {
+        "amplitude": 1.6078066612195632,
+        "phase_rad": 1.920930404036903,
+        "mean": 0.015762921214429015,
+        "residual_rms": 1.1612573761607397,
+        "r_squared": 0.4889495267368831,
+        "samples": 3454
+      },
+      "command_held": {
+        "amplitude": 0.9989034954377479,
+        "phase_rad": -0.07898585749822316,
+        "mean": 6.825644901425898e-06,
+        "residual_rms": 0.03268002638205058,
+        "r_squared": 0.9978649741987269,
+        "samples": 175652
+      }
+    },
+    "gain": 0.8056155913436119,
+    "phase_lag_deg": 62.99251929161835,
+    "phase_equivalent_lag_ms": 34.995843679682125,
+    "lag_against_ideal_command_ms": 37.546001222171405,
+    "error_rms_rad": 0.6967980084659362,
+    "error_p95_abs_rad": 0.9416689614327473,
+    "error_max_abs_rad": 0.9738855611212174,
+    "mean_tracking_bias_rad": -0.006274914401837167,
+    "peaks": {
+      "position": {
+        "min": -0.9541360500648688,
+        "max": 0.8989127417009857,
+        "abs_max": 0.9541360500648688,
+        "rms": 0.5710549096478488
+      },
+      "velocity": {
+        "min": -20.528213596106905,
+        "max": 20.451768174869553,
+        "abs_max": 20.528213596106905,
+        "rms": 18.264845566854703
+      },
+      "torque": {
+        "min": -4.708859827280045,
+        "max": 4.728359826564789,
+        "abs_max": 4.728359826564789,
+        "rms": 1.6244660349176117
+      }
+    },
+    "gain_block_min_max": [
+      0.8051363286750414,
+      0.8065307754959565
+    ],
+    "phase_lag_deg_block_min_max": [
+      62.85471860122726,
+      63.08800819653905
+    ],
+    "error_rms_rad_block_min_max": [
+      0.6902182984056755,
+      0.7022534542792908
+    ]
+  },
+  "blocks": [
+    {
+      "window_s": [
+        1.0046290229947772,
+        6.859673674329922
+      ],
+      "duration_s": 5.855044651335144,
+      "cycle_lengths": 29.275223567211444,
+      "fits": {
+        "command_samples": {
+          "amplitude": 1.000000014997949,
+          "phase_rad": 0.0011338852037535087,
+          "mean": -5.896647116859907e-06,
+          "residual_rms": 0.0001863535027826011,
+          "r_squared": 0.9999999305890592,
+          "samples": 1149
+        },
+        "position": {
+          "amplitude": 0.8043396831815374,
+          "phase_rad": -1.1760367701673697,
+          "mean": -0.00750525766718646,
+          "residual_rms": 0.05405912294428588,
+          "r_squared": 0.9910035380710833,
+          "samples": 1152
+        },
+        "velocity": {
+          "amplitude": 24.82431205691713,
+          "phase_rad": 0.3350493361731642,
+          "mean": -0.007576064673499694,
+          "residual_rms": 4.950003561543141,
+          "r_squared": 0.9266374721530718,
+          "samples": 1152
+        },
+        "torque": {
+          "amplitude": 1.5829937569201031,
+          "phase_rad": 1.920435529610086,
+          "mean": 0.020192689233078376,
+          "residual_rms": 1.1413486504077897,
+          "r_squared": 0.48901059486368126,
+          "samples": 1152
+        },
+        "command_held": {
+          "amplitude": 0.998950911037062,
+          "phase_rad": -0.07901498016142952,
+          "mean": -7.16028600135643e-05,
+          "residual_rms": 0.03268162571976373,
+          "r_squared": 0.9978637493912541,
+          "samples": 58551
+        }
+      },
+      "gain": 0.8051843932416171,
+      "phase_lag_deg": 62.85471860122726,
+      "phase_equivalent_lag_ms": 34.91928774138802,
+      "lag_against_ideal_command_ms": 37.470505335541205,
+      "error_rms_rad": 0.6902182984056755,
+      "error_p95_abs_rad": 0.940355974422246,
+      "error_max_abs_rad": 0.9689573486221528,
+      "mean_tracking_bias_rad": -0.007433654807172896,
+      "peaks": {
+        "position": {
+          "min": -0.9541360500648688,
+          "max": 0.8989127417009857,
+          "abs_max": 0.9541360500648688,
+          "rms": 0.5700183666798653
+        },
+        "velocity": {
+          "min": -20.528213596106905,
+          "max": 20.415116260577676,
+          "abs_max": 20.528213596106905,
+          "rms": 18.276464896420475
+        },
+        "torque": {
+          "min": -4.580939831972122,
+          "max": 4.728359826564789,
+          "abs_max": 4.728359826564789,
+          "rms": 1.5968376467296275
+        }
+      }
+    },
+    {
+      "window_s": [
+        6.859673674329922,
+        12.714718325665066
+      ],
+      "duration_s": 5.855044651335144,
+      "cycle_lengths": 29.275223567211444,
+      "fits": {
+        "command_samples": {
+          "amplitude": 0.9999896496649086,
+          "phase_rad": 0.0011007815495473615,
+          "mean": 1.744146921297499e-05,
+          "residual_rms": 0.0003744528153203433,
+          "r_squared": 0.9999997189769111,
+          "samples": 1149
+        },
+        "position": {
+          "amplitude": 0.80556472462583,
+          "phase_rad": -1.1800748110146178,
+          "mean": -0.006391737784866236,
+          "residual_rms": 0.05268415510761996,
+          "r_squared": 0.9915625159213337,
+          "samples": 1150
+        },
+        "velocity": {
+          "amplitude": 24.89128120219459,
+          "phase_rad": 0.33155699264273886,
+          "mean": 0.012902886801097857,
+          "residual_rms": 4.955727698812149,
+          "r_squared": 0.9262084469068578,
+          "samples": 1150
+        },
+        "torque": {
+          "amplitude": 1.6346783227556985,
+          "phase_rad": 1.9210018480619824,
+          "mean": 0.011371395498779968,
+          "residual_rms": 1.1810974928972027,
+          "r_squared": 0.4904704088099051,
+          "samples": 1150
+        },
+        "command_held": {
+          "amplitude": 0.9988022144976023,
+          "phase_rad": -0.07898134945984146,
+          "mean": 0.00011173882337214835,
+          "residual_rms": 0.0327741786359224,
+          "r_squared": 0.9978474934246949,
+          "samples": 58551
+        }
+      },
+      "gain": 0.8065307754959565,
+      "phase_lag_deg": 63.08800819653905,
+      "phase_equivalent_lag_ms": 35.048893070742004,
+      "lag_against_ideal_command_ms": 37.59798644439801,
+      "error_rms_rad": 0.7022534542792908,
+      "error_p95_abs_rad": 0.9417100664990732,
+      "error_max_abs_rad": 0.9738855611212174,
+      "mean_tracking_bias_rad": -0.006503476608238384,
+      "peaks": {
+        "position": {
+          "min": -0.9081166264282996,
+          "max": 0.8985292465040143,
+          "abs_max": 0.9081166264282996,
+          "rms": 0.5735530890008251
+        },
+        "velocity": {
+          "min": -20.497844867122204,
+          "max": 20.37951154383699,
+          "abs_max": 20.497844867122204,
+          "rms": 18.243481246100156
+        },
+        "torque": {
+          "min": -4.708859827280045,
+          "max": 4.697159827709198,
+          "abs_max": 4.708859827280045,
+          "rms": 1.6546306134972415
+        }
+      }
+    },
+    {
+      "window_s": [
+        12.714718325665066,
+        18.56976297700021
+      ],
+      "duration_s": 5.8550446513351435,
+      "cycle_lengths": 29.27522356721144,
+      "fits": {
+        "command_samples": {
+          "amplitude": 0.9999943553448771,
+          "phase_rad": 0.0011547492613857443,
+          "mean": -1.6619008777879734e-06,
+          "residual_rms": 0.00017980844261134688,
+          "r_squared": 0.9999999355574245,
+          "samples": 1150
+        },
+        "position": {
+          "amplitude": 0.8042941881336093,
+          "phase_rad": -1.1790951109636538,
+          "mean": -0.0049313936522581425,
+          "residual_rms": 0.05238293372915612,
+          "r_squared": 0.9915415740888349,
+          "samples": 1152
+        },
+        "velocity": {
+          "amplitude": 24.826207501235967,
+          "phase_rad": 0.33176270226412474,
+          "mean": -0.015020789623425124,
+          "residual_rms": 4.9135212920282685,
+          "r_squared": 0.9276977371730141,
+          "samples": 1152
+        },
+        "torque": {
+          "amplitude": 1.605433445666134,
+          "phase_rad": 1.9212762038421578,
+          "mean": 0.015956624681848552,
+          "residual_rms": 1.1607139105472104,
+          "r_squared": 0.48752083197424356,
+          "samples": 1152
+        },
+        "command_held": {
+          "amplitude": 0.998954039817309,
+          "phase_rad": -0.07888815113228816,
+          "mean": -1.762202806938895e-05,
+          "residual_rms": 0.03258686343883454,
+          "r_squared": 0.9978827420991139,
+          "samples": 58551
+        }
+      },
+      "gain": 0.8051363286750414,
+      "phase_lag_deg": 63.03721538925654,
+      "phase_equivalent_lag_ms": 35.020674844773275,
+      "lag_against_ideal_command_ms": 37.5685194691602,
+      "error_rms_rad": 0.697878521725199,
+      "error_p95_abs_rad": 0.9424829282972678,
+      "error_max_abs_rad": 0.9619839805879643,
+      "mean_tracking_bias_rad": -0.004913771624188754,
+      "peaks": {
+        "position": {
+          "min": -0.9073496360343567,
+          "max": 0.8985292465040143,
+          "abs_max": 0.9073496360343567,
+          "rms": 0.5695893341195039
+        },
+        "velocity": {
+          "min": -20.408833075270493,
+          "max": 20.451768174869553,
+          "abs_max": 20.451768174869553,
+          "rms": 18.274534728193355
+        },
+        "torque": {
+          "min": -4.687019828081131,
+          "max": 4.673759828567505,
+          "abs_max": 4.687019828081131,
+          "rms": 1.6214649184847651
+        }
+      }
+    }
+  ],
+  "method": "Exclude first max(1 s, 3 periods) and last max(.25 s, 1 period); fit sin/cos/DC at each trace's own timestamp; held encoded input on .1 ms grid; RMS error against latest encoded target, no alignment shift or smoothing",
+  "limitations": "Offline free-steering sine comparison, not a balancing trial. Yesterday steering was confirmed free; user confirms the same free steering, power supply and firmware speed/current limits today. Host send/receipt clocks, not motor acquisition timestamps. Phase-equivalent lag is frequency-specific, not pure firmware delay. A1 torque is current times B0 Kt, not calibrated shaft torque. F0 encoding ranges do not verify total PD limits. Different days/temperatures and one recording per condition limit causality. 200 Hz sends contain fresh sine samples, not repeated held 50 Hz policy targets.",
+  "correlation_check": {
+    "available": true,
+    "lag_ms": 35,
+    "correlation": 0.9947253231445811,
+    "grid_ms": 1,
+    "lag_step_ms": 0.5,
+    "search_range_ms": [
+      0,
+      97.99999896046906
+    ]
+  },
+  "f1_cross_check": {
+    "fit": {
+      "amplitude": 0.8049554796330286,
+      "phase_rad": -1.1625907427800477,
+      "mean": -0.006266895809789896,
+      "residual_rms": 0.05280797229189062,
+      "r_squared": 0.9914537887471748,
+      "samples": 3448
+    },
+    "gain": 0.8058390858671229,
+    "phase_lag_deg": 62.08598658640626
+  },
+  "steady_timing": {
+    "MIT encoded position target": {
+      "mean_rate_hz": 196.31154834635868,
+      "median_ms": 5.083737996756099,
+      "p99_ms": 5.203837820154149,
+      "max_ms": 7.908806001069024
+    },
+    "A3 position feedback": {
+      "mean_rate_hz": 196.65332614253924,
+      "median_ms": 5.0805159989977255,
+      "p99_ms": 5.375179675756954,
+      "max_ms": 7.917565992102027
+    },
+    "A2 velocity feedback": {
+      "mean_rate_hz": 196.65345991182434,
+      "median_ms": 5.079330992884934,
+      "p99_ms": 5.46365023474209,
+      "max_ms": 7.807382004102692
+    },
+    "A1 current-derived torque": {
+      "mean_rate_hz": 196.6544384348568,
+      "median_ms": 5.078793998109177,
+      "p99_ms": 5.569005995057523,
+      "max_ms": 10.123329004272819
+    }
+  },
+  "command_lateness_max_ms": 2.9088059964124113,
+  "skipped_command_ticks": 0,
+  "ideal_sine_peak_speed_rad_s": 31.415926869141074,
+  "fraction_steady_speed_over_20_rad_s": 0.5799073537927041,
+  "fraction_steady_torque_over_training_5_6_nm": 0,
+  "maximum_recorded_target_slew_rad_s": 31.901221636340694,
+  "ideal_continuous_sine_error_rms_rad": 0.7214130072660686,
+  "fraction_consecutive_targets_changed": 0.9997292174383969,
+  "encoded_target_hold_phase_equivalent_ms": 2.5501575424892806,
+  "mode": "MIT / nominal 200 Hz"
+}

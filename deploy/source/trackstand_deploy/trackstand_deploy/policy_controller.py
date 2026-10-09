@@ -47,7 +47,6 @@ class PolicyController(Node):
         self.declare_parameter("motor_timeout_s", 0.06)
         self.declare_parameter("rc_timeout_s", 0.15)
         self.declare_parameter("wheel_radius_m", 0.07)
-        self.declare_parameter("max_roll_rad", math.radians(30.0))
         self.declare_parameter("max_steering_target_rad", math.radians(90.0))
 
         model_path = str(self.get_parameter("model_path").value)
@@ -56,7 +55,6 @@ class PolicyController(Node):
         self._motor_timeout_s = float(self.get_parameter("motor_timeout_s").value)
         self._rc_timeout_s = float(self.get_parameter("rc_timeout_s").value)
         self._wheel_radius_m = float(self.get_parameter("wheel_radius_m").value)
-        self._max_roll_rad = float(self.get_parameter("max_roll_rad").value)
         self._max_steering_target_rad = float(
             self.get_parameter("max_steering_target_rad").value
         )
@@ -65,11 +63,11 @@ class PolicyController(Node):
         if (
             not all(math.isfinite(value) for value in (
                 self._imu_timeout_s, self._motor_timeout_s, self._rc_timeout_s,
-                self._wheel_radius_m, self._max_roll_rad, self._max_steering_target_rad,
+                self._wheel_radius_m, self._max_steering_target_rad,
             ))
             or min(self._imu_timeout_s, self._motor_timeout_s, self._rc_timeout_s) <= 0.0
             or self._wheel_radius_m <= 0.0
-            or min(self._max_roll_rad, self._max_steering_target_rad) <= 0.0
+            or self._max_steering_target_rad <= 0.0
         ):
             raise ValueError("policy timeouts, wheel radius, and safety limits must be positive")
         if self._sha256(model_path) != MODEL_SHA256:
@@ -213,8 +211,7 @@ class PolicyController(Node):
         gravity_body = rotate_vector_xyzw(
             quaternion_inverse_xyzw(self._world_from_bike), np.array([0.0, 0.0, -1.0])
         )
-        fallen = abs(float(gravity_body[1])) > math.sin(self._max_roll_rad) or gravity_body[2] > 0.0
-        return ["roll_or_inversion_safety"] if fallen else []
+        return ["inversion_safety"] if gravity_body[2] > 0.0 else []
 
     def _policy_tick(self) -> None:
         now = time.monotonic()

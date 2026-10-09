@@ -44,7 +44,7 @@ the motion phase, excluding startup/shutdown. `--duration 0` runs until Ctrl-C.
 | --- | --- |
 | MIT command rate | Fixed 50 Hz; not configurable through a rate flag |
 | `--interface`, `--motor-id` | `can0`, steering address `2` |
-| `--amplitude`, `--period` | Peak **1 joint rad**, period **10 s**; frequency = 1/period |
+| `--amplitude`, `--period` | Peak **1 joint rad**, period **1 s**; frequency = 1/period |
 | `--sign`, `--gear-ratio` | `-1`, `1`; positive joint sine maps to negative native motor position |
 | `--torque-sign` | `-1`, retained from the existing recorder; independent of encoder sign |
 | Kp / Kd | Requested `10 Nm/motor-rad`, `0.2 Nm s/motor-rad` |

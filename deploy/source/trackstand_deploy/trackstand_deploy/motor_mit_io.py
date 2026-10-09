@@ -1,8 +1,9 @@
-"""Alternative deployment motor node: 50 Hz MIT steering and 200 Hz C0 rear torque.
+"""Motor node: 50 Hz policy input, 100 Hz feedback, 200 Hz MIT/C0 control.
 
 One SocketCAN owner performs preflight, receives feedback, polls A3/A2/A1,
 checks the 200 Hz safety gate, and sends commands. The ROS interface matches
 motor_io; versioned motor_control telemetry exposes native MIT command/feedback data.
+This node owns its state and ROS handling; it does not import either legacy motor node.
 Firmware PD frequency and MIT current limiting are not established by the
 local protocol; F0 ranges do not implement the previous host torque clamp.
 """
@@ -10,7 +11,9 @@ local protocol; F0 ranges do not implement the previous host torque clamp.
 from __future__ import annotations
 
 from collections import deque
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+import errno
+import fcntl
 import json
 import math
 import select
@@ -20,47 +23,40 @@ import threading
 import time
 
 import rclpy
+from rcl_interfaces.msg import ParameterDescriptor
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, ReliabilityPolicy
-from sensor_msgs.msg import JointState
 from std_msgs.msg import Bool, Float64MultiArray, MultiArrayDimension, String
 
 from .can_protocol import (
-    RADIANS_PER_COUNT,
-    current_feedback_to_torque_nm,
-    parse_a2_velocity,
-    parse_a3_multi_turn_count,
-    parse_a3_position,
-    parse_b0_torque_constant,
-    parse_current_feedback,
-    q_current_payload,
+    RADIANS_PER_COUNT, current_feedback_to_torque_nm, parse_a2_velocity, parse_a3_multi_turn_count,
+    parse_a3_position, parse_b0_torque_constant, parse_current_feedback, q_current_payload,
 )
 from .contracts import (
-    DRIVE_DAMPING_NM_S_PER_RAD,
-    DRIVE_EFFORT_LIMIT_NM,
-    DRIVE_VELOCITY_LIMIT_RAD_S,
-    STEERING_KD_NM_S_PER_RAD,
-    STEERING_KP_NM_PER_RAD,
-    STEERING_VELOCITY_LIMIT_RAD_S,
-    motor_fault_clear_allowed,
+    DRIVE_DAMPING_NM_S_PER_RAD, DRIVE_EFFORT_LIMIT_NM,
+    STEERING_KD_NM_S_PER_RAD, STEERING_KP_NM_PER_RAD, STEERING_VELOCITY_LIMIT_RAD_S, motor_fault_clear_allowed,
 )
 from .mit_protocol import (
     MitCommand, MitFeedback, MitRanges, f0_with_position, mit_motion_payload,
     parse_f0, parse_f1, parse_mit_motion,
 )
-from .motor_io import ChannelState, MotorIo
 from .telemetry import (
     MOTOR_CONTROL_FIELDS as BASE_CONTROL_FIELDS,
-    DisableResult,
-    MotorSendResult,
-    age_ms,
-    motor_disable_reasons,
-    send_result_values,
-    telemetry_values,
+    MOTOR_STATE_FIELDS, MOTOR_STATE_LABEL, DisableResult, MotorControlPublishGate, MotorSendResult,
+    age_ms, fresh_torque_feedback_nm, motor_disable_reasons, send_result_values, telemetry_values,
 )
 
 
-MIT_RATE_HZ = 50.0
+# Division 1: policy-originated ROS commands. This is the producer's rate,
+# not a callback throttle: disable requests are never discarded/delayed.
+COMMAND_RATE_HZ = 50.0
+
+# Division 2: encoder/current query rounds and state/status/fault publication.
+STATE_RATE_HZ = 100.0
+STATE_DT_S = 1.0 / STATE_RATE_HZ
+
+# Division 3: MIT steering, rear C0, safety checks and control diagnostics.
+MIT_RATE_HZ = 200.0
 MIT_DT_S = 1.0 / MIT_RATE_HZ
 MIT_POSITION_MAX_RAD = 3.0
 QUERY_TIMEOUT_S = 0.002
@@ -70,6 +66,8 @@ MAX_RX_BATCH = 64
 CAN_FRAME = struct.Struct("=IB3x8s")
 CAN_FILTER = struct.Struct("=II")
 CAN_MASK = 0xC00007FF
+SIOCGIFFLAGS = 0x8913
+IFF_UP = 0x1
 SO_RXQ_OVFL = getattr(socket, "SO_RXQ_OVFL", 40)
 # Linux asm-generic/socket.h: NEW uses a 64-bit timespec on both 32/64-bit Pi OS.
 SO_TIMESTAMPNS_NEW = 64
@@ -89,6 +87,32 @@ MOTOR_CONTROL_FIELDS = BASE_CONTROL_FIELDS + (
 
 
 @dataclass
+class ChannelState:
+    """MIT-owned encoder/current state; joint feedback uses the configured signs."""
+
+    name: str
+    host_id: int
+    feedback_id: int
+    gear_ratio: float
+    encoder_sign: float
+    torque_sign: float
+    zero_count: int | None = None
+    position_rad: float = 0.0
+    velocity_rad_s: float = 0.0
+    torque_constant_nm_per_a: float | None = None
+    sample_monotonic: float = 0.0
+    torque_nm: float = math.nan
+    torque_sample_monotonic: float = 0.0
+    position_sample_monotonic: float = 0.0
+    velocity_sample_monotonic: float = 0.0
+    position_query_ms: float = math.nan
+    velocity_query_ms: float = math.nan
+    position_query_failures: int = 0
+    velocity_query_failures: int = 0
+    lock: threading.Lock = field(default_factory=threading.Lock)
+
+
+@dataclass
 class CanReply:
     can_id: int
     data: bytes
@@ -101,6 +125,7 @@ class SocketCan:
     """Sole receiver/sender; strict standard-frame and overflow checking."""
 
     def __init__(self, interface: str, steering_id: int, drive_id: int):
+        self.interface = interface
         self.socket = socket.socket(socket.AF_CAN, socket.SOCK_RAW, socket.CAN_RAW)
         ids = [steering_id, drive_id, 0, 0xFF, 0x400, 0x4FF]
         for device_id in (steering_id, drive_id):
@@ -114,6 +139,16 @@ class SocketCan:
             self.socket.setsockopt(socket.SOL_SOCKET, SO_TIMESTAMPNS_NEW, 1)
             self.socket.setblocking(False)
             self.socket.bind((interface,))
+            # Binding a raw CAN socket can succeed on an administratively down
+            # interface. Reject that before any motor preflight commands.
+            request = struct.pack("256s", interface.encode())
+            flags = fcntl.ioctl(self.socket.fileno(), SIOCGIFFLAGS, request)
+            if not struct.unpack_from("=H", flags, 16)[0] & IFF_UP:
+                raise OSError(
+                    errno.ENETDOWN,
+                    f"CAN interface {interface!r} is DOWN; configure its motor bitrate "
+                    "and bring it UP before starting motor_mit_io",
+                )
         except BaseException:
             self.socket.close()
             raise
@@ -124,7 +159,14 @@ class SocketCan:
     def send(self, can_id: int, payload: bytes) -> None:
         if not 0 <= can_id <= 0x7FF or not 1 <= len(payload) <= 8:
             raise ValueError("invalid standard CAN frame")
-        sent = self.socket.send(CAN_FRAME.pack(can_id, len(payload), payload))
+        try:
+            sent = self.socket.send(CAN_FRAME.pack(can_id, len(payload), payload))
+        except OSError as error:
+            raise OSError(
+                error.errno,
+                f"CAN send on {self.interface!r}, ID {can_id:03X}, "
+                f"data {payload.hex().upper()}: {error.strerror or error}",
+            ) from error
         if sent != CAN_FRAME.size:
             raise OSError("short SocketCAN send")
 
@@ -180,31 +222,41 @@ class SocketCan:
         self.socket.close()
 
 
-class MotorMitIo(MotorIo):
-    """Reuse the established ROS command, state and measured-current contracts."""
+class MotorMitIo(Node):
+    """Independent MIT/C0 node implementing the established ROS motor contracts."""
+
+    _parameter_defaults = {
+        "can_interface": "can0", "steering_host_id": "102", "steering_feedback_id": "002",
+        "drive_host_id": "101", "drive_feedback_id": "001", "steering_gear_ratio": 1.0,
+        "drive_gear_ratio": 1.0, "steering_encoder_sign": -1.0, "drive_encoder_sign": 1.0,
+        "steering_torque_sign": -1.0, "drive_torque_sign": -1.0,
+        # MIT-specific rate keys ignore the shared YAML's legacy overrides.
+        "command_rate_hz": COMMAND_RATE_HZ, "state_rate_hz": STATE_RATE_HZ,
+        "actuation_rate_hz": MIT_RATE_HZ,
+        "command_timeout_s": 0.08, "feedback_timeout_s": 0.05,
+        "steering_limit_rad": math.radians(90.0), "steering_fault_clear_rad": math.radians(5.0),
+        "dry_run": False,
+        "mit_kp_nm_per_motor_rad": STEERING_KP_NM_PER_RAD,
+        "mit_kd_nm_s_per_motor_rad": STEERING_KD_NM_S_PER_RAD,
+    }
+    _control_fields = MOTOR_CONTROL_FIELDS
+    _control_label = "motor_control_mit_v1"
+    _snapshot_fields = (
+        "position_rad", "velocity_rad_s", "sample_monotonic", "torque_constant_nm_per_a",
+        "position_sample_monotonic", "velocity_sample_monotonic", "position_query_ms",
+        "velocity_query_ms", "position_query_failures", "velocity_query_failures",
+    )
 
     def __init__(self) -> None:
-        # MotorIo.__init__ starts independent python-can pollers. MIT needs one
-        # receiver so replies cannot be stolen or paired with the wrong query.
+        # One CAN owner prevents competing pollers from stealing replies.
         Node.__init__(self, "trackstand_motor_io")
-        defaults = {
-            "can_interface": "can0", "steering_host_id": "102", "steering_feedback_id": "002",
-            "drive_host_id": "101", "drive_feedback_id": "001", "steering_gear_ratio": 1.0,
-            "drive_gear_ratio": 1.0, "steering_encoder_sign": -1.0, "drive_encoder_sign": 1.0,
-            "steering_torque_sign": -1.0, "drive_torque_sign": -1.0,
-            "poll_rate_hz": 200.0, "control_rate_hz": 200.0,
-            "command_timeout_s": 0.08, "feedback_timeout_s": 0.05,
-            "steering_limit_rad": math.pi / 2, "steering_fault_clear_rad": math.radians(5.0),
-            "dry_run": False,
-            "mit_kp_nm_per_motor_rad": STEERING_KP_NM_PER_RAD,
-            "mit_kd_nm_s_per_motor_rad": STEERING_KD_NM_S_PER_RAD,
-        }
-        for name, default in defaults.items():
-            self.declare_parameter(name, default)
+        for name, default in self._parameter_defaults.items():
+            self.declare_parameter(name, default, ParameterDescriptor(read_only=True))
         parameter = lambda name: self.get_parameter(name).value
         self._can_interface = str(parameter("can_interface"))
-        self._poll_rate_hz = float(parameter("poll_rate_hz"))
-        self._control_rate_hz = float(parameter("control_rate_hz"))
+        self._command_rate_hz = float(parameter("command_rate_hz"))
+        self._poll_rate_hz = float(parameter("state_rate_hz"))
+        self._control_rate_hz = float(parameter("actuation_rate_hz"))
         self._command_timeout_s = float(parameter("command_timeout_s"))
         self._feedback_timeout_s = float(parameter("feedback_timeout_s"))
         self._steering_limit_rad = float(parameter("steering_limit_rad"))
@@ -212,7 +264,7 @@ class MotorMitIo(MotorIo):
         self._dry_run = bool(parameter("dry_run"))
         self._mit_kp = float(parameter("mit_kp_nm_per_motor_rad"))
         self._mit_kd = float(parameter("mit_kd_nm_s_per_motor_rad"))
-        scalars = (self._poll_rate_hz, self._control_rate_hz, self._command_timeout_s,
+        scalars = (self._command_rate_hz, self._poll_rate_hz, self._control_rate_hz, self._command_timeout_s,
                    self._feedback_timeout_s, self._steering_limit_rad, self._steering_fault_clear_rad,
                    self._mit_kp, self._mit_kd)
         if (not all(map(math.isfinite, scalars)) or self._poll_rate_hz <= 0 or self._control_rate_hz <= 0
@@ -220,10 +272,13 @@ class MotorMitIo(MotorIo):
                 or self._steering_limit_rad <= 0 or not 0 < self._steering_fault_clear_rad < self._steering_limit_rad
                 or not 0 <= self._mit_kp <= 500 or not 0 <= self._mit_kd <= 5):
             raise ValueError("invalid motor rate, timeout, limit, or MIT gain")
-        if self._control_rate_hz < MIT_RATE_HZ or self._poll_rate_hz < MIT_RATE_HZ:
-            raise ValueError("control and encoder-poll rates must be at least 50 Hz")
-        if self._feedback_timeout_s <= MIT_DT_S:
-            raise ValueError("feedback timeout must exceed the 20 ms MIT reply interval")
+        if (self._command_rate_hz, self._poll_rate_hz, self._control_rate_hz) != (
+                COMMAND_RATE_HZ, STATE_RATE_HZ, MIT_RATE_HZ):
+            raise ValueError("MIT command/state/actuation rates must remain 50/100/200 Hz")
+        if self._command_timeout_s <= 1.0 / COMMAND_RATE_HZ:
+            raise ValueError("command timeout must exceed the 20 ms policy interval")
+        if self._feedback_timeout_s <= STATE_DT_S:
+            raise ValueError("feedback timeout must exceed the 10 ms state-query interval")
 
         def channel(prefix: str) -> ChannelState:
             host = int(str(parameter(f"{prefix}_host_id")), 16)
@@ -242,17 +297,8 @@ class MotorMitIo(MotorIo):
         self._steering, self._drive = channel("steering"), channel("drive")
         if self._steering.feedback_id == self._drive.feedback_id:
             raise ValueError("steering and drive cannot have the same CAN ID")
-        self._running = True
-        self._requested_enable = False
-        self._steering_target_rad = self._requested_steering_target_rad = self._slewed_steering_target_rad = 0.0
-        self._drive_target_nm = self._requested_drive_target_nm = self._command_monotonic = 0.0
-        self._fault_latched = self._hard_fault = self._outputs_active = False
-        self._fault_reason = None
-        self._command_lock = threading.Lock()
-        self._last_published_sample_times = (0.0, 0.0)
-        self._control_sequence = 0
-        self._last_control_monotonic = 0.0
-        self._last_event_state = None
+        self._initialize_command_state()
+        self._hard_fault = False
         self._mit_ranges: MitRanges | None = None
         self._mit_zero_rad: float | None = None
         self._mit_feedback: MitFeedback | None = None
@@ -260,44 +306,78 @@ class MotorMitIo(MotorIo):
         self._mit_send_interval_ms = math.nan
         self._mit_f1_at = self._mit_last_sent_at = self._mit_first_sent_at = self._next_mit_at = 0.0
         self._mit_sent_this_enable = False
+        self._slew_last_at = 0.0
         self._mit_config_ready = False
         self._pending = None
         self._poll_jobs = deque()
         self._next_poll_at = self._next_b0_at = self._next_f0_at = 0.0
-        self._last_steering_current_query_at = 0.0
         self._tx_bus: SocketCan | None = None
         self._last_disable_errors = ()
         self._disable_wait: dict[str, float | None] = {}
+        self._disable_f1_wait: dict[str, float] = {}
         self._disable_confirmed = False
         self._disable_deadline_at = self._next_disable_retry_at = 0.0
 
-        self._state_publisher = self.create_publisher(Float64MultiArray, "/trackstand/motor_state", 10)
-        self._torque_publisher = self.create_publisher(
-            JointState,
-            "/trackstand/motor_torque", QoSProfile(depth=100, reliability=ReliabilityPolicy.BEST_EFFORT),
+        self._create_interfaces()
+        self._publish_timer = self.create_timer(STATE_DT_S, self._publish_feedback)
+        self._worker = threading.Thread(target=self._run_io, name="trackstand_mit_can", daemon=True)
+        self.get_logger().info(
+            f"Policy input {COMMAND_RATE_HZ:g} Hz, state/query {STATE_RATE_HZ:g} Hz, "
+            f"MIT steering/C0 drive/control {MIT_RATE_HZ:g} Hz on {self._can_interface}; "
+            f"dry_run={self._dry_run}"
         )
-        self._control_publisher = self.create_publisher(
-            Float64MultiArray, "/trackstand/motor_control",
-            QoSProfile(depth=50, reliability=ReliabilityPolicy.BEST_EFFORT),
-        )
-        self._event_publisher = self.create_publisher(String, "/trackstand/motor_event", 100)
-        self._fault_publisher = self.create_publisher(Bool, "/trackstand/motor_fault", 10)
-        self._status_publisher = self.create_publisher(String, "/trackstand/motor_status", 10)
-        self._control_dimension = MultiArrayDimension(
-            label="motor_control_mit_v1:" + ",".join(MOTOR_CONTROL_FIELDS),
-            size=len(MOTOR_CONTROL_FIELDS), stride=len(MOTOR_CONTROL_FIELDS),
-        )
+        self._worker.start()
+
+    def _initialize_command_state(self) -> None:
+        self._running = True
+        self._requested_enable = self._outputs_active = self._fault_latched = False
+        self._steering_target_rad = self._requested_steering_target_rad = self._slewed_steering_target_rad = 0.0
+        self._drive_target_nm = self._requested_drive_target_nm = self._command_monotonic = 0.0
+        self._fault_reason: str | None = None
+        self._command_lock = threading.Lock()
+        self._disable_generation = self._active_disable_generation = 0
+        self._last_published_sample_times = (0.0, 0.0)
+        self._control_sequence = 0
+        self._last_control_monotonic = 0.0
+        self._last_event_state = None
+        self._control_publish_gate = MotorControlPublishGate(MIT_RATE_HZ)
+        self._feedback_gate_fault = False
+
+    def _create_interfaces(self) -> None:
+        for name, kind, qos in (
+            ("state", Float64MultiArray, 10),
+            ("control", Float64MultiArray, QoSProfile(depth=50, reliability=ReliabilityPolicy.BEST_EFFORT)),
+            ("event", String, 100), ("fault", Bool, 10), ("status", String, 10),
+        ):
+            setattr(self, f"_{name}_publisher", self.create_publisher(kind, f"/trackstand/motor_{name}", qos))
+        for name, label, fields in (("state", MOTOR_STATE_LABEL, MOTOR_STATE_FIELDS),
+                                    ("control", self._control_label + ":" + ",".join(self._control_fields),
+                                     self._control_fields)):
+            setattr(self, f"_{name}_dimension", MultiArrayDimension(label=label, size=len(fields), stride=len(fields)))
         self._command_subscription = self.create_subscription(
             Float64MultiArray, "/trackstand/motor_command", self._command_callback, 10,
         )
-        self._publish_timer = self.create_timer(1.0 / self._poll_rate_hz, self._publish_state)
-        self._status_timer = self.create_timer(0.5, self._publish_status)
-        self._worker = threading.Thread(target=self._run_io, name="trackstand_mit_can", daemon=True)
-        self._worker.start()
-        self.get_logger().info(
-            f"MIT steering 50 Hz, C0 drive {self._control_rate_hz:g} Hz on {self._can_interface}; "
-            f"dry_run={self._dry_run}"
-        )
+
+    def _command_callback(self, message: Float64MultiArray) -> None:
+        if len(message.data) != 3:
+            self.get_logger().warning("motor_command must be [enable, steering_target_rad, drive_torque_nm]")
+            return
+        values = tuple(map(float, message.data))
+        if not all(map(math.isfinite, values)):
+            self.get_logger().error("Rejected non-finite motor command")
+            return
+        with self._command_lock:
+            self._requested_enable = bool(values[0] > 0.5)
+            if not self._requested_enable:
+                self._disable_generation += 1
+            self._requested_steering_target_rad, self._requested_drive_target_nm = values[1:]
+            self._steering_target_rad = max(-self._steering_limit_rad, min(self._steering_limit_rad, values[1]))
+            self._drive_target_nm = max(-DRIVE_EFFORT_LIMIT_NM, min(DRIVE_EFFORT_LIMIT_NM, values[2]))
+            self._command_monotonic = time.monotonic()
+
+    def _snapshot(self, motor: ChannelState) -> tuple:
+        with motor.lock:
+            return tuple(getattr(motor, name) for name in self._snapshot_fields)
 
     def _send(self, can_id: int, data: bytes) -> None:
         if self._tx_bus is None:
@@ -326,6 +406,23 @@ class MotorMitIo(MotorIo):
         if not data:
             raise RuntimeError("empty motor response")
         opcode = data[0]
+        if opcode == 0xF1 and len(data) == 7:
+            if data[6] & ~3:
+                raise RuntimeError("unknown F1 status bits")
+            verify_sent_at = self._disable_f1_wait.get(motor.name)
+            if verify_sent_at is not None and stamp >= verify_sent_at:
+                if stamp > self._disable_deadline_at:
+                    self._fault("disable_ack_timeout", hard=True)
+                if data[6] & 2:
+                    self._fault(f"{motor.name}_mit_system_fault", hard=True)
+                    self._disable_wait[motor.name] = None
+                    del self._disable_f1_wait[motor.name]
+                elif data[6] & 1:
+                    self._fault(f"{motor.name}_disable_not_confirmed", hard=True)
+                    self._disable_wait[motor.name] = None
+                    del self._disable_f1_wait[motor.name]
+                else:
+                    self._confirm_disable(motor)
         if opcode in (0xA3, 0xA2):
             pending = self._pending
             if (pending is None or pending[0] is not motor or pending[1] != opcode
@@ -336,12 +433,9 @@ class MotorMitIo(MotorIo):
             with motor.lock:
                 constant = motor.torque_constant_nm_per_a
             if constant is not None:
-                sample = JointState()
-                sample.header.stamp = self.get_clock().now().to_msg()  # ROS receipt time, not motor sample time.
-                sample.name = ["steering_joint" if motor is self._steering else "rear_wheel_joint"]
-                sample.effort = [current_feedback_to_torque_nm(current_a, constant, motor.torque_sign)]
-                self._torque_publisher.publish(sample)
+                torque_nm = current_feedback_to_torque_nm(current_a, constant, motor.torque_sign)
                 with motor.lock:
+                    motor.torque_nm = torque_nm
                     motor.torque_sample_monotonic = stamp
         elif opcode == 0xB0 and len(data) == 7:
             try:
@@ -382,15 +476,16 @@ class MotorMitIo(MotorIo):
             if self._mit_config_ready and ranges != self._mit_ranges:
                 raise RuntimeError("steering F0 encoding ranges changed")
             self._mit_ranges = ranges
-        elif motor is self._steering and opcode == 0xF1 and len(data) == 7 and self._mit_ranges is not None:
-            feedback = parse_f1(data, self._mit_ranges)
-            if stamp >= self._mit_f1_at:
-                self._mit_feedback, self._mit_f1_at = feedback, stamp
-            if feedback.system_fault:
-                self._fault("steering_mit_system_fault", hard=True)
-            elif (self._mit_sent_this_enable and stamp >= self._mit_first_sent_at
-                  and not feedback.mode_active):
-                self._fault("steering_mit_unexpected_exit", hard=True)
+        elif opcode == 0xF1 and len(data) == 7:
+            if data[6] & 2:
+                self._fault(f"{motor.name}_mit_system_fault", hard=True)
+            if motor is self._steering and self._mit_ranges is not None:
+                feedback = parse_f1(data, self._mit_ranges)
+                if stamp >= self._mit_f1_at:
+                    self._mit_feedback, self._mit_f1_at = feedback, stamp
+                if (self._mit_sent_this_enable and stamp >= self._mit_first_sent_at
+                        and not feedback.mode_active):
+                    self._fault("steering_mit_unexpected_exit", hard=True)
         elif motor is self._steering and opcode == 0xB1 and self._mit_config_ready:
             raise RuntimeError("steering origin changed after startup")
         elif opcode in (0xCF, 0xAE) and len(data) == 8:
@@ -400,13 +495,26 @@ class MotorMitIo(MotorIo):
             if opcode == 0xCF and disable_sent_at is not None and stamp >= disable_sent_at:
                 if stamp > self._disable_deadline_at:
                     self._fault("disable_ack_timeout", hard=True)
-                if data[6] == 0:
-                    del self._disable_wait[motor.name]
-                    if not self._disable_wait:
-                        self._disable_confirmed, self._outputs_active = True, False
+                if data[7]:
+                    self._disable_wait[motor.name] = None
+                    self._disable_f1_wait.pop(motor.name, None)
+                elif data[6] == 0:
+                    self._confirm_disable(motor)
+                elif 1 <= data[6] <= 5:
+                    # This firmware retains its selected mode after CF. Require
+                    # a fresh, fault-free F1 readback confirming MIT is inactive.
+                    if motor.name not in self._disable_f1_wait:
+                        sent_at = time.monotonic()
+                        try:
+                            self._send(motor.host_id, bytes([0xF1]))
+                        except (OSError, RuntimeError, ValueError):
+                            self._disable_wait[motor.name] = None
+                            raise
+                        self._disable_f1_wait[motor.name] = sent_at
                 else:
                     self._fault(f"{motor.name}_disable_not_confirmed", hard=True)
                     self._disable_wait[motor.name] = None
+                    self._disable_f1_wait.pop(motor.name, None)
             elif (self._mit_sent_this_enable and stamp >= self._mit_first_sent_at and data[6] == 0):
                 reason = "steering_driver_left_mit_mode" if motor is self._steering else "drive_driver_unexpected_exit"
                 self._fault(reason, hard=True)
@@ -418,13 +526,23 @@ class MotorMitIo(MotorIo):
                 and len(data) == pending[4] and pending[2] <= stamp <= pending[3]):
             self._pending = None
 
+    def _confirm_disable(self, motor: ChannelState) -> None:
+        self._disable_wait.pop(motor.name, None)
+        self._disable_f1_wait.pop(motor.name, None)
+        if not self._disable_wait:
+            self._disable_confirmed, self._outputs_active = True, False
+
+    def _receive_one(self, timeout_s: float) -> CanReply | None:
+        frame = self._tx_bus.receive(timeout_s)
+        if frame is not None:
+            self._consume(frame, frame.received_monotonic)
+        return frame
+
     def _drain_received(self) -> None:
         """Read queued faults before any actuation or new request; bound backlog."""
         for _ in range(MAX_RX_BATCH):
-            frame = self._tx_bus.receive(0.0)
-            if frame is None:
+            if self._receive_one(0.0) is None:
                 return
-            self._consume(frame, time.monotonic())
         raise RuntimeError("CAN receive backlog did not clear")
 
     def _query(self, motor: ChannelState, opcode: int, expected_length: int, timeout_s: float,
@@ -436,10 +554,9 @@ class MotorMitIo(MotorIo):
         try:
             self._send(motor.host_id, bytes([opcode]) if payload is None else payload)
             while self._running and time.monotonic() < deadline:
-                frame = self._tx_bus.receive(max(0.0, deadline - time.monotonic()))
+                frame = self._receive_one(max(0.0, deadline - time.monotonic()))
                 if frame is None:
                     continue
-                self._consume(frame, time.monotonic())
                 if (sent_at <= frame.received_monotonic <= deadline and frame.can_id == motor.feedback_id
                         and len(frame.data) == expected_length and frame.data[0] == opcode):
                     return frame.data
@@ -447,16 +564,32 @@ class MotorMitIo(MotorIo):
         finally:
             self._pending = None
 
+    def _verify_startup_disable(self, motor: ChannelState) -> None:
+        status = self._query(motor, 0xCF, 8, 0.25)
+        if status[7] or status[6] > 5:
+            raise RuntimeError(
+                f"{motor.name} CF invalid/faulted: mode={status[6]}, "
+                f"fault=0x{status[7]:02X}, reply={status.hex().upper()}"
+            )
+        if status[6] != 0:
+            inactive = self._query(motor, 0xF1, 7, 0.25)
+            if inactive[6] != 0:
+                raise RuntimeError(
+                    f"{motor.name} CF retained mode={status[6]}; F1 did not "
+                    f"confirm inactive/fault-free state: {inactive.hex().upper()}"
+                )
+            self.get_logger().info(
+                f"{motor.name} CF acknowledged with retained mode={status[6]}; "
+                "F1 confirms MIT inactive and fault-free"
+            )
+
     def _startup(self) -> None:
         steer, drive = self._steering, self._drive
         if not self._dry_run:
-            # CF exits MIT; B1 changes the persistent native origin exactly once
-            # per process start, never on later RC up/down transitions.
+            # CF exits MIT; B1 sets the persistent origin once per process, not per episode.
             for motor in (steer, drive):
                 self._send(motor.host_id, q_current_payload(0.0))
-                status = self._query(motor, 0xCF, 8, 0.25)
-                if status[6] or status[7]:
-                    raise RuntimeError(f"{motor.name} CF did not confirm disabled/fault-free mode")
+                self._verify_startup_disable(motor)
             with self._command_lock:
                 if self._requested_enable:
                     raise RuntimeError("kickstands must remain down during MIT origin setup")
@@ -517,12 +650,11 @@ class MotorMitIo(MotorIo):
                 motor.velocity_query_failures += 1
                 motor._pending_position = None
             self._pending = None
-        if now >= self._next_poll_at and not self._poll_jobs:
+        if now + 1e-9 >= self._next_poll_at and not self._poll_jobs:
             self._poll_jobs.extend(((self._steering, 0xA3, 7), (self._steering, 0xA2, 5),
-                                    (self._drive, 0xA3, 7), (self._drive, 0xA2, 5)))
-            if now - self._last_steering_current_query_at >= MIT_DT_S:
-                self._poll_jobs.append((self._steering, 0xA1, 5))
-                self._last_steering_current_query_at = now
+                                    (self._drive, 0xA3, 7), (self._drive, 0xA2, 5),
+                                    (self._steering, 0xA1, 5), (self._drive, 0xA1, 5)))
+            # Configuration verification/calibration retries remain at 1 s.
             if now >= self._next_b0_at:
                 for motor in (self._steering, self._drive):
                     if motor.torque_constant_nm_per_a is None:
@@ -531,7 +663,11 @@ class MotorMitIo(MotorIo):
             if now >= self._next_f0_at:
                 self._poll_jobs.append((self._steering, 0xF0, 7))
                 self._next_f0_at = now + 1.0
-            self._next_poll_at = now + 1.0 / self._poll_rate_hz
+            if self._next_poll_at <= 0.0:
+                self._next_poll_at = now + STATE_DT_S
+            else:
+                missed = math.floor(max(0.0, now - self._next_poll_at + 1e-9) / STATE_DT_S)
+                self._next_poll_at += (missed + 1) * STATE_DT_S
         if self._pending is None and self._poll_jobs:
             motor, opcode, length = self._poll_jobs.popleft()
             sent = time.monotonic()
@@ -546,38 +682,32 @@ class MotorMitIo(MotorIo):
             while self._running:
                 self._drain_received()
                 now = time.monotonic()
-                drive_due = now >= next_control
-                mit_due = self._outputs_active and not self._disable_wait and now >= self._next_mit_at
-                if drive_due or mit_due:
-                    self._control_tick(send_drive=drive_due)
-                    if drive_due:
-                        next_control += 1.0 / self._control_rate_hz
-                        if next_control <= time.monotonic():
-                            next_control = time.monotonic() + 1.0 / self._control_rate_hz
+                if now >= next_control:
+                    self._control_tick()
+                    next_control += 1.0 / self._control_rate_hz
+                    # Align both motors, respecting the actual MIT send deadline.
+                    if self._outputs_active and not self._disable_wait:
+                        next_control = max(next_control, self._next_mit_at)
+                    if next_control <= time.monotonic():
+                        next_control = time.monotonic() + 1.0 / self._control_rate_hz
                 self._schedule_polls(time.monotonic())
                 deadline = next_control
-                if self._outputs_active and not self._disable_wait:
-                    deadline = min(deadline, self._next_mit_at)
                 if self._pending is not None:
                     deadline = min(deadline, self._pending[3])
                 elif not self._poll_jobs:
                     deadline = min(deadline, self._next_poll_at)
-                frame = self._tx_bus.receive(min(0.005, max(0.0, deadline - time.monotonic())))
-                if frame is not None:
-                    self._consume(frame, time.monotonic())
+                self._receive_one(min(MIT_DT_S, max(0.0, deadline - time.monotonic())))
         except Exception as error:
             self._fault(f"mit_io_error:{type(error).__name__}:{error}", hard=True)
             self.get_logger().error(f"MIT motor I/O stopped: {error}")
-            self._fault_publisher.publish(Bool(data=True))
         finally:
+            self._running = False
             if self._tx_bus is not None:
                 try:
                     self._disable_outputs(force=True)
                     deadline = time.monotonic() + DISABLE_TIMEOUT_S
                     while self._disable_wait and time.monotonic() < deadline:
-                        frame = self._tx_bus.receive(min(0.01, max(0.0, deadline - time.monotonic())))
-                        if frame is not None:
-                            self._consume(frame, time.monotonic())
+                        self._receive_one(min(STATE_DT_S, max(0.0, deadline - time.monotonic())))
                         self._disable_outputs()
                     if self._disable_wait:
                         self._fault("disable_ack_timeout", hard=True)
@@ -586,10 +716,27 @@ class MotorMitIo(MotorIo):
                     self._fault("shutdown_disable_unconfirmed", hard=True)
                     self.get_logger().error(f"Motor disable/shutdown failed: {error}")
                 finally:
-                    self._tx_bus.close()
-                    self._tx_bus = None
+                    try:
+                        self._tx_bus.close()
+                    except Exception as error:
+                        self._fault("shutdown_close_failed", hard=True)
+                        self.get_logger().error(f"CAN close failed: {error}")
+                    finally:
+                        self._tx_bus = None
+            # SIGINT can invalidate ROS before the worker finishes. CAN cleanup
+            # above must still run, but a terminal ROS event is then unavailable.
+            if self.context.ok():
+                try:
+                    self._publish_event(time.monotonic(), {
+                        "gate_enabled": False, "ros_time_s": self.get_clock().now().nanoseconds * 1e-9,
+                    }, ["mit_io_stopped"] + (["fault_latched"] if self._fault_latched else []),
+                        DisableResult(errors=self._last_disable_errors))
+                except Exception as error:
+                    if self.context.ok():
+                        self.get_logger().error(f"Terminal motor event unavailable: {error}")
 
-    def _send_torque(self, motor: ChannelState, torque_nm: float, torque_constant: float) -> MotorSendResult:
+    def _send_torque(self, motor: ChannelState, torque_nm: float, torque_constant: float,
+                     guard=None) -> MotorSendResult:
         result = MotorSendResult()
         started = time.monotonic()
         try:
@@ -601,7 +748,7 @@ class MotorMitIo(MotorIo):
             result.current_command_a = current_a
             result.encoded_current_a = encoded
             result.encoded_torque_nm = current_feedback_to_torque_nm(encoded, torque_constant, motor.torque_sign)
-            if not self._dry_run:
+            if (guard is None or guard()) and not self._dry_run:
                 result.attempted = True
                 self._send(motor.host_id, payload)
                 result.success = True
@@ -612,15 +759,14 @@ class MotorMitIo(MotorIo):
         result.duration_ms = (time.monotonic() - started) * 1000.0
         return result
 
-    def _send_mit(self, target_rad: float) -> tuple[MotorSendResult, float]:
+    def _send_mit(self, target_rad: float, guard=None) -> tuple[MotorSendResult, float]:
         result = MotorSendResult()
         started = time.monotonic()
         native = math.nan
         try:
             native = self._mit_zero_rad + self._steering.encoder_sign * self._steering.gear_ratio * target_rad
             payload = mit_motion_payload(native, self._mit_ranges, self._mit_kp, self._mit_kd)
-            # Round INSIDE the joint travel range. Nearest-code rounding alone
-            # can put an endpoint command a fraction of a code beyond +/-90 deg.
+            # Round inside travel limits; nearest-code rounding can exceed an endpoint.
             half_span = self._steering.gear_ratio * self._steering_limit_rad
             pmax = self._mit_ranges.position_rad
             low_code = math.ceil((self._mit_zero_rad - half_span + pmax) * 65535 / (2 * pmax))
@@ -628,6 +774,9 @@ class MotorMitIo(MotorIo):
             code = max(low_code, min(high_code, int.from_bytes(payload[:2], "big")))
             payload = code.to_bytes(2, "big") + payload[2:]
             self._mit_encoded_command = parse_mit_motion(payload, self._mit_ranges)
+            if guard is not None and not guard():
+                result.duration_ms = (time.monotonic() - started) * 1000.0
+                return result, native
             if not self._dry_run:
                 result.attempted = True
                 self._send(0x400 | self._steering.host_id, payload)
@@ -638,9 +787,9 @@ class MotorMitIo(MotorIo):
                 if not self._mit_sent_this_enable:
                     self._mit_first_sent_at = self._mit_last_sent_at
                 self._mit_sent_this_enable = True
-                self._next_mit_at = self._mit_last_sent_at + MIT_DT_S
-            else:
-                self._next_mit_at = time.monotonic() + MIT_DT_S
+            self._slew_last_at = time.monotonic()
+            self._next_mit_at = self._slew_last_at + MIT_DT_S
+            self._outputs_active, self._disable_confirmed = True, False
         except (OSError, RuntimeError, ValueError, OverflowError, TypeError) as error:
             self._fault("steering_mit_send_failed")
             result.error = str(error)
@@ -661,7 +810,7 @@ class MotorMitIo(MotorIo):
         elif not force and not self._outputs_active:
             return result
         self._mit_sent_this_enable = False
-        self._next_mit_at = 0.0
+        self._next_mit_at = self._slew_last_at = 0.0
         if self._dry_run:
             self._outputs_active = False
             self._disable_confirmed = True
@@ -669,6 +818,7 @@ class MotorMitIo(MotorIo):
         if not self._disable_wait:
             self._disable_confirmed = False
             self._disable_wait = {"steering": None, "drive": None}
+            self._disable_f1_wait.clear()
             self._disable_deadline_at = now + DISABLE_TIMEOUT_S
         if self._tx_bus is not None:
             result.attempted = True
@@ -701,43 +851,36 @@ class MotorMitIo(MotorIo):
         self._outputs_active = bool(self._disable_wait)
         return result
 
-    def _control_tick(self, send_drive: bool = True) -> None:
-        now = time.monotonic()
-        self._control_sequence += 1
-        interval_ms = age_ms(now, self._last_control_monotonic)
-        self._last_control_monotonic = now
+    def _gate_state(self, now: float, requested_enable: bool, command_stamp: float,
+                    sending: bool = False) -> tuple[dict, list[str]]:
+        """Shared safety decision; active watchdog failures require a safe RC-down reset."""
         steering, drive = self._snapshot(self._steering), self._snapshot(self._drive)
-        with self._command_lock:
-            requested_enable = self._requested_enable
-            command_stamp = self._command_monotonic
-            target_rad = self._steering_target_rad
-            target_drive_nm = self._drive_target_nm
-            requested_steering = self._requested_steering_target_rad
-            requested_drive = self._requested_drive_target_nm
-        steering_fresh = steering[2] > 0 and now - steering[2] <= self._feedback_timeout_s
-        drive_fresh = drive[2] > 0 and now - drive[2] <= self._feedback_timeout_s
-        steering_ready = steering_fresh and steering[3] is not None
-        drive_ready = drive_fresh and drive[3] is not None
-        feedback_ready = steering_ready and drive_ready
-        command_ready = command_stamp > 0 and now - command_stamp <= self._command_timeout_s
         with self._steering.lock:
             steering_unwrapped = getattr(self._steering, "_unwrapped_rad", steering[0])
             steering_unwrapped_at = getattr(self._steering, "_unwrapped_at", steering[4])
-        limit_reason = None
-        if abs(steering_unwrapped) > self._steering_limit_rad:
-            limit_reason = "steering_position_limit"
-        elif abs(steering[1]) > STEERING_VELOCITY_LIMIT_RAD_S * 1.1:
-            limit_reason = "steering_speed_limit"
-        elif abs(drive[1]) > DRIVE_VELOCITY_LIMIT_RAD_S * 1.1:
-            limit_reason = "drive_speed_limit"
-        if limit_reason is not None:
-            self._fault(limit_reason)
+        if sending:
+            with self._command_lock:
+                requested_enable = self._requested_enable
+        now = max(now, time.monotonic())  # Sample after lock waits, not before them.
+        steering_fresh = 0 < steering[2] <= now and now - steering[2] <= self._feedback_timeout_s
+        drive_fresh = 0 < drive[2] <= now and now - drive[2] <= self._feedback_timeout_s
+        steering_ready = steering_fresh and steering[3] is not None
+        drive_ready = drive_fresh and drive[3] is not None
+        feedback_ready = steering_ready and drive_ready
+        self._feedback_gate_fault = requested_enable and (not feedback_ready or bool(self._disable_wait))
+        command_ready = 0 < command_stamp <= now and now - command_stamp <= self._command_timeout_s
+        if requested_enable and (sending or (self._outputs_active and not self._disable_wait)):
+            if not command_ready:
+                self._fault("command_timeout")
+            elif not feedback_ready:
+                self._fault("active_feedback_unavailable")
         if self._disable_wait and now >= self._disable_deadline_at:
             self._fault("disable_ack_timeout", hard=True)
         if (self._mit_sent_this_enable and
                 now - max(self._mit_f1_at, self._mit_first_sent_at) > self._feedback_timeout_s):
             self._fault("steering_mit_feedback_timeout", hard=True)
-        if (not self._hard_fault and feedback_ready and limit_reason is None
+        if (not sending and not self._hard_fault and feedback_ready
+                and self._disable_confirmed
                 and not self._outputs_active and not self._disable_wait and
                 motor_fault_clear_allowed(requested_enable, steering_unwrapped, self._steering_fault_clear_rad)):
             self._fault_latched, self._fault_reason = False, None
@@ -754,18 +897,12 @@ class MotorMitIo(MotorIo):
         if self._disable_wait or not disable_ready:
             reasons.append("motor_disable_unconfirmed")
         diag = {
-            "sequence": self._control_sequence, "ros_time_s": self.get_clock().now().nanoseconds * 1e-9,
-            "monotonic_time_s": now, "cycle_interval_ms": interval_ms, "dry_run": self._dry_run,
             "requested_enable": requested_enable, "gate_enabled": enabled,
             "command_age_ms": age_ms(now, command_stamp), "command_ready": command_ready,
             "steering_feedback_ready": steering_ready, "drive_feedback_ready": drive_ready,
             "steering_pair_age_ms": age_ms(now, steering[2]), "drive_pair_age_ms": age_ms(now, drive[2]),
             "steering_position_rad": steering[0], "steering_velocity_rad_s": steering[1],
             "drive_position_rad": drive[0], "drive_velocity_rad_s": drive[1],
-            "requested_steering_target_rad": requested_steering, "requested_drive_target_nm": requested_drive,
-            "bounded_steering_target_rad": target_rad, "bounded_drive_target_nm": target_drive_nm,
-            "steering_target_clipped": requested_steering != target_rad,
-            "drive_target_clipped": requested_drive != target_drive_nm,
             "mit_config_ready": config_ready, "mit_restart_required": self._hard_fault,
             "mit_f1_age_ms": age_ms(now, self._mit_f1_at),
             "mit_last_send_age_ms": age_ms(now, self._mit_last_sent_at),
@@ -784,130 +921,191 @@ class MotorMitIo(MotorIo):
                         mit_feedback_active=self._mit_feedback.mode_active,
                         mit_feedback_fault=self._mit_feedback.system_fault)
         for name, sample in (("steering", steering), ("drive", drive)):
-            diag.update({
-                f"{name}_position_age_ms": age_ms(now, sample[4]),
-                f"{name}_velocity_age_ms": age_ms(now, sample[5]),
-                f"{name}_position_query_ms": sample[6],
-                f"{name}_velocity_query_ms": sample[7],
-                f"{name}_position_query_failures": sample[8],
-                f"{name}_velocity_query_failures": sample[9],
-            })
+            fields = ("position_age_ms", "velocity_age_ms", "position_query_ms", "velocity_query_ms",
+                      "position_query_failures", "velocity_query_failures")
+            values = (age_ms(now, sample[4]), age_ms(now, sample[5]), *sample[6:])
+            diag.update(zip((f"{name}_{field}" for field in fields), values))
+        return diag, reasons
+
+    def _motion_allowed(self, token: tuple[float, int], diag: dict, reasons: list[str]) -> bool:
+        """Revalidate after encoding, immediately before each motor submission; no ROS work."""
+        # Keep the original packet's age: a later policy update cannot refresh it.
+        checked, current_reasons = self._gate_state(time.monotonic(), True, token[0], sending=True)
+        enabled, withdrawn = self._requested_enable, self._disable_generation != token[1]
+        if enabled and withdrawn:
+            self._fault("enable_withdrawn_during_control")
+        if not enabled or not self._running or withdrawn:
+            checked["gate_enabled"] = False
+            current_reasons.append("enable_not_requested" if not enabled else
+                                   "mit_io_stopped" if not self._running else "enable_withdrawn_during_control")
+        checked["requested_enable"] = enabled
+        diag.update(checked)
+        reasons[:] = list(dict.fromkeys(current_reasons))
+        return bool(diag["gate_enabled"])
+
+    def _control_tick(self, send_drive: bool = True) -> None:
+        now = time.monotonic()
+        self._control_sequence += 1
+        interval_ms = age_ms(now, self._last_control_monotonic)
+        self._last_control_monotonic = now
+        with self._command_lock:
+            requested_enable, command_stamp = self._requested_enable, self._command_monotonic
+            token = (command_stamp, self._disable_generation)
+            target_rad, target_drive_nm = self._steering_target_rad, self._drive_target_nm
+            requested_steering, requested_drive = self._requested_steering_target_rad, self._requested_drive_target_nm
+        if self._outputs_active and requested_enable and token[1] != self._active_disable_generation:
+            self._fault("enable_withdrawn_during_control")
+        diag, reasons = self._gate_state(now, requested_enable, command_stamp)
+        diag.update(
+            sequence=self._control_sequence, ros_time_s=self.get_clock().now().nanoseconds * 1e-9,
+            monotonic_time_s=now, cycle_interval_ms=interval_ms, dry_run=self._dry_run,
+            requested_steering_target_rad=requested_steering, requested_drive_target_nm=requested_drive,
+            bounded_steering_target_rad=target_rad, bounded_drive_target_nm=target_drive_nm,
+            steering_target_clipped=requested_steering != target_rad, drive_target_clipped=requested_drive != target_drive_nm,
+        )
+        guard = lambda: self._motion_allowed(token, diag, reasons)
         steer_send, drive_send, disable = MotorSendResult(), MotorSendResult(), DisableResult()
-        if not enabled:
-            self._slewed_steering_target_rad = steering[0]
+        if not diag["gate_enabled"]:
+            self._slewed_steering_target_rad = diag["steering_position_rad"]
             disable = self._disable_outputs()
-            self._fault_publisher.publish(Bool(data=self._fault_latched or
-                (requested_enable and (not feedback_ready or bool(self._disable_wait)))))
+            self._feedback_gate_fault |= requested_enable and bool(self._disable_wait)
             diag["slewed_steering_target_rad"] = self._slewed_steering_target_rad
             self._publish_control_telemetry(now, diag, reasons, steer_send, drive_send, disable)
             return
         due = now + 1e-9 >= self._next_mit_at
         diag["mit_send_due"] = due
+        self._active_disable_generation = token[1]
         if due:
-            elapsed = MIT_DT_S if not self._mit_sent_this_enable else max(0.0, now - self._mit_last_sent_at)
+            elapsed = max(0.0, now - self._slew_last_at) if self._slew_last_at > 0 else MIT_DT_S
             max_step = STEERING_VELOCITY_LIMIT_RAD_S * min(elapsed, 2 * MIT_DT_S)
             delta = target_rad - self._slewed_steering_target_rad
             proposed = self._slewed_steering_target_rad + max(-max_step, min(max_step, delta))
             diag["steering_slew_limited"] = abs(delta) > max_step
-            steer_send, native = self._send_mit(proposed)
+            steer_send, native = self._send_mit(proposed, guard=guard)
             diag["mit_native_target_rad"] = native
-            if self._dry_run or steer_send.success:
+            if diag["gate_enabled"] and (self._dry_run or steer_send.success):
                 self._slewed_steering_target_rad = proposed
         diag["slewed_steering_target_rad"] = self._slewed_steering_target_rad
-        diag["steering_error_rad"] = self._slewed_steering_target_rad - steering[0]
-        drive_damping = -DRIVE_DAMPING_NM_S_PER_RAD * drive[1]
+        diag["steering_error_rad"] = self._slewed_steering_target_rad - diag["steering_position_rad"]
+        drive_damping = -DRIVE_DAMPING_NM_S_PER_RAD * diag["drive_velocity_rad_s"]
         drive_unclipped = target_drive_nm + drive_damping
         drive_torque = max(-DRIVE_EFFORT_LIMIT_NM, min(DRIVE_EFFORT_LIMIT_NM, drive_unclipped))
         diag.update(drive_damping_torque_nm=drive_damping, drive_unclipped_torque_nm=drive_unclipped,
                     drive_final_torque_nm=drive_torque, drive_torque_saturated=drive_torque != drive_unclipped)
-        if not self._fault_latched and send_drive:
-            drive_send = self._send_torque(self._drive, drive_torque, float(drive[3]))
-        if self._fault_latched:
+        if diag["gate_enabled"] and not self._fault_latched and send_drive:
+            drive_send = self._send_torque(self._drive, drive_torque, float(self._drive.torque_constant_nm_per_a), guard)
+        if self._fault_latched or not diag["gate_enabled"]:
             diag["gate_enabled"] = False
-            reasons = ["fault_latched", self._fault_reason or "send_failed"]
-            disable = self._disable_outputs(force=True)
-            self._fault_publisher.publish(Bool(data=True))
-        else:
-            self._outputs_active = True
-            self._disable_confirmed = False
-            self._fault_publisher.publish(Bool(data=False))
+            if self._fault_latched:
+                reasons = list(dict.fromkeys(reasons + ["fault_latched", self._fault_reason or "send_failed"]))
+            disable = self._disable_outputs(force=steer_send.attempted or drive_send.attempted)
         self._publish_control_telemetry(now, diag, reasons, steer_send, drive_send, disable)
 
     def _publish_control_telemetry(
         self, started: float, diag: dict, reasons: list[str],
         steer_send: MotorSendResult, drive_send: MotorSendResult, disable: DisableResult,
     ) -> None:
-        if self._mit_encoded_command is not None:
-            command = self._mit_encoded_command
-            diag.update(mit_encoded_position_motor_rad=command.position_rad,
-                        mit_encoded_position_rad=self._steering.encoder_sign
-                        * (command.position_rad - self._mit_zero_rad) / self._steering.gear_ratio,
-                        mit_encoded_velocity_motor_rad_s=command.velocity_rad_s,
-                        mit_encoded_kp_nm_per_motor_rad=command.kp_nm_per_rad,
-                        mit_encoded_kd_nm_s_per_motor_rad=command.kd_nm_s_per_rad,
-                        mit_encoded_feedforward_torque_motor_nm=command.feedforward_torque_nm,
-                        mit_actual_send_interval_ms=self._mit_send_interval_ms)
-        diag.update(send_result_values("steering", steer_send))
-        diag.update(send_result_values("drive", drive_send))
-        diag.update({
-            "outputs_active": self._outputs_active, "fault_latched": self._fault_latched,
-            "disable_pending": bool(self._disable_wait), "disable_confirmed": self._disable_confirmed,
-            "steering_disable_confirmed": self._disable_confirmed or
-            (bool(self._disable_wait) and "steering" not in self._disable_wait),
-            "drive_disable_confirmed": self._disable_confirmed or
-            (bool(self._disable_wait) and "drive" not in self._disable_wait),
-            "work_duration_ms": (time.monotonic() - started) * 1000.0,
-            "disable_attempted": disable.attempted,
-            "steering_zero_send_success": math.nan,
-            "steering_disable_send_success": math.nan if disable.steering_disable_success is None
-            else disable.steering_disable_success,
-            "drive_zero_send_success": math.nan if disable.drive_zero_success is None else disable.drive_zero_success,
-            "drive_disable_send_success": math.nan if disable.drive_disable_success is None
-            else disable.drive_disable_success,
-        })
+        if self._control_publish_gate.due(started):
+            if self._mit_encoded_command is not None:
+                command = self._mit_encoded_command
+                diag.update(mit_encoded_position_motor_rad=command.position_rad,
+                            mit_encoded_position_rad=self._steering.encoder_sign
+                            * (command.position_rad - self._mit_zero_rad) / self._steering.gear_ratio,
+                            mit_encoded_velocity_motor_rad_s=command.velocity_rad_s,
+                            mit_encoded_kp_nm_per_motor_rad=command.kp_nm_per_rad,
+                            mit_encoded_kd_nm_s_per_motor_rad=command.kd_nm_s_per_rad,
+                            mit_encoded_feedforward_torque_motor_nm=command.feedforward_torque_nm,
+                            mit_actual_send_interval_ms=self._mit_send_interval_ms)
+            diag.update(self._event_details())
+            for name, result in (("steering", steer_send), ("drive", drive_send)):
+                diag.update(send_result_values(name, result))
+            diag.update(outputs_active=self._outputs_active, fault_latched=self._fault_latched,
+                        work_duration_ms=(time.monotonic() - started) * 1000.0, disable_attempted=disable.attempted)
+            for name in ("steering_zero", "steering_disable", "drive_zero", "drive_disable"):
+                value = getattr(disable, f"{name}_success")
+                diag[f"{name}_send_success"] = math.nan if value is None else value
+            message = Float64MultiArray()
+            message.layout.dim = [self._control_dimension]
+            message.data = telemetry_values(self._control_fields, diag)
+            self._control_publisher.publish(message)
+        self._publish_event(started, diag, reasons, disable)
+
+    def _publish_event(self, started: float, diag: dict, reasons: list[str], disable: DisableResult) -> None:
         if disable.errors:
             reasons = list(dict.fromkeys(reasons + ["disable_send_failed"]))
-        message = Float64MultiArray()
-        message.layout.dim = [self._control_dimension]
-        message.data = telemetry_values(MOTOR_CONTROL_FIELDS, diag)
-        self._control_publisher.publish(message)
+        # Transition events observe every control tick, not the state-topic timer.
+        details = self._event_details()
         event_state = (bool(diag["gate_enabled"]), self._outputs_active, self._fault_latched,
-                       tuple(reasons), self._fault_reason, disable.errors)
+                       tuple(reasons), self._fault_reason, disable.errors, tuple(details.values()))
         if event_state != self._last_event_state:
             event = String()
             event.data = json.dumps({
                 "sequence": self._control_sequence, "ros_time_s": diag["ros_time_s"],
                 "monotonic_time_s": started, "gate_enabled": bool(diag["gate_enabled"]),
                 "outputs_active": self._outputs_active, "dry_run": self._dry_run,
-                "disable_pending": bool(self._disable_wait), "disable_confirmed": self._disable_confirmed,
                 "fault_latched": self._fault_latched, "fault_reason": self._fault_reason,
                 "disable_reasons": reasons, "disable_send_errors": list(disable.errors),
+                **details,
             }, sort_keys=True)
             self._event_publisher.publish(event)
             self._last_event_state = event_state
+
+    def _event_details(self) -> dict:
+        pending = bool(self._disable_wait)
+        return {"disable_pending": pending, "disable_confirmed": self._disable_confirmed,
+                **{f"{name}_disable_confirmed": self._disable_confirmed or (pending and name not in self._disable_wait)
+                   for name in ("steering", "drive")}}
+
+    def _publish_feedback(self) -> None:
+        """100 Hz ROS output; actuation and fault detection never wait for this timer."""
+        self._fault_publisher.publish(Bool(data=self._fault_latched or self._feedback_gate_fault))
+        self._publish_state()
+        self._publish_status()
+
+    def _publish_state(self) -> None:
+        steering, drive = self._snapshot(self._steering), self._snapshot(self._drive)
+        now = time.monotonic()
+        sample_times = (steering[2], drive[2])
+        if any(stamp <= 0.0 or now - stamp > self._feedback_timeout_s for stamp in sample_times):
+            return
+        if any(stamp <= previous for stamp, previous in zip(sample_times, self._last_published_sample_times)):
+            return
+        torques = []
+        for motor in (self._steering, self._drive):
+            with motor.lock:
+                torques.append(fresh_torque_feedback_nm(
+                    motor.torque_nm, motor.torque_sample_monotonic, time.monotonic(), self._feedback_timeout_s,
+                ))
+        message = Float64MultiArray()
+        message.layout.dim = [self._state_dimension]
+        message.data = [steering[0], drive[0], steering[1], drive[1], time.time(), *torques]
+        self._state_publisher.publish(message)
+        self._last_published_sample_times = sample_times
 
     def _publish_status(self) -> None:
         steering, drive = self._snapshot(self._steering), self._snapshot(self._drive)
         now = time.monotonic()
         message = String()
-        steering_torque_age = age_ms(now, self._steering.torque_sample_monotonic)
-        drive_torque_age = age_ms(now, self._drive.torque_sample_monotonic)
-        mit_f1_age = age_ms(now, self._mit_f1_at)
+        ages = {"steering_torque_age_ms": self._steering.torque_sample_monotonic,
+                "drive_torque_age_ms": self._drive.torque_sample_monotonic, "mit_f1_age_ms": self._mit_f1_at}
         message.data = json.dumps({
             "outputs_active": self._outputs_active, "fault_latched": self._fault_latched,
-            "disable_pending": bool(self._disable_wait), "disable_confirmed": self._disable_confirmed,
+            **self._event_details(),
             "motors_awaiting_disable": sorted(self._disable_wait),
             "fault_reason": self._fault_reason, "dry_run": self._dry_run,
             "steering_torque_constant_nm_per_a": steering[3],
             "drive_torque_constant_nm_per_a": drive[3],
-            "steering_torque_age_ms": steering_torque_age if math.isfinite(steering_torque_age) else None,
-            "drive_torque_age_ms": drive_torque_age if math.isfinite(drive_torque_age) else None,
+            **{name: age_ms(now, stamp) if stamp > 0 else None for name, stamp in ages.items()},
             "torque_feedback_source": "measured A1/C0 Q-axis current times B0 torque constant",
             "mit_config_ready": self._mit_config_ready,
             "mit_restart_required": self._hard_fault,
             "last_disable_send_errors": list(getattr(self, "_last_disable_errors", ())),
             "mit_command_rate_hz": MIT_RATE_HZ,
-            "mit_f1_age_ms": mit_f1_age if math.isfinite(mit_f1_age) else None,
+            "policy_command_rate_hz": COMMAND_RATE_HZ,
+            "state_query_rate_hz": STATE_RATE_HZ,
+            "state_status_fault_rate_hz": STATE_RATE_HZ,
+            "motor_control_rate_hz": MIT_RATE_HZ,
+            "drive_command_rate_hz": self._control_rate_hz,
         }, sort_keys=True, allow_nan=False)
         self._status_publisher.publish(message)
 

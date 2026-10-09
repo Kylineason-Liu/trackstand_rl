@@ -15,7 +15,7 @@ import pytest
 
 
 PACKAGE = Path(__file__).resolve().parents[1]
-SCRIPT = PACKAGE.parents[1] / "scripts" / "motor_feedback.py"
+SCRIPT = PACKAGE.parents[1] / "experiments" / "motor_feedback.py"
 
 
 def load_file(path, name, monkeypatch):
