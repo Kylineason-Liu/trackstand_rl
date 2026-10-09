@@ -7,6 +7,15 @@ from `MotorIo` and now inherits directly from ROS `Node`. The counts and shared-
 descriptions below record the earlier refactor, not the later independent MIT file.
 See [MIT node documentation](MOTOR_MIT_IO.md) for the separation and its verification.
 
+Later 2026-10-08/09 changes also supersede this snapshot's MIT rates and safety:
+MIT now uses the 50/100/200 Hz profile, CF plus fresh F1 for retained-mode
+disable confirmation, and no measured-angle/overspeed stops. The shared
+policy has no 30° roll cutoff; legacy C0/C2 still retain their motor-limit
+checks. The current suite is not fully passing. See the current-source
+section in [AUDIT.md](AUDIT.md) and [MIT validation status](MOTOR_MIT_IO.md).
+The counts, equivalence results and unchanged-behavior claims below apply
+only to the dated refactor; its historical data is preserved.
+
 ## Result
 
 Removed **493 physical lines from runtime Python**, without changing configured hardware, policy, control equations, CAN payloads, public ROS topics or intended operating sequence. The complete Python tree decreased from **14,184 to 13,832 lines**, including added regression coverage. These counts include comments and blank lines; they are not a runtime-performance measurement.

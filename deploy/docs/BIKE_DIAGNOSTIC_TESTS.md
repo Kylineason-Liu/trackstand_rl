@@ -12,9 +12,55 @@ source /opt/ros/humble/setup.bash
 colcon build --symlink-install --packages-select trackstand_deploy
 source install/setup.bash
 ros2 pkg prefix trackstand_deploy
+ros2 pkg executables trackstand_deploy
 ```
 
 Keep CH7 in its **down** position before starting nodes. Check running nodes and parameters after they start, as directed below. Verify exactly one `/trackstand_motor_io` node and at most one `/trackstand_policy_controller`; multiple publishers to `/trackstand/motor_command` invalidate the test. `motor_io` alone does not read RC commands. Save parameter dumps and startup console logs with the bag. The policy node checks the ONNX SHA-256 at startup. Note the B0 torque constants and steering encoder zero logged by `motor_io`. Do not restart `motor_io` mid-test without recording that its encoder zeros were re-established.
+
+### Selecting MIT instead of the default C0 backend
+
+The Stage A–C commands below use `motor_io`. To test MIT, substitute
+`motor_mit_io` in **each motor-node command**, retaining the parameter file
+and startup `--ros-args -p dry_run:=true/false` override. Never start both.
+The default launch still selects C0. `No executable found` means the selected
+installation lacks its wrapper: synchronize `setup.py`, rebuild/source,
+and inspect the package prefix/executable list before investigating CAN.
+
+| Backend | Policy command Hz | Actuation Hz | State/status/fault | Control diagnostics Hz |
+|---|---:|---:|---|---:|
+| C0 (`motor_io`) | 50 | 200 | State up to 200 Hz; status 2 Hz; fault each control tick | 50 |
+| MIT (`motor_mit_io`) | 50 | 200 | State up to 100 Hz; status/fault 100 Hz | 200 |
+
+MIT polls A3/A2/A1 for each motor at nominal 100 Hz and receives automatic
+F1/C0 replies continuously. In Stage B, inspect the MIT encoded target/gains,
+not steering host-PD torque fields: those are NaN. Prepared targets/current
+may exist without transmission; `*_send_attempted`/`*_send_success` must be 0
+in dry-run. MIT diagnostics normally have ~5 ms spacing, not C0's ~20 ms.
+A1 current can be recorded even in MIT dry-run; it is not commanded torque.
+
+Keep steering straight/stationary and enable off during powered MIT startup:
+the node verifies CAN UP, CF/F1, writes persistent B1/F0 once, and checks
+origin/ranges. Its parameters are startup-only/read-only; restarting with
+different values is required. `ros2 param set ... dry_run true` cannot stop it.
+RC down/up does not rewrite the startup origin.
+
+Current `policy_controller` has **no 30° roll cutoff**, only inversion
+(`gravity_body[2] > 0`) plus input/motor/inference gates. The YAML
+`max_roll_rad` entry has no effect. MIT also has no measured steering-angle
+or overspeed stops, although ±90° target and 23.9 rad/s target-slew limits
+remain; C0/C2 retain their measured-limit checks. Do not use these software
+gates as the test's physical restraint or emergency stop.
+
+For MIT Stage C, a publisher-end watchdog timeout now latches the ordinary
+motor fault rather than automatically resuming. After every command trial,
+publish enable off, confirm `disable_pending=false`, both per-motor
+confirmations, fresh encoder/B0 readiness, steering strictly inside ±5°
+and a cleared motor fault **before** the next enable. With policy absent,
+the RC switch cannot perform this reset; use the explicit disabled command
+shown below. `mit_restart_required=true` requires supported restart, not
+another enable. CF mode 0 confirms directly; retained modes 1–5 need fresh
+inactive/fault-free F1. Verify physical free state independently. A lack of
+terminal ROS event after Ctrl-C does not settle whether CAN cleanup succeeded.
 
 ## 2. Start a bag for each test
 
@@ -69,7 +115,7 @@ ros2 param dump /trackstand_policy_controller
 ros2 param get /trackstand_policy_controller model_path
 ```
 
-Record a new bag. With CH7 down, confirm disabled timing messages but no raw actions. Briefly request CH7 up and then down while the bike remains restrained. Confirm the mode and events transition, the 50 Hz observation/raw-action/command stream appears during the enabled interval, and the 50 Hz sampled motor record shows computed steering/drive torque with `send_attempted=0`. Disabled motor commands continue outside the enabled interval. Inspect `policy_timing` for large intervals or inference times, and `motor_control` for target clipping, steering slew, torque saturation, command gaps, and feedback ages. Its `cycle_interval_ms` should still reflect the 200 Hz control loop (about 5 ms), while record timestamps are about 20 ms apart; sequence gaps are intentional. Events and faults must respond on unsampled control ticks too. If kickstands actually move or a motor receives C0 current in this stage, stop and resolve the startup/parameter mismatch before proceeding.
+Record a new bag. With CH7 down, confirm disabled timing messages but no raw actions. Briefly request CH7 up and then down while the bike remains restrained. Confirm the mode and events transition and the 50 Hz observation/raw-action/command stream during enable. With the default C0 backend, the 50 Hz motor record shows computed steering/drive torque with `send_attempted=0`; MIT uses the fields/rate described above. Disabled motor commands continue outside enable. Inspect policy timing, target clipping/slew, applicable torque calculations, command gaps and feedback ages. `cycle_interval_ms` reflects the nominal 200 Hz motor loop (~5 ms); C0 record timestamps are ~20 ms apart, MIT ~5 ms. Sequence gaps depend on sampling and scheduling. Events/safety are not diagnostic-rate throttled. If kickstands actually move or a motor receives an actuation command in dry-run, stop and resolve the mismatch.
 
 ## 5. Stage C: small powered motor commands, policy stopped
 
@@ -101,7 +147,7 @@ ros2 topic pub --once --qos-durability volatile \
   /trackstand/motor_command std_msgs/msg/Float64MultiArray '{data: [0.0, 0.0, 0.0]}'
 ```
 
-The values are diagnostic examples, not certified safe hardware limits. Stop immediately if signs are wrong, torque/current feedback is absent or implausible, a joint approaches its physical limit, or vibration begins. Record which command and time caused it. Do not hold a joint against a fixture or rely on the kickstands to restrain torque. RC-down does **not** override these manually published commands when the policy node is absent; stop the publisher and isolate motor power if necessary. The final disable message is explicit; the watchdog also disables after command publication stops. Check `/trackstand/motor_event` for `command_timeout` at each intended gap. Socket-send success is not proof of physical disable; verify mechanically before touching the bike.
+The values are diagnostic examples, not certified safe hardware limits. Stop immediately if signs are wrong, torque/current feedback is absent or implausible, a joint approaches its physical limit, or vibration begins. Record which command and time caused it. Do not hold a joint against a fixture or rely on the kickstands to restrain torque. RC-down does **not** override these manually published commands when the policy node is absent; stop the publisher and isolate motor power if necessary. The final disable message is explicit; use it after **each** trial when testing MIT and wait for its safe fault reset before the next enable. The watchdog also requests disable after command publication stops. Check `/trackstand/motor_event` for `command_timeout` at each intended gap. Socket-send success is not proof of physical disable; verify mechanically before touching the bike.
 
 ## 6. Hand off the evidence
 

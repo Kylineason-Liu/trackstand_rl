@@ -4,15 +4,24 @@ This ROS 2 workspace deploys `Trackstand-Balance-v0` on the Tsinghua bicycle. It
 
 ## Runtime flow
 
-1. Startup commands both kickstands down and keeps both GIM motors disabled.
+1. The policy starts disabled and commands both kickstands down; the selected motor backend performs its own startup checks.
 2. CRSF channel 7 high requests the known up positions; low requests down and the middle position holds the last state. A change is accepted after eight matching frames.
 3. With fresh IMU and encoder data, the 50 Hz ONNX policy starts immediately while the stands lift.
-4. RC low immediately disables/freewheels both motors and commands the stands down.
+4. RC low immediately publishes motor-enable off and commands the stands down. Motor I/O then attempts CAN disabling; the policy does not wait for motor acknowledgements before lowering the stands.
 5. Stale sensors, stale RC, motor faults, inference errors, or inversion disable and latch balancing. Cycle the RC switch down before trying again.
 
-The motor I/O node polls both motors' A3 multi-turn position and A2 full-range speed frames and closes the nominal actuator laws at 200 Hz. It reads each motor's B0 torque constant before allowing C0 current commands. The default policy is the Raspberry-Pi-friendly, self-contained ONNX export of run `2026-09-22_19-45-06`, checkpoint `model_91850.pt`; its SHA-256 is checked at startup and action scaling is applied in code. The host-side explicit servo is an approximation, not an exact reproduction of Isaac's implicit actuator.
+The default `motor_io` backend polls both motors' A3 multi-turn position and A2 full-range speed frames and closes the nominal actuator laws at 200 Hz. MIT uses the separate rate profile below. Both require each motor's B0 torque constant before enable. The default policy is the Raspberry-Pi-friendly, self-contained ONNX export of run `2026-09-22_19-45-06`, checkpoint `model_91850.pt`; its SHA-256 is checked at startup and action scaling is applied in code. The host-side explicit servo is an approximation, not an exact reproduction of Isaac's implicit actuator.
 
-Raw policy actions are not clipped to `[-1, 1]`, matching Trackstand-Balance-v0's RSL-RL configuration. Steering is scaled by `1.57 rad` and drive torque by `6.28 N·m`; the controller then limits the steering target to `±π/2 rad` (`±90°`). Motor I/O retains its independent ±90° steering target limit, ±6.28 N·m drive-target clamp, target slew limit, and final torque limits. Thus raw-output scaling matches training, but hardware safety limits remain. The 30° roll cutoff and measured steering-angle/overspeed stop checks are removed. Inversion detection remains active. `steering_fault_clear_rad` independently requires the disabled steering to return within `±5°` of its startup encoder zero before an ordinary motor fault clears. Verify actual steering clearance with the bike supported before commanding the expanded range.
+Raw policy actions are not clipped to `[-1, 1]`, matching Trackstand-Balance-v0's RSL-RL configuration. Steering is scaled by `1.57 rad` and drive torque by `6.28 N·m`; the controller then limits the steering target to `±π/2 rad` (`±90°`). Every motor backend independently clamps that target and the rear request, slews steering at no more than 23.9 rad/s, and clamps final rear torque to ±6.28 N·m. Steering torque protection differs by backend; MIT has no proven total-PD ±5.6 N·m clamp.
+
+The current policy has **no 30° roll cutoff**. With fresh inputs it checks inversion as `gravity_body[2] > 0`, plus sensor/RC timeouts and motor faults. The leftover `max_roll_rad` entry in `params.yaml` is not declared or read and cannot restore the removed cutoff. A policy fault disables balancing but does not automatically lower the kickstands; RC down does that. Motor safety is backend-specific:
+
+| Motor backend | Measured steering-angle stop | Measured steering/rear overspeed stops |
+|---|---|---|
+| `motor_io` / `motor_io_position` | Retained at ±90° | Retained above 26.29 / 67.76 rad/s |
+| `motor_mit_io` | Removed | Removed |
+
+The ±90° target clamp is not a measured-overtravel stop. `steering_fault_clear_rad` still requires disabled steering **strictly inside ±5°** of startup zero to clear an ordinary motor latch; MIT also requires confirmed disable and fresh encoder/B0 readiness. Hard MIT faults require restart. Verify physical clearance, emergency stopping and firmware protection with independent support before powered tests.
 
 Motor signs now follow the bike's reported C0/A2/A3 direction checks, rather than the older `ros2_ws` sign assumptions: steering encoder/current `-1/-1`, rear encoder/current `+1/-1`. Positive policy steering targets and measured positions mean right; positive policy rear torque and measured wheel speed mean forward. Reconfirm these mappings with the stands down after deploying the update.
 
@@ -27,11 +36,21 @@ sudo ip link set can0 up type can bitrate 1000000
 ros2 launch trackstand_deploy trackstand.launch.py
 ```
 
-The checked-in hardware paths match `ros2_ws`: the CH340 by-id path is the IMU, the CP2102 by-id path is the CRSF receiver, and `/dev/ttyAMA2` is the servo bus. Edit `source/trackstand_deploy/config/params.yaml` only if the hardware identities change. Build dependencies include ROS 2 `rclpy`, `sensor_msgs`, and `std_msgs`.
+The checked-in hardware paths match `ros2_ws`: the CH340 by-id path is the IMU, the CP2102 by-id path is the CRSF receiver, and `/dev/ttyAMA2` is the servo bus. Edit `source/trackstand_deploy/config/params.yaml` only if the hardware identities change. ROS dependencies include `rclpy`, `rcl_interfaces`, `sensor_msgs`, and `std_msgs`. The default launch selects `motor_io`, not MIT.
 
 An optional `motor_io_position` executable uses firmware **C2 absolute position control** for steering while retaining the rear-wheel C0 controller and existing safety gates. Run it **instead of**, never alongside, `motor_io`; the default launch remains unchanged. Targets use the latched raw A3 startup zero plus the converted steering angle, not the current measured position. Native increasing steering position turns left; `steering_encoder_sign=-1` maps policy-positive steering into decreasing native counts. Start with steering straight and in dry-run. Powered C2 requires B2/B3 limit readback; the former C3 reference-verification flag is removed. See [C2 node instructions and telemetry](docs/MOTOR_IO_POSITION.md) before using it on the bike.
 
 The separate `motor_mit_io` executable has three rate divisions: **50 Hz policy commands**, **100 Hz motor-state queries and state/status/fault topics**, and **200 Hz steering MIT, rear C0, safety checks and control telemetry**. Steering uses native Kp=10, Kd=0.2, requested velocity=0, and feedforward torque=0. It inherits directly from ROS `Node` and does not import or inherit either legacy motor backend; only backend-neutral protocol/contract/telemetry helpers are shared. Its startup follows the verified MIT experiment's CF/B1/F0/A3/F1 checks. MIT cannot reproduce the host-side ±5.6 N·m steering torque clamp from `motor_io`; the protocol does not establish that the C2 current limit applies to total MIT PD torque. See [MIT node instructions, rate parameters and limits](docs/MOTOR_MIT_IO.md).
+
+To select MIT, start nodes individually with **only** this motor backend, first in dry-run:
+
+```bash
+ros2 pkg executables trackstand_deploy
+ros2 run trackstand_deploy motor_mit_io --ros-args \
+  --params-file source/trackstand_deploy/config/params.yaml -p dry_run:=true
+```
+
+If `ros2 run` says `No executable found`, rebuild the synchronized package and source its installation; sourcing alone does not create the entry point. Check `ros2 pkg prefix trackstand_deploy` for an unintended overlay. MIT's 21 parameters are startup-only/read-only; changing `dry_run` at runtime is not a stop mechanism. Powered MIT requires CAN already UP, steering straight and stationary, and kickstands down during persistent-origin setup. Confirm CF/F1 disable handling as described in the MIT guide; neither send success nor an inactive-MIT reply alone proves a physical free state.
 
 ## Observation contract
 
@@ -65,7 +84,7 @@ The first five fields retain their previous indices, and the policy still reads 
 
 The estimate is `torque_sign × B0 torque constant × measured Q-axis current`. Legacy nodes use a receive-only listener for C0/C2/A1 replies; MIT's sole CAN owner explicitly queries both motors' A1 current at 100 Hz and also consumes rear C0 replies. It never substitutes the commanded current or clamps measured torque. This is **motor-current-based feedback, not an independent shaft-torque measurement**; torque-constant accuracy and mechanical losses are not calibrated by this code.
 
-During active C0 control, expect roughly one reply per motor per 200 Hz command cycle, subject to motor replies, CAN delivery, and scheduling. This consolidation adds no CAN queries or control-loop waits. Each state message includes the latest independently received torque for each motor; a cached value can repeat while it is fresh. A torque field is `NaN` until valid current/B0 feedback exists or when its age exceeds `feedback_timeout_s` (default 50 ms). Missing torque does not suppress fresh position/velocity or replace feedback with a commanded torque. Disabled motors and `dry_run` do not provide a continuous C0 feedback stream. `motor_status` includes `steering_torque_age_ms` and `drive_torque_age_ms` (`null` until the first valid torque reply).
+During active C0 control, expect roughly one reply per motor per 200 Hz command cycle, subject to motor replies, CAN delivery, and scheduling. Combining feedback into one state topic adds no queries; MIT's explicit A1 queries are a separate backend feature. Each state message includes the latest independently received torque for each motor; a cached value can repeat while it is fresh. A torque field is `NaN` until valid current/B0 feedback exists or when its age exceeds `feedback_timeout_s` (default 50 ms). Missing torque does not suppress fresh position/velocity or replace feedback with a commanded torque. MIT can collect A1 current in disabled/dry-run operation; it does not fabricate powered torque. Disabled legacy motors and `dry_run` do not provide a continuous C0 feedback stream. `motor_status` includes `steering_torque_age_ms` and `drive_torque_age_ms` (`null` until the first valid torque reply).
 
 `data[4]` is Unix wall-clock time at state publication, **not** motor acquisition time. Encoder and torque replies, and the two motors, are sampled independently; this is a latest-feedback snapshot, not a hardware-synchronized measurement. State publication uses a nominal 100 Hz timer for MIT, 200 Hz for legacy C0/C2, and requires new, fresh encoder pairs from both motors.
 

@@ -2,6 +2,46 @@
 
 Audit date: 2026-09-23
 
+## Current-source update (2026-10-09)
+
+The original audit and dated entries below are **historical snapshots**, not
+the current safety specification or current-suite certification. Current
+sources are `trackstand_deploy/motor_mit_io.py` and `policy_controller.py`;
+see [MIT instructions](MOTOR_MIT_IO.md), [telemetry](TELEMETRY.md), and the
+[hardware checklist](HARDWARE_CHECKLIST.md) for operation.
+
+- Policy remains 50 Hz with unchanged 13 observations, default 91850 export,
+  action scales and RC/kickstand flow. The 30° roll cutoff and `max_roll_rad`
+  declaration/read were removed; inversion uses `gravity_body[2] > 0`.
+  The leftover YAML key has no effect. Timeouts, motor fault and inference
+  handling remain. A policy fault does not automatically lower the stands.
+- MIT has 50 Hz policy input, 100 Hz A3/A2/A1 query rounds and state/status/fault,
+  and 200 Hz steering MIT/rear C0/safety/control telemetry. State is **up to**
+  100 Hz, with new/fresh paired encoders required. All backends use seven-field
+  `motor_state_v2`; there is no separate motor-torque topic.
+- MIT measured-angle/overspeed faults were removed; C0/C2 retain them.
+  Target ±90°, target slew 23.9 rad/s, rear ±6.28 N·m and MIT Kp/Kd 10/0.2 remain.
+  MIT does not enforce a proven total steering-PD ±5.6 N·m clamp.
+- CF mode 0 confirms directly; retained modes 1–5 require fresh inactive,
+  fault-free F1. Pending disable blocks enable; missing confirmation after
+  250 ms requires restart. Physical free state still needs verification.
+  Ordinary MIT recovery requires enable off, confirmed disable, fresh
+  encoder/B0 readiness and unwrapped steering strictly inside ±5°.
+- CAN must already be UP; send failures report interface/ID/payload/errno.
+  MIT parameters are read-only after startup. Worker cleanup attempts disable
+  and close even after ROS shutdown, but then no terminal ROS event is promised.
+  Active watchdogs latch, and both sends revalidate after payload encoding.
+- RC down publishes enable off before requesting stands down; the policy
+  does **not** await CAN confirmation before issuing that stand command.
+  Host sends, protocol acknowledgements and physical disabling are distinct.
+- Current offline suite: **443 passed, 72 failed, 1 skipped**. Many failures
+  are outdated MIT fixtures missing `_disable_f1_wait`/ROS context; others
+  expect the removed angle/speed/roll checks. Older passing counts below do
+  not validate this source/test pairing. This documentation-only update
+  does not repair tests or change hardware/runtime configuration.
+
+## Historical 2026-09-23 audit
+
 ## Naming and interfaces
 
 - ROS node names use the `trackstand_*` prefix; all runtime topics use `/trackstand/*`.

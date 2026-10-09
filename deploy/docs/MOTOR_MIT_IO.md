@@ -9,8 +9,10 @@ MIT fields are appended. Steering's host PD/current-command fields are `NaN`
 because MIT PD runs in the motor. A1 current times the measured B0 torque
 constant remains the source of the torque fields in `/trackstand/motor_state`; F1's separately
 decoded motor torque is in `/trackstand/motor_control`.
-The appended MIT fields also report the last encoded target, gains,
+The appended MIT fields report the last prepared encoded target, gains,
 zero-velocity/feedforward quantization residuals, and actual send interval.
+Preparation can precede a rejected send guard or occur in dry-run; use the
+per-tick send flags to distinguish a prepared payload from socket submission.
 
 `motor_state` uses the shared seven-field `motor_state_v2` format: the existing
 position/velocity/time prefix followed by steering and rear torque in N·m.
@@ -24,6 +26,33 @@ The implementation is independent of `motor_io.py` and `motor_io_position.py`:
 publication and control/event telemetry. It shares only backend-neutral
 helpers in `can_protocol.py`, `mit_protocol.py`, `contracts.py` and `telemetry.py`;
 it does not import either legacy node or `python-can`.
+
+## Current safety contract (2026-10-09)
+
+The steering **target** remains clamped to ±90° and slewed at 23.9 rad/s;
+the rear request and final damped torque remain clamped to ±6.28 N·m.
+Measured steering overtravel and steering/rear overspeed no longer latch
+this backend. Their feedback is still published and used where needed,
+but a bounded target does not guarantee bounded physical motion.
+Legacy C0/C2 backends retain their measured-angle/speed checks.
+
+The shared `policy_controller` no longer applies the former 30° roll
+cutoff, regardless of motor backend. It retains inversion detection
+(`gravity_body[2] > 0`), IMU/motor-state/RC freshness gates and motor-fault
+handling. `max_roll_rad` remains in the shared YAML but is no longer
+declared/read by the policy; supplying it does not re-enable that cutoff.
+Policy faults disable output without automatically lowering kickstands.
+RC down publishes enable off and requests stands down without waiting
+for CAN disable acknowledgements. Independent support and power isolation
+are therefore essential during commissioning.
+
+Ordinary motor latches clear only with enable off, both motors' disable
+confirmed, no pending/active outputs, fresh encoder pairs/B0 constants,
+and unwrapped steering **strictly inside ±5°**. A quick down/up can instead
+latch `enable_withdrawn_during_control`; wait for the safe reset before
+requesting up. Hard faults (`mit_restart_required=true`) require restart.
+`motor_fault` is the latched fault OR the enabled-request feedback gate;
+it can be true during missing-feedback startup without a hard fault.
 
 ## Three frequency divisions
 
@@ -48,6 +77,8 @@ verification and missing-B0 calibration retries retain their 1 s interval
 inside the state-query scheduler; startup/preflight queries are one-shot.
 CAN receive is continuously serviced: automatic MIT F1 and rear C0 replies
 can arrive at 200 Hz and are not discarded to enforce the ROS state rate.
+Six 2 ms query timeouts can exceed a 10 ms round; missed rounds are skipped,
+not replayed. The profile is a nominal schedule, not a delivery guarantee.
 State publication still requires new, fresh encoder pairs from both motors,
 so its actual rate is **up to** 100 Hz. Status and fault use the same 10 ms
 ROS timer even if state is unavailable or the CAN worker has stopped.
@@ -85,7 +116,7 @@ the motor fault: a brief recovery cannot automatically restart balancing or
 disappear between 100 Hz fault publications. Incomplete startup feedback
 still gates enable without latching an episode fault. Ordinary
 latched watchdog/send faults clear only with RC down, confirmed disable,
-fresh feedback, and steering within ±5°.
+fresh encoder/B0 readiness, and unwrapped steering strictly inside ±5°.
 `mit_restart_required` distinguishes these cases in control/status.
 The first target step of every enable cycle is bounded to 23.9/200=0.1195 rad;
 a delayed step is capped at two actuation intervals (0.239 rad). Time spent
@@ -106,9 +137,10 @@ jittered powered scheduling, without fabricating actual MIT sends or F1 feedback
 Control timestamps still identify tick start; age/readiness fields reflect
 the latest safety check within that tick. Events additionally expose each
 motor's disable confirmation, including partial acknowledgements. A worker
-failure/shutdown emits a terminal `mit_io_stopped` event after cleanup,
-without depending on another control tick. ROS reporting failure is logged
-but cannot skip the preceding CAN disable/close attempts.
+failure/shutdown emits a terminal `mit_io_stopped` event after cleanup
+**only while the ROS context is still valid**, without depending on another
+control tick. After ROS shutdown, CAN cleanup still runs but no terminal
+ROS event is promised. Reporting failure cannot skip prior disable/close attempts.
 
 Linux kernel receive timestamps (`SO_TIMESTAMPNS_NEW`, 64-bit timespec)
 preserve queue age. A3/A2 replies must arrive after the matching query was
@@ -153,6 +185,13 @@ ros2 run trackstand_deploy motor_mit_io --ros-args \
   --params-file source/trackstand_deploy/config/params.yaml -p dry_run:=true
 ```
 
+If `No executable found` appears, synchronize the whole source package
+(including `setup.py`), run `colcon build --symlink-install --packages-select
+trackstand_deploy`, and source that workspace's `install/setup.bash`.
+`ros2 pkg prefix trackstand_deploy` must identify the intended installation;
+`ros2 pkg executables trackstand_deploy` must list `motor_mit_io`.
+Sourcing alone does not install a newly added console entry point.
+
 For powered operation, replace `dry_run:=true` with `dry_run:=false`. Start the
 other deployment nodes exactly as for `motor_io`, but do not start another
 motor I/O process or standalone CAN writer on the selected motors. The
@@ -181,7 +220,23 @@ with the earlier 50 Hz control / 2 Hz status configuration. Check actual
 topic rates and `mit_actual_send_interval_ms`, policy timing and feedback
 ages while recording on the Raspberry Pi, with the bike supported first.
 
-2026-10-08 post-fix validation: **515 deployment tests passed, 1 skipped** (the
+## Validation history and current status
+
+**2026-10-09 current local check:** **443 deployment tests passed, 72 failed,
+1 skipped**. Many MIT fixtures bypass the constructor and omit
+`_disable_f1_wait` or the real ROS `context`; other tests still expect the
+removed measured-angle/speed and 30° roll checks. These require separate
+fixture/expectation updates and CF/F1 regression coverage. Do not treat the
+older passing results below as a pass for the current source/test combination.
+This documentation update does not change runtime code or tests.
+
+Run from `deploy/source/trackstand_deploy/`:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 python3 -m pytest -q -p no:cacheprovider test --tb=short
+```
+
+Historical 2026-10-08 post-fix validation: **515 deployment tests passed, 1 skipped** (the
 sandbox-restricted local socket test). Tests cover 50 Hz command updates,
 100 Hz queries and state/status/fault publishing, 200 Hz MIT/C0/control,
 nonzero simulated CAN-send work, no query/send catch-up bursts, watchdog
@@ -196,7 +251,7 @@ The isolated colcon build and installed import with real ROS classes pass;
 the installed MIT source matches the audited file. All **130 experiment
 tests** also pass. These are offline tests, not measured bike timings.
 
-## 2026-10-08 live CF confirmation fix
+## Recorded 2026-10-08 live CF confirmation fix
 
 The live-mode failure was reproduced with a steering CF reply whose selected-mode
 byte remained 2 and fault byte was 0; the subsequent F1 status was 0 (MIT inactive,
@@ -204,13 +259,14 @@ fault-free). Startup and runtime/shutdown now use the fresh F1 confirmation path
 for retained modes, while rejecting faults, active MIT, malformed status, stale
 replies and missing confirmations. Dry-run does not exercise CF confirmation.
 
-Validation: **210 motor MIT tests passed**. The deployment suite had **538 passed
+The previously recorded validation was **210 motor MIT tests passed**. The deployment suite had **538 passed
 and 1 failed**; the failure was the policy ONNX test because this Python environment
 lacks `onnxruntime`. The ROS 2 Jazzy colcon build succeeded and installed motor
-source matched the edited source. A live, non-dry-run probe on both motors ran
+source matched the edited source. The recorded live, non-dry-run probe on both motors ran
 only CF/F1 and drive C0 zero during shutdown: both disable confirmations completed,
 with no pending confirmations or hard fault. It did not send B1, F0 writes or MIT
-motion targets, and did not validate active balancing.
+motion targets, and did not validate active balancing. This is the saved
+probe record, not a new hardware test or a reproducible current-suite pass.
 
 ## Remaining hardware safety checks
 
@@ -229,7 +285,7 @@ broken CAN connection. Verify motor-side deadman behavior and actual MIT
 current/torque protection before unsupported balancing. No undocumented
 firmware setting was changed by this fix.
 
-Offline validation covers packet units/gains, motor signs, startup and
+The earlier offline validation covered packet units/gains, motor signs, startup and
 persistent references, 50/200 Hz scheduling, paired feedback ages, disabled
 operation, faults, receive overflow, and ROS shutdown. The package also
 builds in an isolated colcon workspace. These checks do not measure the
@@ -249,7 +305,7 @@ refer to missing `deploy/scripts/` paths; those failures were reproduced
 before this implementation.
 
 The relocated-script tests were fixed in the subsequent 2026-10-06 refactor.
-After MIT separation, validation is **386 deployment tests passed, 1 skipped**
+At the MIT-separation snapshot, validation was **386 deployment tests passed, 1 skipped**
 (sandbox-restricted local socket test), plus **117 experiment tests** and
 **5 historical tracking-analysis tests** passed. A blocked-import regression
 checks independence from both legacy nodes and `python-can`. The isolated
