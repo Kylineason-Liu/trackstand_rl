@@ -228,7 +228,7 @@ class MotorMitIo(Node):
     _parameter_defaults = {
         "can_interface": "can0", "steering_host_id": "102", "steering_feedback_id": "002",
         "drive_host_id": "101", "drive_feedback_id": "001", "steering_gear_ratio": 1.0,
-        "drive_gear_ratio": 1.0, "steering_encoder_sign": -1.0, "drive_encoder_sign": 1.0,
+        "drive_gear_ratio": 1.0, "steering_encoder_sign": -1.0, "drive_encoder_sign": -1.0,
         "steering_torque_sign": -1.0, "drive_torque_sign": -1.0,
         # MIT-specific rate keys ignore the shared YAML's legacy overrides.
         "command_rate_hz": COMMAND_RATE_HZ, "state_rate_hz": STATE_RATE_HZ,

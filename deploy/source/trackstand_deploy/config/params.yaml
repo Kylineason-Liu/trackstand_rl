@@ -16,10 +16,11 @@ trackstand_motor_io:
     drive_feedback_id: "001"
     steering_gear_ratio: 1.0
     drive_gear_ratio: 1.0
-    # Bike C0/A2/A3 checks: native positive steer is left; native drive
-    # feedback is forward, while positive C0 drive current turns backward.
+    # Bike checks: native positive steering feedback/current is left.
+    # 2026-10-12: forward rear rotation gives negative A2/A3 feedback;
+    # positive native C0 drive current turns backward.
     steering_encoder_sign: -1.0
-    drive_encoder_sign: 1.0
+    drive_encoder_sign: -1.0
     steering_torque_sign: -1.0
     drive_torque_sign: -1.0
     poll_rate_hz: 200.0

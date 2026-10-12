@@ -56,7 +56,7 @@ def test_mit_owns_parameter_defaults_and_three_frequency_divisions(node_module):
     expected = {
         "can_interface": "can0", "steering_host_id": "102", "steering_feedback_id": "002",
         "drive_host_id": "101", "drive_feedback_id": "001", "steering_gear_ratio": 1.0,
-        "drive_gear_ratio": 1.0, "steering_encoder_sign": -1.0, "drive_encoder_sign": 1.0,
+        "drive_gear_ratio": 1.0, "steering_encoder_sign": -1.0, "drive_encoder_sign": -1.0,
         "steering_torque_sign": -1.0, "drive_torque_sign": -1.0,
         "command_rate_hz": 50.0, "state_rate_hz": 100.0, "actuation_rate_hz": 200.0,
         "command_timeout_s": 0.08, "feedback_timeout_s": 0.05,
@@ -997,7 +997,7 @@ def test_constructor_registers_existing_ros_contract_and_no_can_pollers(mit_cons
     node = construct()
     assert node.node_name == "trackstand_motor_io"
     assert node._steering.feedback_id == 2 and node._drive.feedback_id == 1
-    assert node._steering.encoder_sign == -1 and node._drive.encoder_sign == 1
+    assert node._steering.encoder_sign == -1 and node._drive.encoder_sign == -1
     assert (node._command_rate_hz, node._poll_rate_hz, node._control_rate_hz) == (50, 100, 200)
     assert node.create_timer.call_count == 1
     assert node.create_timer.call_args.args == (.01, node._publish_feedback)

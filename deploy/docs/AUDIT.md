@@ -40,6 +40,36 @@ see [MIT instructions](MOTOR_MIT_IO.md), [telemetry](TELEMETRY.md), and the
   not validate this source/test pairing. This documentation-only update
   does not repair tests or change hardware/runtime configuration.
 
+## Rear encoder sign correction (2026-10-12)
+
+The user's physically labelled forward-rotation checks supersede the earlier
+rear `+1` encoder assumption. A2 fields `02D7FFFF`, `64FAFFFF`, `88F6FFFF`,
+`87F0FFFF`, `F4E2FFFF` decode to negative native speeds. A3 data changed from
+`232C236C5200` to `630C634C5200`: signed multi-turn counts decrease from
+5,401,635 to 5,393,507 (−8,128 counts, −178.59375°). Positive native C0 current
+(`C000200000`, +8.192 A requested) turns the rear wheel backward; the clarified
+A1 field `96020000` represents +0.662 A measured at one instant.
+
+Set rear encoder sign to **−1** in shared YAML, C0 defaults (inherited by C2),
+independent MIT defaults, and the standalone rear feedback collectors. Keep
+rear torque sign **−1**, steering signs, controller laws, frequencies, policy,
+limits and RC/kickstand behavior unchanged. Position/velocity and wheel-derived
+body-x velocity now use the forward-positive contract; the same existing rear
+damping law opposes forward rotation. Rebuild/source and restart on the Pi;
+MIT parameters cannot be changed while running. Historical reports/CSVs below
+retain their original configurations, not the corrected defaults. This fixes
+the confirmed sign error, not the policy's excessive startup demand or a proven
+ability to balance safely.
+
+Offline validation: **73 focused tests passed**, including **27 new regression
+cases** exercising the supplied A2/A3/A1 bytes, YAML/all three backend defaults,
+policy observation signs, damping direction and mocked C0 submissions.
+All **130 experiment tests passed**. The full deployment suite is **470 passed,
+72 failed, 1 skipped**; the failed test IDs are exactly the same as the pre-change
+baseline (**443 passed, 72 failed, 1 skipped**), with no new failures. Existing
+fixture/safety-expectation failures are not repaired by this sign-only change.
+No ROS executor or physical CAN/motor test was run.
+
 ## Historical 2026-09-23 audit
 
 ## Naming and interfaces
@@ -77,7 +107,7 @@ The requested controller target and motor-I/O steering limits are now ±90° (`1
 
 The subsequent motor fault-clear setting is independent of the ±90° command limit: `steering_fault_clear_rad` is now ±5° (`0.0872664626 rad`) while the motors are disabled. This replaces the ±45° clearing threshold above. The controller's own fault latch still requires an RC-down cycle before another RC-up request can start balancing.
 
-## 2026-09-28 motor-sign update
+## 2026-09-28 motor-sign update (historical; rear encoder superseded 2026-10-12)
 
 The bike's reported raw checks supersede the earlier `ros2_ws` motor-sign assumptions: positive C0 current turns steering left and the rear wheel backward; positive A2/A3 feedback occurs when steering left and the rear wheel forward. Deployment signs are therefore steering encoder/current `-1/-1` and rear encoder/current `+1/-1`. The report was not independently measured by this repository audit; verify the installed parameters and low-power motion with the bike secured before lifting the stands.
 

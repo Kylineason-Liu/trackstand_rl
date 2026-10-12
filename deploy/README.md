@@ -23,7 +23,7 @@ The current policy has **no 30° roll cutoff**. With fresh inputs it checks inve
 
 The ±90° target clamp is not a measured-overtravel stop. `steering_fault_clear_rad` still requires disabled steering **strictly inside ±5°** of startup zero to clear an ordinary motor latch; MIT also requires confirmed disable and fresh encoder/B0 readiness. Hard MIT faults require restart. Verify physical clearance, emergency stopping and firmware protection with independent support before powered tests.
 
-Motor signs now follow the bike's reported C0/A2/A3 direction checks, rather than the older `ros2_ws` sign assumptions: steering encoder/current `-1/-1`, rear encoder/current `+1/-1`. Positive policy steering targets and measured positions mean right; positive policy rear torque and measured wheel speed mean forward. Reconfirm these mappings with the stands down after deploying the update.
+Motor signs follow the bike's physical C0/A2/A3 checks: steering encoder/current `-1/-1`, rear encoder/current `-1/-1`. The 2026-10-12 rear check supersedes the earlier `+1` encoder assumption: forward rotation produces negative native A2 velocity and decreasing A3 counts, while positive native C0 current drives backward. Positive policy steering targets and measured positions mean right; positive policy rear torque, position change and wheel speed mean forward. Rebuild/source and restart the selected motor node after this correction, then confirm published signs with the bike independently supported before balancing. Frequencies, policy selection, steering signs and torque-command signs are unchanged.
 
 ## Build and run
 

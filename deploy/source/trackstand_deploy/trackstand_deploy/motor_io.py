@@ -78,7 +78,7 @@ class MotorIo(Node):
     _parameter_defaults = {
         "can_interface": "can0", "steering_host_id": "102", "steering_feedback_id": "002",
         "drive_host_id": "101", "drive_feedback_id": "001", "steering_gear_ratio": 1.0,
-        "drive_gear_ratio": 1.0, "steering_encoder_sign": -1.0, "drive_encoder_sign": 1.0,
+        "drive_gear_ratio": 1.0, "steering_encoder_sign": -1.0, "drive_encoder_sign": -1.0,
         "steering_torque_sign": -1.0, "drive_torque_sign": -1.0,
         "poll_rate_hz": 200.0, "control_rate_hz": 200.0,
         "command_timeout_s": 0.08, "feedback_timeout_s": 0.05,

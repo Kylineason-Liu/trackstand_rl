@@ -1,0 +1,3253 @@
+{
+  "bag": "/home/lmbike/trackstand_rl/deploy/experiments/logs/rosbag2_2026_10_12-12_06_32/rosbag2_2026_10_12-12_06_32_0.mcap",
+  "bytes": 85540864,
+  "sha256": "262c9510421a9efd477b3171ec018c71cc17ca08ba894edf6a3eb2df1fc3c06f",
+  "duration_s": 155.29600393200002,
+  "counts": {
+    "/trackstand/motor_command": 77340,
+    "/trackstand/policy_timing": 7765,
+    "/trackstand/kickstands_command": 9,
+    "/rosout": 55,
+    "/trackstand/motor_status": 12859,
+    "/trackstand/motor_control": 16352,
+    "/trackstand/kickstands_up": 76661,
+    "/trackstand/motor_fault": 12855,
+    "/trackstand/imu": 15410,
+    "/trackstand/motor_state": 7670,
+    "/trackstand/status": 311,
+    "/trackstand/motor_event": 74,
+    "/trackstand/policy_event": 33,
+    "/trackstand/observation": 249,
+    "/trackstand/raw_action": 249
+  },
+  "issues": [
+    {
+      "stream_error": "error('unpack requires a buffer of 8 bytes')",
+      "file_position": 85540864
+    }
+  ],
+  "decoded_message_count": 227892,
+  "model": "trackstand_rl_rsl_2026-09-22_19-45-06_model_91850.onnx",
+  "model_sha256": "9232a0723df8806e8b5f6fb4e39a7a11ccb5af8bf058d9026eddb57dab8fd806",
+  "checkpoint_sha256": "f77aadf7c021a1d20603a636daf757601dca2fe4faf264d5bba99c2dcf2b5c5e",
+  "onnx_replay_max_error": 2.384185791015625e-07,
+  "torch_checkpoint_replay_max_error": 1.52587890625e-05,
+  "action_scaling_max_error": 0.0,
+  "ideal_upright_zero_raw_action": [
+    1.599544882774353,
+    16.720317840576172
+  ],
+  "ideal_upright_zero_scaled_action": [
+    2.5112854659557344,
+    105.00359603881836
+  ],
+  "steering_requested_outside_90_count": 188,
+  "rear_requested_outside_6_28_count": 200,
+  "policy_samples": 249,
+  "successful_rear_send_ticks": 839,
+  "counterfactual_not_closed_loop": {
+    "changed_indices_zero_based": [
+      5,
+      8,
+      10
+    ],
+    "original_rear_raw_abs_gt_1_count": 200,
+    "flipped_rear_raw_abs_gt_1_count": 40,
+    "warning": "Same recorded poses/rates/steering, not the trajectory that a corrected controller would create."
+  },
+  "motor_active_timing": {
+    "cycle_interval_ms": {
+      "n": 839,
+      "min": 3.8248509999903035,
+      "median": 5.45155200006775,
+      "p95": 7.407331200010956,
+      "p99": 9.1860509399703,
+      "max": 17.48102400006246,
+      "mean": 5.82238821692503,
+      "rms": 5.894761275613683
+    },
+    "work_duration_ms": {
+      "n": 839,
+      "min": 0.25551199996698415,
+      "median": 0.43476599967107177,
+      "p95": 2.320672999985617,
+      "p99": 3.8359349401980585,
+      "max": 9.046744999977818,
+      "mean": 0.7258607449251023,
+      "rms": 1.0525480785915944
+    },
+    "command_age_ms": {
+      "n": 839,
+      "min": 0.7834610000827524,
+      "median": 9.757836999597203,
+      "p95": 19.266129799780174,
+      "p99": 21.646407279895357,
+      "max": 24.10356500013222,
+      "mean": 10.28623976638087,
+      "rms": 11.814797764704288
+    },
+    "steering_pair_age_ms": {
+      "n": 839,
+      "min": 0.7204813273347099,
+      "median": 6.079856483665935,
+      "p95": 11.628101145879548,
+      "p99": 16.61451883737755,
+      "max": 29.602380117466964,
+      "mean": 6.170057702066332,
+      "rms": 7.154979424530839
+    },
+    "drive_pair_age_ms": {
+      "n": 839,
+      "min": 0.712760102487664,
+      "median": 6.303697574821854,
+      "p95": 13.21774469706723,
+      "p99": 23.997256415987074,
+      "max": 43.448496856854035,
+      "mean": 6.422837945731915,
+      "rms": 7.915627240639261
+    },
+    "mit_actual_send_interval_ms": {
+      "n": 836,
+      "min": 5.203716000323766,
+      "median": 5.421085000079984,
+      "p95": 7.5287552498366495,
+      "p99": 9.421818999885538,
+      "max": 17.553243999827828,
+      "mean": 5.827407339713348,
+      "rms": 5.904205799041368
+    }
+  },
+  "policy_active_timing": {
+    "cycle_interval_ms": {
+      "n": 249,
+      "min": 15.97119300004124,
+      "median": 19.994068999949377,
+      "p95": 20.934021000084613,
+      "p99": 21.75549143983517,
+      "max": 22.44435800002975,
+      "mean": 20.00293361445702,
+      "rms": 20.014173028304867
+    },
+    "work_duration_ms": {
+      "n": 249,
+      "min": 0.8404410000366624,
+      "median": 1.393558000017947,
+      "p95": 2.226859800157399,
+      "p99": 3.2413456401081944,
+      "max": 4.53662300014912,
+      "mean": 1.484175421711666,
+      "rms": 1.5626848913544227
+    },
+    "inference_ms": {
+      "n": 249,
+      "min": 0.13405200024863007,
+      "median": 0.19234699993830873,
+      "p95": 0.3449101999649429,
+      "p99": 0.5612129998371542,
+      "max": 1.5575329998682719,
+      "mean": 0.22012542167869403,
+      "rms": 0.24833929458811746
+    },
+    "imu_age_ms": {
+      "n": 249,
+      "min": 0.8166840002559184,
+      "median": 4.484131000026537,
+      "p95": 5.68489960005536,
+      "p99": 13.666325840022184,
+      "max": 16.30974799991236,
+      "mean": 4.608391244961883,
+      "rms": 4.957476921981076
+    },
+    "motor_age_ms": {
+      "n": 249,
+      "min": 0.8037020002120698,
+      "median": 7.203231000403321,
+      "p95": 16.383487400071317,
+      "p99": 21.416543200066382,
+      "max": 37.862498000322375,
+      "mean": 7.599200738940523,
+      "rms": 9.125604841437461
+    },
+    "rc_age_ms": {
+      "n": 249,
+      "min": 0.5191549998926348,
+      "median": 1.0034199999608973,
+      "p95": 2.9053918000499803,
+      "p99": 6.7801068802509725,
+      "max": 14.998069999819563,
+      "mean": 1.2691558473730642,
+      "rms": 1.7979819246887796
+    }
+  },
+  "imu_quaternion_norm": {
+    "n": 15410,
+    "min": 0.9999999999999999,
+    "median": 1.0,
+    "p95": 1.0,
+    "p99": 1.0000000000000002,
+    "max": 1.0000000000000002,
+    "mean": 1.0,
+    "rms": 1.0
+  },
+  "imu_quaternion_gyro_check": {
+    "x": {
+      "n": 2821,
+      "correlation": 0.7660942683642478,
+      "gyro_to_quaternion_rate_gain": 0.751798673936636
+    },
+    "y": {
+      "n": 2619,
+      "correlation": 0.6926477608351345,
+      "gyro_to_quaternion_rate_gain": 0.5346875722551468
+    },
+    "z": {
+      "n": 2670,
+      "correlation": 0.6494167876778325,
+      "gyro_to_quaternion_rate_gain": 0.7628360241714526
+    }
+  },
+  "rc_average_recorded_hz": 493.8789139862121,
+  "disabled_motor_command_count": 77091,
+  "parameter_event_count": 0,
+  "user_conditions": "Both wheels grounded, no manual restraint during all four attempts; physically straight steering on each motor-node start/restart; no changed settings, Pi repo reported up-to-date.",
+  "rear_control_equation_max_error_nm": 0.0,
+  "encoded_mit_gains": {
+    "mit_encoded_kp_nm_per_motor_rad": [
+      10.012210012210012
+    ],
+    "mit_encoded_kd_nm_s_per_motor_rad": [
+      0.20024420024420025
+    ]
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "first_s": 7.488605302000001,
+      "last_inference_s": 8.98649172,
+      "policy_samples": 76,
+      "initial_observation": [
+        0.025145025923848152,
+        -0.9996641278266907,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.1353738009929657,
+        0.10737865418195724,
+        0.009424777701497078,
+        0.0,
+        0.13496071100234985,
+        0.9908509254455566
+      ],
+      "initial_raw_action": [
+        2.4543368816375732,
+        22.670991897583008
+      ],
+      "initial_unclipped_steering_deg": 220.77833736917793,
+      "initial_rear_request_nm": 142.3738291168213,
+      "active_rear_send_ticks": 251,
+      "steering_target_clipping_fraction": 0.8947368421052632,
+      "rear_request_exceedance_fraction": 0.868421052631579,
+      "raw_rear_action": {
+        "n": 76,
+        "min": -1.396360158920288,
+        "median": 3.2692712545394897,
+        "p95": 34.112565994262695,
+        "p99": 51.09999179840088,
+        "max": 59.09694290161133,
+        "mean": 6.762858285715706,
+        "rms": 12.827421462105121
+      },
+      "counterfactual_raw_rear_action": {
+        "n": 76,
+        "min": -1.141831398010254,
+        "median": -0.120719313621521,
+        "p95": 1.402174949645996,
+        "p99": 24.90928840637207,
+        "max": 31.140682220458984,
+        "mean": 0.9042183756828308,
+        "rms": 5.193170070648193
+      },
+      "inference_events": [
+        {
+          "t": 7.489267896,
+          "latched_fault_reasons": [],
+          "mode": "balancing",
+          "monotonic_time_s": 2386.893218858,
+          "readiness_reasons": [],
+          "ready": true,
+          "ros_time_s": 1791778000.1206417,
+          "sequence": 14492
+        },
+        {
+          "t": 9.007789292,
+          "latched_fault_reasons": [
+            "motor_fault"
+          ],
+          "mode": "fault_latched",
+          "monotonic_time_s": 2388.412559251,
+          "readiness_reasons": [
+            "motor_fault"
+          ],
+          "ready": false,
+          "ros_time_s": 1791778001.637258,
+          "sequence": 14568
+        }
+      ],
+      "motor_events": [
+        {
+          "t": 7.496470985,
+          "disable_confirmed": false,
+          "disable_pending": false,
+          "disable_reasons": [],
+          "disable_send_errors": [],
+          "drive_disable_confirmed": false,
+          "dry_run": false,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": true,
+          "monotonic_time_s": 2386.902074403,
+          "outputs_active": true,
+          "ros_time_s": 1791778000.1266053,
+          "sequence": 10279,
+          "steering_disable_confirmed": false
+        },
+        {
+          "t": 8.989718895000001,
+          "disable_confirmed": false,
+          "disable_pending": true,
+          "disable_reasons": [
+            "drive_feedback_missing_or_stale",
+            "fault_latched",
+            "active_feedback_unavailable"
+          ],
+          "disable_send_errors": [],
+          "drive_disable_confirmed": false,
+          "dry_run": false,
+          "fault_latched": true,
+          "fault_reason": "active_feedback_unavailable",
+          "gate_enabled": false,
+          "monotonic_time_s": 2388.386194941,
+          "outputs_active": true,
+          "ros_time_s": 1791778001.6107774,
+          "sequence": 10530,
+          "steering_disable_confirmed": false
+        },
+        {
+          "t": 8.99684332,
+          "disable_confirmed": true,
+          "disable_pending": false,
+          "disable_reasons": [
+            "fault_latched"
+          ],
+          "disable_send_errors": [],
+          "drive_disable_confirmed": true,
+          "dry_run": false,
+          "fault_latched": true,
+          "fault_reason": "active_feedback_unavailable",
+          "gate_enabled": false,
+          "monotonic_time_s": 2388.403174182,
+          "outputs_active": false,
+          "ros_time_s": 1791778001.6277604,
+          "sequence": 10531,
+          "steering_disable_confirmed": true
+        },
+        {
+          "t": 9.00906237,
+          "disable_confirmed": true,
+          "disable_pending": false,
+          "disable_reasons": [
+            "enable_not_requested",
+            "fault_latched"
+          ],
+          "disable_send_errors": [],
+          "drive_disable_confirmed": true,
+          "dry_run": false,
+          "fault_latched": true,
+          "fault_reason": "active_feedback_unavailable",
+          "gate_enabled": false,
+          "monotonic_time_s": 2388.415726408,
+          "outputs_active": false,
+          "ros_time_s": 1791778001.6402595,
+          "sequence": 10534,
+          "steering_disable_confirmed": true
+        }
+      ],
+      "drive_speed_rad_s": {
+        "n": 251,
+        "min": -61.724965260181065,
+        "median": -56.81675033772261,
+        "p95": -5.240176546187775,
+        "p99": 28.78222469463849,
+        "max": 33.648551715049074,
+        "mean": -50.92908028095512,
+        "rms": 54.04399431822427
+      },
+      "steering_position_deg": {
+        "n": 251,
+        "min": 2.197265625000002,
+        "median": 88.26416015624999,
+        "p95": 90.04394531250003,
+        "p99": 90.06591796875,
+        "max": 90.17578125000001,
+        "mean": 74.92176800610059,
+        "rms": 79.06579670046672
+      },
+      "drive_command_nm": {
+        "n": 251,
+        "min": -6.28,
+        "median": 6.28,
+        "p95": 6.28,
+        "p99": 6.28,
+        "max": 6.28,
+        "mean": 5.714515917778167,
+        "rms": 6.1230252133171605
+      },
+      "drive_current_derived_torque_nm": {
+        "n": 133,
+        "min": -6.445800256133079,
+        "median": 0.6108000242710113,
+        "p95": 3.976440158009524,
+        "p99": 5.8097162308573775,
+        "max": 6.30060025036335,
+        "mean": 0.8750797340206633,
+        "rms": 1.9067639049956993
+      },
+      "drive_net_rotation_rad": -74.68530611498518,
+      "drive_command_saturation_fraction": 0.9043824701195219,
+      "positive_command_negative_speed_fraction": 0.9163346613545816,
+      "mit_send_interval_ms": {
+        "n": 250,
+        "min": 5.203716000323766,
+        "median": 5.433237500028554,
+        "p95": 7.681621949859616,
+        "p99": 9.924286790092077,
+        "max": 17.553243999827828,
+        "mean": 5.882051280001178,
+        "rms": 6.007229307187414
+      },
+      "rear_above_50_rad_s_after_first_send_ms": 54.74310099998547,
+      "rear_net_above_7_2_rad_after_first_send_ms": 165.6892460000563,
+      "steering_above_85_deg_after_first_send_ms": 188.19459999986066,
+      "training_fallen_gravity_threshold_bag_s": null,
+      "inversion_bag_s": null
+    },
+    {
+      "attempt": 2,
+      "first_s": 48.007713124000006,
+      "last_inference_s": 50.167547884,
+      "policy_samples": 109,
+      "initial_observation": [
+        0.019802875816822052,
+        -0.9997896552085876,
+        0.0,
+        0.0,
+        0.0,
+        0.0036651913542300463,
+        0.0,
+        0.0,
+        0.0,
+        -0.0,
+        0.05235987901687622,
+        0.0,
+        1.0
+      ],
+      "initial_raw_action": [
+        1.705108642578125,
+        17.18299102783203
+      ],
+      "initial_unclipped_steering_deg": 153.38198026468152,
+      "initial_rear_request_nm": 107.90918365478517,
+      "active_rear_send_ticks": 379,
+      "steering_target_clipping_fraction": 0.6330275229357798,
+      "rear_request_exceedance_fraction": 0.6422018348623854,
+      "raw_rear_action": {
+        "n": 109,
+        "min": -5.934961795806885,
+        "median": 1.4439024925231934,
+        "p95": 14.875531768798796,
+        "p99": 23.243092269897467,
+        "max": 31.651084899902344,
+        "mean": 2.9350202706975677,
+        "rms": 6.107673124762141
+      },
+      "counterfactual_raw_rear_action": {
+        "n": 109,
+        "min": -7.028651237487793,
+        "median": -0.12151885032653809,
+        "p95": 8.804264068603516,
+        "p99": 17.54292106628418,
+        "max": 19.31726837158203,
+        "mean": 0.7792952060699463,
+        "rms": 3.951777696609497
+      },
+      "inference_events": [
+        {
+          "t": 48.0083647,
+          "latched_fault_reasons": [],
+          "mode": "balancing",
+          "monotonic_time_s": 2427.413018769,
+          "readiness_reasons": [],
+          "ready": true,
+          "ros_time_s": 1791778040.6392791,
+          "sequence": 16518
+        },
+        {
+          "t": 50.187670818,
+          "latched_fault_reasons": [],
+          "mode": "down",
+          "monotonic_time_s": 2429.59396542,
+          "readiness_reasons": [],
+          "ready": true,
+          "ros_time_s": 1791778042.819036,
+          "sequence": 16627
+        }
+      ],
+      "motor_events": [
+        {
+          "t": 48.012051165,
+          "disable_confirmed": false,
+          "disable_pending": false,
+          "disable_reasons": [],
+          "disable_send_errors": [],
+          "drive_disable_confirmed": false,
+          "dry_run": false,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": true,
+          "monotonic_time_s": 2427.417062188,
+          "outputs_active": true,
+          "ros_time_s": 1791778040.6415994,
+          "sequence": 1570,
+          "steering_disable_confirmed": false
+        },
+        {
+          "t": 50.183881966,
+          "disable_confirmed": false,
+          "disable_pending": true,
+          "disable_reasons": [
+            "enable_not_requested"
+          ],
+          "disable_send_errors": [],
+          "drive_disable_confirmed": false,
+          "dry_run": false,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": false,
+          "monotonic_time_s": 2429.589590842,
+          "outputs_active": true,
+          "ros_time_s": 1791778042.814127,
+          "sequence": 1949,
+          "steering_disable_confirmed": false
+        },
+        {
+          "t": 50.192738731000006,
+          "disable_confirmed": false,
+          "disable_pending": true,
+          "disable_reasons": [
+            "enable_not_requested",
+            "motor_disable_unconfirmed"
+          ],
+          "disable_send_errors": [],
+          "drive_disable_confirmed": false,
+          "dry_run": false,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": false,
+          "monotonic_time_s": 2429.598984019,
+          "outputs_active": true,
+          "ros_time_s": 1791778042.8237147,
+          "sequence": 1950,
+          "steering_disable_confirmed": true
+        },
+        {
+          "t": 50.198910191,
+          "disable_confirmed": true,
+          "disable_pending": false,
+          "disable_reasons": [
+            "enable_not_requested"
+          ],
+          "disable_send_errors": [],
+          "drive_disable_confirmed": true,
+          "dry_run": false,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": false,
+          "monotonic_time_s": 2429.605444324,
+          "outputs_active": false,
+          "ros_time_s": 1791778042.829988,
+          "sequence": 1951,
+          "steering_disable_confirmed": true
+        }
+      ],
+      "drive_speed_rad_s": {
+        "n": 379,
+        "min": -62.5417793501144,
+        "median": -56.825127918132175,
+        "p95": 60.57723674406959,
+        "p99": 60.833465040896364,
+        "max": 60.99925735720181,
+        "mean": -34.87036876714415,
+        "rms": 56.82208121284478
+      },
+      "steering_position_deg": {
+        "n": 379,
+        "min": -35.50781249999999,
+        "median": 81.71630859374999,
+        "p95": 91.49853515624999,
+        "p99": 94.45737304687499,
+        "max": 95.38330078124997,
+        "mean": 65.36656523128298,
+        "rms": 72.36333464734759
+      },
+      "drive_command_nm": {
+        "n": 379,
+        "min": -6.28,
+        "median": 6.28,
+        "p95": 6.28,
+        "p99": 6.28,
+        "max": 6.28,
+        "mean": 3.781732177614078,
+        "rms": 5.77848365734642
+      },
+      "drive_current_derived_torque_nm": {
+        "n": 204,
+        "min": -4.882200194001198,
+        "median": 0.36465001448988915,
+        "p95": 2.6751151062995184,
+        "p99": 4.270758169704675,
+        "max": 5.679000225663185,
+        "mean": 0.6038794357607178,
+        "rms": 1.3045361732458363
+      },
+      "drive_net_rotation_rad": -76.71821415413064,
+      "drive_command_saturation_fraction": 0.7044854881266491,
+      "positive_command_negative_speed_fraction": 0.7889182058047494,
+      "mit_send_interval_ms": {
+        "n": 378,
+        "min": 5.227834999914194,
+        "median": 5.404173500210163,
+        "p95": 7.167661950120419,
+        "p99": 8.013583259980814,
+        "max": 9.197477999805415,
+        "mean": 5.732239068783004,
+        "rms": 5.769807818057932
+      },
+      "rear_above_50_rad_s_after_first_send_ms": 61.73650300024747,
+      "rear_net_above_7_2_rad_after_first_send_ms": 163.20551100034209,
+      "steering_above_85_deg_after_first_send_ms": 102.10810400030823,
+      "training_fallen_gravity_threshold_bag_s": 48.380176813000006,
+      "inversion_bag_s": null
+    },
+    {
+      "attempt": 3,
+      "first_s": 79.58955156100001,
+      "last_inference_s": 79.607283592,
+      "policy_samples": 2,
+      "initial_observation": [
+        0.006445220671594143,
+        -0.9999622106552124,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        3.1231849193573,
+        0.3681553900241852,
+        0.010471975430846214,
+        0.0,
+        0.018406730145215988,
+        -0.9998306035995483
+      ],
+      "initial_raw_action": [
+        4.099221706390381,
+        35.36311721801758
+      ],
+      "initial_unclipped_steering_deg": 368.7429218113974,
+      "initial_rear_request_nm": 222.0803761291504,
+      "active_rear_send_ticks": 0,
+      "steering_target_clipping_fraction": 1.0,
+      "rear_request_exceedance_fraction": 1.0,
+      "raw_rear_action": {
+        "n": 2,
+        "min": 35.36311721801758,
+        "median": 35.43643760681152,
+        "p95": 35.50242595672607,
+        "p99": 35.50829158782959,
+        "max": 35.50975799560547,
+        "mean": 35.43643760681152,
+        "rms": 35.436513459154796
+      },
+      "counterfactual_raw_rear_action": {
+        "n": 2,
+        "min": 43.11668014526367,
+        "median": 43.19170379638672,
+        "p95": 43.25922393798828,
+        "p99": 43.265228271484375,
+        "max": 43.266727447509766,
+        "mean": 43.19170379638672,
+        "rms": 43.191768646240234
+      },
+      "inference_events": [
+        {
+          "t": 79.590690756,
+          "latched_fault_reasons": [],
+          "mode": "balancing",
+          "monotonic_time_s": 2458.994689355,
+          "readiness_reasons": [],
+          "ready": true,
+          "ros_time_s": 1791778072.2217999,
+          "sequence": 18097
+        },
+        {
+          "t": 79.62591939800001,
+          "latched_fault_reasons": [
+            "motor_fault"
+          ],
+          "mode": "fault_latched",
+          "monotonic_time_s": 2459.03266123,
+          "readiness_reasons": [
+            "motor_fault"
+          ],
+          "ready": false,
+          "ros_time_s": 1791778072.2573814,
+          "sequence": 18099
+        }
+      ],
+      "motor_events": [
+        {
+          "t": 79.599695972,
+          "disable_confirmed": true,
+          "disable_pending": false,
+          "disable_reasons": [
+            "fault_latched",
+            "steering_mit_send_failed"
+          ],
+          "disable_send_errors": [],
+          "drive_disable_confirmed": true,
+          "dry_run": false,
+          "fault_latched": true,
+          "fault_reason": "steering_mit_send_failed",
+          "gate_enabled": false,
+          "monotonic_time_s": 2459.003386115,
+          "outputs_active": false,
+          "ros_time_s": 1791778072.2279718,
+          "sequence": 7712,
+          "steering_disable_confirmed": true
+        },
+        {
+          "t": 79.601429432,
+          "disable_confirmed": true,
+          "disable_pending": false,
+          "disable_reasons": [
+            "fault_latched"
+          ],
+          "disable_send_errors": [],
+          "drive_disable_confirmed": true,
+          "dry_run": false,
+          "fault_latched": true,
+          "fault_reason": "steering_mit_send_failed",
+          "gate_enabled": false,
+          "monotonic_time_s": 2459.007767717,
+          "outputs_active": false,
+          "ros_time_s": 1791778072.2323534,
+          "sequence": 7713,
+          "steering_disable_confirmed": true
+        },
+        {
+          "t": 79.63102250200001,
+          "disable_confirmed": true,
+          "disable_pending": false,
+          "disable_reasons": [
+            "enable_not_requested",
+            "fault_latched"
+          ],
+          "disable_send_errors": [],
+          "drive_disable_confirmed": true,
+          "dry_run": false,
+          "fault_latched": true,
+          "fault_reason": "steering_mit_send_failed",
+          "gate_enabled": false,
+          "monotonic_time_s": 2459.037661724,
+          "outputs_active": false,
+          "ros_time_s": 1791778072.262251,
+          "sequence": 7719,
+          "steering_disable_confirmed": true
+        }
+      ]
+    },
+    {
+      "attempt": 4,
+      "first_s": 117.80971484300001,
+      "last_inference_s": 119.026102882,
+      "policy_samples": 62,
+      "initial_observation": [
+        0.013833114877343178,
+        -0.999891459941864,
+        0.0,
+        0.0,
+        0.0,
+        -0.002712241606786847,
+        0.0,
+        0.0,
+        0.0003834952076431364,
+        -0.0,
+        -0.03874630853533745,
+        0.0,
+        1.0
+      ],
+      "initial_raw_action": [
+        1.7129714488983154,
+        17.32892608642578
+      ],
+      "initial_unclipped_steering_deg": 154.08927408380438,
+      "initial_rear_request_nm": 108.82565582275392,
+      "active_rear_send_ticks": 209,
+      "steering_target_clipping_fraction": 0.7903225806451613,
+      "rear_request_exceedance_fraction": 1.0,
+      "raw_rear_action": {
+        "n": 62,
+        "min": 1.0844770669937134,
+        "median": 4.479360580444336,
+        "p95": 17.154482173919675,
+        "p99": 49.6846336936951,
+        "max": 79.51872253417969,
+        "mean": 7.000223919268577,
+        "rms": 12.63662949348093
+      },
+      "counterfactual_raw_rear_action": {
+        "n": 62,
+        "min": -2.750335693359375,
+        "median": -0.13830506801605225,
+        "p95": -0.08930158615112305,
+        "p99": 17.11233139038086,
+        "max": 17.215042114257812,
+        "mean": 0.22825674712657928,
+        "rms": 3.147339105606079
+      },
+      "inference_events": [
+        {
+          "t": 117.809870488,
+          "latched_fault_reasons": [],
+          "mode": "balancing",
+          "monotonic_time_s": 2497.213077673,
+          "readiness_reasons": [],
+          "ready": true,
+          "ros_time_s": 1791778110.4395332,
+          "sequence": 20008
+        },
+        {
+          "t": 119.04700864700001,
+          "latched_fault_reasons": [
+            "inversion_safety"
+          ],
+          "mode": "fault_latched",
+          "monotonic_time_s": 2498.453236507,
+          "readiness_reasons": [
+            "inversion_safety"
+          ],
+          "ready": false,
+          "ros_time_s": 1791778111.678327,
+          "sequence": 20070
+        }
+      ],
+      "motor_events": [
+        {
+          "t": 117.812122309,
+          "disable_confirmed": false,
+          "disable_pending": false,
+          "disable_reasons": [],
+          "disable_send_errors": [],
+          "drive_disable_confirmed": false,
+          "dry_run": false,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": true,
+          "monotonic_time_s": 2497.21815484,
+          "outputs_active": true,
+          "ros_time_s": 1791778110.442698,
+          "sequence": 1151,
+          "steering_disable_confirmed": false
+        },
+        {
+          "t": 119.052054518,
+          "disable_confirmed": false,
+          "disable_pending": true,
+          "disable_reasons": [
+            "enable_not_requested"
+          ],
+          "disable_send_errors": [],
+          "drive_disable_confirmed": false,
+          "dry_run": false,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": false,
+          "monotonic_time_s": 2498.458298988,
+          "outputs_active": true,
+          "ros_time_s": 1791778111.6828783,
+          "sequence": 1360,
+          "steering_disable_confirmed": false
+        },
+        {
+          "t": 119.056790692,
+          "disable_confirmed": true,
+          "disable_pending": false,
+          "disable_reasons": [
+            "enable_not_requested"
+          ],
+          "disable_send_errors": [],
+          "drive_disable_confirmed": true,
+          "dry_run": false,
+          "fault_latched": false,
+          "fault_reason": null,
+          "gate_enabled": false,
+          "monotonic_time_s": 2498.462970664,
+          "outputs_active": false,
+          "ros_time_s": 1791778111.6877263,
+          "sequence": 1361,
+          "steering_disable_confirmed": true
+        }
+      ],
+      "drive_speed_rad_s": {
+        "n": 209,
+        "min": -62.76902121872406,
+        "median": -60.30391818320727,
+        "p95": -42.31306425364973,
+        "p99": -0.04293509959906051,
+        "max": 0.019896753472735357,
+        "mean": -55.71750356087131,
+        "rms": 56.6833541949447
+      },
+      "steering_position_deg": {
+        "n": 209,
+        "min": 0.0,
+        "median": 85.67138671874999,
+        "p95": 89.7802734375,
+        "p99": 89.84619140625,
+        "max": 89.86816406250001,
+        "mean": 71.58859617972487,
+        "rms": 76.62213048054466
+      },
+      "drive_command_nm": {
+        "n": 209,
+        "min": 6.279005162326364,
+        "median": 6.28,
+        "p95": 6.28,
+        "p99": 6.28,
+        "max": 6.28,
+        "mean": 6.279993736856752,
+        "rms": 6.27999373726825
+      },
+      "drive_current_derived_torque_nm": {
+        "n": 114,
+        "min": -1.2060000479221344,
+        "median": 0.27630001097917556,
+        "p95": 2.4305850965827687,
+        "p99": 3.416688135766983,
+        "max": 6.274200249314308,
+        "mean": 0.7417079242096658,
+        "rms": 1.2276844747405817
+      },
+      "drive_net_rotation_rad": -70.61718906551245,
+      "drive_command_saturation_fraction": 1.0,
+      "positive_command_negative_speed_fraction": 0.9808612440191388,
+      "mit_send_interval_ms": {
+        "n": 208,
+        "min": 5.22181200039995,
+        "median": 5.444297500162065,
+        "p95": 8.199114300032303,
+        "p99": 9.79788413973438,
+        "max": 10.287922999850707,
+        "mean": 5.9346795576927365,
+        "rms": 6.019633451666508
+      },
+      "rear_above_50_rad_s_after_first_send_ms": 56.635351000295486,
+      "rear_net_above_7_2_rad_after_first_send_ms": 161.81471300023986,
+      "steering_above_85_deg_after_first_send_ms": 180.2898460000506,
+      "training_fallen_gravity_threshold_bag_s": 118.521851338,
+      "inversion_bag_s": 119.040051984
+    }
+  ],
+  "archived_isaac_comparison": {
+    "path": "isaaclab_train/reports/motor_limits_09221945_91850_2026-10-01/motor_limit_samples.npz",
+    "sha256": "f47602b0491f43ae642725ee455665775d94e369650098fccf22eb33476d35d9",
+    "episode_starts": 171,
+    "startup_rear_requested_nm": {
+      "n": 171,
+      "min": 63.88702392578125,
+      "median": 103.57232666015625,
+      "p95": 125.03152465820312,
+      "p99": 130.4930877685547,
+      "max": 132.00242614746094,
+      "mean": 102.28732299804688,
+      "rms": 103.59163665771484
+    },
+    "non_startup_rear_abs_peak_nm": 2.765089750289917,
+    "startup_rear_velocity_after_20ms_rad_s": {
+      "n": 171,
+      "min": -28.384441375732422,
+      "median": 60.31058120727539,
+      "p95": 63.84539794921875,
+      "p99": 64.5430679321289,
+      "max": 65.4729995727539,
+      "mean": 56.474761962890625,
+      "rms": 57.94193649291992
+    },
+    "positive_startup_rear_velocity_count": 167,
+    "non_startup_request_exceedances": 0,
+    "feedforward_buffer_equals_processed_target": true
+  },
+  "events": {
+    "motor_event": [
+      {
+        "t": 0.6798939390000001,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "steering_feedback_missing_or_stale"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": false,
+        "monotonic_time_s": 2380.086144896,
+        "outputs_active": false,
+        "ros_time_s": 1791777993.3107762,
+        "sequence": 9010,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 0.689393464,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": false,
+        "monotonic_time_s": 2380.09536354,
+        "outputs_active": false,
+        "ros_time_s": 1791777993.3199594,
+        "sequence": 9011,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 1.118954508,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "steering_feedback_missing_or_stale"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": false,
+        "monotonic_time_s": 2380.525136152,
+        "outputs_active": false,
+        "ros_time_s": 1791777993.7497349,
+        "sequence": 9087,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 1.1307140290000002,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": false,
+        "monotonic_time_s": 2380.536960542,
+        "outputs_active": false,
+        "ros_time_s": 1791777993.761645,
+        "sequence": 9089,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 1.187256343,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "drive_feedback_missing_or_stale"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": false,
+        "monotonic_time_s": 2380.591072569,
+        "outputs_active": false,
+        "ros_time_s": 1791777993.815666,
+        "sequence": 9096,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 1.193363811,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": false,
+        "monotonic_time_s": 2380.599613305,
+        "outputs_active": false,
+        "ros_time_s": 1791777993.824233,
+        "sequence": 9097,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 1.2705662240000002,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "drive_feedback_missing_or_stale"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": false,
+        "monotonic_time_s": 2380.675700582,
+        "outputs_active": false,
+        "ros_time_s": 1791777993.9005575,
+        "sequence": 9104,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 1.278838597,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": false,
+        "monotonic_time_s": 2380.683628742,
+        "outputs_active": false,
+        "ros_time_s": 1791777993.9082046,
+        "sequence": 9105,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 1.2894521680000002,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "steering_feedback_missing_or_stale"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": false,
+        "monotonic_time_s": 2380.692892681,
+        "outputs_active": false,
+        "ros_time_s": 1791777993.9174938,
+        "sequence": 9106,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 1.307695517,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": false,
+        "monotonic_time_s": 2380.713487857,
+        "outputs_active": false,
+        "ros_time_s": 1791777993.9380307,
+        "sequence": 9108,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 1.345135412,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "steering_feedback_missing_or_stale"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": false,
+        "monotonic_time_s": 2380.751118469,
+        "outputs_active": false,
+        "ros_time_s": 1791777993.9757423,
+        "sequence": 9111,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 1.355230181,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": false,
+        "monotonic_time_s": 2380.758629751,
+        "outputs_active": false,
+        "ros_time_s": 1791777993.9833765,
+        "sequence": 9112,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 1.404787293,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "steering_feedback_missing_or_stale",
+          "drive_feedback_missing_or_stale"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": false,
+        "monotonic_time_s": 2380.808578575,
+        "outputs_active": false,
+        "ros_time_s": 1791777994.0331268,
+        "sequence": 9115,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 1.4118543650000002,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "drive_feedback_missing_or_stale"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": false,
+        "monotonic_time_s": 2380.816074265,
+        "outputs_active": false,
+        "ros_time_s": 1791777994.0406642,
+        "sequence": 9116,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 1.419290557,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": false,
+        "monotonic_time_s": 2380.82523693,
+        "outputs_active": false,
+        "ros_time_s": 1791777994.0497682,
+        "sequence": 9117,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 1.45012787,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "steering_feedback_missing_or_stale"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": false,
+        "monotonic_time_s": 2380.854813313,
+        "outputs_active": false,
+        "ros_time_s": 1791777994.0793588,
+        "sequence": 9119,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 1.4611543180000002,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "drive_feedback_missing_or_stale"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": false,
+        "monotonic_time_s": 2380.865799596,
+        "outputs_active": false,
+        "ros_time_s": 1791777994.0903387,
+        "sequence": 9120,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 1.468097116,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": false,
+        "monotonic_time_s": 2380.874102857,
+        "outputs_active": false,
+        "ros_time_s": 1791777994.098701,
+        "sequence": 9121,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 7.496470985,
+        "disable_confirmed": false,
+        "disable_pending": false,
+        "disable_reasons": [],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": false,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": true,
+        "monotonic_time_s": 2386.902074403,
+        "outputs_active": true,
+        "ros_time_s": 1791778000.1266053,
+        "sequence": 10279,
+        "steering_disable_confirmed": false
+      },
+      {
+        "t": 8.989718895000001,
+        "disable_confirmed": false,
+        "disable_pending": true,
+        "disable_reasons": [
+          "drive_feedback_missing_or_stale",
+          "fault_latched",
+          "active_feedback_unavailable"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": false,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "active_feedback_unavailable",
+        "gate_enabled": false,
+        "monotonic_time_s": 2388.386194941,
+        "outputs_active": true,
+        "ros_time_s": 1791778001.6107774,
+        "sequence": 10530,
+        "steering_disable_confirmed": false
+      },
+      {
+        "t": 8.99684332,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "fault_latched"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "active_feedback_unavailable",
+        "gate_enabled": false,
+        "monotonic_time_s": 2388.403174182,
+        "outputs_active": false,
+        "ros_time_s": 1791778001.6277604,
+        "sequence": 10531,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 9.00906237,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "fault_latched"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "active_feedback_unavailable",
+        "gate_enabled": false,
+        "monotonic_time_s": 2388.415726408,
+        "outputs_active": false,
+        "ros_time_s": 1791778001.6402595,
+        "sequence": 10534,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 16.018911968,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "mit_io_stopped",
+          "fault_latched"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "mit_io_error:RuntimeError:system clock sampling delayed; CAN feedback age is uncertain",
+        "gate_enabled": false,
+        "monotonic_time_s": 2395.425948256,
+        "outputs_active": false,
+        "ros_time_s": 1791778008.6504009,
+        "sequence": 11917,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 48.012051165,
+        "disable_confirmed": false,
+        "disable_pending": false,
+        "disable_reasons": [],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": false,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": true,
+        "monotonic_time_s": 2427.417062188,
+        "outputs_active": true,
+        "ros_time_s": 1791778040.6415994,
+        "sequence": 1570,
+        "steering_disable_confirmed": false
+      },
+      {
+        "t": 50.183881966,
+        "disable_confirmed": false,
+        "disable_pending": true,
+        "disable_reasons": [
+          "enable_not_requested"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": false,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": false,
+        "monotonic_time_s": 2429.589590842,
+        "outputs_active": true,
+        "ros_time_s": 1791778042.814127,
+        "sequence": 1949,
+        "steering_disable_confirmed": false
+      },
+      {
+        "t": 50.192738731000006,
+        "disable_confirmed": false,
+        "disable_pending": true,
+        "disable_reasons": [
+          "enable_not_requested",
+          "motor_disable_unconfirmed"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": false,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": false,
+        "monotonic_time_s": 2429.598984019,
+        "outputs_active": true,
+        "ros_time_s": 1791778042.8237147,
+        "sequence": 1950,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 50.198910191,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": false,
+        "monotonic_time_s": 2429.605444324,
+        "outputs_active": false,
+        "ros_time_s": 1791778042.829988,
+        "sequence": 1951,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 54.066058851,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "steering_feedback_missing_or_stale"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": false,
+        "monotonic_time_s": 2433.471985518,
+        "outputs_active": false,
+        "ros_time_s": 1791778046.6969142,
+        "sequence": 2709,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 54.072280144000004,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "drive_feedback_missing_or_stale"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": false,
+        "monotonic_time_s": 2433.478870054,
+        "outputs_active": false,
+        "ros_time_s": 1791778046.7033987,
+        "sequence": 2710,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 54.079183347000004,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": false,
+        "monotonic_time_s": 2433.485429802,
+        "outputs_active": false,
+        "ros_time_s": 1791778046.7099419,
+        "sequence": 2711,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 66.70180641500001,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "steering_feedback_missing_or_stale"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": false,
+        "monotonic_time_s": 2446.107131336,
+        "outputs_active": false,
+        "ros_time_s": 1791778059.3316898,
+        "sequence": 5194,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 66.715321168,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": false,
+        "monotonic_time_s": 2446.121590492,
+        "outputs_active": false,
+        "ros_time_s": 1791778059.3461492,
+        "sequence": 5197,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 71.80850940900001,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "steering_feedback_missing_or_stale"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": false,
+        "monotonic_time_s": 2451.215165872,
+        "outputs_active": false,
+        "ros_time_s": 1791778064.4397063,
+        "sequence": 6201,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 71.816159525,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": false,
+        "monotonic_time_s": 2451.221028697,
+        "outputs_active": false,
+        "ros_time_s": 1791778064.4455633,
+        "sequence": 6202,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 72.00876360800001,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "drive_feedback_missing_or_stale"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": false,
+        "monotonic_time_s": 2451.410618832,
+        "outputs_active": false,
+        "ros_time_s": 1791778064.6353474,
+        "sequence": 6230,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 72.026372341,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "steering_feedback_missing_or_stale",
+          "drive_feedback_missing_or_stale"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": false,
+        "monotonic_time_s": 2451.432314709,
+        "outputs_active": false,
+        "ros_time_s": 1791778064.6568468,
+        "sequence": 6232,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 72.037323267,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "drive_feedback_missing_or_stale"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": false,
+        "monotonic_time_s": 2451.442820887,
+        "outputs_active": false,
+        "ros_time_s": 1791778064.6673539,
+        "sequence": 6234,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 72.04663702900001,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": false,
+        "monotonic_time_s": 2451.452614637,
+        "outputs_active": false,
+        "ros_time_s": 1791778064.6772027,
+        "sequence": 6235,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 79.599695972,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "fault_latched",
+          "steering_mit_send_failed"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "steering_mit_send_failed",
+        "gate_enabled": false,
+        "monotonic_time_s": 2459.003386115,
+        "outputs_active": false,
+        "ros_time_s": 1791778072.2279718,
+        "sequence": 7712,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 79.601429432,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "fault_latched"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "steering_mit_send_failed",
+        "gate_enabled": false,
+        "monotonic_time_s": 2459.007767717,
+        "outputs_active": false,
+        "ros_time_s": 1791778072.2323534,
+        "sequence": 7713,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 79.63102250200001,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "fault_latched"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "steering_mit_send_failed",
+        "gate_enabled": false,
+        "monotonic_time_s": 2459.037661724,
+        "outputs_active": false,
+        "ros_time_s": 1791778072.262251,
+        "sequence": 7719,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 82.50179879800001,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "drive_feedback_missing_or_stale",
+          "fault_latched"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "steering_mit_send_failed",
+        "gate_enabled": false,
+        "monotonic_time_s": 2461.908467631,
+        "outputs_active": false,
+        "ros_time_s": 1791778075.133015,
+        "sequence": 8282,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 82.50900102,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "fault_latched"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "steering_mit_send_failed",
+        "gate_enabled": false,
+        "monotonic_time_s": 2461.914750356,
+        "outputs_active": false,
+        "ros_time_s": 1791778075.1392944,
+        "sequence": 8283,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 82.530927901,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "steering_feedback_missing_or_stale",
+          "fault_latched"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "steering_mit_send_failed",
+        "gate_enabled": false,
+        "monotonic_time_s": 2461.935775276,
+        "outputs_active": false,
+        "ros_time_s": 1791778075.1603346,
+        "sequence": 8284,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 82.54056106600001,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "fault_latched"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "steering_mit_send_failed",
+        "gate_enabled": false,
+        "monotonic_time_s": 2461.943234029,
+        "outputs_active": false,
+        "ros_time_s": 1791778075.167795,
+        "sequence": 8285,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 87.82689657,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "steering_feedback_missing_or_stale",
+          "fault_latched"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "steering_mit_send_failed",
+        "gate_enabled": false,
+        "monotonic_time_s": 2467.22766476,
+        "outputs_active": false,
+        "ros_time_s": 1791778080.4523966,
+        "sequence": 9322,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 87.829073613,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "fault_latched"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "steering_mit_send_failed",
+        "gate_enabled": false,
+        "monotonic_time_s": 2467.235543024,
+        "outputs_active": false,
+        "ros_time_s": 1791778080.4601128,
+        "sequence": 9323,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 104.35298205100001,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "steering_feedback_missing_or_stale",
+          "fault_latched"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "steering_mit_send_failed",
+        "gate_enabled": false,
+        "monotonic_time_s": 2483.757045071,
+        "outputs_active": false,
+        "ros_time_s": 1791778096.981775,
+        "sequence": 12581,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 104.36440670200001,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "drive_feedback_missing_or_stale",
+          "fault_latched"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "steering_mit_send_failed",
+        "gate_enabled": false,
+        "monotonic_time_s": 2483.76770935,
+        "outputs_active": false,
+        "ros_time_s": 1791778096.9923184,
+        "sequence": 12582,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 104.364460664,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "fault_latched"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "steering_mit_send_failed",
+        "gate_enabled": false,
+        "monotonic_time_s": 2483.770545639,
+        "outputs_active": false,
+        "ros_time_s": 1791778096.995126,
+        "sequence": 12583,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 104.397701642,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "steering_feedback_missing_or_stale",
+          "fault_latched"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "steering_mit_send_failed",
+        "gate_enabled": false,
+        "monotonic_time_s": 2483.801117825,
+        "outputs_active": false,
+        "ros_time_s": 1791778097.025842,
+        "sequence": 12586,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 104.41501519900001,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "drive_feedback_missing_or_stale",
+          "fault_latched"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "steering_mit_send_failed",
+        "gate_enabled": false,
+        "monotonic_time_s": 2483.817146651,
+        "outputs_active": false,
+        "ros_time_s": 1791778097.041695,
+        "sequence": 12587,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 104.428987961,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "fault_latched"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "steering_mit_send_failed",
+        "gate_enabled": false,
+        "monotonic_time_s": 2483.835684459,
+        "outputs_active": false,
+        "ros_time_s": 1791778097.0602336,
+        "sequence": 12589,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 104.44494708500001,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "steering_feedback_missing_or_stale",
+          "fault_latched"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "steering_mit_send_failed",
+        "gate_enabled": false,
+        "monotonic_time_s": 2483.845410112,
+        "outputs_active": false,
+        "ros_time_s": 1791778097.076082,
+        "sequence": 12591,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 104.453122809,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "fault_latched"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "steering_mit_send_failed",
+        "gate_enabled": false,
+        "monotonic_time_s": 2483.859543555,
+        "outputs_active": false,
+        "ros_time_s": 1791778097.0840993,
+        "sequence": 12592,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 104.508153097,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "drive_feedback_missing_or_stale",
+          "fault_latched"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "steering_mit_send_failed",
+        "gate_enabled": false,
+        "monotonic_time_s": 2483.914539806,
+        "outputs_active": false,
+        "ros_time_s": 1791778097.1390812,
+        "sequence": 12597,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 104.51539763800001,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "fault_latched"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "steering_mit_send_failed",
+        "gate_enabled": false,
+        "monotonic_time_s": 2483.922073526,
+        "outputs_active": false,
+        "ros_time_s": 1791778097.1466217,
+        "sequence": 12598,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 104.52790961800001,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "steering_feedback_missing_or_stale",
+          "fault_latched"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "steering_mit_send_failed",
+        "gate_enabled": false,
+        "monotonic_time_s": 2483.931022011,
+        "outputs_active": false,
+        "ros_time_s": 1791778097.1555703,
+        "sequence": 12599,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 104.542799192,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "fault_latched"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "steering_mit_send_failed",
+        "gate_enabled": false,
+        "monotonic_time_s": 2483.948980109,
+        "outputs_active": false,
+        "ros_time_s": 1791778097.1735342,
+        "sequence": 12600,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 104.64991320300001,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "steering_feedback_missing_or_stale",
+          "fault_latched"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "steering_mit_send_failed",
+        "gate_enabled": false,
+        "monotonic_time_s": 2484.051183693,
+        "outputs_active": false,
+        "ros_time_s": 1791778097.2757144,
+        "sequence": 12611,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 104.659723391,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "fault_latched"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "steering_mit_send_failed",
+        "gate_enabled": false,
+        "monotonic_time_s": 2484.065093233,
+        "outputs_active": false,
+        "ros_time_s": 1791778097.2896254,
+        "sequence": 12612,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 104.687559749,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "steering_feedback_missing_or_stale",
+          "fault_latched"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "steering_mit_send_failed",
+        "gate_enabled": false,
+        "monotonic_time_s": 2484.093959384,
+        "outputs_active": false,
+        "ros_time_s": 1791778097.3185015,
+        "sequence": 12615,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 104.701300868,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "fault_latched"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "steering_mit_send_failed",
+        "gate_enabled": false,
+        "monotonic_time_s": 2484.106576916,
+        "outputs_active": false,
+        "ros_time_s": 1791778097.3310988,
+        "sequence": 12617,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 104.71183694700001,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "drive_feedback_missing_or_stale",
+          "fault_latched"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "steering_mit_send_failed",
+        "gate_enabled": false,
+        "monotonic_time_s": 2484.11808627,
+        "outputs_active": false,
+        "ros_time_s": 1791778097.3426385,
+        "sequence": 12618,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 104.741637169,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "steering_feedback_missing_or_stale",
+          "drive_feedback_missing_or_stale",
+          "fault_latched"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "steering_mit_send_failed",
+        "gate_enabled": false,
+        "monotonic_time_s": 2484.148296761,
+        "outputs_active": false,
+        "ros_time_s": 1791778097.3728988,
+        "sequence": 12620,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 104.760231512,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "drive_feedback_missing_or_stale",
+          "fault_latched"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "steering_mit_send_failed",
+        "gate_enabled": false,
+        "monotonic_time_s": 2484.166323543,
+        "outputs_active": false,
+        "ros_time_s": 1791778097.390987,
+        "sequence": 12623,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 104.768741711,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "fault_latched"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "steering_mit_send_failed",
+        "gate_enabled": false,
+        "monotonic_time_s": 2484.174150849,
+        "outputs_active": false,
+        "ros_time_s": 1791778097.3990092,
+        "sequence": 12625,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 104.86663259500001,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "steering_feedback_missing_or_stale",
+          "drive_feedback_missing_or_stale",
+          "fault_latched"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "steering_mit_send_failed",
+        "gate_enabled": false,
+        "monotonic_time_s": 2484.271810442,
+        "outputs_active": false,
+        "ros_time_s": 1791778097.49637,
+        "sequence": 12635,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 104.881786996,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "steering_feedback_missing_or_stale",
+          "fault_latched"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "steering_mit_send_failed",
+        "gate_enabled": false,
+        "monotonic_time_s": 2484.285575004,
+        "outputs_active": false,
+        "ros_time_s": 1791778097.5102224,
+        "sequence": 12637,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 104.89449086,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested",
+          "fault_latched"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "steering_mit_send_failed",
+        "gate_enabled": false,
+        "monotonic_time_s": 2484.300141326,
+        "outputs_active": false,
+        "ros_time_s": 1791778097.5246851,
+        "sequence": 12640,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 117.812122309,
+        "disable_confirmed": false,
+        "disable_pending": false,
+        "disable_reasons": [],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": false,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": true,
+        "monotonic_time_s": 2497.21815484,
+        "outputs_active": true,
+        "ros_time_s": 1791778110.442698,
+        "sequence": 1151,
+        "steering_disable_confirmed": false
+      },
+      {
+        "t": 119.052054518,
+        "disable_confirmed": false,
+        "disable_pending": true,
+        "disable_reasons": [
+          "enable_not_requested"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": false,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": false,
+        "monotonic_time_s": 2498.458298988,
+        "outputs_active": true,
+        "ros_time_s": 1791778111.6828783,
+        "sequence": 1360,
+        "steering_disable_confirmed": false
+      },
+      {
+        "t": 119.056790692,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "enable_not_requested"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": false,
+        "fault_reason": null,
+        "gate_enabled": false,
+        "monotonic_time_s": 2498.462970664,
+        "outputs_active": false,
+        "ros_time_s": 1791778111.6877263,
+        "sequence": 1361,
+        "steering_disable_confirmed": true
+      },
+      {
+        "t": 123.532030695,
+        "disable_confirmed": true,
+        "disable_pending": false,
+        "disable_reasons": [
+          "mit_io_stopped",
+          "fault_latched"
+        ],
+        "disable_send_errors": [],
+        "drive_disable_confirmed": true,
+        "dry_run": false,
+        "fault_latched": true,
+        "fault_reason": "mit_io_error:RuntimeError:system clock sampling delayed; CAN feedback age is uncertain",
+        "gate_enabled": false,
+        "monotonic_time_s": 2502.938905689,
+        "outputs_active": false,
+        "ros_time_s": 1791778116.1633594,
+        "sequence": 2225,
+        "steering_disable_confirmed": true
+      }
+    ],
+    "policy_event": [
+      {
+        "t": 1.28949337,
+        "latched_fault_reasons": [],
+        "mode": "down",
+        "monotonic_time_s": 2380.693609829,
+        "readiness_reasons": [
+          "motor_state_timeout"
+        ],
+        "ready": false,
+        "ros_time_s": 1791777993.9187434,
+        "sequence": 14182
+      },
+      {
+        "t": 1.30948521,
+        "latched_fault_reasons": [],
+        "mode": "down",
+        "monotonic_time_s": 2380.713854365,
+        "readiness_reasons": [],
+        "ready": true,
+        "ros_time_s": 1791777993.940853,
+        "sequence": 14183
+      },
+      {
+        "t": 7.489267896,
+        "latched_fault_reasons": [],
+        "mode": "balancing",
+        "monotonic_time_s": 2386.893218858,
+        "readiness_reasons": [],
+        "ready": true,
+        "ros_time_s": 1791778000.1206417,
+        "sequence": 14492
+      },
+      {
+        "t": 9.007789292,
+        "latched_fault_reasons": [
+          "motor_fault"
+        ],
+        "mode": "fault_latched",
+        "monotonic_time_s": 2388.412559251,
+        "readiness_reasons": [
+          "motor_fault"
+        ],
+        "ready": false,
+        "ros_time_s": 1791778001.637258,
+        "sequence": 14568
+      },
+      {
+        "t": 10.485702214,
+        "latched_fault_reasons": [],
+        "mode": "down",
+        "monotonic_time_s": 2389.89260245,
+        "readiness_reasons": [
+          "motor_fault"
+        ],
+        "ready": false,
+        "ros_time_s": 1791778003.1172082,
+        "sequence": 14642
+      },
+      {
+        "t": 16.066226262,
+        "latched_fault_reasons": [],
+        "mode": "down",
+        "monotonic_time_s": 2395.473049666,
+        "readiness_reasons": [
+          "motor_state_timeout",
+          "motor_fault"
+        ],
+        "ready": false,
+        "ros_time_s": 1791778008.6976483,
+        "sequence": 14921
+      },
+      {
+        "t": 42.025868222,
+        "latched_fault_reasons": [],
+        "mode": "down",
+        "monotonic_time_s": 2421.432496909,
+        "readiness_reasons": [],
+        "ready": true,
+        "ros_time_s": 1791778034.6573937,
+        "sequence": 16219
+      },
+      {
+        "t": 48.0083647,
+        "latched_fault_reasons": [],
+        "mode": "balancing",
+        "monotonic_time_s": 2427.413018769,
+        "readiness_reasons": [],
+        "ready": true,
+        "ros_time_s": 1791778040.6392791,
+        "sequence": 16518
+      },
+      {
+        "t": 50.187670818,
+        "latched_fault_reasons": [],
+        "mode": "down",
+        "monotonic_time_s": 2429.59396542,
+        "readiness_reasons": [],
+        "ready": true,
+        "ros_time_s": 1791778042.819036,
+        "sequence": 16627
+      },
+      {
+        "t": 66.729473368,
+        "latched_fault_reasons": [],
+        "mode": "down",
+        "monotonic_time_s": 2446.135839727,
+        "readiness_reasons": [
+          "motor_state_timeout"
+        ],
+        "ready": false,
+        "ros_time_s": 1791778059.3604841,
+        "sequence": 17454
+      },
+      {
+        "t": 66.750496905,
+        "latched_fault_reasons": [],
+        "mode": "down",
+        "monotonic_time_s": 2446.154752814,
+        "readiness_reasons": [],
+        "ready": true,
+        "ros_time_s": 1791778059.3810544,
+        "sequence": 17455
+      },
+      {
+        "t": 72.047184386,
+        "latched_fault_reasons": [],
+        "mode": "down",
+        "monotonic_time_s": 2451.453583781,
+        "readiness_reasons": [
+          "motor_state_timeout"
+        ],
+        "ready": false,
+        "ros_time_s": 1791778064.6782851,
+        "sequence": 17720
+      },
+      {
+        "t": 72.06620473400001,
+        "latched_fault_reasons": [],
+        "mode": "down",
+        "monotonic_time_s": 2451.472520001,
+        "readiness_reasons": [],
+        "ready": true,
+        "ros_time_s": 1791778064.6975896,
+        "sequence": 17721
+      },
+      {
+        "t": 79.590690756,
+        "latched_fault_reasons": [],
+        "mode": "balancing",
+        "monotonic_time_s": 2458.994689355,
+        "readiness_reasons": [],
+        "ready": true,
+        "ros_time_s": 1791778072.2217999,
+        "sequence": 18097
+      },
+      {
+        "t": 79.62591939800001,
+        "latched_fault_reasons": [
+          "motor_fault"
+        ],
+        "mode": "fault_latched",
+        "monotonic_time_s": 2459.03266123,
+        "readiness_reasons": [
+          "motor_fault"
+        ],
+        "ready": false,
+        "ros_time_s": 1791778072.2573814,
+        "sequence": 18099
+      },
+      {
+        "t": 81.306191192,
+        "latched_fault_reasons": [],
+        "mode": "down",
+        "monotonic_time_s": 2460.71302741,
+        "readiness_reasons": [
+          "motor_fault"
+        ],
+        "ready": false,
+        "ros_time_s": 1791778073.9376495,
+        "sequence": 18183
+      },
+      {
+        "t": 82.53588028600001,
+        "latched_fault_reasons": [],
+        "mode": "down",
+        "monotonic_time_s": 2461.935157753,
+        "readiness_reasons": [
+          "motor_state_timeout",
+          "motor_fault"
+        ],
+        "ready": false,
+        "ros_time_s": 1791778075.1656744,
+        "sequence": 18244
+      },
+      {
+        "t": 82.54790382200001,
+        "latched_fault_reasons": [],
+        "mode": "down",
+        "monotonic_time_s": 2461.9534177,
+        "readiness_reasons": [
+          "motor_fault"
+        ],
+        "ready": false,
+        "ros_time_s": 1791778075.1788635,
+        "sequence": 18245
+      },
+      {
+        "t": 104.370307866,
+        "latched_fault_reasons": [],
+        "mode": "down",
+        "monotonic_time_s": 2483.773769992,
+        "readiness_reasons": [
+          "motor_state_timeout",
+          "motor_fault"
+        ],
+        "ready": false,
+        "ros_time_s": 1791778096.9989972,
+        "sequence": 19336
+      },
+      {
+        "t": 104.39115069600001,
+        "latched_fault_reasons": [],
+        "mode": "down",
+        "monotonic_time_s": 2483.797525053,
+        "readiness_reasons": [
+          "motor_fault"
+        ],
+        "ready": false,
+        "ros_time_s": 1791778097.0222263,
+        "sequence": 19337
+      },
+      {
+        "t": 104.74978430200001,
+        "latched_fault_reasons": [],
+        "mode": "down",
+        "monotonic_time_s": 2484.154986759,
+        "readiness_reasons": [
+          "motor_state_timeout",
+          "motor_fault"
+        ],
+        "ready": false,
+        "ros_time_s": 1791778097.3803072,
+        "sequence": 19355
+      },
+      {
+        "t": 104.79047776200001,
+        "latched_fault_reasons": [],
+        "mode": "down",
+        "monotonic_time_s": 2484.19613045,
+        "readiness_reasons": [
+          "motor_fault"
+        ],
+        "ready": false,
+        "ros_time_s": 1791778097.4209938,
+        "sequence": 19357
+      },
+      {
+        "t": 108.24746521200001,
+        "latched_fault_reasons": [],
+        "mode": "down",
+        "monotonic_time_s": 2487.653812699,
+        "readiness_reasons": [
+          "motor_state_timeout",
+          "motor_fault"
+        ],
+        "ready": false,
+        "ros_time_s": 1791778100.8785632,
+        "sequence": 19530
+      },
+      {
+        "t": 114.066381484,
+        "latched_fault_reasons": [],
+        "mode": "down",
+        "monotonic_time_s": 2493.473042853,
+        "readiness_reasons": [],
+        "ready": true,
+        "ros_time_s": 1791778106.6978817,
+        "sequence": 19821
+      },
+      {
+        "t": 117.809870488,
+        "latched_fault_reasons": [],
+        "mode": "balancing",
+        "monotonic_time_s": 2497.213077673,
+        "readiness_reasons": [],
+        "ready": true,
+        "ros_time_s": 1791778110.4395332,
+        "sequence": 20008
+      },
+      {
+        "t": 119.04700864700001,
+        "latched_fault_reasons": [
+          "inversion_safety"
+        ],
+        "mode": "fault_latched",
+        "monotonic_time_s": 2498.453236507,
+        "readiness_reasons": [
+          "inversion_safety"
+        ],
+        "ready": false,
+        "ros_time_s": 1791778111.678327,
+        "sequence": 20070
+      },
+      {
+        "t": 120.146430772,
+        "latched_fault_reasons": [],
+        "mode": "down",
+        "monotonic_time_s": 2499.552760241,
+        "readiness_reasons": [
+          "inversion_safety"
+        ],
+        "ready": false,
+        "ros_time_s": 1791778112.7777722,
+        "sequence": 20125
+      },
+      {
+        "t": 120.267108507,
+        "latched_fault_reasons": [],
+        "mode": "down",
+        "monotonic_time_s": 2499.673615231,
+        "readiness_reasons": [],
+        "ready": true,
+        "ros_time_s": 1791778112.8985813,
+        "sequence": 20131
+      },
+      {
+        "t": 120.42629807,
+        "latched_fault_reasons": [],
+        "mode": "down",
+        "monotonic_time_s": 2499.833011771,
+        "readiness_reasons": [
+          "inversion_safety"
+        ],
+        "ready": false,
+        "ros_time_s": 1791778113.0578198,
+        "sequence": 20139
+      },
+      {
+        "t": 123.226460923,
+        "latched_fault_reasons": [],
+        "mode": "down",
+        "monotonic_time_s": 2502.632723264,
+        "readiness_reasons": [],
+        "ready": true,
+        "ros_time_s": 1791778115.857597,
+        "sequence": 20279
+      },
+      {
+        "t": 123.52648583400001,
+        "latched_fault_reasons": [],
+        "mode": "down",
+        "monotonic_time_s": 2502.933332328,
+        "readiness_reasons": [
+          "motor_fault"
+        ],
+        "ready": false,
+        "ros_time_s": 1791778116.1579556,
+        "sequence": 20294
+      },
+      {
+        "t": 123.565539301,
+        "latched_fault_reasons": [],
+        "mode": "down",
+        "monotonic_time_s": 2502.972456886,
+        "readiness_reasons": [
+          "motor_state_timeout",
+          "motor_fault"
+        ],
+        "ready": false,
+        "ros_time_s": 1791778116.197041,
+        "sequence": 20296
+      },
+      {
+        "t": 154.733801172,
+        "latched_fault_reasons": [],
+        "mode": "down",
+        "monotonic_time_s": 2534.138091015,
+        "readiness_reasons": [
+          "imu_timeout",
+          "motor_state_timeout",
+          "motor_fault"
+        ],
+        "ready": false,
+        "ros_time_s": 1791778147.3627815,
+        "sequence": 21854
+      }
+    ],
+    "kickstands_command": [
+      {
+        "t": 0.024048898000000003,
+        "text": "down"
+      },
+      {
+        "t": 7.46730138,
+        "text": "up"
+      },
+      {
+        "t": 10.474446341,
+        "text": "down"
+      },
+      {
+        "t": 47.997070866,
+        "text": "up"
+      },
+      {
+        "t": 50.178122274,
+        "text": "down"
+      },
+      {
+        "t": 79.58481257800001,
+        "text": "up"
+      },
+      {
+        "t": 81.293580781,
+        "text": "down"
+      },
+      {
+        "t": 117.791831661,
+        "text": "up"
+      },
+      {
+        "t": 120.126406673,
+        "text": "down"
+      }
+    ]
+  },
+  "non_recorder_logs": [
+    {
+      "t": 7.468592753,
+      "stamp_s": 1791778000.1000686,
+      "level": 20,
+      "node": "trackstand_policy_controller",
+      "message": "Kickstands commanded up",
+      "file": "/home/smallbike/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/policy_controller.py",
+      "function": "_command_kickstands",
+      "line": 306
+    },
+    {
+      "t": 7.481789129,
+      "stamp_s": 1791778000.1133835,
+      "level": 20,
+      "node": "trackstand_kickstand_driver",
+      "message": "Kickstands commanded up",
+      "file": "/home/smallbike/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/kickstand_driver.py",
+      "function": "_command_callback",
+      "line": 89
+    },
+    {
+      "t": 10.475340947000001,
+      "stamp_s": 1791778003.107008,
+      "level": 20,
+      "node": "trackstand_policy_controller",
+      "message": "Kickstands commanded down",
+      "file": "/home/smallbike/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/policy_controller.py",
+      "function": "_command_kickstands",
+      "line": 306
+    },
+    {
+      "t": 10.486290995000001,
+      "stamp_s": 1791778003.117417,
+      "level": 20,
+      "node": "trackstand_kickstand_driver",
+      "message": "Kickstands commanded down",
+      "file": "/home/smallbike/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/kickstand_driver.py",
+      "function": "_command_callback",
+      "line": 92
+    },
+    {
+      "t": 16.013935263,
+      "stamp_s": 1791778008.6455936,
+      "level": 40,
+      "node": "trackstand_motor_io",
+      "message": "MIT motor I/O stopped: system clock sampling delayed; CAN feedback age is uncertain",
+      "file": "/home/smallbike/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/motor_mit_io.py",
+      "function": "_run_io",
+      "line": 702
+    },
+    {
+      "t": 42.520178434,
+      "stamp_s": 1791778032.6478448,
+      "level": 20,
+      "node": "trackstand_motor_io",
+      "message": "Policy input 50 Hz, state/query 100 Hz, MIT steering/C0 drive/control 200 Hz on can0; dry_run=False",
+      "file": "/home/smallbike/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/motor_mit_io.py",
+      "function": "__init__",
+      "line": 324
+    },
+    {
+      "t": 42.520196063,
+      "stamp_s": 1791778032.6519995,
+      "level": 20,
+      "node": "trackstand_motor_io",
+      "message": "steering CF acknowledged with retained mode=2; F1 confirms MIT inactive and fault-free",
+      "file": "/home/smallbike/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/motor_mit_io.py",
+      "function": "_verify_startup_disable",
+      "line": 581
+    },
+    {
+      "t": 42.520215692,
+      "stamp_s": 1791778032.6556146,
+      "level": 20,
+      "node": "trackstand_motor_io",
+      "message": "drive CF acknowledged with retained mode=2; F1 confirms MIT inactive and fault-free",
+      "file": "/home/smallbike/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/motor_mit_io.py",
+      "function": "_verify_startup_disable",
+      "line": 581
+    },
+    {
+      "t": 42.520219877,
+      "stamp_s": 1791778032.6620505,
+      "level": 20,
+      "node": "trackstand_motor_io",
+      "message": "steering A3 zero=0 counts",
+      "file": "/home/smallbike/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/motor_mit_io.py",
+      "function": "_consume",
+      "line": 452
+    },
+    {
+      "t": 42.520225192000005,
+      "stamp_s": 1791778032.6656644,
+      "level": 20,
+      "node": "trackstand_motor_io",
+      "message": "MIT preflight: F0=MitRanges(position_rad=3.0, velocity_rad_s=45.0, torque_nm=18.0), F1 zero=-0.000046 native rad",
+      "file": "/home/smallbike/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/motor_mit_io.py",
+      "function": "_startup",
+      "line": 639
+    },
+    {
+      "t": 42.520228396,
+      "stamp_s": 1791778032.6707022,
+      "level": 20,
+      "node": "trackstand_motor_io",
+      "message": "drive A3 zero=-204273 counts",
+      "file": "/home/smallbike/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/motor_mit_io.py",
+      "function": "_consume",
+      "line": 452
+    },
+    {
+      "t": 47.998319280000004,
+      "stamp_s": 1791778040.629956,
+      "level": 20,
+      "node": "trackstand_policy_controller",
+      "message": "Kickstands commanded up",
+      "file": "/home/smallbike/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/policy_controller.py",
+      "function": "_command_kickstands",
+      "line": 306
+    },
+    {
+      "t": 48.011411459,
+      "stamp_s": 1791778040.6425645,
+      "level": 20,
+      "node": "trackstand_kickstand_driver",
+      "message": "Kickstands commanded up",
+      "file": "/home/smallbike/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/kickstand_driver.py",
+      "function": "_command_callback",
+      "line": 89
+    },
+    {
+      "t": 50.180190001,
+      "stamp_s": 1791778042.8107684,
+      "level": 20,
+      "node": "trackstand_policy_controller",
+      "message": "Kickstands commanded down",
+      "file": "/home/smallbike/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/policy_controller.py",
+      "function": "_command_kickstands",
+      "line": 306
+    },
+    {
+      "t": 50.192177189000006,
+      "stamp_s": 1791778042.8235495,
+      "level": 20,
+      "node": "trackstand_kickstand_driver",
+      "message": "Kickstands commanded down",
+      "file": "/home/smallbike/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/kickstand_driver.py",
+      "function": "_command_callback",
+      "line": 92
+    },
+    {
+      "t": 79.586366505,
+      "stamp_s": 1791778072.2177427,
+      "level": 20,
+      "node": "trackstand_policy_controller",
+      "message": "Kickstands commanded up",
+      "file": "/home/smallbike/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/policy_controller.py",
+      "function": "_command_kickstands",
+      "line": 306
+    },
+    {
+      "t": 79.59887201000001,
+      "stamp_s": 1791778072.2304258,
+      "level": 40,
+      "node": "trackstand_motor_io",
+      "message": "steering MIT send failed: MIT value -3.004114156397827 outside [-3.0, 3.0]",
+      "file": "/home/smallbike/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/motor_mit_io.py",
+      "function": "_send_mit",
+      "line": 796
+    },
+    {
+      "t": 79.601419469,
+      "stamp_s": 1791778072.232881,
+      "level": 20,
+      "node": "trackstand_kickstand_driver",
+      "message": "Kickstands commanded up",
+      "file": "/home/smallbike/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/kickstand_driver.py",
+      "function": "_command_callback",
+      "line": 89
+    },
+    {
+      "t": 81.29442868800001,
+      "stamp_s": 1791778073.9260468,
+      "level": 20,
+      "node": "trackstand_policy_controller",
+      "message": "Kickstands commanded down",
+      "file": "/home/smallbike/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/policy_controller.py",
+      "function": "_command_kickstands",
+      "line": 306
+    },
+    {
+      "t": 81.30802848200001,
+      "stamp_s": 1791778073.9394867,
+      "level": 20,
+      "node": "trackstand_kickstand_driver",
+      "message": "Kickstands commanded down",
+      "file": "/home/smallbike/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/kickstand_driver.py",
+      "function": "_command_callback",
+      "line": 92
+    },
+    {
+      "t": 114.52869174000001,
+      "stamp_s": 1791778104.561194,
+      "level": 20,
+      "node": "trackstand_motor_io",
+      "message": "Policy input 50 Hz, state/query 100 Hz, MIT steering/C0 drive/control 200 Hz on can0; dry_run=False",
+      "file": "/home/smallbike/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/motor_mit_io.py",
+      "function": "__init__",
+      "line": 324
+    },
+    {
+      "t": 114.52869555400001,
+      "stamp_s": 1791778104.5670192,
+      "level": 20,
+      "node": "trackstand_motor_io",
+      "message": "steering CF acknowledged with retained mode=2; F1 confirms MIT inactive and fault-free",
+      "file": "/home/smallbike/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/motor_mit_io.py",
+      "function": "_verify_startup_disable",
+      "line": 581
+    },
+    {
+      "t": 114.528704387,
+      "stamp_s": 1791778104.5710394,
+      "level": 20,
+      "node": "trackstand_motor_io",
+      "message": "drive CF acknowledged with retained mode=2; F1 confirms MIT inactive and fault-free",
+      "file": "/home/smallbike/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/motor_mit_io.py",
+      "function": "_verify_startup_disable",
+      "line": 581
+    },
+    {
+      "t": 114.528706721,
+      "stamp_s": 1791778104.5757248,
+      "level": 20,
+      "node": "trackstand_motor_io",
+      "message": "steering A3 zero=0 counts",
+      "file": "/home/smallbike/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/motor_mit_io.py",
+      "function": "_consume",
+      "line": 452
+    },
+    {
+      "t": 114.528710184,
+      "stamp_s": 1791778104.578498,
+      "level": 20,
+      "node": "trackstand_motor_io",
+      "message": "MIT preflight: F0=MitRanges(position_rad=3.0, velocity_rad_s=45.0, torque_nm=18.0), F1 zero=-0.000046 native rad",
+      "file": "/home/smallbike/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/motor_mit_io.py",
+      "function": "_startup",
+      "line": 639
+    },
+    {
+      "t": 114.528712721,
+      "stamp_s": 1791778104.5822911,
+      "level": 20,
+      "node": "trackstand_motor_io",
+      "message": "drive A3 zero=-399860 counts",
+      "file": "/home/smallbike/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/motor_mit_io.py",
+      "function": "_consume",
+      "line": 452
+    },
+    {
+      "t": 117.793293406,
+      "stamp_s": 1791778110.4248908,
+      "level": 20,
+      "node": "trackstand_policy_controller",
+      "message": "Kickstands commanded up",
+      "file": "/home/smallbike/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/policy_controller.py",
+      "function": "_command_kickstands",
+      "line": 306
+    },
+    {
+      "t": 117.806373898,
+      "stamp_s": 1791778110.4376745,
+      "level": 20,
+      "node": "trackstand_kickstand_driver",
+      "message": "Kickstands commanded up",
+      "file": "/home/smallbike/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/kickstand_driver.py",
+      "function": "_command_callback",
+      "line": 89
+    },
+    {
+      "t": 120.12710588,
+      "stamp_s": 1791778112.7587776,
+      "level": 20,
+      "node": "trackstand_policy_controller",
+      "message": "Kickstands commanded down",
+      "file": "/home/smallbike/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/policy_controller.py",
+      "function": "_command_kickstands",
+      "line": 306
+    },
+    {
+      "t": 120.146004837,
+      "stamp_s": 1791778112.7768533,
+      "level": 20,
+      "node": "trackstand_kickstand_driver",
+      "message": "Kickstands commanded down",
+      "file": "/home/smallbike/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/kickstand_driver.py",
+      "function": "_command_callback",
+      "line": 92
+    },
+    {
+      "t": 123.52194043200001,
+      "stamp_s": 1791778116.1535494,
+      "level": 40,
+      "node": "trackstand_motor_io",
+      "message": "MIT motor I/O stopped: system clock sampling delayed; CAN feedback age is uncertain",
+      "file": "/home/smallbike/trackstand_rl/deploy/install/trackstand_deploy/lib/python3.12/site-packages/trackstand_deploy/motor_mit_io.py",
+      "function": "_run_io",
+      "line": 702
+    }
+  ],
+  "read_only_model_sign_check": {
+    "model_path": "mujoco_sim2sim/models/trackstand_rl_0916_bike/trackstand_rl_0916.xml",
+    "sha256": "6f839f2c214da9b743cbd310a72d13ed98d383e8ac4c1d1be609eb89cb003476",
+    "rear_joint_world_axis": [
+      -0.013262999202133897,
+      0.9999109398478622,
+      -0.0014849999106676393
+    ],
+    "steering_joint_world_axis": [
+      0.18408901596733043,
+      0.000982000085186563,
+      -0.9829090852545977
+    ],
+    "rear_to_front_direction": [
+      0.9987356089721343,
+      -0.05024947283713227,
+      0.001474398402788881
+    ],
+    "positive_rear_rotation_no_slip_world_velocity": [
+      0.06999376578935036,
+      0.0009284099441493729,
+      0.0
+    ],
+    "method": "in-memory viewer augmentation, compile, mj_forward only; zero dynamic steps"
+  },
+  "source_hashes": {
+    "deploy/source/trackstand_deploy/trackstand_deploy/policy_controller.py": "8a8e8bcd29312d032869d18637cd4a1ee69fb527b6c30179f4b4b640f3f5473d",
+    "deploy/source/trackstand_deploy/trackstand_deploy/policy.py": "bc23aaf0efb31ca8567567ac523830709e08baef87ba41117e08e0562f9b6d0e",
+    "deploy/source/trackstand_deploy/trackstand_deploy/contracts.py": "d55dfe9487f4c06e6ced6c656634f95e2b6a242b0cdacfa93c4c932d6457938f",
+    "deploy/source/trackstand_deploy/trackstand_deploy/motor_mit_io.py": "7384cc8e3f8f035ea1bbf100975f22e6ee7fc0b38418bbcc53d196370f58521d",
+    "deploy/source/trackstand_deploy/trackstand_deploy/can_protocol.py": "25ef50ec0a2ee282f68f4c0e54c1166f1c1add24473a3dbe8e19612f35fe7d29",
+    "deploy/source/trackstand_deploy/trackstand_deploy/mit_protocol.py": "4d2562b8af03cfd4c499c500a0eeb48d8489968e166a9601b4d16984c7e84a9c",
+    "deploy/source/trackstand_deploy/trackstand_deploy/rc_kickstand.py": "f8061067af808257e83dee1d5325e6004d6049660f40118c989504f35c35da56",
+    "deploy/source/trackstand_deploy/trackstand_deploy/imu_publisher.py": "3228b7b719ae10b8025771a34a32ca272924608797b69a12d9979d89959aedbc"
+  }
+}

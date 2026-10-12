@@ -26,10 +26,16 @@ Queries add CAN traffic, so inspect the recorded timestamps for actual rates
 and gaps; 200 Hz and the sine script's 5 ms spacing are not hard-real-time guarantees.
 
 Defaults mirror `source/trackstand_deploy/config/params.yaml`: steering address
-2, encoder/torque signs -1/-1; rear drive address 1, signs +1/-1; both gear ratios
+2, encoder/torque signs -1/-1; rear drive address 1, signs -1/-1; both gear ratios
 1. These are standalone CLI defaults, not values dynamically loaded from YAML.
 Override them using `--steering-id`, `--drive-id`, `--*-gear-ratio`,
 `--*-encoder-sign`, and `--*-torque-sign` if the hardware configuration differs.
+
+The rear encoder default was corrected on 2026-10-12 after forward rotation
+was measured as negative native A2 velocity/decreasing A3 counts. The same
+default applies to `motor_feedback_mit.py` and read-only rear collection in
+`steering_sine_mit_io.py`. Rear torque sign remains -1; old CSVs retain the
+signs used when they were recorded and must not be reinterpreted as new data.
 
 The same CSV also records outgoing **C2 target counts and timestamps** through
 a separate receive-only SocketCAN socket. Local SocketCAN loopback lets this

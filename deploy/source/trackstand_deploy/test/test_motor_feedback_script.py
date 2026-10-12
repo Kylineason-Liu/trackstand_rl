@@ -328,7 +328,7 @@ def test_defaults_match_deployment_and_steering_only(module):
     args = module.parse_args([])
     assert args.motors == ["steering", "drive"] and args.rate == 200
     assert (args.steering_id, args.drive_id) == (2, 1)
-    assert (args.steering_encoder_sign, args.drive_encoder_sign) == (-1, 1)
+    assert (args.steering_encoder_sign, args.drive_encoder_sign) == (-1, -1)
     assert args.steering_torque_sign == args.drive_torque_sign == -1
     assert module.parse_args(["--motors", "steering"]).motors == ["steering"]
 

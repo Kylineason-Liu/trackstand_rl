@@ -102,7 +102,7 @@ def parse_args(argv=None):
     parser.add_argument("--include-drive", action="store_true", help="Read-only drive collection, extended mode only.")
     parser.add_argument("--drive-id", type=lambda value: int(value, 0), default=1)
     parser.add_argument("--drive-gear-ratio", type=finite_float, default=1.0)
-    parser.add_argument("--drive-encoder-sign", type=int, choices=(-1, 1), default=1)
+    parser.add_argument("--drive-encoder-sign", type=int, choices=(-1, 1), default=-1)
     parser.add_argument("--drive-torque-sign", type=int, choices=(-1, 1), default=-1)
     args = parser.parse_args(argv)
     if not all(1 <= mid <= 254 for mid in (args.motor_id, args.drive_id)):

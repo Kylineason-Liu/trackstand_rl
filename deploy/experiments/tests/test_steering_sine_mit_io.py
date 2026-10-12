@@ -170,6 +170,7 @@ class IntegratedMITTests(unittest.TestCase):
         args = combined.parse_args([])
         self.assertEqual(combined.COMMAND_RATE_HZ, 50)
         self.assertEqual((args.motor_id, args.sign, args.torque_sign, args.gear_ratio), (2, -1, -1, 1))
+        self.assertEqual((args.drive_encoder_sign, args.drive_torque_sign), (-1, -1))
         self.assertEqual((args.amplitude, args.period, args.feedback, args.feedback_rate), (1, 1, "extended", 200))
         self.assertFalse(args.include_drive)
 

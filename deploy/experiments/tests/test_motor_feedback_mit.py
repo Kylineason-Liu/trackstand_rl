@@ -229,7 +229,7 @@ class MITFeedbackTests(unittest.TestCase):
         self.assertEqual((args.rate, args.timeout, args.duration), (200, .002, 0))
         self.assertEqual(args.motors, ["steering", "drive"])
         self.assertEqual((args.steering_id, args.drive_id), (2, 1))
-        self.assertEqual((args.steering_encoder_sign, args.drive_encoder_sign), (-1, 1))
+        self.assertEqual((args.steering_encoder_sign, args.drive_encoder_sign), (-1, -1))
         self.assertTrue(args.output.startswith("motor_feedback_mit_"))
 
     def test_f0_little_endian_units_and_nondefault_ranges(self):

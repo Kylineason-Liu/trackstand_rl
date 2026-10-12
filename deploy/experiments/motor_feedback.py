@@ -57,7 +57,7 @@ def parse_args(argv=None):
     parser.add_argument("--timeout", type=float, default=0.002, help="Maximum wait per query, seconds (default: .002).")
     parser.add_argument("--output", default=f"motor_feedback_{datetime.now():%Y%m%d_%H%M%S_%f}.csv")
     # Defaults are from deploy/source/trackstand_deploy/config/params.yaml.
-    for name, device_id, encoder_sign in (("steering", 2, -1), ("drive", 1, 1)):
+    for name, device_id, encoder_sign in (("steering", 2, -1), ("drive", 1, -1)):
         parser.add_argument(f"--{name}-id", type=lambda text: int(text, 0), default=device_id)
         parser.add_argument(f"--{name}-gear-ratio", type=float, default=1.0)
         parser.add_argument(f"--{name}-encoder-sign", type=int, choices=(-1, 1), default=encoder_sign)
