@@ -1,0 +1,67 @@
+/home/lmbike/.local/lib/python3.10/site-packages/matplotlib/projections/__init__.py:63: UserWarning: Unable to import Axes3D. This may be due to multiple versions of Matplotlib being installed (e.g. as a system package and as a pip package). As a result, the 3D projection is not available.
+  warnings.warn("Unable to import Axes3D. This may be due to multiple versions of "
+[CAPTURE] phase=+0 mode=wrapped_pi 1000/3000
+[CAPTURE] phase=+0 mode=wrapped_pi 2000/3000
+[CAPTURE] phase=+0 mode=wrapped_pi 3000/3000
+[CAPTURE] phase=+0 mode=native_unwrapped 1000/3000
+[CAPTURE] phase=+0 mode=native_unwrapped 2000/3000
+[CAPTURE] phase=+0 mode=native_unwrapped 3000/3000
+[CAPTURE] phase=+0 mode=candidate_4pi 1000/3000
+[CAPTURE] phase=+0 mode=candidate_4pi 2000/3000
+[CAPTURE] phase=+0 mode=candidate_4pi 3000/3000
+[CAPTURE] phase=+2.8 mode=wrapped_pi 1000/1500
+[CAPTURE] phase=+3.5 mode=wrapped_pi 1000/1500
+[CAPTURE] phase=+3.5 mode=native_unwrapped 1000/1500
+[CAPTURE] phase=+3.5 mode=candidate_4pi 1000/1500
+[CAPTURE] phase=-3.5 mode=wrapped_pi 1000/1500
+[CAPTURE] phase=-3.5 mode=candidate_4pi 1000/1500
+{
+  "nominal": {
+    "wrapped_pi": {
+      "encoding": "wrapped_pi",
+      "mean_completed_episode_s": 30.0,
+      "completed_episodes": 128,
+      "timeouts": 128,
+      "falls": 0,
+      "rear_native_min_rad": -0.7444667342459543,
+      "rear_native_max_rad": 0.0,
+      "native_rear_abs_over_pi_samples": 0,
+      "rear_observation_branch_jumps": 0,
+      "oob_percent": [
+        0.0,
+        0.0
+      ]
+    },
+    "native_unwrapped": {
+      "encoding": "native_unwrapped",
+      "mean_completed_episode_s": 30.0,
+      "completed_episodes": 128,
+      "timeouts": 128,
+      "falls": 0,
+      "rear_native_min_rad": -0.7444667342459543,
+      "rear_native_max_rad": 0.0,
+      "native_rear_abs_over_pi_samples": 0,
+      "rear_observation_branch_jumps": 0,
+      "oob_percent": [
+        0.0,
+        0.0
+      ]
+    },
+    "candidate_4pi": {
+      "encoding": "candidate_4pi",
+      "mean_completed_episode_s": 30.0,
+      "completed_episodes": 128,
+      "timeouts": 128,
+      "falls": 0,
+      "rear_native_min_rad": -0.7444667342459543,
+      "rear_native_max_rad": 0.0,
+      "native_rear_abs_over_pi_samples": 0,
+      "rear_observation_branch_jumps": 0,
+      "oob_percent": [
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "wall_time_s": 86.02254471796914
+}

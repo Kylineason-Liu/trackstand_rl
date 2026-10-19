@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>41050 no DR — rear-angle wrapping</title>
+<style>
+body {max-width:1200px; margin:2rem auto; padding:0 1rem; font:17px/1.5 system-ui,sans-serif; color:#182430}
+img {width:100%; height:auto; border:1px solid #ddd} figure {margin:2rem 0} figcaption {margin:.6rem 0}
+</style>
+<h1>41050 no DR: rear-angle wrapping</h1>
+<p><a href="README.md">Full report and reproduction</a> · <a href="results/summary.json">Numerical results</a> · <a href="results/comparison.csv">Comparison CSV</a></p>
+<p>In the perfect nominal evaluation, all three encodings are bitwise identical because rear angle never reaches ±π. Boundary stress tests show that encoding can matter substantially, but removing wrapping worsened the tested cases.</p>
+<figure><img src="results/nominal_wrapping_comparison.png" alt="Identical perfect nominal results"><figcaption>64 seeds × 3000 actions: all 128 completed episodes reach 30 s in each variant. Actual rear range is −0.744467…0 rad.</figcaption></figure>
+<figure><img src="results/boundary_stress_comparison.png" alt="Fixed initial wheel phase stress comparisons"><figcaption>These are separate nonzero-initial-phase tests, not the original nominal condition. Same initial physical state within each column, 16 matched seeds; only rear-angle encoding differs. Bar labels show mean duration and timeouts/16.</figcaption></figure>
+<figure><img src="results/boundary_crossing_detail.png" alt="First causal encoding difference at a boundary crossing"><figcaption>At 4.46 s, physical state, preceding actions and other twelve observations are identical. Only the supplied rear-angle branch changes. Scaled rear demand is a policy request, not measured motor torque.</figcaption></figure>
+</html>

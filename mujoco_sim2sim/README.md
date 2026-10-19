@@ -65,7 +65,28 @@ stepped per environment on the CPU. The simulation control interval stays
 0.02 s, but wall-time playback may be slower than real time with many bikes.
 `--dr`, `--base_inertia`, and no-policy task settings apply to every bike.
 
-On closing `deploy_sim`, metrics aggregate completed episodes from all bikes.
+On closing `deploy_sim`, evaluation files are saved under `logs/` with one
+shared prefix: `YYYYMMDDHHMM_<model>_<dr|no_dr>`, such as
+`202610151649_41050_no_dr`. Outputs are:
+
+- `<prefix>_epi_len_histogram.png`: episode-length distribution.
+- `<prefix>_epi_len_histogram.csv`: the ten bin counts.
+- `<prefix>_torque.png`: applied drive/steering torque plots.
+- `<prefix>_torque.npz`: raw torque data and associated step/reset information.
+- `<prefix>_summary.log`: completed-episode metrics (survival, falls, roll, speeds, drift, yaw).
+
+The timestamp uses local time when saving. If any output name already exists,
+the shared prefix receives `_2`, `_3`, ... before the output type, preserving
+earlier files and keeping every file from the same run grouped together.
+The summary requires a completed episode; torque files require recorded steps.
+Each printed completed episode contributes to the histogram
+once, including repeated episodes from the same environment. The ten bars
+cover `[0, 3)`, `[3, 6)`, ..., `[27, 30]` seconds: exact 3-second boundaries
+enter the next bin, while 30-second timeouts enter the last bin. Episodes
+still running when the window closes are excluded. No extra flag is needed;
+closing before any episode completes produces a ten-bin, all-zero histogram.
+The graph title identifies the loaded model number (from the active ONNX or
+PyTorch filename) and whether domain randomization is `ON` or `OFF`.
 For multiple environments, the torque PNG includes all traces plus their mean;
 NPZ `drive`/`steer` arrays have shape `(control_steps, num_envs)`, with environment
 IDs, seeds, and reset events `(one-based global step, environment ID)`.

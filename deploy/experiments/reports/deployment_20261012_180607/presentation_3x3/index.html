@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Policy to motor response — 3×3 presentation figure</title>
+<style>
+body { max-width: 1800px; margin: 2rem auto; padding: 0 1rem; font: 16px/1.5 system-ui, sans-serif; color: #17212c; }
+img { width: 100%; height: auto; } a { color: #1565c0; }
+.note { background: #fff5d5; padding: .8rem; }
+</style>
+<h1>Policy output → final motor request → measured response</h1>
+<p>Three attempts, three stages; steering radians on left axes, rear torque N·m on right axes.</p>
+<p><a href="policy_to_motor_3x3.png">PNG</a> · <a href="policy_to_motor_3x3.svg">SVG</a> ·
+<a href="policy_to_motor_3x3.pdf">PDF</a> · <a href="README.md">Data definitions</a> ·
+<a href="provenance.json">Provenance</a></p>
+<p class="note">2026-10-12 18:06, model 91850; command limits were enabled.
+Rear measured torque is current × B0, not independently measured shaft torque.
+The user reports early kickstand contact; persistent lean is not successful balancing.</p>
+<a href="policy_to_motor_3x3.svg"><img src="policy_to_motor_3x3.png" alt="Nine aligned panels: three attempt columns and raw output, final request, measured response rows"></a>
+</html>

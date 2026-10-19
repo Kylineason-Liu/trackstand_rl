@@ -45,24 +45,24 @@ def test_imu_mount_correction_matches_identity_case():
     assert rates == pytest.approx([0.9, 1.8, 2.7])
 
 
-def test_action_scaling_respects_narrower_configured_steering_limit():
+def test_action_scaling_bypasses_commented_narrow_steering_limit():
     steering, drive = scale_policy_action(np.array([2.0, -2.0]), math.radians(30.0))
-    assert steering == pytest.approx(math.radians(30.0))
+    assert steering == pytest.approx(3.14)
     assert drive == pytest.approx(-12.56)
 
 
-def test_action_scaling_preserves_90_degree_hardware_target_limit():
+def test_action_scaling_bypasses_commented_90_degree_target_limit():
     steering, drive = scale_policy_action(np.array([2.0, -2.0]), math.radians(90.0))
-    assert steering == pytest.approx(math.radians(90.0))
+    assert steering == pytest.approx(3.14)
     assert drive == pytest.approx(-12.56)
     steering, drive = scale_policy_action(np.array([-2.0, 2.0]), math.radians(90.0))
-    assert steering == pytest.approx(-math.radians(90.0))
+    assert steering == pytest.approx(-3.14)
     assert drive == pytest.approx(12.56)
 
 
 @pytest.mark.parametrize("raw_action", [[2.0, -2.0], [-2.0, 2.0], [0.5, -0.25]])
 def test_action_scaling_matches_unclipped_training_scales(raw_action):
-    # A nonbinding target limit isolates the action scaling from hardware safety.
+    # The retained limit argument no longer clips the scaled action.
     steering, drive = scale_policy_action(np.array(raw_action), max_steering_target_rad=10.0)
     assert steering == pytest.approx(raw_action[0] * 1.57)
     assert drive == pytest.approx(raw_action[1] * 6.28)

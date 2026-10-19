@@ -1,0 +1,581 @@
+{
+  "model": "09221945/model_91850",
+  "scales": [
+    1.57,
+    6.28
+  ],
+  "references": [
+    1.5707963267948966,
+    6.28
+  ],
+  "native_unit_tolerance": 1e-05,
+  "onnx_bag_replay_max_error": 3.814697265625e-06,
+  "versions": {
+    "mujoco": "3.12.0",
+    "numpy": "2.2.6"
+  },
+  "isaac_archived_dr": {
+    "samples": 192000,
+    "raw_abs_max": [
+      2.6422488689422607,
+      21.019495010375977
+    ],
+    "scaled_abs_max": [
+      4.1483306884765625,
+      132.00242614746094
+    ],
+    "steer_peak_deg": 237.6818404743061,
+    "count": [
+      1265,
+      171
+    ],
+    "percent": [
+      0.6588541666666667,
+      0.0890625
+    ],
+    "first_samples": 171,
+    "first_count": [
+      171,
+      171
+    ],
+    "after_first_samples": 191829,
+    "after_first_count": [
+      1094,
+      0
+    ],
+    "after_first_abs_max": [
+      4.1483306884765625,
+      2.765089750289917
+    ],
+    "raw_abs_over_one_count": [
+      1280,
+      171
+    ],
+    "steer_target_change_rate": {
+      "samples": 191829,
+      "count_over_23_9": 1385,
+      "maximum_rad_s": 236.44309997558594,
+      "meaning": "Within each environment/episode, not differences between flattened environments"
+    },
+    "physics_samples": 1536000,
+    "computed_torque_abs_max": [
+      48.2740364074707,
+      132.00242614746094
+    ],
+    "computed_torque_over_count": [
+      4335,
+      1368
+    ],
+    "diagnostic_abs_max": [
+      5.599999904632568,
+      6.28000020980835
+    ],
+    "diagnostic_over_count": [
+      0,
+      0
+    ],
+    "actual_speed_abs_max": [
+      24.27422332763672,
+      92.51143646240234
+    ],
+    "speed_over_count": [
+      671,
+      608
+    ],
+    "actual_position_abs_max_rad": 1.570893406867981,
+    "rear_submitted_ff_abs_max_nm": 132.00242614746094,
+    "shape": [
+      3000,
+      64,
+      2
+    ]
+  },
+  "mujoco_no_dr": {
+    "samples": 4460,
+    "raw_abs_max": [
+      10.847201347351074,
+      16.864646911621094
+    ],
+    "scaled_abs_max": [
+      17.030106115341187,
+      105.90998260498047
+    ],
+    "steer_peak_deg": 975.7532050689836,
+    "count": [
+      395,
+      24
+    ],
+    "percent": [
+      8.856502242152468,
+      0.5381165919282511
+    ],
+    "first_samples": 8,
+    "first_count": [
+      8,
+      8
+    ],
+    "after_first_samples": 4452,
+    "after_first_count": [
+      387,
+      16
+    ],
+    "after_first_abs_max": [
+      17.030106115341187,
+      67.57525695800781
+    ],
+    "raw_abs_over_one_count": [
+      396,
+      24
+    ],
+    "steer_target_change_rate": {
+      "samples": 4452,
+      "count_over_23_9": 1100,
+      "maximum_rad_s": 448.85134896636004,
+      "meaning": "Rate required for exact 20-ms target tracking, not a commanded/measured motor velocity"
+    },
+    "episodes": [
+      {
+        "seed": 42,
+        "begin": 0,
+        "end": 390,
+        "steps": 390,
+        "timeout": false,
+        "death": "fallen"
+      },
+      {
+        "seed": 43,
+        "begin": 390,
+        "end": 570,
+        "steps": 180,
+        "timeout": false,
+        "death": "fallen"
+      },
+      {
+        "seed": 44,
+        "begin": 570,
+        "end": 1803,
+        "steps": 1233,
+        "timeout": false,
+        "death": "fallen"
+      },
+      {
+        "seed": 45,
+        "begin": 1803,
+        "end": 2312,
+        "steps": 509,
+        "timeout": false,
+        "death": "fallen"
+      },
+      {
+        "seed": 46,
+        "begin": 2312,
+        "end": 2573,
+        "steps": 261,
+        "timeout": false,
+        "death": "fallen"
+      },
+      {
+        "seed": 47,
+        "begin": 2573,
+        "end": 3788,
+        "steps": 1215,
+        "timeout": false,
+        "death": "fallen"
+      },
+      {
+        "seed": 48,
+        "begin": 3788,
+        "end": 4333,
+        "steps": 545,
+        "timeout": false,
+        "death": "fallen"
+      },
+      {
+        "seed": 49,
+        "begin": 4333,
+        "end": 4460,
+        "steps": 127,
+        "timeout": false,
+        "death": "fallen"
+      }
+    ],
+    "physics_samples": 35680,
+    "actual_force_abs_max_nm": [
+      5.6,
+      6.28
+    ],
+    "actual_force_over_count": [
+      0,
+      0
+    ],
+    "speed_post_control_abs_max": [
+      16.07020127898458,
+      61.6
+    ],
+    "speed_pre_manual_clamp_abs_max": [
+      58.25495845334724,
+      86.16669068871009
+    ],
+    "stored_ctrl_abs_max": [
+      1.5707999467849731,
+      105.90998260498047
+    ],
+    "actual_steer_position_abs_max_rad": 1.5727400446886308
+  },
+  "mujoco_dr": {
+    "samples": 4739,
+    "raw_abs_max": [
+      12.218575477600098,
+      22.742280960083008
+    ],
+    "scaled_abs_max": [
+      19.183163499832155,
+      142.8215244293213
+    ],
+    "steer_peak_deg": 1099.1143062497918,
+    "count": [
+      434,
+      26
+    ],
+    "percent": [
+      9.15805022156573,
+      0.548638953365689
+    ],
+    "first_samples": 8,
+    "first_count": [
+      8,
+      8
+    ],
+    "after_first_samples": 4731,
+    "after_first_count": [
+      426,
+      18
+    ],
+    "after_first_abs_max": [
+      19.183163499832155,
+      60.184672889709475
+    ],
+    "raw_abs_over_one_count": [
+      434,
+      26
+    ],
+    "steer_target_change_rate": {
+      "samples": 4731,
+      "count_over_23_9": 1220,
+      "maximum_rad_s": 518.5550510659814,
+      "meaning": "Rate required for exact 20-ms target tracking, not a commanded/measured motor velocity"
+    },
+    "episodes": [
+      {
+        "seed": 42,
+        "begin": 0,
+        "end": 53,
+        "steps": 53,
+        "timeout": false,
+        "death": "fallen"
+      },
+      {
+        "seed": 43,
+        "begin": 53,
+        "end": 1553,
+        "steps": 1500,
+        "timeout": true,
+        "death": null
+      },
+      {
+        "seed": 44,
+        "begin": 1553,
+        "end": 3053,
+        "steps": 1500,
+        "timeout": true,
+        "death": null
+      },
+      {
+        "seed": 45,
+        "begin": 3053,
+        "end": 3113,
+        "steps": 60,
+        "timeout": false,
+        "death": "fallen"
+      },
+      {
+        "seed": 46,
+        "begin": 3113,
+        "end": 3159,
+        "steps": 46,
+        "timeout": false,
+        "death": "fallen"
+      },
+      {
+        "seed": 47,
+        "begin": 3159,
+        "end": 4659,
+        "steps": 1500,
+        "timeout": true,
+        "death": null
+      },
+      {
+        "seed": 48,
+        "begin": 4659,
+        "end": 4679,
+        "steps": 20,
+        "timeout": false,
+        "death": "fallen"
+      },
+      {
+        "seed": 49,
+        "begin": 4679,
+        "end": 4739,
+        "steps": 60,
+        "timeout": false,
+        "death": "fallen"
+      }
+    ],
+    "physics_samples": 37912,
+    "actual_force_abs_max_nm": [
+      5.6,
+      6.28
+    ],
+    "actual_force_over_count": [
+      0,
+      0
+    ],
+    "speed_post_control_abs_max": [
+      23.9,
+      61.6
+    ],
+    "speed_pre_manual_clamp_abs_max": [
+      66.11699883496543,
+      93.76612576927094
+    ],
+    "stored_ctrl_abs_max": [
+      1.5707999467849731,
+      142.8215244293213
+    ],
+    "actual_steer_position_abs_max_rad": 1.5622766405521036
+  },
+  "bike_pre_disable": {
+    "samples": 894,
+    "raw_abs_max": [
+      25.02981185913086,
+      106.25117492675781
+    ],
+    "scaled_abs_max": [
+      39.29680461883545,
+      667.2573785400391
+    ],
+    "steer_peak_deg": 2251.541053009471,
+    "count": [
+      594,
+      341
+    ],
+    "percent": [
+      66.44295302013423,
+      38.14317673378076
+    ],
+    "first_samples": 3,
+    "first_count": [
+      3,
+      3
+    ],
+    "after_first_samples": 891,
+    "after_first_count": [
+      591,
+      338
+    ],
+    "after_first_abs_max": [
+      39.29680461883545,
+      667.2573785400391
+    ],
+    "raw_abs_over_one_count": [
+      594,
+      341
+    ],
+    "steer_target_change_rate": {
+      "samples": 891,
+      "count_over_23_9": 818,
+      "maximum_rad_s": 2108.177911924357,
+      "meaning": "Uses recorded bag-clock policy intervals"
+    },
+    "attempts": [
+      {
+        "attempt": 1,
+        "samples": 53,
+        "raw_abs_max": [
+          16.019269943237305,
+          92.06633758544922
+        ],
+        "scaled_abs_max": [
+          25.15025381088257,
+          578.1766000366212
+        ],
+        "steer_peak_deg": 1441.0033970463862,
+        "count": [
+          32,
+          18
+        ],
+        "percent": [
+          60.37735849056604,
+          33.9622641509434
+        ],
+        "first_samples": 1,
+        "first_count": [
+          1,
+          1
+        ],
+        "after_first_samples": 52,
+        "after_first_count": [
+          31,
+          17
+        ],
+        "after_first_abs_max": [
+          25.15025381088257,
+          578.1766000366212
+        ],
+        "raw_abs_over_one_count": [
+          32,
+          18
+        ],
+        "steer_target_change_rate": {
+          "samples": 52,
+          "count_over_23_9": 45,
+          "maximum_rad_s": 1628.8970673042593,
+          "meaning": "Uses recorded bag-clock policy intervals"
+        }
+      },
+      {
+        "attempt": 2,
+        "samples": 468,
+        "raw_abs_max": [
+          22.955429077148438,
+          92.62344360351562
+        ],
+        "scaled_abs_max": [
+          36.04002365112305,
+          581.6752258300781
+        ],
+        "steer_peak_deg": 2064.9412487610184,
+        "count": [
+          316,
+          185
+        ],
+        "percent": [
+          67.52136752136752,
+          39.52991452991453
+        ],
+        "first_samples": 1,
+        "first_count": [
+          1,
+          1
+        ],
+        "after_first_samples": 467,
+        "after_first_count": [
+          315,
+          184
+        ],
+        "after_first_abs_max": [
+          36.04002365112305,
+          581.6752258300781
+        ],
+        "raw_abs_over_one_count": [
+          316,
+          185
+        ],
+        "steer_target_change_rate": {
+          "samples": 467,
+          "count_over_23_9": 433,
+          "maximum_rad_s": 1725.064967047255,
+          "meaning": "Uses recorded bag-clock policy intervals"
+        }
+      },
+      {
+        "attempt": 3,
+        "samples": 373,
+        "raw_abs_max": [
+          25.02981185913086,
+          106.25117492675781
+        ],
+        "scaled_abs_max": [
+          39.29680461883545,
+          667.2573785400391
+        ],
+        "steer_peak_deg": 2251.541053009471,
+        "count": [
+          246,
+          138
+        ],
+        "percent": [
+          65.95174262734585,
+          36.99731903485255
+        ],
+        "first_samples": 1,
+        "first_count": [
+          1,
+          1
+        ],
+        "after_first_samples": 372,
+        "after_first_count": [
+          245,
+          137
+        ],
+        "after_first_abs_max": [
+          39.29680461883545,
+          667.2573785400391
+        ],
+        "raw_abs_over_one_count": [
+          246,
+          138
+        ],
+        "steer_target_change_rate": {
+          "samples": 372,
+          "count_over_23_9": 340,
+          "maximum_rad_s": 2108.177911924357,
+          "meaning": "Uses recorded bag-clock policy intervals"
+        }
+      }
+    ],
+    "successful_send_ticks": 3022,
+    "final_encoded_abs_max": [
+      1.5707942320897232,
+      6.279900249540805
+    ],
+    "final_encoded_over_count": [
+      0,
+      0
+    ],
+    "context": "Both wheels grounded; no manual disturbance. Only rear encoder sign changed. User reports kickstand contact within less than one second after each release; exact contact time unrecorded."
+  },
+  "source_sha256": {
+    "isaaclab_train/reports/motor_limits_09221945_91850_2026-10-01/motor_limit_samples.npz": "f47602b0491f43ae642725ee455665775d94e369650098fccf22eb33476d35d9",
+    "isaaclab_train/reports/motor_limits_09221945_91850_2026-10-01/motor_limit_statistics.json": "e79c5d18283cbc8f1ed882d2739bf08efdc50e6cd1f8a0668db9e87ff0c044b5",
+    "isaaclab_train/reports/motor_limits_09221945_91850_2026-10-01/experiment.json": "0c9584e07df7279287b5e843413548a88f64f2d82d6e924c99217657d2873431",
+    "deploy/experiments/reports/deployment_20261012_180607/policy_samples.csv": "ad35a19dafce039846a6a3d7f77f93abf76efc89c8f7fbe077b8bd6d0b56ca2a",
+    "deploy/experiments/reports/deployment_20261012_180607/active_motor_commands.csv": "e37a198cc8b3c910abdce2631b5a477ae92e2510fb775708035e788d4006b660",
+    "deploy/experiments/reports/deployment_20261012_180607/summary.json": "a0496b38ca2fe55260e03eef5d491febea7876420bcd4f79df8f488e1be81989",
+    "mujoco_sim2sim/scripts/run_deploy_viewer.py": "7818d87701aa82f8a0c0fd1604f209e3d0ce8ce2f42131c7ea179bb0feef7c9e",
+    "mujoco_sim2sim/src/newbike_mujoco/env.py": "72dd3f1315bbe85a697159713423cafe7aa5639d006deec3318d38886cbf204a",
+    "mujoco_sim2sim/src/newbike_mujoco/policy.py": "97cfca1f686469becb49974c4468e83a61e02b9678d8eb95d0067dbf04bdcc9e",
+    "mujoco_sim2sim/models/trackstand_rl_0916_bike/trackstand_rl_0916.xml": "6f839f2c214da9b743cbd310a72d13ed98d383e8ac4c1d1be609eb89cb003476",
+    "mujoco_sim2sim/policies/trackstand_rl_rsl_2026-09-22_19-45-06_model_91850.onnx": "9232a0723df8806e8b5f6fb4e39a7a11ccb5af8bf058d9026eddb57dab8fd806",
+    "deploy/source/trackstand_deploy/models/trackstand_rl_rsl_2026-09-22_19-45-06_model_91850.onnx": "9232a0723df8806e8b5f6fb4e39a7a11ccb5af8bf058d9026eddb57dab8fd806",
+    "deploy/experiments/reports/20261015_deployment_failure_analysis/question_2_policy_limits/analyze.py": "68d125f0a9c7614ef0e43e30562c0daa730511b943cc97198d34150b1544f39a"
+  },
+  "mujoco_policy_row_fields": [
+    "raw_steer",
+    "raw_drive",
+    "stored_ctrl_steer_rad",
+    "stored_ctrl_drive_nm",
+    "actual_steer_rad",
+    "steer_velocity_rad_s",
+    "rear_velocity_rad_s",
+    "actual_steer_actuator_nm",
+    "actual_drive_actuator_nm"
+  ],
+  "mujoco_physics_row_fields": [
+    "steer_actuator_nm",
+    "drive_actuator_nm",
+    "steer_velocity_before_manual_clamp_rad_s",
+    "rear_velocity_before_manual_clamp_rad_s"
+  ],
+  "conditions": "New MuJoCo: actual unchanged viewer augmentation/env/policy, no GUI/XML write; seeds 42..49, one episode per seed/mode, max1500 steps, normal observation noise. All physics steps instrumented by wrapping and delegating mj_step without state changes. Isaac/bike are existing data, not rerun, and are not matched trajectories."
+}

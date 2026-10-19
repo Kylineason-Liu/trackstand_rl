@@ -1,0 +1,26 @@
+{
+  "local_links_checked": 44,
+  "missing_links": [],
+  "markdown_fences": {
+    "deploy/experiments/reports/20261015_deployment_failure_analysis/03_observation_contract_comparison.md": true,
+    "deploy/experiments/reports/20261015_deployment_failure_analysis/question_3_observations/README.md": true
+  },
+  "svg_count": 6,
+  "pdf_count": 6,
+  "pdf_headers_valid": true,
+  "python_parse_count": 3,
+  "all_independent_checks_passed": true,
+  "input_hashes": {
+    "deploy/experiments/reports/20261015_deployment_failure_analysis/question_3_observations/mujoco_observations.npz": "66b916976ac18e03219814c5b80a6c50932fab6d1d1e5bab5730fabb57c436cb",
+    "deploy/experiments/reports/20261015_deployment_failure_analysis/question_3_observations/mujoco_estimator_ablation.npz": "dda8134527470fbf3fe2442ca4e0694b54b727142c4262689eb3bc48e15c9602",
+    "deploy/experiments/reports/20261015_deployment_failure_analysis/question_3_observations/mujoco_phase_ablation.npz": "7df766de50d5aa34f42d5b3ccfdebe69d9d883e93c01484a7fe215b624ca059d",
+    "deploy/experiments/reports/deployment_20261012_180607/policy_samples.csv": "ad35a19dafce039846a6a3d7f77f93abf76efc89c8f7fbe077b8bd6d0b56ca2a",
+    "deploy/experiments/reports/20261015_deployment_failure_analysis/question_3_observations/isaac_dr_estimator_gpu/observations.npz": "c195a0de700047578129a817b14daf83578f2c58390e47850e9fd343348473ff",
+    "deploy/experiments/reports/20261015_deployment_failure_analysis/question_3_observations/isaac_dr_gpu/observations.npz": "442428f547a45b81593beac1f106117851eda6708e22bfda158ff48ac3443534",
+    "deploy/experiments/reports/20261015_deployment_failure_analysis/question_3_observations/isaac_no_dr_estimator_gpu/observations.npz": "47bfdc5bee9e877835fe74604b9bae041abd83f16d7c985f68977ea48e5430cc",
+    "deploy/experiments/reports/20261015_deployment_failure_analysis/question_3_observations/isaac_no_dr_gpu/observations.npz": "bbc8a78f0f1a2dd8eb40ca85c2ed3f5d09feb4ebc7d3c0cae0436884e7d7f03a"
+  },
+  "protected_file_count": 129,
+  "changed_protected_files": [],
+  "independent_check_count": 64
+}

@@ -1,0 +1,93 @@
+{
+  "no_dr": {
+    "policy_samples": 192000,
+    "physics_samples_per_motor": 1536000,
+    "completed_episodes": 128,
+    "scaled_demand_abs_max_rad_nm": [
+      2.557783331871033,
+      106.23838752746582
+    ],
+    "measured_joint_effort_abs_max_nm": [
+      5.437634468078613,
+      11.858068466186523
+    ],
+    "effort_over_nominal_plus_1e_5_count": [
+      0,
+      128
+    ],
+    "effort_over_nominal_plus_0_01_count": [
+      0,
+      128
+    ],
+    "after_first_action_effort_abs_max_nm": [
+      5.437634468078613,
+      2.1287755966186523
+    ],
+    "after_first_action_effort_over_nominal_plus_0_01_count": [
+      0,
+      0
+    ],
+    "clipped_estimate_abs_max_nm": [
+      5.599999904632568,
+      6.28000020980835
+    ],
+    "env0_effort_abs_max_nm": [
+      5.437623023986816,
+      11.854819297790527
+    ],
+    "env0_peak_rear_demand_nm": 105.33765464782715,
+    "max_rear_demand_environment": 2
+  },
+  "dr": {
+    "policy_samples": 192000,
+    "physics_samples_per_motor": 1536000,
+    "completed_episodes": 129,
+    "scaled_demand_abs_max_rad_nm": [
+      4.14833072423935,
+      132.00242866516115
+    ],
+    "measured_joint_effort_abs_max_nm": [
+      5.607549667358398,
+      13.132935523986816
+    ],
+    "effort_over_nominal_plus_1e_5_count": [
+      353,
+      116
+    ],
+    "effort_over_nominal_plus_0_01_count": [
+      0,
+      116
+    ],
+    "after_first_action_effort_abs_max_nm": [
+      5.607549667358398,
+      2.5316731929779053
+    ],
+    "after_first_action_effort_over_nominal_plus_0_01_count": [
+      0,
+      0
+    ],
+    "clipped_estimate_abs_max_nm": [
+      5.599999904632568,
+      6.28000020980835
+    ],
+    "env0_effort_abs_max_nm": [
+      5.602605819702148,
+      8.657841682434082
+    ],
+    "env0_peak_rear_demand_nm": 99.62798824310303,
+    "max_rear_demand_environment": 44
+  },
+  "plotted_environment": 0,
+  "peak_startup_environments": {
+    "no_dr": 2,
+    "dr": 44
+  },
+  "input_sha256": {
+    "no_dr/motor_samples.npz": "15bd401441ebc450432dc90e4a5e424efc07945e1970eff2b83321070b81da90",
+    "no_dr/experiment.json": "db08c7867ca4e3c73f990c681139d4f9a6a34c3f120f2c76f6654ffe8f419944",
+    "dr/motor_samples.npz": "a5d6b6cb44d101017daa1a93a44c0c8b0920681fd7ccbe73ff8aaa3408afdcbe",
+    "dr/experiment.json": "455d43271dba7626b60074e803afc0313916aa6a5a8296697f38cfcf976e7619",
+    "plot.py": "d9b254fa7dbaae02a152da9561dad37e620ca7ee9ee42da55dcc6e136fa559ba",
+    "sensor_validation.json": "1e8246bf90f793ba7dc916d72c56f670a4587c32f66efd9fbcac3d8ce8607403"
+  }
+}

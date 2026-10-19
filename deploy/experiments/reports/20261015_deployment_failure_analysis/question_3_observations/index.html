@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>91850 — Observation-contract investigation</title>
+<style>
+body { margin: 2rem auto; max-width: 1200px; padding: 0 1rem; font: 17px/1.5 system-ui, sans-serif; color: #17232d; }
+img { width: 100%; height: auto; border: 1px solid #ddd; }
+figure { margin: 2rem 0; } figcaption { margin: .6rem 0; }
+code { background: #f2f4f6; padding: .1rem .3rem; }
+</style>
+<h1>91850: observation-contract investigation</h1>
+<p><a href="../03_observation_contract_comparison.md">Full report</a> · <a href="README.md">Reproduction and artifact guide</a> · <a href="summary.json">Numerical results</a></p>
+<p>Deployment substitutes <code>vx = 0.07 × rear speed</code> and <code>vy = 0</code> for privileged simulated root velocities. Controlled experiments change only those two policy inputs. No runtime source, geometry, checkpoint or hardware was changed.</p>
+<figure><img src="isaac_closed_loop_observation_ablation.png" alt="Controlled Isaac comparison of original and deployment-style velocity observations"><figcaption>Actual closed-loop Isaac experiments: same policy, seed, dynamics, actions and terminations. Final unfinished episodes are excluded from the mean. Reaching the horizon is different from firing only the fallen termination.</figcaption></figure>
+<figure><img src="closed_loop_observation_ablation.png" alt="MuJoCo closed-loop observation ablations"><figcaption>Independent MuJoCo experiments with eight matched seeds. The candidate 4π rear branch is not a fully validated PhysX emulator and did not consistently improve results.</figcaption></figure>
+<figure><img src="isaac_velocity_mismatch_example.png" alt="Exact same Isaac states replayed using substituted body velocities"><figcaption>Fixed-input replay, not a new trajectory: original physical motion is held fixed. The example is deliberately selected for largest rear-action change; plotted demands are not delivered motor torque.</figcaption></figure>
+<figure><img src="velocity_substitution_effect.png" alt="Fixed-state change in action exceedances"><figcaption>All baseline simulation frames, replayed with only vx/vy replaced. Closed-loop divergence is not included in this plot.</figcaption></figure>
+<figure><img src="observation_distributions.png" alt="All thirteen policy-input distributions across platforms"><figcaption>Empirical distributions of actual policy inputs. Different state visitation and real-bike stand contact prevent interpreting these as a matched-motion calibration test.</figcaption></figure>
+<figure><img src="rear_phase_operating_regions.png" alt="Rear phase and policy output operating regions"><figcaption>These associations are not single-feature causal effects. The report separately includes an equivalent-angle, fixed-input counterexample and backend probes.</figcaption></figure>
+</html>

@@ -5,7 +5,9 @@
                obs -> policy -> scaled-actions cycle, auto-reset on death),
                like run_deploy_eval.py but visualized. Also records the
                per-step applied drive/steer torque and saves a play_eval-style
-               torque profile (torque_profile.png/.npz) next to the metrics log.
+               torque plot/data (*_torque.png/.npz) next to the summary log.
+               On exit, saves a completed-episode length histogram: ten
+               3-second bins covering 0-30 s, aggregated across all bikes.
   zero_agent : no policy at all — actuators disabled, the bike just falls
                freely from the reset pose and resets on death (sanity check
                that the model + reset protocol behave physically).
@@ -48,6 +50,7 @@ Usage:
 
 import argparse
 import os
+import re
 import sys
 import time
 
@@ -114,12 +117,62 @@ def write_metrics_log(ep_records, log_path, num_envs=1):
     print(f"[INFO] metrics log written to: {log_path}")
 
 
+def _evaluation_output_base(output_dir, policy_path, enable_dr):
+    """Choose one timestamp/model/DR prefix for all reports, preserving earlier runs."""
+    policy_name = os.path.basename(policy_path)
+    model = re.search(r"model_(\d+)", policy_name)
+    model_id = model.group(1) if model else os.path.splitext(policy_name)[0]
+    stem = f"{time.strftime('%Y%m%d%H%M')}_{model_id}_{'dr' if enable_dr else 'no_dr'}"
+    out_base = os.path.join(output_dir, stem)
+    endings = ("_epi_len_histogram.png", "_epi_len_histogram.csv", "_torque.png", "_torque.npz", "_summary.log")
+    suffix = 2
+    while any(os.path.exists(out_base + ending) for ending in endings):
+        out_base = os.path.join(output_dir, f"{stem}_{suffix}")
+        suffix += 1
+    return out_base
+
+
+def _plot_episode_length_distribution(ep_records, out_base, policy_path, enable_dr):
+    """Count completed episodes in [0, 3), ..., [27, 30] s; save PNG and counts."""
+    lengths_s = np.asarray([record[0] for record in ep_records]) * BikeBalanceEnv.CTRL_DT
+    edges_s = np.arange(0.0, 31.0, 3.0)
+    counts, _ = np.histogram(lengths_s, bins=edges_s)
+    policy_name = os.path.basename(policy_path)
+    model = re.search(r"model_\d+", policy_name)
+    model_label = model.group() if model else policy_name
+
+    fig, ax = plt.subplots(figsize=(10, 5))
+    bars = ax.bar(edges_s[:-1], counts, width=3.0, align="edge", color="#1f77b4", edgecolor="white")
+    ax.bar_label(bars, padding=3)
+    ax.set_xticks(edges_s)
+    ax.set_xlim(0, 30)
+    ax.set_ylim(0, max(1, int(counts.max()) * 1.15))
+    ax.yaxis.set_major_locator(matplotlib.ticker.MaxNLocator(integer=True))
+    ax.set_xlabel("Episode length (s)")
+    ax.set_ylabel("Number of completed episodes")
+    ax.set_title(f"Episode length distribution — {len(ep_records)} completed episodes\n"
+                 f"{model_label} | Domain randomization: {'ON' if enable_dr else 'OFF'}")
+    ax.set_axisbelow(True)
+    ax.grid(axis="y", alpha=0.25)
+    fig.tight_layout(rect=(0, 0.05, 1, 1))
+    fig.text(0.5, 0.02, "Bins: [0, 3), ..., [27, 30] s. Timeouts included; unfinished episodes excluded.",
+             ha="center", fontsize=9)
+    fig.savefig(out_base + "_epi_len_histogram.png", dpi=150)
+    plt.close(fig)
+    np.savetxt(
+        out_base + "_epi_len_histogram.csv",
+        np.column_stack((edges_s[:-1], edges_s[1:], counts)), delimiter=",",
+        header="start_s,end_s,episode_count", comments="", fmt=("%.1f", "%.1f", "%d"),
+    )
+    print(f"[INFO] episode length distribution written: {out_base}_epi_len_histogram.png / .csv")
+
+
 def _plot_torque_traces(tau_eps, drive_lim, steer_lim, out_base):
     """play_eval-style torque profile: applied drive/steer torque vs step with
     +-forcerange dashed lines. The single-env MuJoCo analog of play_eval's
     6-panel plot (MuJoCo's ``actuator_force`` IS the post-forcerange-clip
     applied torque, matching the sim's ``applied_torque``). Episode boundaries
-    are dotted vertical lines. Saved as <out_base>_torque_profile.png (+ raw .npz).
+    are dotted vertical lines. Saved as <out_base>_torque.png (+ raw .npz).
     """
     boundaries = np.cumsum([len(e) for e in tau_eps])[:-1]
     steps = np.concatenate([np.arange(len(e), dtype=float) for e in tau_eps])
@@ -139,10 +192,10 @@ def _plot_torque_traces(tau_eps, drive_lim, steer_lim, out_base):
     axes[0].set_title(f"applied motor torque vs step — MuJoCo deploy_sim ({len(tau_eps)} episode(s))")
     axes[-1].set_xlabel("step")
     fig.tight_layout()
-    fig.savefig(out_base + "_torque_profile.png", dpi=150)
+    fig.savefig(out_base + "_torque.png", dpi=150)
     plt.close(fig)
-    np.savez(out_base + "_torque_profile.npz", steps=steps, boundaries=boundaries, drive=drive, steer=steer)
-    print(f"[INFO] torque profile written to: {out_base}_torque_profile.png / .npz")
+    np.savez(out_base + "_torque.npz", steps=steps, boundaries=boundaries, drive=drive, steer=steer)
+    print(f"[INFO] torque profile written to: {out_base}_torque.png / .npz")
 
 
 def _plot_multi_torque_traces(traces, resets, drive_lim, steer_lim, out_base, seed):
@@ -164,16 +217,16 @@ def _plot_multi_torque_traces(traces, resets, drive_lim, steer_lim, out_base, se
     axes[0].set_title(f"Applied motor torque — {torque.shape[1]} independent environments")
     axes[-1].set_xlabel("global control step (0.02 s each)")
     fig.tight_layout()
-    fig.savefig(out_base + "_torque_profile.png", dpi=150)
+    fig.savefig(out_base + "_torque.png", dpi=150)
     plt.close(fig)
     np.savez(
-        out_base + "_torque_profile.npz", steps=steps,
+        out_base + "_torque.npz", steps=steps,
         drive=torque[:, :, 0], steer=torque[:, :, 1],
         env_ids=np.arange(torque.shape[1]), seeds=seed + np.arange(torque.shape[1]),
         reset_events=np.asarray(resets, dtype=int).reshape(-1, 2),
         control_dt=BikeBalanceEnv.CTRL_DT,
     )
-    print(f"[INFO] all-environment torque profile written: {out_base}_torque_profile.png / .npz")
+    print(f"[INFO] all-environment torque profile written: {out_base}_torque.png / .npz")
 
 
 def _positive_int(value):
@@ -356,6 +409,7 @@ def main():
         pt_path = args.pt if args.pt is not None else (
             TRACKSTAND_EXPORT_PT if trackstand_mode else os.path.join(ROOT, "policies/model_500.pt"))
         policy = DeployedPolicy(onnx_path=onnx_path, pt_path=pt_path)
+        loaded_policy_path = onnx_path if policy.backend == "onnxruntime" else pt_path
         print(f"[INFO] task=deploy_sim  policy backend: {policy.backend}")
         print(f"[INFO]   onnx: {onnx_path}")
         # deploy_sim terminations: the env's default envelope — time_out
@@ -445,10 +499,12 @@ def main():
     if args.task == "deploy_sim":
         if ep_tau:
             tau_eps.append(np.array(ep_tau))  # the partial episode before the window closed
-        out_base = os.path.join(ROOT, "logs", f"deploy_sim_{time.strftime('%m%d%H%M%S')}")
-        os.makedirs(os.path.dirname(out_base), exist_ok=True)
+        output_dir = os.path.join(ROOT, "logs")
+        os.makedirs(output_dir, exist_ok=True)
+        out_base = _evaluation_output_base(output_dir, loaded_policy_path, args.dr)
         if ep_records:
-            write_metrics_log(ep_records, out_base + ".log", num_envs=args.num_envs)
+            write_metrics_log(ep_records, out_base + "_summary.log", num_envs=args.num_envs)
+        _plot_episode_length_distribution(ep_records, out_base, loaded_policy_path, args.dr)
         if tau_eps:
             _plot_torque_traces(tau_eps, drive_lim, steer_lim, out_base)
         if torque_traces:

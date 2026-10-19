@@ -1,0 +1,22 @@
+/home/lmbike/.local/lib/python3.10/site-packages/matplotlib/projections/__init__.py:63: UserWarning: Unable to import Axes3D. This may be due to multiple versions of Matplotlib being installed (e.g. as a system package and as a pip package). As a result, the 3D projection is not available.
+  warnings.warn("Unable to import Axes3D. This may be due to multiple versions of "
+{
+  "verified_first_difference_rows": 96,
+  "example": {
+    "initial_phase_rad": 2.8,
+    "alternative": "native_unwrapped",
+    "seed": 42,
+    "first_different_tick": 223,
+    "first_different_time_s": 4.46,
+    "native_rear_position_rad": -3.150965508065936,
+    "wrapped_observation_rad": 3.1322197914123535,
+    "alternative_observation_rad": -3.150965452194214,
+    "wrapped_raw_steer": -0.32029226422309875,
+    "alternative_raw_steer": -0.39715054631233215,
+    "wrapped_raw_rear": -0.24847480654716492,
+    "alternative_raw_rear": -0.011987228877842426,
+    "physical_state_identical": true,
+    "other_12_channels_identical": true,
+    "preceding_actions_and_states_identical": true
+  }
+}

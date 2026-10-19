@@ -156,6 +156,7 @@ def mit_node(node_module):
     node._mit_sent_this_enable = False
     node._slew_last_at = 0.0
     node._disable_wait = {}
+    node._disable_f1_wait = {}  # Match the current CF/F1 confirmation state.
     node._disable_confirmed = True
     node._disable_deadline_at = node._next_disable_retry_at = 0
     node._last_disable_errors = ()
@@ -175,6 +176,7 @@ def mit_node(node_module):
     node.get_clock = Mock(return_value=SimpleNamespace(now=lambda: SimpleNamespace(
         nanoseconds=123456000000000, to_msg=lambda: "receipt_stamp")))
     node.get_logger = Mock(return_value=Mock())
+    node.context = SimpleNamespace(ok=lambda: True)
     return node, module, clock
 
 
@@ -194,13 +196,13 @@ def confirm_disable(node, module):
 
 @pytest.mark.parametrize("enable", [0.0, 0.5, 0.500001, 1.0])
 @pytest.mark.parametrize("target,drive", [(0.1, -0.2), (2.0, -8.0), (-2.0, 8.0)])
-def test_independent_command_callback_preserves_enable_clamps_and_requested_values(mit_node, enable, target, drive):
+def test_independent_callback_preserves_enable_and_unclipped_targets(mit_node, enable, target, drive):
     node, module, clock = mit_node
     node._command_callback(module.Float64MultiArray(data=[enable, target, drive]))
     assert node._requested_enable == (enable > 0.5)
     assert node._requested_steering_target_rad == target and node._requested_drive_target_nm == drive
-    assert node._steering_target_rad == max(-math.pi / 2, min(math.pi / 2, target))
-    assert node._drive_target_nm == max(-6.28, min(6.28, drive))
+    assert node._steering_target_rad == target
+    assert node._drive_target_nm == drive
     assert node._command_monotonic == clock.value
 
 
@@ -413,14 +415,15 @@ def test_pre_send_revalidation_rejects_stale_or_withdrawn_motion(mit_node, monke
 
 
 @pytest.mark.parametrize("dry_run", [False, True])
-def test_slew_jitter_uses_logical_send_time_without_faking_wire_feedback(mit_node, dry_run):
+def test_direct_target_under_jitter_does_not_fake_wire_feedback(mit_node, dry_run):
     node, module, clock = mit_node
     node._dry_run = dry_run
     node._requested_steering_target_rad = node._steering_target_rad = 1.0
     node._control_tick()
     clock.value += .008
     node._control_tick()
-    assert record(node, module)["slewed_steering_target_rad"] == pytest.approx(.3107)
+    assert record(node, module)["slewed_steering_target_rad"] == pytest.approx(1.0)
+    assert record(node, module)["steering_slew_limited"] == 0
     if dry_run:
         assert node._mit_last_sent_at == 0 and not node._mit_sent_this_enable
         assert math.isnan(record(node, module)["mit_actual_send_interval_ms"])
@@ -529,22 +532,74 @@ def test_mit_deadline_dispatch_does_not_add_a_rear_command(mit_node):
     assert [call.args[0] for call in node._tx_bus.send.call_args_list] == [0x502]
 
 
-def test_mit_slew_uses_200hz_actuation_interval(mit_node):
+def test_mit_direct_target_is_not_slewed_over_200hz_ticks(mit_node):
     node, module, _ = mit_node
     node._steering_target_rad = node._requested_steering_target_rad = 1.57
     node._control_tick()
-    assert record(node, module)["slewed_steering_target_rad"] == pytest.approx(23.9 / 200)
-    assert record(node, module)["steering_slew_limited"] == 1
+    assert record(node, module)["slewed_steering_target_rad"] == pytest.approx(1.57)
+    assert record(node, module)["steering_slew_limited"] == 0
 
 
-@pytest.mark.parametrize("target_sign", [-1, 1])
-def test_encoded_position_rounds_inside_ninety_degree_limit(mit_node, target_sign):
-    node, _, _ = mit_node
-    result, _ = node._send_mit(target_sign * node._steering_limit_rad)
+@pytest.mark.parametrize("target", [-2.8, -math.pi / 2, 0.0, math.pi / 2, 2.8])
+def test_encoded_position_does_not_apply_commented_travel_clamp(mit_node, target):
+    node, module, _ = mit_node
+    result, native = node._send_mit(target)
     assert result.success
     joint_target = node._steering.encoder_sign * (node._mit_encoded_command.position_rad - node._mit_zero_rad)
-    assert abs(joint_target) <= node._steering_limit_rad
-    assert abs(joint_target - target_sign * node._steering_limit_rad) <= 6 / 65535
+    assert joint_target == pytest.approx(target, abs=3 / 65535)
+    assert node._tx_bus.send.call_args.args == (
+        0x502, module.mit_motion_payload(native, node._mit_ranges, node._mit_kp, node._mit_kd),
+    )
+
+
+@pytest.mark.parametrize("sign", [-1.0, 1.0])
+def test_oversized_policy_request_passes_scaling_callback_and_mit_c0_encoding(mit_node, sign):
+    # An actual recorded startup-sized request: no real CAN interface is opened.
+    import numpy as np
+    from trackstand_deploy.contracts import scale_policy_action
+
+    node, module, _ = mit_node
+    raw_action = np.array([sign * 1.599545, sign * 16.720318], dtype=np.float32)
+    steering, rear = scale_policy_action(raw_action, math.pi / 2)
+    node._drive.velocity_rad_s = sign * 60.0
+    node._command_callback(module.Float64MultiArray(data=[1.0, steering, rear]))
+    node._control_tick()
+    data = record(node, module)
+    assert abs(steering) > math.pi / 2 and abs(rear) > 6.28
+    assert data["bounded_steering_target_rad"] == steering
+    assert data["bounded_drive_target_nm"] == rear
+    assert data["slewed_steering_target_rad"] == steering
+    assert data["steering_target_clipped"] == data["drive_target_clipped"] == data["steering_slew_limited"] == 0
+    assert data["drive_torque_saturated"] == 0
+    assert data["drive_final_torque_nm"] == pytest.approx(rear - sign * 3.0)
+    motion = {call.args[0]: call.args[1] for call in node._tx_bus.send.call_args_list}
+    encoded = module.parse_mit_motion(motion[0x502], node._mit_ranges)
+    assert node._steering.encoder_sign * (encoded.position_rad - node._mit_zero_rad) == pytest.approx(
+        steering, abs=3 / 65535,
+    )
+    encoded_rear_nm = module.parse_current_feedback(motion[0x101]) * 0.3 * node._drive.torque_sign
+    assert encoded_rear_nm == pytest.approx(rear - sign * 3.0, abs=0.00015)
+
+
+@pytest.mark.parametrize("target", [-3.2, 3.2])
+def test_disabled_travel_cap_does_not_bypass_mit_protocol_range(mit_node, target):
+    node, module, _ = mit_node
+    node._command_callback(module.Float64MultiArray(data=[1.0, target, 105.0]))
+    node._control_tick()
+    assert node._fault_latched and node._fault_reason == "steering_mit_send_failed"
+    assert not any(call.args[0] == 0x502 for call in node._tx_bus.send.call_args_list)
+    assert not any(call.args[0] == 0x101 and call.args[1][0] == 0xC0
+                   and parse_current_feedback(call.args[1]) != 0 for call in node._tx_bus.send.call_args_list)
+
+
+def test_unclipped_current_overflow_still_faults_and_disables(mit_node):
+    node, module, _ = mit_node
+    node._command_callback(module.Float64MultiArray(data=[1.0, 0.2, 1e9]))
+    node._control_tick()
+    assert node._fault_latched and node._fault_reason == "drive_can_send_failed"
+    assert node._disable_wait
+    assert not any(call.args[0] == 0x101 and call.args[1][0] == 0xC0
+                   and parse_current_feedback(call.args[1]) != 0 for call in node._tx_bus.send.call_args_list)
 
 
 def test_dry_run_never_sends_even_if_enabled(mit_node):
@@ -1174,7 +1229,7 @@ def test_old_inactive_feedback_does_not_fault_a_new_enable(mit_node):
     assert not node._hard_fault and node._mit_sent_this_enable
 
 
-def test_new_episode_slew_does_not_use_time_spent_disabled(mit_node):
+def test_new_episode_submits_direct_target_without_disabled_time_slew(mit_node):
     node, module, clock = mit_node
     node._control_tick()
     node._requested_enable = False
@@ -1187,7 +1242,8 @@ def test_new_episode_slew_does_not_use_time_spent_disabled(mit_node):
     node._requested_enable = True
     node._steering_target_rad = node._requested_steering_target_rad = 1.57
     node._control_tick()
-    assert record(node, module)["slewed_steering_target_rad"] == pytest.approx(23.9 / 200)
+    assert record(node, module)["slewed_steering_target_rad"] == pytest.approx(1.57)
+    assert record(node, module)["steering_slew_limited"] == 0
 
 
 @pytest.mark.parametrize("motor_name,speed,reason", [

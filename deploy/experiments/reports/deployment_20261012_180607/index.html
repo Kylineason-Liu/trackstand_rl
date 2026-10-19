@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Corrected-sign Trackstand deployment — 2026-10-12 18:06</title>
+<style>
+body { margin: 2rem auto; max-width: 1450px; padding: 0 1rem; font: 16px/1.5 system-ui, sans-serif; color: #17212c; }
+a { color: #0864b0; } img { width: 100%; height: auto; border: 1px solid #d6dce2; }
+.note { background: #fff5d5; padding: .8rem 1rem; border-left: 4px solid #c79500; }
+h2 { margin-top: 2rem; } small { color: #465563; }
+</style>
+<h1>Corrected-sign deployment analysis</h1>
+<p>Recording: <code>rosbag2_2026_10_12-18_06_07</code>. 82.416 s; 3 attempts; 894 policy samples.</p>
+<p><a href="README.md">Full report, ranked causes and proposed tests</a> · <a href="summary.json">Statistics</a> ·
+<a href="policy_samples.csv">Policy CSV</a> · <a href="active_motor_commands.csv">Successful motor-command CSV</a> ·
+<a href="tracking_lag_scan.csv">Alignment scans</a> · <a href="rear_phase_sensitivity.csv">Phase replays</a></p>
+<p class="note">The user reports that a kickstand caught the bike less than one second after each release.
+Exact contact times are not recorded. Stable lean and gray intervals are not free balancing;
+the first second can already include support contact. One-second markers use inference time, not measured servo-release time.
+Main traces are not artificially time-shifted.
+Alignment scans and phase replays are explicitly offline diagnostics, not alternate hardware experiments.</p>
+<h2>Early motion: first 0.8 seconds</h2>
+<p>Roll, clipped policy target, submitted MIT target, measured position/current, wheel speed and input phase.</p>
+<a href="startup.svg"><img src="startup.png" alt="Early tilt and control activity during all three attempts"></a>
+<h2>Complete policy-active attempts</h2>
+<p>Gray intervals begin at one second after first inference and flag later support-affected data, not an exact contact timestamp.</p>
+<a href="attempts.svg"><img src="attempts.png" alt="Full attempt traces with support-contaminated intervals marked"></a>
+<h2>Unclipped policy requests</h2>
+<a href="policy_requests.svg"><img src="policy_requests.png" alt="Scaled policy requests and independent deployment limits"></a>
+<h2>Rear request, damping, current and speed</h2>
+<a href="rear_control.svg"><img src="rear_control.png" alt="Early rear current command decomposition and speed reversals"></a>
+<h2>Steering and rear recorded alignment</h2>
+<p>Correlation versus held-input shift is descriptive closed-loop alignment, not a universal firmware dead time.</p>
+<a href="tracking_alignment.svg"><img src="tracking_alignment.png" alt="Tracking correlation as a function of command shift"></a>
+<h2>Rear position branch sensitivity</h2>
+<p>Dashed traces change only recorded position inputs for replay; no alternate physics/contact trajectory was simulated.</p>
+<a href="rear_phase.svg"><img src="rear_phase.png" alt="Wrapped rear phase and explicitly labelled offline policy replay"></a>
+<h2>Timing, freshness and stopped control</h2>
+<a href="timing.svg"><img src="timing.png" alt="RC state, policy activity, control intervals and sensor ages"></a>
+<p><small>Offline analysis only. Original data and deployment sources unchanged. Open SVG links for full-resolution plots.</small></p>
+</html>

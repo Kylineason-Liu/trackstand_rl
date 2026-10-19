@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Motor-specific overlays — middle five seconds</title>
+<style>
+body { max-width: 1800px; margin: 2rem auto; padding: 0 1rem; font: 16px/1.5 system-ui, sans-serif; color: #17212c; }
+img { width: 100%; height: auto; } a { color: #1565c0; }
+.note { background: #fff5d5; padding: .8rem; }
+</style>
+<h1>Motor-specific overlays: middle five seconds</h1>
+<p>Attempt columns 1–3; steering radians on the top row, rear N·m on the bottom row.
+Blue: scaled raw policy output. Orange: final encoded request. Green: measured response.</p>
+<p><a href="motor_overlay_middle_5s.png">PNG</a> · <a href="motor_overlay_middle_5s.svg">SVG</a> ·
+<a href="motor_overlay_middle_5s.pdf">PDF</a> · <a href="README.md">Data definitions</a> ·
+<a href="provenance.json">Provenance</a></p>
+<p class="note">Attempt 1 has only 1.04 s of policy activity: surrounding time is blank,
+not fabricated. All curves share a linear physical-unit axis; full raw range is retained.
+Rear feedback torque is current × B0, not independently measured shaft torque.
+Command limits were enabled; early kickstand contact was reported.</p>
+<a href="motor_overlay_middle_5s.svg"><img src="motor_overlay_middle_5s.png"
+alt="Six motor-specific panels overlaying scaled policy output, encoded request and measured response"></a>
+</html>

@@ -1,0 +1,100 @@
+{
+  "bag": "/home/lmbike/trackstand_rl/deploy/experiments/logs/rosbag2_2026_10_12-18_06_07/rosbag2_2026_10_12-18_06_07_0.mcap",
+  "bag_sha256": "24be09c76b25d338c58ca6ae3d95bd468107a4afb4fa5b38139a1d8e568c3e78",
+  "policy": "trackstand_rl_rsl_2026-09-22_19-45-06_model_91850.onnx",
+  "report_summary_sha256": "a0496b38ca2fe55260e03eef5d491febea7876420bcd4f79df8f488e1be81989",
+  "decoded_data_sha256": "a346bf667eb1d66f2edcaeb7eb447d8d47b3864e8a09d610fc608c946d5cf8c9",
+  "source_fields": {
+    "raw": "raw_action: steering*1.57 rad, rear*6.28 N m",
+    "request": "motor_control: mit_encoded_position_rad, drive_encoded_torque_nm; both send_success=true",
+    "response": "motor_state: steering_position_rad (A3), drive_torque_nm (measured current * signed B0)"
+  },
+  "time_base": "recorded timestamps within a centred 5 s window; x=0 is its start",
+  "feedback_tail_s": 0.03,
+  "pre_inference_context_s": 0.02,
+  "gap_break_threshold_s": 0.05,
+  "warning": "Rear feedback is current-derived, not independently measured shaft torque. No time shifting, filtering, interpolation or synthetic feedback. This recording predates removal of command limits. Kickstand contact <1 s after lift was reported by the user; exact contact time is unknown.",
+  "generator_sha256": "d9087d4002593a375526a1480c33df4fc324bc1832d4f8f24cb42fcea216cd83",
+  "source_presentation": "/home/lmbike/trackstand_rl/deploy/experiments/reports/deployment_20261012_180607/presentation_3x3",
+  "source_csv_sha256": {
+    "attempt_1_raw_scaled.csv": "16800e94155559fce7849d1c1efdc543ada555c9a29b6ba05b268136ef206cc7",
+    "attempt_1_motor_bound.csv": "851fbb2b47c61f15301d89d7889eed0714b385fa5b762699f95abf5c3dc423b8",
+    "attempt_1_measured.csv": "8794c18f938e3621b05d44b7cd800d3c898056c93e0a365bb34709a550dd9927",
+    "attempt_2_raw_scaled.csv": "95ea1621a921bf66735b4ceb3d1fd15c1a21af453db4e6ca4946bc7b08333218",
+    "attempt_2_motor_bound.csv": "e9fbd2267e0cbe4de6776b4d794f4ffbe91310ec1bba394da1db40d3ef2df1c6",
+    "attempt_2_measured.csv": "c6be0b5a25d537fee7336eff30d46c2c4cdcd568429d25a8e3feabedb47246a1",
+    "attempt_3_raw_scaled.csv": "55921fb1854ea8d1d553ef68b5ebe03a034890838f612cc264bf1f5163d7dc97",
+    "attempt_3_motor_bound.csv": "3b1926a74fc8d512450af615c753a9e4a360378b69e9c193ea7f174f1488a0c4",
+    "attempt_3_measured.csv": "ff41c85d32344f843ea26146e1e28ac9d65b03fae86e9822d4cc4e0a4be621d6"
+  },
+  "source_provenance_sha256": "8cb8fc08117ec7ccfaa676ecf236eedaaf70a602051837fd50d37832b325e0bf",
+  "window_duration_s": 5.0,
+  "short_attempt_handling": "Keep the available recorded attempt (including existing <=20 ms context/30 ms tail). Leave the rest of its centred 5 s window blank; never invent or repeat data.",
+  "layout": [
+    2,
+    3
+  ],
+  "primary_panels": 6,
+  "y_scale": "linear",
+  "symmetric_y_limits": {
+    "steering_rad": 50.0,
+    "rear_nm": 800.0
+  },
+  "helper_sha256": "f812669418cc1be8e423ad335c470261720eade456054e402b109c9e4f7daf74",
+  "attempts": [
+    {
+      "attempt": 1,
+      "active_duration_s": 1.0406774800000003,
+      "shorter_than_window": true,
+      "window_since_first_inference_s": [
+        -1.9796612599999999,
+        3.02033874
+      ],
+      "window_bag_s": [
+        4.182268484,
+        9.182268484
+      ],
+      "samples_per_stage": {
+        "raw_scaled": 53,
+        "motor_bound": 178,
+        "measured": 66
+      }
+    },
+    {
+      "attempt": 2,
+      "active_duration_s": 9.339206526,
+      "shorter_than_window": false,
+      "window_since_first_inference_s": [
+        2.169603263,
+        7.169603263
+      ],
+      "window_bag_s": [
+        16.010298088000003,
+        21.010298088000003
+      ],
+      "samples_per_stage": {
+        "raw_scaled": 250,
+        "motor_bound": 852,
+        "measured": 346
+      }
+    },
+    {
+      "attempt": 3,
+      "active_duration_s": 7.439092637999998,
+      "shorter_than_window": false,
+      "window_since_first_inference_s": [
+        1.219546318999999,
+        6.219546318999999
+      ],
+      "window_bag_s": [
+        33.860914500999996,
+        38.860914500999996
+      ],
+      "samples_per_stage": {
+        "raw_scaled": 249,
+        "motor_bound": 839,
+        "measured": 344
+      }
+    }
+  ]
+}

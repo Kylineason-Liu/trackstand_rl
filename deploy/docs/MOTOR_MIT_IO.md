@@ -27,14 +27,38 @@ publication and control/event telemetry. It shares only backend-neutral
 helpers in `can_protocol.py`, `mit_protocol.py`, `contracts.py` and `telemetry.py`;
 it does not import either legacy node or `python-can`.
 
-## Current safety contract (2026-10-09)
+## Current safety contract (2026-10-13)
 
-The steering **target** remains clamped to ±90° and slewed at 23.9 rad/s;
-the rear request and final damped torque remain clamped to ±6.28 N·m.
+**Experimental, limits disabled by request:** the shared policy steering clamp,
+MIT steering target clamp (including wire-rounding travel clamp), steering
+23.9 rad/s slew, and both rear ±6.28 N·m clamps are commented out, not deleted.
+Steering is `1.57*raw_action`; rear torque is
+`6.28*raw_action - 0.05*reported_rear_speed`, with no host effort cap.
+The first steering target after enable is submitted directly, without a ramp.
+Raw requests can exceed motor capability; 91850's ideal-zero rear request is
+about 105 N·m. This is not safe-to-balance certification. Independent motor
+current protection, physical support and emergency stopping are essential
+before a powered test; current firmware total-PD protection is unverified.
+
+Protocol bounds are unchanged: powered startup still configures F0 Pos_Max=3
+native motor rad, and encoding a target outside that range faults rather than
+clipping or wrapping it. C0 still rejects non-finite/out-of-int32 current values;
+representability is not motor current protection. Watchdogs, fault latches,
+RC-down/confirmed-disable handling, gains, signs and rates are unchanged.
+To restore host limits, uncomment the marked limiter blocks in `contracts.py`
+and `motor_mit_io.py`; the bypass assignments precede those blocks. Update the
+startup warning, documentation and test expectations when restoring them.
+`max_steering_target_rad` no longer clips policy output. MIT's
+`steering_limit_rad` remains for startup compatibility/validation, not target
+clipping. `bounded_*` telemetry now equals the requested targets;
+`slewed_steering_target_rad` retains its field name but holds the direct
+submitted/prepared target. While enabled, `steering_slew_limited` is false and
+`drive_torque_saturated` is false; neither proves safe motion/current.
+
 Measured steering overtravel and steering/rear overspeed no longer latch
 this backend. Their feedback is still published and used where needed,
-but a bounded target does not guarantee bounded physical motion.
-Legacy C0/C2 backends retain their measured-angle/speed checks.
+and no target clamp currently contains the MIT command.
+Legacy C0/C2 backends retain their own clamps/slew and measured-angle/speed checks.
 
 The shared `policy_controller` no longer applies the former 30° roll
 cutoff, regardless of motor backend. It retains inversion detection
@@ -63,7 +87,7 @@ it can be true during missing-feedback startup without a hard fault.
 | 200 Hz (`MIT_RATE_HZ`) | One CAN-owner actuation loop sends MIT steering and C0 rear torque, checks safety, and publishes `/trackstand/motor_control`. |
 
 Steering requests zero velocity/zero feedforward torque, Kp=10 and Kd=0.2 in
-**native motor units**. Rear damping, gains, signs, limits and the default
+**native motor units**. Rear damping, gains, signs and the default
 80 ms command / 50 ms feedback watchdogs are unchanged. The current policy
 target is held between its 50 Hz updates; 200 Hz CAN sends do not refresh
 the ROS-command watchdog. Actual rates may be lower under host/CAN load.
@@ -118,9 +142,9 @@ still gates enable without latching an episode fault. Ordinary
 latched watchdog/send faults clear only with RC down, confirmed disable,
 fresh encoder/B0 readiness, and unwrapped steering strictly inside ±5°.
 `mit_restart_required` distinguishes these cases in control/status.
-The first target step of every enable cycle is bounded to 23.9/200=0.1195 rad;
-a delayed step is capped at two actuation intervals (0.239 rad). Time spent
-disabled cannot enlarge it. The first hard-fault reason is
+The former first-step bound 23.9/200=0.1195 rad and delayed-step cap
+0.239 rad are commented out with the slew limiter. Enable now submits the
+full requested target at the next scheduled MIT send. The first hard-fault reason is
 retained through subsequent disable/shutdown failures.
 
 Both motor sends revalidate safety **after payload encoding**, without ROS
@@ -131,8 +155,8 @@ counter remembers RC down even if up follows before a motor tick or during
 the tick. A rapid down/up cancellation latches `enable_withdrawn_during_control`
 until a safe down/reset. If steering was already submitted when the gate
 closes, rear motion is withheld and both motors enter confirmed-disable
-handling. Dry-run now uses separate logical slew timestamps to match
-jittered powered scheduling, without fabricating actual MIT sends or F1 feedback.
+handling. Dry-run retains separate logical send timestamps for jittered
+dispatch scheduling, without fabricating actual MIT sends or F1 feedback.
 
 Control timestamps still identify tick start; age/readiness fields reflect
 the latest safety check within that tick. Events additionally expose each

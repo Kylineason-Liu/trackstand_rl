@@ -25,6 +25,9 @@ Domain randomization is OFF by default. Pass --dr to enable the task's full
 per-episode randomization from the first reset; there is no DR ramp. Observation
 white noise is unchanged. mean_reward is NOT comparable across reward-weight
 changes — rank configs by episode length / roll metrics instead.
+
+Pass --pure_survival to keep only time_out and fallen terminations, disabling
+yaw_deviation, drifted, wheel_net and diverged. Metrics/rewards/DR are unchanged.
 """
 
 """Launch Isaac Sim Simulator first."""
@@ -36,6 +39,7 @@ from isaaclab.app import AppLauncher
 
 # local imports
 import cli_args  # isort: skip
+from scripts.evaluation_options import add_evaluation_args, configure_pure_survival
 
 parser = argparse.ArgumentParser(description="Evaluate an RSL-RL checkpoint with summary metrics.")
 parser.add_argument("--num_envs", type=int, default=64, help="Number of environments to simulate.")
@@ -48,6 +52,7 @@ parser.add_argument(
     help="Env steps to run (~2 episodes/env at the 1500-step / 30s cap).",
 )
 cli_args.add_rsl_rl_args(parser)
+add_evaluation_args(parser)
 AppLauncher.add_app_launcher_args(parser)
 args_cli, hydra_args = parser.parse_known_args()
 unknown_flags = [arg for arg in hydra_args if arg.startswith("-")]
@@ -162,6 +167,7 @@ def main(env_cfg, agent_cfg):
     env_cfg.scene.num_envs = args_cli.num_envs if args_cli.num_envs is not None else env_cfg.scene.num_envs
 
     configure_domain_randomization(env_cfg, args_cli.dr)
+    configure_pure_survival(env_cfg, args_cli.pure_survival)
 
     agent_cfg = handle_deprecated_rsl_rl_cfg(agent_cfg, installed_version)
     env_cfg.seed = agent_cfg.seed
@@ -369,6 +375,8 @@ def main(env_cfg, agent_cfg):
     emit("=" * 64)
     emit(f"  EVAL SUMMARY  —  {os.path.basename(resume_path)}")
     emit(f"  {num_envs} envs x {args_cli.num_steps} steps  |  {n_ep} completed episodes")
+    if args_cli.pure_survival:
+        emit("  termination_mode       : pure_survival (time_out, fallen only)")
     emit("=" * 64)
     if n_ep == 0:
         emit("  No episode completed within --num_steps. Increase it, or the")

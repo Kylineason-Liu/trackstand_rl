@@ -1,0 +1,116 @@
+{
+  "bag": "/home/lmbike/trackstand_rl/deploy/experiments/logs/rosbag2_2026_10_12-18_06_07/rosbag2_2026_10_12-18_06_07_0.mcap",
+  "bag_sha256": "24be09c76b25d338c58ca6ae3d95bd468107a4afb4fa5b38139a1d8e568c3e78",
+  "policy": "trackstand_rl_rsl_2026-09-22_19-45-06_model_91850.onnx",
+  "report_summary_sha256": "a0496b38ca2fe55260e03eef5d491febea7876420bcd4f79df8f488e1be81989",
+  "decoded_data_sha256": "a346bf667eb1d66f2edcaeb7eb447d8d47b3864e8a09d610fc608c946d5cf8c9",
+  "source_fields": {
+    "raw": "raw_action: steering*1.57 rad, rear*6.28 N m",
+    "request": "motor_control: mit_encoded_position_rad, drive_encoded_torque_nm; both send_success=true",
+    "response": "motor_state: steering_position_rad (A3), drive_torque_nm (measured current * signed B0)"
+  },
+  "time_base": "bag record time minus first inference time; each topic keeps its own timestamps",
+  "feedback_tail_s": 0.03,
+  "pre_inference_context_s": 0.02,
+  "gap_break_threshold_s": 0.05,
+  "warning": "Rear feedback is current-derived, not independently measured shaft torque. No time shifting, filtering, interpolation or synthetic feedback. This recording predates removal of command limits. Kickstand contact <1 s after lift was reported by the user; exact contact time is unknown.",
+  "primary_panels": 9,
+  "layout": [
+    3,
+    3
+  ],
+  "left_axis_rad_limits": [
+    50.0,
+    2.0,
+    2.0
+  ],
+  "right_axis_nm_limits": [
+    800.0,
+    8.0,
+    8.0
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "first_inference_bag_s": 6.161929744,
+      "counts": [
+        {
+          "stage": "raw_scaled",
+          "rows": 53,
+          "finite_steering": 53,
+          "finite_rear": 53,
+          "gaps_over_50ms": 0
+        },
+        {
+          "stage": "motor_bound",
+          "rows": 178,
+          "finite_steering": 178,
+          "finite_rear": 178,
+          "gaps_over_50ms": 0
+        },
+        {
+          "stage": "measured",
+          "rows": 66,
+          "finite_steering": 66,
+          "finite_rear": 66,
+          "gaps_over_50ms": 1
+        }
+      ]
+    },
+    {
+      "attempt": 2,
+      "first_inference_bag_s": 13.840694825000002,
+      "counts": [
+        {
+          "stage": "raw_scaled",
+          "rows": 468,
+          "finite_steering": 468,
+          "finite_rear": 468,
+          "gaps_over_50ms": 0
+        },
+        {
+          "stage": "motor_bound",
+          "rows": 1601,
+          "finite_steering": 1601,
+          "finite_rear": 1601,
+          "gaps_over_50ms": 0
+        },
+        {
+          "stage": "measured",
+          "rows": 653,
+          "finite_steering": 653,
+          "finite_rear": 653,
+          "gaps_over_50ms": 0
+        }
+      ]
+    },
+    {
+      "attempt": 3,
+      "first_inference_bag_s": 32.641368182,
+      "counts": [
+        {
+          "stage": "raw_scaled",
+          "rows": 373,
+          "finite_steering": 373,
+          "finite_rear": 373,
+          "gaps_over_50ms": 0
+        },
+        {
+          "stage": "motor_bound",
+          "rows": 1243,
+          "finite_steering": 1243,
+          "finite_rear": 1243,
+          "gaps_over_50ms": 0
+        },
+        {
+          "stage": "measured",
+          "rows": 514,
+          "finite_steering": 514,
+          "finite_rear": 514,
+          "gaps_over_50ms": 0
+        }
+      ]
+    }
+  ],
+  "generator_sha256": "f812669418cc1be8e423ad335c470261720eade456054e402b109c9e4f7daf74"
+}

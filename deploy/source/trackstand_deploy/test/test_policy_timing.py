@@ -52,7 +52,7 @@ def timing(node):
 def test_normal_timing_does_not_change_action_scaling(policy_node):
     node = policy_node
     node._policy_tick()
-    node._publish_motor_command.assert_called_once_with(True, math.pi / 2, -12.56)
+    node._publish_motor_command.assert_called_once_with(True, 3.14, -12.56)
     data = timing(node)
     assert data["cycle_interval_ms"] == pytest.approx(20.0)
     assert data["imu_age_ms"] == pytest.approx(10.0)

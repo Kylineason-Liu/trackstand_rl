@@ -157,17 +157,23 @@ def build_observation(
 
 
 def scale_policy_action(raw_action: np.ndarray, max_steering_target_rad: float) -> tuple[float, float]:
-    """Apply Isaac's unclipped action scales, then the hardware steering target limit."""
+    """Apply Isaac's unclipped scales; the steering target clamp is commented out.
+
+    Keep the limit argument/validation for compatibility and restoring the clamp.
+    Legacy motor backends still enforce their own limits downstream.
+    """
     action = np.asarray(raw_action, dtype=np.float32)
     if action.shape != (ACTION_SIZE,) or not np.all(np.isfinite(action)):
         raise ValueError("policy action must contain two finite values")
     if not math.isfinite(max_steering_target_rad) or max_steering_target_rad <= 0.0:
         raise ValueError("steering target limit must be positive and finite")
-    steering = float(np.clip(
-        float(action[0]) * STEERING_ACTION_SCALE_RAD,
-        -float(max_steering_target_rad),
-        float(max_steering_target_rad),
-    ))
+    steering = float(action[0]) * STEERING_ACTION_SCALE_RAD
+    # Disabled by request: steering target clamp. Uncomment to restore.
+    # steering = float(np.clip(
+    #     float(action[0]) * STEERING_ACTION_SCALE_RAD,
+    #     -float(max_steering_target_rad),
+    #     float(max_steering_target_rad),
+    # ))
     drive = float(action[1]) * DRIVE_ACTION_SCALE_NM
     return steering, drive
 
