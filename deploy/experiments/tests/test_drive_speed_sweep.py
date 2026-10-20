@@ -48,6 +48,8 @@ class FakeCAN:
         self.reverse_speed, self.ignore_writes = False, False
         self.query_delay = 0.0002
         self.closed = False
+        self.b3_write_offset_ma, self.b3_readback_offset_ma, self.b3_writes = 0, 0, 0
+        self.drop_b3_readback = False
 
     def close(self):
         self.closed = True
@@ -74,8 +76,17 @@ class FakeCAN:
             reply = b"\xc1"+struct.pack("<i",self.speed_code)
         elif op in self.config:
             if len(data)>1 and not self.ignore_writes:
+                if op == 0xB3:
+                    self.b3_writes += 1
+                    value = struct.unpack("<I",data[1:])[0]+self.b3_write_offset_ma
+                    data = b"\xb3"+struct.pack("<I",value)
                 self.config[op] = data
             reply = self.config[op]
+            if op == 0xB3 and len(data) == 1 and self.b3_writes:
+                if self.drop_b3_readback:
+                    return len(frame)
+                value = struct.unpack("<I",reply[1:])[0]+self.b3_readback_offset_ma
+                reply = b"\xb3"+struct.pack("<I",value)
         elif op == 0xB0:
             reply = b"\xb0\x00"+struct.pack("<f",0.3)+b"\x00"
         elif op == 0xA2:
@@ -206,6 +217,79 @@ class SpeedSweepTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError,"acknowledgement"):
             self.runner.startup()
         self.assertFalse(any(data[0]==0xC1 for _,data in self.bus.frames))
+        self.assertTrue(self.runner.shutdown())
+
+    def test_b3_comparison_is_one_sided_one_ma_and_rejects_zero(self):
+        for wanted,actual,expected in ((1000,1000,True),(1000,999,True),(1000,1001,False),
+                                       (1000,998,False),(1,0,False),(0,0,False)):
+            with self.subTest(wanted=wanted,actual=actual):
+                request=b"\xb3"+struct.pack("<I",wanted)
+                reply=b"\xb3"+struct.pack("<I",actual)
+                self.assertEqual(sweep.setting_matches(request,reply),expected)
+        self.assertFalse(sweep.setting_matches(b"\xb3\x01",b"\xb3\x01"))
+        self.assertFalse(sweep.setting_matches(b"\xb3\0\0\0\0",b"\xcd\0\0\0\0"))
+        self.assertFalse(sweep.setting_matches(b"\xcd\x01\xf4\x01\x00",b"\xcd\x01\xf3\x01\x00"))
+
+    def test_recorded_1000_to_999_ma_case_runs_and_restores_with_same_tolerance(self):
+        self.bus.b3_write_offset_ma=-1
+        self.runner.startup()
+        self.assertEqual(self.bus.config[0xB3],bytes.fromhex("B3E7030000"))
+        self.assertAlmostEqual(self.runner.current_limit,.999)
+        sent=[data for _,data in self.bus.frames]
+        write_index=sent.index(bytes.fromhex("B3E8030000"))
+        self.assertEqual(sent[write_index+1],b"\xb3")  # Independent read AFTER the write acknowledgement.
+        self.runner.run()
+        self.assertTrue(self.runner.shutdown())
+        self.assertEqual(self.bus.mode,0)
+        self.assertEqual(self.bus.config[0xB3],b"\xb3"+struct.pack("<I",2999))
+        self.assertTrue(any("999 mA for 1000 mA" in r.get("note","") for r in self.log.rows))
+        self.assertTrue(any(r.get("current_limit_a")==.999 for r in self.log.rows if r["record_type"]=="command"))
+
+    def test_unsafe_or_excessive_b3_acknowledgements_prevent_motion(self):
+        for offset in (1,-2,-1000):
+            with self.subTest(offset=offset):
+                self.reset_runner_for_b3_offset(offset)
+                with self.assertRaisesRegex(RuntimeError,"acknowledgement mismatch"):
+                    self.runner.startup()
+                self.assertFalse(any(data[0]==0xC1 for _,data in self.bus.frames))
+                self.bus.b3_write_offset_ma=0
+                self.assertTrue(self.runner.shutdown())
+
+    def reset_runner_for_b3_offset(self,offset):
+        self.clock=Clock()
+        self.bus=FakeCAN(self.clock)
+        self.log=MemoryLog()
+        self.runner=sweep.Sweep(self.args,self.bus,self.log,clock=self.clock)
+        self.runner.wait=self.bus.wait
+        self.bus.b3_write_offset_ma=offset
+
+    def test_b3_readback_checked_independently_even_after_valid_ack(self):
+        for offset in (1,-2):
+            with self.subTest(readback_offset=offset):
+                self.reset_runner_for_b3_offset(0)
+                self.bus.b3_readback_offset_ma=offset
+                with self.assertRaisesRegex(RuntimeError,"readback mismatch"):
+                    self.runner.startup()
+                self.assertFalse(any(data[0]==0xC1 for _,data in self.bus.frames))
+                self.bus.b3_readback_offset_ma=0
+                self.assertTrue(self.runner.shutdown())
+
+    def test_safe_readback_not_acknowledgement_sets_logged_current_limit(self):
+        self.bus.b3_write_offset_ma=-1
+        self.bus.b3_readback_offset_ma=1
+        self.runner.startup()
+        self.assertAlmostEqual(self.runner.current_limit,1.0)
+        self.runner.emit("test")
+        self.assertAlmostEqual(self.log.rows[-1]["current_limit_a"],1.0)
+        self.bus.b3_write_offset_ma=self.bus.b3_readback_offset_ma=0
+        self.assertTrue(self.runner.shutdown())
+
+    def test_missing_b3_readback_after_valid_ack_prevents_motion(self):
+        self.bus.drop_b3_readback=True
+        with self.assertRaises(TimeoutError):
+            self.runner.startup()
+        self.assertFalse(any(data[0]==0xC1 for _,data in self.bus.frames))
+        self.bus.drop_b3_readback=False
         self.assertTrue(self.runner.shutdown())
 
     def test_missing_query_stops_without_using_cached_reply(self):

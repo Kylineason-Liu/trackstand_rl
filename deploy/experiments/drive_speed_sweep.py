@@ -22,7 +22,10 @@ Before motion: CF disable confirmation; read B0/B3/CD; temporarily LOWER B3
 current ceiling to at most --current-limit-a (never raise the existing limit),
 enable CD communication watchdog, verify both by readback. These two settings
 are volatile per local CAN protocol 3.09b0 pp.9,14-15. No origins/gains/faults
-are reset. Original settings are restored ONLY after CF confirms disabled.
+are reset. B3 acknowledgement AND independent readback may be at most 1 mA
+below the requested value, never above it or zero. Actual readback is logged.
+CD remains byte-exact. The same B3 tolerance applies when restoring originals.
+Original settings are restored ONLY after CF confirms disabled.
 On crash/power loss restoration is not guaranteed; the reduced current limit
 and enabled watchdog may remain. Watchdog is communication, not independently
 verified command-age protection. Other CAN traffic may affect it.
@@ -62,6 +65,7 @@ import time
 CAN_FRAME = struct.Struct("=IB3x8s")
 CAN_MASK = 0xC00007FF
 SO_RXQ_OVFL = getattr(socket, "SO_RXQ_OVFL", 40)
+B3_DOWNWARD_TOLERANCE_MA = 1  # One protocol count; observed 1000 mA request -> 999 mA reply.
 LENGTHS = {0xA1: 5, 0xA2: 5, 0xB0: 7, 0xAE: 8, 0xB3: 5, 0xCD: 5, 0xCF: 8, 0xC1: 5}
 FIELDS = (
     "record_type", "time_unix_s", "elapsed_s", "repeat", "step", "phase", "phase_elapsed_s",
@@ -152,6 +156,19 @@ def speed_payload(args, speed):
         raise ValueError("C1 target does not fit int32 0.01-rpm units")
     encoded = args.command_sign * code * 0.01 * 2 * math.pi / 60 / args.gear_ratio
     return b"\xc1" + struct.pack("<i", code), encoded, code * 0.01
+
+
+def setting_matches(requested, reported):
+    """Only B3 permits one-count downward quantization; never accept a higher ceiling."""
+    if not requested or not reported or requested[0] != reported[0]:
+        return False
+    if requested[0] != 0xB3:
+        return reported == requested
+    if len(requested) != 5 or len(reported) != 5:
+        return False
+    wanted_ma = struct.unpack("<I", requested[1:])[0]
+    actual_ma = struct.unpack("<I", reported[1:])[0]
+    return actual_ma > 0 and 0 <= wanted_ma-actual_ma <= B3_DOWNWARD_TOLERANCE_MA
 
 
 @dataclass(frozen=True)
@@ -425,6 +442,19 @@ class Sweep:
                           query_round_trip_s=received-sent)
                 return data
 
+    def verify_setting(self, requested, reported, stage):
+        if not setting_matches(requested, reported):
+            raise RuntimeError(f"{stage} mismatch: requested={requested.hex().upper()}, "
+                               f"reported={reported.hex().upper()}")
+        if requested != reported:
+            wanted_ma = struct.unpack("<I", requested[1:])[0]
+            actual_ma = struct.unpack("<I", reported[1:])[0]
+            note = (f"{stage}: accepted B3 {actual_ma} mA for {wanted_ma} mA request "
+                    f"({wanted_ma-actual_ma} mA downward quantization)")
+            self.emit("event", note=note)
+            if stage.endswith("readback"):
+                print(note, flush=True)
+
     def startup(self):
         self.emit("event", note=json.dumps({key: str(value) if isinstance(value, Path) else value
                                            for key, value in vars(self.args).items()}, sort_keys=True))
@@ -447,10 +477,10 @@ class Sweep:
         for original, requested in configs:
             if original != requested:
                 self.saved.append(original)  # Register restoration BEFORE a write/possibly lost acknowledgement.
-                if self.request(requested[0], requested, timeout=0.25) != requested:
-                    raise RuntimeError("temporary safety setting acknowledgement mismatch")
-            if self.request(requested[0], timeout=0.25) != requested:
-                raise RuntimeError("temporary safety setting readback mismatch")
+                self.verify_setting(requested, self.request(requested[0], requested, timeout=0.25),
+                                    "temporary safety setting acknowledgement")
+            self.verify_setting(requested, self.request(requested[0], timeout=0.25),
+                                "temporary safety setting readback")
         # Refresh measurements AFTER setup, without taking a motor-origin reference.
         self.request(0xAE, timeout=0.25)
         if self.status["motor_mode"] != 0:
@@ -507,14 +537,14 @@ class Sweep:
             return False
         try:
             for original in self.saved:  # Restore B3 then CD, only while confirmed disabled.
-                if self.request(original[0], original, timeout=0.15) != original:
-                    raise RuntimeError("restoration acknowledgement mismatch")
-                if self.request(original[0], timeout=0.15) != original:
-                    raise RuntimeError("restoration readback mismatch")
+                self.verify_setting(original, self.request(original[0], original, timeout=0.15),
+                                    "restoration acknowledgement")
+                self.verify_setting(original, self.request(original[0], timeout=0.15), "restoration readback")
             if self.request(0xCF, timeout=0.15)[6] != 0:
                 raise RuntimeError("final disable not confirmed")
-            self.emit("event", note="CF disabled confirmed; original B3/CD restored and read back")
-            print("Motor disabled; original B3/CD settings restored. Wheel may still coast.", flush=True)
+            self.emit("event", note="CF disabled confirmed; original B3/CD verified, B3 may be at most 1 mA lower")
+            print("Motor disabled; B3/CD restored and verified (B3 allows up to 1 mA lower). "
+                  "Wheel may still coast.", flush=True)
             if self.log_error is not None:
                 print(f"ERROR: CSV recording incomplete: {self.log_error}", file=sys.stderr)
                 return False
