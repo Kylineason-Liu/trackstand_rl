@@ -29,7 +29,7 @@ gym.register(
     id="Trackstand-Balance-v1",
     entry_point=(
         "source.trackstand_rl.trackstand_rl.tasks.manager_based."
-        "trackstand.trackstand_bike.trackstand_rl_env:TrackstandRLEnv"
+        "trackstand.trackstand_bike.trackstand_rl_env:TrackstandRLEnvV1"
     ),
     disable_env_checker=True,
     kwargs={

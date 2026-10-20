@@ -1,0 +1,140 @@
+{
+  "all_checks_passed": true,
+  "results": [
+    {
+      "domain_randomization": false,
+      "seed": 42,
+      "num_envs": 64,
+      "ppo_updates": 2,
+      "ppo_policy_steps": 32,
+      "sampled_action_min_max": [
+        -0.9955391883850098,
+        0.9984378814697266
+      ],
+      "finite_ppo_losses": [
+        {
+          "value": 2.624786174297333,
+          "surrogate": -0.005792914982885122,
+          "entropy": 1.2185449182987214
+        },
+        {
+          "value": 2.314789962768555,
+          "surrogate": -0.008819949254393578,
+          "entropy": 1.1818956971168517
+        }
+      ],
+      "live_reward_formula_checks": {
+        "reward_checks": 34,
+        "max_reward_error": 2.9802322387695312e-08
+      },
+      "unit_steer_and_unit_drive_change_weighted_reward": [
+        -0.0020000000298023225,
+        -0.0020000000298023225
+      ],
+      "forced_reset_diagnostic": {
+        "seeded_old_wheel_angle_rad": 2.0,
+        "seeded_old_spawn_yaw_rad": 0.123,
+        "terminated_first_four": [
+          false,
+          true,
+          true,
+          false
+        ],
+        "truncated_first_four": [
+          true,
+          false,
+          true,
+          false
+        ],
+        "post_reset_wheel_angle_first_four_rad": [
+          0.0,
+          0.0,
+          0.0,
+          2.0001890659332275
+        ],
+        "post_reset_spawn_yaw_first_four_rad": [
+          0.0,
+          0.0,
+          0.0,
+          0.12300000339746475
+        ],
+        "post_reset_actual_heading_first_three_rad": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physical_joint_state_slew_target_and_encoder_observations_reset_to_zero": true,
+        "continuing_environment_preserved": true,
+        "explicit_full_reset_passed": true
+      }
+    },
+    {
+      "domain_randomization": true,
+      "seed": 42,
+      "num_envs": 64,
+      "ppo_updates": 2,
+      "ppo_policy_steps": 32,
+      "sampled_action_min_max": [
+        -0.9928817749023438,
+        0.9920178651809692
+      ],
+      "finite_ppo_losses": [
+        {
+          "value": 1.571262937784195,
+          "surrogate": -0.005349545087665319,
+          "entropy": 1.225281399488449
+        },
+        {
+          "value": 0.9527114927768707,
+          "surrogate": -0.00784022305160761,
+          "entropy": 1.231067717075348
+        }
+      ],
+      "live_reward_formula_checks": {
+        "reward_checks": 34,
+        "max_reward_error": 2.9802322387695312e-08
+      },
+      "unit_steer_and_unit_drive_change_weighted_reward": [
+        -0.0020000000298023225,
+        -0.0020000000298023225
+      ],
+      "forced_reset_diagnostic": {
+        "seeded_old_wheel_angle_rad": 2.0,
+        "seeded_old_spawn_yaw_rad": 0.123,
+        "terminated_first_four": [
+          false,
+          true,
+          true,
+          false
+        ],
+        "truncated_first_four": [
+          true,
+          false,
+          true,
+          false
+        ],
+        "post_reset_wheel_angle_first_four_rad": [
+          0.0,
+          0.0,
+          0.0,
+          2.000441789627075
+        ],
+        "post_reset_spawn_yaw_first_four_rad": [
+          0.0,
+          0.0,
+          0.0,
+          0.12300000339746475
+        ],
+        "post_reset_actual_heading_first_three_rad": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "physical_joint_state_slew_target_and_encoder_observations_reset_to_zero": true,
+        "continuing_environment_preserved": true,
+        "explicit_full_reset_passed": true
+      }
+    }
+  ],
+  "scope": "Controlled reset regressions and short PPO smoke tests, not learned-policy performance"
+}

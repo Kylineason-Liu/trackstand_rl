@@ -1,0 +1,521 @@
+{
+  "rows": 505766,
+  "duration_s": 716.0036786029996,
+  "startup_arguments": {
+    "b0_rate": 1.0,
+    "command_rate": 50.0,
+    "command_sign": -1,
+    "encoder_sign": -1,
+    "execute": true,
+    "gear_ratio": 1.0,
+    "hold": 10.0,
+    "interface": "can0",
+    "motor_id": 2,
+    "output": "/home/smallbike/trackstand_rl/deploy/experiments/logs/20261020_180044_997520_steering_speed_sweep.csv",
+    "preview": false,
+    "query_rate": 100.0,
+    "repeats": 3,
+    "rest": 2.0,
+    "settle": 5.0,
+    "speeds": [
+      1.0,
+      2.0,
+      4.0,
+      6.0,
+      8.0,
+      10.0,
+      12.0,
+      -1.0,
+      -2.0,
+      -4.0,
+      -6.0,
+      -8.0,
+      -10.0,
+      -12.0
+    ],
+    "status_rate": 5.0,
+    "torque_sign": -1
+  },
+  "user_confirmed_condition": "Front wheel fully airborne, unconstrained, no hand contact/cable tightening/stops",
+  "raw_validated_reply_counts": {
+    "CF": 3,
+    "B5": 1,
+    "C1": 35663,
+    "A3": 70952,
+    "A2": 70952,
+    "A1": 70952,
+    "AE": 3579,
+    "B0": 716
+  },
+  "input_rows_by_type": {
+    "rx": 252818,
+    "tx": 217155,
+    "command": 35663,
+    "event": 130
+  },
+  "complete_hold_plateaus": 42,
+  "retained_samples_a1": 33301,
+  "retained_samples_a2": 33305,
+  "retained_samples_a3": 33304,
+  "fit_window": "Fresh A1/A2 separately averaged over each complete hold's [1,9) seconds; 42 equal-weight points",
+  "torque_constant_nm_per_a": [
+    0.7799999713897705
+  ],
+  "unconstrained_fit": {
+    "B_nm_s_per_rad": 0.00091071349227937,
+    "coulomb_nm": 0.046036056104416766,
+    "offset_nm": 0.0012878609597628914,
+    "n_plateaus": 42,
+    "rmse_nm": 0.0026009901312355724,
+    "sse_nm2": 0.00028413628583696325,
+    "standard_errors": [
+      0.00010975740435651989,
+      0.0007922794813973726,
+      0.00041649176368458395
+    ],
+    "conditional_95pct_t_intervals": [
+      [
+        0.000688708187080634,
+        0.0011327187974781061
+      ],
+      [
+        0.04443351959126287,
+        0.04763859261757066
+      ],
+      [
+        0.00044542685108798705,
+        0.0021302950684377957
+      ]
+    ],
+    "residual_degrees_of_freedom": 39
+  },
+  "physical_nonnegative_fit": {
+    "B_nm_s_per_rad": 0.00091071349227937,
+    "coulomb_nm": 0.046036056104416766,
+    "offset_nm": 0.0012878609597628914,
+    "n_plateaus": 42,
+    "rmse_nm": 0.0026009901312355724,
+    "sse_nm2": 0.00028413628583696325
+  },
+  "conditional_bootstrap": {
+    "seed": 42,
+    "repetitions": 10000,
+    "stratified_by": "repeat and direction",
+    "B_percentile_2_5_50_97_5": [
+      0.0007001423359416409,
+      0.0009107960196207993,
+      0.0011325155444301411
+    ]
+  },
+  "by_repeat": {
+    "1": {
+      "B_nm_s_per_rad": 0.00100908806291439,
+      "coulomb_nm": 0.04486458475271881,
+      "offset_nm": 0.0013509598812602617,
+      "n_plateaus": 14,
+      "rmse_nm": 0.002115379922257083,
+      "sse_nm2": 6.264765101683735e-05,
+      "standard_errors": [
+        0.0001681696690761807,
+        0.0012134241333489329,
+        0.0006378110515288696
+      ]
+    },
+    "2": {
+      "B_nm_s_per_rad": 0.0010070476126462897,
+      "coulomb_nm": 0.046137825890286324,
+      "offset_nm": 0.0013030930732287273,
+      "n_plateaus": 14,
+      "rmse_nm": 0.003030935919224581,
+      "sse_nm2": 0.00012861201565024058,
+      "standard_errors": [
+        0.00024075807091921932,
+        0.0017380060084668193,
+        0.0009138616789196952
+      ]
+    },
+    "3": {
+      "B_nm_s_per_rad": 0.0007160833012755023,
+      "coulomb_nm": 0.047105995465516866,
+      "offset_nm": 0.001209633854615793,
+      "n_plateaus": 14,
+      "rmse_nm": 0.002233039031465862,
+      "sse_nm2": 6.981048642469994e-05,
+      "standard_errors": [
+        0.0001773889415550043,
+        0.001280928157782413,
+        0.0006732866119436358
+      ]
+    }
+  },
+  "by_direction": {
+    "-1": {
+      "B_nm_s_per_rad": 0.0008225102673644482,
+      "intercept_nm": 0.045289906770002976
+    },
+    "1": {
+      "B_nm_s_per_rad": 0.0009989656340291075,
+      "intercept_nm": 0.046782090107277574
+    }
+  },
+  "leave_one_plateau_out_B": [
+    0.0009096523979096019,
+    0.0008802558135723357,
+    0.0009033057308796442,
+    0.000910585925360675,
+    0.0009141713154131464,
+    0.0008943581512949556,
+    0.0008906424198246528,
+    0.0009477436784054253,
+    0.0009077270578979719,
+    0.0008967337903263927,
+    0.0009102283317447773,
+    0.0009105085520696712,
+    0.000925010620441022,
+    0.0009140988846349485,
+    0.000957138285847029,
+    0.0009273054360432237,
+    0.0009049815698703482,
+    0.0009096842199901657,
+    0.0009096332237084606,
+    0.0008997819050216316,
+    0.0008933366184595647,
+    0.0009444255402767768,
+    0.0009115764175744906,
+    0.0008897392139103885,
+    0.000910147121550152,
+    0.000907490332732481,
+    0.0008851153756172795,
+    0.0008651743629244181,
+    0.0009100188869252181,
+    0.0009238235532633165,
+    0.000909872548973075,
+    0.000909892237498614,
+    0.0009119160099844223,
+    0.0009213842678883963,
+    0.000884659321646568,
+    0.0009443218481368423,
+    0.0009311204517594244,
+    0.0008949058856703691,
+    0.0009108115286965967,
+    0.0009092466529171121,
+    0.0009062584177936705,
+    0.0009534450894857019
+  ],
+  "trim_sensitivity": {
+    "0": {
+      "B_nm_s_per_rad": 0.0009639666095427384,
+      "coulomb_nm": 0.045559860626840455,
+      "offset_nm": 0.0012657150299135163,
+      "n_plateaus": 42,
+      "rmse_nm": 0.0025875210155622587,
+      "sse_nm2": 0.0002812011302510064,
+      "standard_errors": [
+        0.0001091955887461893,
+        0.0007882095706893372,
+        0.0004143349749323117
+      ]
+    },
+    "1": {
+      "B_nm_s_per_rad": 0.00091071349227937,
+      "coulomb_nm": 0.046036056104416766,
+      "offset_nm": 0.0012878609597628914,
+      "n_plateaus": 42,
+      "rmse_nm": 0.0026009901312355724,
+      "sse_nm2": 0.00028413628583696325,
+      "standard_errors": [
+        0.00010975740435651989,
+        0.0007922794813973726,
+        0.00041649176368458395
+      ]
+    },
+    "2": {
+      "B_nm_s_per_rad": 0.0009027890069924407,
+      "coulomb_nm": 0.04604311746426174,
+      "offset_nm": 0.0012734707111866554,
+      "n_plateaus": 42,
+      "rmse_nm": 0.0028654367863147827,
+      "sse_nm2": 0.00034485057500737153,
+      "standard_errors": [
+        0.0001209141623539007,
+        0.0008728310631931825,
+        0.00045883711529353413
+      ]
+    },
+    "3": {
+      "B_nm_s_per_rad": 0.0009539334765290264,
+      "coulomb_nm": 0.04551868804223058,
+      "offset_nm": 0.0008810497207191181,
+      "n_plateaus": 42,
+      "rmse_nm": 0.003070855872435009,
+      "sse_nm2": 0.0003960665431492804,
+      "standard_errors": [
+        0.0001295948273278786,
+        0.0009355029315341668,
+        0.0004917304891253863
+      ]
+    },
+    "4": {
+      "B_nm_s_per_rad": 0.0008254686408869898,
+      "coulomb_nm": 0.04633884547946888,
+      "offset_nm": -0.00011585227902650644,
+      "n_plateaus": 42,
+      "rmse_nm": 0.003660144098218699,
+      "sse_nm2": 0.0005626595024284572,
+      "standard_errors": [
+        0.00015445930438510452,
+        0.0011149833483975766,
+        0.0005860921239526388
+      ]
+    }
+  },
+  "time_weighted_fit": {
+    "B_nm_s_per_rad": 0.0009045308991143306,
+    "coulomb_nm": 0.046072953979870296,
+    "offset_nm": 0.001280058058616031,
+    "n_plateaus": 42,
+    "rmse_nm": 0.0025984619900591764,
+    "sse_nm2": 0.00028358419797885637,
+    "standard_errors": [
+      0.00010965003673005736,
+      0.0007915048072923459,
+      0.0004160869364639871
+    ]
+  },
+  "a3_speed_fit": {
+    "B_nm_s_per_rad": 0.0008972262327506055,
+    "coulomb_nm": 0.04603377593597845,
+    "offset_nm": 0.0012869844992621062,
+    "n_plateaus": 42,
+    "rmse_nm": 0.0026005878988571347,
+    "sse_nm2": 0.000284048411626651,
+    "standard_errors": [
+      0.00010810575514398898,
+      0.0007923404713136569,
+      0.0004164273391595104
+    ]
+  },
+  "full_turn_window_fit": {
+    "B_nm_s_per_rad": 0.0008908970876971834,
+    "coulomb_nm": 0.046096949733326634,
+    "offset_nm": 0.0012754178217729503,
+    "n_plateaus": 42,
+    "rmse_nm": 0.0027202357544070313,
+    "sse_nm2": 0.0003107866675012844,
+    "standard_errors": [
+      0.00011478724963785804,
+      0.0008286039175378998,
+      0.0004355863418023122
+    ]
+  },
+  "speed_subset_fits": {
+    "1": {
+      "B_nm_s_per_rad": 0.00091071349227937,
+      "coulomb_nm": 0.046036056104416766,
+      "offset_nm": 0.0012878609597628914,
+      "n_plateaus": 42,
+      "rmse_nm": 0.0026009901312355724,
+      "sse_nm2": 0.00028413628583696325,
+      "standard_errors": [
+        0.00010975740435651989,
+        0.0007922794813973726,
+        0.00041649176368458395
+      ]
+    },
+    "2": {
+      "B_nm_s_per_rad": 0.0011383413612842822,
+      "coulomb_nm": 0.04400095343362228,
+      "offset_nm": 0.0014653594970282942,
+      "n_plateaus": 36,
+      "rmse_nm": 0.002285714964450782,
+      "sse_nm2": 0.0001880817443537126,
+      "standard_errors": [
+        0.00011653284876271654,
+        0.0009073436955704458,
+        0.00039789192545269597
+      ]
+    },
+    "4": {
+      "B_nm_s_per_rad": 0.0014346927691096247,
+      "coulomb_nm": 0.04123621080663357,
+      "offset_nm": 0.001586955980227534,
+      "n_plateaus": 30,
+      "rmse_nm": 0.001875828143569196,
+      "sse_nm2": 0.0001055619367261877,
+      "standard_errors": [
+        0.00012769664359582397,
+        0.0010831685306480765,
+        0.0003610033388452003
+      ]
+    },
+    "6": {
+      "B_nm_s_per_rad": 0.001390775698638616,
+      "coulomb_nm": 0.04167520515826865,
+      "offset_nm": 0.001252339069476179,
+      "n_plateaus": 24,
+      "rmse_nm": 0.0019166176613446381,
+      "sse_nm2": 8.816215823467657e-05,
+      "standard_errors": [
+        0.00018712763319057087,
+        0.0017347344053311496,
+        0.00041824033897768696
+      ]
+    }
+  },
+  "mean_absolute_torque_by_target": [
+    {
+      "magnitude": 1.0,
+      "plateaus": 6,
+      "mean_absolute_torque_nm": 0.049599064951993434
+    },
+    {
+      "magnitude": 2.0,
+      "plateaus": 6,
+      "mean_absolute_torque_nm": 0.04824946588751473
+    },
+    {
+      "magnitude": 4.0,
+      "plateaus": 6,
+      "mean_absolute_torque_nm": 0.04679875542790374
+    },
+    {
+      "magnitude": 6.0,
+      "plateaus": 6,
+      "mean_absolute_torque_nm": 0.04950978471902867
+    },
+    {
+      "magnitude": 8.0,
+      "plateaus": 6,
+      "mean_absolute_torque_nm": 0.05338585198739395
+    },
+    {
+      "magnitude": 10.0,
+      "plateaus": 6,
+      "mean_absolute_torque_nm": 0.055925283285419645
+    },
+    {
+      "magnitude": 12.0,
+      "plateaus": 6,
+      "mean_absolute_torque_nm": 0.05793036208208893
+    }
+  ],
+  "pure_viscous_only_B_nm_s_per_rad": 0.006335921503979896,
+  "peak_plateau_mean_speed_error_pct": 0.5701111484150423,
+  "speed_std_range_rad_s": [
+    0.0578247257690088,
+    0.15248362274424643
+  ],
+  "max_plateau_endpoint_speed_change_rad_s": 0.02092279551784637,
+  "a3_over_a2_displacement_ratio": {
+    "mean": 1.0159108904820389,
+    "median": 1.0156544761773927,
+    "min": 1.0135167126247395,
+    "max": 1.0223445379833964
+  },
+  "voltage_range_v": [
+    18.59,
+    20.22
+  ],
+  "temperature_range_c": [
+    32.0,
+    48.0
+  ],
+  "motion_status_modes": [
+    3.0
+  ],
+  "motion_status_faults": [
+    0.0
+  ],
+  "peak_sampled_current": {
+    "elapsed_s": 238.0048050249989,
+    "phase": "rest",
+    "target_rad_s": -12.0,
+    "current_a": -12.649,
+    "current_based_torque_nm": 9.866219638109207
+  },
+  "peak_fitted_window_current_a": 0.538,
+  "firmware_b5_acceleration_readback_rad_s2": [
+    0.0
+  ],
+  "unknown_firmware_settings": "B3 current ceiling/CD watchdog/gains not read by this recording",
+  "completion_events": [
+    {
+      "elapsed_s": 716.0008460319987,
+      "note": "sweep completed"
+    },
+    {
+      "elapsed_s": 716.0036786029996,
+      "note": "CF disable acknowledged=True; no firmware settings changed"
+    }
+  ],
+  "error_rows": 0,
+  "reported_kernel_drop_rows": 0,
+  "a1_timing": {
+    "observed_rate_hz": 99.0944445028767,
+    "maximum_gap_ms": 117.66290899868181
+  },
+  "a2_timing": {
+    "observed_rate_hz": 99.09448121867302,
+    "maximum_gap_ms": 117.69927900061816
+  },
+  "a3_timing": {
+    "observed_rate_hz": 99.09448901786796,
+    "maximum_gap_ms": 125.18507899949327
+  },
+  "c1_timing": {
+    "observed_rate_hz": 49.80726318024973,
+    "maximum_gap_ms": 129.9619950004569
+  },
+  "ae_timing": {
+    "observed_rate_hz": 4.997205484306332,
+    "maximum_gap_ms": 246.17527700138453
+  },
+  "b0_timing": {
+    "observed_rate_hz": 0.9998819173325753,
+    "maximum_gap_ms": 1027.3056699988956
+  },
+  "tx_rx_counts": {
+    "CF": {
+      "sent": 3,
+      "received": 3
+    },
+    "B5": {
+      "sent": 1,
+      "received": 1
+    },
+    "C1": {
+      "sent": 35663,
+      "received": 35663
+    },
+    "A3": {
+      "sent": 70952,
+      "received": 70952
+    },
+    "A2": {
+      "sent": 70952,
+      "received": 70952
+    },
+    "A1": {
+      "sent": 70952,
+      "received": 70952
+    },
+    "AE": {
+      "sent": 3579,
+      "received": 3579
+    },
+    "B0": {
+      "sent": 716,
+      "received": 716
+    }
+  },
+  "provenance_sha256": {
+    "deploy/experiments/logs/20261020_180044_997520_steering_speed_sweep.csv": "de57bc2c5336b2c3388ad19d55bd05e9050cd53bcbc714f581aabd3eb5232137",
+    "deploy/experiments/reports/drive_damping_20261020_154728/analysis.py": "64f9526ac1ee84e8aa838c80b28239fdfb19a19b542db445c1ff9ea875742f62",
+    "deploy/experiments/reports/drive_damping_20261020_154728/fit_summary.json": "7493a0cc3c87ed9ad1769db80c52c5262752cb08da839dfc291fd62aa795ea90",
+    "deploy/experiments/steering_speed_sweep.py": "1b862c9fe934f50fd32f014af41aec080af6747b1abde3435404398c01727715",
+    "deploy/experiments/drive_speed_sweep.py": "f164d70fa0805859dab7a71325c2ad6537436a42f4d9e1ca2c3879535bfb5ce6",
+    "deploy/source/trackstand_deploy/trackstand_deploy/can_protocol.py": "25ef50ec0a2ee282f68f4c0e54c1166f1c1add24473a3dbe8e19612f35fe7d29",
+    "tsinghua_bike_project/can_protocol.txt": "448b690d47d4741712aca71a8eb4e35a81b2944a4df1c2b1101bf21e2a055423"
+  },
+  "analysis_source_sha256": "a66d12c843fa0c6d91f87773be5f6a9db90d4857a9020bdacf213c8fdc1f36d4"
+}

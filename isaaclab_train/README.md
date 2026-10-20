@@ -123,27 +123,54 @@ update**. The target is held for all eight 400-Hz physics substeps. The limiter
 resets per environment from measured steering position, clipped to the target
 range. V0's steering action is unchanged.
 
-V1's rear drive uses `IdealPDActuator` with zero stiffness and zero target
-velocity. At each **400-Hz physics step**, it computes
-`clip(6.28 * drive_action - Kd * rear_speed, -6.28, 6.28)` N m from the held
-50-Hz action. Nominal `Kd=0.05` N m s/rad remains a **placeholder**, not an
-identified passive-friction coefficient. Set it in v1's `__post_init__()` in
-`trackstand_bike/trackstand_rl_env_cfg_v1.py`. Gain DR still scales this Kd by
-`U(0.9, 1.1)` when enabled. `effort_limit=6.28` provides the explicit
-post-damping clamp; the existing `effort_limit_sim=6.28` and
-`velocity_limit_sim=61.6` rad/s are retained. The framework disables native rear
-PD gains, so damping is not added twice. V0 retains its implicit rear actuator.
+Its `IdealPDActuator` retains controller `stiffness=10`, `damping=0.2`.
+At every **400-Hz physics step**, with zero velocity target and feedforward,
+it submits `clip(10 * (held_target - measured_position) - 0.2 * measured_velocity,
+-5.6, 5.6)` N m. Gain DR, when enabled, changes the actual Kp/Kd used before
+clipping. Both native steering PD gains are zero, preventing double control.
+`effort_limit=effort_limit_sim=5.6` N m and
+`velocity_limit=velocity_limit_sim=23.9` rad/s remain; the latter is a solver
+speed constraint, not a torque-speed envelope.
+Separate passive steering losses use the [2026-10-20 sweep fit](../deploy/experiments/reports/steering_damping_20261020_180044/README.md):
+`viscous_friction=0.000910713492` N m s/rad and
+`dynamic_friction=0.046036056104` N m. Static `friction` is provisionally equal
+to moving friction; breakaway was not measured. The fitted bias is not applied.
+These effective unloaded-assembly estimates are not exact intrinsic constants
+or a replacement for controller Kd.
+
+V1's rear drive uses `IdealPDActuator` with zero stiffness and controller damping.
+At each **400-Hz physics step**, it computes
+`clip(6.28 * drive_action, -6.28, 6.28)` N m from the held 50-Hz action.
+Passive rear moving friction is `0.106` N m, with the same provisional static
+threshold, from its [unloaded sweep](../deploy/experiments/reports/drive_damping_20261020_154728/README.md).
+The passive losses are applied separately by PhysX, not deducted again from the
+command or added to controller Kd. Configure them in v1's `__post_init__()` in
+`trackstand_bike/trackstand_rl_env_cfg_v1.py`. `effort_limit=6.28` provides the
+explicit torque clamp; `effort_limit_sim=6.28` and `velocity_limit_sim=61.6`
+rad/s remain. Native rear PD gains are zero. V0 retains its original implicit
+actuators and gains; neither MuJoCo nor Raspberry Pi settings change here.
 
 Both observation functions live in `mdp/stationary/observations.py`. V1 uses
 the independent `balance_imu_state_v1()` function with 11 channels: projected
 gravity Y/Z, body angular velocity XYZ, steering/rear positions, steering/rear
 velocities, and steering sine/cosine.
 It never reads body linear velocity and has its own matching noise configuration.
+V1 preserves finite observation values without the former +/-100 clamp; NaN
+and positive/negative infinity are still replaced with zero. V0 retains its clamp.
 V0 retains its original 13-channel `balance_imu_state()` function in the same file,
 including body linear velocity X/Y, with its original 13-entry noise tuple and
 Gaussian policy. Editing v0's observation layout does not change v1's layout.
-Apart from these observation and motor-command changes, environment settings
-and PPO hyperparameters inherit v0, including
+
+V1's action-rate penalty is `-norm(raw_action - previous_raw_action)`, weighted
+by `0.1`: steering and rear changes have equal weight in normalized action
+units, without dividing again by `1.57`/`6.28`. RewardManager also multiplies
+by the policy step duration (`0.02` s). Survival and drift rewards are unchanged.
+The v1 environment clears accumulated rear-wheel rotation and refreshes the
+spawn-yaw baseline after **both failures and timeouts**, leaving continuing
+environments untouched. V0 retains its historical reward and reset behavior.
+
+Apart from these observation, motor-command, action-rate and bookkeeping changes,
+environment settings and PPO hyperparameters inherit v0, including
 400 Hz physics, 50 Hz policy, unchanged noise on retained channels and opt-in
 `--dr`. V1 intentionally has no skrl entry: the existing skrl configuration is
 Gaussian-only.

@@ -145,14 +145,14 @@ def balance_imu_state_v1(
     asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
     steer_joint_name: str = "steering_joint",
     drive_joint_name: str = "rear_wheel_joint",
-    obs_clip: float = 100.0,
 ) -> torch.Tensor:
     """Return (num_envs, 11) without body linear-velocity observations.
 
     Order: gravity Y/Z (dimensionless), body angular velocity XYZ (rad/s),
     steering/rear positions (rad), steering/rear velocities (rad/s), and
     sin/cos of steering position. Joint positions are native simulator values;
-    no new wrapping or zero-reference behavior is introduced.
+    no new wrapping or zero-reference behavior is introduced. Finite values are
+    not clipped; NaN and infinity are still replaced with zero.
     """
     asset = env.scene[asset_cfg.name]
     # Match v0: use the raw xyzw quaternion so reset observations do not read
@@ -189,8 +189,7 @@ def balance_imu_state_v1(
         obs[:, 0:2] += env._imu_tilt_bias
         obs[:, 2:5] += env._imu_gyro_bias
 
-    obs = torch.nan_to_num(obs, nan=0.0, posinf=0.0, neginf=0.0)
-    return torch.clamp(obs, -obs_clip, obs_clip)
+    return torch.nan_to_num(obs, nan=0.0, posinf=0.0, neginf=0.0)
 
 
 def balance_command_obs(env: ManagerBasedRLEnv) -> torch.Tensor:

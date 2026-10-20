@@ -59,14 +59,17 @@ class TestTrackstandBeta(unittest.TestCase):
 
     def test_registration_resolves_separate_configs_and_beta_runner(self):
         v0, v1 = (self.gym.spec(f"Trackstand-Balance-v{version}") for version in (0, 1))
-        self.assertEqual(v0.entry_point, v1.entry_point)  # Same environment dynamics by design.
+        env_module = importlib.import_module(f"{TASK_PACKAGE}.trackstand_bike.trackstand_rl_env")
+        self.assertTrue(v0.entry_point.endswith(":TrackstandRLEnv"))
+        self.assertTrue(v1.entry_point.endswith(":TrackstandRLEnvV1"))
+        self.assertTrue(issubclass(env_module.TrackstandRLEnvV1, env_module.TrackstandRLEnv))
         self.assertIsNot(v0.kwargs["env_cfg_entry_point"], v1.kwargs["env_cfg_entry_point"])
         module, name = v1.kwargs["rsl_rl_cfg_entry_point"].split(":")
         self.assertIs(getattr(importlib.import_module(module), name), self.v1_runner)
         self.assertIn("skrl_cfg_entry_point", v0.kwargs)
         self.assertNotIn("skrl_cfg_entry_point", v1.kwargs)  # Do not silently run a Gaussian as v1.
 
-    def test_env_configs_differ_only_in_observations_and_requested_motor_constraints(self):
+    def test_env_configs_differ_only_in_observations_motors_and_rate_weighting(self):
         for dr in (False, True):
             with self.subTest(dr=dr):
                 configs = [
@@ -98,9 +101,23 @@ class TestTrackstandBeta(unittest.TestCase):
                 self.assertEqual(drive0, drive1)
                 steering_actuator0 = v0["scene"]["robot"]["actuators"]["steering"]
                 steering_actuator1 = v1["scene"]["robot"]["actuators"]["steering"]
-                for name, value in (("effort_limit", 5.6), ("velocity_limit", 23.9)):
+                self.assertNotEqual(steering_actuator0.pop("class_type"), steering_actuator1.pop("class_type"))
+                for name, value in (
+                    ("effort_limit", 5.6),
+                    ("velocity_limit", 23.9),
+                    ("friction", 0.046036056104),
+                    ("dynamic_friction", 0.046036056104),
+                    ("viscous_friction", 0.000910713492),
+                ):
                     self.assertIsNone(steering_actuator0.pop(name))
                     self.assertEqual(steering_actuator1.pop(name), value)
+                rate0, rate1 = (cfg["rewards"].pop("rate_penalty") for cfg in (v0, v1))
+                self.assertTrue(rate0.pop("func").endswith(":balance_action_rate_penalty_norm"))
+                self.assertTrue(rate1.pop("func").endswith(":balance_action_rate_penalty"))
+                self.assertEqual(rate0.pop("params"), {"action_scales": (1.57, 6.28)})
+                self.assertEqual(rate1.pop("params"), {})
+                self.assertEqual(rate1["weight"], 0.1)
+                self.assertEqual(rate0, rate1)
                 self.assertEqual(v0, v1)
                 self.assertNotEqual(obs0["policy"]["imu"].pop("func"), obs1["policy"]["imu"].pop("func"))
                 noise0 = obs0["policy"]["imu"]["noise"].pop("std")
@@ -187,7 +204,7 @@ class TestTrackstandBeta(unittest.TestCase):
         noisy = noise_module.per_channel_gaussian_noise(biased, term.noise)
         torch.testing.assert_close(noisy[:, 5:], biased[:, 5:])
 
-    def test_v0_has_13_channels_and_v1_matches_all_11_retained_channels(self):
+    def test_v0_has_13_channels_and_v1_matches_retained_channels_except_clipping(self):
         torch = self.torch
         quat = torch.randn(16, 4)
         quat /= quat.norm(dim=-1, keepdim=True)
@@ -220,11 +237,39 @@ class TestTrackstandBeta(unittest.TestCase):
             v0, v1 = (term.func(env, **term.params) for term, env in zip(terms, envs, strict=True))
             self.assertEqual(v0.shape, (16, 13))
             self.assertEqual(v1.shape, (16, 11))
-            torch.testing.assert_close(v1, torch.cat((v0[:, :5], v0[:, 7:]), dim=-1), rtol=0, atol=0)
+            retained_v0 = torch.cat((v0[:, :5], v0[:, 7:]), dim=-1)
+            torch.testing.assert_close(v1.clamp(-100.0, 100.0), retained_v0, rtol=0, atol=0)
             self.assertTrue(torch.isfinite(v1).all())
-            self.assertLessEqual(v1.abs().max().item(), 100.0)
+            self.assertEqual(v1[2, 8].item(), -500.0)  # V1 preserves large finite rear speed.
+            self.assertEqual(v0[2, 10].item(), -100.0)  # V0 retains its original clamp.
         self.assertEqual(len(terms[0].noise.std), 13)
         self.assertIsNot(terms[0].func, terms[1].func)
+
+    def test_v1_preserves_large_finite_observations_but_sanitizes_nonfinite_values(self):
+        torch = self.torch
+        data = SimpleNamespace(
+            root_quat_w=SimpleNamespace(torch=torch.tensor([[0.0, 0.0, 0.0, 1.0]] * 2)),
+            root_link_ang_vel_w=SimpleNamespace(torch=torch.tensor([[150.0, -200.0, 250.0], [torch.nan] * 3])),
+            joint_pos=torch.tensor([[0.0, 125.0, -250.0], [0.0, torch.inf, -torch.inf]]),
+            joint_vel=torch.tensor([[0.0, 300.0, -500.0], [0.0, torch.inf, torch.nan]]),
+        )
+        asset = SimpleNamespace(
+            data=data,
+            find_joints=lambda name: ([{"steering_joint": 1, "rear_wheel_joint": 2}[name]], [name]),
+        )
+        env = SimpleNamespace(
+            scene={"robot": asset}, device="cpu", num_envs=2,
+            _imu_tilt_bias=torch.tensor([[150.0, -160.0], [torch.inf, torch.nan]]),
+            _imu_gyro_bias=torch.zeros((2, 3)),
+        )
+        term = self.gym.spec("Trackstand-Balance-v1").kwargs["env_cfg_entry_point"]().observations["policy"].imu
+        actual = term.func(env, **term.params)
+        expected_finite = torch.tensor([150.0, -161.0, 150.0, -200.0, 250.0, 125.0, -250.0, 300.0, -500.0])
+        torch.testing.assert_close(actual[0, :9], expected_finite)
+        torch.testing.assert_close(actual[0, 9:], torch.stack((data.joint_pos[0, 1].sin(), data.joint_pos[0, 1].cos())))
+        torch.testing.assert_close(actual[1], torch.zeros(11))
+        self.assertTrue(torch.isfinite(actual).all())
+        self.assertIsNone(term.clip)  # No observation-manager clamp either.
 
     def test_sample_and_mean_bounds_including_extreme_logits(self):
         torch = self.torch

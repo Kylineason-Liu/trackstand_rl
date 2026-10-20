@@ -1,4 +1,4 @@
-"""Env class for Trackstand-Balance-v0 — standalone.
+"""Trackstand environments with legacy v0 and corrected v1 reset bookkeeping.
 
 Maintains per-episode state that reward functions cannot compute statelessly:
 
@@ -48,12 +48,24 @@ class TrackstandRLEnv(ManagerBasedRLEnv):
         self.wheel_net_angle = self.wheel_net_angle + dv * self.step_dt
         # capture the post-reset heading as each resetting env's new episode baseline
         yaw = self._heading_of()
-        self.spawn_yaw[self.reset_terminated] = yaw[self.reset_terminated]
-        self.wheel_net_angle[self.reset_terminated] = 0.0
+        reset_mask = self._bookkeeping_reset_mask()
+        self.spawn_yaw[reset_mask] = yaw[reset_mask]
+        self.wheel_net_angle[reset_mask] = 0.0
         return obs, rew, term, trunc, extras
+
+    def _bookkeeping_reset_mask(self):
+        """Preserve v0's historical failure-only bookkeeping reset."""
+        return self.reset_terminated
 
     def reset(self, seed=None, options=None):
         obs, extras = super().reset(seed=seed, options=options)
         self.wheel_net_angle.zero_()
         self.spawn_yaw = self._heading_of().clone()
         return obs, extras
+
+
+class TrackstandRLEnvV1(TrackstandRLEnv):
+    """Clear per-episode state after either failure or timeout scene resets."""
+
+    def _bookkeeping_reset_mask(self):
+        return self.reset_terminated | self.reset_time_outs

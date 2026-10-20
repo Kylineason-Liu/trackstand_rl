@@ -1,0 +1,20 @@
+/home/lmbike/.local/lib/python3.10/site-packages/matplotlib/projections/__init__.py:63: UserWarning: Unable to import Axes3D. This may be due to multiple versions of Matplotlib being installed (e.g. as a system package and as a pip package). As a result, the 3D projection is not available.
+  warnings.warn("Unable to import Axes3D. This may be due to multiple versions of "
+test_a3_multiturn_position_and_rollover (test_analysis.SteeringIdentificationTests) ... ok
+test_bootstrap_reproducible (test_analysis.SteeringIdentificationTests) ... ok
+test_c1_transmission_quantization (test_analysis.SteeringIdentificationTests) ... ok
+test_constant_drag_not_mistaken_for_viscous (test_analysis.SteeringIdentificationTests) ... ok
+test_full_turn_window_ends_at_same_position_phase (test_analysis.SteeringIdentificationTests) ... ok
+test_interrupted_hold_not_used (test_analysis.SteeringIdentificationTests) ... ok
+test_negative_slope_not_passive_antidamping (test_analysis.SteeringIdentificationTests) ... ok
+test_nonuniform_sample_time_average (test_analysis.SteeringIdentificationTests) ... ok
+test_only_fresh_trimmed_samples_and_one_point_per_hold (test_analysis.SteeringIdentificationTests) ... ok
+test_raw_current_decoding_and_sign_rejects_corruption (test_analysis.SteeringIdentificationTests) ... ok
+test_recovers_viscous_coulomb_offset (test_analysis.SteeringIdentificationTests) ... ok
+test_rejects_single_direction_as_unidentifiable (test_analysis.SteeringIdentificationTests) ... ok
+test_zero_trim_covers_first_and_last_sample_without_boundary_failure (test_analysis.SteeringIdentificationTests) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.090s
+
+OK

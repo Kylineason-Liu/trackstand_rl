@@ -1,0 +1,54 @@
+{
+  "passed": true,
+  "command": [
+    "reports/20261020_v1_explicit_steering/verify_steering.py",
+    "--output",
+    "reports/20261020_v1_explicit_steering/nominal",
+    "--headless",
+    "--device",
+    "cuda:0"
+  ],
+  "task": "Trackstand-Balance-v1",
+  "seed": 42,
+  "domain_randomization": false,
+  "num_envs": 4,
+  "policy_steps": 32,
+  "policy_rate_hz": 50,
+  "physics_rate_hz": 400,
+  "calculations_per_policy_step": 8,
+  "physics_samples_per_motor": 1024,
+  "submission_samples_per_motor_including_resets": 1036,
+  "explicit_resets_including_initial": 4,
+  "completed_episodes": 8,
+  "steering_process_calls": 32,
+  "steering_clip_and_50hz_slew_verified": true,
+  "kp_range": [
+    10.0,
+    10.0
+  ],
+  "kd_range": [
+    0.20000000298023224,
+    0.20000000298023224
+  ],
+  "max_unclipped_abs_nm": 15.700000762939453,
+  "max_submitted_abs_nm": 5.599999904632568,
+  "samples_requiring_post_pd_clipping_including_resets": 11,
+  "submitted_equals_clipped_torque_exactly": true,
+  "native_pd_both_motors_zero": true,
+  "friction_and_speed_limits_preserved_through_steps_and_resets": true,
+  "steering_static_dynamic_viscous": [
+    0.046036056104,
+    0.046036056104,
+    0.000910713492
+  ],
+  "rear_static_dynamic_viscous": [
+    0.106,
+    0.106,
+    0.0
+  ],
+  "speed_limits_steer_rear_rad_s": [
+    23.9,
+    61.6
+  ],
+  "scope": "synthetic saturation/reset/DR integration verification, not learned-policy balance or hardware performance"
+}

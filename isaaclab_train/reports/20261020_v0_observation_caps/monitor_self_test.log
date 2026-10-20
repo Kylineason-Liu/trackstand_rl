@@ -1,0 +1,1 @@
+PASS: proxy preserves math and input, captures pre-sanitization NaN/Inf and +/-100 exceedances, and excludes exact boundaries

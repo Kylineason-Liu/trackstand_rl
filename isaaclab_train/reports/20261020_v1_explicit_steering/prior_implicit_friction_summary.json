@@ -1,0 +1,71 @@
+{
+  "passed": true,
+  "command": [
+    "/tmp/trackstand_steering_friction.LNbjTn/verify_steering_friction.py",
+    "--output",
+    "/tmp/trackstand_steering_friction.LNbjTn/summary.json",
+    "--headless",
+    "--device",
+    "cuda:0"
+  ],
+  "results": [
+    {
+      "domain_randomization": false,
+      "seed": 42,
+      "num_envs": 4,
+      "policy_steps": 32,
+      "physics_steps_per_env": 256,
+      "explicit_resets_including_initial": 4,
+      "friction_readback_static_dynamic_viscous": [
+        0.04603605717420578,
+        0.04603605717420578,
+        0.0009107135119847953
+      ],
+      "friction_readback_preserved_after_steps_and_resets": true,
+      "native_kp_range": [
+        10.0,
+        10.0
+      ],
+      "native_kd_range": [
+        0.20000000298023224,
+        0.20000000298023224
+      ],
+      "rear_properties_and_torque_clip_unchanged": true,
+      "speed_limits_steer_rear_rad_s": [
+        23.9,
+        61.6
+      ],
+      "completed_episodes": 4,
+      "scope": "synthetic step/reset/DR property verification; not learned-policy balance performance"
+    },
+    {
+      "domain_randomization": true,
+      "seed": 42,
+      "num_envs": 4,
+      "policy_steps": 32,
+      "physics_steps_per_env": 256,
+      "explicit_resets_including_initial": 4,
+      "friction_readback_static_dynamic_viscous": [
+        0.04603605717420578,
+        0.04603605717420578,
+        0.0009107135119847953
+      ],
+      "friction_readback_preserved_after_steps_and_resets": true,
+      "native_kp_range": [
+        9.061816215515137,
+        10.89394474029541
+      ],
+      "native_kd_range": [
+        0.1820424646139145,
+        0.21983757615089417
+      ],
+      "rear_properties_and_torque_clip_unchanged": true,
+      "speed_limits_steer_rear_rad_s": [
+        23.9,
+        61.6
+      ],
+      "completed_episodes": 4,
+      "scope": "synthetic step/reset/DR property verification; not learned-policy balance performance"
+    }
+  ]
+}

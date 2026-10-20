@@ -1,0 +1,46 @@
+Warp CUDA error 100: no CUDA-capable device is detected (in function init_cuda_driver, /builds/omniverse/warp/warp/native/cuda_util.cpp:309)
+/home/lmbike/.config/matplotlib is not a writable directory
+Matplotlib created a temporary cache directory at /tmp/matplotlib-i5qsw37b because there was an issue with the default path (/home/lmbike/.config/matplotlib); it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.
+{
+  "checks_completed": true,
+  "fallen_for_upright_roll29_roll31_pitch60_inverted": [
+    false,
+    false,
+    true,
+    false,
+    true
+  ],
+  "action_rate_for_unit_steer_change_unit_drive_change_and_zero": [
+    -0.6369426250457764,
+    -0.15923568606376648,
+    -9.999999747378752e-05
+  ],
+  "weighted_dt_rate_contributions_at_50hz": [
+    -0.0012738851364701986,
+    -0.00031847137142904103,
+    -1.9999998812636477e-07
+  ],
+  "diverged_for_normal_linear20_1_angular50_1_joint300_1_nan_joint_speed_nan_root_position_nan_joint_position": [
+    false,
+    true,
+    true,
+    true,
+    true,
+    false,
+    false
+  ],
+  "nan_root_position_produces_nan_drift_reward_without_diverged_or_drifted_termination": true,
+  "yaw_wraparound_cases": [
+    false,
+    false,
+    true,
+    true
+  ],
+  "wheel_net_boundary_cases": [
+    true,
+    false,
+    false,
+    true
+  ],
+  "scope": "Synthetic edge cases using real configured functions; not failures observed in a physical rollout"
+}

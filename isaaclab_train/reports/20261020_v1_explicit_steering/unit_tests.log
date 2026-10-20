@@ -1,0 +1,59 @@
+/home/lmbike/IsaacLab/_isaac_sim/kit/python/lib/python3.12/site-packages/torch/jit/_script.py:1480: DeprecationWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+Warp DeprecationWarning: warp.config.quiet is deprecated; use warp.config.log_level = warp.LOG_WARNING to suppress the init banner.
+Warp CUDA error 100: no CUDA-capable device is detected (in function init_cuda_driver, /builds/omniverse/warp/warp/native/cuda_util.cpp:309)
+/home/lmbike/IsaacLab/source/isaaclab/isaaclab/utils/configclass.py:513: DeprecationWarning: 'RigidBodyMaterialCfg' is deprecated and will be removed in 5.0. Use 'isaaclab_physx.sim.spawners.materials.PhysxRigidBodyMaterialCfg' for PhysX properties, or 'isaaclab.sim.spawners.materials.RigidBodyMaterialBaseCfg' for solver-common properties only.
+  f1(*args, **kwargs)
+/home/lmbike/.config/matplotlib is not a writable directory
+Matplotlib created a temporary cache directory at /tmp/matplotlib-l273_syg because there was an issue with the default path (/home/lmbike/.config/matplotlib); it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.
+/home/lmbike/IsaacLab/source/isaaclab/isaaclab/utils/configclass.py:513: DeprecationWarning: 'RigidBodyMaterialCfg' is deprecated and will be removed in 5.0. Use 'isaaclab_physx.sim.spawners.materials.PhysxRigidBodyMaterialCfg' for PhysX properties, or 'isaaclab.sim.spawners.materials.RigidBodyMaterialBaseCfg' for solver-common properties only.
+  f1(*args, **kwargs)
+/home/lmbike/IsaacLab/source/isaaclab/isaaclab/utils/configclass.py:513: DeprecationWarning: 'RigidBodyPropertiesCfg' is deprecated and will be removed in 5.0. Use 'isaaclab_physx.sim.schemas.PhysxRigidBodyPropertiesCfg' for PhysX properties, or 'isaaclab.sim.schemas.RigidBodyBaseCfg' for solver-common properties only.
+  f1(*args, **kwargs)
+/home/lmbike/IsaacLab/source/isaaclab/isaaclab/utils/configclass.py:513: DeprecationWarning: 'ArticulationRootPropertiesCfg' is deprecated and will be removed in 5.0. Use 'isaaclab_physx.sim.schemas.PhysxArticulationRootPropertiesCfg' for PhysX properties, or 'isaaclab.sim.schemas.ArticulationRootBaseCfg' for solver-common properties only.
+  f1(*args, **kwargs)
+test_endpoint_densities_are_finite_and_outside_support_is_rejected (test_trackstand_beta.TestTrackstandBeta.test_endpoint_densities_are_finite_and_outside_support_is_rejected) ... ok
+test_env_configs_differ_only_in_observations_and_requested_motor_constraints (test_trackstand_beta.TestTrackstandBeta.test_env_configs_differ_only_in_observations_and_requested_motor_constraints) ... ok
+test_initial_policy_is_centered_and_v0_checkpoints_are_incompatible (test_trackstand_beta.TestTrackstandBeta.test_initial_policy_is_centered_and_v0_checkpoints_are_incompatible) ... ok
+test_log_probability_entropy_std_and_kl_match_transformed_beta (test_trackstand_beta.TestTrackstandBeta.test_log_probability_entropy_std_and_kl_match_transformed_beta) ... ok
+test_native_and_standalone_deterministic_export_match (test_trackstand_beta.TestTrackstandBeta.test_native_and_standalone_deterministic_export_match) ... /home/lmbike/IsaacLab/_isaac_sim/kit/python/lib/python3.12/site-packages/torch/jit/_script.py:1480: DeprecationWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+ok
+test_older_rsl_rl_cannot_silently_fall_back_to_gaussian (test_trackstand_beta.TestTrackstandBeta.test_older_rsl_rl_cannot_silently_fall_back_to_gaussian) ... ok
+test_onnx_includes_bounded_mean_with_dynamic_batch (test_trackstand_beta.TestTrackstandBeta.test_onnx_includes_bounded_mean_with_dynamic_batch) ... /home/lmbike/trackstand_rl/isaaclab_train/tests/test_trackstand_beta.py:351: DeprecationWarning: You are using the legacy TorchScript-based ONNX export. Starting in PyTorch 2.9, the new torch.export-based ONNX exporter has become the default. Learn more about the new export logic: https://docs.pytorch.org/docs/stable/onnx_export.html. For exporting control flow: https://pytorch.org/tutorials/beginner/onnx/export_control_flow_model_to_onnx_tutorial.html
+  torch.onnx.export(
+/home/lmbike/IsaacLab/_isaac_sim/kit/python/lib/python3.12/site-packages/torch/onnx/_internal/torchscript_exporter/utils.py:218: DeprecationWarning: The feature will be removed. Please remove usage of this function
+  setup_onnx_logging(verbose) as log_ctx,
+ok
+test_real_observation_term_has_11_correctly_ordered_channels (test_trackstand_beta.TestTrackstandBeta.test_real_observation_term_has_11_correctly_ordered_channels) ... ok
+test_real_ppo_updates_are_finite_and_keep_actions_bounded (test_trackstand_beta.TestTrackstandBeta.test_real_ppo_updates_are_finite_and_keep_actions_bounded) ... ok
+test_registration_resolves_separate_configs_and_beta_runner (test_trackstand_beta.TestTrackstandBeta.test_registration_resolves_separate_configs_and_beta_runner) ... ok
+test_runner_changes_only_actor_distribution_and_copies_mutable_values (test_trackstand_beta.TestTrackstandBeta.test_runner_changes_only_actor_distribution_and_copies_mutable_values) ... ok
+test_sample_and_mean_bounds_including_extreme_logits (test_trackstand_beta.TestTrackstandBeta.test_sample_and_mean_bounds_including_extreme_logits) ... ok
+test_v0_has_13_channels_and_v1_matches_all_11_retained_channels (test_trackstand_beta.TestTrackstandBeta.test_v0_has_13_channels_and_v1_matches_all_11_retained_channels) ... ok
+test_v1_observation_group_does_not_inherit_the_v0_layout (test_trackstand_beta.TestTrackstandBeta.test_v1_observation_group_does_not_inherit_the_v0_layout) ... ok
+test_default_zero_damping_preserves_requested_torque_at_all_speeds (test_trackstand_drive_actuator.TestDriveActuator.test_default_zero_damping_preserves_requested_torque_at_all_speeds) ... ok
+test_default_zero_damping_still_clips_excess_effort (test_trackstand_drive_actuator.TestDriveActuator.test_default_zero_damping_still_clips_excess_effort) ... ok
+test_friction_is_not_subtracted_from_the_actuator_torque_command (test_trackstand_drive_actuator.TestDriveActuator.test_friction_is_not_subtracted_from_the_actuator_torque_command) ... ok
+test_opposing_damping_cannot_exceed_the_torque_command_limit (test_trackstand_drive_actuator.TestDriveActuator.test_opposing_damping_cannot_exceed_the_torque_command_limit) ... ok
+test_per_environment_gain_updates_are_used_before_clipping (test_trackstand_drive_actuator.TestDriveActuator.test_per_environment_gain_updates_are_used_before_clipping) ... ok
+test_scaled_feedforward_plus_damping_is_clipped_before_submission (test_trackstand_drive_actuator.TestDriveActuator.test_scaled_feedforward_plus_damping_is_clipped_before_submission) ... ok
+test_steering_passive_losses_preserve_explicit_controller_pd (test_trackstand_drive_actuator.TestDriveActuator.test_steering_passive_losses_preserve_explicit_controller_pd) ... ok
+test_steering_torque_is_clipped_after_pd_with_nonzero_targets_and_feedforward (test_trackstand_drive_actuator.TestDriveActuator.test_steering_torque_is_clipped_after_pd_with_nonzero_targets_and_feedforward) ... ok
+test_steering_zero_position_error_still_clips_controller_damping (test_trackstand_drive_actuator.TestDriveActuator.test_steering_zero_position_error_still_clips_controller_damping) ... ok
+test_v1_configuration_does_not_mutate_v0_or_other_instances (test_trackstand_drive_actuator.TestDriveActuator.test_v1_configuration_does_not_mutate_v0_or_other_instances) ... ok
+test_v1_only_actuator_and_limits (test_trackstand_drive_actuator.TestDriveActuator.test_v1_only_actuator_and_limits) ... ok
+test_zero_policy_action_still_produces_clipped_damping (test_trackstand_drive_actuator.TestDriveActuator.test_zero_policy_action_still_produces_clipped_damping) ... ok
+test_empty_reset_does_not_modify_other_environments (test_trackstand_steering_action.TestSteeringAction.test_empty_reset_does_not_modify_other_environments) ... ok
+test_full_reset_uses_measured_positions_clipped_to_command_bounds (test_trackstand_steering_action.TestSteeringAction.test_full_reset_uses_measured_positions_clipped_to_command_bounds) ... ok
+test_invalid_rate_or_missing_clip_is_rejected (test_trackstand_steering_action.TestSteeringAction.test_invalid_rate_or_missing_clip_is_rejected) ... ok
+test_non_50_hz_policy_is_rejected (test_trackstand_steering_action.TestSteeringAction.test_non_50_hz_policy_is_rejected) ... ok
+test_partial_reset_primes_only_selected_environments (test_trackstand_steering_action.TestSteeringAction.test_partial_reset_primes_only_selected_environments) ... ok
+test_physics_applications_hold_the_target_and_do_not_advance_slew (test_trackstand_steering_action.TestSteeringAction.test_physics_applications_hold_the_target_and_do_not_advance_slew) ... ok
+test_reversal_respects_rate_in_both_directions (test_trackstand_steering_action.TestSteeringAction.test_reversal_respects_rate_in_both_directions) ... ok
+test_scale_clip_then_slew (test_trackstand_steering_action.TestSteeringAction.test_scale_clip_then_slew) ... ok
+
+----------------------------------------------------------------------
+Ran 34 tests in 2.563s
+
+OK
