@@ -10,8 +10,9 @@ import socket
 import struct
 import sys
 import tempfile
+from types import SimpleNamespace
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import drive_speed_sweep as sweep
@@ -122,6 +123,31 @@ class SpeedSweepTests(unittest.TestCase):
             self.assertEqual(sweep.main(["--speeds","1"]),0)
         can.assert_not_called()
         log.assert_not_called()
+
+    def test_socket_setup_with_and_without_python_error_filter_constant(self):
+        names=("AF_CAN","SOCK_RAW","CAN_RAW","SOL_CAN_RAW","CAN_RAW_FILTER",
+               "CAN_RAW_RECV_OWN_MSGS","SOL_SOCKET")
+        for exports_constant in (False,True):
+            with self.subTest(exports_constant=exports_constant):
+                bus=Mock()
+                portable=SimpleNamespace(**{name:getattr(socket,name) for name in names},
+                                         socket=Mock(return_value=bus))
+                if exports_constant:
+                    portable.CAN_RAW_ERR_FILTER=2
+                with patch.object(sweep,"socket",portable):
+                    self.assertIs(sweep.open_bus(self.args),bus)
+                bus.setsockopt.assert_any_call(socket.SOL_CAN_RAW,2,struct.pack("=I",0x1FFFFFFF))
+                bus.bind.assert_called_once_with(("can0",))
+                bus.send.assert_not_called()
+                bus.close.assert_not_called()
+
+    def test_socket_option_failure_closes_socket_without_sending(self):
+        bus=Mock()
+        bus.setsockopt.side_effect=OSError("unsupported kernel option")
+        with patch.object(sweep.socket,"socket",return_value=bus),self.assertRaises(OSError):
+            sweep.open_bus(self.args)
+        bus.close.assert_called_once()
+        bus.send.assert_not_called()
 
     def test_cli_rejects_invalid_numbers_and_limits(self):
         for flags in (["--speeds","nan"],["--speeds","11"],["--speeds","0"],

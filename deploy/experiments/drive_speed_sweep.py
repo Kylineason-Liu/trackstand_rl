@@ -218,7 +218,10 @@ def open_bus(args):
         bus.setsockopt(socket.SOL_CAN_RAW, socket.CAN_RAW_FILTER,
                        b"".join(struct.pack("=II", cid, CAN_MASK) for cid in ids))
         bus.setsockopt(socket.SOL_CAN_RAW, socket.CAN_RAW_RECV_OWN_MSGS, 0)
-        bus.setsockopt(socket.SOL_CAN_RAW, socket.CAN_RAW_ERR_FILTER, struct.pack("=I", 0x1FFFFFFF))
+        # Linux UAPI <linux/can/raw.h>: CAN_RAW_ERR_FILTER=2. Some Pi Python
+        # builds omit the name even though the kernel supports the option.
+        error_filter = getattr(socket, "CAN_RAW_ERR_FILTER", 2)
+        bus.setsockopt(socket.SOL_CAN_RAW, error_filter, struct.pack("=I", 0x1FFFFFFF))
         bus.setsockopt(socket.SOL_SOCKET, SO_RXQ_OVFL, 1)
         bus.setblocking(False)
         bus.bind((args.interface,))
