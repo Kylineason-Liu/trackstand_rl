@@ -1,0 +1,36 @@
+{
+  "command": [
+    "reports/20261019_v1_explicit_drive/verify_drive.py",
+    "--headless",
+    "--device",
+    "cuda:0",
+    "--dr",
+    "--output",
+    "/home/lmbike/trackstand_rl/isaaclab_train/reports/20261019_v1_explicit_drive/dr"
+  ],
+  "passed": true,
+  "task": "Trackstand-Balance-v1",
+  "seed": 42,
+  "domain_randomization": true,
+  "num_envs": 4,
+  "policy_steps": 64,
+  "policy_rate_hz": 50.0,
+  "drive_calculation_rate_hz": 400.0,
+  "physics_calls_per_policy_step": 8,
+  "physics_samples_per_motor": 2048,
+  "total_submission_samples_per_motor": 2080,
+  "additional_reset_submission_calls": 8,
+  "explicit_resets": 8,
+  "native_rear_stiffness_and_damping_are_zero": true,
+  "rear_velocity_limit_rad_s": 61.6,
+  "max_feedforward_abs_nm": 6.28000020980835,
+  "max_unclipped_abs_nm": 8.16217041015625,
+  "max_submitted_abs_nm": 6.28000020980835,
+  "samples_requiring_post_damping_clipping": 19,
+  "kd_min_max_nm_s_per_rad": [
+    0.04533492401242256,
+    0.054174233227968216
+  ],
+  "submitted_equals_clipped_torque_exactly": true,
+  "scope": "synthetic controller integration test; not policy balance or passive-friction identification"
+}

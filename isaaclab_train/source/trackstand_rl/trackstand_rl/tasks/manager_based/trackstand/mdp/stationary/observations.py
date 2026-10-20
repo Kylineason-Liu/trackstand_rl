@@ -140,6 +140,59 @@ def balance_imu_state(
     return torch.clamp(obs, -obs_clip, obs_clip)
 
 
+def balance_imu_state_v1(
+    env: ManagerBasedRLEnv,
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+    steer_joint_name: str = "steering_joint",
+    drive_joint_name: str = "rear_wheel_joint",
+    obs_clip: float = 100.0,
+) -> torch.Tensor:
+    """Return (num_envs, 11) without body linear-velocity observations.
+
+    Order: gravity Y/Z (dimensionless), body angular velocity XYZ (rad/s),
+    steering/rear positions (rad), steering/rear velocities (rad/s), and
+    sin/cos of steering position. Joint positions are native simulator values;
+    no new wrapping or zero-reference behavior is introduced.
+    """
+    asset = env.scene[asset_cfg.name]
+    # Match v0: use the raw xyzw quaternion so reset observations do not read
+    # stale cached projected-gravity or body-frame-velocity fields.
+    quat = asset.data.root_quat_w.torch
+    gravity_w = torch.zeros(quat.shape[0], 3, device=env.device)
+    gravity_w[:, 2] = -1.0
+    gravity_b = math_utils.quat_apply_inverse(quat, gravity_w)
+    ang_vel_b = math_utils.quat_apply_inverse(quat, asset.data.root_link_ang_vel_w.torch)
+
+    steer_idx = asset.find_joints(steer_joint_name)[0][0]
+    drive_idx = asset.find_joints(drive_joint_name)[0][0]
+    steer_pos = asset.data.joint_pos[:, steer_idx : steer_idx + 1]
+    drive_pos = asset.data.joint_pos[:, drive_idx : drive_idx + 1]
+    steer_vel = asset.data.joint_vel[:, steer_idx : steer_idx + 1]
+    drive_vel = asset.data.joint_vel[:, drive_idx : drive_idx + 1]
+    _accumulate_motor_speeds(env, steer_vel[:, 0], drive_vel[:, 0])
+
+    obs = torch.cat(
+        (
+            gravity_b[:, 1:3],
+            ang_vel_b,
+            steer_pos,
+            drive_pos,
+            steer_vel,
+            drive_vel,
+            torch.sin(steer_pos),
+            torch.cos(steer_pos),
+        ),
+        dim=-1,
+    )
+    # Same per-episode IMU residuals, applied to the same first five channels.
+    if hasattr(env, "_imu_tilt_bias"):
+        obs[:, 0:2] += env._imu_tilt_bias
+        obs[:, 2:5] += env._imu_gyro_bias
+
+    obs = torch.nan_to_num(obs, nan=0.0, posinf=0.0, neginf=0.0)
+    return torch.clamp(obs, -obs_clip, obs_clip)
+
+
 def balance_command_obs(env: ManagerBasedRLEnv) -> torch.Tensor:
     """Provide the current velocity command to the policy.
 

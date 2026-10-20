@@ -109,6 +109,72 @@ To enable your extension, follow these steps:
     - Find your extension under the `Third Party` category.
     - Toggle it to enable your extension.
 
+## Trackstand-Balance-v1: bounded Beta policy
+
+`Trackstand-Balance-v1` uses an RSL-RL Beta actor. Both sampled training actions
+and deterministic evaluation/export actions lie in `[-1, 1]`. The four internal
+MLP outputs parameterize two Beta distributions; they are **not** motor commands.
+The two resulting actions retain v0's scales: steering position x `1.57` rad,
+rear-wheel torque x `6.28` N m.
+
+V1 steering additionally clips the scaled position request to `[-1.57, 1.57]`
+rad, then limits target change to `23.9 * 0.02 = 0.478` rad per **50-Hz policy
+update**. The target is held for all eight 400-Hz physics substeps. The limiter
+resets per environment from measured steering position, clipped to the target
+range. V0's steering action is unchanged.
+
+V1's rear drive uses `IdealPDActuator` with zero stiffness and zero target
+velocity. At each **400-Hz physics step**, it computes
+`clip(6.28 * drive_action - Kd * rear_speed, -6.28, 6.28)` N m from the held
+50-Hz action. Nominal `Kd=0.05` N m s/rad remains a **placeholder**, not an
+identified passive-friction coefficient. Set it in v1's `__post_init__()` in
+`trackstand_bike/trackstand_rl_env_cfg_v1.py`. Gain DR still scales this Kd by
+`U(0.9, 1.1)` when enabled. `effort_limit=6.28` provides the explicit
+post-damping clamp; the existing `effort_limit_sim=6.28` and
+`velocity_limit_sim=61.6` rad/s are retained. The framework disables native rear
+PD gains, so damping is not added twice. V0 retains its implicit rear actuator.
+
+Both observation functions live in `mdp/stationary/observations.py`. V1 uses
+the independent `balance_imu_state_v1()` function with 11 channels: projected
+gravity Y/Z, body angular velocity XYZ, steering/rear positions, steering/rear
+velocities, and steering sine/cosine.
+It never reads body linear velocity and has its own matching noise configuration.
+V0 retains its original 13-channel `balance_imu_state()` function in the same file,
+including body linear velocity X/Y, with its original 13-entry noise tuple and
+Gaussian policy. Editing v0's observation layout does not change v1's layout.
+Apart from these observation and motor-command changes, environment settings
+and PPO hyperparameters inherit v0, including
+400 Hz physics, 50 Hz policy, unchanged noise on retained channels and opt-in
+`--dr`. V1 intentionally has no skrl entry: the existing skrl configuration is
+Gaussian-only.
+
+Run from `isaaclab_train/` using the documented Isaac Lab Python environment:
+
+```bash
+export PYTHONPATH="$PWD${PYTHONPATH:+:$PYTHONPATH}"
+~/IsaacLab/isaaclab.sh -p scripts/rsl_rl/train.py \
+  --task Trackstand-Balance-v1 --num_envs 4096 --seed 42 --headless
+# Append --dr for randomized training. Train a NEW policy; do not resume a v0 checkpoint.
+~/IsaacLab/isaaclab.sh -p scripts/rsl_rl/play_eval.py \
+  --task Trackstand-Balance-v1 --checkpoint /path/to/new_beta_model.pt \
+  --num_envs 64 --num_steps 3000 --seed 42 --headless
+~/IsaacLab/isaaclab.sh -p scripts/deployment/export_rsl_rl_onnx.py \
+  --checkpoint /path/to/new_beta_model.pt --output /path/to/beta_policy.onnx
+```
+
+V1 requires RSL-RL >= 5.0 (the current installation is 5.0.1); its Beta
+distribution is project-local, so no RSL-RL upgrade or vendor edit is needed.
+Run the CPU contract/PPO/export tests with:
+
+```bash
+~/IsaacLab/isaaclab.sh -p -m unittest discover -s tests -p 'test_trackstand_*.py' -v
+```
+
+The standalone exporter detects v1 from its checkpoint marker and includes the
+bounded mean transform. Native RSL-RL JIT/ONNX exports also include it. This does
+not update MuJoCo or Raspberry Pi's current 13-input observation interfaces:
+those must be matched to the new 11-input policy before transfer.
+
 ## Code formatting
 
 We have a pre-commit template to automatically format your code.

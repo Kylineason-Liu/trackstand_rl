@@ -1,0 +1,28 @@
+{
+  "command": [
+    "reports/20261019_v1_steering_drive_damping/probe_drive_damping.py",
+    "--headless",
+    "--device",
+    "cuda:0",
+    "--seed",
+    "42",
+    "--output",
+    "/home/lmbike/trackstand_rl/isaaclab_train/reports/20261019_v1_steering_drive_damping/rotor_validated"
+  ],
+  "seed": 42,
+  "dt": 0.0025,
+  "steps": 2000,
+  "duration_s": 5.0,
+  "inertia_kg_m2": 1.0,
+  "gravity_contacts_passive_friction": "absent",
+  "effort_limit_sim": 6.28,
+  "velocity_limit_sim": 10000.0,
+  "scope": "synthetic free-rotor actuator test, not bicycle balance",
+  "validation": {
+    "max_velocity_error_rad_s": 0.08847463989258131,
+    "velocity_error_tolerance_rad_s": 0.1,
+    "max_acceleration_effort_error_nm": 0.02424478530883789,
+    "acceleration_effort_error_tolerance_nm": 0.05,
+    "passed": true
+  }
+}

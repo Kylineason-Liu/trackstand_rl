@@ -11,16 +11,17 @@ The script:
      the same path ``play_eval`` uses.
   2. Reconstructs the MLP architecture from the state dict itself (no
      hardcoded layer sizes); ELU between the Linear layers, per this repo's
-     agent config.
+     agent config. Trackstand-Balance-v1 Beta checkpoints include a persistent
+     distribution marker; their four shape logits are converted to two means.
   3. Bakes in observation normalization ONLY if the checkpoint carries one
      (``obs_normalizer.running_mean`` etc.). The 09090950 baseline has none
      (``obs_normalization: false``), so its ONNX takes raw 13-dim obs.
   4. Exports ONNX (opset 18, dynamic batch) and verifies numeric fidelity
      PyTorch vs onnxruntime on random inputs.
 
-Action scaling is NOT baked in — the ONNX outputs raw policy means and the
-embedding side applies the env's action scales (for NewBike-Balance-v1:
-steer x 1.57 rad position target, drive x 10.0 rad/s velocity target).
+Action scaling is NOT baked in — the ONNX outputs normalized policy actions.
+Trackstand-Balance-v0 Gaussian means are unbounded; v1 Beta means are in [-1, 1].
+The embedding side applies steering x 1.57 rad and rear drive x 6.28 N m once.
 """
 
 import argparse
@@ -31,11 +32,21 @@ import torch.nn as nn
 
 
 class DeploymentPolicy(nn.Module):
-    """Optional obs preprocessor + the policy MLP — the full inference graph."""
+    """Optional obs preprocessor + MLP + deterministic distribution transform."""
 
-    def __init__(self, mlp: nn.Sequential, mean: torch.Tensor | None = None, var: torch.Tensor | None = None):
+    def __init__(
+        self,
+        mlp: nn.Sequential,
+        mean: torch.Tensor | None = None,
+        var: torch.Tensor | None = None,
+        beta_policy: bool = False,
+    ):
         super().__init__()
         self.mlp = mlp
+        self.beta_policy = beta_policy
+        self.num_actions = mlp[-1].out_features // 2 if beta_policy else mlp[-1].out_features
+        if beta_policy and mlp[-1].out_features % 2:
+            raise ValueError("A Beta head must predict two shape parameters per action.")
         if mean is not None:
             assert var is not None  # guarded by the caller's mean/var parity check
             # matches rsl_rl EmpiricalNormalization: (x - mean) / sqrt(var + eps), eps = 1e-2
@@ -48,7 +59,13 @@ class DeploymentPolicy(nn.Module):
     def forward(self, obs: torch.Tensor) -> torch.Tensor:
         if self.mean is not None:
             obs = (obs - self.mean) * self.inv_std
-        return self.mlp(obs)
+        output = self.mlp(obs)
+        if self.beta_policy:
+            alpha_raw, beta_raw = output.reshape(-1, 2, self.num_actions).unbind(dim=-2)
+            alpha = torch.nn.functional.softplus(alpha_raw) + 1.0
+            beta = torch.nn.functional.softplus(beta_raw) + 1.0
+            output = 2.0 * (alpha / (alpha + beta)) - 1.0
+        return output
 
 
 def main():
@@ -79,7 +96,14 @@ def main():
 
     sd = dict(ckpt["actor_state_dict"])
 
-    # ---- 2. Strip distribution (deterministic export) ---------------------------
+    # ---- 2. Identify the deterministic distribution transform -----------------
+    beta_version = sd.pop("distribution._beta_policy_version", None)
+    beta_policy = beta_version is not None
+    if beta_policy and (beta_version.numel() != 1 or beta_version.item() != 1):
+        raise ValueError(f"Unsupported Beta policy version marker: {beta_version}")
+    print(f"[INFO] Actor distribution: {'bounded Beta' if beta_policy else 'Gaussian'}")
+    # Only Gaussian exploration parameters are discarded. Beta's deterministic
+    # mean mapping is retained in DeploymentPolicy; logits are never motor actions.
     dist_keys = [k for k in sd if k.startswith("distribution.")]
     for k in dist_keys:
         sd.pop(k)
@@ -138,7 +162,7 @@ def main():
           f"{' -> '.join(str(validated[i][0].shape[0]) for i in idxs[:-1])}"
           f" -> {output_dim} (ELU between layers)")
 
-    deployment = DeploymentPolicy(mlp, mean, var)
+    deployment = DeploymentPolicy(mlp, mean, var, beta_policy=beta_policy)
     deployment.eval()
 
     # ---- 5. Export ONNX ----------------------------------------------------------
@@ -181,8 +205,8 @@ def main():
         print("[WARN]  Error is larger than expected — verify numeric fidelity.")
     else:
         print("[INFO] Numeric fidelity verified.")
-    print(f"[INFO] Action scales are NOT baked in — apply the env's scales on the embedding side"
-          f" (NewBike-Balance-v1: steer x 1.57 rad pos, drive x 10.0 rad/s vel).")
+    print("[INFO] Action scales are NOT baked in — apply the env's scales on the embedding side"
+          " (Trackstand: steer x 1.57 rad position, rear drive x 6.28 N m torque).")
 
 
 if __name__ == "__main__":

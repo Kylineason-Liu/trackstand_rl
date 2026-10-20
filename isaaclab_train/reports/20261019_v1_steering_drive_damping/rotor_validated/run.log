@@ -1,0 +1,211 @@
+The '--headless' CLI argument is deprecated. Omit '--viz' for default headless. If config visualizers are enabled and you want to force headless, use '--viz none'.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+E0000 00:00:1792418804.998171  815649 descriptor_database.cc:633] File already exists in database: grpc/health/v1/health.proto
+W0000 00:00:1792418804.998203  815649 message.cc:301] Protobuf GeneratedMessageFactory: File is already registered: grpc/health/v1/health.proto
+[ISAACLAB] AppLauncher initialization complete
+[ISAACLAB] Kit version: 110.1.1+production.305458.6312fa25.gl
+[ISAACLAB] Kit kernel:  210.1.5+release.12978.b22b555f.gl
+[ISAACLAB] Kit hash:    6312fa25
+[INFO]: Registered backend 'physx' for factory Articulation.
+[INFO]: Simulation parameters for joints in /World/Rotors/rotor_.*:
++----------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                                                Simulation Joint Information (Prim path: /World/Rotors/rotor_.*)                                                |
++-------+-------+-----------+---------+----------+-----------------+------------------+------------------+---------------------+-----------------+---------------+
+| Index | Name  | Stiffness | Damping | Armature | Static Friction | Dynamic Friction | Viscous Friction |   Position Limits   | Velocity Limits | Effort Limits |
++-------+-------+-----------+---------+----------+-----------------+------------------+------------------+---------------------+-----------------+---------------+
+|   0   | hinge |   0.000   |  0.050  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     1.0e+04     |     6.280     |
++-------+-------+-----------+---------+----------+-----------------+------------------+------------------+---------------------+-----------------+---------------+
+/home/lmbike/trackstand_rl/isaaclab_train/reports/20261019_v1_steering_drive_damping/probe_drive_damping.py:116: DeprecationWarning: The function 'write_joint_state_to_sim' will be deprecated in a future release. Please use 'write_joint_position_to_sim_index' and 'write_joint_velocity_to_sim_index' instead.
+  robot.write_joint_state_to_sim(zero, speed)
+/home/lmbike/trackstand_rl/isaaclab_train/reports/20261019_v1_steering_drive_damping/probe_drive_damping.py:119: DeprecationWarning: The function 'write_joint_damping_to_sim' will be deprecated in a future release. Please use 'write_joint_damping_to_sim_index' instead.
+  robot.write_joint_damping_to_sim(damping)
+/home/lmbike/trackstand_rl/isaaclab_train/reports/20261019_v1_steering_drive_damping/probe_drive_damping.py:120: DeprecationWarning: The function 'set_joint_position_target' will be deprecated in a future release. Please use 'set_joint_position_target_index' instead.
+  robot.set_joint_position_target(zero)
+/home/lmbike/trackstand_rl/isaaclab_train/reports/20261019_v1_steering_drive_damping/probe_drive_damping.py:121: DeprecationWarning: The function 'set_joint_velocity_target' will be deprecated in a future release. Please use 'set_joint_velocity_target_index' instead.
+  robot.set_joint_velocity_target(zero)
+/home/lmbike/trackstand_rl/isaaclab_train/reports/20261019_v1_steering_drive_damping/probe_drive_damping.py:122: DeprecationWarning: The function 'set_joint_effort_target' will be deprecated in a future release. Please use 'set_joint_effort_target_index' instead.
+  robot.set_joint_effort_target(feedforward)
+{
+  "max_velocity_error_rad_s": 0.08847463989258131,
+  "velocity_error_tolerance_rad_s": 0.1,
+  "max_acceleration_effort_error_nm": 0.02424478530883789,
+  "acceleration_effort_error_tolerance_nm": 0.05,
+  "passed": true
+}
+[
+  {
+    "scenario": "coast_10",
+    "damping": 0.0,
+    "initial_velocity_rad_s": 10.0,
+    "feedforward_nm": 0.0,
+    "final_velocity_rad_s": 10.0,
+    "analytic_final_velocity_rad_s": 10.0,
+    "max_velocity_error_rad_s": 0.0,
+    "initial_measured_effort_nm": 5.656461361442206e-22,
+    "max_absolute_effort_nm": 7.429328875499612e-19,
+    "max_acceleration_effort_error_nm": 7.429328875499612e-19
+  },
+  {
+    "scenario": "coast_10",
+    "damping": 0.05,
+    "initial_velocity_rad_s": 10.0,
+    "feedforward_nm": 0.0,
+    "final_velocity_rad_s": 7.788196563720703,
+    "analytic_final_velocity_rad_s": 7.788007830714049,
+    "max_velocity_error_rad_s": 0.0007326799990501343,
+    "initial_measured_effort_nm": -0.4999673366546631,
+    "max_absolute_effort_nm": 0.4999673366546631,
+    "max_acceleration_effort_error_nm": 0.006067723035812378
+  },
+  {
+    "scenario": "coast_61_6",
+    "damping": 0.0,
+    "initial_velocity_rad_s": 61.6,
+    "feedforward_nm": 0.0,
+    "final_velocity_rad_s": 61.599998474121094,
+    "analytic_final_velocity_rad_s": 61.6,
+    "max_velocity_error_rad_s": 1.5258789076710855e-06,
+    "initial_measured_effort_nm": 3.984689535405558e-19,
+    "max_absolute_effort_nm": 3.08611491248429e-17,
+    "max_acceleration_effort_error_nm": 3.08611491248429e-17
+  },
+  {
+    "scenario": "coast_61_6",
+    "damping": 0.05,
+    "initial_velocity_rad_s": 61.6,
+    "feedforward_nm": 0.0,
+    "final_velocity_rad_s": 47.974693298339844,
+    "analytic_final_velocity_rad_s": 47.97412823719854,
+    "max_velocity_error_rad_s": 0.0018596914778044038,
+    "initial_measured_effort_nm": -3.0797994136810303,
+    "max_absolute_effort_nm": 3.0797994136810303,
+    "max_acceleration_effort_error_nm": 0.02424478530883789
+  },
+  {
+    "scenario": "drive_from_rest",
+    "damping": 0.0,
+    "initial_velocity_rad_s": 0.0,
+    "feedforward_nm": 6.28,
+    "final_velocity_rad_s": 31.37974739074707,
+    "analytic_final_velocity_rad_s": 31.400000000000002,
+    "max_velocity_error_rad_s": 0.02025260925293182,
+    "initial_measured_effort_nm": 6.280003547668457,
+    "max_absolute_effort_nm": 6.280005931854248,
+    "max_acceleration_effort_error_nm": 0.005591869354248047
+  },
+  {
+    "scenario": "drive_from_rest",
+    "damping": 0.05,
+    "initial_velocity_rad_s": 0.0,
+    "feedforward_nm": 6.28,
+    "final_velocity_rad_s": 27.782459259033203,
+    "analytic_final_velocity_rad_s": 27.782621646231547,
+    "max_velocity_error_rad_s": 0.0002949057648748976,
+    "initial_measured_effort_nm": 6.27959680557251,
+    "max_absolute_effort_nm": 6.27959680557251,
+    "max_acceleration_effort_error_nm": 0.011884212493896484
+  },
+  {
+    "scenario": "reverse_from_rest",
+    "damping": 0.0,
+    "initial_velocity_rad_s": 0.0,
+    "feedforward_nm": -6.28,
+    "final_velocity_rad_s": -31.37974739074707,
+    "analytic_final_velocity_rad_s": -31.400000000000002,
+    "max_velocity_error_rad_s": 0.02025260925293182,
+    "initial_measured_effort_nm": -6.280003547668457,
+    "max_absolute_effort_nm": 6.280005931854248,
+    "max_acceleration_effort_error_nm": 0.005591869354248047
+  },
+  {
+    "scenario": "reverse_from_rest",
+    "damping": 0.05,
+    "initial_velocity_rad_s": 0.0,
+    "feedforward_nm": -6.28,
+    "final_velocity_rad_s": -27.782459259033203,
+    "analytic_final_velocity_rad_s": -27.782621646231547,
+    "max_velocity_error_rad_s": 0.0002949057648748976,
+    "initial_measured_effort_nm": -6.27959680557251,
+    "max_absolute_effort_nm": 6.27959680557251,
+    "max_acceleration_effort_error_nm": 0.011884212493896484
+  },
+  {
+    "scenario": "hold_10",
+    "damping": 0.0,
+    "initial_velocity_rad_s": 10.0,
+    "feedforward_nm": 0.5,
+    "final_velocity_rad_s": 12.50244140625,
+    "analytic_final_velocity_rad_s": 12.5,
+    "max_velocity_error_rad_s": 0.00244140625,
+    "initial_measured_effort_nm": 0.5,
+    "max_absolute_effort_nm": 0.5000001788139343,
+    "max_acceleration_effort_error_nm": 0.00048866868019104
+  },
+  {
+    "scenario": "hold_10",
+    "damping": 0.05,
+    "initial_velocity_rad_s": 10.0,
+    "feedforward_nm": 0.5,
+    "final_velocity_rad_s": 10.0,
+    "analytic_final_velocity_rad_s": 10.0,
+    "max_velocity_error_rad_s": 0.0,
+    "initial_measured_effort_nm": 6.984919878050277e-07,
+    "max_absolute_effort_nm": 1.0710214155551512e-06,
+    "max_acceleration_effort_error_nm": 1.0710214155551512e-06
+  },
+  {
+    "scenario": "brake_10",
+    "damping": 0.0,
+    "initial_velocity_rad_s": 10.0,
+    "feedforward_nm": -6.28,
+    "final_velocity_rad_s": -21.387426376342773,
+    "analytic_final_velocity_rad_s": -21.400000000000002,
+    "max_velocity_error_rad_s": 0.012573623657228694,
+    "initial_measured_effort_nm": -6.280002593994141,
+    "max_absolute_effort_nm": 6.280005931854248,
+    "max_acceleration_effort_error_nm": 0.005591869354248047
+  },
+  {
+    "scenario": "brake_10",
+    "damping": 0.05,
+    "initial_velocity_rad_s": 10.0,
+    "feedforward_nm": -6.28,
+    "final_velocity_rad_s": -19.9943790435791,
+    "analytic_final_velocity_rad_s": -19.994613815517496,
+    "max_velocity_error_rad_s": 0.0003216231564096006,
+    "initial_measured_effort_nm": -6.77956485748291,
+    "max_absolute_effort_nm": 6.77956485748291,
+    "max_acceleration_effort_error_nm": 0.011867523193359375
+  },
+  {
+    "scenario": "brake_61_6",
+    "damping": 0.0,
+    "initial_velocity_rad_s": 61.6,
+    "feedforward_nm": -6.28,
+    "final_velocity_rad_s": 30.113201141357422,
+    "analytic_final_velocity_rad_s": 30.2,
+    "max_velocity_error_rad_s": 0.08847463989258131,
+    "initial_measured_effort_nm": -6.280002593994141,
+    "max_absolute_effort_nm": 6.28000545501709,
+    "max_acceleration_effort_error_nm": 0.018832683563232422
+  },
+  {
+    "scenario": "brake_61_6",
+    "damping": 0.05,
+    "initial_velocity_rad_s": 61.6,
+    "feedforward_nm": -6.28,
+    "final_velocity_rad_s": 20.191402435302734,
+    "analytic_final_velocity_rad_s": 20.19150659096698,
+    "max_velocity_error_rad_s": 0.00039611656774241055,
+    "initial_measured_effort_nm": -9.359395980834961,
+    "max_absolute_effort_nm": 9.359395980834961,
+    "max_acceleration_effort_error_nm": 0.023889541625976562
+  }
+]
+PASS: rotor dynamics and measured-effort cross-check
+Loading user config located at: '/home/lmbike/.cache/packman/chk/kit-kernel/110.1.1+production.manylinux_2_35_x86_64.release/data/Kit/IsaacLab/3.0/user.config.json'
+2026-10-19T14:06:44Z [0ms] [Warning] [omni.ext.plugin] [ext: extensions] Extensions config 'extension.toml' doesn't exist '/home/lmbike/IsaacLab/source/extensions' or '/home/lmbike/IsaacLab/source/extensions/config'
+2026-10-19T14:06:45Z [342ms] [Warning] [omni.usd_config.extension] Enable omni.materialx.libs extension to use MaterialX
+2026-10-19T14:06:45Z [793ms] [Warning] [isaacsim.core.simulation_manager.plugin] USD stage is not available; stage-opened subscription is deferred
+2026-10-19T14:06:45Z [794ms] [Warning] [isaacsim.core.simulation_manager.plugin] USD stage is not available; stage-opened subscription is deferred
+2026-10-19T14:06:47Z [2,447ms] [Warning] [usdrt.population.plugin] Last global time was not created. Did you call setEnableUsdNoticeHandling?
