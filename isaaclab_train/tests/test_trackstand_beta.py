@@ -90,6 +90,11 @@ class TestTrackstandBeta(unittest.TestCase):
                 self.assertEqual(drive1.pop("effort_limit"), 6.28)
                 self.assertIsNone(drive0.pop("velocity_limit"))
                 self.assertEqual(drive1.pop("velocity_limit"), 61.6)
+                self.assertEqual(drive0.pop("damping"), 0.05)
+                self.assertEqual(drive1.pop("damping"), 0.0)
+                for field in ("friction", "dynamic_friction"):
+                    self.assertIsNone(drive0.pop(field))
+                    self.assertEqual(drive1.pop(field), 0.106)
                 self.assertEqual(drive0, drive1)
                 steering_actuator0 = v0["scene"]["robot"]["actuators"]["steering"]
                 steering_actuator1 = v1["scene"]["robot"]["actuators"]["steering"]

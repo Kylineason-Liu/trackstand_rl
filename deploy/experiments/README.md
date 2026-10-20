@@ -77,3 +77,88 @@ B0 is retried once a second until valid; no guessed constant is substituted.
 Failed measurement queries produce NaN (raw missing counts are blank), not
 cached readings or fabricated zeros. Restart the collector after motor power
 resets, since startup counts and torque constants are latched per recording.
+
+## Bounded steering speed-step sweep
+
+`steering_speed_sweep.py` is a standalone stdlib/SocketCAN controller and recorder;
+transfer this file alone to the Pi. It uses steering ID **2** (host `102`, reply
+`002`), not rear drive ID 1. No ROS nodes, separate feedback collector or package
+build is needed. Stop other motor writers/query recorders; secure the bike with
+the **front wheel airborne**, steering physically straight at startup and free
+throughout the selected travel. Keep an independent emergency stop available.
+
+From the repository root:
+
+```bash
+# Preview: no CAN access or CSV creation.
+python3 deploy/experiments/steering_speed_sweep.py
+# First check: low-speed out-and-back, then return toward startup zero.
+python3 deploy/experiments/steering_speed_sweep.py --execute --speeds .2 --cycles 1
+# Full default speed set, three repeats (only after the first check is satisfactory).
+python3 deploy/experiments/steering_speed_sweep.py --execute --repeats 3
+```
+
+Default speed magnitudes are **`1 2 4 6 8 10 12` rad/s**, with three out-and-back
+cycles per speed. C1 commands jump directly to the signed speed, then to zero
+at each endpoint: **no host ramp**. Endpoint zero commands can occur between
+nominal 50-Hz ticks. Firmware **B5 acceleration is read/logged, not changed**;
+actual speed can therefore still rise/fall gradually. Commands do not guarantee
+instantaneous mechanical speed or steady motion.
+
+The measured overspeed abort is **16 rad/s**, below the bike's configured
+steering limit of 23.9 rad/s. Startup positioning and the final return toward
+zero still use at most 0.4 rad/s; the measurement traversals use the full speed
+steps above. No firmware current ceiling or acceleration is increased by this
+higher-speed revision.
+Startup warns when a constant-acceleration estimate using the read B5 value
+would require more than the full stroke to reach a requested speed from rest.
+That estimate is conditional on firmware enforcing B5, not a calibrated motor
+response. The warning does not change B5 or suppress the requested speed step.
+
+Turnarounds are at approximately **±0.6 rad** from the software startup zero;
+the hard angle abort is **±1.2 rad**, with an additional velocity/age lookahead.
+These are test settings, not measured stopping-distance guarantees. There are
+stopped rests before reversals, leg/stop timeouts, freshness, direction, speed,
+temperature, fault, bus-overflow and conflicting-writer checks. CF disables
+torque but cannot guarantee a mechanical stop. No hardware origin or gains are
+changed. Only the selected motor is commanded: ID 1 is untouched with the
+default steering ID 2.
+
+High-speed defaults use **200 Hz queries**, a **10 ms motion-query deadline**,
+**20 ms feedback-age limit**, and **15 ms position lookahead**. The lookahead
+is a reaction guard, **not an identified braking time**. Argument validation
+checks endpoint margin against speed, feedback age, query period/deadline and
+lookahead. Endpoint zero bypasses the periodic C1 tick. Long Pi scheduling
+stalls remain dangerous; do not loosen timeouts merely to suppress aborts.
+
+The default temporary **B3 ceiling remains 1 A**, never raising an existing
+lower limit. `--current-limit-a` chooses a different test ceiling. The measured
+current guard is more tolerant than the rear sweep: **1.5 × actual B3 + 0.05 A**
+(about 1.55 A if B3 reads exactly 1 A), configurable with
+`--current-guard-factor` and `--current-guard-margin-a`. This allowance is not a
+motor rating. B3 acknowledgements/readbacks still permit only 1 mA downward
+rounding; more current-spike tolerance does not weaken parameter verification.
+Original B3/CD settings are restored only after CF and a fresh AE confirm
+disabled; crashes/power loss can prevent restoration.
+
+The CSV saves automatically to `logs/<timestamp>_steering_speed_sweep.csv` beside
+the script; `--output` selects an exclusive alternative path. It records raw
+TX/RX bytes, unwrapped startup-relative **A3 position**, A2 speed, A1 current,
+B0 torque constant, AE status, B5 acceleration, phase/leg/cycle metadata, and
+individual feedback ages. Nominal A3/A2/A1 rates are **200 Hz each**, AE 5 Hz,
+B0 1 Hz. Torque is the signed A1 × B0 estimate, not an independent measurement.
+
+For analysis, select fresh `record_type=rx` rows by opcode. Other rows repeat
+cached state and are not independent measurements. `analysis_window` marks
+post-settle travel within ±0.4 rad after a nominal **20 ms** exclusion,
+**not verified steady motion**. At 12 rad/s an ideal full stroke lasts only
+0.1 s; actual strokes may contain no steady-speed plateau. Inspect actual
+speed, acceleration and angle dependence; do not fit friction to reversals or
+assume every requested plateau was achieved. Compare directions at matching
+angles to help separate friction from gravitational/angle-dependent loads.
+
+Simulated-CAN tests (no real motor):
+
+```bash
+python3 -B -m unittest discover -s deploy/experiments/tests -p 'test_*speed_sweep.py' -v
+```

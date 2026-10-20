@@ -1,0 +1,425 @@
+{
+  "rows": 388994,
+  "duration_s": 576.066796699,
+  "raw_validated_reply_counts": {
+    "CF": 5,
+    "B0": 577,
+    "B3": 5,
+    "CD": 5,
+    "AE": 2870,
+    "A1": 53529,
+    "A2": 53529,
+    "C1": 28667
+  },
+  "input_rows_by_type": {
+    "rx": 139187,
+    "query": 110520,
+    "tx": 110520,
+    "command": 28667,
+    "event": 100
+  },
+  "complete_hold_plateaus": 19,
+  "retained_samples_a1": 22950,
+  "retained_samples_a2": 22950,
+  "fit_window": "Each complete hold, phase_elapsed_s in [1,14); independent fresh A1/A2 rows only",
+  "user_confirmed_condition": "Rear wheel completely airborne, unconstrained, free to rotate",
+  "torque_constant_nm_per_a": [
+    0.3000000119209289
+  ],
+  "original_q_current_ceiling_readback_a": 82.498,
+  "active_q_current_ceiling_readback_a": [
+    0.999
+  ],
+  "gear_ratio": [
+    1.0
+  ],
+  "encoder_sign": [
+    -1
+  ],
+  "torque_sign": [
+    -1
+  ],
+  "voltage_range_v": [
+    20.18,
+    20.22
+  ],
+  "temperature_range_c": [
+    30.0,
+    42.0
+  ],
+  "motion_modes": [
+    3.0
+  ],
+  "motion_faults": [
+    0.0
+  ],
+  "command_rate_hz": 49.76983397352663,
+  "max_command_interval_ms": 88.90625399999408,
+  "query_failures": [
+    {
+      "elapsed_s": 576.0605599390005,
+      "repeat": 2,
+      "step": 10,
+      "phase": "ramp_up",
+      "opcode_hex": "A1",
+      "query_status": "timeout"
+    }
+  ],
+  "stop_detail": {
+    "request_elapsed_s": 575.9921130940006,
+    "timeout_check_elapsed_s": 576.0605599390005,
+    "late_receipt_elapsed_s": 576.0607431940002,
+    "host_request_to_timeout_check_ms": 68.44684499992582,
+    "host_request_to_late_receipt_ms": 68.63009999960923,
+    "last_C1_elapsed_s": 575.9781228369998,
+    "explanation": "A1 20ms deadline; host receipt gap cannot distinguish driver delay, CAN delay, or host scheduling"
+  },
+  "unconstrained_fit": {
+    "B_nm_s_per_rad": -4.8666741606070944e-05,
+    "coulomb_nm": 0.10621870780052463,
+    "offset_nm": 0.000856773949372263,
+    "n_plateaus": 19,
+    "rmse_nm": 0.005490119959008635,
+    "sse_nm2": 0.0005726869261217947,
+    "standard_errors": [
+      0.000558199279374317,
+      0.0026151362444890545,
+      0.0013793874052148143
+    ],
+    "conditional_95pct_t_intervals": [
+      [
+        -0.001231996351973171,
+        0.001134662868761029
+      ],
+      [
+        0.10067486661764671,
+        0.11176254898340254
+      ],
+      [
+        -0.0020673967206216778,
+        0.0037809446193662038
+      ]
+    ]
+  },
+  "physical_nonnegative_fit": {
+    "B_nm_s_per_rad": 0.0,
+    "coulomb_nm": 0.10602473549640903,
+    "offset_nm": 0.0008465922369885625,
+    "n_plateaus": 19,
+    "rmse_nm": 0.0054914239250468035,
+    "sse_nm2": 0.0005729589977669524
+  },
+  "conditional_bootstrap": {
+    "seed": 42,
+    "repetitions": 10000,
+    "stratified_by": "repeat and direction",
+    "B_percentile_2_5_50_97_5": [
+      -0.0009059573431442152,
+      -7.215887929519175e-05,
+      0.0009528539701338134
+    ]
+  },
+  "by_repeat": {
+    "1": {
+      "B_nm_s_per_rad": 0.0001836665509937057,
+      "coulomb_nm": 0.10469449430476857,
+      "offset_nm": 0.0007125512118656041,
+      "n_plateaus": 10,
+      "rmse_nm": 0.006068384867525816,
+      "sse_nm2": 0.00036825294900416324,
+      "standard_errors": [
+        0.0008964328434677578,
+        0.00440479557546719,
+        0.0022936340069122686
+      ]
+    },
+    "2": {
+      "B_nm_s_per_rad": -0.00032895535703541536,
+      "coulomb_nm": 0.10786285317187086,
+      "offset_nm": 0.0010817940278291666,
+      "n_plateaus": 9,
+      "rmse_nm": 0.004600864210906368,
+      "sse_nm2": 0.0001905115633847917,
+      "standard_errors": [
+        0.0008180652887858789,
+        0.0035853109127542714,
+        0.0019286794922265835
+      ]
+    }
+  },
+  "by_direction": {
+    "-1": [
+      0.00013200008364026687,
+      0.10467964320208611
+    ],
+    "1": [
+      -0.00018652325559431428,
+      0.10765378142853782
+    ]
+  },
+  "mean_absolute_torque_by_target": [
+    {
+      "magnitude": 1.0,
+      "plateaus": 4,
+      "mean_absolute_torque_nm": 0.10820933267585642
+    },
+    {
+      "magnitude": 2.0,
+      "plateaus": 4,
+      "mean_absolute_torque_nm": 0.10451432549194842
+    },
+    {
+      "magnitude": 4.0,
+      "plateaus": 4,
+      "mean_absolute_torque_nm": 0.1034510485595669
+    },
+    {
+      "magnitude": 6.0,
+      "plateaus": 4,
+      "mean_absolute_torque_nm": 0.10858637968875495
+    },
+    {
+      "magnitude": 8.0,
+      "plateaus": 3,
+      "mean_absolute_torque_nm": 0.1054240736680843
+    }
+  ],
+  "positive_viscous_only_fit_B_nm_s_per_rad": 0.01920879184497315,
+  "peak_plateau_speed_error_pct": 2.216918325565387,
+  "speed_std_range_rad_s": [
+    0.18572457857469862,
+    0.4089246875492239
+  ],
+  "largest_plateau_linear_speed_trend_rad_s2": 0.023654528740970817,
+  "leave_one_plateau_out_B": [
+    0.00011328903757655418,
+    -0.0004006749034141346,
+    -3.986044095302334e-05,
+    -0.0001233166422548027,
+    -3.182698916941435e-05,
+    -7.718015925512724e-05,
+    4.53713000233425e-05,
+    -3.999178688690997e-05,
+    3.47709947891408e-05,
+    -0.00011036244882128934,
+    9.222979788214774e-05,
+    7.699188726874557e-05,
+    -5.671214710653653e-05,
+    -6.877758240374473e-05,
+    7.583845402428438e-05,
+    -3.981888920096534e-05,
+    -6.716238723827e-05,
+    -3.40595289623743e-05,
+    -0.00025324748941406896
+  ],
+  "a2_observed_rate_hz": 92.93147039240294,
+  "a1_observed_rate_hz": 92.93134553930786,
+  "trim_sensitivity": {
+    "0": {
+      "B_nm_s_per_rad": -8.82260833012427e-05,
+      "coulomb_nm": 0.10532974248394003,
+      "offset_nm": 0.0006880095364101748,
+      "n_plateaus": 19,
+      "rmse_nm": 0.0058220975429305035,
+      "sse_nm2": 0.0006440395761885508,
+      "standard_errors": [
+        0.0005920531058707629,
+        0.002775043326909828,
+        0.0014628538531311747
+      ],
+      "conditional_95pct_t_intervals": [
+        [
+          -0.0013433225998570756,
+          0.0011668704332545902
+        ],
+        [
+          0.09944691342965531,
+          0.11121257153822475
+        ],
+        [
+          -0.0024131020988288334,
+          0.003789121171649183
+        ]
+      ]
+    },
+    "1": {
+      "B_nm_s_per_rad": -4.8666741606070944e-05,
+      "coulomb_nm": 0.10621870780052463,
+      "offset_nm": 0.000856773949372263,
+      "n_plateaus": 19,
+      "rmse_nm": 0.005490119959008635,
+      "sse_nm2": 0.0005726869261217947,
+      "standard_errors": [
+        0.000558199279374317,
+        0.0026151362444890545,
+        0.0013793874052148143
+      ],
+      "conditional_95pct_t_intervals": [
+        [
+          -0.001231996351973171,
+          0.001134662868761029
+        ],
+        [
+          0.10067486661764671,
+          0.11176254898340254
+        ],
+        [
+          -0.0020673967206216778,
+          0.0037809446193662038
+        ]
+      ]
+    },
+    "2": {
+      "B_nm_s_per_rad": 0.00010232243695704157,
+      "coulomb_nm": 0.10613516640025122,
+      "offset_nm": 0.0014928219960462282,
+      "n_plateaus": 19,
+      "rmse_nm": 0.005426348118520549,
+      "sse_nm2": 0.0005594598241640586,
+      "standard_errors": [
+        0.0005522451913605643,
+        0.0025859773963119383,
+        0.001363168202950536
+      ],
+      "conditional_95pct_t_intervals": [
+        [
+          -0.0010683850706776745,
+          0.0012730299445917574
+        ],
+        [
+          0.10065313921414316,
+          0.11161719358635928
+        ],
+        [
+          -0.0013969655011185278,
+          0.004382609493210984
+        ]
+      ]
+    },
+    "3": {
+      "B_nm_s_per_rad": 0.000398166550554394,
+      "coulomb_nm": 0.10416788678009405,
+      "offset_nm": 0.0022649004244746987,
+      "n_plateaus": 19,
+      "rmse_nm": 0.005547232770871343,
+      "sse_nm2": 0.0005846640368703503,
+      "standard_errors": [
+        0.0005650373126700802,
+        0.0026467918923548796,
+        0.0013934267287852072
+      ],
+      "conditional_95pct_t_intervals": [
+        [
+          -0.0007996590428326458,
+          0.001595992143941434
+        ],
+        [
+          0.09855693862155508,
+          0.10977883493863301
+        ],
+        [
+          -0.0006890322819535998,
+          0.005218833130902998
+        ]
+      ]
+    },
+    "4": {
+      "B_nm_s_per_rad": -0.0005531433544950034,
+      "coulomb_nm": 0.10810939111423327,
+      "offset_nm": 0.001049386609923984,
+      "n_plateaus": 19,
+      "rmse_nm": 0.006514224535846368,
+      "sse_nm2": 0.0008062673047650337,
+      "standard_errors": [
+        0.0006623358709386098,
+        0.0031044619255364975,
+        0.0016366547227694
+      ],
+      "conditional_95pct_t_intervals": [
+        [
+          -0.0019572326771620874,
+          0.0008509459681720805
+        ],
+        [
+          0.10152822582705784,
+          0.11469055640140871
+        ],
+        [
+          -0.0024201664098703604,
+          0.004518939629718328
+        ]
+      ]
+    },
+    "5": {
+      "B_nm_s_per_rad": -0.0016937618689732371,
+      "coulomb_nm": 0.11093081992438976,
+      "offset_nm": 0.0032918331254131964,
+      "n_plateaus": 19,
+      "rmse_nm": 0.00954990480501858,
+      "sse_nm2": 0.0017328129539134218,
+      "standard_errors": [
+        0.0009686047629771885,
+        0.004550269820239045,
+        0.0023990150273493745
+      ],
+      "conditional_95pct_t_intervals": [
+        [
+          -0.0037471122388595263,
+          0.0003595885009130518
+        ],
+        [
+          0.10128467881957846,
+          0.12057696102920105
+        ],
+        [
+          -0.0017938515439761653,
+          0.008377517794802558
+        ]
+      ]
+    }
+  },
+  "first_query_metadata": {
+    "acceleration": 1.0,
+    "b0_rate": 1.0,
+    "command_rate": 50.0,
+    "command_sign": -1,
+    "current_limit_a": 1.0,
+    "encoder_sign": -1,
+    "execute": true,
+    "feedback_timeout": 0.25,
+    "gear_ratio": 1.0,
+    "hold": 15.0,
+    "interface": "can0",
+    "max_temperature": 60.0,
+    "motor_id": 1,
+    "output": "/home/smallbike/trackstand_rl/deploy/experiments/logs/20261020_154728_360275_drive_speed_sweep.csv",
+    "preview": false,
+    "query_rate": 100.0,
+    "query_timeout": 0.02,
+    "repeats": 3,
+    "rest": 2.0,
+    "settle": 5.0,
+    "speed_limit": 10.0,
+    "speeds": [
+      1,
+      2,
+      4,
+      6,
+      8,
+      -1,
+      -2,
+      -4,
+      -6,
+      -8
+    ],
+    "status_rate": 5.0,
+    "torque_sign": -1,
+    "watchdog_ms": 500
+  },
+  "provenance_sha256": {
+    "deploy/experiments/logs/20261020_154728_360275_drive_speed_sweep.csv": "5607236f4d8cd96c5993aaca95dd4216047919365ab3a51e1b1be5f375bd2045",
+    "deploy/experiments/reports/drive_damping_20261020_154728/analysis.py": "64f9526ac1ee84e8aa838c80b28239fdfb19a19b542db445c1ff9ea875742f62",
+    "deploy/experiments/drive_speed_sweep.py": "f164d70fa0805859dab7a71325c2ad6537436a42f4d9e1ca2c3879535bfb5ce6",
+    "deploy/source/trackstand_deploy/trackstand_deploy/can_protocol.py": "25ef50ec0a2ee282f68f4c0e54c1166f1c1add24473a3dbe8e19612f35fe7d29"
+  }
+}

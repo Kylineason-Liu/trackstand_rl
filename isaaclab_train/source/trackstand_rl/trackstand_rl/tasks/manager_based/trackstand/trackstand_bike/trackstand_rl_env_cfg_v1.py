@@ -5,7 +5,8 @@ steering/rear velocity (rad/s), sin(steering), cos(steering). No body linear
 velocities. Both the observation function and the matching noise configuration
 are independent of v0's 13-channel observation term. The steering action clips
 targets to +/-1.57 rad and slews at 23.9 rad/s, once per 50-Hz policy update.
-The rear IdealPDActuator clips feedforward plus damping to +/-6.28 N m.
+The rear IdealPDActuator clips feedforward torque to +/-6.28 N m (Kp = Kd = 0).
+Rear passive moving friction is 0.106 N m; the equal static threshold is provisional.
 No reward, termination, reset-event, timing, or DR settings change.
 """
 
@@ -56,14 +57,16 @@ class TrackstandRLEnvCfgV1(TrackstandRLEnvCfg):
         self.scene.robot.actuators["steering"].effort_limit = 5.6
         self.scene.robot.actuators["steering"].velocity_limit = 23.9
         # V1-only replacement: the scene is an independent config instance.
-        # With the inherited zero velocity target, compute at each physics step:
-        # clip(6.28 * drive_action - damping * rear_speed, -6.28, 6.28).
-        # The explicit actuator path disables native PD gains (no double damping).
+        # With Kp = Kd = 0, compute at each physics step:
+        # clip(6.28 * drive_action, -6.28, 6.28).
+        # Passive joint friction is separate from the clipped actuator command.
         self.scene.robot.actuators["drive"] = IdealPDActuatorCfg(
             joint_names_expr=["rear_wheel_joint"],
             stiffness=0.0,
-            damping=0.05,  # PLACEHOLDER controller Kd, N m s/rad; not measured passive friction.
-            effort_limit=6.28,  # Explicit clamp AFTER adding damping, N m.
+            damping=0.0,  # Pure feedforward torque control; no controller velocity damping.
+            friction=0.106,  # N m: provisional static threshold (must be >= dynamic); not measured.
+            dynamic_friction=0.106,  # N m: effective unloaded moving drag, 2026-10-20 speed sweep.
+            effort_limit=6.28,  # Explicit actuator torque clamp, N m.
             effort_limit_sim=6.28,  # Retain the existing solver setting as well.
             velocity_limit=61.6,  # Explicit model parameter, matching the solver speed limit.
             velocity_limit_sim=61.6,  # Existing rear-wheel speed constraint, rad/s.
