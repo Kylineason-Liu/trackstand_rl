@@ -1,0 +1,34 @@
+test_async_late_reply_has_explicit_status (test_steering_sine_mit_io.IntegratedMITTests) ... ok
+test_busy_receive_work_is_bounded_by_command_deadline (test_steering_sine_mit_io.IntegratedMITTests) ... ok
+test_cli_invalid_values_rejected (test_steering_sine_mit_io.IntegratedMITTests) ... ok
+test_command_intervals_20ms_despite_missing_aux_replies (test_steering_sine_mit_io.IntegratedMITTests) ... ok
+test_csv_backlog_and_writer_errors_visible (test_steering_sine_mit_io.IntegratedMITTests) ... ok
+test_defaults_fixed_50hz_and_extended_200hz (test_steering_sine_mit_io.IntegratedMITTests) ... ok
+test_delayed_f1_does_not_set_command_frequency (test_steering_sine_mit_io.IntegratedMITTests) ... ok
+test_drive_collection_never_controls_drive (test_steering_sine_mit_io.IntegratedMITTests) ... ok
+test_feedback_units_and_signs (test_steering_sine_mit_io.IntegratedMITTests) ... ok
+test_logging_failure_does_not_prevent_physical_cf_send (test_steering_sine_mit_io.IntegratedMITTests) ... ok
+test_missing_f1_watchdog_stops_and_disables (test_steering_sine_mit_io.IntegratedMITTests) ... ok
+test_mit_only_no_motion_time_read_queries (test_steering_sine_mit_io.IntegratedMITTests) ... ok
+test_one_socket_startup_order_preserves_ranges_and_csv_fields (test_steering_sine_mit_io.IntegratedMITTests) ... ok
+test_origin_or_config_change_during_motion_stops (test_steering_sine_mit_io.IntegratedMITTests) ... ok
+test_overwrite_refused_before_can_open (test_steering_sine_mit_io.IntegratedMITTests) ... ok
+test_payload_and_native_origin_match_proven_sender (test_steering_sine_mit_io.IntegratedMITTests) ... ok
+test_pre_b1_unsolicited_samples_cannot_define_motion_reference (test_steering_sine_mit_io.IntegratedMITTests) ... ok
+test_preview_50hz_no_can_no_csv (test_steering_sine_mit_io.IntegratedMITTests) ... ok
+test_real_csv_writer_full_fake_experiment_flushes_rows (test_steering_sine_mit_io.IntegratedMITTests) ... ok
+test_receive_interference_drop_and_truncation_fail (test_steering_sine_mit_io.IntegratedMITTests) ... ok
+test_request_rejects_wrong_motor_opcode_and_length (test_steering_sine_mit_io.IntegratedMITTests) ... ok
+test_runtime_fault_and_failed_transmission_attempt_cf (test_steering_sine_mit_io.IntegratedMITTests) ... ok
+test_shutdown_send_failure_is_not_reported_success (test_steering_sine_mit_io.IntegratedMITTests) ... ok
+test_shutdown_without_ack_is_explicit_failure (test_steering_sine_mit_io.IntegratedMITTests) ... ok
+test_sigterm_and_keyboard_interrupt_cleanup (test_steering_sine_mit_io.IntegratedMITTests) ... ok
+test_stale_f0_write_reply_is_logged_not_confirmed (test_steering_sine_mit_io.IntegratedMITTests) ... ok
+test_startup_failures_no_motion_final_cf_attempted (test_steering_sine_mit_io.IntegratedMITTests) ... ok
+test_steering_references_require_explicit_verified_startup (test_steering_sine_mit_io.IntegratedMITTests) ... ok
+test_unknown_torque_constant_stays_nan (test_steering_sine_mit_io.IntegratedMITTests) ... ok
+
+----------------------------------------------------------------------
+Ran 29 tests in 0.143s
+
+OK

@@ -1,0 +1,38 @@
+{
+  "passed": true,
+  "completed_episodes": 6000,
+  "bin_counts": [
+    1097,
+    6,
+    5,
+    19,
+    25,
+    38,
+    40,
+    26,
+    17,
+    4727
+  ],
+  "all_64_first_episodes_match_saved_reference": true,
+  "protected_input_hashes_unchanged": true,
+  "physics_hz": 800,
+  "motor_torque_application_hz": 800,
+  "policy_target_update_hz": 50,
+  "pure_survival": true,
+  "complete_episode_and_step_accounting": true,
+  "shared_friction_bank_identical_across_workers": true,
+  "raw_episode_records_sha256": {
+    "worker_00/episodes.jsonl": "ae4ec1368fce0dda882e1a3314bd22beb83106247aa10163f57eae71bcee0be2",
+    "worker_01/episodes.jsonl": "6f1da2d944c31cd71f9bfeaeb0cff57435cf4cca208248526a3da5389813b0b0",
+    "worker_02/episodes.jsonl": "f8f078cca3cf1abfefe78232103f37905a4c5e23322aebf7216f9160ced5b728",
+    "worker_03/episodes.jsonl": "8349634183b6eb0c383f8819f83c1e1ff972d3c3d13d68cf026dc8d9288c9764",
+    "worker_04/episodes.jsonl": "8011a76ee2de20363cc3b034503495607f4e46a2bbfd85b65944343b5c2bc567",
+    "worker_05/episodes.jsonl": "c676e15d1f1e4e0ed0c8caa8f7e7b0ac64a49258e3e4c5ef84a510bd860ac7ed",
+    "worker_06/episodes.jsonl": "aacbd4951f40a7553eb67d68a62e2cb2fbdf2bd6ebda59422ed61399aca5fd3f",
+    "worker_07/episodes.jsonl": "bfba09fba9204ed0f76ec94c0383295fefbc2f1ac423702c89d7ca537d932c76",
+    "worker_08/episodes.jsonl": "27fa0bbb848347aea47d8c07506eee018575f6d1752f6bd1b84ddeb67b4f4643",
+    "worker_09/episodes.jsonl": "cdd3329826c24956d021cdaa4bbd17244f626032226d2b455d947481838d31d6",
+    "worker_10/episodes.jsonl": "b6e18de0346e632fcabf129b62a9e66a40d97694b4747149594182686a1e1511",
+    "worker_11/episodes.jsonl": "1e3b40926d0a9d3f5a43b005ca5a40d9e47d7fed48518f31431c406166ffe4af"
+  }
+}

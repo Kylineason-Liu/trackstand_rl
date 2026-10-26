@@ -1,0 +1,42 @@
+{
+  "model": "2500",
+  "training_run": "2026-10-21_11-18-29",
+  "dr": true,
+  "seed": 42,
+  "environment": 0,
+  "episode": 1,
+  "policy_hz": 50,
+  "units": "position rad; torque N m",
+  "steering_levels": "scaled raw action versus held position target BEFORE PD and passive losses",
+  "files": {
+    "2500_isaac400_env0_episode1.csv": {
+      "sha256": "c799e80fbc87af307871e35dce7ad409f3e636ff662e99ed498c3800a4cf3ad6",
+      "samples": 1500,
+      "duration_s": 30.0,
+      "source_files": {
+        "isaaclab_train/reports/20261025_2500_dr_comparison/isaac400/motor_samples.npz": "d6e1b712082b273daab7dc2fd0ba6a848317cc88c147a8f07f786feded6fcf1e"
+      },
+      "maximum_scaled_vs_conditioned_steering_difference_rad": 0.0
+    },
+    "2500_mujoco400_env0_episode1.csv": {
+      "sha256": "6121decd9019e348984edf45bb35ed82aa6d8eb01737937d0e59b291e7999abb",
+      "samples": 1500,
+      "duration_s": 30.0,
+      "source_files": {
+        "isaaclab_train/reports/20261025_2500_dr_comparison/mujoco400/physics_samples.npz": "bd6c6dc1faf25226205efa51256f1fdc81e6c762f5f957eedfa731e3ee326b6f",
+        "isaaclab_train/reports/20261025_2500_dr_comparison/mujoco400/202610252053_2500_dr_evaluation.npz": "dbf343daaed907a574ee96c58c1d2082f0a9ef5118f94da2f0f9a56800f2219d"
+      },
+      "maximum_scaled_vs_conditioned_steering_difference_rad": 0.0
+    },
+    "2500_mujoco800_env0_episode1.csv": {
+      "sha256": "3a1451775febd5845423825841878f2e69f0c450f91598648b25eb15269e1bd7",
+      "samples": 1500,
+      "duration_s": 30.0,
+      "source_files": {
+        "isaaclab_train/reports/20261025_2500_dr_comparison/mujoco800/physics_samples.npz": "516af93b49501697cf2e013dba186bb1630f184380ba3b6186417253ea5a27f4",
+        "isaaclab_train/reports/20261025_2500_dr_comparison/mujoco800/202610252053_2500_dr_evaluation.npz": "77df57a9d1546b10637ff134450927d3d2963b25e134146c6b2632821ffb5f60"
+      },
+      "maximum_scaled_vs_conditioned_steering_difference_rad": 0.0
+    }
+  }
+}

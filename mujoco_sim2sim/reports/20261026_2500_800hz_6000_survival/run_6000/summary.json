@@ -1,0 +1,366 @@
+{
+  "environments": 64,
+  "completed_episodes": 6000,
+  "mean_episode_length_steps": 1210.691,
+  "mean_episode_length_s": 24.213820000000002,
+  "min_episode_length_s": 0.16,
+  "max_episode_length_s": 30.0,
+  "std_episode_length_steps": 574.2908710044065,
+  "mean_reward": 163.38631922689206,
+  "timeout_rate": 0.784,
+  "termination_counts": {
+    "time_out": 4704,
+    "fallen": 1296,
+    "diverged": 0,
+    "drifted": 0,
+    "yaw_deviation": 0,
+    "wheel_net": 0
+  },
+  "roll_rms_deg": 2.018682011988102,
+  "max_roll_deg": 37.89599804737367,
+  "mean_worst_lean_deg": 10.013659952287153,
+  "mean_drift_m": 0.10956924066134952,
+  "max_drift_m": 1.645882325178812,
+  "mean_yaw_deg": 13.674118929184909,
+  "max_yaw_deg": 179.99838155593235,
+  "mean_turn_deg": 96.90338673646639,
+  "mean_drive_speed_rad_s": 0.31035509961826974,
+  "max_drive_speed_rad_s": 61.6,
+  "mean_steer_speed_rad_s": 1.2548849054409583,
+  "max_steer_speed_rad_s": 18.081537027455067,
+  "physics_hz": 800,
+  "motor_torque_application_hz": 800,
+  "policy_hz": 50,
+  "pure_survival": true,
+  "domain_randomization": true,
+  "episode_horizon_s": 30,
+  "wall_time_s": 398.49915216700174,
+  "total_simulated_seconds": 145282.92,
+  "sampling": "93 or 94 completed episodes per environment stream for target=6000",
+  "seed_range": [
+    42,
+    105
+  ],
+  "per_environment": [
+    {
+      "env_index": 0,
+      "seed": 42,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 1,
+      "seed": 43,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 2,
+      "seed": 44,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 3,
+      "seed": 45,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 4,
+      "seed": 46,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 5,
+      "seed": 47,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 6,
+      "seed": 48,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 7,
+      "seed": 49,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 8,
+      "seed": 50,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 9,
+      "seed": 51,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 10,
+      "seed": 52,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 11,
+      "seed": 53,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 12,
+      "seed": 54,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 13,
+      "seed": 55,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 14,
+      "seed": 56,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 15,
+      "seed": 57,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 16,
+      "seed": 58,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 17,
+      "seed": 59,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 18,
+      "seed": 60,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 19,
+      "seed": 61,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 20,
+      "seed": 62,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 21,
+      "seed": 63,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 22,
+      "seed": 64,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 23,
+      "seed": 65,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 24,
+      "seed": 66,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 25,
+      "seed": 67,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 26,
+      "seed": 68,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 27,
+      "seed": 69,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 28,
+      "seed": 70,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 29,
+      "seed": 71,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 30,
+      "seed": 72,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 31,
+      "seed": 73,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 32,
+      "seed": 74,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 33,
+      "seed": 75,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 34,
+      "seed": 76,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 35,
+      "seed": 77,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 36,
+      "seed": 78,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 37,
+      "seed": 79,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 38,
+      "seed": 80,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 39,
+      "seed": 81,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 40,
+      "seed": 82,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 41,
+      "seed": 83,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 42,
+      "seed": 84,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 43,
+      "seed": 85,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 44,
+      "seed": 86,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 45,
+      "seed": 87,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 46,
+      "seed": 88,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 47,
+      "seed": 89,
+      "completed_episodes": 94
+    },
+    {
+      "env_index": 48,
+      "seed": 90,
+      "completed_episodes": 93
+    },
+    {
+      "env_index": 49,
+      "seed": 91,
+      "completed_episodes": 93
+    },
+    {
+      "env_index": 50,
+      "seed": 92,
+      "completed_episodes": 93
+    },
+    {
+      "env_index": 51,
+      "seed": 93,
+      "completed_episodes": 93
+    },
+    {
+      "env_index": 52,
+      "seed": 94,
+      "completed_episodes": 93
+    },
+    {
+      "env_index": 53,
+      "seed": 95,
+      "completed_episodes": 93
+    },
+    {
+      "env_index": 54,
+      "seed": 96,
+      "completed_episodes": 93
+    },
+    {
+      "env_index": 55,
+      "seed": 97,
+      "completed_episodes": 93
+    },
+    {
+      "env_index": 56,
+      "seed": 98,
+      "completed_episodes": 93
+    },
+    {
+      "env_index": 57,
+      "seed": 99,
+      "completed_episodes": 93
+    },
+    {
+      "env_index": 58,
+      "seed": 100,
+      "completed_episodes": 93
+    },
+    {
+      "env_index": 59,
+      "seed": 101,
+      "completed_episodes": 93
+    },
+    {
+      "env_index": 60,
+      "seed": 102,
+      "completed_episodes": 93
+    },
+    {
+      "env_index": 61,
+      "seed": 103,
+      "completed_episodes": 93
+    },
+    {
+      "env_index": 62,
+      "seed": 104,
+      "completed_episodes": 93
+    },
+    {
+      "env_index": 63,
+      "seed": 105,
+      "completed_episodes": 93
+    }
+  ]
+}

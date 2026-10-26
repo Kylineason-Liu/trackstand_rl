@@ -1,0 +1,65 @@
+{
+  "passed": true,
+  "new_evaluation_run": false,
+  "source_files_sha256": {
+    "isaaclab_train/reports/20261025_2500_dr_comparison/mujoco800/202610252053_2500_dr_metadata.json": "b21833968d10f108db62beb292f3c174b1b1d4089442871209641df45907616b",
+    "isaaclab_train/reports/20261025_2500_dr_comparison/mujoco800/202610252053_2500_dr_summary.json": "5950196b0a8e917d9910b680c0bb26876850663a296ecfc753f914612848bd1b",
+    "isaaclab_train/reports/20261025_2500_dr_comparison/mujoco800/202610252053_2500_dr_evaluation.npz": "77df57a9d1546b10637ff134450927d3d2963b25e134146c6b2632821ffb5f60",
+    "isaaclab_train/reports/20261025_2500_dr_comparison/mujoco800/202610252053_2500_dr_epi_len_histogram.csv": "1457add590478a7e8f48980ca35f94dcb868cdae49790a432cbd22bb61314c18",
+    "isaaclab_train/reports/20261025_2500_dr_comparison/mujoco800/experiment.json": "03f22fb6c49176f8fac733566ec12c78eb5e5caa022c79870fd12b8d98f87dba"
+  },
+  "checkpoint_sha256": "5389effbd6a0d3e78c9ea9caeac309ceb5082622c8ee125bb701c63d1511fe52",
+  "physics_hz": 800,
+  "motor_torque_application_hz": 800,
+  "policy_target_update_hz": 50,
+  "domain_randomization": true,
+  "pure_survival": false,
+  "termination_names": [
+    "time_out",
+    "fallen",
+    "diverged",
+    "drifted",
+    "yaw_deviation",
+    "wheel_net"
+  ],
+  "seed": 42,
+  "environments": 64,
+  "simulated_seconds_per_environment": 60.0,
+  "completed_episodes": 149,
+  "mean_episode_length_s": 19.455436241610737,
+  "timeouts": 92,
+  "timeout_rate": 0.6174496644295302,
+  "unfinished_episodes_excluded": 35,
+  "bin_edges_s": [
+    0.0,
+    3.0,
+    6.0,
+    9.0,
+    12.0,
+    15.0,
+    18.0,
+    21.0,
+    24.0,
+    27.0,
+    30.0
+  ],
+  "bin_counts": [
+    48,
+    2,
+    1,
+    2,
+    1,
+    2,
+    0,
+    0,
+    1,
+    92
+  ],
+  "validation": [
+    "Saved timing, policy identity and local checkpoint hash agree",
+    "16 recorded motor-torque applications per 50-Hz policy step",
+    "All recorded resets match termination flags and episode lengths",
+    "All ten histogram counts agree with the original saved CSV",
+    "Mean, timeouts and total simulation-step budget agree with source records"
+  ]
+}

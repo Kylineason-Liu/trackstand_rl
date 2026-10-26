@@ -1,0 +1,10 @@
+{
+  "corrected_after_evaluation": "Exclude worker log files from worker-directory glob",
+  "only_one_line_of_reporting_code_changed": true,
+  "original_script_sha256": "b561a18481d6d5ebc3b89b8153571d520c60376978c6b3ab71cf9708d8f3c73f",
+  "original_script_snapshot": "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/evaluate_as_run.py",
+  "corrected_script_sha256": "633d3197956bf61522ef8f88c2da547f603a4a7695a7d0a4a05dffa8b22556e1",
+  "physical_runtime_model_and_checkpoint_hashes_unchanged": true,
+  "wall_time_note": "summary.wall_time_s is maximum worker evaluation time, excluding process startup",
+  "completed_episodes": 6000
+}

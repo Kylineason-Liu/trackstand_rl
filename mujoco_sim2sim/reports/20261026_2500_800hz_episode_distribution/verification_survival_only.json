@@ -1,0 +1,69 @@
+{
+  "passed": true,
+  "new_evaluation_run": false,
+  "source_files_sha256": {
+    "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/diagnostic800_survival/202610230044_2500_dr_metadata.json": "2acabb18db2ad3a91a735c593e97e670cb41d480a45771c2bd1de11995d278d5",
+    "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/diagnostic800_survival/202610230044_2500_dr_summary.json": "c762188579f4713301eb4c28fd70a9906f503d968b6a9ed821ed832a605b124f",
+    "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/diagnostic800_survival/202610230044_2500_dr_evaluation.npz": "a57fa493c688899cf7b63490f96037cc0994c0d261ddc98c971e6bfb610c37c5",
+    "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/diagnostic800_survival/202610230044_2500_dr_epi_len_histogram.csv": "79fc15260b7f1f286746a09abd0cf8a420305754bbc959fea2f9be966f46369d",
+    "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/diagnostic800_survival/experiment.json": "716be2daf0e400a87407684e60e0766961870bde4e1a26ebcca7480f858d515c"
+  },
+  "checkpoint_sha256": "5389effbd6a0d3e78c9ea9caeac309ceb5082622c8ee125bb701c63d1511fe52",
+  "physics_hz": 800,
+  "motor_torque_application_hz": 800,
+  "policy_target_update_hz": 50,
+  "domain_randomization": true,
+  "pure_survival": true,
+  "termination_names": [
+    "time_out",
+    "fallen",
+    "diverged",
+    "drifted",
+    "yaw_deviation",
+    "wheel_net"
+  ],
+  "enabled_termination_names": [
+    "time_out",
+    "fallen"
+  ],
+  "seed": 42,
+  "environments": 64,
+  "simulated_seconds_per_environment": 60.0,
+  "completed_episodes": 139,
+  "mean_episode_length_s": 23.323597122302157,
+  "timeouts": 104,
+  "timeout_rate": 0.7482014388489209,
+  "unfinished_episodes_excluded": 24,
+  "bin_edges_s": [
+    0.0,
+    3.0,
+    6.0,
+    9.0,
+    12.0,
+    15.0,
+    18.0,
+    21.0,
+    24.0,
+    27.0,
+    30.0
+  ],
+  "bin_counts": [
+    29,
+    0,
+    0,
+    0,
+    1,
+    2,
+    2,
+    0,
+    0,
+    105
+  ],
+  "validation": [
+    "Saved timing, policy identity and local checkpoint hash agree",
+    "16 recorded motor-torque applications per 50-Hz policy step",
+    "All recorded resets match termination flags and episode lengths",
+    "All ten histogram counts agree with the original saved CSV",
+    "Mean, timeouts and total simulation-step budget agree with source records"
+  ]
+}

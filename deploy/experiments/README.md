@@ -1,5 +1,16 @@
 # Standalone motor feedback
 
+For **both motors' separate recorded-target tests** and Raspberry Pi startup
+steps, see [POLICY_REPLAY.md](POLICY_REPLAY.md). Rear C0 torque replay is provided
+by `drive_policy_replay.py`; steering MIT replay remains separate. Never run the
+two tests together or alongside deployment motor nodes.
+
+For the model_2500 **recorded-policy steering replay**, both command levels,
+50/200 Hz packet comparison and integrated feedback recording, see
+[STEERING_POLICY_REPLAY.md](STEERING_POLICY_REPLAY.md). The new
+`steering_policy_replay.py` defaults to preview-only and uses the portable CSVs
+under `replay_targets/`; it does not run a policy or command the rear motor.
+
 `motor_feedback.py` uses Python's standard library and SocketCAN. No ROS nodes,
 ROS environment, package build, or `python-can` installation is needed. The CAN
 interface must already be configured/up and the motor(s) powered.

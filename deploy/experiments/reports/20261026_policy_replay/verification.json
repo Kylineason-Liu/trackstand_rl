@@ -1,0 +1,40 @@
+{
+  "date": "2026-10-26",
+  "hardware_executed": false,
+  "tests": {
+    "replay_tests.log": {
+      "passed": 21,
+      "seconds": 0.696
+    },
+    "shared_transport_tests.log": {
+      "passed": 29,
+      "seconds": 0.141
+    }
+  },
+  "total_tests_passed": 50,
+  "default_preview_without_site_packages_passed": true,
+  "planned_target_hz": 50,
+  "packet_hz_options": [
+    50,
+    200
+  ],
+  "exact_default_plans_match_existing_simulator_inputs_for_all_three_sources": true,
+  "source_files_and_target_CSV_hashes_verified": true,
+  "original_protected_files": 228,
+  "protected_changes": [],
+  "original_metadata_and_ledgers_unchanged": true,
+  "syntax_pyflakes_120_columns_passed": true,
+  "source_sha256": {
+    "deploy/experiments/steering_policy_replay.py": "3295148580e8bbb297c9ed75fd9fe5cbc1ba08d160a9f5cfe4ecfa6910b918a1",
+    "deploy/experiments/export_policy_replay.py": "6f60aa267844eaedbf65da79e547d9919f0dae35c5cbd289b9812fd42cd2abbc",
+    "deploy/experiments/tests/test_steering_policy_replay.py": "e690e0cbe7dc61dacf0b22f5f9f7d7348daf313b3b216db29f216b5cec0a8b7a"
+  },
+  "known_boundaries": [
+    "Only steering is commanded; rear motor is not stopped by this tool",
+    "No physical total MIT current/torque cap is established by this test harness",
+    "Feedback uses kernel host RX timestamps, not motor acquisition timestamps",
+    "Real hardware behavior remains untested",
+    "The three exported first episodes have identical scaled and conditioned steering values"
+  ],
+  "backup_path": "/tmp/trackstand_hardware_replay_audit.3w0kk4k1"
+}
