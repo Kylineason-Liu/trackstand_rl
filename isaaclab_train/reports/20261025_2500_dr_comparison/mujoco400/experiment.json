@@ -1,0 +1,38 @@
+{
+  "capture_completed": true,
+  "checkpoint_source": "/home/lmbike/trackstand_rl/isaaclab_train/logs/rsl_rl/trackstand_rl_rsl/2026-10-21_11-18-29/model_2500.pt",
+  "checkpoint_sha256": "5389effbd6a0d3e78c9ea9caeac309ceb5082622c8ee125bb701c63d1511fe52",
+  "production_invocation": [
+    "/home/lmbike/trackstand_rl/mujoco_sim2sim/scripts/run_deploy_eval.py",
+    "--pt",
+    "/home/lmbike/trackstand_rl/isaaclab_train/logs/rsl_rl/trackstand_rl_rsl/2026-10-21_11-18-29/model_2500.pt",
+    "--dr",
+    "--num_envs",
+    "64",
+    "--num_steps",
+    "3000",
+    "--seed",
+    "42",
+    "--physics_hz",
+    "400",
+    "--output_dir",
+    "/home/lmbike/trackstand_rl/isaaclab_train/reports/20261025_2500_dr_comparison/mujoco400"
+  ],
+  "policy_dt_s": 0.02,
+  "physics_dt_s": 0.0025,
+  "decimation": 8,
+  "num_envs": 64,
+  "completed_policy_steps": 3000,
+  "dr": true,
+  "training_dr": true,
+  "pure_survival": false,
+  "seed": 42,
+  "mujoco_version": "3.12.0",
+  "motor_order": [
+    "steering",
+    "rear"
+  ],
+  "velocity_after_meaning": "Native post-integration velocity BEFORE production speed projection",
+  "torque_meaning": "data.actuator_force: applied motor actuator force, NOT total net joint torque",
+  "timing": "Commands at physics-step start; responses at end, before projection and automatic reset"
+}

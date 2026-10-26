@@ -1,0 +1,30 @@
+/home/lmbike/.config/matplotlib is not a writable directory
+Matplotlib created a temporary cache directory at /tmp/matplotlib-7fm4jt6b because there was an issue with the default path (/home/lmbike/.config/matplotlib); it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.
+/home/lmbike/.local/lib/python3.10/site-packages/matplotlib/projections/__init__.py:63: UserWarning: Unable to import Axes3D. This may be due to multiple versions of Matplotlib being installed (e.g. as a system package and as a pip package). As a result, the 3D projection is not available.
+  warnings.warn("Unable to import Axes3D. This may be due to multiple versions of "
+test_all_observation_extrema_match_every_environment_raw_recording (test_analysis.PlotVerification) ... ok
+test_completed_episode_statistics (test_analysis.PlotVerification) ... ok
+test_csv_contains_actual_inference_inputs_and_start_end_positions (test_analysis.PlotVerification) ... FAIL
+test_detail_window_is_inside_one_episode (test_analysis.PlotVerification) ... ok
+test_every_environment_spawn_markers_are_exact (test_analysis.PlotVerification) ... ok
+test_every_plot_format_and_all64_pdf_pages (test_analysis.PlotVerification) ... ok
+test_full_and_detail_axes_cover_all_saved_extrema (test_analysis.PlotVerification) ... ok
+test_gallery_links_and_recorded_input_hashes (test_analysis.PlotVerification) ... ok
+test_min_max_labels_and_timebase_of_position (test_analysis.PlotVerification) ... ok
+test_mujoco_policy_boundaries_and_projection_are_not_mislabelled (test_analysis.PlotVerification) ... ok
+test_real_data_pass_command_observation_and_old_mujoco_checks (test_analysis.PlotVerification) ... ok
+test_red_spawn_artists_in_actual_rendering (test_analysis.PlotVerification) ... ok
+test_segments_and_spawns_include_initial_and_final_boundary (test_analysis.PlotVerification) ... ok
+
+======================================================================
+FAIL: test_csv_contains_actual_inference_inputs_and_start_end_positions (test_analysis.PlotVerification)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/lmbike/trackstand_rl/isaaclab_train/reports/20261025_2500_dr_comparison/test_analysis.py", line 131, in test_csv_contains_actual_inference_inputs_and_start_end_positions
+    self.assertEqual(float(row[label]), float(data["observation"][step, 0, channel]))
+AssertionError: -0.020372022 != -0.020372021943330765
+
+----------------------------------------------------------------------
+Ran 13 tests in 6.328s
+
+FAILED (failures=1)

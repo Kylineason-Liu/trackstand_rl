@@ -56,7 +56,7 @@ class TestDriveActuator(unittest.TestCase):
             self.assertEqual(drive.joint_names_expr, ["rear_wheel_joint"])
             self.assertEqual((drive.stiffness, drive.damping), (0.0, 0.0))
             self.assertEqual((drive.friction, drive.dynamic_friction), (0.106, 0.106))
-            self.assertIsNone(drive.viscous_friction)
+            self.assertEqual(drive.viscous_friction, 0.0)
             self.assertEqual((drive.effort_limit, drive.effort_limit_sim), (6.28, 6.28))
             self.assertEqual((drive.velocity_limit, drive.velocity_limit_sim), (61.6, 61.6))
             steering = cfg.scene.robot.actuators["steering"]
@@ -197,9 +197,19 @@ class TestDriveActuator(unittest.TestCase):
         actuator = self.make_actuator(2)
         torch.testing.assert_close(actuator.friction, torch.full((2, 1), 0.106))
         torch.testing.assert_close(actuator.dynamic_friction, torch.full((2, 1), 0.106))
+        torch.testing.assert_close(actuator.viscous_friction, torch.zeros((2, 1)))
         speed = torch.tensor([[-4.0], [4.0]])
         output = self.calculate(actuator, torch.zeros_like(speed), speed)
         torch.testing.assert_close(output.joint_efforts, torch.zeros_like(speed))
+
+    def test_explicit_zero_viscous_friction_overrides_asset_default(self):
+        torch = self.torch
+        actuator = self.IdealPDActuator(
+            cfg=self.env_cfg().scene.robot.actuators["drive"],
+            joint_names=["rear_wheel_joint"], joint_ids=slice(None), num_envs=2, device="cpu",
+            viscous_friction=0.123,
+        )
+        torch.testing.assert_close(actuator.viscous_friction, torch.zeros((2, 1)))
 
     def test_per_environment_gain_updates_are_used_before_clipping(self):
         torch = self.torch
@@ -214,6 +224,7 @@ class TestDriveActuator(unittest.TestCase):
         first.scene.robot.actuators["drive"].damping = 0.123
         first.scene.robot.actuators["drive"].friction = 0.789
         first.scene.robot.actuators["drive"].dynamic_friction = 0.456
+        first.scene.robot.actuators["drive"].viscous_friction = 0.123
         first.scene.robot.actuators["steering"].stiffness = 999.0
         first.scene.robot.actuators["steering"].friction = 0.789
         first.scene.robot.actuators["steering"].dynamic_friction = 0.456
@@ -223,6 +234,7 @@ class TestDriveActuator(unittest.TestCase):
             self.assertEqual(fresh.scene.robot.actuators["drive"].damping, 0.05 if version == 0 else 0.0)
             self.assertEqual(fresh.scene.robot.actuators["drive"].friction, None if version == 0 else 0.106)
             self.assertEqual(fresh.scene.robot.actuators["drive"].dynamic_friction, None if version == 0 else 0.106)
+            self.assertEqual(fresh.scene.robot.actuators["drive"].viscous_friction, None if version == 0 else 0.0)
             self.assertEqual(fresh.scene.robot.actuators["steering"].stiffness, 10.0)
             steering = fresh.scene.robot.actuators["steering"]
             self.assertEqual(steering.damping, 0.2)

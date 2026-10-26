@@ -1,0 +1,886 @@
+{
+  "isaac400": {
+    "airborne": {
+      "sine_1hz_0p1rad_friction_on": {
+        "tracking_rms_rad": 0.011976275593042374,
+        "tracking_rms_deg": 0.6861900091171265,
+        "tracking_p95_rad": 0.019138095900416374,
+        "target_peak_to_peak_rad": 0.19960534572601318,
+        "position_peak_to_peak_rad": 0.18950068950653076,
+        "maximum_native_speed_rad_s": 1.4446810483932495,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": -0.004607351031154394,
+        "final_hold_mean_motor_torque_nm": 0.04603571072220802,
+        "final_hold_mean_abs_speed_rad_s": 0.00018899448332376778,
+        "fundamental_response": {
+          "fundamental_gain": 0.9769394903050055,
+          "phase_equivalent_lag_ms": 26.52970419610398,
+          "note": "Fit to actual held reference, no response time shift; 3-7s window"
+        }
+      },
+      "sine_1hz_0p1rad_friction_off": {
+        "tracking_rms_rad": 0.00800047256052494,
+        "tracking_rms_deg": 0.45839327573776245,
+        "tracking_p95_rad": 0.014471329748630524,
+        "target_peak_to_peak_rad": 0.19960534572601318,
+        "position_peak_to_peak_rad": 0.1987411379814148,
+        "maximum_native_speed_rad_s": 1.4561643600463867,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": 7.450580596923828e-08,
+        "final_hold_mean_motor_torque_nm": -5.332033197191777e-07,
+        "final_hold_mean_abs_speed_rad_s": 1.0595093726806226e-06,
+        "fundamental_response": {
+          "fundamental_gain": 0.9930692255573227,
+          "phase_equivalent_lag_ms": 17.41517213443381,
+          "note": "Fit to actual held reference, no response time shift; 3-7s window"
+        }
+      },
+      "alternating_25hz_0p1rad_friction_on": {
+        "tracking_rms_rad": 0.089760422706604,
+        "tracking_rms_deg": 5.142893314361572,
+        "tracking_p95_rad": 0.12945595383644104,
+        "target_peak_to_peak_rad": 0.20000000298023224,
+        "position_peak_to_peak_rad": 0.14185205101966858,
+        "maximum_native_speed_rad_s": 16.472349166870117,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": 0.004595718812197447,
+        "final_hold_mean_motor_torque_nm": -0.04595725238323212,
+        "final_hold_mean_abs_speed_rad_s": 4.428672539802392e-09,
+        "fundamental_response": {
+          "fundamental_gain": 0.30809948308712914,
+          "phase_equivalent_lag_ms": 6.738093306440402,
+          "note": "Fit to actual held reference, no response time shift; 3-7s window"
+        }
+      },
+      "alternating_25hz_0p1rad_friction_off": {
+        "tracking_rms_rad": 0.08938199281692505,
+        "tracking_rms_deg": 5.12121057510376,
+        "tracking_p95_rad": 0.1308712512254715,
+        "target_peak_to_peak_rad": 0.20000000298023224,
+        "position_peak_to_peak_rad": 0.14890672266483307,
+        "maximum_native_speed_rad_s": 17.403766632080078,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": -1.1649354973997106e-06,
+        "final_hold_mean_motor_torque_nm": 7.065385489113396e-06,
+        "final_hold_mean_abs_speed_rad_s": 2.2952388462726958e-05,
+        "fundamental_response": {
+          "fundamental_gain": 0.32428989017242604,
+          "phase_equivalent_lag_ms": 6.719677432409745,
+          "note": "Fit to actual held reference, no response time shift; 3-7s window"
+        }
+      },
+      "isaac400_dr_env0_12p5_17p5_friction_on": {
+        "tracking_rms_rad": 0.009987512603402138,
+        "tracking_rms_deg": 0.572242259979248,
+        "tracking_p95_rad": 0.019635967910289764,
+        "target_peak_to_peak_rad": 0.10006070137023926,
+        "position_peak_to_peak_rad": 0.07483816146850586,
+        "maximum_native_speed_rad_s": 3.2521064281463623,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": 0.0046084169298410416,
+        "final_hold_mean_motor_torque_nm": -0.04603759944438934,
+        "final_hold_mean_abs_speed_rad_s": 0.00023286711075343192
+      },
+      "isaac400_dr_env0_12p5_17p5_friction_off": {
+        "tracking_rms_rad": 0.008778775110840797,
+        "tracking_rms_deg": 0.50298672914505,
+        "tracking_p95_rad": 0.018478021025657654,
+        "target_peak_to_peak_rad": 0.10006070137023926,
+        "position_peak_to_peak_rad": 0.0824425220489502,
+        "maximum_native_speed_rad_s": 3.645611524581909,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": 1.9073486328125e-06,
+        "final_hold_mean_motor_torque_nm": -1.1312516789985239e-06,
+        "final_hold_mean_abs_speed_rad_s": 8.9727618615143e-05
+      },
+      "mujoco400_dr_env0_12p5_17p5_friction_on": {
+        "tracking_rms_rad": 0.057780854403972626,
+        "tracking_rms_deg": 3.310598850250244,
+        "tracking_p95_rad": 0.09656026214361191,
+        "target_peak_to_peak_rad": 0.2592313289642334,
+        "position_peak_to_peak_rad": 0.1461477279663086,
+        "maximum_native_speed_rad_s": 15.862346649169922,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": -0.004604339599609375,
+        "final_hold_mean_motor_torque_nm": 0.046025410294532776,
+        "final_hold_mean_abs_speed_rad_s": 8.971890201792121e-05
+      },
+      "mujoco400_dr_env0_12p5_17p5_friction_off": {
+        "tracking_rms_rad": 0.057410430163145065,
+        "tracking_rms_deg": 3.289375066757202,
+        "tracking_p95_rad": 0.09709266573190689,
+        "target_peak_to_peak_rad": 0.2592313289642334,
+        "position_peak_to_peak_rad": 0.15098536014556885,
+        "maximum_native_speed_rad_s": 16.8099422454834,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": -3.2192467642744305e-06,
+        "final_hold_mean_motor_torque_nm": 2.649853558978066e-05,
+        "final_hold_mean_abs_speed_rad_s": 7.353367982432246e-05
+      },
+      "mujoco800_dr_env0_12p5_17p5_friction_on": {
+        "tracking_rms_rad": 0.06314300745725632,
+        "tracking_rms_deg": 3.6178276538848877,
+        "tracking_p95_rad": 0.09968855232000351,
+        "target_peak_to_peak_rad": 0.22458279132843018,
+        "position_peak_to_peak_rad": 0.1436694860458374,
+        "maximum_native_speed_rad_s": 11.979898452758789,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": -0.004602313041687012,
+        "final_hold_mean_motor_torque_nm": 0.04602313041687012,
+        "final_hold_mean_abs_speed_rad_s": 4.485670057619018e-09
+      },
+      "mujoco800_dr_env0_12p5_17p5_friction_off": {
+        "tracking_rms_rad": 0.06284530460834503,
+        "tracking_rms_deg": 3.6007704734802246,
+        "tracking_p95_rad": 0.10085500031709671,
+        "target_peak_to_peak_rad": 0.22458279132843018,
+        "position_peak_to_peak_rad": 0.14840567111968994,
+        "maximum_native_speed_rad_s": 13.04457950592041,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": -4.597723454935476e-05,
+        "final_hold_mean_motor_torque_nm": 0.0002824914699885994,
+        "final_hold_mean_abs_speed_rad_s": 0.0008853963227011263
+      }
+    },
+    "ground": {
+      "isaac_dr_env0_from_spawn": {
+        "tracking_rms_rad": 0.13730210065841675,
+        "tracking_rms_deg": 7.866830348968506,
+        "tracking_p95_rad": 0.28907322883605957,
+        "target_peak_to_peak_rad": 0.8329511880874634,
+        "position_peak_to_peak_rad": 1.118860125541687,
+        "maximum_native_speed_rad_s": 23.89786720275879,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          0.0,
+          0.25
+        ],
+        "first_30deg_time_s": 0.3725,
+        "warning": "Open-loop copied commands from a different DR trajectory; not a balancing evaluation"
+      },
+      "mujoco800_dr_env0_from_spawn": {
+        "tracking_rms_rad": 0.1375485509634018,
+        "tracking_rms_deg": 7.880950927734375,
+        "tracking_p95_rad": 0.30376312136650085,
+        "target_peak_to_peak_rad": 0.8834553360939026,
+        "position_peak_to_peak_rad": 1.0634788274765015,
+        "maximum_native_speed_rad_s": 23.69886589050293,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          0.0,
+          0.25
+        ],
+        "first_30deg_time_s": 0.3525,
+        "warning": "Open-loop copied commands from a different DR trajectory; not a balancing evaluation"
+      }
+    }
+  },
+  "mujoco400": {
+    "airborne": {
+      "sine_1hz_0p1rad_friction_on": {
+        "tracking_rms_rad": 0.010077841488478154,
+        "tracking_rms_deg": 0.5774177838916377,
+        "tracking_p95_rad": 0.016104417925443107,
+        "target_peak_to_peak_rad": 0.19960534572601318,
+        "position_peak_to_peak_rad": 0.19541532913946943,
+        "maximum_native_speed_rad_s": 1.3739277837698827,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": 1.1730979363874446e-08,
+        "final_hold_mean_motor_torque_nm": -1.3125248874385477e-07,
+        "final_hold_mean_abs_speed_rad_s": 7.42377795499253e-08,
+        "final_hold_mean_dry_friction_nm": -1.5462900271475633e-08,
+        "fundamental_response": {
+          "fundamental_gain": 0.984614894708629,
+          "phase_equivalent_lag_ms": 22.31675220923341,
+          "note": "Fit to actual held reference, no response time shift; 3-7s window"
+        }
+      },
+      "sine_1hz_0p1rad_friction_off": {
+        "tracking_rms_rad": 0.008160480736254402,
+        "tracking_rms_deg": 0.46756110498518794,
+        "tracking_p95_rad": 0.014265056403822736,
+        "target_peak_to_peak_rad": 0.19960534572601318,
+        "position_peak_to_peak_rad": 0.2014626985169298,
+        "maximum_native_speed_rad_s": 3.6981177757630728,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": 5.4473289380265605e-08,
+        "final_hold_mean_motor_torque_nm": 6.8793822576348945e-06,
+        "final_hold_mean_abs_speed_rad_s": 0.0026063212898330686,
+        "final_hold_mean_dry_friction_nm": 0.0,
+        "fundamental_response": {
+          "fundamental_gain": 0.9922694357184344,
+          "phase_equivalent_lag_ms": 17.396356067451602,
+          "note": "Fit to actual held reference, no response time shift; 3-7s window"
+        }
+      },
+      "alternating_25hz_0p1rad_friction_on": {
+        "tracking_rms_rad": 0.08434963261989376,
+        "tracking_rms_deg": 4.832877952598929,
+        "tracking_p95_rad": 0.11442714936934117,
+        "target_peak_to_peak_rad": 0.20000000298023224,
+        "position_peak_to_peak_rad": 0.14648854613202766,
+        "maximum_native_speed_rad_s": 18.02580465635347,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": 2.3190303763132026e-08,
+        "final_hold_mean_motor_torque_nm": -1.9016958265594288e-07,
+        "final_hold_mean_abs_speed_rad_s": 2.222075197582265e-07,
+        "final_hold_mean_dry_friction_nm": 4.62987102048525e-08,
+        "fundamental_response": {
+          "fundamental_gain": 0.31064189171661766,
+          "phase_equivalent_lag_ms": 5.647875965627236,
+          "note": "Fit to actual held reference, no response time shift; 3-7s window"
+        }
+      },
+      "alternating_25hz_0p1rad_friction_off": {
+        "tracking_rms_rad": 0.08431769053749112,
+        "tracking_rms_deg": 4.8310478060883995,
+        "tracking_p95_rad": 0.11446420617323683,
+        "target_peak_to_peak_rad": 0.20000000298023224,
+        "position_peak_to_peak_rad": 0.15034125624718714,
+        "maximum_native_speed_rad_s": 18.60680687776508,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": -8.186151595764024e-08,
+        "final_hold_mean_motor_torque_nm": -1.7139162421459047e-05,
+        "final_hold_mean_abs_speed_rad_s": 0.006304217965225681,
+        "final_hold_mean_dry_friction_nm": 0.0,
+        "fundamental_response": {
+          "fundamental_gain": 0.31183880094053207,
+          "phase_equivalent_lag_ms": 5.576141578992502,
+          "note": "Fit to actual held reference, no response time shift; 3-7s window"
+        }
+      },
+      "isaac400_dr_env0_12p5_17p5_friction_on": {
+        "tracking_rms_rad": 0.008881138294339978,
+        "tracking_rms_deg": 0.5088517415376954,
+        "tracking_p95_rad": 0.01759895674902638,
+        "target_peak_to_peak_rad": 0.10006070137023926,
+        "position_peak_to_peak_rad": 0.08009847512720047,
+        "maximum_native_speed_rad_s": 3.6059025166446963,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": 8.659656112186553e-09,
+        "final_hold_mean_motor_torque_nm": -6.966722540598625e-08,
+        "final_hold_mean_abs_speed_rad_s": 9.014098208019333e-08,
+        "final_hold_mean_dry_friction_nm": 1.877632839316659e-08
+      },
+      "isaac400_dr_env0_12p5_17p5_friction_off": {
+        "tracking_rms_rad": 0.008384733537022496,
+        "tracking_rms_deg": 0.4804098440131878,
+        "tracking_p95_rad": 0.01722511801803601,
+        "target_peak_to_peak_rad": 0.10006070137023926,
+        "position_peak_to_peak_rad": 0.0845438691632383,
+        "maximum_native_speed_rad_s": 4.55546071076938,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": -1.5216099246151415e-08,
+        "final_hold_mean_motor_torque_nm": -3.637836546724456e-06,
+        "final_hold_mean_abs_speed_rad_s": 0.001330532813229742,
+        "final_hold_mean_dry_friction_nm": 0.0
+      },
+      "mujoco400_dr_env0_12p5_17p5_friction_on": {
+        "tracking_rms_rad": 0.05399671060131947,
+        "tracking_rms_deg": 3.093783625044915,
+        "tracking_p95_rad": 0.09093463713678232,
+        "target_peak_to_peak_rad": 0.2592313289642334,
+        "position_peak_to_peak_rad": 0.14781246769196987,
+        "maximum_native_speed_rad_s": 17.15607683499295,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": -2.1047551101993634e-09,
+        "final_hold_mean_motor_torque_nm": -1.5020847700050003e-08,
+        "final_hold_mean_abs_speed_rad_s": 1.9204464237054538e-07,
+        "final_hold_mean_dry_friction_nm": -4.001358057042068e-08
+      },
+      "mujoco400_dr_env0_12p5_17p5_friction_off": {
+        "tracking_rms_rad": 0.05400218684908272,
+        "tracking_rms_deg": 3.0940973909293175,
+        "tracking_p95_rad": 0.09081755101448324,
+        "target_peak_to_peak_rad": 0.2592313289642334,
+        "position_peak_to_peak_rad": 0.15188798598432962,
+        "maximum_native_speed_rad_s": 15.858075806173622,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": 7.092538693465045e-08,
+        "final_hold_mean_motor_torque_nm": 1.1503937215187912e-05,
+        "final_hold_mean_abs_speed_rad_s": 0.004287600151133818,
+        "final_hold_mean_dry_friction_nm": 0.0
+      },
+      "mujoco800_dr_env0_12p5_17p5_friction_on": {
+        "tracking_rms_rad": 0.05906286309361697,
+        "tracking_rms_deg": 3.3840527812232453,
+        "tracking_p95_rad": 0.09287870776567761,
+        "target_peak_to_peak_rad": 0.22458279132843018,
+        "position_peak_to_peak_rad": 0.14603980895589896,
+        "maximum_native_speed_rad_s": 13.191824285122468,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": -1.0766450908583635e-09,
+        "final_hold_mean_motor_torque_nm": -1.957786467326704e-08,
+        "final_hold_mean_abs_speed_rad_s": 1.6156706446567878e-07,
+        "final_hold_mean_dry_friction_nm": -3.36623913383372e-08
+      },
+      "mujoco800_dr_env0_12p5_17p5_friction_off": {
+        "tracking_rms_rad": 0.059059226192087116,
+        "tracking_rms_deg": 3.3838444021150798,
+        "tracking_p95_rad": 0.09278401686253275,
+        "target_peak_to_peak_rad": 0.22458279132843018,
+        "position_peak_to_peak_rad": 0.14974021100860035,
+        "maximum_native_speed_rad_s": 11.82077636434905,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": 5.764291534537946e-08,
+        "final_hold_mean_motor_torque_nm": 9.192043910500508e-06,
+        "final_hold_mean_abs_speed_rad_s": 0.003429347037846693,
+        "final_hold_mean_dry_friction_nm": 0.0
+      }
+    },
+    "ground": {
+      "isaac_dr_env0_from_spawn": {
+        "tracking_rms_rad": 0.1295828633736495,
+        "tracking_rms_deg": 7.424551168530492,
+        "tracking_p95_rad": 0.27048585626158483,
+        "target_peak_to_peak_rad": 0.8329511880874634,
+        "position_peak_to_peak_rad": 1.0962360949667183,
+        "maximum_native_speed_rad_s": 31.72938039949252,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          0.0,
+          0.25
+        ],
+        "first_30deg_time_s": 0.2925,
+        "warning": "Open-loop copied commands from a different DR trajectory; not a balancing evaluation"
+      },
+      "mujoco800_dr_env0_from_spawn": {
+        "tracking_rms_rad": 0.1285550832747943,
+        "tracking_rms_deg": 7.365663706598552,
+        "tracking_p95_rad": 0.2835870858255147,
+        "target_peak_to_peak_rad": 0.8834553360939026,
+        "position_peak_to_peak_rad": 1.0539481636762587,
+        "maximum_native_speed_rad_s": 35.505763794760625,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          0.0,
+          0.25
+        ],
+        "first_30deg_time_s": 0.28500000000000003,
+        "warning": "Open-loop copied commands from a different DR trajectory; not a balancing evaluation"
+      }
+    }
+  },
+  "mujoco800": {
+    "airborne": {
+      "sine_1hz_0p1rad_friction_on": {
+        "tracking_rms_rad": 0.012419338882968972,
+        "tracking_rms_deg": 0.7115757023368403,
+        "tracking_p95_rad": 0.019656724212863845,
+        "target_peak_to_peak_rad": 0.19960534572601318,
+        "position_peak_to_peak_rad": 0.19516770433024114,
+        "maximum_native_speed_rad_s": 0.9241483498182196,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": 1.1998293407743458e-08,
+        "final_hold_mean_motor_torque_nm": -1.331214870742833e-07,
+        "final_hold_mean_abs_speed_rad_s": 6.774509794739368e-08,
+        "final_hold_mean_dry_friction_nm": -1.3557627800282047e-08,
+        "fundamental_response": {
+          "fundamental_gain": 0.983164730748065,
+          "phase_equivalent_lag_ms": 27.67743599430913,
+          "note": "Fit to actual held reference, no response time shift; 3-7s window"
+        }
+      },
+      "sine_1hz_0p1rad_friction_off": {
+        "tracking_rms_rad": 0.008558672338963595,
+        "tracking_rms_deg": 0.4903758032579747,
+        "tracking_p95_rad": 0.015461373032962892,
+        "target_peak_to_peak_rad": 0.19960534572601318,
+        "position_peak_to_peak_rad": 0.1986661754046771,
+        "maximum_native_speed_rad_s": 0.9256775239977332,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": 1.4627178402367227e-08,
+        "final_hold_mean_motor_torque_nm": -1.4627178565679913e-07,
+        "final_hold_mean_abs_speed_rad_s": 1.1730884211373418e-13,
+        "final_hold_mean_dry_friction_nm": 0.0,
+        "fundamental_response": {
+          "fundamental_gain": 0.992751278350723,
+          "phase_equivalent_lag_ms": 18.656685395326303,
+          "note": "Fit to actual held reference, no response time shift; 3-7s window"
+        }
+      },
+      "alternating_25hz_0p1rad_friction_on": {
+        "tracking_rms_rad": 0.09338152823752516,
+        "tracking_rms_deg": 5.350367452491913,
+        "tracking_p95_rad": 0.13714866565883876,
+        "target_peak_to_peak_rad": 0.20000000298023224,
+        "position_peak_to_peak_rad": 0.1450475941364981,
+        "maximum_native_speed_rad_s": 9.15468183770757,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": 2.159466889743722e-08,
+        "final_hold_mean_motor_torque_nm": -1.8057972967225317e-07,
+        "final_hold_mean_abs_speed_rad_s": 1.8235961719860761e-07,
+        "final_hold_mean_dry_friction_nm": 3.6503294080054474e-08,
+        "fundamental_response": {
+          "fundamental_gain": 0.2979894317965896,
+          "phase_equivalent_lag_ms": 7.458251222302178,
+          "note": "Fit to actual held reference, no response time shift; 3-7s window"
+        }
+      },
+      "alternating_25hz_0p1rad_friction_off": {
+        "tracking_rms_rad": 0.09320073726841777,
+        "tracking_rms_deg": 5.340008892987979,
+        "tracking_p95_rad": 0.13908384307346328,
+        "target_peak_to_peak_rad": 0.20000000298023224,
+        "position_peak_to_peak_rad": 0.1474096476827387,
+        "maximum_native_speed_rad_s": 9.410517445123999,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": 1.4517540767033932e-08,
+        "final_hold_mean_motor_torque_nm": -1.451753133661853e-07,
+        "final_hold_mean_abs_speed_rad_s": 6.139371189077233e-13,
+        "final_hold_mean_dry_friction_nm": 0.0,
+        "fundamental_response": {
+          "fundamental_gain": 0.3137060397293646,
+          "phase_equivalent_lag_ms": 7.449792390147928,
+          "note": "Fit to actual held reference, no response time shift; 3-7s window"
+        }
+      },
+      "isaac400_dr_env0_12p5_17p5_friction_on": {
+        "tracking_rms_rad": 0.010149908120091615,
+        "tracking_rms_deg": 0.581546897726813,
+        "tracking_p95_rad": 0.02002964889074277,
+        "target_peak_to_peak_rad": 0.10006070137023926,
+        "position_peak_to_peak_rad": 0.07852506449382468,
+        "maximum_native_speed_rad_s": 1.7800534017309249,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": 7.940452049215452e-09,
+        "final_hold_mean_motor_torque_nm": -6.542327335284179e-08,
+        "final_hold_mean_abs_speed_rad_s": 7.209251007130914e-08,
+        "final_hold_mean_dry_friction_nm": 1.4424735256932504e-08
+      },
+      "isaac400_dr_env0_12p5_17p5_friction_off": {
+        "tracking_rms_rad": 0.00919321586363759,
+        "tracking_rms_deg": 0.5267324691391501,
+        "tracking_p95_rad": 0.01922711678095125,
+        "target_peak_to_peak_rad": 0.10006070137023926,
+        "position_peak_to_peak_rad": 0.08204116508031922,
+        "maximum_native_speed_rad_s": 2.0185483454824262,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": 5.142843142458276e-09,
+        "final_hold_mean_motor_torque_nm": -5.143150879455678e-08,
+        "final_hold_mean_abs_speed_rad_s": 1.6425212679963082e-11,
+        "final_hold_mean_dry_friction_nm": 0.0
+      },
+      "mujoco400_dr_env0_12p5_17p5_friction_on": {
+        "tracking_rms_rad": 0.05984411316166525,
+        "tracking_rms_deg": 3.4288151128667197,
+        "tracking_p95_rad": 0.09924159720154432,
+        "target_peak_to_peak_rad": 0.2592313289642334,
+        "position_peak_to_peak_rad": 0.14371761416786288,
+        "maximum_native_speed_rad_s": 8.471039547828248,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": -7.074205160551017e-10,
+        "final_hold_mean_motor_torque_nm": -2.344449855140902e-08,
+        "final_hold_mean_abs_speed_rad_s": 1.5736107794803974e-07,
+        "final_hold_mean_dry_friction_nm": -3.149894839479731e-08
+      },
+      "mujoco400_dr_env0_12p5_17p5_friction_off": {
+        "tracking_rms_rad": 0.05967920679874382,
+        "tracking_rms_deg": 3.4193666742564695,
+        "tracking_p95_rad": 0.10032967673327992,
+        "target_peak_to_peak_rad": 0.2592313289642334,
+        "position_peak_to_peak_rad": 0.14841165055301753,
+        "maximum_native_speed_rad_s": 8.835045246623643,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": 5.398237855613886e-09,
+        "final_hold_mean_motor_torque_nm": -5.398471388095265e-08,
+        "final_hold_mean_abs_speed_rad_s": 1.2428837161144918e-11,
+        "final_hold_mean_dry_friction_nm": 0.0
+      },
+      "mujoco800_dr_env0_12p5_17p5_friction_on": {
+        "tracking_rms_rad": 0.06544125460986737,
+        "tracking_rms_deg": 3.749507695186443,
+        "tracking_p95_rad": 0.1025185176237641,
+        "target_peak_to_peak_rad": 0.22458279132843018,
+        "position_peak_to_peak_rad": 0.14199021096006614,
+        "maximum_native_speed_rad_s": 6.415244144819831,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": 9.808608314454404e-11,
+        "final_hold_mean_motor_torque_nm": -2.6681968647033212e-08,
+        "final_hold_mean_abs_speed_rad_s": 1.325205839385158e-07,
+        "final_hold_mean_dry_friction_nm": -2.6525510360355624e-08
+      },
+      "mujoco800_dr_env0_12p5_17p5_friction_off": {
+        "tracking_rms_rad": 0.06527364663894931,
+        "tracking_rms_deg": 3.739904465840087,
+        "tracking_p95_rad": 0.10390253441442972,
+        "target_peak_to_peak_rad": 0.22458279132843018,
+        "position_peak_to_peak_rad": 0.1465823182351087,
+        "maximum_native_speed_rad_s": 6.769801262374809,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": 5.239370383658404e-09,
+        "final_hold_mean_motor_torque_nm": -5.239592854819385e-08,
+        "final_hold_mean_abs_speed_rad_s": 1.1848186085167162e-11,
+        "final_hold_mean_dry_friction_nm": 0.0
+      }
+    },
+    "ground": {
+      "isaac_dr_env0_from_spawn": {
+        "tracking_rms_rad": 0.14481577198311413,
+        "tracking_rms_deg": 8.297332541561312,
+        "tracking_p95_rad": 0.31069638787528486,
+        "target_peak_to_peak_rad": 0.8329511880874634,
+        "position_peak_to_peak_rad": 1.1483436249250987,
+        "maximum_native_speed_rad_s": 18.779914424540692,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          0.0,
+          0.25
+        ],
+        "first_30deg_time_s": 0.32125,
+        "warning": "Open-loop copied commands from a different DR trajectory; not a balancing evaluation"
+      },
+      "mujoco800_dr_env0_from_spawn": {
+        "tracking_rms_rad": 0.14430059905382892,
+        "tracking_rms_deg": 8.267815306993878,
+        "tracking_p95_rad": 0.3252957150478232,
+        "target_peak_to_peak_rad": 0.8834553360939026,
+        "position_peak_to_peak_rad": 1.0930310587978254,
+        "maximum_native_speed_rad_s": 20.364067218147458,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          0.0,
+          0.25
+        ],
+        "first_30deg_time_s": 0.305,
+        "warning": "Open-loop copied commands from a different DR trajectory; not a balancing evaluation"
+      }
+    }
+  },
+  "isaac800": {
+    "airborne": {
+      "sine_1hz_0p1rad_friction_on": {
+        "tracking_rms_rad": 0.012532854452729225,
+        "tracking_rms_deg": 0.7180796265602112,
+        "tracking_p95_rad": 0.019810188561677933,
+        "target_peak_to_peak_rad": 0.19960534572601318,
+        "position_peak_to_peak_rad": 0.18950806558132172,
+        "maximum_native_speed_rad_s": 0.9128299355506897,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": -0.004604585003107786,
+        "final_hold_mean_motor_torque_nm": 0.046035755425691605,
+        "final_hold_mean_abs_speed_rad_s": 5.0496961193857715e-05,
+        "fundamental_response": {
+          "fundamental_gain": 0.9770756565146181,
+          "phase_equivalent_lag_ms": 27.767503958592158,
+          "note": "Fit to actual held reference, no response time shift; 3-7s window"
+        }
+      },
+      "sine_1hz_0p1rad_friction_off": {
+        "tracking_rms_rad": 0.008585606701672077,
+        "tracking_rms_deg": 0.49191901087760925,
+        "tracking_p95_rad": 0.015623979270458221,
+        "target_peak_to_peak_rad": 0.19960534572601318,
+        "position_peak_to_peak_rad": 0.19873002171516418,
+        "maximum_native_speed_rad_s": 0.9142439961433411,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": 1.862645149230957e-08,
+        "final_hold_mean_motor_torque_nm": -3.418108178721013e-07,
+        "final_hold_mean_abs_speed_rad_s": 7.776304187245842e-07,
+        "fundamental_response": {
+          "fundamental_gain": 0.9931879402622832,
+          "phase_equivalent_lag_ms": 18.667283913318638,
+          "note": "Fit to actual held reference, no response time shift; 3-7s window"
+        }
+      },
+      "alternating_25hz_0p1rad_friction_on": {
+        "tracking_rms_rad": 0.09647195786237717,
+        "tracking_rms_deg": 5.527435779571533,
+        "tracking_p95_rad": 0.14147096872329712,
+        "target_peak_to_peak_rad": 0.20000000298023224,
+        "position_peak_to_peak_rad": 0.14003464579582214,
+        "maximum_native_speed_rad_s": 9.056915283203125,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": 0.004608104936778545,
+        "final_hold_mean_motor_torque_nm": -0.04605881869792938,
+        "final_hold_mean_abs_speed_rad_s": 0.00011128107871627435,
+        "fundamental_response": {
+          "fundamental_gain": 0.3057035773820734,
+          "phase_equivalent_lag_ms": 8.153528586219913,
+          "note": "Fit to actual held reference, no response time shift; 3-7s window"
+        }
+      },
+      "alternating_25hz_0p1rad_friction_off": {
+        "tracking_rms_rad": 0.09653926640748978,
+        "tracking_rms_deg": 5.53129243850708,
+        "tracking_p95_rad": 0.143754243850708,
+        "target_peak_to_peak_rad": 0.20000000298023224,
+        "position_peak_to_peak_rad": 0.14695045351982117,
+        "maximum_native_speed_rad_s": 9.535482406616211,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": -8.841976750773028e-07,
+        "final_hold_mean_motor_torque_nm": 1.074040756066097e-05,
+        "final_hold_mean_abs_speed_rad_s": 3.462230961304158e-05,
+        "fundamental_response": {
+          "fundamental_gain": 0.3218878859435275,
+          "phase_equivalent_lag_ms": 8.154327539210493,
+          "note": "Fit to actual held reference, no response time shift; 3-7s window"
+        }
+      },
+      "isaac400_dr_env0_12p5_17p5_friction_on": {
+        "tracking_rms_rad": 0.010474233888089657,
+        "tracking_rms_deg": 0.6001293659210205,
+        "tracking_p95_rad": 0.020484285429120064,
+        "target_peak_to_peak_rad": 0.10006070137023926,
+        "position_peak_to_peak_rad": 0.07471585273742676,
+        "maximum_native_speed_rad_s": 1.9089782238006592,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": 0.004608154296875,
+        "final_hold_mean_motor_torque_nm": -0.04603731259703636,
+        "final_hold_mean_abs_speed_rad_s": 0.0002211585087934509
+      },
+      "isaac400_dr_env0_12p5_17p5_friction_off": {
+        "tracking_rms_rad": 0.009449823759496212,
+        "tracking_rms_deg": 0.5414350032806396,
+        "tracking_p95_rad": 0.019887520000338554,
+        "target_peak_to_peak_rad": 0.10006070137023926,
+        "position_peak_to_peak_rad": 0.08225762844085693,
+        "maximum_native_speed_rad_s": 2.0202951431274414,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": 3.4570693969726562e-06,
+        "final_hold_mean_motor_torque_nm": -1.6144747405633098e-06,
+        "final_hold_mean_abs_speed_rad_s": 0.00016478396719321609
+      },
+      "mujoco400_dr_env0_12p5_17p5_friction_on": {
+        "tracking_rms_rad": 0.06197221949696541,
+        "tracking_rms_deg": 3.550746440887451,
+        "tracking_p95_rad": 0.10362245887517929,
+        "target_peak_to_peak_rad": 0.2592313289642334,
+        "position_peak_to_peak_rad": 0.1434321403503418,
+        "maximum_native_speed_rad_s": 8.215537071228027,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": -0.004585636779665947,
+        "final_hold_mean_motor_torque_nm": 0.04585679620504379,
+        "final_hold_mean_abs_speed_rad_s": 1.9803364637027698e-07
+      },
+      "mujoco400_dr_env0_12p5_17p5_friction_off": {
+        "tracking_rms_rad": 0.06207822263240814,
+        "tracking_rms_deg": 3.5568199157714844,
+        "tracking_p95_rad": 0.10491431504487991,
+        "target_peak_to_peak_rad": 0.2592313289642334,
+        "position_peak_to_peak_rad": 0.14814698696136475,
+        "maximum_native_speed_rad_s": 8.560484886169434,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": 6.067156846256694e-06,
+        "final_hold_mean_motor_torque_nm": -6.085491622798145e-05,
+        "final_hold_mean_abs_speed_rad_s": 1.2711800081888214e-05
+      },
+      "mujoco800_dr_env0_12p5_17p5_friction_on": {
+        "tracking_rms_rad": 0.06777430325746536,
+        "tracking_rms_deg": 3.88318133354187,
+        "tracking_p95_rad": 0.106804758310318,
+        "target_peak_to_peak_rad": 0.22458279132843018,
+        "position_peak_to_peak_rad": 0.14149904251098633,
+        "maximum_native_speed_rad_s": 6.237149715423584,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": -0.00459818821400404,
+        "final_hold_mean_motor_torque_nm": 0.04597441852092743,
+        "final_hold_mean_abs_speed_rad_s": 3.7389683711808175e-05
+      },
+      "mujoco800_dr_env0_12p5_17p5_friction_off": {
+        "tracking_rms_rad": 0.0678282305598259,
+        "tracking_rms_deg": 3.8862712383270264,
+        "tracking_p95_rad": 0.10846885293722153,
+        "target_peak_to_peak_rad": 0.22458279132843018,
+        "position_peak_to_peak_rad": 0.14602315425872803,
+        "maximum_native_speed_rad_s": 6.591568470001221,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "final_hold_mean_error_rad": -9.5367431640625e-07,
+        "final_hold_mean_motor_torque_nm": -1.698318556009326e-05,
+        "final_hold_mean_abs_speed_rad_s": 0.00013260377454571426
+      }
+    },
+    "ground": {
+      "isaac_dr_env0_from_spawn": {
+        "tracking_rms_rad": 0.14601635932922363,
+        "tracking_rms_deg": 8.366120338439941,
+        "tracking_p95_rad": 0.3159773647785187,
+        "target_peak_to_peak_rad": 0.8329511880874634,
+        "position_peak_to_peak_rad": 1.152280330657959,
+        "maximum_native_speed_rad_s": 18.724857330322266,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          0.0,
+          0.25
+        ],
+        "first_30deg_time_s": 0.3675,
+        "warning": "Open-loop copied commands from a different DR trajectory; not a balancing evaluation"
+      },
+      "mujoco800_dr_env0_from_spawn": {
+        "tracking_rms_rad": 0.14558690786361694,
+        "tracking_rms_deg": 8.341514587402344,
+        "tracking_p95_rad": 0.3293532729148865,
+        "target_peak_to_peak_rad": 0.8834553360939026,
+        "position_peak_to_peak_rad": 1.092490792274475,
+        "maximum_native_speed_rad_s": 20.417171478271484,
+        "motor_torque_saturated_percent": 0.0,
+        "window_s": [
+          0.0,
+          0.25
+        ],
+        "first_30deg_time_s": 0.35000000000000003,
+        "warning": "Open-loop copied commands from a different DR trajectory; not a balancing evaluation"
+      }
+    }
+  }
+}

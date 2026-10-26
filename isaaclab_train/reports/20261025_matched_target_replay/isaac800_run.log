@@ -1,0 +1,47 @@
+The '--headless' CLI argument is deprecated. Omit '--viz' for default headless. If config visualizers are enabled and you want to force headless, use '--viz none'.
+Loading user config located at: '/home/lmbike/.cache/packman/chk/kit-kernel/110.1.1+production.manylinux_2_35_x86_64.release/data/Kit/IsaacLab/3.0/user.config.json'
+2026-10-25T16:01:15Z [0ms] [Warning] [omni.ext.plugin] [ext: extensions] Extensions config 'extension.toml' doesn't exist '/home/lmbike/IsaacLab/source/extensions' or '/home/lmbike/IsaacLab/source/extensions/config'
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+E0000 00:00:1792944075.884149 1607900 descriptor_database.cc:633] File already exists in database: grpc/health/v1/health.proto
+W0000 00:00:1792944075.884187 1607900 message.cc:301] Protobuf GeneratedMessageFactory: File is already registered: grpc/health/v1/health.proto
+2026-10-25T16:01:16Z [380ms] [Warning] [omni.usd_config.extension] Enable omni.materialx.libs extension to use MaterialX
+2026-10-25T16:01:16Z [842ms] [Warning] [isaacsim.core.simulation_manager.plugin] USD stage is not available; stage-opened subscription is deferred
+2026-10-25T16:01:16Z [842ms] [Warning] [isaacsim.core.simulation_manager.plugin] USD stage is not available; stage-opened subscription is deferred
+[ISAACLAB] AppLauncher initialization complete
+[ISAACLAB] Kit version: 110.1.1+production.305458.6312fa25.gl
+[ISAACLAB] Kit kernel:  210.1.5+release.12978.b22b555f.gl
+[ISAACLAB] Kit hash:    6312fa25
+[INFO]: Registered backend 'physx' for factory Articulation.
+[INFO]: Creating a fixed joint for the articulation: '/World/airborne_0/Robot/Geometry/base_link'.
+2026-10-25T16:01:20Z [4,995ms] [Warning] [usdrt.population.plugin] Last global time was not created. Did you call setEnableUsdNoticeHandling?
+2026-10-25T16:01:20Z [5,126ms] [Warning] [isaaclab_physx.assets.articulation.articulation] Not all actuators are configured! Total number of actuated joints not equal to number of joints available: 2 != 3.
+[INFO]: Simulation parameters for joints in /World/airborne_.*/Robot:
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                                                     Simulation Joint Information (Prim path: /World/airborne_.*/Robot)                                                     |
++-------+-------------------+-----------+---------+----------+-----------------+------------------+------------------+---------------------+-----------------+---------------+
+| Index | Name              | Stiffness | Damping | Armature | Static Friction | Dynamic Friction | Viscous Friction |   Position Limits   | Velocity Limits | Effort Limits |
++-------+-------------------+-----------+---------+----------+-----------------+------------------+------------------+---------------------+-----------------+---------------+
+|   0   | rear_wheel_joint  |   0.000   |  0.000  |  0.000   |      0.106      |      0.106       |      0.000       | [-3.4e+38, 3.4e+38] |      61.600     |     6.280     |
+|   1   | steering_joint    |   0.000   |  0.000  |  0.000   |      0.046      |      0.046       |      0.001       |   [-1.571, 1.571]   |      23.900     |     5.600     |
+|   2   | front_wheel_joint |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    3.4e+38    |
++-------+-------------------+-----------+---------+----------+-----------------+------------------+------------------+---------------------+-----------------+---------------+
+2026-10-25T16:01:20Z [5,144ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/ground_0/Robot/Geometry/base_link/base_link'
+2026-10-25T16:01:20Z [5,144ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/ground_1/Robot/Geometry/base_link/base_link'
+2026-10-25T16:01:20Z [5,182ms] [Warning] [isaaclab_physx.assets.articulation.articulation] Not all actuators are configured! Total number of actuated joints not equal to number of joints available: 2 != 3.
+[INFO]: Simulation parameters for joints in /World/ground_.*/Robot:
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                                                      Simulation Joint Information (Prim path: /World/ground_.*/Robot)                                                      |
++-------+-------------------+-----------+---------+----------+-----------------+------------------+------------------+---------------------+-----------------+---------------+
+| Index | Name              | Stiffness | Damping | Armature | Static Friction | Dynamic Friction | Viscous Friction |   Position Limits   | Velocity Limits | Effort Limits |
++-------+-------------------+-----------+---------+----------+-----------------+------------------+------------------+---------------------+-----------------+---------------+
+|   0   | rear_wheel_joint  |   0.000   |  0.000  |  0.000   |      0.106      |      0.106       |      0.000       | [-3.4e+38, 3.4e+38] |      61.600     |     6.280     |
+|   1   | steering_joint    |   0.000   |  0.000  |  0.000   |      0.046      |      0.046       |      0.001       |   [-1.571, 1.571]   |      23.900     |     5.600     |
+|   2   | front_wheel_joint |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    3.4e+38    |
++-------+-------------------+-----------+---------+----------+-----------------+------------------+------------------+---------------------+-----------------+---------------+
+FIXTURE airborne instances 10 fixed True
+FIXTURE ground instances 2 fixed False
+MATCHED REPLAY 0/400
+MATCHED REPLAY 100/400
+MATCHED REPLAY 200/400
+MATCHED REPLAY 300/400
+MATCHED REPLAY COMPLETE /home/lmbike/trackstand_rl/isaaclab_train/reports/20261025_matched_target_replay/isaac800

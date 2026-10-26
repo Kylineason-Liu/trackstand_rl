@@ -1,0 +1,10 @@
+{
+  "model": "2500",
+  "samples": 1024,
+  "seed": 42,
+  "max_absolute_action_difference": 0.0,
+  "actual_training_BetaMean_compared": true,
+  "interpreter": "/home/lmbike/IsaacLab/_isaac_sim/python.sh",
+  "scope": "CPU function comparison; no fresh Isaac physics evaluation",
+  "passed": true
+}

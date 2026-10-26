@@ -1,0 +1,79 @@
+{
+  "task": "model_2500 Isaac Lab DR and MuJoCo DR demand/actuation/observation plots",
+  "checkpoint_sha256": "5389effbd6a0d3e78c9ea9caeac309ceb5082622c8ee125bb701c63d1511fe52",
+  "evaluations": {
+    "isaac400": {
+      "num_envs": 64,
+      "num_policy_steps": 3000,
+      "seed": 42,
+      "dr": true,
+      "pure_survival": false,
+      "policy_hz": 50,
+      "physics_pd_hz": 400,
+      "completed_episodes": 130,
+      "timeouts": 108,
+      "mean_episode_s": 27.40923076923077
+    },
+    "mujoco400": {
+      "num_envs": 64,
+      "num_policy_steps": 3000,
+      "seed": 42,
+      "dr": true,
+      "pure_survival": false,
+      "policy_hz": 50,
+      "physics_pd_hz": 400,
+      "completed_episodes": 270,
+      "timeouts": 74,
+      "mean_episode_s": 9.36288888888889,
+      "all_13_previous_archive_arrays_byte_identical": true
+    },
+    "mujoco800": {
+      "num_envs": 64,
+      "num_policy_steps": 3000,
+      "seed": 42,
+      "dr": true,
+      "pure_survival": false,
+      "policy_hz": 50,
+      "physics_pd_hz": 800,
+      "completed_episodes": 149,
+      "timeouts": 92,
+      "mean_episode_s": 19.45543624161074,
+      "all_13_previous_archive_arrays_byte_identical": true
+    }
+  },
+  "plot_verification": {
+    "main_figure_sets": 8,
+    "formats": [
+      "png",
+      "svg",
+      "pdf"
+    ],
+    "demand_pdf_pages": 64,
+    "observation_pdf_pages": 64,
+    "red_markers": "Initial spawn plus every actual per-environment reset, including capture boundary",
+    "extrema": "Every plotted curve and every panel; actual recorded values",
+    "all_full_and_detail_samples_inside_fitted_y_limits": true,
+    "no_numeric_smoothing_downsampling_clipping_or_response_shift": true
+  },
+  "focused_tests": {
+    "tests": 13,
+    "failures": 0,
+    "errors": 0,
+    "elapsed_seconds": 6.343,
+    "log": "unit_tests.log"
+  },
+  "syntax_pyflakes_and_120_columns_passed": true,
+  "preservation": {
+    "checked_files": 487,
+    "changed_files": [],
+    "unchanged": true
+  },
+  "limitations": [
+    "Different DR realizations across engines, not matched plant parameters",
+    "Isaac solver joint-axis effort is not isolated motor torque; MuJoCo actuator force is not net joint torque",
+    "MuJoCo native substep speed is recorded before production projection",
+    "No hardware motor response or firmware frequency identified"
+  ],
+  "export_recovery": "Initial monolithic PDF export exceeded memory; all-environment PDFs regenerated via independent eight-page batches and pdfunite without rerunning captures",
+  "csv_precision_fix": "Convert NumPy scalar fields to native scalars before CSV writing; exact stored-value round-trip tests passed"
+}

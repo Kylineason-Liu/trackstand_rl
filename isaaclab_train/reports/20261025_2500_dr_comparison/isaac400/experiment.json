@@ -1,0 +1,53 @@
+{
+  "capture_completed": true,
+  "invocation": [
+    "reports/20261025_2500_dr_comparison/record_isaac.py",
+    "--capture-dir",
+    "reports/20261025_2500_dr_comparison/isaac400",
+    "--task",
+    "Trackstand-Balance-v1",
+    "--num_envs",
+    "64",
+    "--num_steps",
+    "3000",
+    "--seed",
+    "42",
+    "--dr",
+    "--headless",
+    "--device",
+    "cuda:0",
+    "agent.max_iterations=100000",
+    "env.scene.robot.actuators.drive.viscous_friction=null"
+  ],
+  "checkpoint_source": "/home/lmbike/trackstand_rl/isaaclab_train/logs/rsl_rl/trackstand_rl_rsl/2026-10-21_11-18-29/model_2500.pt",
+  "checkpoint_sha256": "5389effbd6a0d3e78c9ea9caeac309ceb5082622c8ee125bb701c63d1511fe52",
+  "motor_order": [
+    "steering",
+    "rear"
+  ],
+  "seed": 42,
+  "dr": true,
+  "training_dr": true,
+  "pure_survival": false,
+  "num_envs": 64,
+  "completed_policy_steps": 3000,
+  "decimation": 8,
+  "policy_dt_s": 0.02,
+  "physics_dt_s": 0.0025,
+  "termination_names": [
+    "time_out",
+    "fallen",
+    "diverged",
+    "drifted",
+    "yaw_deviation",
+    "wheel_net"
+  ],
+  "body_columns": [
+    "roll_rad",
+    "drift_m",
+    "relative_yaw_rad"
+  ],
+  "target_meaning": "Held action-term steering target entering explicit PD, NOT native PhysX position target",
+  "torque_meaning": "submitted_motor_torque is the explicit command; projected_joint_effort is the separate solver active joint-axis wrench component, not isolated motor-only torque",
+  "timing": "Commands at physics-step start; responses at step end, before automatic resets"
+}

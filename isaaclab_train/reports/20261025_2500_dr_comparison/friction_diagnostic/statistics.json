@@ -1,0 +1,172 @@
+{
+  "isaac400": {
+    "samples_per_motor": 1536000,
+    "steer_tracking_rms_rad": 0.029955318197607994,
+    "steer_tracking_p95_rad": 0.035753726959228516,
+    "rear_command_response_max_gap_nm": 2.0317506790161133,
+    "moving_samples": 494061,
+    "motoring_samples": 158780,
+    "motoring_abs_effort_reduction_median_nm": 0.10599382221698761,
+    "moving_response_minus_command_plus_coulomb_residual_within_1e4_percent": 75.66515065953394,
+    "env0_12p5_to_17p5_s": {
+      "target_peak_to_peak_rad": 0.10006070137023926,
+      "position_peak_to_peak_rad": 0.07510566711425781,
+      "tracking_rms_deg": 0.5713399052619934,
+      "kp": 10.6517333984375,
+      "kd": 0.2091839611530304,
+      "controller_damping_abs_torque_p95_nm": 0.18768838047981262,
+      "passive_viscous_abs_torque_p95_nm": 0.0008171293302439153,
+      "steering_motor_torque_saturation_percent": 0.0,
+      "dry_friction_static_equivalent_error_deg": 0.24762839078903198,
+      "target_step_abs_p95_rad": 0.035602068901062,
+      "demeaned_target_fft_energy_10_to_25_hz_percent": 25.267813748227546,
+      "spectrum_definition": "250 held target updates at 50Hz; demeaned full DFT; rectangular 5s window"
+    }
+  },
+  "mujoco400": {
+    "samples_per_motor": 1536000,
+    "steer_tracking_rms_rad": 0.059639639898935434,
+    "steer_tracking_p95_rad": 0.09608205361343668,
+    "rear_command_response_max_gap_nm": 0.0,
+    "moving_samples": 394413,
+    "motoring_samples": 126166,
+    "motoring_abs_effort_reduction_median_nm": 0.0,
+    "moving_response_minus_command_plus_coulomb_residual_within_1e4_percent": 0.0,
+    "env0_12p5_to_17p5_s": {
+      "target_peak_to_peak_rad": 0.2592313289642334,
+      "position_peak_to_peak_rad": 0.14514847755790905,
+      "tracking_rms_deg": 3.1209058416021653,
+      "kp": 9.467878971730682,
+      "kd": 0.1912553556808799,
+      "controller_damping_abs_torque_p95_nm": 1.8396502187142285,
+      "passive_viscous_abs_torque_p95_nm": 0.00875998619112809,
+      "steering_motor_torque_saturation_percent": 0.0,
+      "dry_friction_static_equivalent_error_deg": 0.2785916178335472,
+      "target_step_abs_p95_rad": 0.16815567016601562,
+      "demeaned_target_fft_energy_10_to_25_hz_percent": 95.11160440464747,
+      "spectrum_definition": "250 held target updates at 50Hz; demeaned full DFT; rectangular 5s window"
+    },
+    "force_verification": {
+      "original_13_arrays_byte_identical": true,
+      "damping": [
+        0.000910713492,
+        0.0
+      ],
+      "frictionloss": [
+        0.046036056104,
+        0.106
+      ],
+      "friction_min_nm": [
+        -0.046036056104,
+        -0.106
+      ],
+      "friction_max_nm": [
+        0.046036056104,
+        0.106
+      ],
+      "moving_rear_abs_friction_median_nm": 0.09275834943687494,
+      "moving_rear_abs_friction_saturated_percent": 45.80858136014786,
+      "moving_rear_friction_opposes_pre_step_velocity_percent": 89.41464911146439,
+      "passive_damping_equation_max_error_nm": 0.0,
+      "rear_by_minimum_pre_and_post_speed_rad_s": {
+        "0.1": {
+          "samples": 394413,
+          "abs_friction_median_nm": 0.09275834943687494,
+          "abs_friction_at_0p106_percent": 45.80858136014786
+        },
+        "0.5": {
+          "samples": 113382,
+          "abs_friction_median_nm": 0.106,
+          "abs_friction_at_0p106_percent": 94.93217618316841
+        },
+        "1.0": {
+          "samples": 68125,
+          "abs_friction_median_nm": 0.106,
+          "abs_friction_at_0p106_percent": 96.13211009174312
+        }
+      }
+    },
+    "measured_motoring_example": {
+      "env": 5,
+      "command_time_s": 25.0925,
+      "velocity_before_rad_s": 0.3380368760158102,
+      "submitted_motor_nm": 0.24105128645896912,
+      "actuator_nm": 0.24105128645896912,
+      "joint_dry_friction_nm": -0.106,
+      "motor_plus_joint_losses_nm": 0.13505128645896913
+    }
+  },
+  "mujoco800": {
+    "samples_per_motor": 3072000,
+    "steer_tracking_rms_rad": 0.05930961817917488,
+    "steer_tracking_p95_rad": 0.101422325608938,
+    "rear_command_response_max_gap_nm": 0.0,
+    "moving_samples": 941754,
+    "motoring_samples": 277431,
+    "motoring_abs_effort_reduction_median_nm": 0.0,
+    "moving_response_minus_command_plus_coulomb_residual_within_1e4_percent": 0.0,
+    "env0_12p5_to_17p5_s": {
+      "target_peak_to_peak_rad": 0.22458279132843018,
+      "position_peak_to_peak_rad": 0.13951952540245816,
+      "tracking_rms_deg": 3.7811657571745547,
+      "kp": 9.467878971730682,
+      "kd": 0.1912553556808799,
+      "controller_damping_abs_torque_p95_nm": 0.9059908429747449,
+      "passive_viscous_abs_torque_p95_nm": 0.0043141175387646415,
+      "steering_motor_torque_saturation_percent": 0.0,
+      "dry_friction_static_equivalent_error_deg": 0.2785916178335472,
+      "target_step_abs_p95_rad": 0.17285196781158446,
+      "demeaned_target_fft_energy_10_to_25_hz_percent": 94.32999874028842,
+      "spectrum_definition": "250 held target updates at 50Hz; demeaned full DFT; rectangular 5s window"
+    },
+    "force_verification": {
+      "original_13_arrays_byte_identical": true,
+      "damping": [
+        0.000910713492,
+        0.0
+      ],
+      "frictionloss": [
+        0.046036056104,
+        0.106
+      ],
+      "friction_min_nm": [
+        -0.046036056104,
+        -0.106
+      ],
+      "friction_max_nm": [
+        0.046036056104,
+        0.106
+      ],
+      "moving_rear_abs_friction_median_nm": 0.07487028892549918,
+      "moving_rear_abs_friction_saturated_percent": 38.12439341908821,
+      "moving_rear_friction_opposes_pre_step_velocity_percent": 93.43883859266857,
+      "passive_damping_equation_max_error_nm": 0.0,
+      "rear_by_minimum_pre_and_post_speed_rad_s": {
+        "0.1": {
+          "samples": 941754,
+          "abs_friction_median_nm": 0.07487028892549918,
+          "abs_friction_at_0p106_percent": 38.12439341908821
+        },
+        "0.5": {
+          "samples": 221921,
+          "abs_friction_median_nm": 0.106,
+          "abs_friction_at_0p106_percent": 96.48748879105628
+        },
+        "1.0": {
+          "samples": 76333,
+          "abs_friction_median_nm": 0.106,
+          "abs_friction_at_0p106_percent": 97.88034008882136
+        }
+      }
+    },
+    "measured_motoring_example": {
+      "env": 24,
+      "command_time_s": 34.11375,
+      "velocity_before_rad_s": 0.4368517273943146,
+      "submitted_motor_nm": 0.11137658357620239,
+      "actuator_nm": 0.11137658357620239,
+      "joint_dry_friction_nm": -0.106,
+      "motor_plus_joint_losses_nm": 0.005376583576202396
+    }
+  }
+}

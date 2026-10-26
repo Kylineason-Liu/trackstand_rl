@@ -1,0 +1,85 @@
+/home/lmbike/.config/matplotlib is not a writable directory
+Matplotlib created a temporary cache directory at /tmp/matplotlib-h1crk1tl because there was an issue with the default path (/home/lmbike/.config/matplotlib); it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.
+/home/lmbike/.local/lib/python3.10/site-packages/matplotlib/projections/__init__.py:63: UserWarning: Unable to import Axes3D. This may be due to multiple versions of Matplotlib being installed (e.g. as a system package and as a pip package). As a result, the 3D projection is not available.
+  warnings.warn("Unable to import Axes3D. This may be due to multiple versions of "
+historical_v0_91850_survival {'completed_episodes': 594, 'mean_episode_length_s': 4.426969696969697, 'timeouts': 59, 'timeout_rate': 0.09932659932659933, 'first_episode_mean_s': 4.00375, 'first_episode_timeouts': 6, 'roll_rms_deg': 4.326954959019321}
+current400_full {'completed_episodes': 270, 'mean_episode_length_s': 9.36288888888889, 'timeouts': 74, 'timeout_rate': 0.2740740740740741, 'first_episode_mean_s': 12.0740625, 'first_episode_timeouts': 24, 'roll_rms_deg': 2.716415748826703}
+current400_survival {'completed_episodes': 222, 'mean_episode_length_s': 11.487027027027027, 'timeouts': 79, 'timeout_rate': 0.35585585585585583, 'first_episode_mean_s': 13.654374999999998, 'first_episode_timeouts': 28, 'roll_rms_deg': 2.708129369736544}
+diagnostic800_full {'completed_episodes': 149, 'mean_episode_length_s': 19.455436241610737, 'timeouts': 92, 'timeout_rate': 0.6174496644295302, 'first_episode_mean_s': 21.8053125, 'first_episode_timeouts': 46, 'roll_rms_deg': 2.1815760565890816}
+diagnostic800_survival {'completed_episodes': 139, 'mean_episode_length_s': 23.323597122302157, 'timeouts': 104, 'timeout_rate': 0.7482014388489209, 'first_episode_mean_s': 25.131875, 'first_episode_timeouts': 53, 'roll_rms_deg': 2.1119003348332783}
+{
+  "current400_full": {
+    "mean_s_difference_95ci": [
+      3.3668726158175604,
+      6.854333466628148
+    ],
+    "timeout_rate_difference_95ci": [
+      0.12143383838647594,
+      0.23974907710727716
+    ],
+    "first_mean_s_difference_95ci": [
+      4.075914062499998,
+      12.104578124999982
+    ],
+    "first_timeout_rate_difference_95ci": [
+      0.140625,
+      0.421875
+    ]
+  },
+  "current400_survival": {
+    "mean_s_difference_95ci": [
+      5.293667279479491,
+      9.119838684711338
+    ],
+    "timeout_rate_difference_95ci": [
+      0.19597865159451328,
+      0.32842857292170596
+    ],
+    "first_mean_s_difference_95ci": [
+      5.460265625000002,
+      13.762523437499997
+    ],
+    "first_timeout_rate_difference_95ci": [
+      0.203125,
+      0.484375
+    ]
+  },
+  "diagnostic800_full": {
+    "mean_s_difference_95ci": [
+      12.646455188605222,
+      17.547197783546384
+    ],
+    "timeout_rate_difference_95ci": [
+      0.4296979063303921,
+      0.6110759856378019
+    ],
+    "first_mean_s_difference_95ci": [
+      13.8915546875,
+      21.584117187499995
+    ],
+    "first_timeout_rate_difference_95ci": [
+      0.5,
+      0.75
+    ]
+  },
+  "diagnostic800_survival": {
+    "mean_s_difference_95ci": [
+      16.62978798528064,
+      21.14716687766194
+    ],
+    "timeout_rate_difference_95ci": [
+      0.5689643522833179,
+      0.7293517215100825
+    ],
+    "first_mean_s_difference_95ci": [
+      17.5384140625,
+      24.373124999999998
+    ],
+    "first_timeout_rate_difference_95ci": [
+      0.609375,
+      0.84375
+    ]
+  },
+  "method": "20,000 independent environment-cluster bootstrap resamples per variant, seed20261023; percentile95% intervals for v1 minus fresh v0. Whole environment trajectories are resampled, not independent episodes. Conditional on this single shared material bank and these trained checkpoints; not a causal policy-only or multi-training-seed comparison."
+}
+VALIDATION PASSED; protected files unchanged

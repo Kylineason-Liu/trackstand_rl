@@ -1,0 +1,186 @@
+{
+  "checkpoint": "/home/lmbike/trackstand_rl/isaaclab_train/logs/rsl_rl/trackstand_rl_rsl/2026-10-21_11-18-29/model_2500.pt",
+  "checkpoint_sha256": "5389effbd6a0d3e78c9ea9caeac309ceb5082622c8ee125bb701c63d1511fe52",
+  "checkpoint_iteration": 2500,
+  "mujoco_version": "3.12.0",
+  "torch_version": "2.12.1+cu130",
+  "domain_randomization_training": true,
+  "saved_observation": {
+    "concatenate_terms": "true",
+    "concatenate_dim": "-1",
+    "enable_corruption": "true",
+    "history_length": "null",
+    "flatten_history_dim": "true",
+    "imu": {
+      "func": "source.trackstand_rl.trackstand_rl.tasks.manager_based.trackstand.mdp.stationary.observations:balance_imu_state_v1",
+      "params": {
+        "steer_joint_name": "steering_joint",
+        "drive_joint_name": "rear_wheel_joint"
+      },
+      "modifiers": "null",
+      "noise": {
+        "func": "source.trackstand_rl.trackstand_rl.tasks.manager_based.trackstand.mdp.stationary.noise:per_channel_gaussian_noise",
+        "operation": "add",
+        "std": [
+          "0.001",
+          "0.001",
+          "0.0012",
+          "0.0012",
+          "0.0012",
+          "0.0",
+          "0.0",
+          "0.0",
+          "0.0",
+          "0.0",
+          "0.0"
+        ]
+      },
+      "clip": "null",
+      "scale": "null",
+      "history_length": "0",
+      "flatten_history_dim": "true"
+    }
+  },
+  "saved_actions": {
+    "steering": {
+      "class_type": "source.trackstand_rl.trackstand_rl.tasks.manager_based.trackstand.mdp.stationary.actions:SlewLimitedJointPositionAction",
+      "asset_name": "robot",
+      "debug_vis": "false",
+      "clip": {
+        "steering_joint": [
+          "-1.57",
+          "1.57"
+        ]
+      },
+      "joint_names": [
+        "steering_joint"
+      ],
+      "scale": "1.57",
+      "offset": "0.0",
+      "preserve_order": "false",
+      "use_default_offset": "true",
+      "max_target_velocity_rad_s": "23.9"
+    },
+    "drive": {
+      "class_type": "isaaclab.envs.mdp.actions.joint_actions:JointEffortAction",
+      "asset_name": "robot",
+      "debug_vis": "false",
+      "clip": "null",
+      "joint_names": [
+        "rear_wheel_joint"
+      ],
+      "scale": "6.28",
+      "offset": "0.0",
+      "preserve_order": "false"
+    }
+  },
+  "saved_actuators": {
+    "steering": {
+      "class_type": "isaaclab.actuators.actuator_pd:IdealPDActuator",
+      "joint_names_expr": [
+        "steering_joint"
+      ],
+      "effort_limit": "5.6",
+      "velocity_limit": "23.9",
+      "effort_limit_sim": "5.6",
+      "velocity_limit_sim": "23.9",
+      "stiffness": "10.0",
+      "damping": "0.2",
+      "armature": "null",
+      "friction": "0.046036056104",
+      "dynamic_friction": "0.046036056104",
+      "viscous_friction": "0.000910713492"
+    },
+    "drive": {
+      "class_type": "isaaclab.actuators.actuator_pd:IdealPDActuator",
+      "joint_names_expr": [
+        "rear_wheel_joint"
+      ],
+      "effort_limit": "6.28",
+      "velocity_limit": "61.6",
+      "effort_limit_sim": "6.28",
+      "velocity_limit_sim": "61.6",
+      "stiffness": "0.0",
+      "damping": "0.0",
+      "armature": "null",
+      "friction": "0.106",
+      "dynamic_friction": "0.106",
+      "viscous_friction": "null"
+    }
+  },
+  "saved_agent": {
+    "seed": 42,
+    "device": "cuda:0",
+    "num_steps_per_env": 16,
+    "max_iterations": 100000,
+    "empirical_normalization": {},
+    "obs_groups": {
+      "actor": [
+        "policy"
+      ],
+      "critic": [
+        "policy"
+      ]
+    },
+    "clip_actions": null,
+    "check_for_nan": true,
+    "save_interval": 50,
+    "experiment_name": "trackstand_rl_rsl",
+    "run_name": "",
+    "logger": "tensorboard",
+    "neptune_project": "isaaclab",
+    "wandb_project": "isaaclab",
+    "resume": false,
+    "load_run": ".*",
+    "load_checkpoint": "model_.*.pt",
+    "class_name": "OnPolicyRunner",
+    "actor": {
+      "class_name": "MLPModel",
+      "hidden_dims": [
+        32,
+        32
+      ],
+      "activation": "elu",
+      "obs_normalization": false,
+      "distribution_cfg": {
+        "class_name": "source.trackstand_rl.trackstand_rl.tasks.manager_based.trackstand.agents.beta_distribution:BetaDistribution"
+      }
+    },
+    "critic": {
+      "class_name": "MLPModel",
+      "hidden_dims": [
+        32,
+        32
+      ],
+      "activation": "elu",
+      "obs_normalization": false,
+      "distribution_cfg": null
+    },
+    "algorithm": {
+      "class_name": "PPO",
+      "num_learning_epochs": 5,
+      "num_mini_batches": 4,
+      "learning_rate": 0.001,
+      "schedule": "adaptive",
+      "gamma": 0.99,
+      "lam": 0.95,
+      "entropy_coef": 0.005,
+      "desired_kl": 0.01,
+      "max_grad_norm": 1.0,
+      "optimizer": "adam",
+      "value_loss_coef": 1.0,
+      "use_clipped_value_loss": true,
+      "clip_param": 0.2,
+      "normalize_advantage_per_mini_batch": false,
+      "share_cnn_encoders": false,
+      "rnd_cfg": null,
+      "symmetry_cfg": null
+    },
+    "policy": {}
+  },
+  "physics_hz": 400,
+  "policy_hz": 50,
+  "episode_horizon_s": 30,
+  "historical_snapshot": "e5f5d7f8d4652e83e649fbdfc2eea3f9dea8a465",
+  "protected_file_count": 64
+}

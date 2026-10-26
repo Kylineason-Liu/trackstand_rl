@@ -2,7 +2,7 @@
 
 Reinforcement-learning-based **stationary bicycle balancing**, from Isaac Lab training to MuJoCo sim-to-sim validation and Raspberry Pi deployment with ROS 2.
 
-The active task is `Trackstand-Balance-v0`. A policy commands steering **position** and rear-wheel **torque** to keep the bicycle upright with minimal displacement. This differs from the reference bike's remote-controlled mobile-balancing objective: RC steering/throttle sticks are not policy inputs; the RC switch controls the paired kickstands and authorizes balancing.
+The current training/sim-to-sim task is `Trackstand-Balance-v1` (11 observations and bounded Beta actions); v0 remains available for historical experiments. The Raspberry Pi deployment still uses its separately documented v0 policy/interface and is **not yet v1-compatible**. A policy commands steering **position** and rear-wheel **torque** for stationary balance. RC controls the kickstands and authorizes balancing, not steering/throttle policy inputs.
 
 The workflow is **train → evaluate → export ONNX → validate in MuJoCo → commission on the supported bike**. Simulation results and unloaded motor experiments are recorded, but this is a research codebase, not a certified autonomous or road-ready system.
 
@@ -45,7 +45,7 @@ cd ~/trackstand_rl/isaaclab_train
 export PYTHONPATH="$PWD${PYTHONPATH:+:$PYTHONPATH}"
 
 ~/IsaacLab/isaaclab.sh -p scripts/rsl_rl/train_deterministic.py \
-  --task Trackstand-Balance-v0 --num_envs 4096 \
+  --task Trackstand-Balance-v1 --num_envs 4096 \
   --max_iterations 60000 --seed 42 --headless --dr
 ```
 
@@ -57,7 +57,7 @@ Evaluate a checkpoint with matched task/DR settings; replace the placeholder pat
 
 ```bash
 ~/IsaacLab/isaaclab.sh -p scripts/rsl_rl/play_eval.py \
-  --task Trackstand-Balance-v0 --checkpoint /absolute/path/to/model.pt \
+  --task Trackstand-Balance-v1 --checkpoint /absolute/path/to/v1_model.pt \
   --num_envs 64 --num_steps 3000 --seed 42 --headless --dr
 ```
 
@@ -82,28 +82,32 @@ source ~/.venvs/trackstand-mujoco/bin/activate
 python -m pip install -r requirements.txt matplotlib onnxruntime
 ```
 
-Run the Trackstand model with the included **09221945 / model_91850** export:
+Run the v1 Trackstand model (default **20261021 / model_75300**, if the checkpoint is present locally):
 
 ```bash
 python scripts/run_deploy_viewer.py --task deploy_sim \
   --mjcf models/trackstand_rl_0916_bike/trackstand_rl_0916.xml \
-  --onnx policies/trackstand_rl_rsl_2026-09-22_19-45-06_model_91850.onnx \
-  --num_envs 64 --seed 42 --dr
+  --num_envs 64 --seed 42
 ```
 
-Always pass `--onnx` explicitly: the Trackstand fallback paths in the viewer still reference an old checkout location. Use your own export path to validate a different policy; an ONNX export does not automatically update any other component's selected model.
+Use `--pt /path/to/v1_model.pt` or `--onnx /path/to/v1_export.onnx` for another v1 policy. Historical 13-input 41050/91850 exports are incompatible and rejected. Default paths are repository-relative; exporting a policy does not switch another component's model.
 
 `--num_envs` defaults to **64**; choose `1` for a single-bike view. `--dr` enables randomized resets; omit it for nominal runs. `--speed` controls playback pacing, not policy frequency. Inspect all options with `python scripts/run_deploy_viewer.py --help`.
 
+Both viewer and headless evaluator accept `--physics_hz 800` for 800 Hz physics
+and motor PD, while policy inference and target slew stay at 50 Hz. The default
+remains 400 Hz; rates must be positive multiples of 50 Hz. Non-default rates
+are diagnostic departures from Isaac v1's 400 Hz reference.
+
 On normal viewer exit, available episode metrics and steering/rear torque traces are saved under `mujoco_sim2sim/logs/`. The grid is render-only: environments have independent physics/randomization and do not collide with one another. CPU load may make playback slower than real time.
 
-The separate headless command below exercises the **legacy NewBike baseline**, not the Trackstand MJCF viewer configuration:
+Headless evaluation now uses the **same v1 environment and policy** as the viewer:
 
 ```bash
-python scripts/run_deploy_eval.py --episodes 64 --seed 42
+python scripts/run_deploy_eval.py --num_envs 64 --num_steps 3000 --seed 42
 ```
 
-See the [MuJoCo component guide](mujoco_sim2sim/README.md) and the progress records for the distinction between legacy and Trackstand experiments.
+All six v1 terminations are enabled by default; `--pure_survival` selects only timeout/fallen. See the [MuJoCo guide](mujoco_sim2sim/README.md) for the remaining contact-friction and velocity-constraint approximations. Contract alignment does not guarantee Isaac-equivalent survival.
 
 ## 3. Raspberry Pi ROS 2 deployment
 
@@ -156,7 +160,7 @@ The bundled deployment default is **09221945 / model_91850 ONNX**, checked by SH
 
 ### Operating contract and important limits
 
-Policy inference is **50 Hz**. Current Isaac/MuJoCo physics is **400 Hz**; MIT deployment sends steering MIT/rear C0 at nominal **200 Hz** and queries/publishes motor feedback at **100 Hz** (state only when new/fresh). These rates do not establish the motor firmware's undocumented internal-loop frequency.
+Policy inference is **50 Hz**. Isaac physics is **400 Hz**; MuJoCo physics/PD defaults to **400 Hz**, configurable with `--physics_hz`. MIT deployment sends steering MIT/rear C0 at nominal **200 Hz** and queries/publishes motor feedback at **100 Hz** (state only when new/fresh). These rates do not establish the motor firmware's undocumented internal-loop frequency.
 
 The 13 policy observations use IMU orientation/rates and motor encoders. Longitudinal speed is estimated from rear-wheel speed; lateral speed is assumed zero. Raw actions are scaled by **1.57 rad / 6.28 N·m** without a `[-1,1]` clamp. **As of 2026-10-13, the shared policy steering clamp and MIT backend's steering target/slew and rear torque clamps are commented out by request.** Legacy C0/C2 backends retain their own bounds. MIT requests can exceed motor capability; do not treat the launch examples as approval for powered use without independent current protection, support and emergency stopping.
 

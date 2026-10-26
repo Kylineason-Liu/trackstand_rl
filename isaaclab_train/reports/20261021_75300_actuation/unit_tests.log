@@ -1,0 +1,20 @@
+/home/lmbike/.config/matplotlib is not a writable directory
+Matplotlib created a temporary cache directory at /tmp/matplotlib-kracttxp because there was an issue with the default path (/home/lmbike/.config/matplotlib); it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.
+/home/lmbike/.local/lib/python3.10/site-packages/matplotlib/projections/__init__.py:63: UserWarning: Unable to import Axes3D. This may be due to multiple versions of Matplotlib being installed (e.g. as a system package and as a pip package). As a result, the 3D projection is not available.
+  warnings.warn("Unable to import Axes3D. This may be due to multiple versions of "
+test_actual_inputs_match_native_motor_feedback_and_steering_encoding (__main__.TestAnalysis) ... ok
+test_all_completed_episodes_reset_steering_state_on_next_action (__main__.TestAnalysis) ... ok
+test_all_eleven_figures_exist_in_png_pdf_svg (__main__.TestAnalysis) ... ok
+test_csv_timebase_and_all_plotted_motor_values_match_full_arrays (__main__.TestAnalysis) ... ok
+test_done_signals_and_episode_counts_are_consistent (__main__.TestAnalysis) ... ok
+test_histogram_includes_exact_horizon_and_excludes_unfinished_tail (__main__.TestAnalysis) ... ok
+test_input_hashes_and_checkpoint_hashes_match (__main__.TestAnalysis) ... ok
+test_red_spawn_artists_and_full_range_axes_match_saved_capture (__main__.TestAnalysis) ... ok
+test_reset_segments_have_no_empty_or_cross_reset_interval (__main__.TestAnalysis) ... ok
+test_saved_vertical_zoom_is_explicit_and_preserves_original_extrema (__main__.TestAnalysis) ... ok
+test_spawn_times_include_initial_and_capture_boundary_reset (__main__.TestAnalysis) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 2.018s
+
+OK

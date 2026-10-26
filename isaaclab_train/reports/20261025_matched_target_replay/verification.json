@@ -1,0 +1,53 @@
+{
+  "completed": true,
+  "protected_files": 243,
+  "changed_files": [],
+  "tests_passed": 10,
+  "figures": 6,
+  "runs": {
+    "isaac400": {
+      "completed": true,
+      "physics_hz": 400,
+      "policy_hz": 50,
+      "automatic_resets": false,
+      "policy_inference": false,
+      "dr_resampling": false
+    },
+    "mujoco400": {
+      "completed": true,
+      "physics_hz": 400,
+      "policy_hz": 50,
+      "automatic_resets": false,
+      "policy_inference": false,
+      "dr_resampling": false
+    },
+    "mujoco800": {
+      "completed": true,
+      "physics_hz": 800,
+      "policy_hz": 50,
+      "automatic_resets": false,
+      "policy_inference": false,
+      "dr_resampling": false
+    },
+    "isaac800": {
+      "completed": true,
+      "physics_hz": 800,
+      "policy_hz": 50,
+      "automatic_resets": false,
+      "policy_inference": false,
+      "dr_resampling": false
+    }
+  },
+  "input_sha256": "c7796b76881881bc2ee015ed839cba3aa773fb133fc36a7493efe062253cd0b9",
+  "raw_captures_unchanged": true,
+  "production_edits": false,
+  "hardware_test": false,
+  "full_dr_balancing_evaluation": false,
+  "notes": [
+    "Matched nominal motor/plant parameters; commands extracted from actual DR captures",
+    "Fixed-base airborne fixture plus floating grounded replay",
+    "Steering friction ON/OFF pairs retain controller Kd=0.2",
+    "All target and rear command inputs verified identical across four runs",
+    "Earlier fixture initialization/warm-start attempts retained separately; excluded from results"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "source_sha256": {
+    "isaaclab_train/reports/20261025_2500_dr_comparison/isaac400/motor_samples.npz": "d6e1b712082b273daab7dc2fd0ba6a848317cc88c147a8f07f786feded6fcf1e",
+    "isaaclab_train/reports/20261025_2500_dr_comparison/mujoco400/physics_samples.npz": "bd6c6dc1faf25226205efa51256f1fdc81e6c762f5f957eedfa731e3ee326b6f",
+    "isaaclab_train/reports/20261025_2500_dr_comparison/mujoco800/physics_samples.npz": "516af93b49501697cf2e013dba186bb1630f184380ba3b6186417253ea5a27f4"
+  },
+  "input_sha256": "c7796b76881881bc2ee015ed839cba3aa773fb133fc36a7493efe062253cd0b9",
+  "duration_s": 8.0,
+  "core_window_s": [
+    2.0,
+    7.0
+  ],
+  "final_hold_window_s": [
+    7.0,
+    8.0
+  ],
+  "policy_hz": 50,
+  "supported_fixture": "fixed base, z=2m, no wheel-ground contact; gravity retained",
+  "grounded_fixture": "original floating bike, nominal spawn, no automatic reset",
+  "parameters": "matched nominal v1 gains/masses/CoMs; no DR resampling or policy inference",
+  "replay_sources": "actual post-scale/post-clip/post-slew model_2500 DR commands",
+  "precision": "One shared float32 input file; MuJoCo original float64 targets rounded once <1e-7rad",
+  "friction_off": "steering static/dynamic/viscous losses zero; rear losses unchanged"
+}

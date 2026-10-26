@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><title>Model 2500 matched-target replay</title>
+<style>
+body{font:16px/1.5 system-ui;margin:2rem auto;max-width:1400px;padding:0 1rem;color:#17212b}
+img{max-width:100%;height:auto;border:1px solid #ccc}a{color:#075b9b}p{max-width:1000px}
+</style>
+<h1>Identical-target replay: Isaac Lab and MuJoCo</h1>
+<p>Both engines receive the exact same 50 Hz-held position targets and rear torque requests.
+Nominal matched parameters; supported motor bench with steering-friction ON/OFF pairs.
+Commands come from model 2500 DR recordings, but this is an actuator diagnostic, not a DR balance evaluation.</p>
+<p><a href="README.md">Full report and conclusions</a> · <a href="statistics.json">Exact statistics</a> ·
+<a href="inputs.json">Protocol and source hashes</a> · <a href="verification.json">Verification</a></p>
+<h2>Position detail: same fast inputs also cause large error in Isaac</h2>
+<a href="matched_position_detail.png"><img src="matched_position_detail.png" alt="Matched position detail"></a>
+<h2>Five-second replay core</h2>
+<a href="matched_position_core.png"><img src="matched_position_core.png" alt="Five-second position traces"></a>
+<h2>Final hold: remaining static-friction difference</h2>
+<a href="matched_position_final_hold.png"><img src="matched_position_final_hold.png" alt="Final hold position error"></a>
+<h2>Motor torque commands</h2>
+<a href="matched_torque_detail.png"><img src="matched_torque_detail.png" alt="Motor command torque detail"></a>
+<h2>Full eight seconds including preparation and final hold</h2>
+<a href="matched_position_full.png"><img src="matched_position_full.png" alt="Full eight-second replay"></a>
+<h2>Grounded open-loop replay</h2>
+<p>Colored dotted lines mark the first 30-degree lean; later samples include falling.
+These are not independent balancing evaluations.</p>
+<a href="ground_replay_first_half_second.png"><img src="ground_replay_first_half_second.png" alt="Grounded replay"></a>
+</html>

@@ -1,0 +1,130 @@
+{
+  "final_no_dr": {
+    "environments": 64,
+    "completed_episodes": 15721,
+    "mean_episode_length_steps": 12.191527256535844,
+    "mean_episode_length_s": 0.2438305451307169,
+    "min_episode_length_s": 0.2,
+    "max_episode_length_s": 0.3,
+    "std_episode_length_steps": 1.4066439221170868,
+    "mean_reward": 1.5963091295176683,
+    "timeout_rate": 0.0,
+    "termination_counts": {
+      "time_out": 0,
+      "fallen": 15721,
+      "diverged": 0,
+      "drifted": 0,
+      "yaw_deviation": 0,
+      "wheel_net": 0
+    },
+    "roll_rms_deg": 16.838098983043682,
+    "max_roll_deg": 37.548717354039944,
+    "mean_worst_lean_deg": 34.24956721096254,
+    "mean_drift_m": 0.013721381370648402,
+    "max_drift_m": 0.06632995311044439,
+    "mean_yaw_deg": 8.823871756018827,
+    "max_yaw_deg": 21.691596797329858,
+    "mean_turn_deg": 16.08396875220146,
+    "mean_drive_speed_rad_s": 19.439611445645834,
+    "max_drive_speed_rad_s": 61.6,
+    "mean_steer_speed_rad_s": 3.136061299415878,
+    "max_steer_speed_rad_s": 11.370824443093568,
+    "capture_validation": {
+      "policy_frames": 192000,
+      "motor_physics_frames": 1536000,
+      "raw_min": [
+        -0.7756822109222412,
+        -0.1725982427597046
+      ],
+      "raw_max": [
+        -0.3005939722061157,
+        0.6040745973587036
+      ],
+      "max_abs_actuator_torque_nm": [
+        5.6,
+        3.793588638305664
+      ],
+      "max_abs_steering_target_rad": 1.2178211212158203,
+      "max_reconstructed_slew_error_rad": 0.0,
+      "observation_action_reward_torque_finite": true,
+      "input_sha256": "3db4c46face36a65df1a6cad06ab1be448d82973b0bf29110b71ef0379877ca6"
+    }
+  },
+  "final_dr": {
+    "environments": 64,
+    "completed_episodes": 3185,
+    "mean_episode_length_steps": 48.8436420722135,
+    "mean_episode_length_s": 0.97687284144427,
+    "min_episode_length_s": 0.14,
+    "max_episode_length_s": 30.0,
+    "std_episode_length_steps": 182.85392178975508,
+    "mean_reward": 6.741728949515702,
+    "timeout_rate": 0.014442700156985872,
+    "termination_counts": {
+      "time_out": 46,
+      "fallen": 2576,
+      "diverged": 0,
+      "drifted": 0,
+      "yaw_deviation": 584,
+      "wheel_net": 0
+    },
+    "roll_rms_deg": 7.969716915491444,
+    "max_roll_deg": 39.82304447467556,
+    "mean_worst_lean_deg": 28.040867347297205,
+    "mean_drift_m": 0.01937150344674264,
+    "max_drift_m": 0.1645369041440466,
+    "mean_yaw_deg": 9.24807632183977,
+    "max_yaw_deg": 34.342257191886716,
+    "mean_turn_deg": 19.90369128346854,
+    "mean_drive_speed_rad_s": 3.3248741944757794,
+    "max_drive_speed_rad_s": 61.6,
+    "mean_steer_speed_rad_s": 2.449020215425468,
+    "max_steer_speed_rad_s": 23.9,
+    "capture_validation": {
+      "policy_frames": 192000,
+      "motor_physics_frames": 1536000,
+      "raw_min": [
+        -0.8571162223815918,
+        -0.19123685359954834
+      ],
+      "raw_max": [
+        0.20572173595428467,
+        0.7238025665283203
+      ],
+      "max_abs_actuator_torque_nm": [
+        5.6,
+        4.545480251312256
+      ],
+      "max_abs_steering_target_rad": 1.3456724882125854,
+      "max_reconstructed_slew_error_rad": 0.0,
+      "observation_action_reward_torque_finite": true,
+      "input_sha256": "ef5817f456f4c7ddc16da93736fa6edd643d5b54cd260e393351c7ea14a239aa"
+    }
+  },
+  "matched_action_replay": {
+    "steps": 25,
+    "duration_s": 0.5,
+    "automatic_resets": false,
+    "first_physics_step_isaac_torque_nm": [
+      -4.779999732971191,
+      -0.4414210319519043
+    ],
+    "first_physics_step_mujoco_torque_nm": [
+      -4.779999999999999,
+      -0.4414210319519043
+    ],
+    "first_physics_step_isaac_position_rad": [
+      -0.049271631985902786,
+      -0.002653241390362382
+    ],
+    "first_physics_step_mujoco_position_rad": [
+      -0.09448634117347951,
+      -0.0005094971581866527
+    ],
+    "max_held_target_difference_rad": 1.478195188475695e-08,
+    "max_rear_motor_request_difference_nm": 0.0,
+    "isaac_roll_peak_deg": 1.6153100728988647,
+    "mujoco_roll_peak_deg": 42.736010493298465,
+    "note": "Different physical states lead to different PD feedback torques; no causal engine ablation"
+  }
+}

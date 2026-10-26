@@ -1,0 +1,57 @@
+{
+  "updated_main_figure_sets": 8,
+  "updated_friction_diagnostic_sets": 2,
+  "formats": [
+    "png",
+    "svg",
+    "pdf"
+  ],
+  "all_environment_pdf_pages": {
+    "all64_demand_vs_actuation": 64,
+    "all64_observation_traces": 64
+  },
+  "all_original_plot_settings_unchanged_except_legend_and_dr_keys": true,
+  "summary_and_friction_statistics_byte_unchanged": true,
+  "protected_files": 179,
+  "protected_changes": [],
+  "rendered_panel_comparison": {
+    "panels_compared": 114,
+    "all_original_trace_artists_identical": true,
+    "only_panel_change": "legend location upper right to lower right"
+  },
+  "isaac_recovery_all_18_arrays_byte_identical": true,
+  "plotted_episode_counts": {
+    "isaac400": 150,
+    "mujoco400": 323,
+    "mujoco800": 184
+  },
+  "every_pdf_page_has_correct_three_dr_environment_labels": true,
+  "backup_path": "/tmp/trackstand_plot_dr_20261026.dihxo913",
+  "tests_passed": 17,
+  "tests_duration_s": 6.521,
+  "syntax_pyflakes_and_120_column_checks_passed": true,
+  "original_verified_models_unchanged": {
+    "deploy/source/trackstand_deploy/package.xml": true,
+    "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/assets/payloads/Physics/mujoco.usda": true,
+    "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/assets/payloads/Physics/physics.usda": true,
+    "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/assets/payloads/Physics/physx.usda": true,
+    "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/assets/payloads/base.usda": true,
+    "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/assets/payloads/instances.usda": true,
+    "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/assets/payloads/materials.usda": true,
+    "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/assets/payloads/robot.usda": true,
+    "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/assets/trackstand_rl.usda": true,
+    "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/assets_backup_singleSDF_2026-09-17/payloads/Physics/mujoco.usda": true,
+    "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/assets_backup_singleSDF_2026-09-17/payloads/Physics/physics.usda": true,
+    "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/assets_backup_singleSDF_2026-09-17/payloads/Physics/physx.usda": true,
+    "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/assets_backup_singleSDF_2026-09-17/payloads/base.usda": true,
+    "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/assets_backup_singleSDF_2026-09-17/payloads/instances.usda": true,
+    "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/assets_backup_singleSDF_2026-09-17/payloads/materials.usda": true,
+    "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/assets_backup_singleSDF_2026-09-17/payloads/robot.usda": true,
+    "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/assets_backup_singleSDF_2026-09-17/trackstand_rl.usda": true,
+    "mujoco_sim2sim/models/newbike/model.xml": true,
+    "mujoco_sim2sim/models/newbike/scene.xml": true,
+    "mujoco_sim2sim/models/orange_bike/orange_bike_horizontal.xml": true,
+    "mujoco_sim2sim/models/trackstand_rl_0914_bike/trackstand_rl.xml": true,
+    "mujoco_sim2sim/models/trackstand_rl_0916_bike/trackstand_rl_0916.xml": true
+  }
+}

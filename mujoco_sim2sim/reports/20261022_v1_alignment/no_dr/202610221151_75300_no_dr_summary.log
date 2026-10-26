@@ -1,0 +1,30 @@
+===== TRACKSTAND-BALANCE-V1 METRICS (MuJoCo) =====
+  environments                  : 64
+  completed_episodes            : 15721
+  mean_episode_length_steps     : 12.191527256535844
+  mean_episode_length_s         : 0.2438305451307169
+  min_episode_length_s          : 0.2
+  max_episode_length_s          : 0.3
+  std_episode_length_steps      : 1.4066439221170868
+  mean_reward                   : 1.5963091295176683
+  timeout_rate                  : 0.0
+  termination activations (may overlap):
+    time_out              : 0
+    fallen                : 15721
+    diverged              : 0
+    drifted               : 0
+    yaw_deviation         : 0
+    wheel_net             : 0
+  roll_rms_deg                  : 16.838098983043682
+  max_roll_deg                  : 37.548717354039944
+  mean_worst_lean_deg           : 34.24956721096254
+  mean_drift_m                  : 0.013721381370648402
+  max_drift_m                   : 0.06632995311044439
+  mean_yaw_deg                  : 8.823871756018827
+  max_yaw_deg                   : 21.691596797329858
+  mean_turn_deg                 : 16.08396875220146
+  mean_drive_speed_rad_s        : 19.439611445645834
+  max_drive_speed_rad_s         : 61.6
+  mean_steer_speed_rad_s        : 3.136061299415878
+  max_steer_speed_rad_s         : 11.370824443093568
+  Metrics include terminal state BEFORE caller reset; unfinished episodes excluded.

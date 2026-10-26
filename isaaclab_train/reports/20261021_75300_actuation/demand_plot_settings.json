@@ -1,0 +1,222 @@
+{
+  "source": "existing saved captures; no simulation rerun",
+  "input_sha256": {
+    "no_dr/motor_samples.npz": "5485c0990b479e9c7b55e12381917910e955a1839111f1f7033fddf5fa6d0167",
+    "no_dr/experiment.json": "de00b8dfd060a03e6ba119b0213fe714028a2a1632b7653a9a48540e032ad74a",
+    "dr/motor_samples.npz": "2c5971bf7fa7f366b995d6ad23436bba6c9030cc367034846c6d24551ed1fafe",
+    "dr/experiment.json": "f2cbc9fc93070d6e75edcc9a3db47d8e6640c7bce05bdb66443e962283ab59f4"
+  },
+  "full_range": {
+    "no_dr": {
+      "environment": 0,
+      "spawn_times_s": [
+        0.0,
+        30.0,
+        60.0
+      ],
+      "panels": {
+        "steering": {
+          "units": "deg",
+          "ylim": [
+            -64.47532744407654,
+            2.781702470779419
+          ],
+          "plotted_min_max": [
+            -58.870574951171875,
+            -2.823050022125244
+          ],
+          "axis_fitting_excludes_first_s_each_episode": 0.0,
+          "samples_outside_y_view": 0
+        },
+        "rear": {
+          "units": "N m",
+          "ylim": [
+            -0.5016353413462639,
+            0.22093637138605118
+          ],
+          "plotted_min_max": [
+            -0.4414210319519043,
+            0.1607220619916916
+          ],
+          "axis_fitting_excludes_first_s_each_episode": 0.0,
+          "samples_outside_y_view": 0
+        }
+      }
+    },
+    "dr": {
+      "environment": 0,
+      "spawn_times_s": [
+        0.0,
+        0.46,
+        0.98,
+        1.98,
+        2.5,
+        2.9,
+        3.58,
+        4.84,
+        5.6000000000000005,
+        6.62,
+        7.04,
+        7.46,
+        8.06,
+        8.44,
+        9.16,
+        10.200000000000001,
+        10.700000000000001,
+        11.22,
+        11.76,
+        12.24,
+        12.76,
+        13.48,
+        13.96,
+        43.96,
+        44.46,
+        45.26,
+        45.74,
+        46.88,
+        47.54,
+        48.1,
+        48.86,
+        49.26,
+        49.72,
+        50.54,
+        51.46
+      ],
+      "panels": {
+        "steering": {
+          "units": "deg",
+          "ylim": [
+            -81.04702111576728,
+            11.82007827162518
+          ],
+          "plotted_min_max": [
+            -73.3080961668179,
+            4.081153322675808
+          ],
+          "axis_fitting_excludes_first_s_each_episode": 0.0,
+          "samples_outside_y_view": 0
+        },
+        "rear": {
+          "units": "N m",
+          "ylim": [
+            -1.2268823623657226,
+            3.781411552429199
+          ],
+          "plotted_min_max": [
+            -0.8095245361328125,
+            3.364053726196289
+          ],
+          "axis_fitting_excludes_first_s_each_episode": 0.0,
+          "samples_outside_y_view": 0
+        }
+      }
+    }
+  },
+  "vertical_zoom": {
+    "no_dr": {
+      "environment": 0,
+      "spawn_times_s": [
+        0.0,
+        30.0,
+        60.0
+      ],
+      "panels": {
+        "steering": {
+          "units": "deg",
+          "ylim": [
+            -59.029927905856894,
+            -55.72572467619919
+          ],
+          "plotted_min_max": [
+            -58.870574951171875,
+            -2.823050022125244
+          ],
+          "axis_fitting_excludes_first_s_each_episode": 0.5,
+          "samples_outside_y_view": 188
+        },
+        "rear": {
+          "units": "N m",
+          "ylim": [
+            -0.22108486145734788,
+            0.19543178230524064
+          ],
+          "plotted_min_max": [
+            -0.4414210319519043,
+            0.1607220619916916
+          ],
+          "axis_fitting_excludes_first_s_each_episode": 0.5,
+          "samples_outside_y_view": 52
+        }
+      }
+    },
+    "dr": {
+      "environment": 0,
+      "spawn_times_s": [
+        0.0,
+        0.46,
+        0.98,
+        1.98,
+        2.5,
+        2.9,
+        3.58,
+        4.84,
+        5.6000000000000005,
+        6.62,
+        7.04,
+        7.46,
+        8.06,
+        8.44,
+        9.16,
+        10.200000000000001,
+        10.700000000000001,
+        11.22,
+        11.76,
+        12.24,
+        12.76,
+        13.48,
+        13.96,
+        43.96,
+        44.46,
+        45.26,
+        45.74,
+        46.88,
+        47.54,
+        48.1,
+        48.86,
+        49.26,
+        49.72,
+        50.54,
+        51.46
+      ],
+      "panels": {
+        "steering": {
+          "units": "deg",
+          "ylim": [
+            -81.04702111576728,
+            11.82007827162518
+          ],
+          "plotted_min_max": [
+            -73.3080961668179,
+            4.081153322675808
+          ],
+          "axis_fitting_excludes_first_s_each_episode": 0.0,
+          "samples_outside_y_view": 0
+        },
+        "rear": {
+          "units": "N m",
+          "ylim": [
+            -1.2268823623657226,
+            3.781411552429199
+          ],
+          "plotted_min_max": [
+            -0.8095245361328125,
+            3.364053726196289
+          ],
+          "axis_fitting_excludes_first_s_each_episode": 0.0,
+          "samples_outside_y_view": 0
+        }
+      }
+    }
+  },
+  "terminal_reset_note": "A reset at 60 s has no subsequent samples in this capture."
+}

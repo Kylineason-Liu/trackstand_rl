@@ -1,0 +1,404 @@
+{
+  "historical_v0_91850_survival": {
+    "completed_episodes": 594,
+    "mean_episode_length_s": 4.426969696969697,
+    "median_episode_length_s": 0.72,
+    "std_episode_length_s": 9.035343205667374,
+    "timeouts": 59,
+    "timeout_rate": 0.09932659932659933,
+    "roll_rms_deg": 4.326954959019321,
+    "max_roll_deg": 41.0052756249848,
+    "mean_abs_drive_speed_rad_s": 4.736021572641541,
+    "mean_abs_steering_speed_rad_s": 3.3516822581931076,
+    "first_episode_mean_s": 4.00375,
+    "first_episode_timeouts": 6,
+    "first_episode_timeout_rate": 0.09375,
+    "incomplete_episodes": 63,
+    "incomplete_time_s": 1210.38,
+    "histogram_counts": [
+      478,
+      22,
+      13,
+      9,
+      5,
+      1,
+      5,
+      0,
+      1,
+      60
+    ],
+    "validation": {
+      "observation_shape": [
+        3000,
+        64,
+        13
+      ],
+      "raw_shape": [
+        3000,
+        64,
+        2
+      ],
+      "raw_min": [
+        -6.292288303375244,
+        -1.5882072448730469
+      ],
+      "raw_max": [
+        15.218390464782715,
+        48.92173385620117
+      ],
+      "max_abs_motor_torque_steering_rear_Nm": [
+        5.6,
+        6.28
+      ],
+      "all_samples_finite": true,
+      "dr": true,
+      "physics_dt_s": 0.0025,
+      "control_dt_s": 0.02,
+      "recorded_dr_resets": 658
+    },
+    "termination_counts": {
+      "time_out": 59,
+      "fallen": 535
+    }
+  },
+  "current400_full": {
+    "completed_episodes": 270,
+    "mean_episode_length_s": 9.36288888888889,
+    "median_episode_length_s": 0.86,
+    "std_episode_length_s": 13.082586071606318,
+    "timeouts": 74,
+    "timeout_rate": 0.2740740740740741,
+    "roll_rms_deg": 2.716415748826703,
+    "max_roll_deg": 37.73867802172435,
+    "mean_abs_drive_speed_rad_s": 0.786411650533618,
+    "mean_abs_steering_speed_rad_s": 1.2907985491649725,
+    "first_episode_mean_s": 12.0740625,
+    "first_episode_timeouts": 24,
+    "first_episode_timeout_rate": 0.375,
+    "incomplete_episodes": 53,
+    "incomplete_time_s": 1312.02,
+    "histogram_counts": [
+      182,
+      2,
+      3,
+      2,
+      2,
+      1,
+      1,
+      2,
+      0,
+      75
+    ],
+    "validation": {
+      "observation_shape": [
+        3000,
+        64,
+        11
+      ],
+      "raw_shape": [
+        3000,
+        64,
+        2
+      ],
+      "raw_min": [
+        -0.9975491762161255,
+        -0.9980908632278442
+      ],
+      "raw_max": [
+        0.9968212842941284,
+        0.995509147644043
+      ],
+      "max_abs_motor_torque_steering_rear_Nm": [
+        5.6,
+        6.26801061630249
+      ],
+      "all_samples_finite": true,
+      "dr": true,
+      "physics_dt_s": 0.0025,
+      "control_dt_s": 0.02,
+      "recorded_dr_resets": 334
+    },
+    "termination_counts": {
+      "time_out": 74,
+      "fallen": 135,
+      "diverged": 0,
+      "drifted": 7,
+      "yaw_deviation": 50,
+      "wheel_net": 6
+    }
+  },
+  "current400_survival": {
+    "completed_episodes": 222,
+    "mean_episode_length_s": 11.487027027027027,
+    "median_episode_length_s": 1.03,
+    "std_episode_length_s": 14.025131535385157,
+    "timeouts": 79,
+    "timeout_rate": 0.35585585585585583,
+    "roll_rms_deg": 2.708129369736544,
+    "max_roll_deg": 37.73867802172435,
+    "mean_abs_drive_speed_rad_s": 0.7951488552173349,
+    "mean_abs_steering_speed_rad_s": 1.1500405088467207,
+    "first_episode_mean_s": 13.654374999999998,
+    "first_episode_timeouts": 28,
+    "first_episode_timeout_rate": 0.4375,
+    "incomplete_episodes": 49,
+    "incomplete_time_s": 1289.8799999999999,
+    "histogram_counts": [
+      133,
+      5,
+      1,
+      1,
+      0,
+      0,
+      1,
+      0,
+      2,
+      79
+    ],
+    "validation": {
+      "observation_shape": [
+        3000,
+        64,
+        11
+      ],
+      "raw_shape": [
+        3000,
+        64,
+        2
+      ],
+      "raw_min": [
+        -0.9972896575927734,
+        -0.9980908632278442
+      ],
+      "raw_max": [
+        0.9968212842941284,
+        0.995509147644043
+      ],
+      "max_abs_motor_torque_steering_rear_Nm": [
+        5.6,
+        6.26801061630249
+      ],
+      "all_samples_finite": true,
+      "dr": true,
+      "physics_dt_s": 0.0025,
+      "control_dt_s": 0.02,
+      "recorded_dr_resets": 286
+    },
+    "termination_counts": {
+      "time_out": 79,
+      "fallen": 143,
+      "diverged": 0,
+      "drifted": 0,
+      "yaw_deviation": 0,
+      "wheel_net": 0
+    }
+  },
+  "diagnostic800_full": {
+    "completed_episodes": 149,
+    "mean_episode_length_s": 19.455436241610737,
+    "median_episode_length_s": 30.0,
+    "std_episode_length_s": 13.73286541821947,
+    "timeouts": 92,
+    "timeout_rate": 0.6174496644295302,
+    "roll_rms_deg": 2.1815760565890816,
+    "max_roll_deg": 37.01626941347486,
+    "mean_abs_drive_speed_rad_s": 0.2680719576401566,
+    "mean_abs_steering_speed_rad_s": 1.274232238440319,
+    "first_episode_mean_s": 21.8053125,
+    "first_episode_timeouts": 46,
+    "first_episode_timeout_rate": 0.71875,
+    "incomplete_episodes": 35,
+    "incomplete_time_s": 941.14,
+    "histogram_counts": [
+      48,
+      2,
+      1,
+      2,
+      1,
+      2,
+      0,
+      0,
+      1,
+      92
+    ],
+    "validation": {
+      "observation_shape": [
+        3000,
+        64,
+        11
+      ],
+      "raw_shape": [
+        3000,
+        64,
+        2
+      ],
+      "raw_min": [
+        -0.9965720772743225,
+        -0.9985548853874207
+      ],
+      "raw_max": [
+        0.9961813688278198,
+        0.38218963146209717
+      ],
+      "max_abs_motor_torque_steering_rear_Nm": [
+        5.381501787483204,
+        6.270925045013428
+      ],
+      "all_samples_finite": true,
+      "dr": true,
+      "physics_dt_s": 0.00125,
+      "control_dt_s": 0.02,
+      "recorded_dr_resets": 213
+    },
+    "termination_counts": {
+      "time_out": 92,
+      "fallen": 31,
+      "diverged": 0,
+      "drifted": 0,
+      "yaw_deviation": 25,
+      "wheel_net": 1
+    }
+  },
+  "diagnostic800_survival": {
+    "completed_episodes": 139,
+    "mean_episode_length_s": 23.323597122302157,
+    "median_episode_length_s": 30.0,
+    "std_episode_length_s": 12.040183858582928,
+    "timeouts": 104,
+    "timeout_rate": 0.7482014388489209,
+    "roll_rms_deg": 2.1119003348332783,
+    "max_roll_deg": 37.01626941347486,
+    "mean_abs_drive_speed_rad_s": 0.383687303283459,
+    "mean_abs_steering_speed_rad_s": 1.284081479197731,
+    "first_episode_mean_s": 25.131875,
+    "first_episode_timeouts": 53,
+    "first_episode_timeout_rate": 0.828125,
+    "incomplete_episodes": 24,
+    "incomplete_time_s": 598.02,
+    "histogram_counts": [
+      29,
+      0,
+      0,
+      0,
+      1,
+      2,
+      2,
+      0,
+      0,
+      105
+    ],
+    "validation": {
+      "observation_shape": [
+        3000,
+        64,
+        11
+      ],
+      "raw_shape": [
+        3000,
+        64,
+        2
+      ],
+      "raw_min": [
+        -0.9969410300254822,
+        -0.9985548853874207
+      ],
+      "raw_max": [
+        0.9932311773300171,
+        0.6511766910552979
+      ],
+      "max_abs_motor_torque_steering_rear_Nm": [
+        5.381501787483204,
+        6.270925045013428
+      ],
+      "all_samples_finite": true,
+      "dr": true,
+      "physics_dt_s": 0.00125,
+      "control_dt_s": 0.02,
+      "recorded_dr_resets": 203
+    },
+    "termination_counts": {
+      "time_out": 104,
+      "fallen": 35,
+      "diverged": 0,
+      "drifted": 0,
+      "yaw_deviation": 0,
+      "wheel_net": 0
+    }
+  },
+  "bootstrap": {
+    "current400_full": {
+      "mean_s_difference_95ci": [
+        3.3668726158175604,
+        6.854333466628148
+      ],
+      "timeout_rate_difference_95ci": [
+        0.12143383838647594,
+        0.23974907710727716
+      ],
+      "first_mean_s_difference_95ci": [
+        4.075914062499998,
+        12.104578124999982
+      ],
+      "first_timeout_rate_difference_95ci": [
+        0.140625,
+        0.421875
+      ]
+    },
+    "current400_survival": {
+      "mean_s_difference_95ci": [
+        5.293667279479491,
+        9.119838684711338
+      ],
+      "timeout_rate_difference_95ci": [
+        0.19597865159451328,
+        0.32842857292170596
+      ],
+      "first_mean_s_difference_95ci": [
+        5.460265625000002,
+        13.762523437499997
+      ],
+      "first_timeout_rate_difference_95ci": [
+        0.203125,
+        0.484375
+      ]
+    },
+    "diagnostic800_full": {
+      "mean_s_difference_95ci": [
+        12.646455188605222,
+        17.547197783546384
+      ],
+      "timeout_rate_difference_95ci": [
+        0.4296979063303921,
+        0.6110759856378019
+      ],
+      "first_mean_s_difference_95ci": [
+        13.8915546875,
+        21.584117187499995
+      ],
+      "first_timeout_rate_difference_95ci": [
+        0.5,
+        0.75
+      ]
+    },
+    "diagnostic800_survival": {
+      "mean_s_difference_95ci": [
+        16.62978798528064,
+        21.14716687766194
+      ],
+      "timeout_rate_difference_95ci": [
+        0.5689643522833179,
+        0.7293517215100825
+      ],
+      "first_mean_s_difference_95ci": [
+        17.5384140625,
+        24.373124999999998
+      ],
+      "first_timeout_rate_difference_95ci": [
+        0.609375,
+        0.84375
+      ]
+    },
+    "method": "20,000 independent environment-cluster bootstrap resamples per variant, seed20261023; percentile95% intervals for v1 minus fresh v0. Whole environment trajectories are resampled, not independent episodes. Conditional on this single shared material bank and these trained checkpoints; not a causal policy-only or multi-training-seed comparison."
+  },
+  "protected_files_unchanged": true
+}

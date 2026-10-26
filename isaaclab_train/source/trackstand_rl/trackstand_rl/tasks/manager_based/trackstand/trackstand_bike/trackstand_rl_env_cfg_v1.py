@@ -92,6 +92,7 @@ class TrackstandRLEnvCfgV1(TrackstandRLEnvCfg):
             damping=0.0,  # Pure feedforward torque control; no controller velocity damping.
             friction=0.106,  # N m: provisional static threshold (must be >= dynamic); not measured.
             dynamic_friction=0.106,  # N m: effective unloaded moving drag, 2026-10-20 speed sweep.
+            viscous_friction=0.0,  # N m s/rad: zero model baseline; a positive slope was not resolved.
             effort_limit=6.28,  # Explicit actuator torque clamp, N m.
             effort_limit_sim=6.28,  # Retain the existing solver setting as well.
             velocity_limit=61.6,  # Explicit model parameter, matching the solver speed limit.

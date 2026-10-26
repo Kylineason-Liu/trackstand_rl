@@ -1,0 +1,31 @@
+{
+  "environments": 64,
+  "completed_episodes": 222,
+  "mean_episode_length_steps": 574.3513513513514,
+  "mean_episode_length_s": 11.487027027027027,
+  "min_episode_length_s": 0.2,
+  "max_episode_length_s": 30.0,
+  "std_episode_length_steps": 701.2565767692577,
+  "mean_reward": 76.31534071727023,
+  "timeout_rate": 0.35585585585585583,
+  "termination_counts": {
+    "time_out": 79,
+    "fallen": 143,
+    "diverged": 0,
+    "drifted": 0,
+    "yaw_deviation": 0,
+    "wheel_net": 0
+  },
+  "roll_rms_deg": 2.708129369736544,
+  "max_roll_deg": 37.73867802172435,
+  "mean_worst_lean_deg": 22.67912058009619,
+  "mean_drift_m": 0.12566575942864996,
+  "max_drift_m": 1.360750541073625,
+  "mean_yaw_deg": 14.456512673541509,
+  "max_yaw_deg": 179.90964112453184,
+  "mean_turn_deg": 61.36211280144417,
+  "mean_drive_speed_rad_s": 0.7951488552173349,
+  "max_drive_speed_rad_s": 61.6,
+  "mean_steer_speed_rad_s": 1.1500405088467207,
+  "max_steer_speed_rad_s": 23.9
+}

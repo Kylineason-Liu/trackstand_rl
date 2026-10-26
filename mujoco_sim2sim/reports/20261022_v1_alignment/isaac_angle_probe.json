@@ -1,0 +1,115 @@
+{
+  "completed": true,
+  "task": "Trackstand-Balance-v1",
+  "body_names": [
+    "base_link",
+    "rear_wheel_link_1",
+    "steering_link_1",
+    "front_wheel_link_1"
+  ],
+  "resolved_usd_link_defaults": [
+    {
+      "path": "/World/envs/env_0/Robot/Geometry/base_link",
+      "has_api": true,
+      "angular_damping": 0.05000000074505806,
+      "linear_damping": 0.0,
+      "max_depenetration_velocity": 1.0
+    },
+    {
+      "path": "/World/envs/env_0/Robot/Geometry/base_link/rear_wheel_link_1",
+      "has_api": false,
+      "angular_damping": null,
+      "linear_damping": null,
+      "max_depenetration_velocity": null
+    },
+    {
+      "path": "/World/envs/env_0/Robot/Geometry/base_link/steering_link_1",
+      "has_api": false,
+      "angular_damping": null,
+      "linear_damping": null,
+      "max_depenetration_velocity": null
+    },
+    {
+      "path": "/World/envs/env_0/Robot/Geometry/base_link/steering_link_1/front_wheel_link_1",
+      "has_api": false,
+      "angular_damping": null,
+      "linear_damping": null,
+      "max_depenetration_velocity": null
+    }
+  ],
+  "zero_joint_body_quaternions_xyzw": [
+    [
+      -1.5117624485583292e-08,
+      -1.1434364566298427e-09,
+      1.0661884708440539e-08,
+      1.0
+    ],
+    [
+      -4.3335187882576065e-08,
+      2.9810937718366404e-08,
+      -1.3061926651403155e-08,
+      1.0
+    ],
+    [
+      2.864570625149554e-08,
+      4.966880595702605e-08,
+      -4.4898884610233836e-09,
+      0.9999999403953552
+    ],
+    [
+      -3.311712504228126e-08,
+      6.587366385701898e-08,
+      -1.6170922378933028e-08,
+      0.9999998807907104
+    ]
+  ],
+  "synthetic_airborne_zero_gravity_zero_loss_probe": true,
+  "requested_position_rad": [
+    0.0,
+    3.5,
+    -3.5,
+    6.2731853071795864,
+    6.293185307179586,
+    -6.293185307179586,
+    9.42477796076938,
+    -9.42477796076938,
+    12.576370614359172,
+    -12.576370614359172,
+    18.85955592153876,
+    100.0
+  ],
+  "after_step_position_rad": [
+    0.0,
+    3.5,
+    -3.5,
+    6.2731852531433105,
+    -6.273185729980469,
+    6.273185729980469,
+    -3.1415929794311523,
+    3.1415929794311523,
+    0.009999275207519531,
+    -0.009999275207519531,
+    -6.273185729980469,
+    0.0
+  ],
+  "continuous_min_max_rad": [
+    [
+      -6.280721664428711,
+      -6.279424667358398
+    ],
+    [
+      6.279435634613037,
+      6.280800819396973
+    ]
+  ],
+  "jumps_larger_than_pi": [
+    [
+      653,
+      2148
+    ],
+    [
+      653,
+      2148
+    ]
+  ]
+}

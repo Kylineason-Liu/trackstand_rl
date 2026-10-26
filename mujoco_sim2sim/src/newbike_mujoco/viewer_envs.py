@@ -1,6 +1,7 @@
 """Independent CPU environments and render-only grid placement for the viewer."""
 
 import math
+import copy
 
 import mujoco
 import numpy as np
@@ -19,9 +20,20 @@ class ViewerEnvGroup:
     def __init__(self, first_env: BikeBalanceEnv, num_envs: int, seed: int):
         if num_envs < 1:
             raise ValueError("num_envs must be at least 1")
+        # A caller may already have reset/randomized env0. Never treat that
+        # episode's random mass/CoM/materials as other bikes' nominal defaults.
+        template = copy.copy(first_env.model)
+        ids = first_env._dr_body_ids
+        template.body_mass[ids] = first_env._dr_mass0
+        template.body_ipos[ids] = first_env._dr_ipos0
+        template.body_inertia[ids] = first_env._dr_inertia0
+        template.geom_friction[first_env._dr_geom_ids] = first_env._dr_friction0
         self.envs = [first_env]
         self.envs.extend(
-            BikeBalanceEnv(model=first_env.model, seed=seed + i, enable_dr=first_env.enable_dr)
+            BikeBalanceEnv(model=template, seed=seed + i, enable_dr=first_env.enable_dr,
+                           friction_buckets=first_env._dr_friction_buckets,
+                           velocity_limit_mode=first_env.velocity_limit_mode,
+                           physics_hz=1.0 / first_env.physics_dt)
             for i in range(1, num_envs)
         )
         columns = math.ceil(math.sqrt(num_envs))
@@ -38,13 +50,15 @@ class ViewerEnvGroup:
 
         Torque is (N, 2) in N m, ordered [drive, steering]. The caller records
         terminal stats before resetting only the corresponding environment.
+        Done rows are placeholders: replace them with reset() observations
+        before another policy call. This avoids double-drawing terminal noise.
         """
         actions = np.asarray(actions)
         if actions.shape != (len(self.envs), 2):
             raise ValueError("Expected one two-channel action per environment")
         observations, done, torque = [], [], []
         for env, action in zip(self.envs, actions):
-            obs, finished = env.step(action)
+            obs, finished = env.step(action, observe_terminal=False)
             observations.append(obs)
             done.append(finished)
             torque.append([

@@ -1,0 +1,22 @@
+{
+  "mujoco400": {
+    "protected_files_unchanged": 12,
+    "verified_environments": 64,
+    "original_13_archive_arrays_byte_identical": true
+  },
+  "mujoco800": {
+    "protected_files_unchanged": 12,
+    "verified_environments": 64,
+    "original_13_archive_arrays_byte_identical": true
+  },
+  "original_report_tests": 13,
+  "passive_equation_max_error_nm": 0.0,
+  "fresh_mujoco_samples_per_motor": 4608000,
+  "production_or_model_edits": false,
+  "limitations": [
+    "Different torque sensor definitions",
+    "Distinct closed-loop targets and DR realizations",
+    "No causal friction-disabled comparison",
+    "No new hardware experiment"
+  ]
+}

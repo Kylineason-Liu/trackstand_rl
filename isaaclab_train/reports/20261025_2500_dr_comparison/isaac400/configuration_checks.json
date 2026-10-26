@@ -1,0 +1,15 @@
+{
+  "actions": true,
+  "observations": true,
+  "rewards": true,
+  "terminations": true,
+  "decimation": true,
+  "episode_length_s": true,
+  "physics_dt": true,
+  "actuators": true,
+  "spawn": true,
+  "dr_flag": true,
+  "full_dr_reset_events_enabled": true,
+  "full_dr_initial_roll": true,
+  "full_dr_initial_roll_rate": true
+}

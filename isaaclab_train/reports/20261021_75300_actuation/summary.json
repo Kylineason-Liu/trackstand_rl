@@ -1,0 +1,250 @@
+{
+  "no_dr": {
+    "policy_samples_per_motor": 192000,
+    "physics_samples_per_motor": 1536000,
+    "completed_episodes": 128,
+    "mean_episode_s": 30.0,
+    "min_episode_s": 30.0,
+    "max_episode_s": 30.0,
+    "timeout_rate": 1.0,
+    "episode_histogram_counts": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      128
+    ],
+    "episode_histogram_edges_s": [
+      0.0,
+      3.0,
+      6.0,
+      9.0,
+      12.0,
+      15.0,
+      18.0,
+      21.0,
+      24.0,
+      27.0,
+      30.0
+    ],
+    "termination_counts": {
+      "time_out": 128,
+      "fallen": 0,
+      "diverged": 0,
+      "drifted": 0,
+      "yaw_deviation": 0,
+      "wheel_net": 0
+    },
+    "raw_action_min": [
+      -0.6569896936416626,
+      -0.07068359851837158
+    ],
+    "raw_action_max": [
+      -0.3707476854324341,
+      0.02658867835998535
+    ],
+    "raw_action_oob_count": [
+      0,
+      0
+    ],
+    "scaled_demand_abs_max_rad_nm": [
+      1.0314738190174104,
+      0.4438929986953736
+    ],
+    "held_steering_target_abs_max_rad": 1.0314738750457764,
+    "slew_changes_scaled_target_count": 128,
+    "computed_torque_abs_max_nm": [
+      4.779999732971191,
+      0.4438930153846741
+    ],
+    "submitted_torque_abs_max_nm": [
+      4.779999732971191,
+      0.4438930153846741
+    ],
+    "submitted_torque_oob_count": [
+      0,
+      0
+    ],
+    "post_pd_clipping_count": [
+      0,
+      0
+    ],
+    "solver_joint_effort_abs_max_nm": [
+      2.7122690677642822,
+      0.33846935629844666
+    ],
+    "solver_joint_effort_above_nominal_plus_0_01_count": [
+      0,
+      0
+    ],
+    "actual_speed_abs_max_rad_s": [
+      23.850549697875977,
+      3.0590360164642334
+    ],
+    "actual_speed_over_configured_plus_1e_5_count": [
+      0,
+      0
+    ],
+    "steering_tracking_rmse_rad": 0.012738104909658432,
+    "steering_tracking_rmse_after_first_0_5s_each_episode_rad": 0.004567001946270466,
+    "pre_reset_physics_max_abs_roll_drift_yaw_rad_m_rad": [
+      0.031930599361658096,
+      0.03210872784256935,
+      0.1304553598165512
+    ],
+    "observation_max_abs_by_channel": [
+      0.03282724320888519,
+      1.0039348602294922,
+      0.3217983841896057,
+      0.03358450531959534,
+      0.39355239272117615,
+      1.026635766029358,
+      0.5321013927459717,
+      9.413921356201172,
+      0.7631601095199585,
+      0.8555622100830078,
+      1.0
+    ]
+  },
+  "dr": {
+    "policy_samples_per_motor": 192000,
+    "physics_samples_per_motor": 1536000,
+    "completed_episodes": 2092,
+    "mean_episode_s": 1.4810229445506693,
+    "min_episode_s": 0.2,
+    "max_episode_s": 30.0,
+    "timeout_rate": 0.025334608030592735,
+    "episode_histogram_counts": [
+      2025,
+      9,
+      3,
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      54
+    ],
+    "episode_histogram_edges_s": [
+      0.0,
+      3.0,
+      6.0,
+      9.0,
+      12.0,
+      15.0,
+      18.0,
+      21.0,
+      24.0,
+      27.0,
+      30.0
+    ],
+    "termination_counts": {
+      "time_out": 53,
+      "fallen": 1351,
+      "diverged": 0,
+      "drifted": 0,
+      "yaw_deviation": 688,
+      "wheel_net": 0
+    },
+    "raw_action_min": [
+      -0.8274784088134766,
+      -0.19492733478546143
+    ],
+    "raw_action_max": [
+      0.18281543254852295,
+      0.6378257274627686
+    ],
+    "raw_action_oob_count": [
+      0,
+      0
+    ],
+    "scaled_demand_abs_max_rad_nm": [
+      1.2991411018371584,
+      4.005545568466187
+    ],
+    "held_steering_target_abs_max_rad": 1.2727562189102173,
+    "slew_changes_scaled_target_count": 3166,
+    "computed_torque_abs_max_nm": [
+      5.849385738372803,
+      4.005545616149902
+    ],
+    "submitted_torque_abs_max_nm": [
+      5.599999904632568,
+      4.005545616149902
+    ],
+    "submitted_torque_oob_count": [
+      0,
+      0
+    ],
+    "post_pd_clipping_count": [
+      7,
+      0
+    ],
+    "solver_joint_effort_abs_max_nm": [
+      5.390664577484131,
+      3.901334524154663
+    ],
+    "solver_joint_effort_above_nominal_plus_0_01_count": [
+      0,
+      0
+    ],
+    "actual_speed_abs_max_rad_s": [
+      29.74475860595703,
+      108.63638305664062
+    ],
+    "actual_speed_over_configured_plus_1e_5_count": [
+      387,
+      1082
+    ],
+    "steering_tracking_rmse_rad": 0.058610886335372925,
+    "steering_tracking_rmse_after_first_0_5s_each_episode_rad": 0.02076897770166397,
+    "pre_reset_physics_max_abs_roll_drift_yaw_rad_m_rad": [
+      0.6758396029472351,
+      0.08647073060274124,
+      0.5772790908813477
+    ],
+    "observation_max_abs_by_channel": [
+      0.5057061910629272,
+      1.0084021091461182,
+      6.403261184692383,
+      1.2585920095443726,
+      2.950965166091919,
+      1.1639435291290283,
+      5.4353485107421875,
+      15.348353385925293,
+      65.57439422607422,
+      0.91837078332901,
+      1.0
+    ]
+  },
+  "peak_startup_environments": {
+    "no_dr": 16,
+    "dr": 0
+  },
+  "verification_passed": true,
+  "input_sha256": {
+    "no_dr/motor_samples.npz": "5485c0990b479e9c7b55e12381917910e955a1839111f1f7033fddf5fa6d0167",
+    "no_dr/experiment.json": "de00b8dfd060a03e6ba119b0213fe714028a2a1632b7653a9a48540e032ad74a",
+    "dr/motor_samples.npz": "2c5971bf7fa7f366b995d6ad23436bba6c9030cc367034846c6d24551ed1fafe",
+    "dr/experiment.json": "f2cbc9fc93070d6e75edcc9a3db47d8e6640c7bce05bdb66443e962283ab59f4"
+  },
+  "figures": [
+    "isaac_demand_vs_actuation",
+    "isaac_demand_vs_actuation_zoomed",
+    "isaac_startup_demand_vs_actuation",
+    "isaac_tracking_detail",
+    "isaac_peak_startup_demand_vs_actuation",
+    "raw_policy_output",
+    "balance_motion",
+    "limit_distributions",
+    "observation_traces",
+    "motor_torque_detail",
+    "episode_length_histogram"
+  ]
+}

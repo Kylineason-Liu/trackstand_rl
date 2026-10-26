@@ -46,7 +46,7 @@ class MultiViewerTests(unittest.TestCase):
         group = ViewerEnvGroup(first_env(), 1, 42)
         np.testing.assert_array_equal(original.reset(), group.reset()[0])
         for _ in range(10):
-            obs, done = original.step(np.array([.1, .02]))
+            obs, done = original.step(np.array([.1, .02]), observe_terminal=False)
             batch, finished, _ = group.step(np.array([[.1, .02]]))
             np.testing.assert_array_equal(obs, batch[0])
             self.assertEqual(done, finished[0])
@@ -54,7 +54,7 @@ class MultiViewerTests(unittest.TestCase):
     def test_64_independent_models_and_data(self):
         group = ViewerEnvGroup(first_env(True), 64, 42)
         obs = group.reset()
-        self.assertEqual(obs.shape, (64, 13))
+        self.assertEqual(obs.shape, (64, 11))
         self.assertEqual(len({id(e.model) for e in group.envs}), 64)
         self.assertEqual(len({id(e.data) for e in group.envs}), 64)
         self.assertFalse(np.shares_memory(group.envs[0].model.body_mass, group.envs[1].model.body_mass))
@@ -110,10 +110,11 @@ class MultiViewerTests(unittest.TestCase):
             group.update_scene(mujoco.MjvScene(group.envs[0].model, maxgeom=1), mujoco.MjvOption())
 
     def test_batched_policy_matches_single_actions(self):
-        path = ROOT / "policies/trackstand_rl_rsl_2026-09-22_19-45-06_model_91850.onnx"
+        from newbike_mujoco.contract import DEFAULT_CHECKPOINT
+        path = DEFAULT_CHECKPOINT
         if not path.exists():
-            self.skipTest("model_91850 export is not installed")
-        policy = DeployedPolicy(onnx_path=str(path))
+            self.skipTest("v1 model75300 is not installed")
+        policy = DeployedPolicy(pt_path=str(path))
         obs = ViewerEnvGroup(first_env(True), 64, 42).reset()
         expected = np.stack([policy.act(row) for row in obs])
         np.testing.assert_allclose(policy.act_batch(obs), expected, atol=2e-6, rtol=1e-5)
@@ -121,28 +122,29 @@ class MultiViewerTests(unittest.TestCase):
     def test_fixed_batch_one_policy(self):
         class Session:
             def get_inputs(self):
-                return [type("Input", (), {"shape": [1, 13]})()]
+                return [type("Input", (), {"shape": [1, 11]})()]
             def run(self, outputs, inputs):
                 data = inputs["observation"]
                 self.assert_single(data)
                 return [data[:, :2]]
             @staticmethod
             def assert_single(data):
-                if data.shape != (1, 13):
+                if data.shape != (1, 11):
                     raise ValueError("fixed batch-one export")
         policy = DeployedPolicy.__new__(DeployedPolicy)
         policy.backend = "onnxruntime"
         policy._ort_sess = Session()
-        obs = np.arange(39, dtype=np.float32).reshape(3, 13)
+        policy._input_name = "observation"
+        obs = np.linspace(-1, 1, 33, dtype=np.float32).reshape(3, 11)
         np.testing.assert_array_equal(policy.act_batch(obs), obs[:, :2])
 
     def test_torch_batch(self):
         import torch
         policy = DeployedPolicy.__new__(DeployedPolicy)
         policy.backend = "torch"
-        policy._torch_net = torch.nn.Linear(13, 2)
-        obs = np.zeros((4, 13), dtype=np.float32)
-        np.testing.assert_allclose(policy.act_batch(obs), np.stack([policy.act(row) for row in obs]))
+        policy._torch_net = torch.nn.Linear(11, 4)
+        obs = np.zeros((4, 11), dtype=np.float32)
+        np.testing.assert_allclose(policy.act_batch(obs), np.stack([policy.act(row) for row in obs]), atol=2e-7)
 
     def test_torque_export_shape_and_reset_ids(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -169,7 +171,7 @@ class MultiViewerTests(unittest.TestCase):
             def is_running(self): return self.frames < 2
         handle = Handle()
         with patch.object(sys, "argv", ["viewer", "--task", "zero_agent"]), \
-             patch.object(VIEWER, "BikeBalanceEnv", return_value=first_env()), \
+             patch.object(VIEWER, "build_env_from_mjcf", return_value=(first_env(), True)), \
              patch.object(VIEWER.mujoco.viewer, "launch_passive", return_value=handle), \
              patch.object(VIEWER.time, "sleep"), contextlib.redirect_stdout(io.StringIO()) as output:
             VIEWER.main()
@@ -290,7 +292,7 @@ class MultiViewerTests(unittest.TestCase):
                             done[-1] = True
                             group.envs[-1].stats.length = 1500
                             group.envs[-1].stats.timeout = True
-                    return np.zeros((num_envs, 13)), done, np.zeros((num_envs, 2))
+                    return np.zeros((num_envs, 11)), done, np.zeros((num_envs, 2))
 
                 argv = ["viewer", "--mjcf", "unused.xml", "--num_envs", str(num_envs),
                         "--onnx", "model_91850.onnx", "--pt", "model_41050.pt"]
@@ -319,7 +321,7 @@ class MultiViewerTests(unittest.TestCase):
                 self.assertEqual(plot_histogram.call_args.args[1], str(output_dir / prefix))
                 self.assertEqual({path.name for path in output_dir.iterdir()},
                                  {prefix + ending for ending in ("_epi_len_histogram.png", "_epi_len_histogram.csv",
-                                                                "_torque.png", "_torque.npz", "_summary.log")})
+                                                                "_torque.png", "_torque.npz", "_summary.log", "_summary.json")})
                 with np.load(output_dir / (prefix + "_torque.npz")) as saved:
                     self.assertEqual(saved["drive"].shape, (3,) if num_envs == 1 else (3, num_envs))
                 counts = np.loadtxt(csv_path, delimiter=",", skiprows=1)[:, 2]

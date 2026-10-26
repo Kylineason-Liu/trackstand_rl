@@ -1,0 +1,25 @@
+/home/lmbike/.config/matplotlib is not a writable directory
+Matplotlib created a temporary cache directory at /tmp/matplotlib-josjyb14 because there was an issue with the default path (/home/lmbike/.config/matplotlib); it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.
+/home/lmbike/.local/lib/python3.10/site-packages/matplotlib/projections/__init__.py:63: UserWarning: Unable to import Axes3D. This may be due to multiple versions of Matplotlib being installed (e.g. as a system package and as a pip package). As a result, the 3D projection is not available.
+  warnings.warn("Unable to import Axes3D. This may be due to multiple versions of "
+Written: demand_vs_actuation
+Written: demand_vs_actuation_detail
+Written: observation_traces
+Written: observation_traces_detail
+Written: motor_torque_flow
+Written: motor_torque_flow_detail
+Written: raw_policy_outputs
+Written: motor_speeds
+all64_demand_vs_actuation environment 0
+all64_demand_vs_actuation environment 8
+all64_demand_vs_actuation environment 16
+all64_demand_vs_actuation environment 24
+all64_demand_vs_actuation environment 32
+all64_demand_vs_actuation environment 40
+all64_demand_vs_actuation environment 48
+all64_demand_vs_actuation environment 56
+all64_observation_traces environment 0
+all64_observation_traces environment 8
+all64_observation_traces environment 16
+all64_observation_traces environment 24
+all64_observation_traces environment 32

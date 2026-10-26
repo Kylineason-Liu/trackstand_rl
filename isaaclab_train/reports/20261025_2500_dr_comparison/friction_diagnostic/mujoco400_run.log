@@ -1,0 +1,318 @@
+/home/lmbike/.config/matplotlib is not a writable directory
+Matplotlib created a temporary cache directory at /tmp/matplotlib-75qw_jpr because there was an issue with the default path (/home/lmbike/.config/matplotlib); it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.
+/home/lmbike/.local/lib/python3.10/site-packages/matplotlib/projections/__init__.py:63: UserWarning: Unable to import Axes3D. This may be due to multiple versions of Matplotlib being installed (e.g. as a system package and as a pip package). As a result, the 3D projection is not available.
+  warnings.warn("Unable to import Axes3D. This may be due to multiple versions of "
+[INFO] Trackstand-Balance-v1, torch: /home/lmbike/trackstand_rl/isaaclab_train/logs/rsl_rl/trackstand_rl_rsl/2026-10-21_11-18-29/model_2500.pt
+[INFO] policy=50 Hz, physics/PD=400 Hz (8 substeps/policy step)
+[INFO] 64env, seed=42, DR=True; terms=['diverged', 'drifted', 'fallen', 'time_out', 'wheel_net', 'yaw_deviation']
+[WARN] speed mode=project: NOT a native PhysX-equivalent soft constraint
+env   1: episode   1:    11 steps ( 0.22 s)  fallen
+env  19: episode   1:    11 steps ( 0.22 s)  fallen
+env   7: episode   1:    12 steps ( 0.24 s)  fallen
+env  61: episode   1:    12 steps ( 0.24 s)  fallen
+env   9: episode   1:    13 steps ( 0.26 s)  fallen
+env   3: episode   1:    14 steps ( 0.28 s)  fallen
+env  28: episode   1:    14 steps ( 0.28 s)  fallen
+env  48: episode   1:    14 steps ( 0.28 s)  fallen
+env  51: episode   1:    14 steps ( 0.28 s)  fallen
+env  34: episode   1:    15 steps ( 0.30 s)  fallen
+env  35: episode   1:    15 steps ( 0.30 s)  fallen
+env  47: episode   1:    16 steps ( 0.32 s)  fallen
+env  52: episode   1:    16 steps ( 0.32 s)  fallen
+env  30: episode   1:    17 steps ( 0.34 s)  fallen
+env   5: episode   1:    19 steps ( 0.38 s)  fallen
+env  32: episode   1:    19 steps ( 0.38 s)  yaw_deviation
+env  11: episode   1:    20 steps ( 0.40 s)  fallen
+env  10: episode   1:    21 steps ( 0.42 s)  fallen
+env  62: episode   1:    21 steps ( 0.42 s)  fallen
+env  12: episode   1:    22 steps ( 0.44 s)  fallen
+env  13: episode   1:    22 steps ( 0.44 s)  fallen
+env  58: episode   1:    22 steps ( 0.44 s)  yaw_deviation
+env   8: episode   1:    23 steps ( 0.46 s)  fallen
+env  44: episode   1:    23 steps ( 0.46 s)  fallen
+env   1: episode   2:    14 steps ( 0.28 s)  fallen
+env  34: episode   2:    10 steps ( 0.20 s)  fallen
+env  51: episode   2:    11 steps ( 0.22 s)  fallen
+env  48: episode   2:    12 steps ( 0.24 s)  fallen
+env   5: episode   2:    10 steps ( 0.20 s)  fallen
+env  19: episode   2:    19 steps ( 0.38 s)  fallen
+env  45: episode   1:    30 steps ( 0.60 s)  fallen
+env   7: episode   2:    21 steps ( 0.42 s)  fallen
+env  30: episode   2:    17 steps ( 0.34 s)  fallen
+env  37: episode   1:    34 steps ( 0.68 s)  fallen
+env   1: episode   3:    10 steps ( 0.20 s)  fallen
+env  34: episode   3:    11 steps ( 0.22 s)  fallen
+env   9: episode   2:    29 steps ( 0.58 s)  fallen
+env  13: episode   2:    21 steps ( 0.42 s)  fallen
+env  45: episode   2:    13 steps ( 0.26 s)  fallen
+env   8: episode   2:    21 steps ( 0.42 s)  yaw_deviation
+env  51: episode   3:    19 steps ( 0.38 s)  fallen
+env   5: episode   3:    16 steps ( 0.32 s)  fallen
+env  30: episode   3:    11 steps ( 0.22 s)  fallen
+env  32: episode   2:    26 steps ( 0.52 s)  fallen
+env  50: episode   1:    51 steps ( 1.02 s)  yaw_deviation
+env  16: episode   1:    54 steps ( 1.08 s)  fallen
+env   9: episode   3:    16 steps ( 0.32 s)  fallen
+env  37: episode   2:    26 steps ( 0.52 s)  fallen
+env   5: episode   4:    18 steps ( 0.36 s)  fallen
+env  30: episode   4:    18 steps ( 0.36 s)  fallen
+env  53: episode   1:    63 steps ( 1.26 s)  fallen
+env  43: episode   1:    64 steps ( 1.28 s)  fallen
+env   2: episode   1:    65 steps ( 1.30 s)  yaw_deviation
+env  52: episode   2:    52 steps ( 1.04 s)  yaw_deviation
+env   9: episode   4:    12 steps ( 0.24 s)  fallen
+env  22: episode   1:    73 steps ( 1.46 s)  fallen
+env  45: episode   3:    30 steps ( 0.60 s)  yaw_deviation
+env  60: episode   1:    73 steps ( 1.46 s)  fallen
+env  37: episode   3:    17 steps ( 0.34 s)  fallen
+env  17: episode   1:    85 steps ( 1.70 s)  fallen
+env  60: episode   2:    15 steps ( 0.30 s)  fallen
+env  43: episode   2:    25 steps ( 0.50 s)  fallen
+env  50: episode   2:    38 steps ( 0.76 s)  fallen
+env  33: episode   1:    91 steps ( 1.82 s)  yaw_deviation
+env  10: episode   2:    76 steps ( 1.52 s)  yaw_deviation
+env  41: episode   1:    99 steps ( 1.98 s)  drifted
+env  19: episode   3:    74 steps ( 1.48 s)  fallen
+env  45: episode   4:    32 steps ( 0.64 s)  wheel_net
+env   9: episode   5:    39 steps ( 0.78 s)  yaw_deviation
+env  60: episode   3:    24 steps ( 0.48 s)  fallen
+env  10: episode   3:    24 steps ( 0.48 s)  fallen
+env  37: episode   4:    48 steps ( 0.96 s)  fallen
+env  10: episode   4:    13 steps ( 0.26 s)  fallen
+env  33: episode   2:    43 steps ( 0.86 s)  fallen
+env  39: episode   1:   143 steps ( 2.86 s)  yaw_deviation
+env  19: episode   4:    42 steps ( 0.84 s)  fallen
+env  60: episode   4:    40 steps ( 0.80 s)  yaw_deviation
+env   9: episode   6:    49 steps ( 0.98 s)  fallen
+env  33: episode   3:    25 steps ( 0.50 s)  fallen
+env  13: episode   3:   122 steps ( 2.44 s)  drifted
+env  19: episode   5:    21 steps ( 0.42 s)  fallen
+env  39: episode   2:    32 steps ( 0.64 s)  fallen
+env  16: episode   2:   124 steps ( 2.48 s)  yaw_deviation
+env  19: episode   6:    11 steps ( 0.22 s)  fallen
+env  16: episode   3:    11 steps ( 0.22 s)  fallen
+env  10: episode   5:    76 steps ( 1.52 s)  fallen
+env  10: episode   6:    15 steps ( 0.30 s)  fallen
+env  49: episode   1:   232 steps ( 4.64 s)  yaw_deviation
+env  49: episode   2:    11 steps ( 0.22 s)  fallen
+env  10: episode   7:    19 steps ( 0.38 s)  fallen
+env  13: episode   4:    80 steps ( 1.60 s)  yaw_deviation
+env  39: episode   3:    99 steps ( 1.98 s)  yaw_deviation
+env  49: episode   3:    73 steps ( 1.46 s)  fallen
+env  56: episode   1:   408 steps ( 8.16 s)  yaw_deviation
+env  46: episode   1:   666 steps (13.32 s)  yaw_deviation
+env  16: episode   4:   620 steps (12.40 s)  drifted
+env  30: episode   5:   760 steps (15.20 s)  yaw_deviation
+env  30: episode   6:    10 steps ( 0.20 s)  fallen
+env  16: episode   5:    57 steps ( 1.14 s)  wheel_net
+env  16: episode   6:    24 steps ( 0.48 s)  fallen
+env   0: episode   1:  1500 steps (30.00 s)  time_out
+env   4: episode   1:  1500 steps (30.00 s)  time_out
+env   6: episode   1:  1500 steps (30.00 s)  time_out
+env  14: episode   1:  1500 steps (30.00 s)  time_out
+env  15: episode   1:  1500 steps (30.00 s)  time_out
+env  18: episode   1:  1500 steps (30.00 s)  time_out
+env  20: episode   1:  1500 steps (30.00 s)  time_out
+env  21: episode   1:  1500 steps (30.00 s)  time_out
+env  23: episode   1:  1500 steps (30.00 s)  time_out
+env  24: episode   1:  1500 steps (30.00 s)  time_out
+env  25: episode   1:  1500 steps (30.00 s)  time_out
+env  26: episode   1:  1500 steps (30.00 s)  time_out
+env  27: episode   1:  1500 steps (30.00 s)  time_out
+env  29: episode   1:  1500 steps (30.00 s)  time_out
+env  31: episode   1:  1500 steps (30.00 s)  time_out
+env  36: episode   1:  1500 steps (30.00 s)  time_out
+env  38: episode   1:  1500 steps (30.00 s)  time_out
+env  40: episode   1:  1500 steps (30.00 s)  time_out
+env  42: episode   1:  1500 steps (30.00 s)  time_out
+env  54: episode   1:  1500 steps (30.00 s)  time_out
+env  55: episode   1:  1500 steps (30.00 s)  time_out
+env  57: episode   1:  1500 steps (30.00 s)  time_out
+env  59: episode   1:  1500 steps (30.00 s)  time_out
+env  63: episode   1:  1500 steps (30.00 s)  time_out
+env  21: episode   2:    11 steps ( 0.22 s)  fallen
+env  24: episode   2:    11 steps ( 0.22 s)  fallen
+env  61: episode   2:  1500 steps (30.00 s)  time_out
+env  29: episode   2:    13 steps ( 0.26 s)  fallen
+env   3: episode   2:  1500 steps (30.00 s)  time_out
+env  28: episode   2:  1500 steps (30.00 s)  time_out
+env  42: episode   2:    14 steps ( 0.28 s)  fallen
+env  23: episode   2:    15 steps ( 0.30 s)  yaw_deviation
+env  27: episode   2:    15 steps ( 0.30 s)  fallen
+env  35: episode   2:  1500 steps (30.00 s)  time_out
+env  47: episode   2:  1500 steps (30.00 s)  time_out
+env  38: episode   2:    19 steps ( 0.38 s)  fallen
+env  11: episode   2:  1500 steps (30.00 s)  time_out
+env  62: episode   2:  1500 steps (30.00 s)  time_out
+env  12: episode   2:  1500 steps (30.00 s)  time_out
+env  58: episode   2:  1500 steps (30.00 s)  time_out
+env  59: episode   2:    22 steps ( 0.44 s)  fallen
+env  44: episode   2:  1500 steps (30.00 s)  time_out
+env  48: episode   3:  1500 steps (30.00 s)  time_out
+env  27: episode   3:    14 steps ( 0.28 s)  fallen
+env  55: episode   2:    32 steps ( 0.64 s)  yaw_deviation
+env   7: episode   3:  1500 steps (30.00 s)  time_out
+env  24: episode   3:    22 steps ( 0.44 s)  fallen
+env  28: episode   3:    19 steps ( 0.38 s)  fallen
+env  61: episode   3:    22 steps ( 0.44 s)  fallen
+env   1: episode   4:  1500 steps (30.00 s)  time_out
+env  47: episode   3:    19 steps ( 0.38 s)  wheel_net
+env  34: episode   4:  1500 steps (30.00 s)  time_out
+env  38: episode   3:    18 steps ( 0.36 s)  yaw_deviation
+env  59: episode   3:    17 steps ( 0.34 s)  fallen
+env  62: episode   3:    21 steps ( 0.42 s)  fallen
+env   8: episode   3:  1500 steps (30.00 s)  time_out
+env  51: episode   4:  1500 steps (30.00 s)  time_out
+env  32: episode   3:  1500 steps (30.00 s)  time_out
+env  28: episode   4:    17 steps ( 0.34 s)  fallen
+env  36: episode   2:    52 steps ( 1.04 s)  yaw_deviation
+env  59: episode   4:    14 steps ( 0.28 s)  fallen
+env  21: episode   3:    43 steps ( 0.86 s)  yaw_deviation
+env  55: episode   3:    22 steps ( 0.44 s)  fallen
+env  34: episode   5:    20 steps ( 0.40 s)  yaw_deviation
+env  51: episode   5:    12 steps ( 0.24 s)  fallen
+env   8: episode   4:    17 steps ( 0.34 s)  fallen
+env   0: episode   2:    63 steps ( 1.26 s)  yaw_deviation
+env   5: episode   5:  1500 steps (30.00 s)  time_out
+env  53: episode   2:  1500 steps (30.00 s)  time_out
+env  12: episode   3:    42 steps ( 0.84 s)  fallen
+env  62: episode   4:    22 steps ( 0.44 s)  fallen
+env   2: episode   2:  1500 steps (30.00 s)  time_out
+env  36: episode   3:    15 steps ( 0.30 s)  fallen
+env  52: episode   3:  1500 steps (30.00 s)  time_out
+env  21: episode   4:    15 steps ( 0.30 s)  fallen
+env  35: episode   3:    56 steps ( 1.12 s)  fallen
+env  22: episode   2:  1500 steps (30.00 s)  time_out
+env   2: episode   3:     9 steps ( 0.18 s)  fallen
+env   7: episode   4:    42 steps ( 0.84 s)  yaw_deviation
+env  28: episode   5:    27 steps ( 0.54 s)  yaw_deviation
+env  61: episode   4:    43 steps ( 0.86 s)  wheel_net
+env  29: episode   3:    65 steps ( 1.30 s)  fallen
+env  55: episode   4:    28 steps ( 0.56 s)  fallen
+env  17: episode   2:  1500 steps (30.00 s)  time_out
+env  43: episode   3:  1500 steps (30.00 s)  time_out
+env  50: episode   3:  1500 steps (30.00 s)  time_out
+env  26: episode   2:    92 steps ( 1.84 s)  yaw_deviation
+env   7: episode   5:    20 steps ( 0.40 s)  fallen
+env  55: episode   5:    14 steps ( 0.28 s)  fallen
+env   6: episode   2:    97 steps ( 1.94 s)  yaw_deviation
+env  41: episode   2:  1500 steps (30.00 s)  time_out
+env   2: episode   4:    27 steps ( 0.54 s)  yaw_deviation
+env  26: episode   3:    13 steps ( 0.26 s)  fallen
+env  45: episode   5:  1500 steps (30.00 s)  time_out
+env   7: episode   6:    12 steps ( 0.24 s)  fallen
+env  41: episode   3:    14 steps ( 0.28 s)  fallen
+env  55: episode   6:    18 steps ( 0.36 s)  yaw_deviation
+env  59: episode   5:    63 steps ( 1.26 s)  fallen+wheel_net
+env  22: episode   3:    44 steps ( 0.88 s)  fallen
+env  26: episode   4:    13 steps ( 0.26 s)  fallen
+env  37: episode   5:  1500 steps (30.00 s)  time_out
+env  28: episode   6:    57 steps ( 1.14 s)  fallen
+env  22: episode   4:    19 steps ( 0.38 s)  fallen
+env  26: episode   5:    19 steps ( 0.38 s)  yaw_deviation
+env   7: episode   7:    31 steps ( 0.62 s)  fallen
+env  22: episode   5:    15 steps ( 0.30 s)  fallen
+env  60: episode   5:  1500 steps (30.00 s)  time_out
+env   9: episode   7:  1500 steps (30.00 s)  time_out
+env  33: episode   4:  1500 steps (30.00 s)  time_out
+env  55: episode   7:    52 steps ( 1.04 s)  yaw_deviation
+env  29: episode   4:    90 steps ( 1.80 s)  yaw_deviation
+env  19: episode   7:  1500 steps (30.00 s)  time_out
+env   7: episode   8:    56 steps ( 1.12 s)  yaw_deviation
+env  28: episode   7:    70 steps ( 1.40 s)  drifted
+env  55: episode   8:    47 steps ( 0.94 s)  yaw_deviation
+env   9: episode   8:    60 steps ( 1.20 s)  yaw_deviation
+env  29: episode   5:    55 steps ( 1.10 s)  yaw_deviation
+env  28: episode   8:    21 steps ( 0.42 s)  fallen
+env   9: episode   9:    18 steps ( 0.36 s)  fallen
+env  10: episode   8:  1500 steps (30.00 s)  time_out
+env  13: episode   5:  1500 steps (30.00 s)  time_out
+env  33: episode   5:    87 steps ( 1.74 s)  fallen
+env   9: episode  10:    14 steps ( 0.28 s)  fallen
+env  55: episode   9:    37 steps ( 0.74 s)  fallen
+env  10: episode   9:    15 steps ( 0.30 s)  fallen
+env  29: episode   6:    47 steps ( 0.94 s)  fallen
+env  10: episode  10:    12 steps ( 0.24 s)  fallen
+env  39: episode   4:  1500 steps (30.00 s)  time_out
+env  55: episode  10:    39 steps ( 0.78 s)  fallen
+env  10: episode  11:    45 steps ( 0.90 s)  yaw_deviation
+env  49: episode   4:  1500 steps (30.00 s)  time_out
+env  55: episode  11:    40 steps ( 0.80 s)  fallen
+env  10: episode  12:    20 steps ( 0.40 s)  fallen
+env  49: episode   5:    36 steps ( 0.72 s)  fallen+yaw_deviation
+env  10: episode  13:    40 steps ( 0.80 s)  fallen
+env  56: episode   2:  1500 steps (30.00 s)  time_out
+env  49: episode   6:   109 steps ( 2.18 s)  fallen
+env  16: episode   7:  1114 steps (22.28 s)  drifted
+env  38: episode   4:   534 steps (10.68 s)  yaw_deviation
+env  39: episode   5:   319 steps ( 6.38 s)  yaw_deviation
+env  38: episode   5:    30 steps ( 0.60 s)  fallen
+env  16: episode   8:    98 steps ( 1.96 s)  yaw_deviation
+env  39: episode   6:    17 steps ( 0.34 s)  fallen
+env  38: episode   6:    17 steps ( 0.34 s)  fallen
+env  36: episode   4:   572 steps (11.44 s)  drifted
+env  36: episode   5:     9 steps ( 0.18 s)  fallen
+env  46: episode   2:  1500 steps (30.00 s)  time_out
+env  36: episode   6:    32 steps ( 0.64 s)  yaw_deviation
+env  30: episode   7:  1500 steps (30.00 s)  time_out
+env  30: episode   8:    15 steps ( 0.30 s)  fallen
+env  38: episode   7:   307 steps ( 6.14 s)  drifted
+env  30: episode   9:    82 steps ( 1.64 s)  fallen
+env  30: episode  10:   254 steps ( 5.08 s)  yaw_deviation
+env  30: episode  11:    18 steps ( 0.36 s)  fallen
+env  53: episode   3:  1141 steps (22.82 s)  yaw_deviation
+env  28: episode   9:   987 steps (19.74 s)  yaw_deviation
+env  30: episode  12:    37 steps ( 0.74 s)  wheel_net
+env  30: episode  13:    60 steps ( 1.20 s)  yaw_deviation
+env   0: episode   3:  1361 steps (27.22 s)  yaw_deviation
+env   4: episode   2:  1500 steps (30.00 s)  time_out
+env  14: episode   2:  1500 steps (30.00 s)  time_out
+env  15: episode   2:  1500 steps (30.00 s)  time_out
+env  18: episode   2:  1500 steps (30.00 s)  time_out
+env  20: episode   2:  1500 steps (30.00 s)  time_out
+env  25: episode   2:  1500 steps (30.00 s)  time_out
+env  31: episode   2:  1500 steps (30.00 s)  time_out
+env  40: episode   2:  1500 steps (30.00 s)  time_out
+env  54: episode   2:  1500 steps (30.00 s)  time_out
+env  57: episode   2:  1500 steps (30.00 s)  time_out
+env  63: episode   2:  1500 steps (30.00 s)  time_out
+
+===== TRACKSTAND-BALANCE-V1 METRICS (MuJoCo) =====
+  environments                  : 64
+  completed_episodes            : 270
+  mean_episode_length_steps     : 468.14444444444445
+  mean_episode_length_s         : 9.36288888888889
+  min_episode_length_s          : 0.18
+  max_episode_length_s          : 30.0
+  std_episode_length_steps      : 654.129303580316
+  mean_reward                   : 63.7763803012244
+  timeout_rate                  : 0.2740740740740741
+  termination activations (may overlap):
+    time_out              : 74
+    fallen                : 135
+    diverged              : 0
+    drifted               : 7
+    yaw_deviation         : 50
+    wheel_net             : 6
+  roll_rms_deg                  : 2.716415748826703
+  max_roll_deg                  : 37.73867802172435
+  mean_worst_lean_deg           : 19.57697782454007
+  mean_drift_m                  : 0.07621406717548942
+  max_drift_m                   : 0.5063228828884948
+  mean_yaw_deg                  : 8.752439975389384
+  max_yaw_deg                   : 32.52236079907809
+  mean_turn_deg                 : 49.79794809828612
+  mean_drive_speed_rad_s        : 0.786411650533618
+  max_drive_speed_rad_s         : 61.6
+  mean_steer_speed_rad_s        : 1.2907985491649725
+  max_steer_speed_rad_s         : 23.9
+  policy_hz                     : 50.0
+  physics_hz                    : 400.0
+  pd_hz                         : 400.0
+  decimation                    : 8
+  Metrics include terminal state BEFORE caller reset; unfinished episodes excluded.
+[INFO] metrics written: /home/lmbike/trackstand_rl/isaaclab_train/reports/20261025_2500_dr_comparison/friction_diagnostic/mujoco400/202610252211_2500_dr_summary.log
+[INFO] episode length distribution written: /home/lmbike/trackstand_rl/isaaclab_train/reports/20261025_2500_dr_comparison/friction_diagnostic/mujoco400/202610252211_2500_dr_epi_len_histogram.png / .csv
+[INFO] all-environment torque profile written: /home/lmbike/trackstand_rl/isaaclab_train/reports/20261025_2500_dr_comparison/friction_diagnostic/mujoco400/202610252211_2500_dr_torque.png / .npz
+[INFO] evaluation complete: /home/lmbike/trackstand_rl/isaaclab_train/reports/20261025_2500_dr_comparison/friction_diagnostic/mujoco400/202610252211_2500_dr
+Verified read-only friction decomposition: /home/lmbike/trackstand_rl/isaaclab_train/reports/20261025_2500_dr_comparison/friction_diagnostic/mujoco400

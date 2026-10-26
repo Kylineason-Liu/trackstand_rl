@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "tests_run": 11,
+  "failures": 0,
+  "errors": 0,
+  "checks": [
+    "test_actual_inputs_match_native_motor_feedback_and_steering_encoding",
+    "test_all_completed_episodes_reset_steering_state_on_next_action",
+    "test_all_eleven_figures_exist_in_png_pdf_svg",
+    "test_csv_timebase_and_all_plotted_motor_values_match_full_arrays",
+    "test_done_signals_and_episode_counts_are_consistent",
+    "test_histogram_includes_exact_horizon_and_excludes_unfinished_tail",
+    "test_input_hashes_and_checkpoint_hashes_match",
+    "test_red_spawn_artists_and_full_range_axes_match_saved_capture",
+    "test_reset_segments_have_no_empty_or_cross_reset_interval",
+    "test_saved_vertical_zoom_is_explicit_and_preserves_original_extrema",
+    "test_spawn_times_include_initial_and_capture_boundary_reset"
+  ]
+}

@@ -1,0 +1,2446 @@
+{
+  "48": {
+    "isaac400": [
+      {
+        "environment": 48,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -1.7383194625377656,
+          1.620272344350815
+        ],
+        "extrema": {
+          "Scaled raw steering": {
+            "minimum": -1.482155680656433,
+            "maximum": 1.3641085624694824,
+            "minimum_time_s": 30.36,
+            "maximum_time_s": 30.400000000000002,
+            "samples": 3000
+          },
+          "Held target entering PD": {
+            "minimum": -1.102735161781311,
+            "maximum": 1.2425941228866577,
+            "minimum_time_s": 30.36,
+            "maximum_time_s": 30.900000000000002,
+            "samples": 24000
+          },
+          "Actual steering position": {
+            "minimum": -1.0100951194763184,
+            "maximum": 1.2137739658355713,
+            "minimum_time_s": 30.200000000000003,
+            "maximum_time_s": 30.92,
+            "samples": 24002
+          }
+        },
+        "panel_min": -1.482155680656433,
+        "panel_max": 1.3641085624694824,
+        "spawn_times_s": [
+          0.0,
+          30.0,
+          60.0
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2
+        ]
+      },
+      {
+        "environment": 48,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -1.2013537806272507,
+          0.9689997953176499
+        ],
+        "extrema": {
+          "Scaled raw rear request": {
+            "minimum": -1.035818338394165,
+            "maximum": 0.8034643530845642,
+            "minimum_time_s": 30.48,
+            "maximum_time_s": 30.3,
+            "samples": 3000
+          },
+          "Submitted rear motor torque": {
+            "minimum": -1.035818338394165,
+            "maximum": 0.8034643530845642,
+            "minimum_time_s": 30.48,
+            "maximum_time_s": 30.3,
+            "samples": 24000
+          },
+          "Solver joint-axis effort (not motor-only)": {
+            "minimum": -0.9322600364685059,
+            "maximum": 0.6981202363967896,
+            "minimum_time_s": 30.500000000000004,
+            "maximum_time_s": 30.32,
+            "samples": 24000
+          }
+        },
+        "panel_min": -1.035818338394165,
+        "panel_max": 0.8034643530845642,
+        "spawn_times_s": [
+          0.0,
+          30.0,
+          60.0
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2
+        ]
+      }
+    ],
+    "mujoco400": [
+      {
+        "environment": 48,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -1.843972486257553,
+          1.8267058551311492
+        ],
+        "extrema": {
+          "Scaled raw steering": {
+            "minimum": -1.5640054941177368,
+            "maximum": 1.546738862991333,
+            "minimum_time_s": 0.5,
+            "maximum_time_s": 0.1,
+            "samples": 3000
+          },
+          "Held target entering PD": {
+            "minimum": -1.5640054941177368,
+            "maximum": 1.3703044652938843,
+            "minimum_time_s": 0.5,
+            "maximum_time_s": 51.82,
+            "samples": 24000
+          },
+          "Actual steering position": {
+            "minimum": -1.5560438578712106,
+            "maximum": 1.3598668591603698,
+            "minimum_time_s": 0.5,
+            "maximum_time_s": 51.855,
+            "samples": 24004
+          }
+        },
+        "panel_min": -1.5640054941177368,
+        "panel_max": 1.546738862991333,
+        "spawn_times_s": [
+          0.0,
+          0.28,
+          0.52,
+          30.52
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "environment": 48,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -6.929534279108047,
+          2.0484418499469754
+        ],
+        "extrema": {
+          "Scaled raw rear request": {
+            "minimum": -6.2447733879089355,
+            "maximum": 1.3636809587478638,
+            "minimum_time_s": 0.18,
+            "maximum_time_s": 0.14,
+            "samples": 3000
+          },
+          "Submitted rear motor torque": {
+            "minimum": -6.2447733879089355,
+            "maximum": 1.3636809587478638,
+            "minimum_time_s": 0.18,
+            "maximum_time_s": 0.14,
+            "samples": 24000
+          },
+          "Actual motor actuator force": {
+            "minimum": -6.2447733879089355,
+            "maximum": 1.3636809587478638,
+            "minimum_time_s": 0.1825,
+            "maximum_time_s": 0.14250000000000002,
+            "samples": 24000
+          }
+        },
+        "panel_min": -6.2447733879089355,
+        "panel_max": 1.3636809587478638,
+        "spawn_times_s": [
+          0.0,
+          0.28,
+          0.52,
+          30.52
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2,
+          3,
+          4
+        ]
+      }
+    ],
+    "mujoco800": [
+      {
+        "environment": 48,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -1.823962094783783,
+          1.8373426222801208
+        ],
+        "extrema": {
+          "Scaled raw steering": {
+            "minimum": -1.5447100400924683,
+            "maximum": 1.5580905675888062,
+            "minimum_time_s": 0.08,
+            "maximum_time_s": 30.36,
+            "samples": 3000
+          },
+          "Held target entering PD": {
+            "minimum": -0.956,
+            "maximum": 1.3218183517456055,
+            "minimum_time_s": 0.22,
+            "maximum_time_s": 1.78,
+            "samples": 48000
+          },
+          "Actual steering position": {
+            "minimum": -0.651496584259109,
+            "maximum": 1.2891490827516734,
+            "minimum_time_s": 0.24000000000000002,
+            "maximum_time_s": 23.9,
+            "samples": 48004
+          }
+        },
+        "panel_min": -1.5447100400924683,
+        "panel_max": 1.5580905675888062,
+        "spawn_times_s": [
+          0.0,
+          0.26,
+          30.26,
+          30.580000000000002
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "environment": 48,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -6.904349377155304,
+          2.641217520236969
+        ],
+        "extrema": {
+          "Scaled raw rear request": {
+            "minimum": -6.176297664642334,
+            "maximum": 1.913165807723999,
+            "minimum_time_s": 0.18,
+            "maximum_time_s": 0.16,
+            "samples": 3000
+          },
+          "Submitted rear motor torque": {
+            "minimum": -6.176297664642334,
+            "maximum": 1.913165807723999,
+            "minimum_time_s": 0.18,
+            "maximum_time_s": 0.16,
+            "samples": 48000
+          },
+          "Actual motor actuator force": {
+            "minimum": -6.176297664642334,
+            "maximum": 1.913165807723999,
+            "minimum_time_s": 0.18125,
+            "maximum_time_s": 0.16125,
+            "samples": 48000
+          }
+        },
+        "panel_min": -6.176297664642334,
+        "panel_max": 1.913165807723999,
+        "spawn_times_s": [
+          0.0,
+          0.26,
+          30.26,
+          30.580000000000002
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2,
+          3,
+          4
+        ]
+      }
+    ]
+  },
+  "49": {
+    "isaac400": [
+      {
+        "environment": 49,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -1.817964081764221,
+          1.7968471097946166
+        ],
+        "extrema": {
+          "Scaled raw steering": {
+            "minimum": -1.5422581434249878,
+            "maximum": 1.5211411714553833,
+            "minimum_time_s": 0.18,
+            "maximum_time_s": 0.2,
+            "samples": 3000
+          },
+          "Held target entering PD": {
+            "minimum": -1.3465046882629395,
+            "maximum": 1.395923137664795,
+            "minimum_time_s": 0.04,
+            "maximum_time_s": 12.1,
+            "samples": 24000
+          },
+          "Actual steering position": {
+            "minimum": -1.2190155982971191,
+            "maximum": 1.389992594718933,
+            "minimum_time_s": 0.1,
+            "maximum_time_s": 7.82,
+            "samples": 24003
+          }
+        },
+        "panel_min": -1.5422581434249878,
+        "panel_max": 1.5211411714553833,
+        "spawn_times_s": [
+          0.0,
+          26.68,
+          56.68
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "environment": 49,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -1.2392931807041168,
+          0.9648513424396514
+        ],
+        "extrema": {
+          "Scaled raw rear request": {
+            "minimum": -1.0711804628372192,
+            "maximum": 0.7514769434928894,
+            "minimum_time_s": 0.16,
+            "maximum_time_s": 56.74,
+            "samples": 3000
+          },
+          "Submitted rear motor torque": {
+            "minimum": -1.0711804628372192,
+            "maximum": 0.7514769434928894,
+            "minimum_time_s": 0.16,
+            "maximum_time_s": 56.74,
+            "samples": 24000
+          },
+          "Solver joint-axis effort (not motor-only)": {
+            "minimum": -0.9658105969429016,
+            "maximum": 0.7967386245727539,
+            "minimum_time_s": 0.17250000000000001,
+            "maximum_time_s": 0.024999999999999998,
+            "samples": 24000
+          }
+        },
+        "panel_min": -1.0711804628372192,
+        "panel_max": 0.7967386245727539,
+        "spawn_times_s": [
+          0.0,
+          26.68,
+          56.68
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2,
+          3
+        ]
+      }
+    ],
+    "mujoco400": [
+      {
+        "environment": 49,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -1.8922443271190343,
+          1.837675653579944
+        ],
+        "extrema": {
+          "Scaled raw steering": {
+            "minimum": -1.563485026359558,
+            "maximum": 1.5531902313232422,
+            "minimum_time_s": 6.3,
+            "maximum_time_s": 36.480000000000004,
+            "samples": 3000
+          },
+          "Held target entering PD": {
+            "minimum": -1.563485026359558,
+            "maximum": 1.4599579572677612,
+            "minimum_time_s": 6.3,
+            "maximum_time_s": 38.14,
+            "samples": 24000
+          },
+          "Actual steering position": {
+            "minimum": -1.6077589048623326,
+            "maximum": 1.4749912947469428,
+            "minimum_time_s": 37.0375,
+            "maximum_time_s": 0.18,
+            "samples": 24007
+          }
+        },
+        "panel_min": -1.6077589048623326,
+        "panel_max": 1.5531902313232422,
+        "spawn_times_s": [
+          0.0,
+          4.64,
+          4.86,
+          6.32,
+          36.32,
+          37.04,
+          39.22
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      {
+        "environment": 49,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -5.863935537338257,
+          2.024693555831909
+        ],
+        "extrema": {
+          "Scaled raw rear request": {
+            "minimum": -5.262260437011719,
+            "maximum": 1.423018455505371,
+            "minimum_time_s": 4.68,
+            "maximum_time_s": 5.0,
+            "samples": 3000
+          },
+          "Submitted rear motor torque": {
+            "minimum": -5.262260437011719,
+            "maximum": 1.423018455505371,
+            "minimum_time_s": 4.68,
+            "maximum_time_s": 5.0,
+            "samples": 24000
+          },
+          "Actual motor actuator force": {
+            "minimum": -5.262260437011719,
+            "maximum": 1.423018455505371,
+            "minimum_time_s": 4.6825,
+            "maximum_time_s": 5.0025,
+            "samples": 24000
+          }
+        },
+        "panel_min": -5.262260437011719,
+        "panel_max": 1.423018455505371,
+        "spawn_times_s": [
+          0.0,
+          4.64,
+          4.86,
+          6.32,
+          36.32,
+          37.04,
+          39.22
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      }
+    ],
+    "mujoco800": [
+      {
+        "environment": 49,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -1.7990410351753234,
+          1.5450174832344055
+        ],
+        "extrema": {
+          "Scaled raw steering": {
+            "minimum": -1.5439857244491577,
+            "maximum": 1.2899621725082397,
+            "minimum_time_s": 30.14,
+            "maximum_time_s": 47.660000000000004,
+            "samples": 3000
+          },
+          "Held target entering PD": {
+            "minimum": -0.6514704670906066,
+            "maximum": 1.2899621725082397,
+            "minimum_time_s": 30.080000000000002,
+            "maximum_time_s": 47.660000000000004,
+            "samples": 48000
+          },
+          "Actual steering position": {
+            "minimum": -0.3845366995678279,
+            "maximum": 1.2329649385991632,
+            "minimum_time_s": 30.099999999999998,
+            "maximum_time_s": 31.599999999999998,
+            "samples": 48003
+          }
+        },
+        "panel_min": -1.5439857244491577,
+        "panel_max": 1.2899621725082397,
+        "spawn_times_s": [
+          0.0,
+          30.0,
+          30.2
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "environment": 49,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -5.4548789763450625,
+          1.9952143931388855
+        ],
+        "extrema": {
+          "Scaled raw rear request": {
+            "minimum": -4.886651515960693,
+            "maximum": 1.4269869327545166,
+            "minimum_time_s": 30.04,
+            "maximum_time_s": 30.02,
+            "samples": 3000
+          },
+          "Submitted rear motor torque": {
+            "minimum": -4.886651515960693,
+            "maximum": 1.4269869327545166,
+            "minimum_time_s": 30.04,
+            "maximum_time_s": 30.02,
+            "samples": 48000
+          },
+          "Actual motor actuator force": {
+            "minimum": -4.886651515960693,
+            "maximum": 1.4269869327545166,
+            "minimum_time_s": 30.041249999999998,
+            "maximum_time_s": 30.02125,
+            "samples": 48000
+          }
+        },
+        "panel_min": -4.886651515960693,
+        "panel_max": 1.4269869327545166,
+        "spawn_times_s": [
+          0.0,
+          30.0,
+          30.2
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2,
+          3
+        ]
+      }
+    ]
+  },
+  "50": {
+    "isaac400": [
+      {
+        "environment": 50,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -1.832573674917221,
+          1.8014856803417205
+        ],
+        "extrema": {
+          "Scaled raw steering": {
+            "minimum": -1.5553996562957764,
+            "maximum": 1.5243116617202759,
+            "minimum_time_s": 0.02,
+            "maximum_time_s": 0.3,
+            "samples": 3000
+          },
+          "Held target entering PD": {
+            "minimum": -1.5420591831207275,
+            "maximum": 1.371127963066101,
+            "minimum_time_s": 0.08,
+            "maximum_time_s": 38.36,
+            "samples": 24000
+          },
+          "Actual steering position": {
+            "minimum": -1.4075747728347778,
+            "maximum": 1.3638180494308472,
+            "minimum_time_s": 0.14,
+            "maximum_time_s": 38.379999999999995,
+            "samples": 24002
+          }
+        },
+        "panel_min": -1.5553996562957764,
+        "panel_max": 1.5243116617202759,
+        "spawn_times_s": [
+          0.0,
+          30.0,
+          60.0
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2
+        ]
+      },
+      {
+        "environment": 50,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -1.7690087801218033,
+          1.2203926688432694
+        ],
+        "extrema": {
+          "Scaled raw rear request": {
+            "minimum": -1.5410035848617554,
+            "maximum": 0.9923874735832214,
+            "minimum_time_s": 0.26,
+            "maximum_time_s": 30.02,
+            "samples": 3000
+          },
+          "Submitted rear motor torque": {
+            "minimum": -1.5410035848617554,
+            "maximum": 0.9923874735832214,
+            "minimum_time_s": 0.26,
+            "maximum_time_s": 30.02,
+            "samples": 24000
+          },
+          "Solver joint-axis effort (not motor-only)": {
+            "minimum": -1.437304139137268,
+            "maximum": 0.9544642567634583,
+            "minimum_time_s": 0.2725,
+            "maximum_time_s": 0.03,
+            "samples": 24000
+          }
+        },
+        "panel_min": -1.5410035848617554,
+        "panel_max": 0.9923874735832214,
+        "spawn_times_s": [
+          0.0,
+          30.0,
+          60.0
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2
+        ]
+      }
+    ],
+    "mujoco400": [
+      {
+        "environment": 50,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -1.8367656528949738,
+          1.8267428934574128
+        ],
+        "extrema": {
+          "Scaled raw steering": {
+            "minimum": -1.5573455095291138,
+            "maximum": 1.5473227500915527,
+            "minimum_time_s": 1.06,
+            "maximum_time_s": 1.04,
+            "samples": 3000
+          },
+          "Held target entering PD": {
+            "minimum": -1.434,
+            "maximum": 1.1737465858459473,
+            "minimum_time_s": 1.82,
+            "maximum_time_s": 33.08,
+            "samples": 24000
+          },
+          "Actual steering position": {
+            "minimum": -1.3252754809699914,
+            "maximum": 1.1254609306295011,
+            "minimum_time_s": 1.92,
+            "maximum_time_s": 33.14,
+            "samples": 24004
+          }
+        },
+        "panel_min": -1.5573455095291138,
+        "panel_max": 1.5473227500915527,
+        "spawn_times_s": [
+          0.0,
+          1.02,
+          1.78,
+          31.78
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "environment": 50,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -2.7379645597934723,
+          1.2754817497730255
+        ],
+        "extrema": {
+          "Scaled raw rear request": {
+            "minimum": -2.431854248046875,
+            "maximum": 0.9693714380264282,
+            "minimum_time_s": 0.72,
+            "maximum_time_s": 1.12,
+            "samples": 3000
+          },
+          "Submitted rear motor torque": {
+            "minimum": -2.431854248046875,
+            "maximum": 0.9693714380264282,
+            "minimum_time_s": 0.72,
+            "maximum_time_s": 1.12,
+            "samples": 24000
+          },
+          "Actual motor actuator force": {
+            "minimum": -2.431854248046875,
+            "maximum": 0.9693714380264282,
+            "minimum_time_s": 0.7224999999999999,
+            "maximum_time_s": 1.1225,
+            "samples": 24000
+          }
+        },
+        "panel_min": -2.431854248046875,
+        "panel_max": 0.9693714380264282,
+        "spawn_times_s": [
+          0.0,
+          1.02,
+          1.78,
+          31.78
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2,
+          3,
+          4
+        ]
+      }
+    ],
+    "mujoco800": [
+      {
+        "environment": 50,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -1.8529798182019896,
+          1.8383116502731982
+        ],
+        "extrema": {
+          "Scaled raw steering": {
+            "minimum": -1.5639092922210693,
+            "maximum": 1.5567724704742432,
+            "minimum_time_s": 2.62,
+            "maximum_time_s": 33.06,
+            "samples": 3000
+          },
+          "Held target entering PD": {
+            "minimum": -1.5639092922210693,
+            "maximum": 1.3403626680374146,
+            "minimum_time_s": 2.62,
+            "maximum_time_s": 23.0,
+            "samples": 48000
+          },
+          "Actual steering position": {
+            "minimum": -1.5714406384030346,
+            "maximum": 1.3295853066014964,
+            "minimum_time_s": 2.6350000000000002,
+            "maximum_time_s": 23.02,
+            "samples": 48006
+          }
+        },
+        "panel_min": -1.5714406384030346,
+        "panel_max": 1.5567724704742432,
+        "spawn_times_s": [
+          0.0,
+          2.02,
+          2.2800000000000002,
+          2.64,
+          32.64,
+          33.1
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      {
+        "environment": 50,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -6.977314728498459,
+          2.303319591283798
+        ],
+        "extrema": {
+          "Scaled raw rear request": {
+            "minimum": -6.269469738006592,
+            "maximum": 1.5954746007919312,
+            "minimum_time_s": 2.18,
+            "maximum_time_s": 2.16,
+            "samples": 3000
+          },
+          "Submitted rear motor torque": {
+            "minimum": -6.269469738006592,
+            "maximum": 1.5954746007919312,
+            "minimum_time_s": 2.18,
+            "maximum_time_s": 2.16,
+            "samples": 48000
+          },
+          "Actual motor actuator force": {
+            "minimum": -6.269469738006592,
+            "maximum": 1.5954746007919312,
+            "minimum_time_s": 2.1812500000000004,
+            "maximum_time_s": 2.1612500000000003,
+            "samples": 48000
+          }
+        },
+        "panel_min": -6.269469738006592,
+        "panel_max": 1.5954746007919312,
+        "spawn_times_s": [
+          0.0,
+          2.02,
+          2.2800000000000002,
+          2.64,
+          32.64,
+          33.1
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      }
+    ]
+  },
+  "51": {
+    "isaac400": [
+      {
+        "environment": 51,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -1.1388777428865433,
+          1.599367910027504
+        ],
+        "extrema": {
+          "Scaled raw steering": {
+            "minimum": -0.93002849817276,
+            "maximum": 1.3905186653137207,
+            "minimum_time_s": 30.12,
+            "maximum_time_s": 59.620000000000005,
+            "samples": 3000
+          },
+          "Held target entering PD": {
+            "minimum": -0.93002849817276,
+            "maximum": 1.3905186653137207,
+            "minimum_time_s": 30.12,
+            "maximum_time_s": 59.620000000000005,
+            "samples": 24000
+          },
+          "Actual steering position": {
+            "minimum": -0.7882717847824097,
+            "maximum": 1.3862230777740479,
+            "minimum_time_s": 30.14,
+            "maximum_time_s": 59.82,
+            "samples": 24002
+          }
+        },
+        "panel_min": -0.93002849817276,
+        "panel_max": 1.3905186653137207,
+        "spawn_times_s": [
+          0.0,
+          30.0,
+          60.0
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2
+        ]
+      },
+      {
+        "environment": 51,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -0.6010299760103226,
+          0.7185103136301041
+        ],
+        "extrema": {
+          "Scaled raw rear request": {
+            "minimum": -0.451322466135025,
+            "maximum": 0.6178674101829529,
+            "minimum_time_s": 30.32,
+            "maximum_time_s": 0.06,
+            "samples": 3000
+          },
+          "Submitted rear motor torque": {
+            "minimum": -0.451322466135025,
+            "maximum": 0.6178674101829529,
+            "minimum_time_s": 30.32,
+            "maximum_time_s": 0.06,
+            "samples": 24000
+          },
+          "Solver joint-axis effort (not motor-only)": {
+            "minimum": -0.5003870725631714,
+            "maximum": 0.5319111347198486,
+            "minimum_time_s": 30.3075,
+            "maximum_time_s": 0.0675,
+            "samples": 24000
+          }
+        },
+        "panel_min": -0.5003870725631714,
+        "panel_max": 0.6178674101829529,
+        "spawn_times_s": [
+          0.0,
+          30.0,
+          60.0
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2
+        ]
+      }
+    ],
+    "mujoco400": [
+      {
+        "environment": 51,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -1.8248255479335784,
+          1.8339911925792693
+        ],
+        "extrema": {
+          "Scaled raw steering": {
+            "minimum": -1.5457632541656494,
+            "maximum": 1.5549288988113403,
+            "minimum_time_s": 1.54,
+            "maximum_time_s": 30.92,
+            "samples": 3000
+          },
+          "Held target entering PD": {
+            "minimum": -1.2512833623886108,
+            "maximum": 1.4413785932064056,
+            "minimum_time_s": 1.4000000000000001,
+            "maximum_time_s": 30.94,
+            "samples": 24000
+          },
+          "Actual steering position": {
+            "minimum": -1.1382235396478835,
+            "maximum": 1.1675537052981768,
+            "minimum_time_s": 1.48,
+            "maximum_time_s": 30.96,
+            "samples": 24006
+          }
+        },
+        "panel_min": -1.5457632541656494,
+        "panel_max": 1.5549288988113403,
+        "spawn_times_s": [
+          0.0,
+          0.28,
+          0.5,
+          0.88,
+          30.88,
+          31.12
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      {
+        "environment": 51,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -7.253487510681152,
+          5.667209548950195
+        ],
+        "extrema": {
+          "Scaled raw rear request": {
+            "minimum": -6.26801061630249,
+            "maximum": 4.681732654571533,
+            "minimum_time_s": 0.2,
+            "maximum_time_s": 0.72,
+            "samples": 3000
+          },
+          "Submitted rear motor torque": {
+            "minimum": -6.26801061630249,
+            "maximum": 4.681732654571533,
+            "minimum_time_s": 0.2,
+            "maximum_time_s": 0.72,
+            "samples": 24000
+          },
+          "Actual motor actuator force": {
+            "minimum": -6.26801061630249,
+            "maximum": 4.681732654571533,
+            "minimum_time_s": 0.2025,
+            "maximum_time_s": 0.7224999999999999,
+            "samples": 24000
+          }
+        },
+        "panel_min": -6.26801061630249,
+        "panel_max": 4.681732654571533,
+        "spawn_times_s": [
+          0.0,
+          0.28,
+          0.5,
+          0.88,
+          30.88,
+          31.12
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      }
+    ],
+    "mujoco800": [
+      {
+        "environment": 51,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -1.797718825340271,
+          1.5108986520767211
+        ],
+        "extrema": {
+          "Scaled raw steering": {
+            "minimum": -1.545366644859314,
+            "maximum": 1.2585464715957642,
+            "minimum_time_s": 0.1,
+            "maximum_time_s": 19.68,
+            "samples": 3000
+          },
+          "Held target entering PD": {
+            "minimum": -0.956,
+            "maximum": 1.2585464715957642,
+            "minimum_time_s": 0.1,
+            "maximum_time_s": 19.68,
+            "samples": 48000
+          },
+          "Actual steering position": {
+            "minimum": -0.6232049756269653,
+            "maximum": 1.2130402176207122,
+            "minimum_time_s": 0.12000000000000001,
+            "maximum_time_s": 19.7,
+            "samples": 48003
+          }
+        },
+        "panel_min": -1.545366644859314,
+        "panel_max": 1.2585464715957642,
+        "spawn_times_s": [
+          0.0,
+          0.2,
+          30.2
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "environment": 51,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -6.23941594004631,
+          2.1948601567745207
+        ],
+        "extrema": {
+          "Scaled raw rear request": {
+            "minimum": -5.596123695373535,
+            "maximum": 1.5515679121017456,
+            "minimum_time_s": 0.06,
+            "maximum_time_s": 0.04,
+            "samples": 3000
+          },
+          "Submitted rear motor torque": {
+            "minimum": -5.596123695373535,
+            "maximum": 1.5515679121017456,
+            "minimum_time_s": 0.06,
+            "maximum_time_s": 0.04,
+            "samples": 48000
+          },
+          "Actual motor actuator force": {
+            "minimum": -5.596123695373535,
+            "maximum": 1.5515679121017456,
+            "minimum_time_s": 0.06125,
+            "maximum_time_s": 0.04125,
+            "samples": 48000
+          }
+        },
+        "panel_min": -5.596123695373535,
+        "panel_max": 1.5515679121017456,
+        "spawn_times_s": [
+          0.0,
+          0.2,
+          30.2
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2,
+          3
+        ]
+      }
+    ]
+  },
+  "52": {
+    "isaac400": [
+      {
+        "environment": 52,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -0.1217411971092224,
+          1.4744211649894714
+        ],
+        "extrema": {
+          "Scaled raw steering": {
+            "minimum": 0.10851829499006271,
+            "maximum": 1.352679967880249,
+            "minimum_time_s": 30.0,
+            "maximum_time_s": 5.62,
+            "samples": 3000
+          },
+          "Held target entering PD": {
+            "minimum": 0.10851829499006271,
+            "maximum": 1.352679967880249,
+            "minimum_time_s": 30.0,
+            "maximum_time_s": 5.62,
+            "samples": 24000
+          },
+          "Actual steering position": {
+            "minimum": 0.0,
+            "maximum": 1.3458774089813232,
+            "minimum_time_s": 0.0,
+            "maximum_time_s": 5.6450000000000005,
+            "samples": 24002
+          }
+        },
+        "panel_min": 0.0,
+        "panel_max": 1.352679967880249,
+        "spawn_times_s": [
+          0.0,
+          30.0,
+          60.0
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2
+        ]
+      },
+      {
+        "environment": 52,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -0.6527220153808594,
+          0.7523816967010498
+        ],
+        "extrema": {
+          "Scaled raw rear request": {
+            "minimum": -0.5455530881881714,
+            "maximum": 0.6452127695083618,
+            "minimum_time_s": 0.04,
+            "maximum_time_s": 30.080000000000002,
+            "samples": 3000
+          },
+          "Submitted rear motor torque": {
+            "minimum": -0.5455530881881714,
+            "maximum": 0.6452127695083618,
+            "minimum_time_s": 0.04,
+            "maximum_time_s": 30.080000000000002,
+            "samples": 24000
+          },
+          "Solver joint-axis effort (not motor-only)": {
+            "minimum": -0.43962961435317993,
+            "maximum": 0.5712921619415283,
+            "minimum_time_s": 0.045000000000000005,
+            "maximum_time_s": 0.1625,
+            "samples": 24000
+          }
+        },
+        "panel_min": -0.5455530881881714,
+        "panel_max": 0.6452127695083618,
+        "spawn_times_s": [
+          0.0,
+          30.0,
+          60.0
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2
+        ]
+      }
+    ],
+    "mujoco400": [
+      {
+        "environment": 52,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -1.893145515659034,
+          1.8242927522401127
+        ],
+        "extrema": {
+          "Scaled raw steering": {
+            "minimum": -1.5647445917129517,
+            "maximum": 1.5407593250274658,
+            "minimum_time_s": 0.3,
+            "maximum_time_s": 1.22,
+            "samples": 3000
+          },
+          "Held target entering PD": {
+            "minimum": -1.5647445917129517,
+            "maximum": 1.3668161630630493,
+            "minimum_time_s": 0.3,
+            "maximum_time_s": 36.02,
+            "samples": 24000
+          },
+          "Actual steering position": {
+            "minimum": -1.6096120884463871,
+            "maximum": 1.3490585481035653,
+            "minimum_time_s": 0.3125,
+            "maximum_time_s": 56.06,
+            "samples": 24004
+          }
+        },
+        "panel_min": -1.6096120884463871,
+        "panel_max": 1.5407593250274658,
+        "spawn_times_s": [
+          0.0,
+          0.32,
+          1.36,
+          31.36
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "environment": 52,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -5.749535617828369,
+          1.5328875160217286
+        ],
+        "extrema": {
+          "Scaled raw rear request": {
+            "minimum": -5.194096565246582,
+            "maximum": 0.9774484634399414,
+            "minimum_time_s": 0.24,
+            "maximum_time_s": 0.2,
+            "samples": 3000
+          },
+          "Submitted rear motor torque": {
+            "minimum": -5.194096565246582,
+            "maximum": 0.9774484634399414,
+            "minimum_time_s": 0.24,
+            "maximum_time_s": 0.2,
+            "samples": 24000
+          },
+          "Actual motor actuator force": {
+            "minimum": -5.194096565246582,
+            "maximum": 0.9774484634399414,
+            "minimum_time_s": 0.2425,
+            "maximum_time_s": 0.2025,
+            "samples": 24000
+          }
+        },
+        "panel_min": -5.194096565246582,
+        "panel_max": 0.9774484634399414,
+        "spawn_times_s": [
+          0.0,
+          0.32,
+          1.36,
+          31.36
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2,
+          3,
+          4
+        ]
+      }
+    ],
+    "mujoco800": [
+      {
+        "environment": 52,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -1.7348833322525024,
+          1.679143214225769
+        ],
+        "extrema": {
+          "Scaled raw steering": {
+            "minimum": -1.4744914770126343,
+            "maximum": 1.4187513589859009,
+            "minimum_time_s": 0.04,
+            "maximum_time_s": 30.26,
+            "samples": 3000
+          },
+          "Held target entering PD": {
+            "minimum": -1.3523340520858764,
+            "maximum": 1.3492802381515503,
+            "minimum_time_s": 0.04,
+            "maximum_time_s": 0.96,
+            "samples": 48000
+          },
+          "Actual steering position": {
+            "minimum": -1.2118642463953042,
+            "maximum": 1.3025531821758347,
+            "minimum_time_s": 0.1,
+            "maximum_time_s": 0.98,
+            "samples": 48002
+          }
+        },
+        "panel_min": -1.4744914770126343,
+        "panel_max": 1.4187513589859009,
+        "spawn_times_s": [
+          0.0,
+          30.0,
+          60.0
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2
+        ]
+      },
+      {
+        "environment": 52,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -0.989511975646019,
+          0.8720770567655564
+        ],
+        "extrema": {
+          "Scaled raw rear request": {
+            "minimum": -0.8475263714790344,
+            "maximum": 0.7300914525985718,
+            "minimum_time_s": 0.26,
+            "maximum_time_s": 0.02,
+            "samples": 3000
+          },
+          "Submitted rear motor torque": {
+            "minimum": -0.8475263714790344,
+            "maximum": 0.7300914525985718,
+            "minimum_time_s": 0.26,
+            "maximum_time_s": 0.02,
+            "samples": 48000
+          },
+          "Actual motor actuator force": {
+            "minimum": -0.8475263714790344,
+            "maximum": 0.7300914525985718,
+            "minimum_time_s": 0.26125,
+            "maximum_time_s": 0.02125,
+            "samples": 48000
+          }
+        },
+        "panel_min": -0.8475263714790344,
+        "panel_max": 0.7300914525985718,
+        "spawn_times_s": [
+          0.0,
+          30.0,
+          60.0
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2
+        ]
+      }
+    ]
+  },
+  "53": {
+    "isaac400": [
+      {
+        "environment": 53,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -0.12465585708618164,
+          1.509720935821533
+        ],
+        "extrema": {
+          "Scaled raw steering": {
+            "minimum": 0.2015112191438675,
+            "maximum": 1.3850650787353516,
+            "minimum_time_s": 58.44,
+            "maximum_time_s": 21.96,
+            "samples": 3000
+          },
+          "Held target entering PD": {
+            "minimum": 0.2015112191438675,
+            "maximum": 1.3850650787353516,
+            "minimum_time_s": 58.44,
+            "maximum_time_s": 21.96,
+            "samples": 24000
+          },
+          "Actual steering position": {
+            "minimum": 0.0,
+            "maximum": 1.378627061843872,
+            "minimum_time_s": 0.0,
+            "maximum_time_s": 21.44,
+            "samples": 24003
+          }
+        },
+        "panel_min": 0.0,
+        "panel_max": 1.3850650787353516,
+        "spawn_times_s": [
+          0.0,
+          28.44,
+          58.44
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "environment": 53,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -0.5996746665239334,
+          0.9440150505304337
+        ],
+        "extrema": {
+          "Scaled raw rear request": {
+            "minimum": -0.48193562030792236,
+            "maximum": 0.8262760043144226,
+            "minimum_time_s": 28.88,
+            "maximum_time_s": 0.04,
+            "samples": 3000
+          },
+          "Submitted rear motor torque": {
+            "minimum": -0.48193562030792236,
+            "maximum": 0.8262760043144226,
+            "minimum_time_s": 28.88,
+            "maximum_time_s": 0.04,
+            "samples": 24000
+          },
+          "Solver joint-axis effort (not motor-only)": {
+            "minimum": -0.42092064023017883,
+            "maximum": 0.721269428730011,
+            "minimum_time_s": 0.2725,
+            "maximum_time_s": 0.055,
+            "samples": 24000
+          }
+        },
+        "panel_min": -0.48193562030792236,
+        "panel_max": 0.8262760043144226,
+        "spawn_times_s": [
+          0.0,
+          28.44,
+          58.44
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2,
+          3
+        ]
+      }
+    ],
+    "mujoco400": [
+      {
+        "environment": 53,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -1.8297604274749757,
+          1.780167932510376
+        ],
+        "extrema": {
+          "Scaled raw steering": {
+            "minimum": -1.554426908493042,
+            "maximum": 1.5048344135284424,
+            "minimum_time_s": 0.6,
+            "maximum_time_s": 0.12,
+            "samples": 3000
+          },
+          "Held target entering PD": {
+            "minimum": -1.442743019774556,
+            "maximum": 1.47483229637146,
+            "minimum_time_s": 1.06,
+            "maximum_time_s": 0.14,
+            "samples": 24000
+          },
+          "Actual steering position": {
+            "minimum": -1.2982231989134208,
+            "maximum": 1.3510067493058782,
+            "minimum_time_s": 1.1199999999999999,
+            "maximum_time_s": 0.1575,
+            "samples": 24004
+          }
+        },
+        "panel_min": -1.554426908493042,
+        "panel_max": 1.5048344135284424,
+        "spawn_times_s": [
+          0.0,
+          1.26,
+          31.26,
+          54.08
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      {
+        "environment": 53,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -2.500636042356491,
+          1.5131042611598968
+        ],
+        "extrema": {
+          "Scaled raw rear request": {
+            "minimum": -2.1945033073425293,
+            "maximum": 1.206971526145935,
+            "minimum_time_s": 1.02,
+            "maximum_time_s": 0.12,
+            "samples": 3000
+          },
+          "Submitted rear motor torque": {
+            "minimum": -2.1945033073425293,
+            "maximum": 1.206971526145935,
+            "minimum_time_s": 1.02,
+            "maximum_time_s": 0.12,
+            "samples": 24000
+          },
+          "Actual motor actuator force": {
+            "minimum": -2.1945033073425293,
+            "maximum": 1.206971526145935,
+            "minimum_time_s": 1.0225,
+            "maximum_time_s": 0.1225,
+            "samples": 24000
+          }
+        },
+        "panel_min": -2.1945033073425293,
+        "panel_max": 1.206971526145935,
+        "spawn_times_s": [
+          0.0,
+          1.26,
+          31.26,
+          54.08
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2,
+          3,
+          4
+        ]
+      }
+    ],
+    "mujoco800": [
+      {
+        "environment": 53,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -1.8120668411254883,
+          1.7539334774017334
+        ],
+        "extrema": {
+          "Scaled raw steering": {
+            "minimum": -1.5400837659835815,
+            "maximum": 1.4819504022598267,
+            "minimum_time_s": 30.28,
+            "maximum_time_s": 30.3,
+            "samples": 3000
+          },
+          "Held target entering PD": {
+            "minimum": -1.4543193578720093,
+            "maximum": 1.301047682762146,
+            "minimum_time_s": 30.1,
+            "maximum_time_s": 0.64,
+            "samples": 48000
+          },
+          "Actual steering position": {
+            "minimum": -1.330138804771984,
+            "maximum": 1.2588544181272698,
+            "minimum_time_s": 30.2,
+            "maximum_time_s": 0.66,
+            "samples": 48002
+          }
+        },
+        "panel_min": -1.5400837659835815,
+        "panel_max": 1.4819504022598267,
+        "spawn_times_s": [
+          0.0,
+          30.0,
+          60.0
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2
+        ]
+      },
+      {
+        "environment": 53,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -1.2083834218978882,
+          0.8975945520401001
+        ],
+        "extrema": {
+          "Scaled raw rear request": {
+            "minimum": -1.0477579832077026,
+            "maximum": 0.7369691133499146,
+            "minimum_time_s": 30.26,
+            "maximum_time_s": 30.1,
+            "samples": 3000
+          },
+          "Submitted rear motor torque": {
+            "minimum": -1.0477579832077026,
+            "maximum": 0.7369691133499146,
+            "minimum_time_s": 30.26,
+            "maximum_time_s": 30.1,
+            "samples": 48000
+          },
+          "Actual motor actuator force": {
+            "minimum": -1.0477579832077026,
+            "maximum": 0.7369691133499146,
+            "minimum_time_s": 30.26125,
+            "maximum_time_s": 30.10125,
+            "samples": 48000
+          }
+        },
+        "panel_min": -1.0477579832077026,
+        "panel_max": 0.7369691133499146,
+        "spawn_times_s": [
+          0.0,
+          30.0,
+          60.0
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2
+        ]
+      }
+    ]
+  },
+  "54": {
+    "isaac400": [
+      {
+        "environment": 54,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -1.8165532875061035,
+          1.7519587802886962
+        ],
+        "extrema": {
+          "Scaled raw steering": {
+            "minimum": -1.544378638267517,
+            "maximum": 1.4797841310501099,
+            "minimum_time_s": 0.34,
+            "maximum_time_s": 0.36,
+            "samples": 3000
+          },
+          "Held target entering PD": {
+            "minimum": -1.5332597494125366,
+            "maximum": 1.2291996479034424,
+            "minimum_time_s": 0.14,
+            "maximum_time_s": 30.060000000000002,
+            "samples": 24000
+          },
+          "Actual steering position": {
+            "minimum": -1.5129785537719727,
+            "maximum": 1.15532648563385,
+            "minimum_time_s": 0.2,
+            "maximum_time_s": 30.082500000000003,
+            "samples": 24002
+          }
+        },
+        "panel_min": -1.544378638267517,
+        "panel_max": 1.4797841310501099,
+        "spawn_times_s": [
+          0.0,
+          30.0,
+          60.0
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2
+        ]
+      },
+      {
+        "environment": 54,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -1.7081051468849182,
+          1.1485384106636047
+        ],
+        "extrema": {
+          "Scaled raw rear request": {
+            "minimum": -1.4902255535125732,
+            "maximum": 0.9306588172912598,
+            "minimum_time_s": 0.32,
+            "maximum_time_s": 0.16,
+            "samples": 3000
+          },
+          "Submitted rear motor torque": {
+            "minimum": -1.4902255535125732,
+            "maximum": 0.9306588172912598,
+            "minimum_time_s": 0.32,
+            "maximum_time_s": 0.16,
+            "samples": 24000
+          },
+          "Solver joint-axis effort (not motor-only)": {
+            "minimum": -1.3843450546264648,
+            "maximum": 0.8272891044616699,
+            "minimum_time_s": 0.325,
+            "maximum_time_s": 0.17250000000000001,
+            "samples": 24000
+          }
+        },
+        "panel_min": -1.4902255535125732,
+        "panel_max": 0.9306588172912598,
+        "spawn_times_s": [
+          0.0,
+          30.0,
+          60.0
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2
+        ]
+      }
+    ],
+    "mujoco400": [
+      {
+        "environment": 54,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -1.8237295055389404,
+          1.8081209564208984
+        ],
+        "extrema": {
+          "Scaled raw steering": {
+            "minimum": -1.5467239618301392,
+            "maximum": 1.5311154127120972,
+            "minimum_time_s": 32.82,
+            "maximum_time_s": 32.84,
+            "samples": 3000
+          },
+          "Held target entering PD": {
+            "minimum": -1.0481125860214233,
+            "maximum": 1.2361055612564087,
+            "minimum_time_s": 30.54,
+            "maximum_time_s": 33.84,
+            "samples": 24000
+          },
+          "Actual steering position": {
+            "minimum": -0.8309188907842221,
+            "maximum": 1.1926616357653728,
+            "minimum_time_s": 30.560000000000002,
+            "maximum_time_s": 33.86,
+            "samples": 24002
+          }
+        },
+        "panel_min": -1.5467239618301392,
+        "panel_max": 1.5311154127120972,
+        "spawn_times_s": [
+          0.0,
+          30.0,
+          60.0
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2
+        ]
+      },
+      {
+        "environment": 54,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -1.640898996591568,
+          1.2814859688282012
+        ],
+        "extrema": {
+          "Scaled raw rear request": {
+            "minimum": -1.4180052280426025,
+            "maximum": 1.0585922002792358,
+            "minimum_time_s": 32.8,
+            "maximum_time_s": 30.060000000000002,
+            "samples": 3000
+          },
+          "Submitted rear motor torque": {
+            "minimum": -1.4180052280426025,
+            "maximum": 1.0585922002792358,
+            "minimum_time_s": 32.8,
+            "maximum_time_s": 30.060000000000002,
+            "samples": 24000
+          },
+          "Actual motor actuator force": {
+            "minimum": -1.4180052280426025,
+            "maximum": 1.0585922002792358,
+            "minimum_time_s": 32.802499999999995,
+            "maximum_time_s": 30.062500000000004,
+            "samples": 24000
+          }
+        },
+        "panel_min": -1.4180052280426025,
+        "panel_max": 1.0585922002792358,
+        "spawn_times_s": [
+          0.0,
+          30.0,
+          60.0
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2
+        ]
+      }
+    ],
+    "mujoco800": [
+      {
+        "environment": 54,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -0.11455883145332336,
+          1.3874347364902497
+        ],
+        "extrema": {
+          "Scaled raw steering": {
+            "minimum": 0.48261183500289917,
+            "maximum": 1.2728759050369263,
+            "minimum_time_s": 0.0,
+            "maximum_time_s": 39.04,
+            "samples": 3000
+          },
+          "Held target entering PD": {
+            "minimum": 0.478,
+            "maximum": 1.2728759050369263,
+            "minimum_time_s": 0.0,
+            "maximum_time_s": 39.04,
+            "samples": 48000
+          },
+          "Actual steering position": {
+            "minimum": 0.0,
+            "maximum": 1.2241594446947237,
+            "minimum_time_s": 0.0,
+            "maximum_time_s": 39.1,
+            "samples": 48002
+          }
+        },
+        "panel_min": 0.0,
+        "panel_max": 1.2728759050369263,
+        "spawn_times_s": [
+          0.0,
+          30.0,
+          60.0
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2
+        ]
+      },
+      {
+        "environment": 54,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -0.6238852322101593,
+          0.7277181923389435
+        ],
+        "extrema": {
+          "Scaled raw rear request": {
+            "minimum": -0.5207968354225159,
+            "maximum": 0.6246297955513,
+            "minimum_time_s": 0.02,
+            "maximum_time_s": 30.04,
+            "samples": 3000
+          },
+          "Submitted rear motor torque": {
+            "minimum": -0.5207968354225159,
+            "maximum": 0.6246297955513,
+            "minimum_time_s": 0.02,
+            "maximum_time_s": 30.04,
+            "samples": 48000
+          },
+          "Actual motor actuator force": {
+            "minimum": -0.5207968354225159,
+            "maximum": 0.6246297955513,
+            "minimum_time_s": 0.02125,
+            "maximum_time_s": 30.041249999999998,
+            "samples": 48000
+          }
+        },
+        "panel_min": -0.5207968354225159,
+        "panel_max": 0.6246297955513,
+        "spawn_times_s": [
+          0.0,
+          30.0,
+          60.0
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2
+        ]
+      }
+    ]
+  },
+  "55": {
+    "isaac400": [
+      {
+        "environment": 55,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -1.8227297532558442,
+          1.818908737897873
+        ],
+        "extrema": {
+          "Scaled raw steering": {
+            "minimum": -1.5449776649475098,
+            "maximum": 1.5411566495895386,
+            "minimum_time_s": 51.14,
+            "maximum_time_s": 51.160000000000004,
+            "samples": 3000
+          },
+          "Held target entering PD": {
+            "minimum": -1.284292221069336,
+            "maximum": 1.3759080171585083,
+            "minimum_time_s": 0.08,
+            "maximum_time_s": 10.46,
+            "samples": 24000
+          },
+          "Actual steering position": {
+            "minimum": -1.0665315389633179,
+            "maximum": 1.3697352409362793,
+            "minimum_time_s": 50.96,
+            "maximum_time_s": 10.48,
+            "samples": 24003
+          }
+        },
+        "panel_min": -1.5449776649475098,
+        "panel_max": 1.5411566495895386,
+        "spawn_times_s": [
+          0.0,
+          20.82,
+          50.82
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "environment": 55,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -1.5339968019723893,
+          0.9378621989488601
+        ],
+        "extrema": {
+          "Scaled raw rear request": {
+            "minimum": -1.3454651832580566,
+            "maximum": 0.7493305802345276,
+            "minimum_time_s": 51.36,
+            "maximum_time_s": 51.24,
+            "samples": 3000
+          },
+          "Submitted rear motor torque": {
+            "minimum": -1.3454651832580566,
+            "maximum": 0.7493305802345276,
+            "minimum_time_s": 51.36,
+            "maximum_time_s": 51.24,
+            "samples": 24000
+          },
+          "Solver joint-axis effort (not motor-only)": {
+            "minimum": -1.2396376132965088,
+            "maximum": 0.6434556841850281,
+            "minimum_time_s": 51.365,
+            "maximum_time_s": 51.26,
+            "samples": 24000
+          }
+        },
+        "panel_min": -1.3454651832580566,
+        "panel_max": 0.7493305802345276,
+        "spawn_times_s": [
+          0.0,
+          20.82,
+          50.82
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2,
+          3
+        ]
+      }
+    ],
+    "mujoco400": [
+      {
+        "environment": 55,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -1.8884939242472032,
+          1.8416005790430727
+        ],
+        "extrema": {
+          "Scaled raw steering": {
+            "minimum": -1.5645004510879517,
+            "maximum": 1.557101845741272,
+            "minimum_time_s": 35.76,
+            "maximum_time_s": 35.9,
+            "samples": 3000
+          },
+          "Held target entering PD": {
+            "minimum": -1.5645004510879517,
+            "maximum": 1.557101845741272,
+            "minimum_time_s": 35.76,
+            "maximum_time_s": 35.9,
+            "samples": 24000
+          },
+          "Actual steering position": {
+            "minimum": -1.6039951909454024,
+            "maximum": 1.4771486606689805,
+            "minimum_time_s": 31.6325,
+            "maximum_time_s": 35.9175,
+            "samples": 24012
+          }
+        },
+        "panel_min": -1.6039951909454024,
+        "panel_max": 1.557101845741272,
+        "spawn_times_s": [
+          0.0,
+          30.0,
+          30.64,
+          31.080000000000002,
+          31.64,
+          31.92,
+          32.28,
+          33.32,
+          34.26,
+          35.0,
+          35.78,
+          36.58
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ]
+      },
+      {
+        "environment": 55,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -7.09228937625885,
+          3.7153023958206175
+        ],
+        "extrema": {
+          "Scaled raw rear request": {
+            "minimum": -6.26798152923584,
+            "maximum": 2.8909945487976074,
+            "minimum_time_s": 30.94,
+            "maximum_time_s": 34.76,
+            "samples": 3000
+          },
+          "Submitted rear motor torque": {
+            "minimum": -6.26798152923584,
+            "maximum": 2.8909945487976074,
+            "minimum_time_s": 30.94,
+            "maximum_time_s": 34.76,
+            "samples": 24000
+          },
+          "Actual motor actuator force": {
+            "minimum": -6.26798152923584,
+            "maximum": 2.8909945487976074,
+            "minimum_time_s": 30.942500000000003,
+            "maximum_time_s": 34.762499999999996,
+            "samples": 24000
+          }
+        },
+        "panel_min": -6.26798152923584,
+        "panel_max": 2.8909945487976074,
+        "spawn_times_s": [
+          0.0,
+          30.0,
+          30.64,
+          31.080000000000002,
+          31.64,
+          31.92,
+          32.28,
+          33.32,
+          34.26,
+          35.0,
+          35.78,
+          36.58
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ]
+      }
+    ],
+    "mujoco800": [
+      {
+        "environment": 55,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -1.8318835365772248,
+          1.8142351973056794
+        ],
+        "extrema": {
+          "Scaled raw steering": {
+            "minimum": -1.553789734840393,
+            "maximum": 1.5361413955688477,
+            "minimum_time_s": 30.02,
+            "maximum_time_s": 30.34,
+            "samples": 3000
+          },
+          "Held target entering PD": {
+            "minimum": -1.4086556434631348,
+            "maximum": 1.2476922273635864,
+            "minimum_time_s": 30.04,
+            "maximum_time_s": 45.42,
+            "samples": 48000
+          },
+          "Actual steering position": {
+            "minimum": -1.2585451728161807,
+            "maximum": 1.2048254207901576,
+            "minimum_time_s": 30.099999999999998,
+            "maximum_time_s": 52.32,
+            "samples": 48002
+          }
+        },
+        "panel_min": -1.553789734840393,
+        "panel_max": 1.5361413955688477,
+        "spawn_times_s": [
+          0.0,
+          30.0,
+          60.0
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2
+        ]
+      },
+      {
+        "environment": 55,
+        "window_s": [
+          0.0,
+          60.0
+        ],
+        "ylim": [
+          -1.5310159599781037,
+          0.9557222998142243
+        ],
+        "extrema": {
+          "Scaled raw rear request": {
+            "minimum": -1.341349482536316,
+            "maximum": 0.7660558223724365,
+            "minimum_time_s": 30.240000000000002,
+            "maximum_time_s": 30.02,
+            "samples": 3000
+          },
+          "Submitted rear motor torque": {
+            "minimum": -1.341349482536316,
+            "maximum": 0.7660558223724365,
+            "minimum_time_s": 30.240000000000002,
+            "maximum_time_s": 30.02,
+            "samples": 48000
+          },
+          "Actual motor actuator force": {
+            "minimum": -1.341349482536316,
+            "maximum": 0.7660558223724365,
+            "minimum_time_s": 30.24125,
+            "maximum_time_s": 30.02125,
+            "samples": 48000
+          }
+        },
+        "panel_min": -1.341349482536316,
+        "panel_max": 0.7660558223724365,
+        "spawn_times_s": [
+          0.0,
+          30.0,
+          60.0
+        ],
+        "samples_outside_y_view": 0,
+        "legend_location": "lower right",
+        "sampled_dr_episodes": [
+          1,
+          2
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+/home/lmbike/.config/matplotlib is not a writable directory
+Matplotlib created a temporary cache directory at /tmp/matplotlib-buvqt2ht because there was an issue with the default path (/home/lmbike/.config/matplotlib); it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.
+/home/lmbike/.local/lib/python3.10/site-packages/matplotlib/projections/__init__.py:63: UserWarning: Unable to import Axes3D. This may be due to multiple versions of Matplotlib being installed (e.g. as a system package and as a pip package). As a result, the 3D projection is not available.
+  warnings.warn("Unable to import Axes3D. This may be due to multiple versions of "
+test_all_real_captures_and_motor_command_reconstruction (test_replay.ReplayChecks) ... ok
+test_exact_input_identity_and_bounds (test_replay.ReplayChecks) ... ok
+test_figures_and_links (test_replay.ReplayChecks) ... ok
+test_ground_metric_window_precedes_all_first_crossings (test_replay.ReplayChecks) ... ok
+test_no_contacts_and_loss_ablation_in_mujoco (test_replay.ReplayChecks) ... ok
+test_original_files_unchanged (test_replay.ReplayChecks) ... ok
+test_passive_loss_pairs_and_gains_in_actual_isaac_backend (test_replay.ReplayChecks) ... ok
+test_phase_fit_recovers_known_gain_and_delay (test_replay.ReplayChecks) ... ok
+test_spawn_fall_markers_do_not_pollute_motor_extrema (test_replay.ReplayChecks) ... ok
+test_statistics_are_computed_from_actual_records (test_replay.ReplayChecks) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.945s
+
+OK

@@ -1,0 +1,67 @@
+/home/lmbike/.config/matplotlib is not a writable directory
+Matplotlib created a temporary cache directory at /tmp/matplotlib-hsenkdz7 because there was an issue with the default path (/home/lmbike/.config/matplotlib); it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.
+/home/lmbike/.local/lib/python3.10/site-packages/matplotlib/projections/__init__.py:63: UserWarning: Unable to import Axes3D. This may be due to multiple versions of Matplotlib being installed (e.g. as a system package and as a pip package). As a result, the 3D projection is not available.
+  warnings.warn("Unable to import Axes3D. This may be due to multiple versions of "
+test_actual_beta_mean_mapping (test_isaac_parity.IsaacParityTests) ... skipped 'Run with Isaac Python for live task-term parity'
+test_actual_dr_ranges_and_sampling_configuration (test_isaac_parity.IsaacParityTests) ... skipped 'Run with Isaac Python for live task-term parity'
+test_actual_observation_function_on_1000_matched_states (test_isaac_parity.IsaacParityTests) ... skipped 'Run with Isaac Python for live task-term parity'
+test_actual_resolved_v1_configuration (test_isaac_parity.IsaacParityTests) ... skipped 'Run with Isaac Python for live task-term parity'
+test_actual_reward_terms_match (test_isaac_parity.IsaacParityTests) ... skipped 'Run with Isaac Python for live task-term parity'
+test_actual_termination_functions_match_boundary_cases (test_isaac_parity.IsaacParityTests) ... skipped 'Run with Isaac Python for live task-term parity'
+test_64_independent_models_and_data (test_multi_viewer.MultiViewerTests) ... ok
+test_any_existing_report_reserves_the_whole_prefix (test_multi_viewer.MultiViewerTests) ... ok
+test_batched_policy_matches_single_actions (test_multi_viewer.MultiViewerTests) ... ok
+test_default_64_and_cli_main_headlessly (test_multi_viewer.MultiViewerTests) ... ok
+test_episode_length_histogram_boundaries (test_multi_viewer.MultiViewerTests) ... ok
+test_episode_length_histogram_draws_ten_bars (test_multi_viewer.MultiViewerTests) ... ok
+test_episode_length_histogram_model_and_dr_labels (test_multi_viewer.MultiViewerTests) ... ok
+test_episode_length_histogram_without_completed_episodes (test_multi_viewer.MultiViewerTests) ... ok
+test_evaluation_concise_filenames_preserve_existing_files (test_multi_viewer.MultiViewerTests) ... ok
+test_fixed_batch_one_policy (test_multi_viewer.MultiViewerTests) ... ok
+test_grid_is_render_only_and_hides_duplicate_floor (test_multi_viewer.MultiViewerTests) ... ok
+test_histogram_counts_every_printed_episode_and_excludes_unfinished (test_multi_viewer.MultiViewerTests) ... ok
+test_invalid_counts_actions_and_render_capacity (test_multi_viewer.MultiViewerTests) ... ok
+test_repeatable_seed_streams (test_multi_viewer.MultiViewerTests) ... ok
+test_reset_one_does_not_reset_others (test_multi_viewer.MultiViewerTests) ... ok
+test_single_environment_matches_original (test_multi_viewer.MultiViewerTests) ... ok
+test_torch_batch (test_multi_viewer.MultiViewerTests) ... ok
+test_torque_export_shape_and_reset_ids (test_multi_viewer.MultiViewerTests) ... ok
+test_all_six_and_overlapping_flags (test_v1_contract.V1ContractTests) ... ok
+test_auto_reset_path_does_not_sample_terminal_noise (test_v1_contract.V1ContractTests) ... ok
+test_cad_com_offsets_are_expressed_in_matching_local_frames (test_v1_contract.V1ContractTests) ... ok
+test_disabled_motor_telemetry_matches_actual_zero_output (test_v1_contract.V1ContractTests) ... ok
+test_dr_reset_zeroes_root_com_velocity_not_free_origin_velocity (test_v1_contract.V1ContractTests) ... ok
+test_eight_explicit_pd_steps_and_post_pd_clip (test_v1_contract.V1ContractTests) ... ok
+test_exported_onnx_matches_beta_checkpoint (test_v1_contract.V1ContractTests) ... ok
+test_fall_and_yaw_exact_thresholds (test_v1_contract.V1ContractTests) ... ok
+test_ground_one_tire_priority_preserves_the_intended_pair_dynamics (test_v1_contract.V1ContractTests) ... ok
+test_group_does_not_clone_randomized_episode_as_nominal_model (test_v1_contract.V1ContractTests) ... ok
+test_nominal_spawn_noise_shape_no_finite_cap (test_v1_contract.V1ContractTests) ... ok
+test_passive_losses_not_software_torque_damping (test_v1_contract.V1ContractTests) ... ok
+test_read_only_verified_models_and_self_collision_disabled (test_v1_contract.V1ContractTests) ... ok
+test_real_beta_checkpoint_and_incompatible_v0 (test_v1_contract.V1ContractTests) ... ok
+test_rear_native_branch_matches_new_gpu_probe (test_v1_contract.V1ContractTests) ... ok
+test_reward_equal_raw_weighting_and_dt (test_v1_contract.V1ContractTests) ... ok
+test_shared_material_bank_independent_reset_noncompounding (test_v1_contract.V1ContractTests) ... ok
+test_speed_constraint_modes_are_explicit_not_hidden_target_limits (test_v1_contract.V1ContractTests) ... ok
+test_summary_uses_global_max_and_overlap_not_mean_maxima (test_v1_contract.V1ContractTests) ... ok
+test_target_clip_slew_and_reset_not_measured_position_clamp (test_v1_contract.V1ContractTests) ... ok
+test_wheel_net_lag_and_timeout_reset (test_v1_contract.V1ContractTests) ... ok
+
+----------------------------------------------------------------------
+Ran 45 tests in 2.929s
+
+OK (skipped=6)
+[INFO] episode length distribution written: /tmp/tmp2p7hb092/evaluation_epi_len_histogram.png / .csv
+[INFO] episode length distribution written: /tmp/tmps7unjpzm/evaluation_epi_len_histogram.png / .csv
+[INFO] episode length distribution written: /tmp/tmp5u5b8slh/evaluation_epi_len_histogram.png / .csv
+[INFO] episode length distribution written: /tmp/tmpw5em5dvh/evaluation_epi_len_histogram.png / .csv
+[INFO] episode length distribution written: /tmp/tmpln9emjl1/evaluation_epi_len_histogram.png / .csv
+[INFO] episode length distribution written: /tmp/tmpbllzgj9a/evaluation_epi_len_histogram.png / .csv
+[INFO] episode length distribution written: /tmp/tmpz2n2uc29/evaluation_epi_len_histogram.png / .csv
+[INFO] episode length distribution written: /tmp/tmpx4daweqq/evaluation_epi_len_histogram.png / .csv
+[INFO] episode length distribution written: /tmp/tmp21ihri3k/evaluation_epi_len_histogram.png / .csv
+[INFO] episode length distribution written: /tmp/tmp6gyu17_7/202610151649_41050_no_dr_epi_len_histogram.png / .csv
+[INFO] episode length distribution written: /tmp/tmp6gyu17_7/202610151649_41050_no_dr_2_epi_len_histogram.png / .csv
+[INFO] episode length distribution written: /tmp/tmp6gyu17_7/202610151649_91850_dr_epi_len_histogram.png / .csv
+[INFO] all-environment torque profile written: /tmp/tmp6q3lc9md/torque_torque.png / .npz

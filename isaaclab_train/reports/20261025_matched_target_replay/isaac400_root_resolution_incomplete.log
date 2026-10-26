@@ -1,0 +1,53 @@
+The '--headless' CLI argument is deprecated. Omit '--viz' for default headless. If config visualizers are enabled and you want to force headless, use '--viz none'.
+Loading user config located at: '/home/lmbike/.cache/packman/chk/kit-kernel/110.1.1+production.manylinux_2_35_x86_64.release/data/Kit/IsaacLab/3.0/user.config.json'
+2026-10-25T15:50:19Z [0ms] [Warning] [omni.ext.plugin] [ext: extensions] Extensions config 'extension.toml' doesn't exist '/home/lmbike/IsaacLab/source/extensions' or '/home/lmbike/IsaacLab/source/extensions/config'
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+E0000 00:00:1792943419.546118 1606218 descriptor_database.cc:633] File already exists in database: grpc/health/v1/health.proto
+W0000 00:00:1792943419.546157 1606218 message.cc:301] Protobuf GeneratedMessageFactory: File is already registered: grpc/health/v1/health.proto
+2026-10-25T15:50:19Z [364ms] [Warning] [omni.usd_config.extension] Enable omni.materialx.libs extension to use MaterialX
+2026-10-25T15:50:20Z [825ms] [Warning] [isaacsim.core.simulation_manager.plugin] USD stage is not available; stage-opened subscription is deferred
+2026-10-25T15:50:20Z [825ms] [Warning] [isaacsim.core.simulation_manager.plugin] USD stage is not available; stage-opened subscription is deferred
+[ISAACLAB] AppLauncher initialization complete
+[ISAACLAB] Kit version: 110.1.1+production.305458.6312fa25.gl
+[ISAACLAB] Kit kernel:  210.1.5+release.12978.b22b555f.gl
+[ISAACLAB] Kit hash:    6312fa25
+[INFO]: Registered backend 'physx' for factory Articulation.
+[INFO]: Creating a fixed joint for the articulation: '/World/airborne_0/Robot/Geometry/base_link'.
+2026-10-25T15:50:24Z [4,601ms] [Warning] [usdrt.population.plugin] Last global time was not created. Did you call setEnableUsdNoticeHandling?
+2026-10-25T15:50:24Z [4,612ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/ground_0/Robot/Geometry/base_link/base_link'
+2026-10-25T15:50:24Z [4,612ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/ground_1/Robot/Geometry/base_link/base_link'
+2026-10-25T15:50:24Z [4,730ms] [Warning] [isaaclab_physx.assets.articulation.articulation] Not all actuators are configured! Total number of actuated joints not equal to number of joints available: 2 != 3.
+[INFO]: Simulation parameters for joints in /World/ground_.*/Robot:
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                                                      Simulation Joint Information (Prim path: /World/ground_.*/Robot)                                                      |
++-------+-------------------+-----------+---------+----------+-----------------+------------------+------------------+---------------------+-----------------+---------------+
+| Index | Name              | Stiffness | Damping | Armature | Static Friction | Dynamic Friction | Viscous Friction |   Position Limits   | Velocity Limits | Effort Limits |
++-------+-------------------+-----------+---------+----------+-----------------+------------------+------------------+---------------------+-----------------+---------------+
+|   0   | rear_wheel_joint  |   0.000   |  0.000  |  0.000   |      0.106      |      0.106       |      0.000       | [-3.4e+38, 3.4e+38] |      61.600     |     6.280     |
+|   1   | steering_joint    |   0.000   |  0.000  |  0.000   |      0.046      |      0.046       |      0.001       |   [-1.571, 1.571]   |      23.900     |     5.600     |
+|   2   | front_wheel_joint |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    3.4e+38    |
++-------+-------------------+-----------+---------+----------+-----------------+------------------+------------------+---------------------+-----------------+---------------+
+Traceback (most recent call last):
+  File "/home/lmbike/trackstand_rl/isaaclab_train/reports/20261025_matched_target_replay/replay_isaac.py", line 134, in <module>
+    main()
+  File "/home/lmbike/trackstand_rl/isaaclab_train/reports/20261025_matched_target_replay/replay_isaac.py", line 61, in main
+    sim.reset()
+  File "/home/lmbike/IsaacLab/source/isaaclab/isaaclab/sim/simulation_context.py", line 727, in reset
+    self.physics_manager.reset(soft)
+  File "/home/lmbike/IsaacLab/source/isaaclab_physx/isaaclab_physx/physics/physx_manager.py", line 326, in reset
+    cls.raise_callback_exception_if_any()
+  File "/home/lmbike/IsaacLab/source/isaaclab_physx/isaaclab_physx/physics/physx_manager.py", line 473, in raise_callback_exception_if_any
+    raise exc
+  File "/home/lmbike/IsaacLab/source/isaaclab/isaaclab/physics/physics_manager.py", line 425, in safe_callback_invoke
+    fn(*args)
+  File "/home/lmbike/IsaacLab/source/isaaclab/isaaclab/assets/asset_base.py", line 361, in _invoke
+    getattr(obj_ref, callback_name)(event)
+  File "/home/lmbike/IsaacLab/source/isaaclab/isaaclab/assets/asset_base.py", line 401, in _initialize_callback
+    self._initialize_impl()
+  File "/home/lmbike/IsaacLab/source/isaaclab_physx/isaaclab_physx/assets/articulation/articulation.py", line 3861, in _initialize_impl
+    _, root_prim_path_expr = resolve_matching_prims_from_source(self.cfg.prim_path, **resolve_kwargs)[0]
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lmbike/IsaacLab/source/isaaclab/isaaclab/sim/utils/queries.py", line 477, in resolve_matching_prims_from_source
+    raise RuntimeError(f"Expected {expected_num_matches} prims at '{path_expr}', found {len(results)}.")
+RuntimeError: Expected 1 prims at '/World/airborne_.*/Robot', found 2.
+2026-10-25T15:50:24Z [4,828ms] [Warning] [omni.usd] Unexpected reference count of 2 for UsdStage 'anon:0x5ab22193b160:World0.usd' while being closed in UsdContext (this may indicate it is still resident in memory).

@@ -1,6 +1,7 @@
 # Core (both required)
-mujoco>=3.2
+mujoco>=3.3.0  # MjSpec API used by the read-only, in-memory model augmentation
 numpy
+matplotlib
 
 # Policy inference — pick one:
 #   onnxruntime : runs the exact deployed ONNX artifact (recommended;

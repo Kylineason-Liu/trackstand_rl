@@ -1,0 +1,58 @@
+{
+  "task": "Trackstand-Balance-v1",
+  "date": "2026-10-22",
+  "system_tests": {
+    "total": 45,
+    "passed": 39,
+    "skipped": 6,
+    "failed": 0,
+    "python": "3.10.12",
+    "mujoco": "3.12.0",
+    "numpy": "2.2.6",
+    "torch": "2.12.1+cu130",
+    "onnxruntime": "1.23.2"
+  },
+  "isaac_python_tests": {
+    "total": 45,
+    "passed": 44,
+    "skipped": 1,
+    "failed": 0,
+    "python": "3.12.13",
+    "mujoco": "3.8.1",
+    "numpy": "2.5.0",
+    "torch": "2.10.0+cu128"
+  },
+  "unique_test_cases_covered": 45,
+  "syntax_check_passed": true,
+  "whitespace_check_passed": true,
+  "ruff_black_available": false,
+  "protected_files": {
+    "checked_files": 144,
+    "changed_files": []
+  },
+  "source_sha256": {
+    "mujoco_sim2sim/src/newbike_mujoco/policy.py": "c25c77415932aa29e70c2f589af8cd525fb19ab9008586ae25efca5f45823b3f",
+    "mujoco_sim2sim/src/newbike_mujoco/viewer_envs.py": "c0f14ce0c0faa03efceb1e32575707d45181c1ccdf7247b5300c5ac7b4a151d4",
+    "mujoco_sim2sim/src/newbike_mujoco/reporting.py": "a9dd3f73983d04bb1b0f49f6a12de84500cad9e21492237d658387f8b876cb88",
+    "mujoco_sim2sim/src/newbike_mujoco/model.py": "312da4821aee34eb1920577b68456842781ec0da656be07a676a3988b1d69009",
+    "mujoco_sim2sim/src/newbike_mujoco/contract.py": "e097287cd753c3cd14de7627755a81b5fd584401f41d659d232771f966f55804",
+    "mujoco_sim2sim/src/newbike_mujoco/__init__.py": "3f6a132deec5ed241e1fe23102d05d4152e17169052c5b114d9ca41e67d885a5",
+    "mujoco_sim2sim/src/newbike_mujoco/env.py": "76899426f0fdb6911bf3fa4f00e6f81091baf2556e367148b43c11d6d78e2ff4",
+    "mujoco_sim2sim/scripts/run_deploy_eval.py": "eaa9f1e6c91e319b22a52b4402203f4b8efe9357af007f77b6f5ae846f4bd7e1",
+    "mujoco_sim2sim/scripts/run_deploy_viewer.py": "ccd5ecc161c6d33bd2f87e52678618e978b204f9dfb7836fa98970f3e0067ca2",
+    "mujoco_sim2sim/tests/test_multi_viewer.py": "1664fa67439f172871f126bd58c2116652f6df9f8dca6adf0890a937fa0e89e0",
+    "mujoco_sim2sim/tests/test_isaac_parity.py": "2fa23ad02045ea61fcdae47f7c950395f027e5f3f263552ea370722d8eeff34b",
+    "mujoco_sim2sim/tests/test_v1_contract.py": "d279bfb7d89c7ca1ef95d96f450c25f9d0d87aa728b24429f4968a3b34892403"
+  },
+  "hardware_tested": false,
+  "new_training_started": false,
+  "known_remaining_differences": [
+    "PhysX soft velocity constraints vs selectable MuJoCo hard projection/none",
+    "Separate static/dynamic contact friction vs one MuJoCo sliding coefficient",
+    "TGS/SDF/contact/passive-friction/integration behavior",
+    "Unresolved native rigid-body drag/recovery defaults",
+    "Float precision and RNG stream differences"
+  ],
+  "intermediate_runs_moved_to": "/tmp/trackstand_v1_alignment_intermediate.qYK72K",
+  "metadata_wording_correction": "Only limitation text was corrected to specify runtime env.dr, not persisted material-draw history. No numeric arrays or episode results changed."
+}
