@@ -29,7 +29,7 @@ def test_common_motor_interfaces_keep_each_versioned_schema(node_module, filenam
     )
     assert node._control_dimension.label == node._control_label + ":" + ",".join(module.MOTOR_CONTROL_FIELDS)
     assert node._control_dimension.size == node._control_dimension.stride == len(module.MOTOR_CONTROL_FIELDS)
-    assert node._state_dimension.label == "motor_state_v2:" + ",".join(MOTOR_STATE_FIELDS)
+    assert node._state_dimension.label == "motor_state_v3:" + ",".join(MOTOR_STATE_FIELDS)
     assert node._state_dimension.size == node._state_dimension.stride == 7
     assert node.create_publisher.call_args_list[0].args[2] == 10  # Keep state/observation QoS unchanged.
     assert node.create_publisher.call_args_list[1].args[2].depth == 50

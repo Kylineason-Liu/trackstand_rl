@@ -1,0 +1,31 @@
+test_200hz_repeats_same50hz_targets_and_restores_watchdog (test_drive_policy_replay.DriveReplayTests) ... ok
+test_bad_cli_and_episode_window_rejected (test_drive_policy_replay.DriveReplayTests) ... ok
+test_both_rear_columns_are_selected_without_hidden_transform (test_drive_policy_replay.DriveReplayTests) ... ok
+test_c0_replies_do_not_hide_missing_a1_and_a1_cannot_hide_missing_c0 (test_drive_policy_replay.DriveReplayTests) ... ok
+test_c0_units_sign_and_quantization (test_drive_policy_replay.DriveReplayTests) ... ok
+test_excess_command_current_rejects_plan_without_clipping_or_motion (test_drive_policy_replay.DriveReplayTests) ... ok
+test_failed_restore_is_reported_separately_from_confirmed_disable (test_drive_policy_replay.DriveReplayTests) ... ok
+test_fault_mode_temperature_speed_or_current_stops_and_restores (test_drive_policy_replay.DriveReplayTests) ... ok
+test_logger_failure_still_disables_and_restores_watchdog (test_drive_policy_replay.DriveReplayTests) ... ok
+test_missed_c0_deadline_stops_without_catchup_burst (test_drive_policy_replay.DriveReplayTests) ... ok
+test_missing_kernel_timestamp_refuses_c0_motion (test_drive_policy_replay.DriveReplayTests) ... ok
+test_no_b3_or_b4_writes_and_b3_is_not_used_as_c0_ceiling (test_drive_policy_replay.DriveReplayTests) ... ok
+test_no_watchdog_restore_when_disable_not_confirmed (test_drive_policy_replay.DriveReplayTests) ... ok
+test_nonzero_wheel_velocity_does_not_add_host_damping (test_drive_policy_replay.DriveReplayTests) ... ok
+test_old_replay_outputs_are_not_overwritten (test_drive_policy_replay.DriveReplayTests) ... ok
+test_preview_has_no_can_or_file_side_effect (test_drive_policy_replay.DriveReplayTests) ... ok
+test_rear_position_is_multiturn_and_not_a_steering_angle_stop (test_drive_policy_replay.DriveReplayTests) ... ok
+test_scaled_and_submitted_default_plans_match_actual_simulator_prefix_and_core (test_drive_policy_replay.DriveReplayTests) ... ok
+test_tighter_existing_watchdog_is_preserved (test_drive_policy_replay.DriveReplayTests) ... ok
+test_watchdog_is_restored_after_lost_setup_ack (test_drive_policy_replay.DriveReplayTests) ... ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 0.477s
+
+OK
+Rear replay complete; disabled and CD restored. CSV: /tmp/tmp_42rlvae/rear50.csv
+Rear replay complete; disabled and CD restored. CSV: /tmp/tmp_42rlvae/rear200.csv
+Rear replay complete; disabled and CD restored. CSV: /tmp/tmprw1l5542/rear.csv
+Rear replay complete; disabled and CD restored. CSV: /tmp/tmpmmbohpi_/speed0.csv
+Rear replay complete; disabled and CD restored. CSV: /tmp/tmpmmbohpi_/speed-3000.csv
+Rear replay complete; disabled and CD restored. CSV: /tmp/tmpclo3qpge/rear.csv

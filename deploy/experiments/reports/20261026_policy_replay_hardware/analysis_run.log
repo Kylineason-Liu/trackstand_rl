@@ -1,0 +1,7 @@
+/home/lmbike/.local/lib/python3.10/site-packages/matplotlib/projections/__init__.py:63: UserWarning: Unable to import Axes3D. This may be due to multiple versions of Matplotlib being installed (e.g. as a system package and as a pip package). As a result, the 3D projection is not available.
+  warnings.warn("Unable to import Axes3D. This may be due to multiple versions of "
+Steering MIT 50 Hz completed True error RMS 0.1728744725948925
+Steering MIT 200 Hz completed False error RMS 0.21151304414349362
+Rear C0 50 Hz completed True error RMS 0.015847776498921485
+Rear C0 200 Hz completed True error RMS 0.016495542752989544
+Output: /home/lmbike/trackstand_rl/deploy/experiments/reports/20261026_policy_replay_hardware

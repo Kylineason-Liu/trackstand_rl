@@ -1,0 +1,44 @@
+........................................................................ [ 13%]
+........................................................................ [ 26%]
+........................................................................ [ 39%]
+........................................................................ [ 52%]
+...................F.................................................... [ 65%]
+..................F..FF................s................................ [ 78%]
+............................................F........................... [ 91%]
+...............................................                          [100%]
+=================================== FAILURES ===================================
+___________ test_wrapped_observation_unwrapped_safety_and_fresh_pair ___________
+deploy/source/trackstand_deploy/test/test_motor_mit_io.py:714: in test_wrapped_observation_unwrapped_safety_and_fresh_pair
+    assert node._fault_reason == "steering_position_limit"
+E   AssertionError: assert None == 'steering_position_limit'
+E    +  where None = <trackstand_deploy._motor_mit_io_telemetry_test.MotorMitIo object at 0x76de357cd300>._fault_reason
+____________ test_cf_acknowledgement_with_active_mode_fails_closed _____________
+deploy/source/trackstand_deploy/test/test_motor_mit_io.py:1214: in test_cf_acknowledgement_with_active_mode_fails_closed
+    assert node._hard_fault and node._fault_reason == "steering_disable_not_confirmed"
+E   assert (False)
+E    +  where False = <trackstand_deploy._motor_mit_io_telemetry_test.MotorMitIo object at 0x76de3533d930>._hard_fault
+_ test_present_speed_fault_cannot_clear_while_rc_is_down[steering-30-steering_speed_limit] _
+deploy/source/trackstand_deploy/test/test_motor_mit_io.py:1257: in test_present_speed_fault_cannot_clear_while_rc_is_down
+    assert node._fault_latched and node._fault_reason == reason
+E   assert (False)
+E    +  where False = <trackstand_deploy._motor_mit_io_telemetry_test.MotorMitIo object at 0x76de35515990>._fault_latched
+_ test_present_speed_fault_cannot_clear_while_rc_is_down[drive-70-drive_speed_limit] _
+deploy/source/trackstand_deploy/test/test_motor_mit_io.py:1257: in test_present_speed_fault_cannot_clear_while_rc_is_down
+    assert node._fault_latched and node._fault_reason == reason
+E   assert (False)
+E    +  where False = <trackstand_deploy._motor_mit_io_telemetry_test.MotorMitIo object at 0x76de35516d40>._fault_latched
+________ test_roll_safety_diagnostics_match_existing_gravity_condition _________
+deploy/source/trackstand_deploy/test/test_policy_timing.py:99: in test_roll_safety_diagnostics_match_existing_gravity_condition
+    assert policy_node._readiness_reasons(100.0) == ["roll_or_inversion_safety"]
+E   AssertionError: assert [] == ['roll_or_inversion_safety']
+E     Right contains one more item: 'roll_or_inversion_safety'
+E     Full diff:
+E     - ['roll_or_inversion_safety']
+E     + []
+=========================== short test summary info ============================
+FAILED deploy/source/trackstand_deploy/test/test_motor_mit_io.py::test_wrapped_observation_unwrapped_safety_and_fresh_pair
+FAILED deploy/source/trackstand_deploy/test/test_motor_mit_io.py::test_cf_acknowledgement_with_active_mode_fails_closed
+FAILED deploy/source/trackstand_deploy/test/test_motor_mit_io.py::test_present_speed_fault_cannot_clear_while_rc_is_down[steering-30-steering_speed_limit]
+FAILED deploy/source/trackstand_deploy/test/test_motor_mit_io.py::test_present_speed_fault_cannot_clear_while_rc_is_down[drive-70-drive_speed_limit]
+FAILED deploy/source/trackstand_deploy/test/test_policy_timing.py::test_roll_safety_diagnostics_match_existing_gravity_condition
+5 failed, 545 passed, 1 skipped in 1.80s

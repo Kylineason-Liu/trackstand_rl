@@ -6,8 +6,8 @@ motor_io; versioned motor_control telemetry exposes native MIT command/feedback 
 This node owns its state and ROS handling; it does not import either legacy motor node.
 Firmware PD frequency and MIT current limiting are not established by the
 local protocol; F0 ranges do not implement the previous host torque clamp.
-Experimental: steering target/slew and both rear torque clamps are commented
-out by request. Protocol encoding bounds and fail-closed safety gates remain.
+V1 position clip/slew is performed by policy_controller at 50 Hz; this node
+holds those targets at 200 Hz, bounds motor requests and preserves safety gates.
 """
 
 from __future__ import annotations
@@ -36,7 +36,8 @@ from .can_protocol import (
 )
 from .contracts import (
     DRIVE_DAMPING_NM_S_PER_RAD, DRIVE_EFFORT_LIMIT_NM,
-    STEERING_KD_NM_S_PER_RAD, STEERING_KP_NM_PER_RAD, STEERING_VELOCITY_LIMIT_RAD_S, motor_fault_clear_allowed,
+    STEERING_KD_NM_S_PER_RAD, STEERING_KP_NM_PER_RAD, motor_fault_clear_allowed,
+    STEERING_ACTION_SCALE_RAD,
 )
 from .mit_protocol import (
     MitCommand, MitFeedback, MitRanges, f0_with_position, mit_motion_payload,
@@ -328,11 +329,6 @@ class MotorMitIo(Node):
             f"MIT steering/C0 drive/control {MIT_RATE_HZ:g} Hz on {self._can_interface}; "
             f"dry_run={self._dry_run}"
         )
-        self.get_logger().warning(
-            f"Experimental limits disabled: steering +/-{math.degrees(self._steering_limit_rad):g} deg, "
-            f"target slew {STEERING_VELOCITY_LIMIT_RAD_S:g} rad/s, rear +/-{DRIVE_EFFORT_LIMIT_NM:g} N m. "
-            "Policy targets can exceed motor capability; independent protection/support required."
-        )
         self._worker.start()
 
     def _initialize_command_state(self) -> None:
@@ -378,10 +374,9 @@ class MotorMitIo(Node):
             if not self._requested_enable:
                 self._disable_generation += 1
             self._requested_steering_target_rad, self._requested_drive_target_nm = values[1:]
-            self._steering_target_rad, self._drive_target_nm = values[1:]
-            # Disabled by request: steering target and pre-damping rear torque clamps.
-            # self._steering_target_rad = max(-self._steering_limit_rad, min(self._steering_limit_rad, values[1]))
-            # self._drive_target_nm = max(-DRIVE_EFFORT_LIMIT_NM, min(DRIVE_EFFORT_LIMIT_NM, values[2]))
+            limit = min(self._steering_limit_rad, STEERING_ACTION_SCALE_RAD)
+            self._steering_target_rad = max(-limit, min(limit, values[1]))
+            self._drive_target_nm = max(-DRIVE_EFFORT_LIMIT_NM, min(DRIVE_EFFORT_LIMIT_NM, values[2]))
             self._command_monotonic = time.monotonic()
 
     def _snapshot(self, motor: ChannelState) -> tuple:
@@ -988,13 +983,9 @@ class MotorMitIo(Node):
         diag["steering_slew_limited"] = False
         self._active_disable_generation = token[1]
         if due:
+            # Already clipped/slewed at the 50-Hz producer. Repeat without a
+            # second limiter or updating its state on each 200-Hz transmission.
             proposed = target_rad
-            # Disabled by request: steering target slew. Uncomment to restore.
-            # elapsed = max(0.0, now - self._slew_last_at) if self._slew_last_at > 0 else MIT_DT_S
-            # max_step = STEERING_VELOCITY_LIMIT_RAD_S * min(elapsed, 2 * MIT_DT_S)
-            # delta = target_rad - self._slewed_steering_target_rad
-            # proposed = self._slewed_steering_target_rad + max(-max_step, min(max_step, delta))
-            # diag["steering_slew_limited"] = abs(delta) > max_step
             steer_send, native = self._send_mit(proposed, guard=guard)
             diag["mit_native_target_rad"] = native
             if diag["gate_enabled"] and (self._dry_run or steer_send.success):
@@ -1003,9 +994,7 @@ class MotorMitIo(Node):
         diag["steering_error_rad"] = self._slewed_steering_target_rad - diag["steering_position_rad"]
         drive_damping = -DRIVE_DAMPING_NM_S_PER_RAD * diag["drive_velocity_rad_s"]
         drive_unclipped = target_drive_nm + drive_damping
-        drive_torque = drive_unclipped
-        # Disabled by request: final rear torque clamp. Uncomment to restore.
-        # drive_torque = max(-DRIVE_EFFORT_LIMIT_NM, min(DRIVE_EFFORT_LIMIT_NM, drive_unclipped))
+        drive_torque = max(-DRIVE_EFFORT_LIMIT_NM, min(DRIVE_EFFORT_LIMIT_NM, drive_unclipped))
         diag.update(drive_damping_torque_nm=drive_damping, drive_unclipped_torque_nm=drive_unclipped,
                     drive_final_torque_nm=drive_torque, drive_torque_saturated=drive_torque != drive_unclipped)
         if diag["gate_enabled"] and not self._fault_latched and send_drive:

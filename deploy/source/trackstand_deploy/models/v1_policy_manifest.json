@@ -1,0 +1,23 @@
+{
+  "task": "Trackstand-Balance-v1",
+  "run": "2026-10-21_11-18-29",
+  "training_domain_randomization": true,
+  "checkpoint": "isaaclab_train/logs/rsl_rl/trackstand_rl_rsl/2026-10-21_11-18-29/model_2500.pt",
+  "checkpoint_sha256": "5389effbd6a0d3e78c9ea9caeac309ceb5082622c8ee125bb701c63d1511fe52",
+  "onnx": "trackstand_rl_rsl_2026-10-21_11-18-29_model_2500.onnx",
+  "onnx_sha256": "d9701945b48e62fec14ea3258cf4255b0c7541d530eb8ec7789a770e9a5a63b2",
+  "observation_size": 11,
+  "action_size": 2,
+  "distribution": "Beta deterministic mean: 2*alpha/(alpha+beta)-1",
+  "observation_normalization": false,
+  "weights_embedded": true,
+  "policy_rate_hz": 50.0,
+  "action_scales": [
+    1.57,
+    6.28
+  ],
+  "action_units": [
+    "rad",
+    "N m"
+  ]
+}

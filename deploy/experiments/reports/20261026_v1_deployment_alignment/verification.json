@@ -1,0 +1,20 @@
+{
+  "protected_existing_files_unchanged": 804,
+  "protected_scope": "Isaac task source, MuJoCo source, pre-existing deployment experiments/data/reports and Git index",
+  "runtime_config_test_documentation_changed_or_added": 32,
+  "changed_python_ast_valid": true,
+  "new_python_lines_within_120_columns": true,
+  "unit_tests": {
+    "passed": 584,
+    "skipped": 1
+  },
+  "hardware_ros_build_or_physics_run": false,
+  "backup": "/tmp/trackstand_v1_deploy_alignment.1ubnqwva",
+  "checkpoint_sha256": "5389effbd6a0d3e78c9ea9caeac309ceb5082622c8ee125bb701c63d1511fe52",
+  "local_document_links_resolve": true,
+  "hardware_configurations_unchanged": true,
+  "pyflakes_changed_files_passed": 24,
+  "progress_records_updated": "MD section 208 and concise root TXT counterparts",
+  "skip_reason": "Sandbox restrictions on local socket/kernel timestamp test",
+  "remaining_material_gap": "Physical MIT total PD torque/current limit is unverified"
+}

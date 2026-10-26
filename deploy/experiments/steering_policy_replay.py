@@ -4,7 +4,8 @@
 Python stdlib + adjacent steering_sine_mit_io.py; no ROS/NumPy required on Pi.
 Preview is the default. Only --execute opens CAN. Steering ID 2; no rear writes.
 Targets update at 50 Hz; 200 Hz transmission repeats each encoded target four times.
-Startup records A3/F1 software zeros; never writes B1, F0, gains, B3 or CD settings.
+Startup confirms stationary/disabled, sends B1 ONCE (persistent steering origin),
+then verifies fresh A3/F1 near zero. Never writes F0, gains, B3 or CD settings.
 MIT gains are carried in each packet, with requested velocity/feedforward torque zero.
 F0 ranges are encoding ranges, NOT an established total-current/torque protection.
 Use independent support, clear steering travel, verified protection and emergency stop.
@@ -235,7 +236,7 @@ class CsvLog(mit.CsvLog):
 
 
 class ReplayIO(mit.CanIO):
-    reply_lengths = LENGTHS
+    reply_lengths = LENGTHS | {0xB1: 3}
 
     def __init__(self, bus, log, motor, args):
         super().__init__(bus, log, [motor])
@@ -392,6 +393,8 @@ def open_bus(args):
 
 def startup(io, plan):
     motor = io.motors[0]
+    io.origin_setup = dict(method="B1 persistent steering origin, once per execution",
+                           attempted=False, acknowledged=False, verified=False)
     disabled = io.request(motor, 0xCF)
     if disabled[6] or disabled[7]:
         raise RuntimeError("motor not confirmed disabled and fault-free")
@@ -403,24 +406,56 @@ def startup(io, plan):
     io.request(motor, 0xCD)
     if io.current_limit <= 0:
         raise RuntimeError("invalid configured B3 current limit")
-    encoder = io.request(motor, 0xA3)
-    motor.zero_count = struct.unpack("<i", encoder[3:7])[0]
+    for row in plan:
+        mit.encode(motor.encoder_sign * row["target_rad"], -motor.ranges[0], motor.ranges[0], 16)
+    before = io.request(motor, 0xA3)
+    io.origin_setup["encoder_count_before_reset"] = struct.unpack("<i", before[3:7])[0]
     io.request(motor, 0xA2)
     io.request(motor, 0xA1)
-    feedback = io.request(motor, 0xF1)
-    if feedback[6] & 3 or abs(io.velocity) > .2:
-        raise RuntimeError("motor must be stationary, disabled and fault-free")
-    motor.zero_rad = mit.decode_symmetric(int.from_bytes(feedback[1:3], "big"), motor.ranges[0], 16)
-    motor.reference_epoch = 1
-    # Re-read A3 AFTER fixing its software zero; first sample's relative angle was unavailable.
-    io.request(motor, 0xA3)
     status = io.request(motor, 0xAE)
-    if status[6] or status[7]:
-        raise RuntimeError("motor status changed during startup")
-    if abs(io.current) > io.args.current_abort_a:
-        raise RuntimeError("startup current exceeds test threshold")
+    if status[6] or status[7] or abs(io.velocity) > .2 or abs(io.current) > io.args.current_abort_a:
+        raise RuntimeError("steering must be disabled, stationary and below current threshold BEFORE B1")
+
+    # B1 changes the saved origin; F1 may otherwise be clipped by the existing F0 range.
+    # Do not repeat B1 on a lost reply or attempt an undocumented origin restoration.
+    io.origin_setup["attempted"] = True
+    ack = io.request(motor, 0xB1)
+    io.origin_setup.update(acknowledged=True, acknowledgement_hex=ack.hex().upper())
+    encoder = io.request(motor, 0xA3)
+    single, count = struct.unpack("<Hi", encoder[1:])
+    if single >= 16384 or abs((single + 8192) % 16384 - 8192) > 2 or abs(count) > 2:
+        raise RuntimeError("A3 not near the new B1 origin; no MIT motion sent")
+    feedback = io.request(motor, 0xF1)
+    pcode = int.from_bytes(feedback[1:3], "big")
+    p = mit.decode_symmetric(pcode, motor.ranges[0], 16)
+    v = mit.decode_symmetric((feedback[3] << 4) | (feedback[4] >> 4), motor.ranges[1], 12)
+    io.origin_setup.update(F1_position_code=pcode, F1_native_zero_rad=p, A3_zero_count=count)
+    if pcode in (0, 65535):
+        raise RuntimeError("F1 startup position is clipped at its encoding endpoint; no MIT motion sent")
+    tolerance = 2 * mit.RADIANS_PER_COUNT + 2 * motor.ranges[0] / 65535
+    if feedback[6] & 3 or abs(p - count * mit.RADIANS_PER_COUNT) > tolerance:
+        raise RuntimeError("F1 must be inactive, fault-free and consistent with the new A3 origin")
+    if abs(v) > .1 + 2 * motor.ranges[1] / 4095:
+        raise RuntimeError("F1 reports moving steering after B1; no MIT motion sent")
+    motor.zero_count, motor.zero_rad = count, p
+    motor.reference_epoch = 1
+    # Bracket F1 with fresh A3 samples so changing position cannot define mismatched zeros.
+    after = io.request(motor, 0xA3)
+    if abs(struct.unpack("<i", after[3:7])[0] - count) > 2:
+        raise RuntimeError("steering moved while establishing A3/F1 references; no MIT motion sent")
+    io.request(motor, 0xA2)
+    io.request(motor, 0xA1)
+    status = io.request(motor, 0xAE)
+    if status[6] or status[7] or abs(io.velocity) > .2 or abs(io.current) > io.args.current_abort_a:
+        raise RuntimeError("steering status/motion/current changed during initialization")
+    if io.request(motor, 0xF0) != motor.requested_config:
+        raise RuntimeError("F0 encoding ranges changed during initialization")
     for row in plan:
         mit.encode(motor.zero_rad + motor.encoder_sign * row["target_rad"], -motor.ranges[0], motor.ranges[0], 16)
+    io.origin_setup["verified"] = True
+    io.log.emit(io.row(motor, "event", can_note="B1 acknowledged; fresh stationary A3/F1 origins verified"))
+    print(f"Steering origin verified after B1: A3={count} counts, F1={p:.9f} rad; "
+          f"original A3={io.origin_setup['encoder_count_before_reset']} counts", flush=True)
 
 
 def payload(target_rad, motor, args):
@@ -525,6 +560,7 @@ def execute(args, plan, input_sha):
                     motion(io, plan)
                     metadata["completed"] = True
                 finally:
+                    metadata["steering_origin_setup"] = getattr(io, "origin_setup", None)
                     metadata["disable_confirmed"] = shutdown(io)
                     metadata["final_fault_code"] = getattr(io, "final_fault_code", None)
                     if not metadata["disable_confirmed"]:
@@ -558,7 +594,7 @@ def main(argv=None):
               f"position [{min(r['target_rad'] for r in plan):.6g}, {max(r['target_rad'] for r in plan):.6g}] rad")
         if args.execute:
             print("Independent support, straight startup, free steering and verified protection required. "
-                  "Rear motor is not commanded.", flush=True)
+                  "B1 will set the persistent steering origin once; rear motor is not commanded.", flush=True)
             execute(args, plan, digest)
         else:
             print("No CAN opened; no CSV created. Add --execute for hardware motion.")

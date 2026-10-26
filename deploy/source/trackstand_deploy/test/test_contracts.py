@@ -22,15 +22,14 @@ def test_upright_observation_order_and_units():
         rear_wheel_position_rad=4.0,
         steering_velocity_rad_s=0.4,
         rear_wheel_velocity_rad_s=2.0,
-        wheel_radius_m=0.07,
     )
-    assert observation.shape == (13,)
+    assert observation.shape == (11,)
     assert observation.dtype == np.float32
-    assert observation[:7] == pytest.approx([0.0, -1.0, 0.1, 0.2, 0.3, 0.14, 0.0])
-    assert observation[7] == pytest.approx(0.25)
-    assert observation[8] == pytest.approx(4.0 - 2.0 * math.pi)
-    assert observation[11] == pytest.approx(math.sin(0.25))
-    assert observation[12] == pytest.approx(math.cos(0.25))
+    assert observation[:5] == pytest.approx([0.0, -1.0, 0.1, 0.2, 0.3])
+    assert observation[5] == pytest.approx(0.25)
+    assert observation[6] == pytest.approx(4.0)
+    assert observation[9] == pytest.approx(math.sin(0.25))
+    assert observation[10] == pytest.approx(math.cos(0.25))
 
 
 def test_imu_mount_correction_matches_identity_case():
@@ -45,25 +44,19 @@ def test_imu_mount_correction_matches_identity_case():
     assert rates == pytest.approx([0.9, 1.8, 2.7])
 
 
-def test_action_scaling_bypasses_commented_narrow_steering_limit():
-    steering, drive = scale_policy_action(np.array([2.0, -2.0]), math.radians(30.0))
-    assert steering == pytest.approx(3.14)
-    assert drive == pytest.approx(-12.56)
+def test_action_scaling_rejects_different_training_position_limit():
+    with pytest.raises(ValueError, match="1.57"):
+        scale_policy_action(np.array([1.0, -1.0]), math.radians(30.0))
 
 
-def test_action_scaling_bypasses_commented_90_degree_target_limit():
-    steering, drive = scale_policy_action(np.array([2.0, -2.0]), math.radians(90.0))
-    assert steering == pytest.approx(3.14)
-    assert drive == pytest.approx(-12.56)
-    steering, drive = scale_policy_action(np.array([-2.0, 2.0]), math.radians(90.0))
-    assert steering == pytest.approx(-3.14)
-    assert drive == pytest.approx(12.56)
+def test_action_scaling_reaches_both_v1_endpoints():
+    assert scale_policy_action(np.array([1.0, -1.0])) == pytest.approx((1.57, -6.28))
+    assert scale_policy_action(np.array([-1.0, 1.0])) == pytest.approx((-1.57, 6.28))
 
 
-@pytest.mark.parametrize("raw_action", [[2.0, -2.0], [-2.0, 2.0], [0.5, -0.25]])
-def test_action_scaling_matches_unclipped_training_scales(raw_action):
-    # The retained limit argument no longer clips the scaled action.
-    steering, drive = scale_policy_action(np.array(raw_action), max_steering_target_rad=10.0)
+@pytest.mark.parametrize("raw_action", [[1.0, -1.0], [-1.0, 1.0], [0.5, -0.25]])
+def test_action_scaling_matches_bounded_v1_training_scales(raw_action):
+    steering, drive = scale_policy_action(np.array(raw_action))
     assert steering == pytest.approx(raw_action[0] * 1.57)
     assert drive == pytest.approx(raw_action[1] * 6.28)
 

@@ -1,6 +1,6 @@
-# MIT motor I/O alternative
+# MIT motor I/O backend
 
-`motor_mit_io` is an alternative to `motor_io` and `motor_io_position`; run exactly
+`motor_mit_io` is the default backend; alternatives are `motor_io` and `motor_io_position`. Run exactly
 one of them. It keeps `/trackstand/motor_command` as
 `[enable, steering_target_rad, drive_torque_nm]` and publishes the same unified
 state, fault, status, control, and event topics. The control array
@@ -14,7 +14,7 @@ zero-velocity/feedforward quantization residuals, and actual send interval.
 Preparation can precede a rejected send guard or occur in dry-run; use the
 per-tick send flags to distinguish a prepared payload from socket submission.
 
-`motor_state` uses the shared seven-field `motor_state_v2` format: the existing
+`motor_state` uses the shared seven-field `motor_state_v3` format: the existing
 position/velocity/time prefix followed by steering and rear torque in N·m.
 Missing/stale torque is `NaN`; the policy still uses only the four kinematic
 fields. There is no separate `motor_torque` publisher. See
@@ -27,56 +27,21 @@ publication and control/event telemetry. It shares only backend-neutral
 helpers in `can_protocol.py`, `mit_protocol.py`, `contracts.py` and `telemetry.py`;
 it does not import either legacy node or `python-can`.
 
-## Current safety contract (2026-10-13)
+## Current v1 command and safety contract (2026-10-26)
 
-**Experimental, limits disabled by request:** the shared policy steering clamp,
-MIT steering target clamp (including wire-rounding travel clamp), steering
-23.9 rad/s slew, and both rear ±6.28 N·m clamps are commented out, not deleted.
-Steering is `1.57*raw_action`; rear torque is
-`6.28*raw_action - 0.05*reported_rear_speed`, with no host effort cap.
-The first steering target after enable is submitted directly, without a ramp.
-Raw requests can exceed motor capability; 91850's ideal-zero rear request is
-about 105 N·m. This is not safe-to-balance certification. Independent motor
-current protection, physical support and emergency stopping are essential
-before a powered test; current firmware total-PD protection is unverified.
+The shared policy now uses 11-observation Trackstand-Balance-v1 and model_2500 from the DR-trained October 21 run. It rejects unbounded/wrong-shape actor output; its raw actions are deterministic Beta means in [-1,1].
 
-Protocol bounds are unchanged: powered startup still configures F0 Pos_Max=3
-native motor rad, and encoding a target outside that range faults rather than
-clipping or wrapping it. C0 still rejects non-finite/out-of-int32 current values;
-representability is not motor current protection. Watchdogs, fault latches,
-RC-down/confirmed-disable handling, gains, signs and rates are unchanged.
-To restore host limits, uncomment the marked limiter blocks in `contracts.py`
-and `motor_mit_io.py`; the bypass assignments precede those blocks. Update the
-startup warning, documentation and test expectations when restoring them.
-`max_steering_target_rad` no longer clips policy output. MIT's
-`steering_limit_rad` remains for startup compatibility/validation, not target
-clipping. `bounded_*` telemetry now equals the requested targets;
-`slewed_steering_target_rad` retains its field name but holds the direct
-submitted/prepared target. While enabled, `steering_slew_limited` is false and
-`drive_torque_saturated` is false; neither proves safe motion/current.
+The policy node performs steering scale ×1.57, position clip ±1.57 rad and target slew ±0.478 rad **once per 20-ms inference**. This node repeats the already conditioned target at 200 Hz without a second ramp. Its callback additionally bounds directly published position/torque requests to ±1.57 rad/±6.28 N m. Direct manual topic commands are post-conditioning requests: this backend does not add a 50-Hz slew for an external publisher.
 
-Measured steering overtravel and steering/rear overspeed no longer latch
-this backend. Their feedback is still published and used where needed,
-and no target clamp currently contains the MIT command.
-Legacy C0/C2 backends retain their own clamps/slew and measured-angle/speed checks.
+Rear C0 now uses pure feedforward torque with controller damping **0**, and the final ±6.28 N m host cap is active. The old -0.05*speed law and experimental bypass are superseded. Physical friction is not added to the outgoing torque. Native MIT gains remain Kp=10, Kd=0.2 with requested target velocity/feedforward zero; quantization residuals remain.
 
-The shared `policy_controller` no longer applies the former 30° roll
-cutoff, regardless of motor backend. It retains inversion detection
-(`gravity_body[2] > 0`), IMU/motor-state/RC freshness gates and motor-fault
-handling. `max_roll_rad` remains in the shared YAML but is no longer
-declared/read by the policy; supplying it does not re-enable that cutoff.
-Policy faults disable output without automatically lowering kickstands.
-RC down publishes enable off and requests stands down without waiting
-for CAN disable acknowledgements. Independent support and power isolation
-are therefore essential during commissioning.
+Firmware total MIT PD-torque/current protection is **still unverified**. The v1 simulator clips total steering PD torque to ±5.6 N m, whereas F0 is an encoding range and cannot establish that clamp. Neither physical motor speed constraints nor firmware actuator dynamics are made identical to the simulator by this update. This node retains its existing lack of measured steering-overtravel/overspeed trips; legacy C0/C2 retain their existing trips. The 5-degree policy arming check applies only before starting, not as a steering-travel limit while balancing.
 
-Ordinary motor latches clear only with enable off, both motors' disable
-confirmed, no pending/active outputs, fresh encoder pairs/B0 constants,
-and unwrapped steering **strictly inside ±5°**. A quick down/up can instead
-latch `enable_withdrawn_during_control`; wait for the safe reset before
-requesting up. Hard faults (`mit_restart_required=true`) require restart.
-`motor_fault` is the latched fault OR the enabled-request feedback gate;
-it can be true during missing-feedback startup without a hard fault.
+Motor state now publishes continuous signed A3 angles with the v3 schema. The policy separately rebases rear displacement for each RC-enabled episode and applies the observed PhysX 4π coordinate branch. Startup B1/F0 remains persistent; RC cycles do not reset the motor's straight steering origin. Start physically straight and stationary.
+
+The policy restores the v1 fallen test: |gravity_y| > sin(0.5236) or gravity_z > 0, alongside freshness, motor faults and inference validation. Starting requires steering within 5 degrees of its fixed reference. Faults disable output; RC down requests stands down without waiting for CAN acknowledgements. Simulator timeout/drift/yaw/wheel-net episode scoring is not automatically imposed on hardware.
+
+Ordinary motor latches still clear only with enable off, both disable confirmations, no pending/active output, fresh encoder/B0 readiness, and continuous steering strictly inside ±5 degrees. Hard faults require restart; rapid down/up can retain the withdrawal fault. The packet/query/control rates, IDs, directions, IMU calibration, receiver and servo configurations are unchanged.
 
 ## Three frequency divisions
 
@@ -142,9 +107,10 @@ still gates enable without latching an episode fault. Ordinary
 latched watchdog/send faults clear only with RC down, confirmed disable,
 fresh encoder/B0 readiness, and unwrapped steering strictly inside ±5°.
 `mit_restart_required` distinguishes these cases in control/status.
-The former first-step bound 23.9/200=0.1195 rad and delayed-step cap
-0.239 rad are commented out with the slew limiter. Enable now submits the
-full requested target at the next scheduled MIT send. The first hard-fault reason is
+The old motor-rate target ramp is superseded by the policy node's v1 limiter:
+maximum 0.478 rad per policy action, reset from measured steering each episode.
+MIT dispatch holds the processed target; it does not advance another ramp.
+The first hard-fault reason is
 retained through subsequent disable/shutdown failures.
 
 Both motor sends revalidate safety **after payload encoding**, without ROS
@@ -219,7 +185,7 @@ Sourcing alone does not install a newly added console entry point.
 For powered operation, replace `dry_run:=true` with `dry_run:=false`. Start the
 other deployment nodes exactly as for `motor_io`, but do not start another
 motor I/O process or standalone CAN writer on the selected motors. The
-default launch file continues to select `motor_io`.
+default launch file now selects `motor_mit_io`.
 
 Optional ROS parameters `mit_kp_nm_per_motor_rad` and
 `mit_kd_nm_s_per_motor_rad` override the default gains. MIT-specific rate

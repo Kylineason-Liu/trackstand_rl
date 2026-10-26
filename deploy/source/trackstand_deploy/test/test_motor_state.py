@@ -143,6 +143,8 @@ def test_policy_still_uses_only_kinematics_from_extended_state(node_module, torq
     node = object.__new__(module.PolicyController)
     node._motor_state = None
     node._motor_monotonic = 0.0
-    node._motor_callback(module.Float64MultiArray(data=[0.1, -0.2, 0.3, -0.4, 123456.0, *torques]))
+    message = module.Float64MultiArray(data=[0.1, -0.2, 0.3, -0.4, 123456.0, *torques])
+    message.layout.dim = [SimpleNamespace(label=MOTOR_STATE_LABEL)]
+    node._motor_callback(message)
     np.testing.assert_array_equal(node._motor_state, [0.1, -0.2, 0.3, -0.4])
     assert node._motor_monotonic == 100.0

@@ -142,7 +142,9 @@ def test_conversions_match_motor_io_protocol(module, fake_can, monkeypatch, name
     a3 = b"\xa3\x00\x01" + struct.pack("<i", state.counts[device_id])
     a2 = b"\xa2" + struct.pack("<i", state.speed_raw)
     a1 = b"\xa1" + struct.pack("<i", state.current_raw)
-    assert row["position_rad"] == pytest.approx(reference.parse_a3_position(a3, motor.zero_count, 1.7, encoder_sign))
+    # The historical experiment retains both columns; v1 motor-state is continuous.
+    assert row["position_unwrapped_rad"] == pytest.approx(
+        reference.parse_a3_position(a3, motor.zero_count, 1.7, encoder_sign))
     assert row["position_unwrapped_rad"] == pytest.approx(encoder_sign * 40000 * module.RADIANS_PER_COUNT / 1.7)
     assert row["velocity_rad_s"] == pytest.approx(reference.parse_a2_velocity(a2, 1.7, encoder_sign))
     current = reference.parse_current_feedback(a1)

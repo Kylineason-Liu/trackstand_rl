@@ -39,14 +39,18 @@ def parse_a2_velocity(payload: bytes, gear_ratio: float, sign: float) -> float:
 
 
 def parse_a3_position(payload: bytes, zero_count: int, gear_ratio: float, sign: float) -> float:
-    """Parse A3's int32 multi-turn encoder and return wrapped joint radians."""
+    """Return signed continuous joint radians relative to the fixed A3 zero.
+
+    Keep motor-state telemetry continuous. The policy applies its own per-episode
+    reference and the training backend's angle branch, not a single-turn wrap.
+    """
     if len(payload) < 7 or payload[0] != 0xA3:
         raise ValueError("invalid A3 response")
     if gear_ratio <= 0.0 or sign not in (-1.0, 1.0):
         raise ValueError("gear_ratio must be positive and sign must be +/-1")
     multi_turn_count = struct.unpack("<i", payload[3:7])[0]
     position = sign * (multi_turn_count - int(zero_count)) * RADIANS_PER_COUNT / gear_ratio
-    return (position + math.pi) % (2.0 * math.pi) - math.pi
+    return position
 
 
 def parse_a3_multi_turn_count(payload: bytes) -> int:

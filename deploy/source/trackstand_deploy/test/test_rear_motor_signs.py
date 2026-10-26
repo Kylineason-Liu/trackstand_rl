@@ -50,7 +50,7 @@ def test_physically_forward_a2_samples_publish_positive_speed(backend, speed_hex
     velocity = parse_a2_velocity(payload, defaults["drive_gear_ratio"], defaults["drive_encoder_sign"])
     assert velocity == pytest.approx(-native_rpm * 2 * math.pi / 60)
     assert velocity > 0
-    assert DRIVE_DAMPING_NM_S_PER_RAD * -velocity < 0
+    assert DRIVE_DAMPING_NM_S_PER_RAD == 0.0  # v1 has no rear controller damping.
 
 
 def test_physically_forward_a3_decrease_becomes_positive_position(backend):
@@ -71,11 +71,10 @@ def test_corrected_feedback_reaches_policy_with_positive_forward_velocity(backen
     defaults = cls._parameter_defaults
     velocity = parse_a2_velocity(bytes.fromhex("A264FAFFFF"), 1, defaults["drive_encoder_sign"])
     position = parse_a3_position(bytes.fromhex("A3630C634C5200"), 5401635, 1, defaults["drive_encoder_sign"])
-    observation = build_observation([0, 0, 0, 1], [0, 0, 0], 0, position, 0, velocity, .07)
-    assert observation[5] == pytest.approx(.07 * velocity)
-    assert observation[8] == pytest.approx(position)
-    assert observation[10] == pytest.approx(velocity)
-    assert observation[5] > 0 and observation[10] > 0
+    observation = build_observation([0, 0, 0, 1], [0, 0, 0], 0, position, 0, velocity)
+    assert observation[6] == pytest.approx(position)
+    assert observation[8] == pytest.approx(velocity)
+    assert observation[6] > 0 and observation[8] > 0
 
 
 def test_rear_c0_command_direction_and_a1_feedback_are_unchanged(backend):

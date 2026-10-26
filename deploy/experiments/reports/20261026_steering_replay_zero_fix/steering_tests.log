@@ -1,0 +1,46 @@
+test_bad_intervals_and_double_conditioning_rejected (test_steering_policy_replay.ReplayTests) ... ok
+test_bad_range_refuses_motion_without_reconfiguring_motor (test_steering_policy_replay.ReplayTests) ... ok
+test_both_input_columns_are_selected_without_implicit_slew (test_steering_policy_replay.ReplayTests) ... ok
+test_current_abort_and_send_failure_still_disable (test_steering_policy_replay.ReplayTests) ... Steering origin verified after B1: A3=0 counts, F1=-0.000183108 rad; original A3=0 counts
+Steering origin verified after B1: A3=0 counts, F1=-0.000183108 rad; original A3=0 counts
+ok
+test_default_plan_matches_existing_simulator_replay_exactly (test_steering_policy_replay.ReplayTests) ... ok
+test_default_preview_opens_no_socket_and_writes_no_files (test_steering_policy_replay.ReplayTests) ... ok
+test_delayed_receive_preserves_kernel_queue_age (test_steering_policy_replay.ReplayTests) ... ok
+test_exported_files_exactly_match_both_capture_levels (test_steering_policy_replay.ReplayTests) ... ok
+test_failed_origin_initialization_never_sends_mit_and_still_confirms_disable (test_steering_policy_replay.ReplayTests) ... ok
+test_fault_or_stale_feedback_stops_and_confirms_disable (test_steering_policy_replay.ReplayTests) ... Steering origin verified after B1: A3=0 counts, F1=-0.000183108 rad; original A3=0 counts
+Steering origin verified after B1: A3=0 counts, F1=-0.000183108 rad; original A3=0 counts
+Steering origin verified after B1: A3=0 counts, F1=-0.000183108 rad; original A3=0 counts
+Steering origin verified after B1: A3=0 counts, F1=-0.000183108 rad; original A3=0 counts
+ok
+test_large_measured_angles_are_logged_without_aborting (test_steering_policy_replay.ReplayTests) ... ok
+test_late_encoding_work_cannot_send_an_already_expired_packet (test_steering_policy_replay.ReplayTests) ... ok
+test_logger_failure_cannot_prevent_disable_attempt (test_steering_policy_replay.ReplayTests) ... ok
+test_malformed_target_file_is_rejected_before_can (test_steering_policy_replay.ReplayTests) ... ok
+test_missed_deadline_aborts_without_burst_or_skipped_source_targets (test_steering_policy_replay.ReplayTests) ... Steering origin verified after B1: A3=0 counts, F1=-0.000183108 rad; original A3=0 counts
+ok
+test_missing_kernel_timestamp_refuses_motion_and_reports_unconfirmed_disable (test_steering_policy_replay.ReplayTests) ... ok
+test_old_kernel_arrival_cannot_complete_a_new_query (test_steering_policy_replay.ReplayTests) ... ok
+test_origin_change_acknowledgement_during_motion_aborts (test_steering_policy_replay.ReplayTests) ... ok
+test_packet_rates_have_identical_50hz_held_targets_and_valid_units (test_steering_policy_replay.ReplayTests) ... Steering origin verified after B1: A3=0 counts, F1=-0.000183108 rad; original A3=0 counts
+Replay finished; disable confirmed. CSV: /tmp/tmpkte3113n/run50.csv
+Steering origin verified after B1: A3=0 counts, F1=-0.000183108 rad; original A3=0 counts
+ok
+test_real_clipped_startup_cases_are_rezeroed_before_replay_at_both_rates (test_steering_policy_replay.ReplayTests) ... Replay finished; disable confirmed. CSV: /tmp/tmpkte3113n/run200.csv
+Steering origin verified after B1: A3=0 counts, F1=-0.000045777 rad; original A3=8282 counts
+Replay finished; disable confirmed. CSV: /tmp/tmpzgqpd2an/fixed50.csv
+Steering origin verified after B1: A3=0 counts, F1=-0.000045777 rad; original A3=8380 counts
+ok
+test_rejects_existing_output_before_can (test_steering_policy_replay.ReplayTests) ... ok
+test_slew_is_not_advanced_four_times_when_resending_at_200hz (test_steering_policy_replay.ReplayTests) ... Replay finished; disable confirmed. CSV: /tmp/tmpzgqpd2an/fixed200.csv
+Steering origin verified after B1: A3=0 counts, F1=-0.000183108 rad; original A3=0 counts
+ok
+test_transient_overcurrent_cannot_be_hidden_by_later_normal_sample (test_steering_policy_replay.ReplayTests) ... ok
+test_v1_conditioning_reproduces_recorded_startup_once_per_20ms (test_steering_policy_replay.ReplayTests) ... ok
+
+----------------------------------------------------------------------
+Ran 24 tests in 0.864s
+
+OK
+Replay finished; disable confirmed. CSV: /tmp/tmpje7u9s4p/run.csv

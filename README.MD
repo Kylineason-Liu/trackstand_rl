@@ -2,7 +2,7 @@
 
 Reinforcement-learning-based **stationary bicycle balancing**, from Isaac Lab training to MuJoCo sim-to-sim validation and Raspberry Pi deployment with ROS 2.
 
-The current training/sim-to-sim task is `Trackstand-Balance-v1` (11 observations and bounded Beta actions); v0 remains available for historical experiments. The Raspberry Pi deployment still uses its separately documented v0 policy/interface and is **not yet v1-compatible**. A policy commands steering **position** and rear-wheel **torque** for stationary balance. RC controls the kickstands and authorizes balancing, not steering/throttle policy inputs.
+Training, sim-to-sim and Raspberry Pi deployment now use the `Trackstand-Balance-v1` contract: 11 observations and bounded Beta actions. V0 remains available for historical experiments. A policy commands steering **position** and rear-wheel **torque** for stationary balance. RC controls the kickstands and authorizes balancing, not steering/throttle policy inputs. Matching software contracts does not establish identical physical actuator response or successful hardware balance.
 
 The workflow is **train → evaluate → export ONNX → validate in MuJoCo → commission on the supported bike**. Simulation results and unloaded motor experiments are recorded, but this is a research codebase, not a certified autonomous or road-ready system.
 
@@ -150,23 +150,23 @@ For a supported powered test **after commissioning**, stop the dry-run motor nod
 
 | Motor executable | Steering control | Rear control |
 |---|---|---|
-| `motor_io` | Host PD → C0 current | C0 current with host torque conversion/damping |
+| `motor_io` | Host PD → C0 current | C0 current, v1 pure torque feedforward |
 | `motor_io_position` | Firmware C2 absolute position | Same C0 rear path |
 | `motor_mit_io` | Firmware MIT position-PD | Same C0 rear path |
 
-Run **exactly one** backend, never alongside standalone selected-motor CAN writers/recorders. The existing all-node launch is `ros2 launch trackstand_deploy trackstand.launch.py`: it selects **C0 `motor_io`, not MIT**, and uses the checked-in `dry_run: false` setting. It is not a dry-run shortcut.
+Run **exactly one** backend, never alongside standalone selected-motor CAN writers/recorders. The all-node launch is `ros2 launch trackstand_deploy trackstand.launch.py`: it now selects **`motor_mit_io`**, and uses the checked-in `dry_run: false` setting. It is not a dry-run shortcut.
 
-The bundled deployment default is **09221945 / model_91850 ONNX**, checked by SHA-256 in [policy_controller.py](deploy/source/trackstand_deploy/trackstand_deploy/policy_controller.py). Two commented constants retain the 09171946 / model_41050 alternative. A different model must be deliberately selected with a matching checksum; merely exporting or copying it does not switch the policy.
+The bundled deployment default is **2026-10-21_11-18-29 / model_2500**, the DR-trained v1 Beta actor, in a self-contained ONNX file checked by SHA-256. See [policy_controller.py](deploy/source/trackstand_deploy/trackstand_deploy/policy_controller.py) and the [policy manifest](deploy/source/trackstand_deploy/models/v1_policy_manifest.json). Another compatible v1 export requires both `model_path` and matching `model_sha256` startup parameters. Old 13-input 41050/91850 actors are rejected.
 
 ### Operating contract and important limits
 
 Policy inference is **50 Hz**. Isaac physics is **400 Hz**; MuJoCo physics/PD defaults to **400 Hz**, configurable with `--physics_hz`. MIT deployment sends steering MIT/rear C0 at nominal **200 Hz** and queries/publishes motor feedback at **100 Hz** (state only when new/fresh). These rates do not establish the motor firmware's undocumented internal-loop frequency.
 
-The 13 policy observations use IMU orientation/rates and motor encoders. Longitudinal speed is estimated from rear-wheel speed; lateral speed is assumed zero. Raw actions are scaled by **1.57 rad / 6.28 N·m** without a `[-1,1]` clamp. **As of 2026-10-13, the shared policy steering clamp and MIT backend's steering target/slew and rear torque clamps are commented out by request.** Legacy C0/C2 backends retain their own bounds. MIT requests can exceed motor capability; do not treat the launch examples as approval for powered use without independent current protection, support and emergency stopping.
+The 11 observations are projected gravity YZ, body gyro XYZ, steering/rear position, steering/rear speed, and steering sine/cosine; there are no linear-velocity estimates or finite ±100 clamp. Motor state v3 contains continuous signed encoder displacement. Policy rear displacement is re-zeroed per RC-enabled episode, then adapted to the measured PhysX 4π angle branch. Steering keeps its physically straight reference. Beta outputs are inherently bounded in [-1,1]. Steering follows ×1.57 → ±1.57 clip → at most 0.478 rad per 50-Hz update → hold. Rear follows ×6.28 → ±6.28 N m torque cap → C0 current, with controller damping **0** and no duplicate passive-friction compensation.
 
 Startup holds balancing disabled. RC up authorizes inference when data are ready; RC down requests motor disable and stands down. This does not wait for physical motor-stop confirmation. Fault recovery depends on the selected backend; hard MIT faults require restart.
 
-**Current safety caveats:** the policy has no 30° roll cutoff, only inversion/freshness/fault gates. MIT has no measured steering-overtravel or overspeed stop, its target/slew/rear torque clamps are disabled, and its total internal PD torque/current cap is not established by F0 encoding ranges. Protocol encoding bounds and watchdog/disable checks still apply. Do not attempt unsupported balancing based only on passing simulation, a false fault flag, or successful CAN writes. Read the [MIT guide](deploy/docs/MOTOR_MIT_IO.md) and [audit](deploy/docs/AUDIT.md) (dated audit sections describe earlier snapshots).
+The policy now uses v1's approximately 30° fallen/inversion check and requires steering within 5° of its fixed straight origin before starting an episode. The total physical MIT PD-torque/current cap is still unverified; F0 encoding ranges do not reproduce Isaac's ±5.6 N m steering clamp. MIT also retains its lack of measured overtravel/overspeed stops, unlike the legacy backends. Firmware timing, motor speed constraints, sensor synchronization and physical contact remain validation gaps. See the [v1 migration report](deploy/experiments/reports/20261026_v1_deployment_alignment/README.md) and [MIT guide](deploy/docs/MOTOR_MIT_IO.md); dated old audits describe historical snapshots.
 
 Record raw actions, commands, IMU, motor state/control/status/fault and policy timing/events using the commands in the [telemetry guide](deploy/docs/TELEMETRY.md). Motor torque feedback is current × measured torque constant, not a calibrated shaft-torque measurement. The motor node publishes telemetry but does not automatically save a rosbag.
 

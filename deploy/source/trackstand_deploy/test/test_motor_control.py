@@ -69,7 +69,7 @@ def test_normal_controller_terms_units_and_native_command_quantization(control_n
     assert data["steering_p_torque_nm"] == pytest.approx(0.5)
     assert data["steering_d_torque_nm"] == pytest.approx(-0.05)
     assert data["steering_final_torque_nm"] == pytest.approx(0.45)
-    assert data["drive_final_torque_nm"] == pytest.approx(-0.05)
+    assert data["drive_final_torque_nm"] == 0.0
     assert data["steering_encoded_current_a"] == pytest.approx(-0.36)
     assert data["steering_send_success"] == data["drive_send_success"] == 1.0
     assert data["cycle_interval_ms"] == pytest.approx(5.0)
@@ -80,18 +80,19 @@ def test_normal_controller_terms_units_and_native_command_quantization(control_n
     assert node._fault_publisher.publish.call_args.args[0].data is False
 
 
-def test_slew_saturation_and_requested_target_are_distinguished(control_node):
+def test_held_v1_target_and_torque_saturation_are_distinguished(control_node):
     node = control_node
     node._requested_steering_target_rad = 2.0
-    node._steering_target_rad = math.pi / 2
+    node._steering_target_rad = 1.57
     node._requested_drive_target_nm = 12.56
     node._drive_target_nm = 6.28
     node._steering.position_rad = -1.0
     node._drive.velocity_rad_s = -1.0
     node._control_tick()
     data = record(node)
-    assert data["slewed_steering_target_rad"] == pytest.approx(23.9 / 200)
-    for name in ("steering_slew_limited", "steering_torque_saturated", "drive_torque_saturated",
+    assert data["slewed_steering_target_rad"] == pytest.approx(1.57)
+    assert data["steering_slew_limited"] == data["drive_torque_saturated"] == 0.0
+    for name in ("steering_torque_saturated",
                  "steering_target_clipped", "drive_target_clipped"):
         assert data[name] == 1.0
     assert data["steering_final_torque_nm"] == pytest.approx(5.6)
@@ -190,7 +191,7 @@ def test_idle_ticks_do_not_fabricate_zero_current_commands(control_node):
     assert data["disable_attempted"] == 0.0
 
 
-def test_normal_control_matches_previous_laws_for_500_seeded_targets(control_node):
+def test_v1_held_target_pd_and_zero_rear_damping_for_500_seeded_targets(control_node):
     node = control_node
     random = np.random.default_rng(42)
     for index in range(500):
@@ -205,12 +206,10 @@ def test_normal_control_matches_previous_laws_for_500_seeded_targets(control_nod
         node._steering.position_rad = float(random.uniform(-1, 1))
         node._steering.velocity_rad_s = float(random.uniform(-10, 10))
         node._drive.velocity_rad_s = float(random.uniform(-20, 20))
-        expected_slew = node._slewed_steering_target_rad + float(np.clip(
-            node._steering_target_rad - node._slewed_steering_target_rad, -23.9 / 200, 23.9 / 200,
-        ))
+        expected_slew = node._steering_target_rad
         expected_steer = float(np.clip(10 * (expected_slew - node._steering.position_rad)
                                       - 0.2 * node._steering.velocity_rad_s, -5.6, 5.6))
-        expected_drive = float(np.clip(node._drive_target_nm - 0.05 * node._drive.velocity_rad_s, -6.28, 6.28))
+        expected_drive = float(np.clip(node._drive_target_nm, -6.28, 6.28))
         node._control_tick()
         data = record(node)
         assert data["steering_final_torque_nm"] == expected_steer

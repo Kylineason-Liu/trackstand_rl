@@ -1,0 +1,12 @@
+[
+  {
+    "script": "steering_policy_replay.py",
+    "exit_code": 0,
+    "stdout": "PREVIEW: 2500_isaac400_env0_episode1.csv; scaled; targets=50 Hz, packets=50 Hz; 8 s total\nSource core [12.5, 17.5) s; position [0.0253314, 1.32539] rad\nNo CAN opened; no CSV created. Add --execute for hardware motion.\n"
+  },
+  {
+    "script": "drive_policy_replay.py",
+    "exit_code": 0,
+    "stdout": "PREVIEW rear ID 1: 2500_isaac400_env0_episode1.csv; scaled; targets 50 Hz, C0 200 Hz; 7 s; torque [-0.233069, 0.00930702] Nm\nCore source [12.5, 17.5) s; 2 s zero-torque preparation; 0 s final-torque hold\nNo CAN/output files opened. Current conversion requires measured B0 during --execute.\n"
+  }
+]

@@ -17,12 +17,12 @@ ros2 pkg executables trackstand_deploy
 
 Keep CH7 in its **down** position before starting nodes. Check running nodes and parameters after they start, as directed below. Verify exactly one `/trackstand_motor_io` node and at most one `/trackstand_policy_controller`; multiple publishers to `/trackstand/motor_command` invalidate the test. `motor_io` alone does not read RC commands. Save parameter dumps and startup console logs with the bag. The policy node checks the ONNX SHA-256 at startup. Note the B0 torque constants and steering encoder zero logged by `motor_io`. Do not restart `motor_io` mid-test without recording that its encoder zeros were re-established.
 
-### Selecting MIT instead of the default C0 backend
+### Selecting a backend for these diagnostic examples
 
 The Stage A–C commands below use `motor_io`. To test MIT, substitute
 `motor_mit_io` in **each motor-node command**, retaining the parameter file
 and startup `--ros-args -p dry_run:=true/false` override. Never start both.
-The default launch still selects C0. `No executable found` means the selected
+The v1 all-node launch selects MIT; these staged examples explicitly select their backend. `No executable found` means the selected
 installation lacks its wrapper: synchronize `setup.py`, rebuild/source,
 and inspect the package prefix/executable list before investigating CAN.
 
@@ -44,11 +44,7 @@ origin/ranges. Its parameters are startup-only/read-only; restarting with
 different values is required. `ros2 param set ... dry_run true` cannot stop it.
 RC down/up does not rewrite the startup origin.
 
-Current `policy_controller` has **no 30° roll cutoff**, only inversion
-(`gravity_body[2] > 0`) plus input/motor/inference gates. The YAML
-`max_roll_rad` entry has no effect. MIT also has no measured steering-angle
-or overspeed stops, although ±90° target and 23.9 rad/s target-slew limits
-remain; C0/C2 retain their measured-limit checks. Do not use these software
+Current v1 policy checks |gravity_y| > sin(0.5236) or gravity_z > 0, alongside input/motor/inference gates. It starts only within 5 degrees of the fixed straight steering reference. Steering target clip/slew is ±1.57 rad and 23.9 rad/s, advanced once per 50-Hz inference; the motor nodes hold the result. MIT retains its lack of measured steering-angle/overspeed stops and verified total-PD torque cap; C0/C2 retain their measured-limit checks. Do not use these software
 gates as the test's physical restraint or emergency stop.
 
 For MIT Stage C, a publisher-end watchdog timeout now latches the ordinary
@@ -115,7 +111,7 @@ ros2 param dump /trackstand_policy_controller
 ros2 param get /trackstand_policy_controller model_path
 ```
 
-Record a new bag. With CH7 down, confirm disabled timing messages but no raw actions. Briefly request CH7 up and then down while the bike remains restrained. Confirm the mode and events transition and the 50 Hz observation/raw-action/command stream during enable. With the default C0 backend, the 50 Hz motor record shows computed steering/drive torque with `send_attempted=0`; MIT uses the fields/rate described above. Disabled motor commands continue outside enable. Inspect policy timing, target clipping/slew, applicable torque calculations, command gaps and feedback ages. `cycle_interval_ms` reflects the nominal 200 Hz motor loop (~5 ms); C0 record timestamps are ~20 ms apart, MIT ~5 ms. Sequence gaps depend on sampling and scheduling. Events/safety are not diagnostic-rate throttled. If kickstands actually move or a motor receives an actuation command in dry-run, stop and resolve the mismatch.
+Record a new bag. With CH7 down, confirm disabled timing messages but no raw actions. Briefly request CH7 up and then down while the bike remains restrained. Confirm the mode and events transition and the 50 Hz observation/raw-action/command stream during enable. With the explicitly selected C0 backend, the 50 Hz motor record shows computed steering/drive torque with `send_attempted=0`; MIT uses the fields/rate described above. Disabled motor commands continue outside enable. Inspect policy timing, target clipping/slew, applicable torque calculations, command gaps and feedback ages. `cycle_interval_ms` reflects the nominal 200 Hz motor loop (~5 ms); C0 record timestamps are ~20 ms apart, MIT ~5 ms. Sequence gaps depend on sampling and scheduling. Events/safety are not diagnostic-rate throttled. If kickstands actually move or a motor receives an actuation command in dry-run, stop and resolve the mismatch.
 
 ## 5. Stage C: small powered motor commands, policy stopped
 
@@ -125,7 +121,7 @@ Only after reviewing Stages A and B, return CH7 down, stop `policy_controller`, 
 ros2 run trackstand_deploy motor_io --ros-args --params-file source/trackstand_deploy/config/params.yaml -p dry_run:=false
 ```
 
-Secure the bike independently; allow the rear wheel and steering to move freely in a controlled range. Start a fresh bag and verify there is no other publisher on `/trackstand/motor_command`. The following examples publish for about 2 seconds at 50 Hz. End each publisher before starting another; the 80 ms watchdog will then send zero-current and disable frames. In the first command, verify finite steering/rear torque in `motor_state.data[5]` and `[6]`, fresh torque ages in `motor_status`, and `*_send_success=1`. These commands send to **both** motors; zero rear torque still permits a small damping response if the wheel is moving.
+Secure the bike independently; allow the rear wheel and steering to move freely in a controlled range. Start a fresh bag and verify there is no other publisher on `/trackstand/motor_command`. The following examples publish for about 2 seconds at 50 Hz. End each publisher before starting another; the 80 ms watchdog will then send zero-current and disable frames. In the first command, verify finite steering/rear torque in `motor_state.data[5]` and `[6]`, fresh torque ages in `motor_status`, and `*_send_success=1`. These commands send to **both** motors; v1 zero rear torque requests no software damping, while the real assembly retains its physical friction.
 
 ```bash
 ros2 topic pub --rate 50 --times 100 --qos-durability volatile \

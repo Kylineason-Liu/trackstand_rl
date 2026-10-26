@@ -9,17 +9,55 @@ import math
 import numpy as np
 
 
-OBSERVATION_SIZE = 13
+OBSERVATION_NAMES = (
+    "gravity_y", "gravity_z", "ang_vel_x", "ang_vel_y", "ang_vel_z",
+    "steering_pos", "drive_pos", "steering_vel", "drive_vel", "sin_steer", "cos_steer",
+)
+OBSERVATION_SIZE = len(OBSERVATION_NAMES)
 ACTION_SIZE = 2
+POLICY_RATE_HZ = 50.0
+POLICY_DT_S = 1.0 / POLICY_RATE_HZ
 STEERING_ACTION_SCALE_RAD = 1.57
 DRIVE_ACTION_SCALE_NM = 6.28
 STEERING_KP_NM_PER_RAD = 10.0
 STEERING_KD_NM_S_PER_RAD = 0.2
-DRIVE_DAMPING_NM_S_PER_RAD = 0.05
+DRIVE_DAMPING_NM_S_PER_RAD = 0.0
 STEERING_EFFORT_LIMIT_NM = 5.6
 DRIVE_EFFORT_LIMIT_NM = 6.28
 STEERING_VELOCITY_LIMIT_RAD_S = 23.9
 DRIVE_VELOCITY_LIMIT_RAD_S = 61.6
+FALL_ANGLE_RAD = 0.5236
+
+
+def physx_revolute_angle(angle_rad: float) -> float:
+    """Match the measured v1 PhysX coordinate branch: period 4pi, range +/-2pi.
+
+    This is a policy adapter, not an encoder or physical steering travel limit.
+    See mujoco_sim2sim/reports/20261022_v1_alignment/isaac_angle_probe.json.
+    """
+    if not math.isfinite(angle_rad):
+        return math.nan  # v1 observation non-finite repair below converts this to zero.
+    return 2.0 * math.atan2(math.sin(angle_rad / 2.0), math.cos(angle_rad / 2.0))
+
+
+@dataclass
+class SteeringTargetLimiter:
+    """Advance once per policy action, then hold during all motor transmissions."""
+
+    target_rad: float = 0.0
+
+    def reset(self, measured_position_rad: float) -> None:
+        if not math.isfinite(measured_position_rad):
+            raise ValueError("steering reset position must be finite")
+        self.target_rad = float(np.clip(measured_position_rad, -STEERING_ACTION_SCALE_RAD, STEERING_ACTION_SCALE_RAD))
+
+    def update(self, requested_position_rad: float) -> float:
+        if not math.isfinite(requested_position_rad):
+            raise ValueError("steering target must be finite")
+        bounded = float(np.clip(requested_position_rad, -STEERING_ACTION_SCALE_RAD, STEERING_ACTION_SCALE_RAD))
+        max_step = STEERING_VELOCITY_LIMIT_RAD_S * POLICY_DT_S
+        self.target_rad += float(np.clip(bounded - self.target_rad, -max_step, max_step))
+        return self.target_rad
 
 
 def motor_fault_clear_allowed(
@@ -30,7 +68,7 @@ def motor_fault_clear_allowed(
 
 
 def wrap_to_pi(angle_rad: float) -> float:
-    """Wrap an angle to [-pi, pi), matching the sim2sim contract."""
+    """Generic single-turn utility; not used by the v1 observation contract."""
     return (float(angle_rad) + math.pi) % (2.0 * math.pi) - math.pi
 
 
@@ -117,13 +155,12 @@ def build_observation(
     rear_wheel_position_rad: float,
     steering_velocity_rad_s: float,
     rear_wheel_velocity_rad_s: float,
-    wheel_radius_m: float,
 ) -> np.ndarray:
-    """Build the exact 13-channel policy vector from allowed sensors.
+    """Build v1's 11 channels from calibrated IMU and signed encoder measurements.
 
-    Body-x velocity uses the rear-wheel no-slip estimate. Body-y velocity is
-    zero under the bicycle nonholonomic constraint because no odometry source
-    is allowed by the deployment contract.
+    Rear position must be continuous displacement from this balance episode's
+    zero. Adapt it to the observed native PhysX branch only here. Steering keeps
+    its mechanically straight reference; there are no inferred linear velocities.
     """
     world_from_bike = normalize_quaternion_xyzw(world_from_bike_xyzw)
     gravity_body = rotate_vector_xyzw(
@@ -133,7 +170,9 @@ def build_observation(
     if rates.shape != (3,):
         raise ValueError("body_rate_rad_s must have three values")
     steering_position_rad = float(steering_position_rad)
-    rear_wheel_position_rad = wrap_to_pi(rear_wheel_position_rad)
+    sin_steer, cos_steer = ((math.sin(steering_position_rad), math.cos(steering_position_rad))
+                            if math.isfinite(steering_position_rad) else (math.nan, math.nan))
+    rear_wheel_position_rad = physx_revolute_angle(rear_wheel_position_rad)
     rear_wheel_velocity_rad_s = float(rear_wheel_velocity_rad_s)
     observation = np.array(
         [
@@ -142,38 +181,37 @@ def build_observation(
             rates[0],
             rates[1],
             rates[2],
-            float(wheel_radius_m) * rear_wheel_velocity_rad_s,
-            0.0,
             steering_position_rad,
             rear_wheel_position_rad,
             float(steering_velocity_rad_s),
             rear_wheel_velocity_rad_s,
-            math.sin(steering_position_rad),
-            math.cos(steering_position_rad),
+            sin_steer,
+            cos_steer,
         ],
         dtype=np.float32,
     )
-    return np.nan_to_num(observation, nan=0.0, posinf=0.0, neginf=0.0).clip(-100.0, 100.0)
+    return np.nan_to_num(observation, nan=0.0, posinf=0.0, neginf=0.0)
 
 
-def scale_policy_action(raw_action: np.ndarray, max_steering_target_rad: float) -> tuple[float, float]:
-    """Apply Isaac's unclipped scales; the steering target clamp is commented out.
+def scale_policy_action(
+    raw_action: np.ndarray, max_steering_target_rad: float = STEERING_ACTION_SCALE_RAD,
+) -> tuple[float, float]:
+    """Validate inherently bounded Beta outputs, scale once, then clip position.
 
-    Keep the limit argument/validation for compatibility and restoring the clamp.
-    Legacy motor backends still enforce their own limits downstream.
+    The caller advances SteeringTargetLimiter exactly once per 50-Hz inference.
+    An out-of-contract actor faults instead of being silently converted by clipping.
     """
     action = np.asarray(raw_action, dtype=np.float32)
     if action.shape != (ACTION_SIZE,) or not np.all(np.isfinite(action)):
         raise ValueError("policy action must contain two finite values")
     if not math.isfinite(max_steering_target_rad) or max_steering_target_rad <= 0.0:
         raise ValueError("steering target limit must be positive and finite")
-    steering = float(action[0]) * STEERING_ACTION_SCALE_RAD
-    # Disabled by request: steering target clamp. Uncomment to restore.
-    # steering = float(np.clip(
-    #     float(action[0]) * STEERING_ACTION_SCALE_RAD,
-    #     -float(max_steering_target_rad),
-    #     float(max_steering_target_rad),
-    # ))
+    if max_steering_target_rad != STEERING_ACTION_SCALE_RAD:
+        raise ValueError("v1 steering target limit must equal 1.57 rad")
+    if np.any(np.abs(action) > 1.0):
+        raise ValueError("v1 Beta policy action must be within [-1, 1]")
+    steering = float(np.clip(float(action[0]) * STEERING_ACTION_SCALE_RAD,
+                             -max_steering_target_rad, max_steering_target_rad))
     drive = float(action[1]) * DRIVE_ACTION_SCALE_NM
     return steering, drive
 

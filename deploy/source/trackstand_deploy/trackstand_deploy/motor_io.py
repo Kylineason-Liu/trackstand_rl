@@ -34,6 +34,7 @@ from .contracts import (
     STEERING_KP_NM_PER_RAD,
     STEERING_VELOCITY_LIMIT_RAD_S,
     motor_fault_clear_allowed,
+    STEERING_ACTION_SCALE_RAD,
 )
 from .telemetry import (
     MOTOR_CONTROL_FIELDS,
@@ -357,7 +358,8 @@ class MotorIo(Node):
             self._requested_steering_target_rad = float(values[1])
             self._requested_drive_target_nm = float(values[2])
             self._steering_target_rad = float(
-                np.clip(values[1], -self._steering_limit_rad, self._steering_limit_rad)
+                np.clip(values[1], -min(self._steering_limit_rad, STEERING_ACTION_SCALE_RAD),
+                        min(self._steering_limit_rad, STEERING_ACTION_SCALE_RAD))
             )
             self._drive_target_nm = float(
                 np.clip(values[2], -DRIVE_EFFORT_LIMIT_NM, DRIVE_EFFORT_LIMIT_NM)
@@ -447,9 +449,9 @@ class MotorIo(Node):
             self._publish_control_telemetry(now, diagnostics, reasons, steering_send, drive_send, disable_result)
             return
 
-        max_step = STEERING_VELOCITY_LIMIT_RAD_S / self._control_rate_hz
-        target_error = steering_target - self._slewed_steering_target_rad
-        self._slewed_steering_target_rad += float(np.clip(target_error, -max_step, max_step))
+        # V1 policy_controller already clips/slews once per 20-ms action.
+        # Hold that target; a second 200-Hz ramp would change the trained signal.
+        self._slewed_steering_target_rad = steering_target
         error_rad = self._slewed_steering_target_rad - steering[0]
         p_torque_nm = STEERING_KP_NM_PER_RAD * error_rad
         d_torque_nm = -STEERING_KD_NM_S_PER_RAD * steering[1]
@@ -466,7 +468,7 @@ class MotorIo(Node):
         )
         diagnostics.update({
             "slewed_steering_target_rad": self._slewed_steering_target_rad,
-            "steering_slew_limited": abs(target_error) > max_step,
+            "steering_slew_limited": False,  # Slew is owned by the 50-Hz policy node.
             "steering_error_rad": error_rad, "steering_p_torque_nm": p_torque_nm,
             "steering_d_torque_nm": d_torque_nm, "steering_unclipped_torque_nm": steering_unclipped_nm,
             "steering_final_torque_nm": steering_torque_nm,

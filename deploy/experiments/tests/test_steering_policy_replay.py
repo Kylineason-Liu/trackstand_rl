@@ -28,25 +28,47 @@ class ReplayCAN(FakeCAN):
         self.no_timestamps = False
         self.active_current_ma = 1500
         self.pause_after_first_packet = 0.
+        self.initial_count, self.origin_resets, self.origin_reads = 0, 0, 0
+        self.origin_reply_delay = self.reply_delay
 
     def send(self, frame):
         cid, size, padded = replay.mit.CAN_FRAME.unpack(frame)
         data, mid = padded[:size], cid & 255
         response = None
+        if data == b"\xb1":
+            self.frames.append((self.now, cid, data))
+            self.origin_resets += 1
+            if self.fault != "b1_not_applied":
+                self.positions[mid] = 32767
+                self.zero_native = replay.mit.decode_symmetric(32767, self.configs[mid][0]*.1, 16)
+            if self.fault != "missing_b1":
+                self.enqueue(mid, b"\xb1" + struct.pack("<H", self.initial_count % 16384), self.origin_reply_delay)
+            return len(frame)
         if data == b"\xa2":
-            response = b"\xa2" + struct.pack("<i", 0)
+            response = b"\xa2" + struct.pack("<i", 10000 if self.fault == "moving_before_reset" else 0)
         elif data == b"\xa1":
             response = b"\xa1" + struct.pack("<i", self.active_current_ma if self.enabled else 1500)
         elif data == b"\xa3":
             native = replay.mit.decode_symmetric(self.positions[mid], self.configs[mid][0] * .1, 16)
-            count = round((native - self.zero_native) / replay.mit.RADIANS_PER_COUNT) if self.enabled else 0
-            response = b"\xa3" + struct.pack("<Hi", count % 16384, count)
+            if self.enabled:
+                count = round((native - self.zero_native) / replay.mit.RADIANS_PER_COUNT)
+            elif not self.origin_resets or self.fault == "b1_not_applied":
+                count = self.initial_count
+            else:
+                self.origin_reads += 1
+                count = 100 if self.fault == "bad_a3_zero" else 0
+                if self.fault == "drifting_origin" and self.origin_reads > 1:
+                    count = 10
+            single = 16384 if self.fault == "bad_single_zero" and self.origin_resets else count % 16384
+            response = b"\xa3" + struct.pack("<Hi", single, count)
         elif data == b"\xae":
             response = b"\xae" + struct.pack("<HH", 4800, 125) + bytes([35, 4 if self.enabled else 0, 0])
         elif data == b"\xb3":
             response = b"\xb3" + struct.pack("<I", 10000)
         elif data == b"\xcd":
             response = b"\xcd\x00\xf4\x01\x00"
+        elif data == b"\xf1" and self.fault in ("endpoint_after_reset", "lower_endpoint_after_reset"):
+            self.positions[mid] = 65535 if self.fault == "endpoint_after_reset" else 0
         if response is not None:
             self.frames.append((self.now, cid, data))
             if not self.enabled or data[0] not in self.drop_aux:
@@ -167,12 +189,13 @@ class ReplayTests(unittest.TestCase):
             np.testing.assert_allclose([float(r["requested_position_rad"]) for r in targets],
                                        np.repeat([r["target_rad"] for r in plan], rate // 50), atol=0)
             self.assertTrue(all(int(r["mit_kp_code"]) == 82 and int(r["mit_kd_code"]) == 164 for r in targets))
-            # Nothing is sent to rear ID 1; no origin/range/current/watchdog changes.
+            # One steering B1 reset; no rear/range/current/watchdog changes.
             for _, cid, data in bus.frames:
                 self.assertIn(cid, (0x102, 0x502))
                 if cid == 0x102:
                     self.assertEqual(len(data), 1)
-                    self.assertNotIn(data[0], (0xB1, 0xC0, 0xC1, 0xC2, 0xC3))
+                    self.assertNotIn(data[0], (0xC0, 0xC1, 0xC2, 0xC3))
+            self.assertEqual(sum(data == b"\xb1" for _, _, data in bus.frames), 1)
             currents = [r for r in self.rows() if r["can_opcode"] == str(0xA1)]
             self.assertTrue(currents)
             self.assertAlmostEqual(float(currents[-1]["torque_nm"]), -1.5 * .78, places=6)
@@ -257,6 +280,65 @@ class ReplayTests(unittest.TestCase):
             self.run_bus(args, bus)
         self.assertFalse(any(cid == 0x502 for _, cid, _ in bus.frames))
         self.assertTrue(all(len(data) == 1 for _, _, data in bus.frames))
+        self.assertEqual(bus.origin_resets, 0)
+
+    def test_real_clipped_startup_cases_are_rezeroed_before_replay_at_both_rates(self):
+        for count, rate in ((8282, 50), (8380, 200)):
+            with self.subTest(count=count, rate=rate):
+                self.output = Path(self.folder.name) / f"fixed{rate}.csv"
+                args, bus = self.args("--packet-rate", str(rate)), ReplayCAN()
+                bus.configs[2], bus.positions[2], bus.initial_count = (30, 4500, 1800), 65535, count
+                bus.origin_reply_delay = .035  # Documented optional second-encoder B1 acknowledgement delay.
+                self.run_bus(args, bus)
+                metadata = json.loads(self.output.with_suffix(".json").read_text())
+                origin = metadata["steering_origin_setup"]
+                self.assertTrue(origin["attempted"] and origin["acknowledged"] and origin["verified"])
+                self.assertEqual(origin["encoder_count_before_reset"], count)
+                self.assertEqual(metadata["encoder_zero_count"], 0)
+                self.assertLess(abs(metadata["native_zero_rad"]), .0001)
+                self.assertEqual(bus.origin_resets, 1)
+                self.assertEqual(bus.configs[2], (30, 4500, 1800))
+                self.assertFalse(any(data[0] == 0xF0 and len(data) > 1 for _, _, data in bus.frames))
+                first = next(i for i, (_, cid, _) in enumerate(bus.frames) if cid == 0x502)
+                self.assertTrue(any(data == b"\xb1" for _, _, data in bus.frames[:first]))
+                rows = self.rows()
+                last_target = sampled_target = None
+                for row in rows:
+                    if row["record_type"] == "mit_target":
+                        last_target = float(row["requested_position_rad"])
+                    elif row["phase"] == "motion" and row["can_opcode"] == str(0xA3):
+                        if row["can_direction"] == "local_tx":
+                            sampled_target = last_target  # FakeCAN samples A3 when the query is sent.
+                        else:
+                            self.assertIsNotNone(sampled_target)
+                            self.assertAlmostEqual(float(row["position_unwrapped_rad"]), sampled_target,
+                                                   delta=2*replay.mit.RADIANS_PER_COUNT)
+
+    def test_failed_origin_initialization_never_sends_mit_and_still_confirms_disable(self):
+        faults = ("missing_b1", "b1_not_applied", "bad_a3_zero", "bad_single_zero", "bad_f1_zero",
+                  "endpoint_after_reset", "lower_endpoint_after_reset", "drifting_origin",
+                  "moving_startup", "startup_active", "startup_fault", "moving_before_reset")
+        for fault in faults:
+            with self.subTest(fault=fault):
+                self.output = Path(self.folder.name) / f"{fault}.csv"
+                args, bus = self.args(), ReplayCAN(fault)
+                bus.initial_count = 8282
+                with self.assertRaises((RuntimeError, ValueError, OSError)):
+                    self.run_bus(args, bus)
+                self.assertFalse(any(cid == 0x502 for _, cid, _ in bus.frames))
+                metadata = json.loads(self.output.with_suffix(".json").read_text())
+                self.assertTrue(metadata["disable_confirmed"])
+                self.assertFalse(metadata["completed"] or metadata["steering_origin_setup"]["verified"])
+                self.assertEqual(bus.origin_resets, 0 if fault == "moving_before_reset" else 1)
+
+    def test_origin_change_acknowledgement_during_motion_aborts(self):
+        args, bus = self.args(), ReplayCAN()
+        with self.clock(bus), replay.CsvLog(self.output) as log:
+            controller = replay.ReplayIO(bus, log, replay.mit.Motor("steering", 2, 1., -1, -1), args)
+            controller.phase = "motion"
+            bus.enqueue(2, b"\xb1\x00\x00")
+            with self.assertRaisesRegex(RuntimeError, "origin"):
+                controller.receive()
 
     def test_delayed_receive_preserves_kernel_queue_age(self):
         args, bus = self.args(), ReplayCAN()

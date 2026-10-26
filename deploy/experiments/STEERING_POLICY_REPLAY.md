@@ -9,6 +9,12 @@ experiment, not policy inference or a balancing attempt. Only the selected
 steering motor (default ID **2**, native/joint sign **-1**, gear **1**) is commanded.
 The rear motor is neither commanded nor disabled by this script.
 
+**Initialization fix (2026-10-26):** each `--execute` now sends **B1 once** after
+confirming steering disabled and stationary. B1 stores the current physical
+position as the motor's persistent origin. Start physically straight every time.
+Fresh A3/F1 references must agree near zero; an endpoint-clipped F1 value is
+rejected. Preview remains read-only. F0 encoding ranges are preserved.
+
 ## Actual target files
 
 `replay_targets/` contains three CSVs exported from the October 25 model_2500 DR
@@ -114,11 +120,18 @@ Do not mix loaded and airborne traces as identical fixtures.
   decoded values when refining simulation, rather than assuming exact zeros/gains.
 - These are DR-origin commands tested with nominal gains, matching the earlier
   simulator replay. Original source episodes had their own sampled DR gains.
-- Startup: **CF** confirms disabled/fault-free; read **F0/B0/B3/CD**, **A3/A2/A1/F1/AE**;
-  record A3 and F1 software references; verify stationary and range compatibility.
-  There are **no B1 origin resets or F0/B3/CD configuration writes**. Native MIT
-  position is `first_F1_position + sign * joint_target`. If that absolute path
-  exceeds the existing F0 range, refuse motion without modifying settings.
+- Startup: **CF** confirms disabled/fault-free; read **F0/B0/B3/CD**, save the old
+  A3 count and verify A2/A1/AE before **one B1 origin reset**. B1's three-byte
+  reply is required; a missing reply is not retried. Fresh post-reset A3 must be
+  within two counts of native zero. F1 must be inactive, fault-free, unsaturated
+  and consistent with A3 within encoder/encoding quantization. A second A3
+  brackets F1 to detect movement; A2/A1/AE and unchanged F0 are checked again.
+  The verified post-B1 A3/F1 values define the per-run references.
+- **B1 changes the persistent steering origin**, matching the working MIT sine
+  and deployment startup procedure. It is not restored on exit, and origin setup
+  failures can leave the new origin stored. There are no F0/B3/CD or gain writes.
+  Native MIT position is `verified_post_B1_F1_zero + sign * joint_target`.
+  Every absolute target must fit the existing F0 encoding range before motion.
 - A3/A2/A1 queries target **100 Hz each** at either packet rate. AE targets 5 Hz;
   B0/F0 target 1 Hz. Replies are asynchronous/sequential, not simultaneous.
   Query deadlines and actual timestamps are logged; inspect achieved rates.
@@ -150,7 +163,21 @@ Every executed run automatically creates exclusive files under `logs/`:
 - Same stem `_plan.csv`: exact 50 Hz reference used, including labeled preparation
   and held phases. Use this file/recorded encoded commands for simulator comparison.
 - Same stem `.json`: file/code hashes, settings, software zeros, F0/B3/CD values,
-  fixture note, completion/error and disable-confirmation state.
+  fixture note, completion/error and disable-confirmation state. The
+  `steering_origin_setup` object saves the pre-reset count, B1 attempt/acknowledgement,
+  fresh A3/F1 reference values and verification result, including failed setup.
+
+After successful initialization the terminal prints, for example:
+
+```text
+Steering origin verified after B1: A3=0 counts, F1=-0.000045777 rad; original A3=8282 counts
+```
+
+A tiny nonzero decoded F1 zero is expected from the 16-bit symmetric encoding.
+This initialization validation does not restore the removed measured-angle abort.
+The earlier replay recordings used the old, unverified origin procedure; their
+analysis and matching runtime snapshots remain in
+[the hardware report](reports/20261026_policy_replay_hardware/README.md).
 
 Target rows identify `ramp`, `pre_hold`, `core` and `post_hold`. Feedback/query
 rows use phase `motion`; select their core interval by `replay_time_s` (default

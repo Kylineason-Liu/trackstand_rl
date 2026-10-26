@@ -1,0 +1,162 @@
+[
+  {
+    "path": "deploy/source/trackstand_deploy/config/params.yaml",
+    "new_file": false,
+    "sha256": "19abe24e34393ba2591f44cac4830bea09aa7f5bf00f9fa69b2db21221b9c7be"
+  },
+  {
+    "path": "deploy/source/trackstand_deploy/launch/trackstand.launch.py",
+    "new_file": false,
+    "sha256": "ca43e04a42b664fa5178deb876ebcc1787aa0dcbb0ea57652944e7f673081d5d"
+  },
+  {
+    "path": "deploy/source/trackstand_deploy/trackstand_deploy/policy.py",
+    "new_file": false,
+    "sha256": "ecfbb3663e39c0a0429379f9e8c2e10c5934370d07595a0059a118d6173e2d16"
+  },
+  {
+    "path": "deploy/source/trackstand_deploy/trackstand_deploy/motor_io_position.py",
+    "new_file": false,
+    "sha256": "d754371b5ceca488f080e628159c50efc571fdbae1042f4c53285d1a22995166"
+  },
+  {
+    "path": "deploy/source/trackstand_deploy/trackstand_deploy/motor_io.py",
+    "new_file": false,
+    "sha256": "d3bacbf5031092e1009ede766d33f391d8af2b4691cd8363cc7ad18529c9dccd"
+  },
+  {
+    "path": "deploy/source/trackstand_deploy/trackstand_deploy/motor_mit_io.py",
+    "new_file": false,
+    "sha256": "7383189aaf157018671274409df7076cae58c5a16f4eb6d1462b9648417ee631"
+  },
+  {
+    "path": "deploy/source/trackstand_deploy/trackstand_deploy/contracts.py",
+    "new_file": false,
+    "sha256": "e8831f86eb6c437653a034b3f8bd658cbb5572ddb4a3975b412253fbaff03ffc"
+  },
+  {
+    "path": "deploy/source/trackstand_deploy/trackstand_deploy/telemetry.py",
+    "new_file": false,
+    "sha256": "4655bcb5aac38366bedb21d267202e6eef755a8a7c57daff7fb425e46548a7d1"
+  },
+  {
+    "path": "deploy/source/trackstand_deploy/trackstand_deploy/policy_controller.py",
+    "new_file": false,
+    "sha256": "80ec172719bf16d160faa16a39f63d5164889e002bdf4734ad51d1b698127dcd"
+  },
+  {
+    "path": "deploy/source/trackstand_deploy/trackstand_deploy/can_protocol.py",
+    "new_file": false,
+    "sha256": "4cf7667669549dd3be03579b205b83f9dae27d7ded7c40e5035dcd317ad85386"
+  },
+  {
+    "path": "deploy/source/trackstand_deploy/test/test_contracts.py",
+    "new_file": false,
+    "sha256": "7890feb52e24d1a0a14e64c9934afad9f599a7b5a1bc6a00cfcfc97d796c8f43"
+  },
+  {
+    "path": "deploy/source/trackstand_deploy/test/test_policy_timing.py",
+    "new_file": false,
+    "sha256": "a3d0cf84779c7ec2d19176a6e2ff7e7278c6a5794377edc389f281535ee68505"
+  },
+  {
+    "path": "deploy/source/trackstand_deploy/test/test_motor_io_position.py",
+    "new_file": false,
+    "sha256": "d5b9700ef6738fd0184541b30b8bb6dc641e6fb95df4772e1281b61096fd9005"
+  },
+  {
+    "path": "deploy/source/trackstand_deploy/test/test_motor_feedback_script.py",
+    "new_file": false,
+    "sha256": "80ece455e7220928d81911652a26dd3ff5437185843f847a54c37f8638da94c8"
+  },
+  {
+    "path": "deploy/source/trackstand_deploy/test/test_shared_node_io.py",
+    "new_file": false,
+    "sha256": "337fedb906394243d90fcb566e7b2e92e77f01c4d458d089698c8e60383b8572"
+  },
+  {
+    "path": "deploy/source/trackstand_deploy/test/test_can_protocol.py",
+    "new_file": false,
+    "sha256": "7b42a22d711f749fb6626f466bb1cf9074f47a9cd17857524d3a447bb9004f3a"
+  },
+  {
+    "path": "deploy/source/trackstand_deploy/test/test_motor_control.py",
+    "new_file": false,
+    "sha256": "19a20ff0b53ef3f521c97bd90230e864e71af7ba9d557106fa32956bb0602b58"
+  },
+  {
+    "path": "deploy/source/trackstand_deploy/test/test_motor_mit_io.py",
+    "new_file": false,
+    "sha256": "51ea1eaada47c24f27f7dfd1d28a1a9a43f5533e177e55cad8c9ce9bac99c37c"
+  },
+  {
+    "path": "deploy/source/trackstand_deploy/test/test_rear_motor_signs.py",
+    "new_file": false,
+    "sha256": "d4d83d5a23d53f84b0c683dbd31e0107261807f4503c504355fb36d4bb50ce93"
+  },
+  {
+    "path": "deploy/source/trackstand_deploy/test/test_policy_startup.py",
+    "new_file": true,
+    "sha256": "f5da7a81758a623c37de55eeb5fdae663536e566a507d3361938c86b8660ee7e"
+  },
+  {
+    "path": "deploy/source/trackstand_deploy/test/test_v1_contract.py",
+    "new_file": true,
+    "sha256": "6eb88c3db3a92592fc9bb7b7f17409caea60e50b7d3cd717862312834d7d07be"
+  },
+  {
+    "path": "deploy/source/trackstand_deploy/test/test_motor_state.py",
+    "new_file": false,
+    "sha256": "0ceb02d2dec44deb058de55754690c8aa41c88cd73451fd9e3e11cb273b23d94"
+  },
+  {
+    "path": "deploy/source/trackstand_deploy/test/test_policy.py",
+    "new_file": false,
+    "sha256": "46e61bbe9eedf19be75615132ad354eb0020a5bca34439b1a287578c3035cab9"
+  },
+  {
+    "path": "deploy/source/trackstand_deploy/models/v1_policy_manifest.json",
+    "new_file": true,
+    "sha256": "be8ef296a1702c72e2538173f696d64a64525840b98288d48075b56c2fa9520e"
+  },
+  {
+    "path": "deploy/source/trackstand_deploy/models/trackstand_rl_rsl_2026-10-21_11-18-29_model_2500.onnx",
+    "new_file": true,
+    "sha256": "d9701945b48e62fec14ea3258cf4255b0c7541d530eb8ec7789a770e9a5a63b2"
+  },
+  {
+    "path": "deploy/docs/HARDWARE_CHECKLIST.md",
+    "new_file": false,
+    "sha256": "df6f50123b6ac9bcc8fa058b08a8a271e886375aa292980c3ec771aa59650897"
+  },
+  {
+    "path": "deploy/docs/MOTOR_MIT_IO.md",
+    "new_file": false,
+    "sha256": "c2de9d6f98d9a1cab57611be9fa306902a3d5a66193b0c6d7dac2a2565bf99d2"
+  },
+  {
+    "path": "deploy/docs/BIKE_DIAGNOSTIC_TESTS.md",
+    "new_file": false,
+    "sha256": "440ac4529fbf3737444dc519dd919adcf9ae18a239b36028ac548f8f8b3e7183"
+  },
+  {
+    "path": "deploy/docs/MOTOR_IO_POSITION.md",
+    "new_file": false,
+    "sha256": "5bdde47b7440288cf260c4fcaa72239f961622fc1944023a05d06f447fe06164"
+  },
+  {
+    "path": "deploy/docs/TELEMETRY.md",
+    "new_file": false,
+    "sha256": "9dab8f9a2e5f4359736fde9a8cbcb8cb83095b8096f613b1a7c22958ee251fe1"
+  },
+  {
+    "path": "deploy/README.md",
+    "new_file": false,
+    "sha256": "3c5c4588e970b004eca57372737be9f550290c7606ce49f0957cedb9835cfdfb"
+  },
+  {
+    "path": "README.MD",
+    "new_file": false,
+    "sha256": "84faacb9df4e293df155b63931e388afcb1c4d9b945437d53b0c558e8e9f2bab"
+  }
+]

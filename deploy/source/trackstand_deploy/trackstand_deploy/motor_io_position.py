@@ -263,9 +263,8 @@ class MotorIoPosition(MotorIo):
             self._publish_control_telemetry(now, diagnostics, reasons, steering_send, drive_send, disable_result)
             return
 
-        max_step = STEERING_VELOCITY_LIMIT_RAD_S / self._control_rate_hz
-        target_error = steering_target - self._slewed_steering_target_rad
-        self._slewed_steering_target_rad += float(np.clip(target_error, -max_step, max_step))
+        # Hold the v1 target already conditioned at 50 Hz by policy_controller.
+        self._slewed_steering_target_rad = steering_target
         error_rad = self._slewed_steering_target_rad - steering[0]
         # The firmware closes the position/speed/current loops. No host steering
         # torque command or artificial PD estimate is reported in C2 mode.
@@ -277,7 +276,7 @@ class MotorIoPosition(MotorIo):
         )
         diagnostics.update({
             "slewed_steering_target_rad": self._slewed_steering_target_rad,
-            "steering_slew_limited": abs(target_error) > max_step,
+            "steering_slew_limited": False,
             "steering_error_rad": error_rad,
             "drive_damping_torque_nm": drive_damping_nm, "drive_unclipped_torque_nm": drive_unclipped_nm,
             "drive_final_torque_nm": drive_torque_nm,

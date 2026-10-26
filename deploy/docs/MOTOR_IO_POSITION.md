@@ -1,10 +1,10 @@
 # C2 steering motor I/O alternative
 
-`motor_io_position.py` is an alternative to `motor_io.py`, not an additional node to run alongside it. Both use ROS node name `/trackstand_motor_io`, the same parameter-file section, and the same topic names. The default launch still starts the original C0 node; that file, launch, and hardware configuration are unchanged.
+`motor_io_position.py` is an alternative to the default MIT backend, not an additional node. All motor backends use ROS node name `/trackstand_motor_io`, the same parameter-file section, and the same topic names. The v1 launch selects MIT steering plus C0 rear.
 
 ## Command conversion
 
-`/trackstand/motor_command` still contains `[enable, steering_target_rad, drive_target_nm]`. The steering target is an **absolute angle relative to the startup encoder zero**, not a relative motion request. The existing ±90° clamp and 23.9 rad/s target slew remain.
+`/trackstand/motor_command` contains `[enable, steering_target_rad, drive_target_nm]`. The steering target is an **absolute angle relative to the startup encoder zero**, not a relative motion request. The v1 policy clips it to ±1.57 rad and slews at 23.9 rad/s once per 50-Hz inference. This backend holds the processed target without a second 200-Hz ramp.
 
 At nominal 200 Hz, the new node computes:
 
@@ -20,14 +20,14 @@ The user verified that naturally increasing steering position turns **left from 
 
 The final encoded target is also clamped to the integer-count representation of the steering-angle limit, so rounding with a noninteger gear ratio cannot request a target outside ±90°.
 
-The raw policy action is not an angle: `policy_controller.py` first applies the existing 1.57 rad steering scale and hardware clamp. This node consumes the resulting angle and preserves its target slew limit; it does not scale the action again.
+The raw v1 Beta action is dimensionless and bounded in [-1,1]. The policy applies the 1.57 rad scale, clip and policy-rate slew. This node consumes the conditioned angle without scaling or slewing it again. Direct manual topic requests are post-conditioning targets.
 
 Live position is **not used to calculate the C2 target**. It is still required for policy observations and safety: missing/stale feedback or an out-of-range unwrapped steering position prevents powered operation. Signed int32 absolute-target overflow latches a fault rather than wrapping. C2 removes C3's relative-reference ambiguity and feedback-dependent conversion error, not communication delay, zero-calibration error, or mechanical tracking error. The obsolete `c3_current_reference_verified` parameter is removed; do not pass it.
 
 ## Preserved behavior and position-mode differences
 
 - Policy remains 50 Hz; command execution and A2/A3 polling remain nominal 200 Hz. The firmware's internal loop frequency is unknown.
-- Rear C0 torque control, its damping/clamps, motor IDs/signs, command watchdog, freshness gates, angle/speed fault checks, fault clearing, and zero-current/CF disables are retained.
+- Rear C0 uses v1 pure feedforward with controller damping zero and ±6.28 N m cap. IDs/signs, watchdogs, freshness and measured angle/speed checks, fault clearing, and zero-current/CF disables remain.
 - Before powered C2, steering B2 speed and B3 current limits are written and independently read back. They match the existing 23.9 rad/s and 5.6 N·m caps, rounded **down** to protocol units. B3 uses the measured B0 torque constant. Missing/mismatched confirmation gates off both motors; setup retries at most once per second. Initial setup can lengthen a control tick; feedback is re-snapshotted and freshness rechecked afterward.
 - The host no longer computes steering PD/current commands. Firmware B6–B9 gains are **not changed** or assumed equivalent to the host's `10/0.2` gains. Suitable firmware tuning still needs hardware validation.
 - C2 replies contain position, not current. An extra nonblocking steering A1 query follows each active command cycle so `/trackstand/motor_state` includes actual-current-derived steering torque. This adds CAN traffic; verify timing and feedback rates while recording.
@@ -62,7 +62,7 @@ B2/B3 must still confirm before actuation. Position mode uses firmware gains and
 unchanged 200 Hz C2/C0 command and safety loop. Fault publication and transition
 events are not throttled; tick sequences intentionally skip between samples.
 
-`/trackstand/motor_state` uses the shared seven-field `motor_state_v2` format: the original position/velocity/time prefix, followed by steering and rear torque in N·m. Missing/stale torque is NaN, and `/trackstand/motor_torque` is no longer published. See [TELEMETRY.md](TELEMETRY.md) for field order and asynchronous-snapshot semantics. Other topic names remain unchanged. `/trackstand/motor_control` uses `motor_control_position_v2:<fields>`: original fields come first, followed by the native C2 startup zero, absolute target count, target offset count, quantized target radians, B2/B3 confirmation and raw limits, A1 socket-send results, and `gate_monotonic_time_s`. This replaces the old C3-specific fields; match recorded layout labels rather than hardcoding offsets. Steering host-PD/current/torque-command fields are NaN because they are not applicable; rear command fields remain valid. Timing ages are evaluated at the recorded gate time. `/trackstand/motor_status` identifies `C2_absolute_position` mode and reports the native startup zero and limit confirmation. Socket-send success is not motor-execution confirmation.
+`/trackstand/motor_state` uses the shared seven-field `motor_state_v3` format: the original position/velocity/time prefix, followed by steering and rear torque in N·m. Missing/stale torque is NaN, and `/trackstand/motor_torque` is no longer published. See [TELEMETRY.md](TELEMETRY.md) for field order and asynchronous-snapshot semantics. Other topic names remain unchanged. `/trackstand/motor_control` uses `motor_control_position_v2:<fields>`: original fields come first, followed by the native C2 startup zero, absolute target count, target offset count, quantized target radians, B2/B3 confirmation and raw limits, A1 socket-send results, and `gate_monotonic_time_s`. This replaces the old C3-specific fields; match recorded layout labels rather than hardcoding offsets. Steering host-PD/current/torque-command fields are NaN because they are not applicable; rear command fields remain valid. Timing ages are evaluated at the recorded gate time. `/trackstand/motor_status` identifies `C2_absolute_position` mode and reports the native startup zero and limit confirmation. Socket-send success is not motor-execution confirmation.
 
 Disk sources: the [CAN protocol Rev.3.09b0](<../../tsinghua_bike_project/assign_2_Hardwares/assign_2_Hardwares/3.RearSteer Servo【GIM3510-8】/CAN Protocol Doc/自定义CAN通信协议_3.09b0.pdf>), pp. 4–6 (A1/A2/A3), pp. 8–9 (B2/B3), p. 14 (C2), p. 24 (absolute position-loop diagram); `ros2_ws/src/motor_can_control/motor_can_control/can_protocol.py:set_position_angle`; and the original deployment `motor_io.py`/`contracts.py`. The normative C2 reply definition refers to A3; C2 replies are not used as torque feedback.
 

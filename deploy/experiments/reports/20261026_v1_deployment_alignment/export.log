@@ -1,0 +1,25 @@
+/home/lmbike/trackstand_rl/isaaclab_train/scripts/deployment/export_rsl_rl_onnx.py:171: UserWarning: # 'dynamic_axes' is not recommended when dynamo=True, and may lead to 'torch._dynamo.exc.UserError: Constraints violated.' Supply the 'dynamic_shapes' argument instead if export is unsuccessful.
+  torch.onnx.export(
+/home/lmbike/IsaacLab/_isaac_sim/kit/python/lib/python3.12/copyreg.py:99: FutureWarning: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+  return cls.__new__(cls, *args)
+/home/lmbike/IsaacLab/_isaac_sim/kit/python/lib/python3.12/site-packages/onnx/reference/ops/op_elu.py:14: RuntimeWarning: overflow encountered in exp
+  return (np.where(x > 0, x, alpha * (np.exp(x) - 1)).astype(x.dtype),)
+/home/lmbike/IsaacLab/_isaac_sim/kit/python/lib/python3.12/site-packages/onnx/reference/ops/op_softplus.py:13: RuntimeWarning: overflow encountered in exp
+  tmp = np.asarray(np.exp(X), dtype=X.dtype)
+[INFO] Loading checkpoint: isaaclab_train/logs/rsl_rl/trackstand_rl_rsl/2026-10-21_11-18-29/model_2500.pt
+[INFO] Checkpoint iteration: 2500
+[INFO] Actor distribution: bounded Beta
+[INFO] Observation normalization baked in: False
+[INFO] Reconstructed MLP: 11 -> 32 -> 32 -> 4 (ELU between layers)
+[INFO] Exporting ONNX (opset=18) to: /tmp/trackstand_v1_deploy_alignment.1ubnqwva/model_2500.onnx
+[torch.onnx] Obtain model graph for `DeploymentPolicy([...]` with `torch.export.export(..., strict=False)`...
+[torch.onnx] Obtain model graph for `DeploymentPolicy([...]` with `torch.export.export(..., strict=False)`... ✅
+[torch.onnx] Run decomposition...
+[torch.onnx] Run decomposition... ✅
+[torch.onnx] Translate the graph into ONNX...
+[torch.onnx] Translate the graph into ONNX... ✅
+[INFO] ONNX export successful.
+[INFO] ONNX model passes onnx.checker validation.
+[INFO] PyTorch <-> ONNX max absolute error (onnx.reference): 1.19e-07
+[INFO] Numeric fidelity verified.
+[INFO] Action scales are NOT baked in — apply the env's scales on the embedding side (Trackstand: steer x 1.57 rad position, rear drive x 6.28 N m torque).

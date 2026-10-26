@@ -8,7 +8,7 @@ MOTOR_STATE_FIELDS = (
     "steering_position_rad", "drive_position_rad", "steering_velocity_rad_s", "drive_velocity_rad_s",
     "unix_time_s", "steering_torque_nm", "drive_torque_nm",
 )
-MOTOR_STATE_LABEL = "motor_state_v2:" + ",".join(MOTOR_STATE_FIELDS)
+MOTOR_STATE_LABEL = "motor_state_v3:" + ",".join(MOTOR_STATE_FIELDS)
 
 
 def fresh_torque_feedback_nm(torque_nm: float, sample_time: float, now: float, timeout_s: float) -> float:

@@ -25,6 +25,12 @@ trackstand_motor_io:
     drive_torque_sign: -1.0
     poll_rate_hz: 200.0
     control_rate_hz: 200.0
+    # Active MIT backend: separate policy input, feedback, and CAN dispatch rates.
+    command_rate_hz: 50.0
+    state_rate_hz: 100.0
+    actuation_rate_hz: 200.0
+    mit_kp_nm_per_motor_rad: 10.0
+    mit_kd_nm_s_per_motor_rad: 0.2
     command_timeout_s: 0.08
     feedback_timeout_s: 0.05
     steering_limit_rad: 1.5707963268
@@ -80,7 +86,8 @@ trackstand_policy_controller:
     imu_timeout_s: 0.06
     motor_timeout_s: 0.06
     rc_timeout_s: 0.15
-    wheel_radius_m: 0.07
-    max_roll_rad: 0.5235987756
-    # Match the training steering-joint range; verify physical clearance before use.
-    max_steering_target_rad: 1.5707963268
+    max_roll_rad: 0.5236
+    # V1 action position bound, distinct from the motor's +/-pi/2 travel guard.
+    max_steering_target_rad: 1.57
+    # Start near the fixed physically straight origin; never re-zero a turned fork.
+    max_steering_start_rad: 0.0872664626

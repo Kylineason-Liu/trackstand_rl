@@ -41,6 +41,9 @@ files are rejected. See [the manifest](replay_targets/manifest.json).
    unobstructed and initially stopped. Steering testing requires straight-ahead
    startup and free travel over the requested range, initially with the front
    wheel airborne. Verify physical current protection and emergency stopping.
+   Steering `--execute` now sends **B1 once**, storing the straight position as
+   its persistent encoder origin, then verifies fresh A3/F1 near zero before
+   replay. It preserves F0 ranges. Rear replay does not reset either origin.
 3. Disable the other motor independently. For example, with other writers
    stopped, `cansend can0 102#CF` requests steering disabled before rear testing;
    `cansend can0 101#CF` requests rear disabled before steering testing. Verify

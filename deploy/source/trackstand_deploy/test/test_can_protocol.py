@@ -14,13 +14,12 @@ from trackstand_deploy.can_protocol import (
 )
 
 
-def test_a2_preserves_full_drive_speed_and_a3_wraps_position():
+def test_a2_preserves_full_drive_speed_and_a3_preserves_multiturn_position():
     speed_payload = bytes([0xA2]) + struct.pack("<i", 58800)
     assert parse_a2_velocity(speed_payload, 1.0, -1.0) == pytest.approx(-61.575216, rel=1e-6)
     position_payload = bytes([0xA3]) + struct.pack("<H", 0) + struct.pack("<i", 20000)
     assert parse_a3_multi_turn_count(position_payload) == 20000
     expected = -((20000 - 100) * 2.0 * math.pi / 16384)
-    expected = (expected + math.pi) % (2.0 * math.pi) - math.pi
     assert parse_a3_position(position_payload, 100, 1.0, -1.0) == pytest.approx(expected)
 
 

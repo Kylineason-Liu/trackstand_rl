@@ -196,13 +196,13 @@ def confirm_disable(node, module):
 
 @pytest.mark.parametrize("enable", [0.0, 0.5, 0.500001, 1.0])
 @pytest.mark.parametrize("target,drive", [(0.1, -0.2), (2.0, -8.0), (-2.0, 8.0)])
-def test_independent_callback_preserves_enable_and_unclipped_targets(mit_node, enable, target, drive):
+def test_independent_callback_preserves_requests_and_bounds_motor_targets(mit_node, enable, target, drive):
     node, module, clock = mit_node
     node._command_callback(module.Float64MultiArray(data=[enable, target, drive]))
     assert node._requested_enable == (enable > 0.5)
     assert node._requested_steering_target_rad == target and node._requested_drive_target_nm == drive
-    assert node._steering_target_rad == target
-    assert node._drive_target_nm == drive
+    assert node._steering_target_rad == max(-1.57, min(1.57, target))
+    assert node._drive_target_nm == max(-6.28, min(6.28, drive))
     assert node._command_monotonic == clock.value
 
 
@@ -256,9 +256,9 @@ def test_mit_and_drive_200hz_and_exact_motor_signs(mit_node):
     assert len(mit) == len(drive) == 9
     expected = mit_motion_payload(0.002 - 0.05, node._mit_ranges, 10, .2)
     assert mit[0].args[1] == expected
-    assert parse_current_feedback(drive[0].args[1]) == pytest.approx(.167)
+    assert parse_current_feedback(drive[0].args[1]) == 0.0
     data = record(node, module)
-    assert data["drive_final_torque_nm"] == pytest.approx(-.05)
+    assert data["drive_final_torque_nm"] == 0.0
     assert math.isnan(data["steering_final_torque_nm"])
     assert math.isnan(data["steering_current_command_a"])
     assert node._mit_zero_rad == .002
@@ -285,6 +285,38 @@ def test_three_rate_divisions_keep_policy_state_and_actuation_independent(mit_no
     assert sum(call.args[0] == 0x502 for call in sent) == (0 if dry_run else 200)
     assert sum(call.args[0] == 0x101 for call in sent) == (0 if dry_run else 200)
     assert record(node, module)["cycle_interval_ms"] == pytest.approx(5.0)
+
+
+def test_v1_targets_are_conditioned_once_and_held_for_four_actual_mit_sends(mit_node):
+    import numpy as np
+    from trackstand_deploy.contracts import SteeringTargetLimiter, scale_policy_action
+
+    node, module, clock = mit_node
+    limiter = SteeringTargetLimiter()
+    previous = 0.
+    for step, raw in enumerate(([1., -.5], [-1., 1.], [1., -1.], [0., 0.])):
+        steering, rear = scale_policy_action(np.array(raw))
+        held = limiter.update(steering)
+        assert abs(held - previous) <= .478 + 1e-12
+        node._tx_bus.reset_mock()
+        for repeat in range(4):
+            clock.value = 100 + step * .02 + repeat * .005
+            if repeat == 0:
+                node._command_callback(module.Float64MultiArray(data=[1., held, rear]))
+            node._mit_f1_at = clock.value
+            for motor in (node._steering, node._drive):
+                motor.sample_monotonic = clock.value
+            node._control_tick()
+        commands = [call.args[1] for call in node._tx_bus.send.call_args_list if call.args[0] == 0x502]
+        assert len(commands) == 4 and all(payload == commands[0] for payload in commands)
+        encoded = module.parse_mit_motion(commands[0], node._mit_ranges)
+        assert node._steering.encoder_sign * (encoded.position_rad - node._mit_zero_rad) == pytest.approx(
+            held, abs=3 / 65535,
+        )
+        drive = [call.args[1] for call in node._tx_bus.send.call_args_list if call.args[0] == 0x101]
+        assert len(drive) == 4
+        assert parse_current_feedback(drive[0]) * .3 * node._drive.torque_sign == pytest.approx(rear, abs=.00015)
+        previous = held
 
 
 @pytest.mark.parametrize("cause", ["rc_down", "stale_feedback", "can_failure"])
@@ -553,38 +585,42 @@ def test_encoded_position_does_not_apply_commented_travel_clamp(mit_node, target
 
 
 @pytest.mark.parametrize("sign", [-1.0, 1.0])
-def test_oversized_policy_request_passes_scaling_callback_and_mit_c0_encoding(mit_node, sign):
+def test_v0_oversized_action_is_rejected_and_direct_topic_requests_are_bounded(mit_node, sign):
     # An actual recorded startup-sized request: no real CAN interface is opened.
     import numpy as np
     from trackstand_deploy.contracts import scale_policy_action
 
     node, module, _ = mit_node
     raw_action = np.array([sign * 1.599545, sign * 16.720318], dtype=np.float32)
-    steering, rear = scale_policy_action(raw_action, math.pi / 2)
+    with pytest.raises(ValueError, match="within"):
+        scale_policy_action(raw_action)
+    steering, rear = float(raw_action[0]) * 1.57, float(raw_action[1]) * 6.28
     node._drive.velocity_rad_s = sign * 60.0
     node._command_callback(module.Float64MultiArray(data=[1.0, steering, rear]))
     node._control_tick()
     data = record(node, module)
     assert abs(steering) > math.pi / 2 and abs(rear) > 6.28
-    assert data["bounded_steering_target_rad"] == steering
-    assert data["bounded_drive_target_nm"] == rear
-    assert data["slewed_steering_target_rad"] == steering
-    assert data["steering_target_clipped"] == data["drive_target_clipped"] == data["steering_slew_limited"] == 0
+    assert data["bounded_steering_target_rad"] == sign * 1.57
+    assert data["bounded_drive_target_nm"] == sign * 6.28
+    assert data["slewed_steering_target_rad"] == sign * 1.57
+    assert data["steering_target_clipped"] == data["drive_target_clipped"] == 1
+    assert data["steering_slew_limited"] == 0
     assert data["drive_torque_saturated"] == 0
-    assert data["drive_final_torque_nm"] == pytest.approx(rear - sign * 3.0)
+    assert data["drive_final_torque_nm"] == sign * 6.28
+    assert data["drive_damping_torque_nm"] == 0
     motion = {call.args[0]: call.args[1] for call in node._tx_bus.send.call_args_list}
     encoded = module.parse_mit_motion(motion[0x502], node._mit_ranges)
     assert node._steering.encoder_sign * (encoded.position_rad - node._mit_zero_rad) == pytest.approx(
-        steering, abs=3 / 65535,
+        sign * 1.57, abs=3 / 65535,
     )
     encoded_rear_nm = module.parse_current_feedback(motion[0x101]) * 0.3 * node._drive.torque_sign
-    assert encoded_rear_nm == pytest.approx(rear - sign * 3.0, abs=0.00015)
+    assert encoded_rear_nm == pytest.approx(sign * 6.28, abs=0.00015)
 
 
 @pytest.mark.parametrize("target", [-3.2, 3.2])
-def test_disabled_travel_cap_does_not_bypass_mit_protocol_range(mit_node, target):
+def test_direct_encoder_still_rejects_out_of_range_native_mit_position(mit_node, target):
     node, module, _ = mit_node
-    node._command_callback(module.Float64MultiArray(data=[1.0, target, 105.0]))
+    node._send_mit(target)
     node._control_tick()
     assert node._fault_latched and node._fault_reason == "steering_mit_send_failed"
     assert not any(call.args[0] == 0x502 for call in node._tx_bus.send.call_args_list)
@@ -592,9 +628,10 @@ def test_disabled_travel_cap_does_not_bypass_mit_protocol_range(mit_node, target
                    and parse_current_feedback(call.args[1]) != 0 for call in node._tx_bus.send.call_args_list)
 
 
-def test_unclipped_current_overflow_still_faults_and_disables(mit_node):
+def test_direct_current_encoder_overflow_still_faults_and_disables(mit_node):
     node, module, _ = mit_node
-    node._command_callback(module.Float64MultiArray(data=[1.0, 0.2, 1e9]))
+    node._outputs_active = True
+    node._send_torque(node._drive, 1e9, .3)
     node._control_tick()
     assert node._fault_latched and node._fault_reason == "drive_can_send_failed"
     assert node._disable_wait
@@ -696,7 +733,7 @@ def test_disable_attempts_all_motors_and_retries_failed_send(mit_node):
     assert not node._outputs_active
 
 
-def test_wrapped_observation_unwrapped_safety_and_fresh_pair(mit_node):
+def test_continuous_a3_state_keeps_extra_turn_visible_and_prevents_fault_clear(mit_node):
     node, module, _ = mit_node
     motor = node._steering
     a3 = bytes([0xA3]) + struct.pack("<Hi", 0, 16384)
@@ -706,12 +743,14 @@ def test_wrapped_observation_unwrapped_safety_and_fresh_pair(mit_node):
     assert motor.position_sample_monotonic == 99.99  # Paired state still refers to the older sample.
     node._pending = (motor, 0xA2, 100, 100.002, 5)
     node._consume(frame(module, motor, bytes([0xA2]) + struct.pack("<i", 0), stamp=100.001), 100.001)
-    assert motor.position_rad == pytest.approx(0)
+    assert motor.position_rad == pytest.approx(-2 * math.pi)
     assert motor._unwrapped_rad == pytest.approx(-2 * math.pi)
     assert motor.sample_monotonic == 100
     assert motor.position_sample_monotonic == 100 and motor.velocity_sample_monotonic == 100.001
+    node._requested_enable = False
+    node._fault("injected_normal_fault")
     node._control_tick()
-    assert node._fault_reason == "steering_position_limit"
+    assert node._fault_latched and node._fault_reason == "injected_normal_fault"
 
 
 def test_actual_current_torque_keeps_kernel_receipt_time_and_no_clipping(mit_node):
@@ -1211,6 +1250,9 @@ def test_cf_acknowledgement_with_active_mode_fails_closed(mit_node):
     node._outputs_active = True
     node._disable_outputs()
     node._consume(frame(module, node._steering, bytes([0xCF]) + bytes(5) + bytes([2, 0])), clock.value)
+    # A retained selected mode requires subsequent inactive F1 verification.
+    assert "steering" in node._disable_f1_wait and not node._disable_confirmed
+    node._consume(frame(module, node._steering, feedback(node._mit_ranges, status=1)), clock.value)
     assert node._hard_fault and node._fault_reason == "steering_disable_not_confirmed"
     assert not node._disable_confirmed and node._disable_wait["steering"] is None
 
@@ -1246,17 +1288,16 @@ def test_new_episode_submits_direct_target_without_disabled_time_slew(mit_node):
     assert record(node, module)["steering_slew_limited"] == 0
 
 
-@pytest.mark.parametrize("motor_name,speed,reason", [
-    ("steering", 30, "steering_speed_limit"), ("drive", 70, "drive_speed_limit")])
-def test_present_speed_fault_cannot_clear_while_rc_is_down(mit_node, motor_name, speed, reason):
+@pytest.mark.parametrize("motor_name,speed", [("steering", 30), ("drive", 70)])
+def test_mit_speed_feedback_is_not_replaced_by_a_simulator_speed_constraint(mit_node, motor_name, speed):
     node, _, clock = mit_node
     node._requested_enable = False
     motor = getattr(node, f"_{motor_name}")
     motor.velocity_rad_s = speed
     node._control_tick()
-    assert node._fault_latched and node._fault_reason == reason
+    assert not node._fault_latched and motor.velocity_rad_s == speed
     node._publish_feedback()
-    assert node._fault_publisher.publish.call_args.args[0].data
+    assert not node._fault_publisher.publish.call_args.args[0].data
     motor.velocity_rad_s = 0
     clock.value += .005
     node._control_tick()

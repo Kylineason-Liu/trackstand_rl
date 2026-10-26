@@ -1,0 +1,20 @@
+/home/lmbike/.local/lib/python3.10/site-packages/matplotlib/projections/__init__.py:63: UserWarning: Unable to import Axes3D. This may be due to multiple versions of Matplotlib being installed (e.g. as a system package and as a pip package). As a result, the 3D projection is not available.
+  warnings.warn("Unable to import Axes3D. This may be due to multiple versions of "
+test_absolute_physical_error_is_not_replaced_by_f1_or_demeaned_error (test_analysis.HardwareReplayTests) ... ok
+test_aligned_exports_preserve_every_fresh_sample_and_time (test_analysis.HardwareReplayTests) ... ok
+test_alignment_recovers_known_synthetic_lag_despite_constant_angle_offset (test_analysis.HardwareReplayTests) ... ok
+test_all_figures_and_local_links_exist (test_analysis.HardwareReplayTests) ... ok
+test_all_twelve_files_and_runtime_hashes_are_validated (test_analysis.HardwareReplayTests) ... ok
+test_existing_simulator_inputs_match_replayed_plans (test_analysis.HardwareReplayTests) ... ok
+test_historical_runtime_snapshots_match_the_recorded_versions (test_analysis.HardwareReplayTests) ... ok
+test_initial_f1_endpoint_and_a3_outside_range_are_real_raw_bytes (test_analysis.HardwareReplayTests) ... ok
+test_main_error_metrics_match_independent_reference_walk (test_analysis.HardwareReplayTests) ... ok
+test_only_steering200_is_incomplete_and_no_tail_is_invented (test_analysis.HardwareReplayTests) ... ok
+test_rate_pairs_are_exactly_equal_at_input_and_payload_levels (test_analysis.HardwareReplayTests) ... ok
+test_rear_accuracy_uses_equal_independent_a1_streams (test_analysis.HardwareReplayTests) ... ok
+test_zero_order_hold_never_uses_a_future_command (test_analysis.HardwareReplayTests) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.383s
+
+OK

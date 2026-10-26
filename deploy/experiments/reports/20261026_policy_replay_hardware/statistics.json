@@ -1,0 +1,979 @@
+{
+  "runs": {
+    "20261026_162728_204031_scaled_50hz_policy_replay": {
+      "label": "Steering MIT 50 Hz",
+      "files": [
+        "20261026_162728_204031_scaled_50hz_policy_replay.csv",
+        "20261026_162728_204031_scaled_50hz_policy_replay.json",
+        "20261026_162728_204031_scaled_50hz_policy_replay_plan.csv"
+      ],
+      "metadata": {
+        "completed": true,
+        "disable_confirmed": true,
+        "targets_sha256": "c799e80fbc87af307871e35dce7ad409f3e636ff662e99ed498c3800a4cf3ad6",
+        "script_sha256": "5f8cd5a994620d9734a3fde9ff0434b45180795e89ecda02b0515d9016cb79a1",
+        "transport_sha256": "e1ca97c2b86ebf126ed975b474fefadac55bf2454f0e8364cd63ed0845822754",
+        "arguments": {
+          "execute": true,
+          "preview": false,
+          "targets": "/home/smallbike/trackstand_rl/deploy/experiments/replay_targets/2500_isaac400_env0_episode1.csv",
+          "level": "scaled",
+          "v1_conditioning": false,
+          "start": 12.5,
+          "duration": 5.0,
+          "ramp": 1.0,
+          "pre_hold": 1.0,
+          "post_hold": 1.0,
+          "packet_rate": 50,
+          "interface": "can0",
+          "motor_id": 2,
+          "sign": -1,
+          "torque_sign": -1,
+          "kp": 10.0,
+          "kd": 0.2,
+          "query_rate": 100.0,
+          "query_timeout": 0.02,
+          "feedback_timeout": 0.1,
+          "max_lateness_ms": 3.0,
+          "current_abort_a": 3.0,
+          "fixture": "airborne",
+          "note": "",
+          "output": "/home/smallbike/trackstand_rl/deploy/experiments/logs/20261026_162728_204031_scaled_50hz_policy_replay.csv"
+        },
+        "target_hz": 50,
+        "packet_hz": 50,
+        "rear_motor_commanded": false,
+        "torque_meaning": "Signed A1 Q-current times measured B0 Kt, not independent shaft torque",
+        "timestamps": "Host send-call and kernel host RX times; not motor acquisition or wire TX times",
+        "mit_ranges": [
+          3.0,
+          45.0,
+          18.0
+        ],
+        "native_zero_rad": 3.0,
+        "encoder_zero_count": 8282,
+        "torque_constant_nm_per_a": 0.7799999713897705,
+        "configured_B3_current_limit_a": 15.0,
+        "configured_CD_hex": "CD00881300",
+        "final_fault_code": 0
+      },
+      "recording_rows": 8119,
+      "transmitted_packets": 400,
+      "planned_packets": 400,
+      "last_sent_replay_s": 7.98012405800182,
+      "first_logged_shutdown_tx_s": 8.000116170002002,
+      "completed_core_window_s": [
+        2.0,
+        7.0
+      ],
+      "tracking": {
+        "n": 494,
+        "bias": 0.17237313292370243,
+        "rms": 0.1728744725948925,
+        "mae": 0.17237313292370243,
+        "p95_abs": 0.19386527532147674,
+        "maximum_abs": 0.21773193181110706,
+        "demeaned_rms": 0.013156227461922803
+      },
+      "common_window_tracking": {
+        "n": 332,
+        "bias": 0.17334027987820197,
+        "rms": 0.17387782481210096,
+        "mae": 0.17334027987820197,
+        "p95_abs": 0.19646846346253283,
+        "maximum_abs": 0.21773193181110706,
+        "demeaned_rms": 0.013661820271628667
+      },
+      "command_intervals_ms": {
+        "n": 399,
+        "minimum": 17.72295400223811,
+        "mean": 20.00004312030523,
+        "median": 19.99935800267849,
+        "p95": 20.07654410081159,
+        "p99": 20.153463419846958,
+        "maximum": 22.296518000075594,
+        "rms": 20.000776780730828
+      },
+      "command_lateness_ms": {
+        "n": 400,
+        "minimum": 0.04394900315674022,
+        "mean": 0.13682675687050505,
+        "median": 0.11998800255241804,
+        "p95": 0.20352524934423846,
+        "p99": 0.26858370838453954,
+        "maximum": 2.419750002445653,
+        "rms": 0.18352887792059486
+      },
+      "effective_tx_hz": 49.99989219946935,
+      "motion_receive_queue_age_ms": {
+        "n": 2829,
+        "minimum": 0.021458658011397347,
+        "mean": 0.050274767190081435,
+        "median": 0.03849763379548676,
+        "p95": 0.0866376722115092,
+        "p99": 0.17198469518916654,
+        "maximum": 2.936451193818357,
+        "rms": 0.08654269150147256
+      },
+      "motion_query_results": {
+        "received": 2429
+      },
+      "alignment": {
+        "best_shift_ms": 16.8,
+        "within_one_percent_loss_shift_range_ms": [
+          16.7,
+          17.400000000000002
+        ],
+        "minimum_rms": 0.009563080047450946,
+        "zero_shift_rms": 0.013156227461922803,
+        "offset_removed": true,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "method": "Grid 0..100 ms, 0.1-ms spacing; actual TX zero-order hold; fixed RX samples",
+        "interpretation": "Descriptive alignment only; no motor acquisition/wire timestamps; not a confidence interval, pure latency or internal loop rate"
+      },
+      "common_window_alignment": {
+        "best_shift_ms": 20.6,
+        "within_one_percent_loss_shift_range_ms": [
+          16.7,
+          21.1
+        ],
+        "minimum_rms": 0.009656146876056157,
+        "zero_shift_rms": 0.013661820271628667,
+        "offset_removed": true,
+        "window_s": [
+          2.0,
+          5.36
+        ],
+        "method": "Grid 0..100 ms, 0.1-ms spacing; actual TX zero-order hold; fixed RX samples",
+        "interpretation": "Descriptive alignment only; no motor acquisition/wire timestamps; not a confidence interval, pure latency or internal loop rate"
+      },
+      "speed_rad_s": {
+        "n": 494,
+        "minimum": -1.543569190463785,
+        "mean": -0.004585198994409397,
+        "median": -0.0010471975511965978,
+        "p95": 0.5943893300591883,
+        "p99": 1.075943123976944,
+        "maximum": 1.221032344695233,
+        "rms": 0.3641484525811668
+      },
+      "current_derived_torque_nm": {
+        "n": 494,
+        "minimum": -0.34319998741149904,
+        "mean": 0.03377526191902547,
+        "median": 0.036659998655319215,
+        "p95": 0.17916599342823025,
+        "p99": 0.2826329896330833,
+        "maximum": 0.40793998503685,
+        "rms": 0.10078878374338056
+      },
+      "feedback_hz": {
+        "A3": 98.87423800297623,
+        "A2": 98.87503461446646,
+        "A1": 98.87508772235554
+      },
+      "bus_voltage_v": {
+        "n": 40,
+        "minimum": 20.22,
+        "mean": 20.23175,
+        "median": 20.23,
+        "p95": 20.240000000000002,
+        "p99": 20.240000000000002,
+        "maximum": 20.240000000000002,
+        "rms": 20.231750851075645
+      },
+      "motor_temperature_c": {
+        "n": 40,
+        "minimum": 32.0,
+        "mean": 33.1,
+        "median": 34.0,
+        "p95": 34.0,
+        "p99": 34.0,
+        "maximum": 34.0,
+        "rms": 33.11495130601885
+      },
+      "zero_reference": {
+        "initial_A3_native_rad": 3.17610722131722,
+        "recorded_F1_zero_rad": 3.0,
+        "initial_F1_position_code": 65535,
+        "F0_position_max_rad": 3.0,
+        "predicted_offset_rad": 0.17610722131722012,
+        "predicted_offset_deg": 10.090200523253035,
+        "measured_A3_minus_F1_relative_rad": {
+          "n": 250,
+          "minimum": 0.17247804126338262,
+          "mean": 0.1762017904564119,
+          "median": 0.17620995008962004,
+          "p95": 0.17710940314578721,
+          "p99": 0.1781949863680062,
+          "maximum": 0.17894983690066057,
+          "rms": 0.17620285564608973
+        },
+        "residual_after_predicted_offset_rad": {
+          "n": 250,
+          "minimum": -0.0036291800538374996,
+          "mean": 9.456913919180109e-05,
+          "median": 0.00010272877239991818,
+          "p95": 0.0010021818285670832,
+          "p99": 0.0020877650507860833,
+          "maximum": 0.0028426155834404554,
+          "rms": 0.0006199363786121983
+        },
+        "F1_based_tracking": {
+          "n": 250,
+          "bias": -0.0037958342870221882,
+          "rms": 0.015591092788458492,
+          "mae": 0.012254703593499613,
+          "p95_abs": 0.030281528953993934,
+          "maximum_abs": 0.04339665827420447,
+          "demeaned_rms": 0.015121964700520537
+        }
+      },
+      "diagnostic_offset_removed_tracking": {
+        "n": 494,
+        "bias": -0.0037340883935176876,
+        "rms": 0.013675881586225264,
+        "mae": 0.010650105678779602,
+        "p95_abs": 0.027555921566157424,
+        "maximum_abs": 0.043494827819045234,
+        "demeaned_rms": 0.013156227461922803
+      }
+    },
+    "20261026_163127_842386_scaled_200hz_policy_replay": {
+      "label": "Steering MIT 200 Hz",
+      "files": [
+        "20261026_163127_842386_scaled_200hz_policy_replay.csv",
+        "20261026_163127_842386_scaled_200hz_policy_replay.json",
+        "20261026_163127_842386_scaled_200hz_policy_replay_plan.csv"
+      ],
+      "metadata": {
+        "completed": false,
+        "disable_confirmed": true,
+        "targets_sha256": "c799e80fbc87af307871e35dce7ad409f3e636ff662e99ed498c3800a4cf3ad6",
+        "script_sha256": "5f8cd5a994620d9734a3fde9ff0434b45180795e89ecda02b0515d9016cb79a1",
+        "transport_sha256": "e1ca97c2b86ebf126ed975b474fefadac55bf2454f0e8364cd63ed0845822754",
+        "arguments": {
+          "execute": true,
+          "preview": false,
+          "targets": "/home/smallbike/trackstand_rl/deploy/experiments/replay_targets/2500_isaac400_env0_episode1.csv",
+          "level": "scaled",
+          "v1_conditioning": false,
+          "start": 12.5,
+          "duration": 5.0,
+          "ramp": 1.0,
+          "pre_hold": 1.0,
+          "post_hold": 1.0,
+          "packet_rate": 200,
+          "interface": "can0",
+          "motor_id": 2,
+          "sign": -1,
+          "torque_sign": -1,
+          "kp": 10.0,
+          "kd": 0.2,
+          "query_rate": 100.0,
+          "query_timeout": 0.02,
+          "feedback_timeout": 0.1,
+          "max_lateness_ms": 3.0,
+          "current_abort_a": 3.0,
+          "fixture": "airborne",
+          "note": "",
+          "output": "/home/smallbike/trackstand_rl/deploy/experiments/logs/20261026_163127_842386_scaled_200hz_policy_replay.csv"
+        },
+        "target_hz": 50,
+        "packet_hz": 200,
+        "rear_motor_commanded": false,
+        "torque_meaning": "Signed A1 Q-current times measured B0 Kt, not independent shaft torque",
+        "timestamps": "Host send-call and kernel host RX times; not motor acquisition or wire TX times",
+        "mit_ranges": [
+          3.0,
+          45.0,
+          18.0
+        ],
+        "native_zero_rad": 3.0,
+        "encoder_zero_count": 8380,
+        "torque_constant_nm_per_a": 0.7799999713897705,
+        "configured_B3_current_limit_a": 15.0,
+        "configured_CD_hex": "CD00881300",
+        "final_fault_code": 0,
+        "error": "RuntimeError: missed packet deadline; replay aborted without skipping or bursting targets"
+      },
+      "recording_rows": 7085,
+      "transmitted_packets": 1074,
+      "planned_packets": 1600,
+      "last_sent_replay_s": 5.3663637270001345,
+      "first_logged_shutdown_tx_s": 5.37326689800102,
+      "completed_core_window_s": [
+        2.0,
+        5.36
+      ],
+      "tracking": {
+        "n": 332,
+        "bias": 0.21108229290910754,
+        "rms": 0.21151304414349362,
+        "mae": 0.21108229290910754,
+        "p95_abs": 0.23563384857556324,
+        "maximum_abs": 0.2561559552412629,
+        "demeaned_rms": 0.013491977730532533
+      },
+      "common_window_tracking": {
+        "n": 332,
+        "bias": 0.21108229290910754,
+        "rms": 0.21151304414349362,
+        "mae": 0.21108229290910754,
+        "p95_abs": 0.23563384857556324,
+        "maximum_abs": 0.2561559552412629,
+        "demeaned_rms": 0.013491977730532533
+      },
+      "command_intervals_ms": {
+        "n": 1073,
+        "minimum": 2.8458539964049123,
+        "mean": 5.001126872318241,
+        "median": 4.999189000955084,
+        "p95": 5.0785995976184495,
+        "p99": 5.188086441048652,
+        "maximum": 7.547691002400825,
+        "rms": 5.004144407274075
+      },
+      "command_lateness_ms": {
+        "n": 1074,
+        "minimum": 0.02813399987644516,
+        "mean": 0.14700786390612153,
+        "median": 0.11871000242535956,
+        "p95": 0.21531675083679142,
+        "p99": 0.8705410895345203,
+        "maximum": 2.9971250041853637,
+        "rms": 0.22148454198238482
+      },
+      "effective_tx_hz": 199.95493526371115,
+      "motion_receive_queue_age_ms": {
+        "n": 2709,
+        "minimum": 0.02118023985531181,
+        "mean": 0.06499517759086347,
+        "median": 0.04002268178737722,
+        "p95": 0.1133565456257201,
+        "p99": 0.3254881122848024,
+        "maximum": 4.212830881442642,
+        "rms": 0.2080277006865533
+      },
+      "motion_query_results": {
+        "received": 1635
+      },
+      "alignment": {
+        "best_shift_ms": 22.500000000000004,
+        "within_one_percent_loss_shift_range_ms": [
+          17.400000000000002,
+          24.800000000000004
+        ],
+        "minimum_rms": 0.009594906810965184,
+        "zero_shift_rms": 0.013491977730532533,
+        "offset_removed": true,
+        "window_s": [
+          2.0,
+          5.36
+        ],
+        "method": "Grid 0..100 ms, 0.1-ms spacing; actual TX zero-order hold; fixed RX samples",
+        "interpretation": "Descriptive alignment only; no motor acquisition/wire timestamps; not a confidence interval, pure latency or internal loop rate"
+      },
+      "common_window_alignment": {
+        "best_shift_ms": 22.500000000000004,
+        "within_one_percent_loss_shift_range_ms": [
+          17.400000000000002,
+          24.800000000000004
+        ],
+        "minimum_rms": 0.009594906810965184,
+        "zero_shift_rms": 0.013491977730532533,
+        "offset_removed": true,
+        "window_s": [
+          2.0,
+          5.36
+        ],
+        "method": "Grid 0..100 ms, 0.1-ms spacing; actual TX zero-order hold; fixed RX samples",
+        "interpretation": "Descriptive alignment only; no motor acquisition/wire timestamps; not a confidence interval, pure latency or internal loop rate"
+      },
+      "speed_rad_s": {
+        "n": 332,
+        "minimum": -1.5676547341413067,
+        "mean": -0.002160633501715866,
+        "median": 0.0,
+        "p95": 0.624496259656091,
+        "p99": 1.0150276424238382,
+        "maximum": 1.5508995733221613,
+        "rms": 0.3740322088279404
+      },
+      "current_derived_torque_nm": {
+        "n": 331,
+        "minimum": -0.2566199905872345,
+        "mean": 0.017607733493124972,
+        "median": 0.024959999084472658,
+        "p95": 0.16964999377727508,
+        "p99": 0.20747999238967896,
+        "maximum": 0.29249998927116394,
+        "rms": 0.0953909232770505
+      },
+      "feedback_hz": {
+        "A3": 99.0022155724131,
+        "A2": 98.96456312364259,
+        "A1": 98.96172682298514
+      },
+      "bus_voltage_v": {
+        "n": 27,
+        "minimum": 20.22,
+        "mean": 20.234444444444446,
+        "median": 20.240000000000002,
+        "p95": 20.240000000000002,
+        "p99": 20.240000000000002,
+        "maximum": 20.240000000000002,
+        "rms": 20.234445420655383
+      },
+      "motor_temperature_c": {
+        "n": 27,
+        "minimum": 32.0,
+        "mean": 33.111111111111114,
+        "median": 34.0,
+        "p95": 34.0,
+        "p99": 34.0,
+        "maximum": 34.0,
+        "rms": 33.126021996812916
+      },
+      "zero_reference": {
+        "initial_A3_native_rad": 3.2136897506204183,
+        "recorded_F1_zero_rad": 3.0,
+        "initial_F1_position_code": 65535,
+        "F0_position_max_rad": 3.0,
+        "predicted_offset_rad": 0.21368975062041828,
+        "predicted_offset_deg": 12.243520835753033,
+        "measured_A3_minus_F1_relative_rad": {
+          "n": 672,
+          "minimum": 0.21118711571640247,
+          "mean": 0.213781426454225,
+          "median": 0.2138026986222482,
+          "p95": 0.21449623169402107,
+          "p99": 0.21509158309572396,
+          "maximum": 0.21600863829212913,
+          "rms": 0.21378193849344918
+        },
+        "residual_after_predicted_offset_rad": {
+          "n": 672,
+          "minimum": -0.0025026349040158102,
+          "mean": 9.16758338067119e-05,
+          "median": 0.0001129480018299267,
+          "p95": 0.0008064810736027819,
+          "p99": 0.001401832475305686,
+          "maximum": 0.0023188876717108453,
+          "rms": 0.0004767952098963924
+        },
+        "F1_based_tracking": {
+          "n": 672,
+          "bias": -0.002619647080622123,
+          "rms": 0.01409846921600904,
+          "mae": 0.010906385900663729,
+          "p95_abs": 0.028381780727855244,
+          "maximum_abs": 0.04248111696040269,
+          "demeaned_rms": 0.01385295215496475
+        }
+      },
+      "diagnostic_offset_removed_tracking": {
+        "n": 332,
+        "bias": -0.00260745771131069,
+        "rms": 0.013741626497524207,
+        "mae": 0.010644537521077867,
+        "p95_abs": 0.027467602744153195,
+        "maximum_abs": 0.042466204620844605,
+        "demeaned_rms": 0.013491977730532533
+      }
+    },
+    "20261026_163432_217938_scaled_50hz_drive_policy_replay": {
+      "label": "Rear C0 50 Hz",
+      "files": [
+        "20261026_163432_217938_scaled_50hz_drive_policy_replay.csv",
+        "20261026_163432_217938_scaled_50hz_drive_policy_replay.json",
+        "20261026_163432_217938_scaled_50hz_drive_policy_replay_plan.csv"
+      ],
+      "metadata": {
+        "completed": true,
+        "disable_confirmed": true,
+        "watchdog_restored": true,
+        "target_hz": 50,
+        "packet_hz": 50,
+        "steering_motor_commanded": false,
+        "targets_sha256": "c799e80fbc87af307871e35dce7ad409f3e636ff662e99ed498c3800a4cf3ad6",
+        "source_sha256": {
+          "drive_policy_replay.py": "bf7b7f67b7e9c597d319ccdd99bdafa96859ee4b94733010902608fc093ce152",
+          "steering_policy_replay.py": "5f8cd5a994620d9734a3fde9ff0434b45180795e89ecda02b0515d9016cb79a1",
+          "steering_sine_mit_io.py": "e1ca97c2b86ebf126ed975b474fefadac55bf2454f0e8364cd63ed0845822754"
+        },
+        "arguments": {
+          "execute": true,
+          "preview": false,
+          "targets": "/home/smallbike/trackstand_rl/deploy/experiments/replay_targets/2500_isaac400_env0_episode1.csv",
+          "level": "scaled",
+          "start": 12.5,
+          "duration": 5.0,
+          "pre_zero": 2.0,
+          "post_hold": 0.0,
+          "packet_rate": 50,
+          "interface": "can0",
+          "motor_id": 1,
+          "encoder_sign": -1,
+          "torque_sign": -1,
+          "query_rate": 100.0,
+          "query_timeout": 0.02,
+          "feedback_timeout": 0.1,
+          "max_lateness_ms": 3.0,
+          "command_current_limit_a": 1.5,
+          "current_abort_a": 2.0,
+          "speed_abort_rad_s": 10.0,
+          "temperature_abort_c": 60.0,
+          "watchdog_ms": 500,
+          "note": "",
+          "output": "/home/smallbike/trackstand_rl/deploy/experiments/logs/20261026_163432_217938_scaled_50hz_drive_policy_replay.csv"
+        },
+        "host_damping_nm_s_per_rad": 0.0,
+        "friction_compensation_nm": 0.0,
+        "torque_meaning": "signed A1/C0 measured current times B0 Kt, not independent shaft torque",
+        "timestamps": "host send-call and kernel host RX times, not motor acquisition or on-wire TX",
+        "B3_meaning": "position/speed-mode current limit; not a C0 current ceiling",
+        "torque_constant_nm_per_a": 0.30000001192092896,
+        "encoder_zero_count": 324554,
+        "CD_restore_error": null,
+        "original_CD_hex": "cd00881300",
+        "latest_CD_hex": "CD00881300",
+        "B3_position_speed_limit_a": 82.498,
+        "B4_current_slew_raw": 0,
+        "B4_current_slew_a_s": 0.0,
+        "final_fault_code": 0
+      },
+      "recording_rows": 7148,
+      "transmitted_packets": 350,
+      "planned_packets": 350,
+      "last_sent_replay_s": 6.980093353999109,
+      "first_logged_shutdown_tx_s": 7.000102909998532,
+      "completed_core_window_s": [
+        2.0,
+        7.0
+      ],
+      "tracking": {
+        "n": 495,
+        "bias": -0.0003890909245519938,
+        "rms": 0.015847776498921485,
+        "mae": 0.011469091364831636,
+        "p95_abs": 0.033000001311302186,
+        "maximum_abs": 0.08850000351667403,
+        "demeaned_rms": 0.015842999343943665
+      },
+      "common_window_tracking": {
+        "n": 332,
+        "bias": -0.001177409685340273,
+        "rms": 0.01687407092602722,
+        "mae": 0.012673193274671772,
+        "p95_abs": 0.034905001387000076,
+        "maximum_abs": 0.0726000028848648,
+        "demeaned_rms": 0.01683294317846597
+      },
+      "command_intervals_ms": {
+        "n": 349,
+        "minimum": 18.02752399817109,
+        "mean": 20.000122154727286,
+        "median": 19.9993340029323,
+        "p95": 20.0807524000993,
+        "p99": 21.094118678447554,
+        "maximum": 22.01696100019035,
+        "rms": 20.001624591511465
+      },
+      "command_lateness_ms": {
+        "n": 350,
+        "minimum": 0.016531997971469536,
+        "mean": 0.12950973982307395,
+        "median": 0.0968095009739045,
+        "p95": 0.17897764937515606,
+        "p99": 1.2857876872658365,
+        "maximum": 2.1143279991520103,
+        "rms": 0.218605833305811
+      },
+      "effective_tx_hz": 49.999694615047,
+      "motion_receive_queue_age_ms": {
+        "n": 2485,
+        "minimum": 0.02233558552688919,
+        "mean": 0.05545228913043892,
+        "median": 0.03983865099144168,
+        "p95": 0.09034989197971294,
+        "p99": 0.17050926777301126,
+        "maximum": 3.466550751909381,
+        "rms": 0.13596231713792797
+      },
+      "motion_query_results": {
+        "received": 2135
+      },
+      "alignment": {
+        "best_shift_ms": 1.4,
+        "within_one_percent_loss_shift_range_ms": [
+          1.0,
+          1.6
+        ],
+        "minimum_rms": 0.013895212284642631,
+        "zero_shift_rms": 0.015847776498921485,
+        "offset_removed": false,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "method": "Grid 0..100 ms, 0.1-ms spacing; actual TX zero-order hold; fixed RX samples",
+        "interpretation": "Descriptive alignment only; no motor acquisition/wire timestamps; not a confidence interval, pure latency or internal loop rate"
+      },
+      "common_window_alignment": {
+        "best_shift_ms": 1.1,
+        "within_one_percent_loss_shift_range_ms": [
+          0.9000000000000001,
+          1.8000000000000003
+        ],
+        "minimum_rms": 0.015321592389668338,
+        "zero_shift_rms": 0.01687407092602722,
+        "offset_removed": false,
+        "window_s": [
+          2.0,
+          5.36
+        ],
+        "method": "Grid 0..100 ms, 0.1-ms spacing; actual TX zero-order hold; fixed RX samples",
+        "interpretation": "Descriptive alignment only; no motor acquisition/wire timestamps; not a confidence interval, pure latency or internal loop rate"
+      },
+      "speed_rad_s": {
+        "n": 495,
+        "minimum": -8.04876037849705,
+        "mean": -1.0401358432654981,
+        "median": -0.00942477796076938,
+        "p95": 0.03665191429188092,
+        "p99": 0.05384689808252907,
+        "maximum": 0.09948376736367678,
+        "rms": 2.4011583590266685
+      },
+      "current_derived_torque_nm": {
+        "n": 495,
+        "minimum": -0.2175000086426735,
+        "mean": -0.100215761557974,
+        "median": -0.09960000395774841,
+        "p95": -0.027450001090765067,
+        "p99": -0.0020640000820159898,
+        "maximum": 0.012000000476837159,
+        "rms": 0.10802338896617046
+      },
+      "feedback_hz": {
+        "A3": 98.8985985705719,
+        "A2": 98.8994174578904,
+        "A1": 98.89986903118377
+      },
+      "bus_voltage_v": {
+        "n": 35,
+        "minimum": 20.17,
+        "mean": 20.204571428571434,
+        "median": 20.21,
+        "p95": 20.21,
+        "p99": 20.21,
+        "maximum": 20.21,
+        "rms": 20.204573032572885
+      },
+      "motor_temperature_c": {
+        "n": 35,
+        "minimum": 30.0,
+        "mean": 30.4,
+        "median": 30.0,
+        "p95": 32.0,
+        "p99": 32.0,
+        "maximum": 32.0,
+        "rms": 30.41052449399714
+      },
+      "zero_command_noise_nm": {
+        "n": 188,
+        "minimum": -0.030000001192092896,
+        "mean": 0.0009095745042283485,
+        "median": -0.0030000001192092896,
+        "p95": 0.016500000655651093,
+        "p99": 0.03109200123548504,
+        "maximum": 0.05790000230073929,
+        "rms": 0.011871089973417868
+      },
+      "near_zero_speed_core_fraction": 0.7171717171717171,
+      "near_zero_speed_torque_abs_nm": {
+        "n": 355,
+        "minimum": 0.0006000000238418579,
+        "mean": 0.09845746870108052,
+        "median": 0.09810000389814377,
+        "p95": 0.1576200062632561,
+        "p99": 0.17370000690221785,
+        "maximum": 0.18780000746250153,
+        "rms": 0.10512107401541183
+      },
+      "near_zero_speed_abs_torque_above_moving_fit_fraction": 0.43380281690140843,
+      "observed_position_last_rad": -5.282262843084205,
+      "initial_encoder_single_turn_count": 13258
+    },
+    "20261026_163545_994664_scaled_200hz_drive_policy_replay": {
+      "label": "Rear C0 200 Hz",
+      "files": [
+        "20261026_163545_994664_scaled_200hz_drive_policy_replay.csv",
+        "20261026_163545_994664_scaled_200hz_drive_policy_replay.json",
+        "20261026_163545_994664_scaled_200hz_drive_policy_replay_plan.csv"
+      ],
+      "metadata": {
+        "completed": true,
+        "disable_confirmed": true,
+        "watchdog_restored": true,
+        "target_hz": 50,
+        "packet_hz": 200,
+        "steering_motor_commanded": false,
+        "targets_sha256": "c799e80fbc87af307871e35dce7ad409f3e636ff662e99ed498c3800a4cf3ad6",
+        "source_sha256": {
+          "drive_policy_replay.py": "bf7b7f67b7e9c597d319ccdd99bdafa96859ee4b94733010902608fc093ce152",
+          "steering_policy_replay.py": "5f8cd5a994620d9734a3fde9ff0434b45180795e89ecda02b0515d9016cb79a1",
+          "steering_sine_mit_io.py": "e1ca97c2b86ebf126ed975b474fefadac55bf2454f0e8364cd63ed0845822754"
+        },
+        "arguments": {
+          "execute": true,
+          "preview": false,
+          "targets": "/home/smallbike/trackstand_rl/deploy/experiments/replay_targets/2500_isaac400_env0_episode1.csv",
+          "level": "scaled",
+          "start": 12.5,
+          "duration": 5.0,
+          "pre_zero": 2.0,
+          "post_hold": 0.0,
+          "packet_rate": 200,
+          "interface": "can0",
+          "motor_id": 1,
+          "encoder_sign": -1,
+          "torque_sign": -1,
+          "query_rate": 100.0,
+          "query_timeout": 0.02,
+          "feedback_timeout": 0.1,
+          "max_lateness_ms": 3.0,
+          "command_current_limit_a": 1.5,
+          "current_abort_a": 2.0,
+          "speed_abort_rad_s": 10.0,
+          "temperature_abort_c": 60.0,
+          "watchdog_ms": 500,
+          "note": "",
+          "output": "/home/smallbike/trackstand_rl/deploy/experiments/logs/20261026_163545_994664_scaled_200hz_drive_policy_replay.csv"
+        },
+        "host_damping_nm_s_per_rad": 0.0,
+        "friction_compensation_nm": 0.0,
+        "torque_meaning": "signed A1/C0 measured current times B0 Kt, not independent shaft torque",
+        "timestamps": "host send-call and kernel host RX times, not motor acquisition or on-wire TX",
+        "B3_meaning": "position/speed-mode current limit; not a C0 current ceiling",
+        "torque_constant_nm_per_a": 0.30000001192092896,
+        "encoder_zero_count": 338328,
+        "CD_restore_error": null,
+        "original_CD_hex": "cd00881300",
+        "latest_CD_hex": "CD00881300",
+        "B3_position_speed_limit_a": 82.498,
+        "B4_current_slew_raw": 0,
+        "B4_current_slew_a_s": 0.0,
+        "final_fault_code": 0
+      },
+      "recording_rows": 9250,
+      "transmitted_packets": 1400,
+      "planned_packets": 1400,
+      "last_sent_replay_s": 6.995093020002969,
+      "first_logged_shutdown_tx_s": 7.000239118002355,
+      "completed_core_window_s": [
+        2.0,
+        7.0
+      ],
+      "tracking": {
+        "n": 495,
+        "bias": 0.00045818183638832746,
+        "rms": 0.016495542752989544,
+        "mae": 0.011012121649703596,
+        "p95_abs": 0.03318000131845471,
+        "maximum_abs": 0.11760000467300416,
+        "demeaned_rms": 0.01648917827305259
+      },
+      "common_window_tracking": {
+        "n": 333,
+        "bias": 0.0005855856088546659,
+        "rms": 0.017176005314997782,
+        "mae": 0.011198198643174615,
+        "p95_abs": 0.034920001387596086,
+        "maximum_abs": 0.11760000467300416,
+        "demeaned_rms": 0.017166020158310848
+      },
+      "command_intervals_ms": {
+        "n": 1399,
+        "minimum": 3.608193997933995,
+        "mean": 5.0000302480351735,
+        "median": 4.9993389984592795,
+        "p95": 5.073492600058671,
+        "p99": 5.163081138889538,
+        "maximum": 6.842390001111198,
+        "rms": 5.001168883020562
+      },
+      "command_lateness_ms": {
+        "n": 1400,
+        "minimum": 0.012405002053128555,
+        "mean": 0.11004061297821213,
+        "median": 0.09196700375468936,
+        "p95": 0.17137990253104363,
+        "p99": 0.3205389519644068,
+        "maximum": 2.160922002076404,
+        "rms": 0.15212446222182438
+      },
+      "effective_tx_hz": 199.9987900859126,
+      "motion_receive_queue_age_ms": {
+        "n": 3535,
+        "minimum": 0.017298265447607264,
+        "mean": 0.054570800582634596,
+        "median": 0.03729771196958609,
+        "p95": 0.09127971788984715,
+        "p99": 0.18863214034354267,
+        "maximum": 4.020230779133271,
+        "rms": 0.1576725707725947
+      },
+      "motion_query_results": {
+        "received": 2135
+      },
+      "alignment": {
+        "best_shift_ms": 2.0,
+        "within_one_percent_loss_shift_range_ms": [
+          1.9,
+          2.0
+        ],
+        "minimum_rms": 0.012240492158039492,
+        "zero_shift_rms": 0.016495542752989544,
+        "offset_removed": false,
+        "window_s": [
+          2.0,
+          7.0
+        ],
+        "method": "Grid 0..100 ms, 0.1-ms spacing; actual TX zero-order hold; fixed RX samples",
+        "interpretation": "Descriptive alignment only; no motor acquisition/wire timestamps; not a confidence interval, pure latency or internal loop rate"
+      },
+      "common_window_alignment": {
+        "best_shift_ms": 2.0,
+        "within_one_percent_loss_shift_range_ms": [
+          1.9,
+          2.0
+        ],
+        "minimum_rms": 0.012514111451423922,
+        "zero_shift_rms": 0.017176005314997782,
+        "offset_removed": false,
+        "window_s": [
+          2.0,
+          5.36
+        ],
+        "method": "Grid 0..100 ms, 0.1-ms spacing; actual TX zero-order hold; fixed RX samples",
+        "interpretation": "Descriptive alignment only; no motor acquisition/wire timestamps; not a confidence interval, pure latency or internal loop rate"
+      },
+      "speed_rad_s": {
+        "n": 494,
+        "minimum": -2.832669375986797,
+        "mean": -0.06716903159355343,
+        "median": 0.0,
+        "p95": 0.04084070449666731,
+        "p99": 0.06200456700635053,
+        "maximum": 0.10786134777324956,
+        "rms": 0.3331614009765295
+      },
+      "current_derived_torque_nm": {
+        "n": 495,
+        "minimum": -0.21900000870227812,
+        "mean": -0.09941273122303414,
+        "median": -0.09720000386238098,
+        "p95": -0.02850000113248825,
+        "p99": -0.00137400005459785,
+        "maximum": 0.014100000560283661,
+        "rms": 0.10763203820395852
+      },
+      "feedback_hz": {
+        "A3": 99.01350662531817,
+        "A2": 99.00615388782191,
+        "A1": 99.00574186961884
+      },
+      "bus_voltage_v": {
+        "n": 35,
+        "minimum": 20.19,
+        "mean": 20.206,
+        "median": 20.21,
+        "p95": 20.21,
+        "p99": 20.21,
+        "maximum": 20.21,
+        "rms": 20.20600073528371
+      },
+      "motor_temperature_c": {
+        "n": 35,
+        "minimum": 30.0,
+        "mean": 31.257142857142856,
+        "median": 32.0,
+        "p95": 32.0,
+        "p99": 32.0,
+        "maximum": 32.0,
+        "rms": 31.272077915336187
+      },
+      "zero_command_noise_nm": {
+        "n": 189,
+        "minimum": -0.06870000272989274,
+        "mean": -0.0007825397136350159,
+        "median": -0.0015000000596046448,
+        "p95": 0.010500000417232515,
+        "p99": 0.012972000515461005,
+        "maximum": 0.02100000083446503,
+        "rms": 0.009245256551209696
+      },
+      "near_zero_speed_core_fraction": 0.9434343434343434,
+      "near_zero_speed_torque_abs_nm": {
+        "n": 467,
+        "minimum": 0.0006000000238418579,
+        "mean": 0.09873597822748365,
+        "median": 0.09810000389814377,
+        "p95": 0.1698000067472458,
+        "p99": 0.19560000777244568,
+        "maximum": 0.2166000086069107,
+        "rms": 0.1061436115369671
+      },
+      "near_zero_speed_abs_torque_above_moving_fit_fraction": 0.41541755888650966,
+      "observed_position_last_rad": -0.3347913069560412,
+      "initial_encoder_single_turn_count": 10648
+    }
+  },
+  "pair_validation": {
+    "steering": {
+      "plans_exactly_equal": true,
+      "full_matched_50hz_intervals": 268,
+      "encoded_payloads_equal_for_every_common_interval": true,
+      "note": "Steering first A3 zeros differ although both F1 zeros equal +3 rad; rear initial rotor/wheel angle differs between runs"
+    },
+    "rear": {
+      "plans_exactly_equal": true,
+      "full_matched_50hz_intervals": 350,
+      "encoded_payloads_equal_for_every_common_interval": true,
+      "note": "Steering first A3 zeros differ although both F1 zeros equal +3 rad; rear initial rotor/wheel angle differs between runs"
+    }
+  },
+  "input_sha256": {
+    "deploy/experiments/logs/20261026_162728_204031_scaled_50hz_policy_replay.csv": "5b2b89d85c3f94eadf71ba444c35d20f6c7ce4d12b7086faca94887e7a14de25",
+    "deploy/experiments/logs/20261026_162728_204031_scaled_50hz_policy_replay.json": "19ceb19cf5c1d4283e1cccd7adfa1aae41020b273ccc3497528bec35b791c9a4",
+    "deploy/experiments/logs/20261026_162728_204031_scaled_50hz_policy_replay_plan.csv": "2ebf99eb71d13558503f3622a860fcd38a4ee7fe1b43ec2cdba30e663b1a008d",
+    "deploy/experiments/logs/20261026_163127_842386_scaled_200hz_policy_replay.csv": "845ccdd27fe63d4e62970b998aed7b987b242a37df6004205cd038109c186a45",
+    "deploy/experiments/logs/20261026_163127_842386_scaled_200hz_policy_replay.json": "f469eed775bc9c2099b16564b61ceb8797fa69cc346bb0ab4a0d1fba91a7d749",
+    "deploy/experiments/logs/20261026_163127_842386_scaled_200hz_policy_replay_plan.csv": "2ebf99eb71d13558503f3622a860fcd38a4ee7fe1b43ec2cdba30e663b1a008d",
+    "deploy/experiments/logs/20261026_163432_217938_scaled_50hz_drive_policy_replay.csv": "0b2f6fc1f361d44a52fd90a7275443ba9bf25e7780844fe6a034ea4c3e481f2d",
+    "deploy/experiments/logs/20261026_163432_217938_scaled_50hz_drive_policy_replay.json": "a7d0d84c1bd3b788d6c202543b312e8067ae2271bdaa33f5ee9fdd6cda6d5c7d",
+    "deploy/experiments/logs/20261026_163432_217938_scaled_50hz_drive_policy_replay_plan.csv": "845fb4e5094ad05e17dbcce97c0e3835da1c6db2f57f7e5f5d9df6cdf5669c7b",
+    "deploy/experiments/logs/20261026_163545_994664_scaled_200hz_drive_policy_replay.csv": "b1315f24a0ca21dc25750214374e68efb825472c567b2df3858dbc47878883a9",
+    "deploy/experiments/logs/20261026_163545_994664_scaled_200hz_drive_policy_replay.json": "8e76ddcbb7ee2b2d656cdd8617a1f8fad8930abc66082f596b33d6a7e46b7039",
+    "deploy/experiments/logs/20261026_163545_994664_scaled_200hz_drive_policy_replay_plan.csv": "845fb4e5094ad05e17dbcce97c0e3835da1c6db2f57f7e5f5d9df6cdf5669c7b"
+  },
+  "user_confirmed_conditions": {
+    "wheels_airborne_free": true,
+    "no_restraint": true,
+    "steering_initially_straight": true,
+    "steering_physically_right": true,
+    "configurations_unchanged": true
+  },
+  "sampling_method": "Errors against latest actual sent command, A3 steering / independent A1 rear; no shifting",
+  "units": {
+    "steering": "rad",
+    "rear_torque": "Nm",
+    "velocity": "rad/s",
+    "timing": "ms"
+  }
+}

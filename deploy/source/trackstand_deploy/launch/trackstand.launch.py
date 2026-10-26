@@ -25,7 +25,7 @@ def generate_launch_description():
         [
             node("kickstand_driver", "trackstand_kickstand_driver"),
             node("imu_publisher", "trackstand_imu_publisher"),
-            node("motor_io", "trackstand_motor_io"),
+            node("motor_mit_io", "trackstand_motor_io"),
             node("rc_kickstand", "trackstand_rc_kickstand"),
             node("policy_controller", "trackstand_policy_controller"),
         ]

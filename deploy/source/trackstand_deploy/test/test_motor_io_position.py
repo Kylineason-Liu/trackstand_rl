@@ -159,7 +159,7 @@ def test_normal_c2_replaces_only_steering_current_command(position_node):
     sent = frames(node)
     assert [(address, payload[0]) for address, payload in sent] == [(0x102, 0xC2), (0x101, 0xC0), (0x102, 0xA1)]
     assert struct.unpack("<i", sent[0][1][1:])[0] == node._steering.zero_count + round(-0.05 / RADIANS_PER_COUNT)
-    expected_drive_nm = 0.05 - 0.05 * 0.4
+    expected_drive_nm = 0.05
     assert parse_current_feedback(sent[1][1]) == pytest.approx(round(-expected_drive_nm / 0.3 * 1000) * 0.001)
     data = telemetry(module, node)
     assert data["gate_enabled"] == 1.0
@@ -248,15 +248,15 @@ def test_status_identifies_c2_and_reports_native_startup_zero(position_node):
     assert "c3_current_reference_verified" not in status
 
 
-def test_clipping_and_slew_remain_unchanged(position_node):
+def test_v1_position_clip_is_held_without_a_second_motor_rate_slew(position_node):
     module, node = position_node
     node._command_callback(SimpleNamespace(data=[1.0, 2.0, 10.0]))
     node._control_tick()
     data = telemetry(module, node)
-    assert data["bounded_steering_target_rad"] == math.pi / 2
+    assert data["bounded_steering_target_rad"] == 1.57
     assert data["bounded_drive_target_nm"] == 6.28
-    assert data["slewed_steering_target_rad"] == pytest.approx(23.9 / 200)
-    assert data["steering_slew_limited"] == 1.0
+    assert data["slewed_steering_target_rad"] == pytest.approx(1.57)
+    assert data["steering_slew_limited"] == 0.0
     assert data["drive_final_torque_nm"] == 6.28
 
 
@@ -531,7 +531,7 @@ def test_constructor_registers_correct_parameters_topics_and_timers(node_module,
     tx_bus.shutdown.assert_called_once()
 
 
-def test_rear_law_matches_original_for_500_seeded_inputs(position_node):
+def test_rear_law_matches_v1_pure_feedforward_for_500_seeded_inputs(position_node):
     module, node = position_node
     rng = np.random.default_rng(42)
     for index in range(500):
@@ -541,7 +541,7 @@ def test_rear_law_matches_original_for_500_seeded_inputs(position_node):
             motor.sample_monotonic = motor.position_sample_monotonic = node._test_clock.value
         node._drive_target_nm = float(rng.uniform(-6.28, 6.28))
         node._drive.velocity_rad_s = float(rng.uniform(-20.0, 20.0))
-        expected = float(np.clip(node._drive_target_nm - 0.05 * node._drive.velocity_rad_s, -6.28, 6.28))
+        expected = float(np.clip(node._drive_target_nm, -6.28, 6.28))
         node._control_tick()
         assert telemetry(module, node)["drive_final_torque_nm"] == expected
 
