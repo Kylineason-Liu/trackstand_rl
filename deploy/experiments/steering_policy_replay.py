@@ -92,8 +92,6 @@ def parse_args(argv=None):
                         help="Abort late sends; never skip target samples")
     parser.add_argument("--current-abort-a", type=finite, default=3.,
                         help="Measured-current abort, NOT a current clamp")
-    parser.add_argument("--angle-abort-rad", type=finite, default=1.7,
-                        help="Measured-angle abort from startup zero")
     parser.add_argument("--fixture", choices=("airborne", "supported-loaded"), default="airborne",
                         help="Record the physical test setup; does not alter commands")
     parser.add_argument("--note", default="", help="Record supply, firmware settings or other test conditions")
@@ -111,7 +109,7 @@ def parse_args(argv=None):
             or not 0 < args.query_timeout < args.feedback_timeout
             or 1 / args.query_rate >= args.feedback_timeout
             or not 0 < args.max_lateness_ms / 1000 < 1 / args.packet_rate
-            or min(args.current_abort_a, args.angle_abort_rad) <= 0):
+            or args.current_abort_a <= 0):
         parser.error("invalid gains, motor ID, rates, deadlines or abort thresholds")
     if args.output is None:
         name = f"{datetime.now():%Y%m%d_%H%M%S_%f}_{args.level}_{args.packet_rate}hz_policy_replay.csv"
@@ -195,8 +193,8 @@ def load_plan(args):
             desired = max(-f32(1.57), min(f32(1.57), row["selected_input_rad"]))
             previous = f32(previous + max(-step, min(step, f32(desired - previous))))
             row["target_rad"] = previous
-    if max(abs(row["target_rad"]) for row in plan) > min(f32(1.57), args.angle_abort_rad):
-        raise ValueError("requested target exceeds +/-1.57 rad or the angle abort; input is rejected, never clipped")
+    if max(abs(row["target_rad"]) for row in plan) > f32(1.57):
+        raise ValueError("requested target exceeds +/-1.57 rad; input is rejected, never clipped")
     return plan, digest
 
 
@@ -344,8 +342,6 @@ class ReplayIO(mit.CanIO):
         if self.phase == "motion":
             if op == 0xA1 and abs(self.current) > self.args.current_abort_a:
                 return "measured current exceeds experiment abort threshold"
-            if op == 0xA3 and abs(self.position) > self.args.angle_abort_rad:
-                return "measured angle exceeds experiment abort threshold"
         return fatal
 
     def request(self, motor, opcode, length=None, payload=None, expected=None, required=True):
@@ -370,8 +366,8 @@ class ReplayIO(mit.CanIO):
                 raise RuntimeError(f"stale {opcode:02X} feedback")
         if now - self.last_f1_at > self.args.feedback_timeout:
             raise RuntimeError("stale F1 feedback")
-        if abs(self.current) > self.args.current_abort_a or abs(self.position) > self.args.angle_abort_rad:
-            raise RuntimeError("measured current/angle exceeds experiment abort threshold")
+        if abs(self.current) > self.args.current_abort_a:
+            raise RuntimeError("measured current exceeds experiment abort threshold")
 
 
 def open_bus(args):

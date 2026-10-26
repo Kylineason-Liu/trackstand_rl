@@ -294,16 +294,24 @@ class ReplayTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, "current"):
                 controller.drain()
 
-    def test_transient_angle_limit_is_checked_on_each_received_sample(self):
+    def test_large_measured_angles_are_logged_without_aborting(self):
         args, bus = self.args(), ReplayCAN()
         with self.clock(bus), replay.CsvLog(self.output) as log:
             motor = replay.mit.Motor("steering", 2, 1., -1, -1, zero_count=0)
             controller = replay.ReplayIO(bus, log, motor, args)
             controller.phase = "motion"
-            bus.enqueue(2, b"\xa3" + struct.pack("<Hi", 6000, 6000))
-            bus.enqueue(2, b"\xa3" + struct.pack("<Hi", 0, 0))
-            with self.assertRaisesRegex(RuntimeError, "angle"):
+            controller.last_f1_at = bus.now
+            bus.enqueue(2, b"\xa1" + struct.pack("<i", 1500))
+            bus.enqueue(2, b"\xa2" + struct.pack("<i", 0))
+            for count in (6000, -6000):
+                bus.enqueue(2, b"\xa3" + struct.pack("<Hi", count % 16384, count))
                 controller.drain()
+                controller.guard()
+                self.assertGreater(abs(controller.position), 1.7)
+                self.assertAlmostEqual(controller.position, -count * replay.mit.RADIANS_PER_COUNT)
+        angles = [float(row["position_unwrapped_rad"]) for row in self.rows()
+                  if row["can_opcode"] == str(0xA3)]
+        np.testing.assert_allclose(angles, np.array([-6000, 6000]) * replay.mit.RADIANS_PER_COUNT)
 
     def test_both_input_columns_are_selected_without_implicit_slew(self):
         args = self.args("--start", "0", "--duration", ".02", "--ramp", "0", "--pre-hold", "0",

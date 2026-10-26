@@ -128,10 +128,11 @@ Do not mix loaded and airborne traces as identical fixtures.
 - Default feedback timeout **100 ms**, packet lateness threshold **3 ms**.
   Missed schedules abort rather than dropping source targets or bursting to catch
   up. These are software checks, not hard-real-time guarantees.
-- Default **measured-current abort 3 A** and **measured-angle abort 1.7 rad** are
-  conservative experiment stop thresholds, not motor ratings or torque clamps.
-  Every received sample is checked, including transient excursions. Change with
-  `--current-abort-a/--angle-abort-rad` only against independently verified limits.
+- Default **measured-current abort 3 A** is an experiment stop threshold, not a
+  motor rating or torque clamp. Every received current sample is checked,
+  including transient excursions. Configure it with `--current-abort-a`.
+  There is no measured-angle abort; angle feedback remains recorded relative to
+  startup zero. The former `--angle-abort-rad` option has been removed.
   F0 and the read B3 value do not establish MIT's actual total torque protection.
 - Completion, faults, Ctrl-C and SIGTERM attempt CF and check fresh CF/AE disabled
   replies. An unconfirmed stop fails the run. Disable removes actuation; it is
