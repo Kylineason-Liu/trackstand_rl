@@ -7,9 +7,10 @@ or balance the bike. No ROS node or package build is needed.
 | Script | Motor | Reference | Default packet rate | Other motor |
 | --- | --- | --- | --- | --- |
 | `steering_policy_replay.py` | ID 2, MIT | Position in rad | 50 Hz | Neither commanded nor disabled |
+| `steering_initial_transient_replay.py` | ID 2, MIT | Position from source time zero | 50 Hz | Neither commanded nor disabled |
 | `drive_policy_replay.py` | ID 1, C0 | Torque in Nm, converted to current with measured B0 | 200 Hz | Neither commanded nor disabled |
 
-Both update references at **50 Hz**. Selecting `--packet-rate 200` repeats the
+All update references at **50 Hz**. Selecting `--packet-rate 200` repeats the
 same encoded reference four times per 20 ms; it does not generate new targets.
 The actual send and feedback timestamps are logged. Default mode is preview;
 only `--execute` opens CAN and permits motor actuation.
@@ -36,7 +37,7 @@ files are rejected. See [the manifest](replay_targets/manifest.json).
 ## Preparation on the Pi
 
 1. Stop all motor nodes, policy/launch processes, other experiment scripts and
-   querying CAN tools. Do not run the two replay scripts simultaneously.
+   querying CAN tools. Do not run motor replay scripts simultaneously.
 2. Secure the bike independently. Rear testing requires the rear wheel airborne,
    unobstructed and initially stopped. Steering testing requires straight-ahead
    startup and free travel over the requested range, initially with the front
@@ -109,6 +110,51 @@ The default source core is **12.50–17.50 s**. Changing sources/windows may cha
 peak torque/current substantially; preview first. Record actual supply/firmware
 and fixture conditions with `--note '...'`. Steering additionally has
 `--fixture airborne|supported-loaded`; the rear test is intended airborne.
+
+## Steering initial-transient replay
+
+Use [steering_initial_transient_replay.py](steering_initial_transient_replay.py)
+to replay the **first five seconds from source time zero**, followed by a one-second
+final hold. It uses the same verified B1/A3/F1 startup, MIT gains 10/0.2, 100-Hz
+A3/A2/A1 queries and integrated CSV/JSON/plan logging as steering_policy_replay.py.
+There is **no preparatory ramp or pre-hold**; the first recorded target is applied
+directly from straight. Only steering ID 2 is addressed; the rear must already be
+disabled independently. This does not change the old scripts or their 12.5–17.5 s
+default core interval.
+
+Keep the new script adjacent to steering_policy_replay.py and
+steering_sine_mit_io.py, with replay_targets/ present. No ROS build is needed.
+The same supported, front-wheel-airborne/free, physically straight setup and
+stopped-writers requirements above apply before **each** execution.
+
+```bash
+cd ~/trackstand_rl/deploy/experiments
+python3 steering_initial_transient_replay.py --preview
+python3 steering_initial_transient_replay.py --execute --packet-rate 50
+# Disable/straighten again before the separate second run:
+python3 steering_initial_transient_replay.py --execute --packet-rate 200
+```
+
+The default Isaac400 file begins at **0.357374 rad (20.476 degrees)** and spans
+**0.357374–1.339667 rad** over the selected five seconds. Nominal Kp times the
+initial stationary position error is approximately **3.574 Nm**, before real
+motor dynamics/current control. This is a stronger input than the previous
+artificial ramp. The existing **3 A measured-current trip** and **3 ms packet
+deadline** remain, so a run may abort; keep its partial data for analysis rather
+than interpreting an incomplete trace as proof of failed tracking. These trips
+are not firmware current clamps. No new measured-angle abort is added.
+
+Use --duration to change how many recorded seconds are played from zero, and
+--post-hold 0 to omit the final hold. Other exposed options include --targets,
+--level, --kp/--kd, --current-abort-a, --max-lateness-ms, --interface, --note and
+--output. Unexposed backend options cannot redirect this entry point to the rear
+motor or insert a preparation ramp. At 200 Hz targets still change only at 50 Hz.
+
+Three files are saved automatically under logs/ with a
+`<timestamp>_<level>_<rate>hz_steering_initial_transient` stem. JSON arguments
+include entry_point and entry_point_sha256 for this wrapper; script_sha256 and
+transport_sha256 continue to identify the unchanged backend/helper. Front-wheel
+replay only: no rear initial-transient implementation or motor command is added.
 
 ## Rear command and feedback details
 

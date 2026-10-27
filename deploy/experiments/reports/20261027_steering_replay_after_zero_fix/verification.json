@@ -1,0 +1,24 @@
+{
+  "protected_files_unchanged": 210,
+  "protected_manifest_backup": "/tmp/steering_replay_20261027_spcl89i2/before.json",
+  "new_raw_files_evaluated": 6,
+  "source_plan_payload_and_reference_checks_passed": true,
+  "independent_standard_library_raw_CAN_crosscheck": {
+    "20261027_144059_652887_scaled_50hz_policy_replay": {
+      "fresh_A3_samples": 495,
+      "independent_raw_RMS_rad": 0.012237006341398906,
+      "independent_raw_bias_rad": 0.0003451747618933911
+    },
+    "20261027_144436_005178_scaled_200hz_policy_replay": {
+      "fresh_A3_samples": 495,
+      "independent_raw_RMS_rad": 0.013749919002128363,
+      "independent_raw_bias_rad": -0.0022863905065009897
+    }
+  },
+  "five_PNG_SVG_PDF_figure_sets_present": true,
+  "report_links_checked": true,
+  "AST_and_120_column_checks_passed": true,
+  "new_simulations_or_hardware_operations": false,
+  "progress_ledgers_or_production_code_changed": false,
+  "command": "python3 -B deploy/experiments/reports/20261027_steering_replay_after_zero_fix/analyze.py"
+}

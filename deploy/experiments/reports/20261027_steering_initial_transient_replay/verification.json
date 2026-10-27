@@ -1,0 +1,29 @@
+{
+  "protected_existing_files_unchanged": 105,
+  "manifest": "/tmp/steering_initial_transient_lv6qtz_y/before.json",
+  "new_entry_point": "deploy/experiments/steering_initial_transient_replay.py",
+  "new_tests": "deploy/experiments/tests/test_steering_initial_transient_replay.py",
+  "new_test_methods": 6,
+  "total_replay_regression_methods_passed": 50,
+  "default_source_interval_s": [
+    0,
+    5
+  ],
+  "default_final_hold_s": 1,
+  "default_total_motion_s": 6,
+  "default_target_intervals": 300,
+  "default_packet_counts": {
+    "50Hz": 300,
+    "200Hz": 1200
+  },
+  "initial_zero_B1_verified_in_virtual_CAN": true,
+  "all_test_CAN_addresses_steering_only": true,
+  "preview_without_site_packages_passed_both_rates": true,
+  "AST_pyflakes_120_column_checks_passed": true,
+  "progress_ledgers_or_old_backend_or_rear_code_modified": false,
+  "real_CAN_or_hardware_or_new_simulation_run": false,
+  "source_hashes": {
+    "deploy/experiments/steering_initial_transient_replay.py": "d613e68fc4a95221a98287755dc2f21e12f6ce37f5c5fbb1d605070a4f764114",
+    "deploy/experiments/tests/test_steering_initial_transient_replay.py": "ca05c496d3576b0af0444e23863baa9b4735fd39feb0d26bcfea2df3a7a6030f"
+  }
+}
