@@ -1,0 +1,39 @@
+{
+  "passed": true,
+  "task": "Trackstand-Balance-v2",
+  "physics_hz": 400,
+  "policy_target_hz": 50,
+  "seed": 42,
+  "num_envs": 64,
+  "target_speed_rad_s": 1.0,
+  "rear_kp": 0.0,
+  "rear_kd": 0.2,
+  "duration_s": 0.2,
+  "fixture": "All bodies lifted to root z=3m at runtime; no contact; unchanged geometry and actuator parameters.",
+  "effective_free_inertia_range_kg_m2": [
+    0.00014420750085264444,
+    0.0002146414335584268
+  ],
+  "scalar_forward_euler_pole_range": [
+    -2.467226266860962,
+    -1.3294663429260254
+  ],
+  "scalar_forward_euler_abs_pole_over_one_envs": 64,
+  "speed_abs_max_rad_s": 1.629591941833496,
+  "late_peak_to_peak_speed_max_rad_s": 1.6295920610427856,
+  "late_peak_to_peak_speed_median_rad_s": 1.346187949180603,
+  "late_mean_abs_target_error_rad_s": 0.6685899496078491,
+  "computed_torque_abs_max_nm": 0.20000004768371582,
+  "applied_torque_abs_max_nm": 0.20000004768371582,
+  "command": [
+    "isaaclab_train/reports/20261027_v2_pretraining_audit/audit_rear_stability.py",
+    "--headless",
+    "--device",
+    "cuda:0",
+    "--physics_hz",
+    "400",
+    "--output",
+    "isaaclab_train/reports/20261027_v2_pretraining_audit/rear_stability_400"
+  ],
+  "scope": "Unloaded discrete-controller diagnostic, not an on-ground balance evaluation or hardware test."
+}

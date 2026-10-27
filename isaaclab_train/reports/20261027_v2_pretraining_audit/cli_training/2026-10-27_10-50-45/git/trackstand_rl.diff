@@ -1,0 +1,210 @@
+--- git commit ---
+5ce9527bc0caab0c9015eda648e1f66294a6d354
+
+
+--- git status ---
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+  (commit or discard the untracked or modified content in submodules)
+	modified:   isaaclab_train/README.md
+	modified:   isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/__init__.py
+	modified:   progress_record.md
+	modified:   progress_record.txt
+	modified:   ros2_ws (modified content)
+	modified:   "tsinghua_bike_project/assign_2_Hardwares/assign_2_Hardwares/1.IMU/Supplementary Materials/\346\272\220\347\240\201/ROS\345\272\224\347\224\250/ROS2/yahboomcar_ws/src/robot_localization" (modified content, untracked content)
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	isaaclab_train/reports/20261027_v2_pretraining_audit/
+	isaaclab_train/reports/20261027_v2_velocity_control/
+	isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/agents/rsl_rl_ppo_beta_v2_cfg.py
+	isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/trackstand_bike/trackstand_rl_env_cfg_v2.py
+	isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/trackstand_bike/trackstand_rl_env_v2.py
+	isaaclab_train/tests/test_trackstand_velocity_v2.py
+
+no changes added to commit (use "git add" and/or "git commit -a") 
+
+
+--- git diff ---
+diff --git a/isaaclab_train/README.md b/isaaclab_train/README.md
+index fa1709b..49ef126 100644
+--- a/isaaclab_train/README.md
++++ b/isaaclab_train/README.md
+@@ -246,3 +246,61 @@ Some examples of packages that can likely be excluded are:
+ "<path-to-isaac-sim>/extscache/omni.services.*"     // Services tools
+ ...
+ ```
++
++## Trackstand-Balance-v2: rear MIT velocity control
++
++V2 inherits v1 and changes the rear action from torque to **target angular velocity**.
++Both raw actions remain bounded Beta outputs in [-1, 1]. The 11 observations,
++steering action/controller, rewards, termination conditions, reset bookkeeping,
++passive friction, and 50-Hz policy / 400-Hz physics rates remain the same.
++
++| Action | Scale | Meaning after scaling |
++| --- | --- | --- |
++| Steering | 1.57 | Steering target position, rad; same v1 clip and 50-Hz slew |
++| Rear drive | 61.6 | Rear-wheel target velocity, rad/s, explicitly clipped to ±61.6 |
++
++The rear scale matches v1's existing 61.6 rad/s speed constraint and the saved
++GIM3510-8 individual datasheet's 588 output rpm (61.5752 rad/s before rounding).
++It is a target bound, not proof the hardware can deliver that speed at every load.
++
++In Isaac, rear IdealPDActuator models the requested MIT velocity law:
++
++```text
++velocity_target = clip(61.6 * raw_drive_action, -61.6, 61.6)  # held for 20 ms
++torque = clip(0.2 * (velocity_target - measured_velocity), -6.28, 6.28)
++```
++
++Rear Kp is zero, nominal Kd is 0.2 N m s/rad, and feedforward torque is zero.
++This Kd is the velocity-controller gain; passive rear losses remain separately
++configured as in v1: measured moving friction 0.106 N m, provisionally equal
++static friction, and viscous friction zero. Zero raw drive action actively
++commands zero speed and braking.
++Velocity error above 31.4 rad/s reaches the nominal 6.28 N m effort cap.
++
++DR remains opt-in, but v2 disables controller-gain randomization for both motors.
++Steering Kp/Kd stay 10/0.2 and rear Kp/Kd stay 0/0.2, including with --dr;
++all other v1 DR terms remain unchanged. The velocity action has no extra
++target slew or default joint-speed offset. This is the nominal MIT equation in
++simulation, with a 400-Hz explicit controller; it is not a measured firmware
++loop/current model or a C1 speed-mode PI controller.
++
++Run from this directory:
++
++```bash
++export PYTHONPATH="$PWD${PYTHONPATH:+:$PYTHONPATH}"
++~/IsaacLab/isaaclab.sh -p scripts/rsl_rl/train.py \
++  --task Trackstand-Balance-v2 --num_envs 4096 --seed 42 --headless --dr
++~/IsaacLab/isaaclab.sh -p scripts/rsl_rl/play_eval.py \
++  --task Trackstand-Balance-v2 --checkpoint /path/to/v2_model.pt \
++  --num_envs 64 --num_steps 3000 --seed 42 --headless --dr
++```
++
++Omit --dr for nominal training/evaluation. V2 uses the separate log directory
++logs/rsl_rl/trackstand_rl_v2_rsl/. Train a new policy: v1 and v2 have the same
++tensor shapes but different rear-action meanings, so existing torque-action
++checkpoints and the current v1 MuJoCo/Pi consumers must not be reused as velocity
++controllers. This change does not switch or modify the deployed v1 model/backend.
++The generic ONNX exporter still exports normalized Beta means; its existing
++v1 torque-scaling console advice is not a v2 consumer contract.
++
++Implementation and validation: [v2 report](reports/20261027_v2_velocity_control/README.md).
+diff --git a/isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/__init__.py b/isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/__init__.py
+index c9019c6..2a51697 100644
+--- a/isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/__init__.py
++++ b/isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/__init__.py
+@@ -1,4 +1,4 @@
+-"""Trackstand balance tasks: v0 Gaussian policy and v1 bounded Beta policy.
++"""Trackstand balance tasks: v0 Gaussian, v1 Beta torque and v2 Beta rear velocity.
+ 
+ Mirrors the CycleRL cyclerl package layout: agents/, assets/, bicycle_cfg.py,
+ mdp/, and a per-bike subpackage (trackstand_bike/) holding the env class and
+@@ -10,6 +10,7 @@ import gymnasium as gym
+ from .trackstand_bike.trackstand_rl_env import TrackstandRLEnv
+ from .trackstand_bike.trackstand_rl_env_cfg import TrackstandRLEnvCfg
+ from .trackstand_bike.trackstand_rl_env_cfg_v1 import TrackstandRLEnvCfgV1
++from .trackstand_bike.trackstand_rl_env_cfg_v2 import TrackstandRLEnvCfgV2
+ 
+ gym.register(
+     id="Trackstand-Balance-v0",
+@@ -38,3 +39,19 @@ gym.register(
+         "rsl_rl_cfg_entry_point": f"{__name__}.agents.rsl_rl_ppo_beta_cfg:TrackstandRLBetaPPORunnerCfg",
+     },
+ )
++
++# Independent v2 registration; the existing v0/v1 registrations are unchanged.
++gym.register(
++    id="Trackstand-Balance-v2",
++    entry_point=(
++        "source.trackstand_rl.trackstand_rl.tasks.manager_based."
++        "trackstand.trackstand_bike.trackstand_rl_env_v2:TrackstandRLEnvV2"
++    ),
++    disable_env_checker=True,
++    kwargs={
++        "env_cfg_entry_point": TrackstandRLEnvCfgV2,
++        "rsl_rl_cfg_entry_point": (
++            f"{__name__}.agents.rsl_rl_ppo_beta_v2_cfg:TrackstandRLVelocityBetaPPORunnerCfg"
++        ),
++    },
++)
+diff --git a/progress_record.md b/progress_record.md
+index 88f3105..be3ae0c 100644
+--- a/progress_record.md
++++ b/progress_record.md
+@@ -2268,6 +2268,39 @@ Supported five-second core, steering losses ON, RMS position error in degrees:
+ - VERIFICATION: **584 deployment tests passed, 1 kernel-socket test skipped under sandbox restrictions**. Includes actual constructor/default actor and checksum rejection, RC-cycle rear rebasing, fixed steering reference, once-per-policy-step slew with four identical MIT packets, signs/units/current feedback, faults/CF-F1 disable and stale-inference rejection. Installed actual Isaac v1 observation term on **1,000 matched states**, maximum channel error **1.66893e-6**; actual steering action class on **1,000 actions with periodic resets**, maximum target error **1.56045e-7 rad**; installed IdealPD formula/clipping agrees exactly on tested tensors. ONNX versus actual BetaMean on **4,096 inputs**, maximum action error **1.04905e-5**, first 1,000 kinematically consistent stress states **1.66893e-6**, p99 **3.57628e-7**; 2e-5 float32 tolerance, not bitwise equality. Artifacts include reproducible scripts, JSON, NPZ, logs and changed-file inventory. Changed Python AST/Pyflakes/new-line-length and whitespace checks pass; vendor-only pre-existing unused imports were left untouched.
+ - REMAINING / PRESERVATION: physical total steering MIT PD-torque/current cap is still **unverified** and cannot be equated with Isaac's +/-5.6 N m from F0 or C2 B3. Real speed/travel constraints, internal timing/current dynamics, loaded response/contact, passive friction and sensor synchronization remain physical validation gaps. Existing MIT lack of measured travel/overspeed trips is unchanged; legacy trips remain. Simulation horizon/drift/yaw/wheel-net scoring is not an automatic hardware reset, and software cannot respawn the real pose/velocity. **804 existing protected files unchanged**, including Isaac/MuJoCo source, all pre-existing experiment scripts/data/reports and Git index. No new physics evaluation, ROS build, CAN/hardware test, retraining, staging or commit; corrected steering replay on the bike remains pending.
+ 
++## 209. Trackstand-Balance-v2 adds rear MIT velocity control; v0/v1 preserved (2026-10-27)
++
++- IMPLEMENTED: independent **Trackstand-Balance-v2** registration with new [config](isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/trackstand_bike/trackstand_rl_env_cfg_v2.py), [environment entry](isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/trackstand_bike/trackstand_rl_env_v2.py) and [Beta runner](isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/agents/rsl_rl_ppo_beta_v2_cfg.py), following v1's layout through inheritance. The only action/plant change is rear velocity instead of torque: **bounded raw drive action x61.6 rad/s -> target clip +/-61.6 -> hold at 50 Hz -> IdealPD Kp=0, nominal Kd=0.2, feedforward=0 -> post-controller torque clip +/-6.28 N m -> joint with separate inherited passive losses**. No rear target slew or default-speed offset is added. Steering remains v1's x1.57/clip/slew path.
++- SCALE / UNITS: **61.6 rad/s** retains v1's existing speed limit and the saved individual GIM3510-8 datasheet's **588 output rpm =61.5752 rad/s**. The catalog PDF has conflicting 564.6-rpm/6.02-N m values; the individual image matching established v1 limits is the cited basis, not a new torque-speed-envelope identification. Kd is controller **N m s/rad**, not passive B. Nominal torque is **clip(0.2*(target_speed-measured_speed), +/-6.28)**; error magnitude above **31.4 rad/s** saturates, and zero action actively commands zero speed/braking. The prior moving-drag fit implies about **0.53 rad/s** steady error only in the simple unsaturated moving P-loop approximation, not measured MIT error or breakaway speed.
++- INHERITANCE / TASK BOUNDARY: keep exactly v1's 11 observations/noise/sanitization, bounded Beta distribution, steering/plant/friction/limits, rewards and normalized action-rate weighting, terminations, fail/timeout bookkeeping, reset events, **400-Hz physics/controller and 50-Hz policy**, and opt-in DR. Inherited gain DR now scales nonzero rear Kd to **0.18–0.22**; Kp stays zero. Runner PPO settings are unchanged except the separate **logs/rsl_rl/trackstand_rl_v2_rsl/** namespace. V0/v1 checkpoints share dimensions but not the new rear semantics; train a new v2 policy. Existing MuJoCo and Raspberry Pi remain v1; no physical rear MIT backend or CAN operation was implemented by this Isaac task.
++- NEW CPU TESTS / LEGACY RESULT: **13 new tests passed, no skips**, using actual installed JointVelocityAction/IdealPD classes. Full config equality is verified after reverting only rear action and rear controller Kd; test instance isolation, runner equality except namespace, target units/clip/offset/hold, zero-command braking, effort clipping and separate friction. The full suite ran **56 test methods** and reported **two subcase failures in one unchanged v0/v1 comparison**: it fails to distinguish v0 viscous_friction=None from explicit v1 0.0. Both subcase failures reproduce in an isolated original-registry baseline with all new v2 source files removed. This pre-existing test was not edited or described as passing.
++- LIVE HEADLESS VERIFICATION: [report and captures](isaaclab_train/reports/20261027_v2_velocity_control/README.md), seed **42**, **16 environments**, nominal and DR. Per mode: **64 synthetic action steps +32 policy steps for two diagnostic PPO updates +1 forced reset step =97** observations/actions, **776** PD/effort writes and **12,416 scalar rear actuator samples**. Target velocity maximum **61.599998 rad/s** both modes; measured maxima **61.600033 /63.547943** show the inherited soft solver speed constraint. Kd nominal **0.200000003**, DR **0.180121–0.219383**. Computed torque peaks **20.659220 /25.684324 N m**, actual submitted torque maximum **6.2800002** (float32), **345 /1,733** samples require clipping. Every submission equals clipped velocity-error torque exactly; FF stays zero; native PhysX PD is zero on both motors; passive properties/speed settings and forced timeout/failure joint/wheel-net/steering resets pass. PPO losses/weights remain finite and actions bounded. These untrained/synthetic checks establish implementation, not balance performance or hardware accuracy.
++- PRESERVATION / DELIVERABLES: both old registrations and complete resolved v0/v1 configurations match before/after in both DR modes; **181 pre-existing protected files unchanged**, including every existing task implementation/test, shared training/export scripts, hardware/MuJoCo source and Git index (the shared registry is the deliberate registration edit). Appended v2 training/evaluation instructions preserve the old training README prefix. New sources pass AST/Pyflakes/120-column/whitespace checks. Report retains CPU/full-suite/baseline/GPU logs, controller/raw-action/observation NPZ captures, summary JSON and reproducible audit script. No v2 checkpoint, full training, hardware test, model-geometry edit, staging or commit. New velocity consumers must verify actual rear MIT signs/ranges/protection; current v1 deployments must not load v2 policies merely because tensor shapes match.
++
++## 210. V2 rear IdealPD resolved parameters and library command path verified (2026-10-27)
++
++The follow-up inspection reconfirmed §209 against the [v2 override](isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/trackstand_bike/trackstand_rl_env_cfg_v2.py) and its [v1 parent actuator](isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/trackstand_bike/trackstand_rl_env_cfg_v1.py). The complete nominal rear configuration discussed is:
++
++| Configuration field | Value / interpretation |
++| --- | --- |
++| class_type | IdealPDActuator |
++| joint_names_expr | rear_wheel_joint |
++| stiffness | 0.0; controller Kp |
++| damping | 0.2 N m s/rad; nominal controller Kd |
++| effort_limit | 6.28 N m; explicit post-controller effort clamp |
++| effort_limit_sim | 6.28 N m; retained simulator setting |
++| velocity_limit | 61.6 rad/s; stored model parameter |
++| velocity_limit_sim | 61.6 rad/s; solver speed constraint |
++| friction | 0.106 N m; provisional static threshold |
++| dynamic_friction | 0.106 N m; fitted moving-friction setting |
++| viscous_friction | 0.0 N m s/rad; passive model setting |
++| armature | None; no explicit override, not a claim of zero joint/motor inertia |
++
++- TARGET / EFFORT BOUNDARY: the action's offset is **0.0** and use_default_offset is **False**. Installed joint_actions.py first scales/clips the 50-Hz action and JointVelocityAction.apply_actions writes the held result into the joint velocity-target buffer. At each of the eight 400-Hz physics steps, articulation.py passes that target and current simulated joint velocity into IdealPDActuator.compute. It calculates **Kd*(target_velocity-measured_velocity)** with Kp zero and feedforward zero, clips using **effort_limit**, clears the outgoing position/velocity commands, and submits the resulting effort through the PhysX effort buffer/set_dof_actuation_forces. This is feedback torque control; the code does not overwrite actual joint speed with the target.
++- PARAMETER DISTINCTIONS: zero feedforward is an **action-input value**, not an extra IdealPDActuatorCfg parameter. Position error contributes zero because Kp=0. Controller damping remains separate from passive viscous_friction. Passive/static/moving friction acts in joint dynamics after effort submission; it is not subtracted again inside this controller or included in the pre-clamp torque formula. Nominal Kd=0.2 becomes the inherited sampled 0.18–0.22 with DR, as already recorded in §209.
++- LIMIT INTERPRETATION: velocity_limit does not add a torque-speed envelope to IdealPD's fixed effort clipping. The explicit **target clip** and the **solver speed constraint** are separate; the latter remains soft, consistent with the already recorded 63.547943-rad/s DR peak. Neither configured speed value proves a strict bound on measured speed, and no physical MIT/CAN command or current-limit verification follows from this Isaac equation.
++- EVIDENCE / RECORDING SCOPE: reread installed joint_actions.py, actuator_pd.py, actuator_base.py/actuator_base_cfg.py, manager_based_rl_env.py and the PhysX articulation buffer/submission path. The existing [nominal](isaaclab_train/reports/20261027_v2_velocity_control/no_dr/summary.json) and [DR](isaaclab_train/reports/20261027_v2_velocity_control/dr/summary.json) summaries reconfirm **12,416 samples per mode**, zero feedforward/native PD and exact submitted-versus-clipped effort equality from the original implementation audit. This recording adds only the missing parameter/flow distinctions; no new tests, physics runs, training, export, ROS build or hardware operations were performed. Only the two root progress ledgers are edited, preserving all previous entries and existing source/report work.
++
+ ---
+ 
+ # Part II — NewBike balance campaign (pre-trackstand, 2026-08 → 09)
+diff --git a/progress_record.txt b/progress_record.txt
+index 7a20318..7667528 100644
+--- a/progress_record.txt
++++ b/progress_record.txt
+@@ -1313,3 +1313,13 @@ seed  DR off steps/outcome  DR on steps/outcome
+ 2026.10.26 V1 deploy commands: bounded steer*x1.57 -> +/-1.57 rad clip -> +/-0.478 rad slew ONCE per 50-Hz action -> motor nodes HOLD, no second 200-Hz ramp. Rear bounded*x6.28 -> restored +/-6.28 Nm caps -> signed C0 current/B0; controller damping now 0, no duplicate passive-friction compensation. Rear action remains TORQUE; MIT rear-velocity Kp 0 / Kd 0.2 proposal not implemented. Launch now motor_mit_io, nominal 50/100/200 unchanged. Restore abs(gravity_y)>sin(.5236) or gravity_z>0 fallen stop; require steering within 5 degrees of fixed straight before arming. Policy parameters read-only/startup-only, latest sensor queues, post-inference freshness recheck; status/events include task/model/checksum/episode/rear zero. Hardware IDs/signs/IMU/CRSF/servo settings and RC authority unchanged. Sync/rebuild/source complete Pi package; v2 state cannot refresh v1 policy.
+ 
+ 2026.10.26 SAVED migration checks: 584 pass/1 sandbox kernel-socket skip. Actual Isaac observation function: 1000 states, max error 1.66893e-6; actual v1 slew 1000 actions/resets max 1.56045e-7 rad; installed IdealPD formula/clipping exact on tested tensors. Actual BetaMean versus ONNX: 4096 inputs, max 1.04905e-5, first 1000 kinematically consistent stress states 1.66893e-6, p99 3.57628e-7 (float32 tolerance 2e-5; not bitwise). New scripts/JSON/NPZ/logs/inventory retained; changed-code AST/Pyflakes/new-line-length and diff checks pass. 804 existing protected files unchanged. Firmware MIT total torque/current cap still unverified: F0/B3 do not prove Isaac +/-5.6 Nm clamp. Real speed/travel constraints, timing/current dynamics, loaded contact/friction, sensor synchronization and physical reset remain gaps; MIT measured travel/speed trips still absent. Simulation 30s/drift/yaw/wheel-net scoring not imposed as hardware resets. No physics, ROS build, hardware/CAN, retraining or commit; corrected steering replay still pending.
++
++2026.10.27 IMPLEMENTED Trackstand-Balance-v2, new env/config/Beta runner mirroring v1 layout. Rear bounded action *61.6 rad/s -> explicit +/-61.6 target clip -> 50-Hz hold -> IdealPD Kp=0, nominal Kd=.2, FF=0 -> +/-6.28 Nm post-controller torque clip -> separate passive losses. No rear target slew/default-speed offset. Scale follows existing v1 limit and individual GIM3510-8 sheet: 588 output rpm=61.5752 rad/s; catalog PDF conflicts (564.6 rpm/6.02 Nm), not substituted. Kd is controller gain, not B. Zero action brakes toward zero speed; nominal saturation starts at 31.4 rad/s error. Simple moving-drag/P-loop estimate gives .53 rad/s steady error, not measured MIT response.
++
++2026.10.27 V2 retains v1 11 observations/Beta/steering/frictions/limits/rewards/terminations/reset bookkeeping and 50/400-Hz timing. Same opt-in DR scales rear Kd to .18-.22, Kp remains 0. PPO settings unchanged; separate logs/rsl_rl/trackstand_rl_v2_rsl/ namespace. V0/v1 registrations and full configs exactly match pre-change snapshots in both DR modes; 181 existing protected files unchanged. Existing task/test/shared script files untouched except adding v2 to shared registry; training README gets appended v2 instructions. MuJoCo/Pi remain v1; actual rear MIT hardware path not implemented. Train new v2 policy; same tensor shapes do not make torque/velocity checkpoints interchangeable.
++
++2026.10.27 V2 verification: 13 new CPU tests passed/no skips. Full suite 56 methods has two subcase failures in one pre-existing v0/v1 comparison (viscous_friction None versus explicit 0); reproduced using isolated original registry without v2 source files, test left untouched. Headless seed 42, 16 envs, no DR/DR each: 64 synthetic +32 steps for two diagnostic PPO updates +1 forced reset=97 policy/obs calls, 776 PD writes, 12416 scalar rear samples. Kd .200000003 / .180121-.219383; target max 61.599998 rad/s, measured max 61.600033/63.547943 (soft speed constraint). Computed torque max 20.659220/25.684324 Nm -> actual max 6.2800002; 345/1733 clipped samples. FF always zero, submissions exactly clipped PD, native PD zero, passive properties/timeout-failure resets verified, finite PPO losses/weights and bounded actions. Sources pass AST/Pyflakes/120 columns/diff checks. Artifacts in isaaclab_train/reports/20261027_v2_velocity_control/; MD 209 details. Diagnostic untrained runs, not balance/hardware evidence; no saved v2 checkpoint, full training, CAN or geometry change.
++
++2026.10.27 V2 rear IdealPD follow-up verification (MD 210): rear_wheel_joint, stiffness 0, nominal damping .2 Nm s/rad; effort_limit=effort_limit_sim=6.28 Nm; velocity_limit=velocity_limit_sim=61.6 rad/s; static friction .106 Nm (provisional), dynamic friction .106 Nm, passive viscous friction 0. Armature None means no explicit override, not zero inertia. Velocity action offset 0/use_default_offset false. These resolved aliases/defaults supplement MD 209's already recorded v2 implementation.
++
++2026.10.27 Library flow reconfirmed: 50-Hz bounded action -> x61.6/velocity target clip -> held velocity-target buffer -> current simulated speed enters IdealPD each 400-Hz step -> Kd*(target-speed), Kp/FF zero -> explicit effort_limit clamp -> outgoing position/velocity commands cleared -> PhysX effort submission -> separate passive joint losses. FF zero is an action input, not a configuration field. IdealPD velocity_limit does not create a torque-speed envelope; target clip and soft solver speed constraint are distinct. Existing nominal/DR summaries retain 12416 samples each, zero FF/native PD and exact clipped-effort submission; not new experiments. Only root progress_record.md/.txt updated after reading source/library/records; no new tests, physics, training, export, ROS or hardware operation.
+diff --git a/ros2_ws b/ros2_ws
+--- a/ros2_ws
++++ b/ros2_ws
+@@ -1 +1 @@
+-Subproject commit 9aaf3f6cf4793eca88cc556b6d3eb7ced4338455
++Subproject commit 9aaf3f6cf4793eca88cc556b6d3eb7ced4338455-dirty
+diff --git "a/tsinghua_bike_project/assign_2_Hardwares/assign_2_Hardwares/1.IMU/Supplementary Materials/\346\272\220\347\240\201/ROS\345\272\224\347\224\250/ROS2/yahboomcar_ws/src/robot_localization" "b/tsinghua_bike_project/assign_2_Hardwares/assign_2_Hardwares/1.IMU/Supplementary Materials/\346\272\220\347\240\201/ROS\345\272\224\347\224\250/ROS2/yahboomcar_ws/src/robot_localization"
+--- "a/tsinghua_bike_project/assign_2_Hardwares/assign_2_Hardwares/1.IMU/Supplementary Materials/\346\272\220\347\240\201/ROS\345\272\224\347\224\250/ROS2/yahboomcar_ws/src/robot_localization"	
++++ "b/tsinghua_bike_project/assign_2_Hardwares/assign_2_Hardwares/1.IMU/Supplementary Materials/\346\272\220\347\240\201/ROS\345\272\224\347\224\250/ROS2/yahboomcar_ws/src/robot_localization"	
+@@ -1 +1 @@
+-Subproject commit 663436c73675d72f8a6c6217e2e9ec7a605bb558
++Subproject commit 663436c73675d72f8a6c6217e2e9ec7a605bb558-dirty

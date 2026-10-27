@@ -1,0 +1,55 @@
+Warp DeprecationWarning: warp.config.quiet is deprecated; use warp.config.log_level = warp.LOG_WARNING to suppress the init banner.
+Warp CUDA error 100: no CUDA-capable device is detected (in function init_cuda_driver, /builds/omniverse/warp/warp/native/cuda_util.cpp:309)
+/home/lmbike/IsaacLab/source/isaaclab/isaaclab/utils/configclass.py:513: DeprecationWarning: 'RigidBodyMaterialCfg' is deprecated and will be removed in 5.0. Use 'isaaclab_physx.sim.spawners.materials.PhysxRigidBodyMaterialCfg' for PhysX properties, or 'isaaclab.sim.spawners.materials.RigidBodyMaterialBaseCfg' for solver-common properties only.
+  f1(*args, **kwargs)
+/home/lmbike/IsaacLab/_isaac_sim/kit/python/lib/python3.12/site-packages/torch/jit/_script.py:1480: DeprecationWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/home/lmbike/IsaacLab/source/isaaclab/isaaclab/utils/configclass.py:513: DeprecationWarning: 'RigidBodyMaterialCfg' is deprecated and will be removed in 5.0. Use 'isaaclab_physx.sim.spawners.materials.PhysxRigidBodyMaterialCfg' for PhysX properties, or 'isaaclab.sim.spawners.materials.RigidBodyMaterialBaseCfg' for solver-common properties only.
+  f1(*args, **kwargs)
+/home/lmbike/IsaacLab/source/isaaclab/isaaclab/utils/configclass.py:513: DeprecationWarning: 'RigidBodyPropertiesCfg' is deprecated and will be removed in 5.0. Use 'isaaclab_physx.sim.schemas.PhysxRigidBodyPropertiesCfg' for PhysX properties, or 'isaaclab.sim.schemas.RigidBodyBaseCfg' for solver-common properties only.
+  f1(*args, **kwargs)
+/home/lmbike/IsaacLab/source/isaaclab/isaaclab/utils/configclass.py:513: DeprecationWarning: 'ArticulationRootPropertiesCfg' is deprecated and will be removed in 5.0. Use 'isaaclab_physx.sim.schemas.PhysxArticulationRootPropertiesCfg' for PhysX properties, or 'isaaclab.sim.schemas.ArticulationRootBaseCfg' for solver-common properties only.
+  f1(*args, **kwargs)
+test_all_v1_motor_limits_and_passive_losses_are_retained (test_trackstand_velocity_v2.TestRearVelocityV2.test_all_v1_motor_limits_and_passive_losses_are_retained) ... ok
+test_beta_runner_matches_v1_except_separate_checkpoint_directory (test_trackstand_velocity_v2.TestRearVelocityV2.test_beta_runner_matches_v1_except_separate_checkpoint_directory) ... ok
+test_distinct_registration_and_v2_bookkeeping_override (test_trackstand_velocity_v2.TestRearVelocityV2.test_distinct_registration_and_v2_bookkeeping_override) ... ok
+test_eight_physics_applications_hold_one_velocity_target (test_trackstand_velocity_v2.TestRearVelocityV2.test_eight_physics_applications_hold_one_velocity_target) ... ok
+test_explicit_velocity_target_clip (test_trackstand_velocity_v2.TestRearVelocityV2.test_explicit_velocity_target_clip) ... ok
+test_gain_dr_stays_disabled_through_constructor_and_cli_switches (test_trackstand_velocity_v2.TestRearVelocityV2.test_gain_dr_stays_disabled_through_constructor_and_cli_switches) ... ok
+test_only_rear_action_controller_and_gain_dr_change_from_v1 (test_trackstand_velocity_v2.TestRearVelocityV2.test_only_rear_action_controller_and_gain_dr_change_from_v1) ... ok
+test_target_reached_has_zero_motor_torque_before_passive_losses (test_trackstand_velocity_v2.TestRearVelocityV2.test_target_reached_has_zero_motor_torque_before_passive_losses) ... ok
+test_timing_observations_and_steering_are_unchanged (test_trackstand_velocity_v2.TestRearVelocityV2.test_timing_observations_and_steering_are_unchanged) ... ok
+test_v2_instance_mutations_never_change_v0_v1_or_fresh_v2 (test_trackstand_velocity_v2.TestRearVelocityV2.test_v2_instance_mutations_never_change_v0_v1_or_fresh_v2) ... ok
+test_velocity_action_units_scale_and_zero_offset (test_trackstand_velocity_v2.TestRearVelocityV2.test_velocity_action_units_scale_and_zero_offset) ... ok
+test_velocity_error_pd_is_clipped_after_controller (test_trackstand_velocity_v2.TestRearVelocityV2.test_velocity_error_pd_is_clipped_after_controller) ... ok
+test_zero_velocity_action_brakes_in_both_directions (test_trackstand_velocity_v2.TestRearVelocityV2.test_zero_velocity_action_brakes_in_both_directions) ... ok
+test_back_and_forth_cancels (test_trackstand_wheel_net_v2.TestWheelNetV2.test_back_and_forth_cancels) ... ok
+test_callback_is_deregistered_before_closing (test_trackstand_wheel_net_v2.TestWheelNetV2.test_callback_is_deregistered_before_closing) ... ok
+test_crossing_pi_is_not_incorrectly_wrapped (test_trackstand_wheel_net_v2.TestWheelNetV2.test_crossing_pi_is_not_incorrectly_wrapped) ... ok
+test_empty_reset_and_full_reset (test_trackstand_wheel_net_v2.TestWheelNetV2.test_empty_reset_and_full_reset) ... ok
+test_environment_callback_reads_native_position (test_trackstand_wheel_net_v2.TestWheelNetV2.test_environment_callback_reads_native_position) ... ok
+test_full_and_partial_reset_delegate_without_legacy_clear_all (test_trackstand_wheel_net_v2.TestWheelNetV2.test_full_and_partial_reset_delegate_without_legacy_clear_all) ... ok
+test_initial_position_is_a_reference_not_motion (test_trackstand_wheel_net_v2.TestWheelNetV2.test_initial_position_is_a_reference_not_motion) ... ok
+test_multiple_turns_accumulate_beyond_the_termination_limit (test_trackstand_wheel_net_v2.TestWheelNetV2.test_multiple_turns_accumulate_beyond_the_termination_limit) ... ok
+test_partial_reset_excludes_teleports_and_preserves_other_envs (test_trackstand_wheel_net_v2.TestWheelNetV2.test_partial_reset_excludes_teleports_and_preserves_other_envs) ... ok
+test_physx_four_pi_branch_crosses_in_both_directions (test_trackstand_wheel_net_v2.TestWheelNetV2.test_physx_four_pi_branch_crosses_in_both_directions) ... ok
+test_selected_scene_resets_refresh_angle_reference_and_yaw (test_trackstand_wheel_net_v2.TestWheelNetV2.test_selected_scene_resets_refresh_angle_reference_and_yaw) ... ok
+test_step_skips_the_legacy_endpoint_speed_integral (test_trackstand_wheel_net_v2.TestWheelNetV2.test_step_skips_the_legacy_endpoint_speed_integral) ... ok
+test_varying_substep_motion_uses_angle_not_final_speed (test_trackstand_wheel_net_v2.TestWheelNetV2.test_varying_substep_motion_uses_angle_not_final_speed) ... ok
+
+----------------------------------------------------------------------
+Ran 26 tests in 1.801s
+
+OK
+[INFO] domain randomization: OFF (nominal physics and fixed initial state); observation white noise is unchanged.
+[INFO] domain randomization: ON (full per-episode randomization); observation white noise is unchanged.
+[INFO] domain randomization: ON (full per-episode randomization); observation white noise is unchanged.
+[INFO] domain randomization: OFF (nominal physics and fixed initial state); observation white noise is unchanged.
+[INFO] domain randomization: OFF (nominal physics and fixed initial state); observation white noise is unchanged.
+[INFO] domain randomization: ON (full per-episode randomization); observation white noise is unchanged.
+[INFO] domain randomization: ON (full per-episode randomization); observation white noise is unchanged.
+[INFO] domain randomization: ON (full per-episode randomization); observation white noise is unchanged.
+[INFO] domain randomization: ON (full per-episode randomization); observation white noise is unchanged.
+[INFO] domain randomization: OFF (nominal physics and fixed initial state); observation white noise is unchanged.
+[INFO] domain randomization: OFF (nominal physics and fixed initial state); observation white noise is unchanged.
+[INFO] domain randomization: ON (full per-episode randomization); observation white noise is unchanged.

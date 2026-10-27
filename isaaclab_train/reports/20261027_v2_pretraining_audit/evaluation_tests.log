@@ -1,0 +1,15 @@
+test_additional_termination_is_also_disabled (test_evaluation_options.TestPureSurvival.test_additional_termination_is_also_disabled) ... ok
+test_cli_is_opt_in_and_independent_of_dr (test_evaluation_options.TestPureSurvival.test_cli_is_opt_in_and_independent_of_dr) ... ok
+test_default_preserves_every_term_and_emits_nothing (test_evaluation_options.TestPureSurvival.test_default_preserves_every_term_and_emits_nothing) ... ok
+test_dictionary_configuration_and_repeated_calls (test_evaluation_options.TestPureSurvival.test_dictionary_configuration_and_repeated_calls) ... ok
+test_evaluator_wires_flag_before_parse_and_override_before_environment (test_evaluation_options.TestPureSurvival.test_evaluator_wires_flag_before_parse_and_override_before_environment) ... ok
+test_keeps_only_time_out_and_fallen_with_parameters_and_identity (test_evaluation_options.TestPureSurvival.test_keeps_only_time_out_and_fallen_with_parameters_and_identity) ... ok
+test_missing_required_term_rejected_before_mutation (test_evaluation_options.TestPureSurvival.test_missing_required_term_rejected_before_mutation) ... ok
+test_unrelated_configuration_is_unchanged (test_evaluation_options.TestPureSurvival.test_unrelated_configuration_is_unchanged) ... ok
+test_unsupported_task_is_allowed_only_without_flag (test_evaluation_options.TestPureSurvival.test_unsupported_task_is_allowed_only_without_flag) ... ok
+test_warning_explicitly_mentions_disabled_divergence_check (test_evaluation_options.TestPureSurvival.test_warning_explicitly_mentions_disabled_divergence_check) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.006s
+
+OK

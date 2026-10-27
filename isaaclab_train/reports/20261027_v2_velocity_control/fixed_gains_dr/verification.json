@@ -1,0 +1,23 @@
+{
+  "protected_python_files_unchanged": 71,
+  "changed_files": [
+    "isaaclab_train/README.md",
+    "isaaclab_train/tests/test_trackstand_velocity_v2.py",
+    "isaaclab_train/reports/20261027_v2_velocity_control/verify_v2.py",
+    "isaaclab_train/reports/20261027_v2_velocity_control/README.md",
+    "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/trackstand_bike/trackstand_rl_env_cfg_v2.py"
+  ],
+  "unit_tests_passed": 13,
+  "headless_dr_passed": true,
+  "seed": 42,
+  "runtime_rear_kd_fixed_at_0_2": true,
+  "capture_torque_submission_equality": true,
+  "source_hashes": {
+    "isaaclab_train/README.md": "b87cb86beb6af91a7b7b05f4c429a2ecf78ec9416d57a7c7f91550308e072728",
+    "isaaclab_train/tests/test_trackstand_velocity_v2.py": "fd5dd228ffac02945cf282dd29fc7b82534d1245377ac3dd38159c6bde981cda",
+    "isaaclab_train/reports/20261027_v2_velocity_control/verify_v2.py": "d9688bb65ddb6f2e1ead42298260fe24b7b30b05fd474b585becdb06b65454ce",
+    "isaaclab_train/reports/20261027_v2_velocity_control/README.md": "15c921b4c429cf4c84d4ed2fc9a5c6e3aaf2a8ab88c88e0e451ec58f16de8882",
+    "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/trackstand_bike/trackstand_rl_env_cfg_v2.py": "77d34930f42b0bb499ab01d8220e3fac766809a1ffb7f931b042ae0d2cfd2308"
+  },
+  "original_no_dr_and_dr_artifacts_preserved": true
+}

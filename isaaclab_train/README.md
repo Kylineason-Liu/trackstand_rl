@@ -246,3 +246,68 @@ Some examples of packages that can likely be excluded are:
 "<path-to-isaac-sim>/extscache/omni.services.*"     // Services tools
 ...
 ```
+
+## Trackstand-Balance-v2: rear MIT velocity control
+
+V2 inherits v1 and changes the rear action from torque to **target angular velocity**.
+Both raw actions remain bounded Beta outputs in [-1, 1]. The 11 observations,
+steering action/controller, rewards, termination conditions,
+passive friction, and 50-Hz policy / 400-Hz physics rates remain the same.
+
+V2 wheel-net bookkeeping uses actual rear-angle increments after each physics
+step, unwrapping the installed PhysX 4pi branch. The existing 7.2 rad termination
+checks the current accumulated angle at the end of that same policy step.
+Full and partial episode resets clear only the selected angle/reference/yaw
+buffers; reset teleports are excluded. V0/v1 keep their previous bookkeeping.
+See the [wheel-net fix and validation](reports/20261027_v2_wheel_net_fix/README.md).
+
+| Action | Scale | Meaning after scaling |
+| --- | --- | --- |
+| Steering | 1.57 | Steering target position, rad; same v1 clip and 50-Hz slew |
+| Rear drive | 61.6 | Rear-wheel target velocity, rad/s, explicitly clipped to ±61.6 |
+
+The rear scale matches v1's existing 61.6 rad/s speed constraint and the saved
+GIM3510-8 individual datasheet's 588 output rpm (61.5752 rad/s before rounding).
+It is a target bound, not proof the hardware can deliver that speed at every load.
+
+In Isaac, rear IdealPDActuator models the requested MIT velocity law:
+
+```text
+velocity_target = clip(61.6 * raw_drive_action, -61.6, 61.6)  # held for 20 ms
+torque = clip(0.2 * (velocity_target - measured_velocity), -6.28, 6.28)
+```
+
+Rear Kp is zero, nominal Kd is 0.2 N m s/rad, and feedforward torque is zero.
+This Kd is the velocity-controller gain; passive rear losses remain separately
+configured as in v1: measured moving friction 0.106 N m, provisionally equal
+static friction, and viscous friction zero. Zero raw drive action actively
+commands zero speed and braking.
+Velocity error above 31.4 rad/s reaches the nominal 6.28 N m effort cap.
+
+DR remains opt-in, but v2 disables controller-gain randomization for both motors.
+Steering Kp/Kd stay 10/0.2 and rear Kp/Kd stay 0/0.2, including with --dr;
+all other v1 DR terms remain unchanged. The velocity action has no extra
+target slew or default joint-speed offset. This is the nominal MIT equation in
+simulation, with a 400-Hz explicit controller; it is not a measured firmware
+loop/current model or a C1 speed-mode PI controller.
+
+Run from this directory:
+
+```bash
+export PYTHONPATH="$PWD${PYTHONPATH:+:$PYTHONPATH}"
+~/IsaacLab/isaaclab.sh -p scripts/rsl_rl/train.py \
+  --task Trackstand-Balance-v2 --num_envs 4096 --seed 42 --headless --dr
+~/IsaacLab/isaaclab.sh -p scripts/rsl_rl/play_eval.py \
+  --task Trackstand-Balance-v2 --checkpoint /path/to/v2_model.pt \
+  --num_envs 64 --num_steps 3000 --seed 42 --headless --dr
+```
+
+Omit --dr for nominal training/evaluation. V2 uses the separate log directory
+logs/rsl_rl/trackstand_rl_v2_rsl/. Train a new policy: v1 and v2 have the same
+tensor shapes but different rear-action meanings, so existing torque-action
+checkpoints and the current v1 MuJoCo/Pi consumers must not be reused as velocity
+controllers. This change does not switch or modify the deployed v1 model/backend.
+The generic ONNX exporter still exports normalized Beta means; its existing
+v1 torque-scaling console advice is not a v2 consumer contract.
+
+Implementation and validation: [v2 report](reports/20261027_v2_velocity_control/README.md).

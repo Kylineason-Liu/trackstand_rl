@@ -1,0 +1,202 @@
+The '--headless' CLI argument is deprecated. Omit '--viz' for default headless. If config visualizers are enabled and you want to force headless, use '--viz none'.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+E0000 00:00:1793070834.066354 1813811 descriptor_database.cc:633] File already exists in database: grpc/health/v1/health.proto
+W0000 00:00:1793070834.066386 1813811 message.cc:301] Protobuf GeneratedMessageFactory: File is already registered: grpc/health/v1/health.proto
+[ISAACLAB] AppLauncher initialization complete
+[ISAACLAB] Kit version: 110.1.1+production.305458.6312fa25.gl
+[ISAACLAB] Kit kernel:  210.1.5+release.12978.b22b555f.gl
+[ISAACLAB] Kit hash:    6312fa25
+[INFO]: Base environment:
+	Environment device    : cuda:0
+	Environment seed      : 42
+	Physics step-size     : 0.00125
+	Rendering step-size   : 0.02
+	Environment step-size : 0.02
+[INFO]: Registered backend 'physx' for factory Articulation.
+[INFO]: Registered backend 'physx' for factory FrameView.
+[INFO]: Physics scene prim path: /physicsScene
+Loading user config located at: '/home/lmbike/.cache/packman/chk/kit-kernel/110.1.1+production.manylinux_2_35_x86_64.release/data/Kit/IsaacLab/3.0/user.config.json'
+2026-10-27T03:13:53Z [0ms] [Warning] [omni.ext.plugin] [ext: extensions] Extensions config 'extension.toml' doesn't exist '/home/lmbike/IsaacLab/source/extensions' or '/home/lmbike/IsaacLab/source/extensions/config'
+2026-10-27T03:13:54Z [360ms] [Warning] [omni.usd_config.extension] Enable omni.materialx.libs extension to use MaterialX
+2026-10-27T03:13:54Z [829ms] [Warning] [isaacsim.core.simulation_manager.plugin] USD stage is not available; stage-opened subscription is deferred
+2026-10-27T03:13:54Z [830ms] [Warning] [isaacsim.core.simulation_manager.plugin] USD stage is not available; stage-opened subscription is deferred
+2026-10-27T03:13:58Z [4,315ms] [Warning] [usdrt.population.plugin] Last global time was not created. Did you call setEnableUsdNoticeHandling?
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_0/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_1/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_2/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_3/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_4/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_5/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_6/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_7/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_8/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_9/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_10/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_11/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_12/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_13/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_14/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_15/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_16/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_17/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_18/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_19/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_20/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_21/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_22/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_23/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_24/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_25/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_26/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_27/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_28/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_29/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_30/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_31/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_32/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_33/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_34/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_35/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_36/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_37/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_38/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_39/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_40/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_41/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_42/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_43/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_44/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_45/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_46/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_47/Robot/Geometry/base_link/base_link'
+[INFO]: Time taken for scene creation Last: 1.399418 s, Mean: 1.399418 s, Std: 0.000000 s, N: 1
+[INFO]: Scene manager:  <class InteractiveScene>
+	Number of environments: 64
+	Environment spacing   : 2.5
+	Source prim name      : /World/envs/env_0
+	Global prim paths     : ['/World/ground']
+	Replicate physics     : True
+[INFO]: Simulation parameters for joints in /World/envs/env_.*/Robot:
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                                                     Simulation Joint Information (Prim path: /World/envs/env_.*/Robot)                                                     |
++-------+-------------------+-----------+---------+----------+-----------------+------------------+------------------+---------------------+-----------------+---------------+
+| Index | Name              | Stiffness | Damping | Armature | Static Friction | Dynamic Friction | Viscous Friction |   Position Limits   | Velocity Limits | Effort Limits |
++-------+-------------------+-----------+---------+----------+-----------------+------------------+------------------+---------------------+-----------------+---------------+
+|   0   | rear_wheel_joint  |   0.000   |  0.000  |  0.000   |      0.106      |      0.106       |      0.000       | [-3.4e+38, 3.4e+38] |      61.600     |     6.280     |
+|   1   | steering_joint    |   0.000   |  0.000  |  0.000   |      0.046      |      0.046       |      0.001       |   [-1.571, 1.571]   |      23.900     |     5.600     |
+|   2   | front_wheel_joint |   0.000   |  0.000  |  0.000   |      0.000      |      0.000       |      0.000       | [-3.4e+38, 3.4e+38] |     5.9e+36     |    3.4e+38    |
++-------+-------------------+-----------+---------+----------+-----------------+------------------+------------------+---------------------+-----------------+---------------+
+[INFO]: Time taken for simulation start Last: 0.748233 s, Mean: 0.748233 s, Std: 0.000000 s, N: 1
+[INFO] Command Manager:  <CommandManager> contains 0 active terms.
++----------------------+
+| Active Command Terms |
++-------+------+-------+
+| Index | Name |  Type |
++-------+------+-------+
++-------+------+-------+
+
+[INFO] Event Manager:  <EventManager> contains 2 active terms.
++-------------------------------------+
+| Active Event Terms in Mode: 'reset' |
++-------+-----------------------------+
+| Index | Name                        |
++-------+-----------------------------+
+|   0   | reset_scene                 |
+|   1   | randomize_mass              |
+|   2   | randomize_com               |
+|   3   | randomize_material          |
+|   4   | initial_state               |
+|   5   | reset_imu_turnon_residuals  |
++-------+-----------------------------+
++---------------------------------------+
+| Active Event Terms in Mode: 'startup' |
++-------+-------------------------------+
+| Index | Name                          |
++-------+-------------------------------+
+|   0   | randomize_ground_friction     |
++-------+-------------------------------+
+
+[INFO] Recorder Manager:  <RecorderManager> contains 0 active terms.
++-----------------------+
+| Active Recorder Terms |
++------------+----------+
+|   Index    | Name     |
++------------+----------+
++------------+----------+
+
+[INFO]: Resolved joint names for the action term SlewLimitedJointPositionAction: ['steering_joint'] [[1]]
+[INFO]: Resolved joint names for the action term JointVelocityAction: ['rear_wheel_joint'] [[0]]
+[INFO] Action Manager:  <ActionManager> contains 2 active terms.
++--------------------------------+
+| Active Action Terms (shape: 2) |
++-------+----------+-------------+
+| Index | Name     |   Dimension |
++-------+----------+-------------+
+|   0   | steering |           1 |
+|   1   | drive    |           1 |
++-------+----------+-------------+
+
+[INFO] Observation Manager: <ObservationManager> contains 1 groups.
++------------------------------------------------------------+
+| Active Observation Terms in Group: 'policy' (shape: (11,)) |
++--------------------+----------------+----------------------+
+|       Index        | Name           |        Shape         |
++--------------------+----------------+----------------------+
+|         0          | imu            |        (11,)         |
++--------------------+----------------+----------------------+
+
+[INFO] Termination Manager:  <TerminationManager> contains 6 active terms.
++----------------------------------+
+|     Active Termination Terms     |
++-------+---------------+----------+
+| Index | Name          | Time Out |
++-------+---------------+----------+
+|   0   | time_out      |   True   |
+|   1   | fallen        |  False   |
+|   2   | diverged      |  False   |
+|   3   | drifted       |  False   |
+|   4   | yaw_deviation |  False   |
+|   5   | wheel_net     |  False   |
++-------+---------------+----------+
+
+[INFO] Reward Manager:  <RewardManager> contains 3 active terms.
++-------------------------------+
+|      Active Reward Terms      |
++-------+--------------+--------+
+| Index | Name         | Weight |
++-------+--------------+--------+
+|   0   | survival     |    5.0 |
+|   1   | drift_gauss  |    2.0 |
+|   2   | rate_penalty |    0.1 |
++-------+--------------+--------+
+
+[INFO] Curriculum Manager:  <CurriculumManager> contains 1 active terms.
++-------------------------+
+| Active Curriculum Terms |
++-------+-----------------+
+| Index | Name            |
++-------+-----------------+
+|   0   | motor_speeds    |
++-------+-----------------+
+
+[INFO]: Completed setting up the environment...
+[MotorSpeed] step 0: drive mean/max = 0.24/0.24 rad/s | steer mean/max = 0.01/0.01 rad/s
+PASS {"passed": true, "task": "Trackstand-Balance-v2", "physics_hz": 800, "policy_target_hz": 50, "seed": 42, "num_envs": 64, "target_speed_rad_s": 1.0, "rear_kp": 0.0, "rear_kd": 0.2, "duration_s": 0.2, "fixture": "All bodies lifted to root z=3m at runtime; no contact; unchanged geometry and actuator parameters.", "effective_free_inertia_range_kg_m2": [0.0003231718728784472, 0.0003231718728784472], "scalar_forward_euler_pole_range": [0.22641783952713013, 0.22641783952713013], "scalar_forward_euler_abs_pole_over_one_envs": 0, "speed_abs_max_rad_s": 0.8146926164627075, "late_peak_to_peak_speed_max_rad_s": 1.1026859283447266e-06, "late_peak_to_peak_speed_median_rad_s": 6.854534149169922e-07, "late_mean_abs_target_error_rad_s": 0.5300204157829285, "computed_torque_abs_max_nm": 0.20000000298023224, "applied_torque_abs_max_nm": 0.20000000298023224, "command": ["isaaclab_train/reports/20261027_v2_pretraining_audit/audit_rear_stability.py", "--headless", "--device", "cuda:0", "--physics_hz", "800", "--output", "isaaclab_train/reports/20261027_v2_pretraining_audit/rear_stability_800"], "scope": "Unloaded discrete-controller diagnostic, not an on-ground balance evaluation or hardware test."}
+[INFO]: SimulationContext cleared
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_48/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_49/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_50/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_51/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_52/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_53/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_54/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_55/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_56/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_57/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_58/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_59/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_60/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_61/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_62/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,339ms] [Warning] [omni.physx.tensors.plugin] Failed to find articulation at '/World/envs/env_63/Robot/Geometry/base_link/base_link'
+2026-10-27T03:13:58Z [4,426ms] [Warning] [isaaclab_physx.assets.articulation.articulation] Not all actuators are configured! Total number of actuated joints not equal to number of joints available: 2 != 3.

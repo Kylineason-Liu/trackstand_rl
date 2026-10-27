@@ -1,0 +1,76 @@
+{
+  "passed": true,
+  "task": "Trackstand-Balance-v2",
+  "command": [
+    "isaaclab_train/reports/20261027_v2_velocity_control/verify_v2.py",
+    "--headless",
+    "--device",
+    "cuda:0",
+    "--dr",
+    "--output",
+    "isaaclab_train/reports/20261027_v2_velocity_control/fixed_gains_dr"
+  ],
+  "seed": 42,
+  "domain_randomization": true,
+  "num_envs": 16,
+  "physics_hz": 400,
+  "policy_hz": 50,
+  "controller_gain_randomization": false,
+  "fixed_controller_gains_verified_every_step": {
+    "steering": {
+      "kp": 10.0,
+      "kd": 0.2
+    },
+    "drive": {
+      "kp": 0.0,
+      "kd": 0.2
+    }
+  },
+  "manual_policy_steps": 64,
+  "ppo_updates": 2,
+  "ppo_policy_steps": 32,
+  "forced_reset_policy_steps": 1,
+  "total_call_counts": {
+    "observations": 97,
+    "drive_process": 97,
+    "steering_process": 97,
+    "drive_compute": 776,
+    "writes": 776
+  },
+  "manual_call_counts": {
+    "observations": 64,
+    "drive_process": 64,
+    "steering_process": 64,
+    "drive_compute": 512,
+    "writes": 512
+  },
+  "scalar_actuator_samples": 12416,
+  "completed_episodes_including_forced_resets": 98,
+  "kd_range": [
+    0.20000000298023224,
+    0.20000000298023224
+  ],
+  "max_abs_velocity_target_rad_s": 61.599998474121094,
+  "max_abs_measured_velocity_rad_s": 71.13525390625,
+  "max_abs_computed_torque_nm": 24.513845443725586,
+  "max_abs_applied_torque_nm": 6.28000020980835,
+  "samples_needing_effort_clip": 1700,
+  "feedforward_always_zero": true,
+  "native_pd_zero_both_motors": true,
+  "native_friction_and_speed_limits_verified": true,
+  "actual_submission_equals_clipped_pd_exactly": true,
+  "timeout_and_failure_reset_verified": true,
+  "finite_ppo_losses": [
+    {
+      "value": 0.8957344055175781,
+      "surrogate": -0.01576252616941929,
+      "entropy": 1.2217408001422883
+    },
+    {
+      "value": 0.4825641453266144,
+      "surrogate": -0.006659851782023907,
+      "entropy": 1.1892725288867951
+    }
+  ],
+  "scope": "Untrained/synthetic functional evaluation and two PPO diagnostic updates; not balance/hardware evidence"
+}

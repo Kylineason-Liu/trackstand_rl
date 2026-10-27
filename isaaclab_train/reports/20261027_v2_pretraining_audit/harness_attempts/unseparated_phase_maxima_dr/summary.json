@@ -1,0 +1,84 @@
+{
+  "passed": true,
+  "task": "Trackstand-Balance-v2",
+  "domain_randomization": true,
+  "command": [
+    "isaaclab_train/reports/20261027_v2_pretraining_audit/audit_live.py",
+    "--headless",
+    "--device",
+    "cuda:0",
+    "--dr",
+    "--output",
+    "isaaclab_train/reports/20261027_v2_pretraining_audit/dr"
+  ],
+  "seed": 42,
+  "num_envs": 64,
+  "synthetic_steps": 256,
+  "frequency_hz": {
+    "policy_observation": 50,
+    "physics_both_controllers": 400
+  },
+  "counts": {
+    "obs": 261,
+    "steer_compute": 2074,
+    "rear_compute": 2074,
+    "reward": 259
+  },
+  "maxima": {
+    "obs_error": 9.5367431640625e-07,
+    "steer_speed": 27.69405746459961,
+    "rear_speed": 158.27685546875,
+    "steer_effort": 5.599999904632568,
+    "rear_effort": 6.28000020980835
+  },
+  "synthetic_resets": 896,
+  "all_termination_causes_verified": {
+    "time_out": true,
+    "fallen": true,
+    "yaw_deviation": true,
+    "drifted": true,
+    "wheel_net": true,
+    "diverged": true
+  },
+  "timeout_and_failure_resets_verified": true,
+  "fixed_gains_and_passive_friction_verified_after_each_step": true,
+  "active_events": {
+    "reset": [
+      "reset_scene",
+      "randomize_mass",
+      "randomize_com",
+      "randomize_material",
+      "initial_state",
+      "reset_imu_turnon_residuals"
+    ],
+    "startup": [
+      "randomize_ground_friction"
+    ]
+  },
+  "white_noise_mean": [
+    -8.80164861882804e-07,
+    9.738330845721066e-06,
+    -2.9153220566513482e-06,
+    1.0891162673942745e-05,
+    -8.87258465809282e-06
+  ],
+  "white_noise_std": [
+    0.0009974011918529868,
+    0.001006260048598051,
+    0.0012000673450529575,
+    0.0012068720534443855,
+    0.0012022571172565222
+  ],
+  "configured_white_noise_std": [
+    0.001,
+    0.001,
+    0.0012,
+    0.0012,
+    0.0012
+  ],
+  "wheel_net_delay_s": 0.02,
+  "wheel_net_at_undetected_first_crossing_rad": 8.276897430419922,
+  "policy_end_speed_integral_minus_native_angle_increment_abs_max_rad": 1.54331636428833,
+  "policy_end_speed_integral_minus_native_angle_increment_rms_rad": 0.5267209604980051,
+  "scope": "Synthetic functional stress audit; no trained-policy survival or hardware fidelity conclusion."
+}

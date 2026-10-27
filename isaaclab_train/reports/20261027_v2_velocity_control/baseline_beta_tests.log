@@ -1,0 +1,79 @@
+/home/lmbike/IsaacLab/_isaac_sim/kit/python/lib/python3.12/site-packages/torch/jit/_script.py:1480: DeprecationWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+Warp DeprecationWarning: warp.config.quiet is deprecated; use warp.config.log_level = warp.LOG_WARNING to suppress the init banner.
+Warp CUDA error 100: no CUDA-capable device is detected (in function init_cuda_driver, /builds/omniverse/warp/warp/native/cuda_util.cpp:309)
+/home/lmbike/IsaacLab/source/isaaclab/isaaclab/utils/configclass.py:513: DeprecationWarning: 'RigidBodyMaterialCfg' is deprecated and will be removed in 5.0. Use 'isaaclab_physx.sim.spawners.materials.PhysxRigidBodyMaterialCfg' for PhysX properties, or 'isaaclab.sim.spawners.materials.RigidBodyMaterialBaseCfg' for solver-common properties only.
+  f1(*args, **kwargs)
+/home/lmbike/IsaacLab/source/isaaclab/isaaclab/utils/configclass.py:513: DeprecationWarning: 'RigidBodyMaterialCfg' is deprecated and will be removed in 5.0. Use 'isaaclab_physx.sim.spawners.materials.PhysxRigidBodyMaterialCfg' for PhysX properties, or 'isaaclab.sim.spawners.materials.RigidBodyMaterialBaseCfg' for solver-common properties only.
+  f1(*args, **kwargs)
+/home/lmbike/IsaacLab/source/isaaclab/isaaclab/utils/configclass.py:513: DeprecationWarning: 'RigidBodyPropertiesCfg' is deprecated and will be removed in 5.0. Use 'isaaclab_physx.sim.schemas.PhysxRigidBodyPropertiesCfg' for PhysX properties, or 'isaaclab.sim.schemas.RigidBodyBaseCfg' for solver-common properties only.
+  f1(*args, **kwargs)
+/home/lmbike/IsaacLab/source/isaaclab/isaaclab/utils/configclass.py:513: DeprecationWarning: 'ArticulationRootPropertiesCfg' is deprecated and will be removed in 5.0. Use 'isaaclab_physx.sim.schemas.PhysxArticulationRootPropertiesCfg' for PhysX properties, or 'isaaclab.sim.schemas.ArticulationRootBaseCfg' for solver-common properties only.
+  f1(*args, **kwargs)
+test_endpoint_densities_are_finite_and_outside_support_is_rejected (test_trackstand_beta.TestTrackstandBeta.test_endpoint_densities_are_finite_and_outside_support_is_rejected) ... ok
+test_env_configs_differ_only_in_observations_motors_and_rate_weighting (test_trackstand_beta.TestTrackstandBeta.test_env_configs_differ_only_in_observations_motors_and_rate_weighting) ... 
+  test_env_configs_differ_only_in_observations_motors_and_rate_weighting (test_trackstand_beta.TestTrackstandBeta.test_env_configs_differ_only_in_observations_motors_and_rate_weighting) (dr=False) ... FAIL
+  test_env_configs_differ_only_in_observations_motors_and_rate_weighting (test_trackstand_beta.TestTrackstandBeta.test_env_configs_differ_only_in_observations_motors_and_rate_weighting) (dr=True) ... FAIL
+test_initial_policy_is_centered_and_v0_checkpoints_are_incompatible (test_trackstand_beta.TestTrackstandBeta.test_initial_policy_is_centered_and_v0_checkpoints_are_incompatible) ... ok
+test_log_probability_entropy_std_and_kl_match_transformed_beta (test_trackstand_beta.TestTrackstandBeta.test_log_probability_entropy_std_and_kl_match_transformed_beta) ... ok
+test_native_and_standalone_deterministic_export_match (test_trackstand_beta.TestTrackstandBeta.test_native_and_standalone_deterministic_export_match) ... /home/lmbike/IsaacLab/_isaac_sim/kit/python/lib/python3.12/site-packages/torch/jit/_script.py:1480: DeprecationWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+ok
+test_older_rsl_rl_cannot_silently_fall_back_to_gaussian (test_trackstand_beta.TestTrackstandBeta.test_older_rsl_rl_cannot_silently_fall_back_to_gaussian) ... ok
+test_onnx_includes_bounded_mean_with_dynamic_batch (test_trackstand_beta.TestTrackstandBeta.test_onnx_includes_bounded_mean_with_dynamic_batch) ... /tmp/trackstand_v2_velocity.zke6o80u/baseline/tests/test_trackstand_beta.py:389: DeprecationWarning: You are using the legacy TorchScript-based ONNX export. Starting in PyTorch 2.9, the new torch.export-based ONNX exporter has become the default. Learn more about the new export logic: https://docs.pytorch.org/docs/stable/onnx_export.html. For exporting control flow: https://pytorch.org/tutorials/beginner/onnx/export_control_flow_model_to_onnx_tutorial.html
+  torch.onnx.export(
+/home/lmbike/IsaacLab/_isaac_sim/kit/python/lib/python3.12/site-packages/torch/onnx/_internal/torchscript_exporter/utils.py:218: DeprecationWarning: The feature will be removed. Please remove usage of this function
+  setup_onnx_logging(verbose) as log_ctx,
+ok
+test_real_observation_term_has_11_correctly_ordered_channels (test_trackstand_beta.TestTrackstandBeta.test_real_observation_term_has_11_correctly_ordered_channels) ... ok
+test_real_ppo_updates_are_finite_and_keep_actions_bounded (test_trackstand_beta.TestTrackstandBeta.test_real_ppo_updates_are_finite_and_keep_actions_bounded) ... ok
+test_registration_resolves_separate_configs_and_beta_runner (test_trackstand_beta.TestTrackstandBeta.test_registration_resolves_separate_configs_and_beta_runner) ... ok
+test_runner_changes_only_actor_distribution_and_copies_mutable_values (test_trackstand_beta.TestTrackstandBeta.test_runner_changes_only_actor_distribution_and_copies_mutable_values) ... ok
+test_sample_and_mean_bounds_including_extreme_logits (test_trackstand_beta.TestTrackstandBeta.test_sample_and_mean_bounds_including_extreme_logits) ... ok
+test_v0_has_13_channels_and_v1_matches_retained_channels_except_clipping (test_trackstand_beta.TestTrackstandBeta.test_v0_has_13_channels_and_v1_matches_retained_channels_except_clipping) ... ok
+test_v1_observation_group_does_not_inherit_the_v0_layout (test_trackstand_beta.TestTrackstandBeta.test_v1_observation_group_does_not_inherit_the_v0_layout) ... ok
+test_v1_preserves_large_finite_observations_but_sanitizes_nonfinite_values (test_trackstand_beta.TestTrackstandBeta.test_v1_preserves_large_finite_observations_but_sanitizes_nonfinite_values) ... ok
+
+======================================================================
+FAIL: test_env_configs_differ_only_in_observations_motors_and_rate_weighting (test_trackstand_beta.TestTrackstandBeta.test_env_configs_differ_only_in_observations_motors_and_rate_weighting) (dr=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/trackstand_v2_velocity.zke6o80u/baseline/tests/test_trackstand_beta.py", line 101, in test_env_configs_differ_only_in_observations_motors_and_rate_weighting
+    self.assertEqual(drive0, drive1)
+AssertionError: {'joi[90 chars], 'stiffness': 0.0, 'armature': None, 'viscous_friction': None} != {'joi[90 chars], 'stiffness': 0.0, 'armature': None, 'viscous_friction': 0.0}
+  {'armature': None,
+   'effort_limit_sim': 6.28,
+   'joint_names_expr': ['rear_wheel_joint'],
+   'stiffness': 0.0,
+   'velocity_limit_sim': 61.6,
+-  'viscous_friction': None}
+?                      ^^^^
+
++  'viscous_friction': 0.0}
+?                      ^^^
+
+
+======================================================================
+FAIL: test_env_configs_differ_only_in_observations_motors_and_rate_weighting (test_trackstand_beta.TestTrackstandBeta.test_env_configs_differ_only_in_observations_motors_and_rate_weighting) (dr=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/trackstand_v2_velocity.zke6o80u/baseline/tests/test_trackstand_beta.py", line 101, in test_env_configs_differ_only_in_observations_motors_and_rate_weighting
+    self.assertEqual(drive0, drive1)
+AssertionError: {'joi[90 chars], 'stiffness': 0.0, 'armature': None, 'viscous_friction': None} != {'joi[90 chars], 'stiffness': 0.0, 'armature': None, 'viscous_friction': 0.0}
+  {'armature': None,
+   'effort_limit_sim': 6.28,
+   'joint_names_expr': ['rear_wheel_joint'],
+   'stiffness': 0.0,
+   'velocity_limit_sim': 61.6,
+-  'viscous_friction': None}
+?                      ^^^^
+
++  'viscous_friction': 0.0}
+?                      ^^^
+
+
+----------------------------------------------------------------------
+Ran 15 tests in 2.284s
+
+FAILED (failures=2)
+There was an error running python

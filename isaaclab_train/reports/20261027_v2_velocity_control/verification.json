@@ -1,0 +1,28 @@
+{
+  "protected_files_unchanged": 181,
+  "v0_v1_configurations_and_registrations_unchanged": true,
+  "new_unit_tests_passed": 13,
+  "new_unit_tests_skipped": 0,
+  "headless_modes_passed": [
+    "no_dr",
+    "dr"
+  ],
+  "headless_environments_per_mode": 16,
+  "headless_seed": 42,
+  "headless_policy_steps_per_mode": 97,
+  "actuator_samples_per_mode": 12416,
+  "physics_hz": 400,
+  "policy_hz": 50,
+  "new_source_ast_and_pyflakes_passed": true,
+  "new_source_lines_within_120": true,
+  "backup": "/tmp/trackstand_v2_velocity.zke6o80u",
+  "hardware_and_mujoco_unchanged": true,
+  "legacy_suite_issue": "Two subcase failures in unchanged test_trackstand_beta v0/v1 comparison; original-registry baseline reproduces them",
+  "audit_script_post_execution_edit": "Line wrapping and extraction of identical deterministic tensor expression; production task source unchanged after audits",
+  "old_registration_blocks_byte_identical": true,
+  "only_new_registration": "Trackstand-Balance-v2",
+  "legacy_baseline_without_any_v2_sources_reproduces_both_subcase_failures": true,
+  "new_local_document_links_resolve": true,
+  "prior_progress_records_and_training_readme_preserved": true,
+  "no_checkpoint_or_hardware_action": true
+}

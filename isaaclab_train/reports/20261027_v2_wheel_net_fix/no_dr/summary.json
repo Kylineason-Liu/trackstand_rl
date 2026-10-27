@@ -1,0 +1,51 @@
+{
+  "passed": true,
+  "command": [
+    "isaaclab_train/reports/20261027_v2_wheel_net_fix/verify_wheel_net.py",
+    "--headless",
+    "--device",
+    "cuda:0",
+    "--output",
+    "isaaclab_train/reports/20261027_v2_wheel_net_fix/no_dr"
+  ],
+  "seed": 42,
+  "num_envs": 64,
+  "domain_randomization": false,
+  "physics_hz": 400,
+  "policy_observation_hz": 50,
+  "synthetic_steps": 256,
+  "synthetic_auto_resets": 618,
+  "counts_including_explicit_reset_observations": {
+    "physics_updates": 2080,
+    "observations": 264,
+    "termination_checks": 260,
+    "steps": 260
+  },
+  "new_angle_error_abs_max_rad": 1.430511474609375e-06,
+  "new_angle_error_rms_rad": 1.567453580264555e-07,
+  "legacy_endpoint_increment_error_abs_max_rad": 0.43411338329315186,
+  "legacy_endpoint_increment_error_rms_rad": 0.08239264041185379,
+  "first_step_pre_reset_net_angle_rad": [
+    7.507138252258301,
+    -7.531283855438232,
+    3.297964334487915
+  ],
+  "both_signed_thresholds_trigger_same_policy_step": true,
+  "timeout_reset_verified": true,
+  "explicit_partial_reset_preserves_continuing_refs": true,
+  "native_wrap_start_rad": [
+    6.199999809265137,
+    -6.199999809265137
+  ],
+  "native_wrap_end_rad": [
+    -5.976995468139648,
+    5.976994514465332
+  ],
+  "native_wrap_net_rad": [
+    0.3893752098083496,
+    -0.3893766403198242
+  ],
+  "full_reset_has_no_teleport_increment": true,
+  "callback_deregistered_on_close": true,
+  "scope": "Wheel-net functional regression only; 400 Hz actuator stability and other audit findings not fixed."
+}

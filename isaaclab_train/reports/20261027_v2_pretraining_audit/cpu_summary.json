@@ -1,0 +1,38 @@
+{
+  "passed": true,
+  "pure_roll_projected_gravity_signs_verified": true,
+  "no_finite_100_clamp_and_no_added_rear_pi_wrap": true,
+  "nan_inf_observations_sanitized": true,
+  "default_num_envs": 4096,
+  "default_max_iterations": 15000,
+  "default_reward_weights": {
+    "survival": 5.0,
+    "drift_gauss": 2.0,
+    "rate_penalty": 0.1
+  },
+  "policy_hidden_dims": [
+    32,
+    32
+  ],
+  "critic_hidden_dims": [
+    32,
+    32
+  ],
+  "clip_actions": null,
+  "obs_normalization": false,
+  "is_finite_horizon": false,
+  "episode_length_s": 30.0,
+  "experiment_name": "trackstand_rl_v2_rsl",
+  "cli_tests_passed": 4,
+  "initial_exploration": {
+    "raw_std_analytic": 0.47747552394866943,
+    "rear_target_std_rad_s": 29.412490844726562,
+    "fraction_rear_samples_saturating_at_zero_speed": 0.34863999485969543,
+    "sample_count": 100000
+  },
+  "confirmed_findings": {
+    "arp_w_targets_missing_term": "action_rate",
+    "nonfinite_pose_probe_diverged": false,
+    "nonfinite_root_position_probe_drift_reward_nan": true
+  }
+}

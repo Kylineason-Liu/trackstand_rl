@@ -1,0 +1,79 @@
+{
+  "passed": true,
+  "task": "Trackstand-Balance-v2",
+  "domain_randomization": false,
+  "command": [
+    "isaaclab_train/reports/20261027_v2_pretraining_audit/audit_live.py",
+    "--headless",
+    "--device",
+    "cuda:0",
+    "--output",
+    "isaaclab_train/reports/20261027_v2_pretraining_audit/no_dr"
+  ],
+  "seed": 42,
+  "num_envs": 64,
+  "synthetic_steps": 256,
+  "frequency_hz": {
+    "policy_observation": 50,
+    "physics_both_controllers": 400
+  },
+  "counts": {
+    "obs": 261,
+    "steer_compute": 2074,
+    "rear_compute": 2074,
+    "reward": 259
+  },
+  "maxima": {
+    "obs_error": 9.5367431640625e-07,
+    "steer_speed": 24.83379364013672,
+    "rear_speed": 62.029449462890625,
+    "steer_effort": 5.599999904632568,
+    "rear_effort": 6.28000020980835
+  },
+  "synthetic_resets": 622,
+  "all_termination_causes_verified": {
+    "time_out": true,
+    "fallen": true,
+    "yaw_deviation": true,
+    "drifted": true,
+    "wheel_net": true,
+    "diverged": true
+  },
+  "timeout_and_failure_resets_verified": true,
+  "fixed_gains_and_passive_friction_verified_after_each_step": true,
+  "active_events": {
+    "reset": [
+      "reset_scene",
+      "initial_state"
+    ],
+    "startup": [
+      "randomize_ground_friction"
+    ]
+  },
+  "white_noise_mean": [
+    -1.6387179130106233e-05,
+    6.556838343385607e-07,
+    -4.396828899189131e-06,
+    8.606176379544195e-06,
+    -5.054485882283188e-06
+  ],
+  "white_noise_std": [
+    0.0009945346973836422,
+    0.0010093493619933724,
+    0.001210041344165802,
+    0.001205950160510838,
+    0.001190219889394939
+  ],
+  "configured_white_noise_std": [
+    0.001,
+    0.001,
+    0.0012,
+    0.0012,
+    0.0012
+  ],
+  "wheel_net_delay_s": 0.02,
+  "wheel_net_at_undetected_first_crossing_rad": 7.513361930847168,
+  "policy_end_speed_integral_minus_native_angle_increment_abs_max_rad": 0.4341132640838623,
+  "policy_end_speed_integral_minus_native_angle_increment_rms_rad": 0.08213850136610186,
+  "scope": "Synthetic functional stress audit; no trained-policy survival or hardware fidelity conclusion."
+}
