@@ -29,7 +29,7 @@ class InitialTransientTests(unittest.TestCase):
         with args.targets.open() as stream:
             source = list(csv.DictReader(stream))
         self.assertEqual((args.start, args.ramp, args.pre_hold, args.motor_id), (0., 0., 0., 2))
-        self.assertEqual((args.kp, args.kd, args.current_abort_a, args.max_lateness_ms), (10., .2, 3., 3.))
+        self.assertEqual((args.kp, args.kd, args.current_abort_a, args.max_lateness_ms), (10., .2, 3., 20.))
         self.assertEqual(len(plan), 300)
         self.assertEqual([row["phase"] for row in plan], ["core"] * 250 + ["post_hold"] * 50)
         self.assertEqual([row["target_rad"] for row in plan[:250]],
@@ -68,6 +68,11 @@ class InitialTransientTests(unittest.TestCase):
             with self.subTest(flags=flags), contextlib.redirect_stderr(io.StringIO()):
                 with self.assertRaises(SystemExit):
                     initial.parse_args(flags)
+
+    def test_larger_lateness_is_forwarded_at_200hz_without_changing_other_trips(self):
+        args = initial.parse_args(["--packet-rate", "200", "--max-lateness-ms", "50"])
+        self.assertEqual((args.max_lateness_ms, args.packet_rate), (50., 200))
+        self.assertEqual((args.current_abort_a, args.feedback_timeout), (3., .1))
 
     def test_complete_both_packet_rates_with_corrected_zero_and_steering_only_frames(self):
         payloads = {}

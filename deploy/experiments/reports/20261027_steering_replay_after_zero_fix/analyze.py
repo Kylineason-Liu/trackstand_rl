@@ -18,6 +18,7 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[3]
 EXPERIMENTS = ROOT / "deploy/experiments"
 LEGACY = EXPERIMENTS / "reports/20261026_policy_replay_hardware"
+RUNTIME = HERE / "runtime_snapshot"
 STEMS = (
     "20261027_144059_652887_scaled_50hz_policy_replay",
     "20261027_144436_005178_scaled_200hz_policy_replay",
@@ -39,8 +40,8 @@ def load_module(name, path):
 # Its main() is not called and none of its existing artifacts are regenerated.
 old = load_module("replay_report_helpers", LEGACY / "analyze.py")
 plt = old.plt
-sys.path.insert(0, str(EXPERIMENTS))
-runtime = load_module("corrected_steering_runtime", EXPERIMENTS / "steering_policy_replay.py")
+sys.path.insert(0, str(RUNTIME))
+runtime = load_module("corrected_steering_runtime", RUNTIME / "steering_policy_replay.py")
 sys.path.pop(0)
 
 
@@ -49,8 +50,8 @@ def validate(run):
     meta, args = run.meta, argparse.Namespace(**run.meta["arguments"])
     args.targets = EXPERIMENTS / "replay_targets" / Path(args.targets).name
     assert meta["completed"] and meta["disable_confirmed"] and meta["final_fault_code"] == 0
-    assert meta["script_sha256"] == old.digest(EXPERIMENTS / "steering_policy_replay.py")
-    assert meta["transport_sha256"] == old.digest(EXPERIMENTS / "steering_sine_mit_io.py")
+    assert meta["script_sha256"] == old.digest(RUNTIME / "steering_policy_replay.py")
+    assert meta["transport_sha256"] == old.digest(RUNTIME / "steering_sine_mit_io.py")
     assert meta["target_hz"] == 50 and args.query_rate == 100 and args.sign == args.torque_sign == -1
     setup = meta["steering_origin_setup"]
     assert all(setup[key] for key in ("attempted", "acknowledged", "verified"))

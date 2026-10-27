@@ -10,10 +10,23 @@ or balance the bike. No ROS node or package build is needed.
 | `steering_initial_transient_replay.py` | ID 2, MIT | Position from source time zero | 50 Hz | Neither commanded nor disabled |
 | `drive_policy_replay.py` | ID 1, C0 | Torque in Nm, converted to current with measured B0 | 200 Hz | Neither commanded nor disabled |
 
-All update references at **50 Hz**. Selecting `--packet-rate 200` repeats the
+All nominally update references at **50 Hz**. Selecting `--packet-rate 200` repeats the
 same encoded reference four times per 20 ms; it does not generate new targets.
 The actual send and feedback timestamps are logged. Default mode is preview;
 only `--execute` opens CAN and permits motor actuation.
+
+Replay scheduling tolerates **20 ms per-send lateness by default**, rather than
+the old 3 ms. Each next packet is scheduled one nominal packet interval after the
+previous send completes. All recorded targets and repeated packets are preserved;
+there are no catch-up bursts. Host delays therefore stretch the actual replay
+and can reduce its achieved rate. Compare feedback against actual logged send
+times; target_time_s remains the nominal source-plan clock. JSON records both
+nominal_motion_duration_s and actual_motion_duration_s. Motor fault, current,
+speed, temperature, feedback-age and initialization checks are unchanged.
+
+Use **--max-lateness-ms 50** to allow more jitter, or **--max-lateness-ms 3** for
+the old tighter trip. The value may exceed a packet interval, including at
+200 Hz. This limit does not replace the independent stale-feedback checks.
 
 ## Files to transfer
 
@@ -139,8 +152,8 @@ The default Isaac400 file begins at **0.357374 rad (20.476 degrees)** and spans
 **0.357374–1.339667 rad** over the selected five seconds. Nominal Kp times the
 initial stationary position error is approximately **3.574 Nm**, before real
 motor dynamics/current control. This is a stronger input than the previous
-artificial ramp. The existing **3 A measured-current trip** and **3 ms packet
-deadline** remain, so a run may abort; keep its partial data for analysis rather
+artificial ramp. The **3 A measured-current trip** remains; the packet-lateness
+trip is now **20 ms** by default. A run may still abort; keep partial data rather
 than interpreting an incomplete trace as proof of failed tracking. These trips
 are not firmware current clamps. No new measured-angle abort is added.
 
@@ -173,10 +186,9 @@ torques are logged. There is **no host damping, extra scaling, friction
 compensation, torque slew or silent clipping**. Plans exceeding ±6.28 Nm or the
 configured command-current bound are rejected in full before any C0 is sent.
 
-This matches the v1 rear feedforward contract. The normal deployment MIT node
-still adds host damping `-0.05 * rear_speed` on disk; this standalone replay
-does not execute that code or modify deployment configuration. It diagnoses the
-motor response rather than certifying the whole current ROS command pipeline.
+This matches the v1 rear feedforward contract. This standalone replay does not
+execute ROS motor code or modify deployment configuration. It diagnoses motor
+response rather than certifying the whole current ROS command pipeline.
 
 Rear preflight confirms CF disabled/fault-free, reads **B0/B3/B4/CD**, establishes
 an A3 software zero, and reads **A3/A2/A1/AE**. B0 is required; no guessed Kt is
@@ -218,20 +230,21 @@ Rear defaults, explicitly experimental rather than motor ratings:
 | `--speed-abort-rad-s` | 10 rad/s | Stop on a measured speed excursion; does not regulate speed |
 | `--temperature-abort-c` | 60 °C | Stop on an AE temperature excursion |
 | `--feedback-timeout` | 0.1 s | Stop on stale A3/A2/A1/C0 feedback |
-| `--max-lateness-ms` | 3 ms | Abort a missed send deadline without skipping/bursting targets |
+| `--max-lateness-ms` | 20 ms | Abort beyond this send lateness; stretch replay without skipping/bursts |
 
 The 10 rad/s speed abort is a conservative initial bench threshold near the
 previous rear sweep's tested range (up to 8 rad/s), not the simulator's 61.6 rad/s
 speed constraint. Free-wheel replay may stop early on this threshold while
 torque tracking is healthy. Keep partial recordings for analysis.
 
-Rear default length is **7 seconds**: 2 s at zero torque + 5 s real core, then CF.
+Rear nominal default length is **7 seconds**: 2 s zero torque + 5 s core, then CF.
 These **350 target samples exactly match** the first seven seconds of the saved
 simulator replay for all three sources and both rear levels. Rear stops here
 because holding a nonzero final torque can continue accelerating a free wheel.
 `--post-hold 1` explicitly adds the original last-torque hold and reproduces all
 400 samples of the prior eight-second input, but is not the initial hardware test.
-Steering retains its existing eight-second ramp/hold/core/hold plan. Comparisons
+Steering retains its nominal eight-second ramp/hold/core/hold plan. Actual wall
+duration may increase under host jitter. Comparisons
 must use the same declared input interval and fixture, not conflate cleanup phases.
 
 ## Output to return for analysis

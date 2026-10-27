@@ -5,6 +5,11 @@ measurement CSVs, two plans and two metadata JSONs. Open the [figure gallery](in
 [tracking graph](steering_tracking.png), [summary CSV](summary.csv) or
 [exact statistics](statistics.json). No motor/CAN operation or new simulation was run.
 
+These recordings predate the later replay-timing relaxation. The exact original
+fixed-zero backend/helper are retained in [runtime_snapshot/](runtime_snapshot/),
+and the analyzer checks those archived hashes. Existing measurements, statistics
+and figures retain their original strict-timing meaning and are unchanged.
+
 ## Conclusions
 
 1. **The initialization correction worked in both physical tests.** B1 was sent
@@ -57,7 +62,7 @@ match between rates. At 200 Hz each is repeated four times, with no new target
 or second position-processing pass. Runtime SHA256
 `d14b274ef49b77467fd57aecb739d0523e933b63cba3497ec22447942e91e40c` and transport
 SHA256 `e1ca97c2b86ebf126ed975b474fefadac55bf2454f0e8364cd63ed0845822754`
-match the local fixed scripts exactly.
+match the archived fixed scripts exactly.
 
 ## Position tracking and the repaired zero
 
@@ -216,7 +221,7 @@ python3 -B deploy/experiments/reports/20261027_steering_replay_after_zero_fix/an
 ```
 
 The analyzer imports the previous report's numerical reader/helpers and the
-current runtime's pure plan/payload functions; neither main hardware loop runs.
+archived runtime's pure plan/payload functions; neither main hardware loop runs.
 Raw recordings, production scripts, old reports, simulator captures and both
 progress ledgers remain unchanged. This report is newly generated evidence;
 recording it in the progress ledgers is a separate task.

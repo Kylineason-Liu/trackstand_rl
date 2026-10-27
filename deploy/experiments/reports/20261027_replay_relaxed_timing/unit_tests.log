@@ -1,0 +1,93 @@
+test_200hz_repeats_same50hz_targets_and_restores_watchdog (test_drive_policy_replay.DriveReplayTests) ... ok
+test_bad_cli_and_episode_window_rejected (test_drive_policy_replay.DriveReplayTests) ... ok
+test_both_rear_columns_are_selected_without_hidden_transform (test_drive_policy_replay.DriveReplayTests) ... ok
+test_c0_replies_do_not_hide_missing_a1_and_a1_cannot_hide_missing_c0 (test_drive_policy_replay.DriveReplayTests) ... ok
+test_c0_units_sign_and_quantization (test_drive_policy_replay.DriveReplayTests) ... ok
+test_excess_command_current_rejects_plan_without_clipping_or_motion (test_drive_policy_replay.DriveReplayTests) ... ok
+test_failed_restore_is_reported_separately_from_confirmed_disable (test_drive_policy_replay.DriveReplayTests) ... ok
+test_fault_mode_temperature_speed_or_current_stops_and_restores (test_drive_policy_replay.DriveReplayTests) ... ok
+test_logger_failure_still_disables_and_restores_watchdog (test_drive_policy_replay.DriveReplayTests) ... ok
+test_missed_c0_deadline_stops_without_catchup_burst (test_drive_policy_replay.DriveReplayTests) ... ok
+test_missing_kernel_timestamp_refuses_c0_motion (test_drive_policy_replay.DriveReplayTests) ... ok
+test_no_b3_or_b4_writes_and_b3_is_not_used_as_c0_ceiling (test_drive_policy_replay.DriveReplayTests) ... ok
+test_no_watchdog_restore_when_disable_not_confirmed (test_drive_policy_replay.DriveReplayTests) ... ok
+test_nonzero_wheel_velocity_does_not_add_host_damping (test_drive_policy_replay.DriveReplayTests) ... ok
+test_old_replay_outputs_are_not_overwritten (test_drive_policy_replay.DriveReplayTests) ... ok
+test_preview_has_no_can_or_file_side_effect (test_drive_policy_replay.DriveReplayTests) ... ok
+test_rear_custom_lateness_can_exceed_period_but_large_stall_still_disables (test_drive_policy_replay.DriveReplayTests) ... ok
+test_rear_position_is_multiturn_and_not_a_steering_angle_stop (test_drive_policy_replay.DriveReplayTests) ... ok
+test_relaxed_c0_timing_preserves_sequence_spacing_and_watchdog_at_both_rates (test_drive_policy_replay.DriveReplayTests) ... ok
+test_scaled_and_submitted_default_plans_match_actual_simulator_prefix_and_core (test_drive_policy_replay.DriveReplayTests) ... ok
+test_tighter_existing_watchdog_is_preserved (test_drive_policy_replay.DriveReplayTests) ... ok
+test_watchdog_is_restored_after_lost_setup_ack (test_drive_policy_replay.DriveReplayTests) ... ok
+test_cannot_select_rear_or_skip_startup_and_invalid_times_are_rejected (test_steering_initial_transient_replay.InitialTransientTests) ... ok
+test_complete_both_packet_rates_with_corrected_zero_and_steering_only_frames (test_steering_initial_transient_replay.InitialTransientTests) ... ok
+test_default_plan_starts_at_spawn_without_artificial_preparation (test_steering_initial_transient_replay.InitialTransientTests) ... ok
+test_failed_zero_or_overcurrent_retains_cleanup_and_partial_metadata (test_steering_initial_transient_replay.InitialTransientTests) ... ok
+test_full_episode_and_conditioned_level_are_supported_without_second_slew (test_steering_initial_transient_replay.InitialTransientTests) ... ok
+test_larger_lateness_is_forwarded_at_200hz_without_changing_other_trips (test_steering_initial_transient_replay.InitialTransientTests) ... ok
+test_preview_has_no_can_or_output_and_help_describes_startup (test_steering_initial_transient_replay.InitialTransientTests) ... ok
+test_bad_intervals_and_double_conditioning_rejected (test_steering_policy_replay.ReplayTests) ... ok
+test_bad_range_refuses_motion_without_reconfiguring_motor (test_steering_policy_replay.ReplayTests) ... ok
+test_both_input_columns_are_selected_without_implicit_slew (test_steering_policy_replay.ReplayTests) ... ok
+test_current_abort_and_send_failure_still_disable (test_steering_policy_replay.ReplayTests) ... Rear replay complete; disabled and CD restored. CSV: /tmp/tmp5e319ime/rear50.csv
+Rear replay complete; disabled and CD restored. CSV: /tmp/tmp5e319ime/rear200.csv
+Rear replay complete; disabled and CD restored. CSV: /tmp/tmpsq0_89up/rear.csv
+Rear replay complete; disabled and CD restored. CSV: /tmp/tmp_mk4gemf/speed0.csv
+Rear replay complete; disabled and CD restored. CSV: /tmp/tmp_mk4gemf/speed-3000.csv
+Rear replay complete; disabled and CD restored. CSV: /tmp/tmpwixzmhmo/relaxed_50.csv
+Rear replay complete; disabled and CD restored. CSV: /tmp/tmpwixzmhmo/relaxed_200.csv
+Rear replay complete; disabled and CD restored. CSV: /tmp/tmp6179hlr5/rear.csv
+Steering origin verified after B1: A3=0 counts, F1=-0.000183108 rad; original A3=0 counts
+Steering origin verified after B1: A3=0 counts, F1=-0.000183108 rad; original A3=0 counts
+ok
+test_custom_lateness_can_exceed_packet_period_but_large_stalls_still_stop (test_steering_policy_replay.ReplayTests) ... Steering origin verified after B1: A3=0 counts, F1=-0.000183108 rad; original A3=0 counts
+ok
+test_default_plan_matches_existing_simulator_replay_exactly (test_steering_policy_replay.ReplayTests) ... ok
+test_default_preview_opens_no_socket_and_writes_no_files (test_steering_policy_replay.ReplayTests) ... ok
+test_delayed_receive_preserves_kernel_queue_age (test_steering_policy_replay.ReplayTests) ... ok
+test_exported_files_exactly_match_both_capture_levels (test_steering_policy_replay.ReplayTests) ... ok
+test_failed_origin_initialization_never_sends_mit_and_still_confirms_disable (test_steering_policy_replay.ReplayTests) ... ok
+test_fault_or_stale_feedback_stops_and_confirms_disable (test_steering_policy_replay.ReplayTests) ... Steering origin verified after B1: A3=0 counts, F1=-0.000183108 rad; original A3=0 counts
+Steering origin verified after B1: A3=0 counts, F1=-0.000183108 rad; original A3=0 counts
+Steering origin verified after B1: A3=0 counts, F1=-0.000183108 rad; original A3=0 counts
+Steering origin verified after B1: A3=0 counts, F1=-0.000183108 rad; original A3=0 counts
+ok
+test_large_measured_angles_are_logged_without_aborting (test_steering_policy_replay.ReplayTests) ... ok
+test_late_encoding_work_cannot_send_an_already_expired_packet (test_steering_policy_replay.ReplayTests) ... ok
+test_logger_failure_cannot_prevent_disable_attempt (test_steering_policy_replay.ReplayTests) ... ok
+test_malformed_target_file_is_rejected_before_can (test_steering_policy_replay.ReplayTests) ... ok
+test_missed_deadline_aborts_without_burst_or_skipped_source_targets (test_steering_policy_replay.ReplayTests) ... Steering origin verified after B1: A3=0 counts, F1=-0.000183108 rad; original A3=0 counts
+ok
+test_missing_kernel_timestamp_refuses_motion_and_reports_unconfirmed_disable (test_steering_policy_replay.ReplayTests) ... ok
+test_old_kernel_arrival_cannot_complete_a_new_query (test_steering_policy_replay.ReplayTests) ... ok
+test_origin_change_acknowledgement_during_motion_aborts (test_steering_policy_replay.ReplayTests) ... ok
+test_packet_rates_have_identical_50hz_held_targets_and_valid_units (test_steering_policy_replay.ReplayTests) ... Steering origin verified after B1: A3=0 counts, F1=-0.000183108 rad; original A3=0 counts
+Replay finished; disable confirmed. CSV: /tmp/tmp4mh_ubbh/run50.csv
+Steering origin verified after B1: A3=0 counts, F1=-0.000183108 rad; original A3=0 counts
+ok
+test_real_clipped_startup_cases_are_rezeroed_before_replay_at_both_rates (test_steering_policy_replay.ReplayTests) ... Replay finished; disable confirmed. CSV: /tmp/tmp4mh_ubbh/run200.csv
+Steering origin verified after B1: A3=0 counts, F1=-0.000045777 rad; original A3=8282 counts
+Replay finished; disable confirmed. CSV: /tmp/tmpsx7s4ngr/fixed50.csv
+Steering origin verified after B1: A3=0 counts, F1=-0.000045777 rad; original A3=8380 counts
+ok
+test_rejects_existing_output_before_can (test_steering_policy_replay.ReplayTests) ... ok
+test_relaxed_timing_preserves_all_packets_and_full_last_hold_at_both_rates (test_steering_policy_replay.ReplayTests) ... Replay finished; disable confirmed. CSV: /tmp/tmpsx7s4ngr/fixed200.csv
+Steering origin verified after B1: A3=0 counts, F1=-0.000183108 rad; original A3=0 counts
+Replay finished; disable confirmed. CSV: /tmp/tmp0ouxxm7b/relaxed_50.csv
+Steering origin verified after B1: A3=0 counts, F1=-0.000183108 rad; original A3=0 counts
+ok
+test_slew_is_not_advanced_four_times_when_resending_at_200hz (test_steering_policy_replay.ReplayTests) ... Replay finished; disable confirmed. CSV: /tmp/tmp0ouxxm7b/relaxed_200.csv
+Steering origin verified after B1: A3=0 counts, F1=-0.000183108 rad; original A3=0 counts
+ok
+test_slow_send_work_stretches_instead_of_starving_queries_or_ending_early (test_steering_policy_replay.ReplayTests) ... Replay finished; disable confirmed. CSV: /tmp/tmpz04cgiqu/run.csv
+Steering origin verified after B1: A3=0 counts, F1=-0.000183108 rad; original A3=0 counts
+ok
+test_transient_overcurrent_cannot_be_hidden_by_later_normal_sample (test_steering_policy_replay.ReplayTests) ... ok
+test_v1_conditioning_reproduces_recorded_startup_once_per_20ms (test_steering_policy_replay.ReplayTests) ... ok
+
+----------------------------------------------------------------------
+Ran 56 tests in 2.378s
+
+OK
+Replay finished; disable confirmed. CSV: /tmp/tmpuqz05fye/run.csv

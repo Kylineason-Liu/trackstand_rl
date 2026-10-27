@@ -1,0 +1,36 @@
+{
+  "protected_files_unchanged": 161,
+  "backup": "/tmp/replay_relaxed_timing_6uirv2k9",
+  "replay_regression_tests_passed": 56,
+  "new_regression_methods": 6,
+  "cold_stdlib_previews_passed": 9,
+  "default_send_lateness_ms": 20,
+  "custom_limit_above_packet_period_validated": true,
+  "no_skipped_targets_or_catchup_bursts": true,
+  "last_packet_full_hold_and_extended_duration_validated": true,
+  "fault_current_stale_feedback_zeroing_cleanup_functions_unchanged": true,
+  "changed_functions": {
+    "steering_policy_replay.py": [
+      "ReplayIO.row",
+      "ReplayIO.send",
+      "execute",
+      "main",
+      "motion",
+      "parse_args"
+    ],
+    "drive_policy_replay.py": [
+      "DriveIO.row",
+      "execute",
+      "main",
+      "motion",
+      "parse_args"
+    ],
+    "steering_initial_transient_replay.py": [
+      "main",
+      "parse_args"
+    ]
+  },
+  "historical_runtime_validated_against_original_uploads": true,
+  "hardware_or_new_simulation_run": false,
+  "progress_ledgers_or_production_nodes_changed": false
+}

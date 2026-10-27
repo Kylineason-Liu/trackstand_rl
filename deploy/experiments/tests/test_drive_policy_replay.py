@@ -16,7 +16,7 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import drive_policy_replay as rear
-from test_steering_policy_replay import ReplayCAN
+from test_steering_policy_replay import ReplayCAN, stall_after_command
 
 
 class DriveCAN(ReplayCAN):
@@ -230,11 +230,41 @@ class DriveReplayTests(unittest.TestCase):
             self.assertAlmostEqual(row["position_unwrapped_rad"], 6 * np.pi)
 
     def test_missed_c0_deadline_stops_without_catchup_burst(self):
-        args, bus = self.args(), DriveCAN()
-        bus.pause_after_first_packet = .035
-        with self.assertRaisesRegex(RuntimeError, "deadline"):
+        args, bus = self.args("--max-lateness-ms", "3"), DriveCAN()
+        with stall_after_command(bus, rear.DriveIO, .035, 0x101, 0xC0), \
+                self.assertRaisesRegex(RuntimeError, "deadline"):
             self.run_bus(args, bus)
         self.assertEqual(sum(data[0] == 0xC0 for _, _, data in bus.frames), 1)
+        meta = json.loads(self.output.with_suffix(".json").read_text())
+        self.assertTrue(meta["disable_confirmed"] and meta["watchdog_restored"])
+
+    def test_relaxed_c0_timing_preserves_sequence_spacing_and_watchdog_at_both_rates(self):
+        for rate, pause in ((50, .035), (200, .015)):
+            with self.subTest(rate=rate):
+                self.output = Path(self.folder.name) / f"relaxed_{rate}.csv"
+                args, bus = self.args("--packet-rate", str(rate)), DriveCAN()
+                self.assertEqual(args.max_lateness_ms, 20.)
+                with stall_after_command(bus, rear.DriveIO, pause, 0x101, 0xC0):
+                    plan = self.run_bus(args, bus)
+                rows = [r for r in self.rows() if r["record_type"] == "drive_target"]
+                times = np.array([float(r["replay_time_s"]) for r in rows])
+                self.assertEqual(len(rows), len(plan) * rate // 50)
+                self.assertTrue(np.all(np.diff(times) >= 1 / rate - 1e-9))
+                self.assertGreater(max(float(r["command_lateness_s"]) for r in rows), .003)
+                self.assertTrue(all(r["skipped_command_ticks"] == "0" for r in rows))
+                np.testing.assert_array_equal([int(r["target_index"]) for r in rows],
+                                              np.repeat(np.arange(len(plan)), rate // 50))
+                meta = json.loads(self.output.with_suffix(".json").read_text())
+                self.assertTrue(meta["completed"] and meta["disable_confirmed"] and meta["watchdog_restored"])
+                self.assertGreater(meta["actual_motion_duration_s"], meta["nominal_motion_duration_s"] + .005)
+                self.assertGreaterEqual(meta["actual_motion_duration_s"] - times[-1], 1 / rate - 1e-9)
+
+    def test_rear_custom_lateness_can_exceed_period_but_large_stall_still_disables(self):
+        self.assertEqual(self.args("--packet-rate", "200", "--max-lateness-ms", "50").max_lateness_ms, 50.)
+        args, bus = self.args(), DriveCAN()
+        with stall_after_command(bus, rear.DriveIO, .045, 0x101, 0xC0), \
+                self.assertRaisesRegex(RuntimeError, "deadline"):
+            self.run_bus(args, bus)
         meta = json.loads(self.output.with_suffix(".json").read_text())
         self.assertTrue(meta["disable_confirmed"] and meta["watchdog_restored"])
 

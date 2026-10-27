@@ -6,6 +6,8 @@ Reuses adjacent steering_policy_replay.py and steering_sine_mit_io.py transport
 helpers; neither steering motion nor policy inference runs. No ROS/NumPy on Pi.
 Torque -> signed current using measured B0 -> C0 int32 little-endian milliamps.
 No added damping, friction compensation, interpolation or silent torque clipping.
+Default send-lateness trip is 20 ms; wait a full packet interval after each send
+completes, preserving all targets without catch-up bursts. Duration may stretch.
 Motor B3 limits position/speed modes, NOT C0: read it but do not assume protection.
 Read B4 current slew without changing it. Temporarily enable/shorten CD watchdog;
 restore it only after fresh CF/AE confirm disabled. Support bike, rear airborne,
@@ -60,7 +62,8 @@ def parse_args(argv=None):
     parser.add_argument("--query-rate", type=shared.finite, default=100., help="A3/A2/A1 queries/s EACH")
     parser.add_argument("--query-timeout", type=shared.finite, default=.02)
     parser.add_argument("--feedback-timeout", type=shared.finite, default=.1)
-    parser.add_argument("--max-lateness-ms", type=shared.finite, default=3.)
+    parser.add_argument("--max-lateness-ms", type=shared.finite, default=shared.DEFAULT_MAX_LATENESS_MS,
+                        help="Abort beyond this per-send lateness (default 20 ms); delayed replay stretches")
     parser.add_argument("--command-current-limit-a", type=shared.finite, default=1.5,
                         help="Reject the ENTIRE plan if any encoded command exceeds this; never clip")
     parser.add_argument("--current-abort-a", type=shared.finite, default=2., help="Measured current abort threshold")
@@ -80,7 +83,7 @@ def parse_args(argv=None):
     if (args.duration <= 0 or not 1 <= args.motor_id <= 254 or not 0 < args.query_rate <= 200
             or not 0 < args.query_timeout < args.feedback_timeout
             or 1 / args.query_rate >= args.feedback_timeout
-            or not 0 < args.max_lateness_ms / 1000 < 1 / args.packet_rate
+            or args.max_lateness_ms <= 0
             or not 0 < args.command_current_limit_a < args.current_abort_a
             or min(args.speed_abort_rad_s, args.temperature_abort_c) <= 0
             or not 100 <= args.watchdog_ms <= 1000):
@@ -151,6 +154,8 @@ class DriveIO(shared.ReplayIO):
         extra = dict(input_level=self.args.level, packet_rate_hz=self.args.packet_rate,
                      replay_time_s=now - self.motion_start if self.motion_start is not None else math.nan)
         extra.update(values)
+        if "packet_index" in values:
+            extra["skipped_command_ticks"] = 0
         if "mit_can_id" in extra:
             extra["can_id_hex"] = f"{extra['mit_can_id']:03X}"
         if "mit_payload_hex" in extra:
@@ -273,19 +278,19 @@ def motion(io, plan, packets):
     periods = {0xA3: 1 / args.query_rate, 0xA2: 1 / args.query_rate, 0xA1: 1 / args.query_rate,
                0xAE: .2, 0xB0: 1., 0xB4: 1., 0xCD: 1.}
     due, jobs = dict.fromkeys(periods, io.motion_start), deque()
-    end = io.motion_start + len(plan) * DT
-    while time.monotonic() < end:
+    packet_count = len(plan) * repeats
+    while packet_index < packet_count or time.monotonic() < io.next_command:
         empty = io.drain()
         io.guard()
         now = time.monotonic()
-        if packet_index < len(plan) * repeats and now >= io.next_command:
+        if packet_index < packet_count and now >= io.next_command:
             index = packet_index // repeats
             sample, (data, fields) = plan[index], packets[index]
             previous = io.send(motor, data, command_previous_s=previous, command_deadline_s=io.next_command,
                                record_type="drive_target", packet_index=packet_index,
                                **sample, **fields)
             packet_index += 1
-            io.next_command = io.motion_start + packet_index / args.packet_rate
+            io.next_command = time.monotonic() + 1 / args.packet_rate
         if io.pending is not None and now >= io.pending.deadline:
             io.finish_query("timed_out")
         if not jobs and io.pending is None:
@@ -297,7 +302,7 @@ def motion(io, plan, packets):
             opcode = jobs.popleft()
             sent = io.send(motor, bytes([opcode]))
             io.pending = mit.PendingRead(motor, opcode, sent, sent + args.query_timeout)
-        wake = min(end, io.next_command, io.pending.deadline if io.pending else min(due.values()))
+        wake = min(io.next_command, io.pending.deadline if io.pending else min(due.values()))
         io.wait(0 if not empty or jobs and io.pending is None else max(0., wake - time.monotonic()))
     if packet_index != len(plan) * repeats:
         raise RuntimeError("rear replay ended with missing packets")
@@ -326,6 +331,8 @@ def execute(args, plan, digest):
         raise FileExistsError("output CSV/JSON/plan exists; refuse overwrite")
     metadata = dict(completed=False, disable_confirmed=False, watchdog_restored=False,
                     target_hz=50, packet_hz=args.packet_rate, steering_motor_commanded=False,
+                    command_schedule="send_relative_no_catchup", rate_labels_are_nominal=True,
+                    nominal_motion_duration_s=len(plan) * DT,
                     targets_sha256=digest,
                     source_sha256={p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in (
                         Path(__file__), Path(shared.__file__), Path(mit.__file__))},
@@ -352,6 +359,8 @@ def execute(args, plan, digest):
                     motion(io, plan, packets)
                     metadata["completed"] = True
                 finally:
+                    metadata["actual_motion_duration_s"] = (time.monotonic() - io.motion_start
+                                                            if io.motion_start is not None else None)
                     try:
                         metadata["disable_confirmed"] = shutdown(io)
                     finally:
@@ -391,8 +400,10 @@ def main(argv=None):
         plan, digest = load_plan(args)
         low, high = min(r["requested_torque_nm"] for r in plan), max(r["requested_torque_nm"] for r in plan)
         print(f"{'EXECUTE' if args.execute else 'PREVIEW'} rear ID {args.motor_id}: {args.targets.name}; "
-              f"{args.level}; targets 50 Hz, C0 {args.packet_rate} Hz; "
-              f"{len(plan) * DT:g} s; torque [{low:g}, {high:g}] Nm")
+              f"{args.level}; nominal targets 50 Hz, C0 {args.packet_rate} Hz; "
+              f"nominal {len(plan) * DT:g} s; torque [{low:g}, {high:g}] Nm")
+        print(f"Lateness trip {args.max_lateness_ms:g} ms; "
+              "delayed sends stretch replay, without skipped targets/bursts.")
         print(f"Core source [{args.start:g}, {args.start + args.duration:g}) s; "
               f"{args.pre_zero:g} s zero-torque preparation; {args.post_hold:g} s final-torque hold")
         if args.execute:

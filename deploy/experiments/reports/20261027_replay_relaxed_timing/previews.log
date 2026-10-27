@@ -1,0 +1,59 @@
+$ /usr/bin/python3 -S -B /home/lmbike/trackstand_rl/deploy/experiments/steering_policy_replay.py --preview --packet-rate 50
+PREVIEW: 2500_isaac400_env0_episode1.csv; scaled; nominal targets=50 Hz, packets=50 Hz; nominal 8 s total
+Lateness trip 20 ms; delayed sends stretch replay, without skipped targets/bursts.
+Source core [12.5, 17.5) s; position [0.0253314, 1.32539] rad
+No CAN opened; no CSV created. Add --execute for hardware motion.
+
+$ /usr/bin/python3 -S -B /home/lmbike/trackstand_rl/deploy/experiments/steering_policy_replay.py --preview --packet-rate 200
+PREVIEW: 2500_isaac400_env0_episode1.csv; scaled; nominal targets=50 Hz, packets=200 Hz; nominal 8 s total
+Lateness trip 20 ms; delayed sends stretch replay, without skipped targets/bursts.
+Source core [12.5, 17.5) s; position [0.0253314, 1.32539] rad
+No CAN opened; no CSV created. Add --execute for hardware motion.
+
+$ /usr/bin/python3 -S -B /home/lmbike/trackstand_rl/deploy/experiments/steering_policy_replay.py --preview --packet-rate 200 --max-lateness-ms 50
+PREVIEW: 2500_isaac400_env0_episode1.csv; scaled; nominal targets=50 Hz, packets=200 Hz; nominal 8 s total
+Lateness trip 50 ms; delayed sends stretch replay, without skipped targets/bursts.
+Source core [12.5, 17.5) s; position [0.0253314, 1.32539] rad
+No CAN opened; no CSV created. Add --execute for hardware motion.
+
+$ /usr/bin/python3 -S -B /home/lmbike/trackstand_rl/deploy/experiments/drive_policy_replay.py --preview --packet-rate 50
+PREVIEW rear ID 1: 2500_isaac400_env0_episode1.csv; scaled; nominal targets 50 Hz, C0 50 Hz; nominal 7 s; torque [-0.233069, 0.00930702] Nm
+Lateness trip 20 ms; delayed sends stretch replay, without skipped targets/bursts.
+Core source [12.5, 17.5) s; 2 s zero-torque preparation; 0 s final-torque hold
+No CAN/output files opened. Current conversion requires measured B0 during --execute.
+
+$ /usr/bin/python3 -S -B /home/lmbike/trackstand_rl/deploy/experiments/drive_policy_replay.py --preview --packet-rate 200
+PREVIEW rear ID 1: 2500_isaac400_env0_episode1.csv; scaled; nominal targets 50 Hz, C0 200 Hz; nominal 7 s; torque [-0.233069, 0.00930702] Nm
+Lateness trip 20 ms; delayed sends stretch replay, without skipped targets/bursts.
+Core source [12.5, 17.5) s; 2 s zero-torque preparation; 0 s final-torque hold
+No CAN/output files opened. Current conversion requires measured B0 during --execute.
+
+$ /usr/bin/python3 -S -B /home/lmbike/trackstand_rl/deploy/experiments/drive_policy_replay.py --preview --packet-rate 200 --max-lateness-ms 50
+PREVIEW rear ID 1: 2500_isaac400_env0_episode1.csv; scaled; nominal targets 50 Hz, C0 200 Hz; nominal 7 s; torque [-0.233069, 0.00930702] Nm
+Lateness trip 50 ms; delayed sends stretch replay, without skipped targets/bursts.
+Core source [12.5, 17.5) s; 2 s zero-torque preparation; 0 s final-torque hold
+No CAN/output files opened. Current conversion requires measured B0 during --execute.
+
+$ /usr/bin/python3 -S -B /home/lmbike/trackstand_rl/deploy/experiments/steering_initial_transient_replay.py --preview --packet-rate 50
+PREVIEW steering initial transient: 2500_isaac400_env0_episode1.csv
+Source [0, 5) s; 250 recorded targets at 50 Hz; nominal MIT packets 50 Hz; nominal total 6 s
+Lateness trip 20 ms; delayed sends stretch replay, without skipped targets/bursts.
+No preparation ramp/pre-hold. First target from straight zero: 0.357374 rad; target range [0.357374, 1.339667] rad
+Initial nominal stationary Kp*error: 3.573741 Nm (not measured motor torque). Measured-current trip remains 3 A.
+No CAN opened; no files created. Add --execute for steering motion.
+
+$ /usr/bin/python3 -S -B /home/lmbike/trackstand_rl/deploy/experiments/steering_initial_transient_replay.py --preview --packet-rate 200
+PREVIEW steering initial transient: 2500_isaac400_env0_episode1.csv
+Source [0, 5) s; 250 recorded targets at 50 Hz; nominal MIT packets 200 Hz; nominal total 6 s
+Lateness trip 20 ms; delayed sends stretch replay, without skipped targets/bursts.
+No preparation ramp/pre-hold. First target from straight zero: 0.357374 rad; target range [0.357374, 1.339667] rad
+Initial nominal stationary Kp*error: 3.573741 Nm (not measured motor torque). Measured-current trip remains 3 A.
+No CAN opened; no files created. Add --execute for steering motion.
+
+$ /usr/bin/python3 -S -B /home/lmbike/trackstand_rl/deploy/experiments/steering_initial_transient_replay.py --preview --packet-rate 200 --max-lateness-ms 50
+PREVIEW steering initial transient: 2500_isaac400_env0_episode1.csv
+Source [0, 5) s; 250 recorded targets at 50 Hz; nominal MIT packets 200 Hz; nominal total 6 s
+Lateness trip 50 ms; delayed sends stretch replay, without skipped targets/bursts.
+No preparation ramp/pre-hold. First target from straight zero: 0.357374 rad; target range [0.357374, 1.339667] rad
+Initial nominal stationary Kp*error: 3.573741 Nm (not measured motor torque). Measured-current trip remains 3 A.
+No CAN opened; no files created. Add --execute for steering motion.

@@ -1,5 +1,10 @@
 # Steering initial-transient replay entry point
 
+This report records the initial implementation and its saved validation. The
+later [relaxed replay timing](../20261027_replay_relaxed_timing/README.md) supersedes
+the original 3 ms deadline below with 20 ms and a send-relative schedule. Targets,
+initialization and other trips are unchanged; durations/rates are now nominal.
+
 Implemented 2026-10-27. The new
 [steering_initial_transient_replay.py](../../steering_initial_transient_replay.py)
 reuses the unchanged steering_policy_replay.py backend. Only steering ID 2 is

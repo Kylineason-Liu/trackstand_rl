@@ -1,0 +1,41 @@
+{
+  "archived_runtime_validation_passed": true,
+  "runs": {
+    "20261027_144059_652887_scaled_50hz_policy_replay": {
+      "raw_reply_counts": {
+        "CF": 5,
+        "F0": 10,
+        "B0": 9,
+        "B3": 1,
+        "CD": 1,
+        "A3": 795,
+        "A2": 794,
+        "A1": 793,
+        "AE": 44,
+        "B1": 1,
+        "F1": 401
+      },
+      "all_tx_payloads_and_plan_bytes_verified": true,
+      "B1_sent_once": true,
+      "fresh_feedback_units_signs_and_reference_verified": true
+    },
+    "20261027_144436_005178_scaled_200hz_policy_replay": {
+      "raw_reply_counts": {
+        "CF": 5,
+        "F0": 10,
+        "B0": 9,
+        "B3": 1,
+        "CD": 1,
+        "A3": 796,
+        "A2": 795,
+        "A1": 795,
+        "AE": 44,
+        "B1": 1,
+        "F1": 1601
+      },
+      "all_tx_payloads_and_plan_bytes_verified": true,
+      "B1_sent_once": true,
+      "fresh_feedback_units_signs_and_reference_verified": true
+    }
+  }
+}

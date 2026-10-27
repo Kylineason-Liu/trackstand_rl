@@ -3,7 +3,9 @@
 
 Python stdlib + adjacent steering_sine_mit_io.py; no ROS/NumPy required on Pi.
 Preview is the default. Only --execute opens CAN. Steering ID 2; no rear writes.
-Targets update at 50 Hz; 200 Hz transmission repeats each encoded target four times.
+Nominal targets update at 50 Hz; 200 Hz packets repeat each encoded target four times.
+Packet timing is nominal: wait a full interval after each actual send, never catch
+up in bursts. Host delays may lengthen replay; the default lateness trip is 20 ms.
 Startup confirms stationary/disabled, sends B1 ONCE (persistent steering origin),
 then verifies fresh A3/F1 near zero. Never writes F0, gains, B3 or CD settings.
 MIT gains are carried in each packet, with requested velocity/feedforward torque zero.
@@ -33,6 +35,7 @@ import steering_sine_mit_io as mit
 
 HERE = Path(__file__).resolve().parent
 DT = .02
+DEFAULT_MAX_LATENESS_MS = DT * 1000
 KERNEL_TIMESTAMP = 64  # Linux SO_TIMESTAMPNS_NEW, 64-bit timespec also on 32-bit Pi.
 TIMESPEC = struct.Struct("=qq")
 LENGTHS = mit.READ_LENGTHS | {0xAE: 8, 0xCF: 8, 0xB3: 5, 0xCD: 5}
@@ -89,8 +92,8 @@ def parse_args(argv=None):
     parser.add_argument("--query-rate", type=finite, default=100., help="A3/A2/A1 queries per second EACH")
     parser.add_argument("--query-timeout", type=finite, default=.02)
     parser.add_argument("--feedback-timeout", type=finite, default=.1)
-    parser.add_argument("--max-lateness-ms", type=finite, default=3.,
-                        help="Abort late sends; never skip target samples")
+    parser.add_argument("--max-lateness-ms", type=finite, default=DEFAULT_MAX_LATENESS_MS,
+                        help="Abort beyond this per-send lateness (default 20 ms); delayed replay stretches")
     parser.add_argument("--current-abort-a", type=finite, default=3.,
                         help="Measured-current abort, NOT a current clamp")
     parser.add_argument("--fixture", choices=("airborne", "supported-loaded"), default="airborne",
@@ -109,7 +112,7 @@ def parse_args(argv=None):
             or not 0 <= args.kd <= 5 or not 0 < args.query_rate <= 200
             or not 0 < args.query_timeout < args.feedback_timeout
             or 1 / args.query_rate >= args.feedback_timeout
-            or not 0 < args.max_lateness_ms / 1000 < 1 / args.packet_rate
+            or args.max_lateness_ms <= 0
             or args.current_abort_a <= 0):
         parser.error("invalid gains, motor ID, rates, deadlines or abort thresholds")
     if args.output is None:
@@ -252,12 +255,17 @@ class ReplayIO(mit.CanIO):
                     packet_rate_hz=self.args.packet_rate,
                     replay_time_s=now - self.motion_start if self.motion_start is not None else math.nan)
         base.update(values)
+        if "packet_index" in values:
+            base["skipped_command_ticks"] = 0  # Every recorded target is preserved, even after a delay.
         return super().row(motor, kind, now, **base)
 
     def send(self, motor, payload, can_id=None, **values):
         deadline = values.get("command_deadline_s")
-        if deadline is not None and time.monotonic() - deadline > self.args.max_lateness_ms / 1000:
-            raise RuntimeError("missed packet deadline immediately before send")
+        if deadline is not None:
+            late_ms = (time.monotonic() - deadline) * 1000
+            if late_ms > self.args.max_lateness_ms:
+                raise RuntimeError(f"missed packet deadline immediately before send: "
+                                   f"{late_ms:.3f} ms late (limit {self.args.max_lateness_ms:g} ms)")
         return super().send(motor, payload, can_id, **values)
 
     def drain(self):
@@ -476,14 +484,12 @@ def motion(io, plan):
     periods = {0xA3: 1 / args.query_rate, 0xA2: 1 / args.query_rate, 0xA1: 1 / args.query_rate,
                0xAE: .2, 0xB0: 1., 0xF0: 1.}
     due, jobs = dict.fromkeys(periods, io.motion_start), deque()
-    end = io.motion_start + len(plan) * DT
-    while time.monotonic() < end:
+    packet_count = len(plan) * repeats
+    while packet_index < packet_count or time.monotonic() < io.next_command:
         empty = io.drain()
         io.guard()
         now = time.monotonic()
-        if packet_index < len(plan) * repeats and now >= io.next_command:
-            if now - io.next_command > args.max_lateness_ms / 1000:
-                raise RuntimeError("missed packet deadline; replay aborted without skipping or bursting targets")
+        if packet_index < packet_count and now >= io.next_command:
             index = packet_index // repeats
             sample = plan[index]
             previous = io.send(motor, packets[index], 0x500 | motor.device_id, command_previous_s=previous,
@@ -494,7 +500,7 @@ def motion(io, plan):
                                    "target_index", "target_time_s", "phase", "target_rad")},
                                **mit.target_fields(motor, packets[index]))
             packet_index += 1
-            io.next_command = io.motion_start + packet_index / args.packet_rate
+            io.next_command = time.monotonic() + 1 / args.packet_rate  # Leave time for reads; no catch-up bursts.
         if io.pending is not None and now >= io.pending.deadline:
             io.finish_query("timed_out")
         if not jobs and io.pending is None:
@@ -506,7 +512,7 @@ def motion(io, plan):
             opcode = jobs.popleft()
             sent = io.send(motor, bytes([opcode]))
             io.pending = mit.PendingRead(motor, opcode, sent, sent + args.query_timeout)
-        wake = min(end, io.next_command, io.pending.deadline if io.pending else min(due.values()))
+        wake = min(io.next_command, io.pending.deadline if io.pending else min(due.values()))
         io.wait(0 if not empty or jobs and io.pending is None else max(0., wake - time.monotonic()))
     if packet_index != len(plan) * repeats:
         raise RuntimeError("replay ended with missing packets")
@@ -539,6 +545,8 @@ def execute(args, plan, input_sha):
                     transport_sha256=hashlib.sha256(Path(mit.__file__).read_bytes()).hexdigest(),
                     arguments={key: str(v) if isinstance(v, Path) else v for key, v in vars(args).items()},
                     target_hz=50, packet_hz=args.packet_rate, rear_motor_commanded=False,
+                    command_schedule="send_relative_no_catchup", rate_labels_are_nominal=True,
+                    nominal_motion_duration_s=len(plan) * DT,
                     torque_meaning="Signed A1 Q-current times measured B0 Kt, not independent shaft torque",
                     timestamps="Host send-call and kernel host RX times; not motor acquisition or wire TX times")
     with plan_path.open("x", newline="") as stream:
@@ -560,6 +568,8 @@ def execute(args, plan, input_sha):
                     motion(io, plan)
                     metadata["completed"] = True
                 finally:
+                    metadata["actual_motion_duration_s"] = (time.monotonic() - io.motion_start
+                                                            if io.motion_start is not None else None)
                     metadata["steering_origin_setup"] = getattr(io, "origin_setup", None)
                     metadata["disable_confirmed"] = shutdown(io)
                     metadata["final_fault_code"] = getattr(io, "final_fault_code", None)
@@ -589,7 +599,9 @@ def main(argv=None):
         plan, digest = load_plan(args)
         core = [row for row in plan if row["phase"] == "core"]
         print(f"{'EXECUTE' if args.execute else 'PREVIEW'}: {args.targets.name}; {args.level}; "
-              f"targets=50 Hz, packets={args.packet_rate} Hz; {len(plan) * DT:g} s total")
+              f"nominal targets=50 Hz, packets={args.packet_rate} Hz; nominal {len(plan) * DT:g} s total")
+        print(f"Lateness trip {args.max_lateness_ms:g} ms; "
+              "delayed sends stretch replay, without skipped targets/bursts.")
         print(f"Source core [{core[0]['source_time_s']:g}, {core[-1]['source_time_s'] + DT:g}) s; "
               f"position [{min(r['target_rad'] for r in plan):.6g}, {max(r['target_rad'] for r in plan):.6g}] rad")
         if args.execute:

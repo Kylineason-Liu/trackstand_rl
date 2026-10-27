@@ -3,8 +3,9 @@
 
 Default: model_2500 Isaac400 targets, source 0-5 s, then 1 s final-position hold.
 No preparation ramp or pre-hold: the first recorded position is applied directly
-from the verified physically straight B1 zero. References update at 50 Hz;
+from the verified physically straight B1 zero. References nominally update at 50 Hz;
 --packet-rate 200 repeats each reference four times. MIT Kp=10/Kd=0.2 by default.
+Packet rates/duration are nominal; delays stretch replay instead of catch-up bursts.
 Only steering ID 2 is addressed. Disable the rear independently, support the
 bike, lift the front wheel clear, and physically straighten before every run.
 Preview is the default; no ROS, NumPy or package build is required on the Pi.
@@ -34,7 +35,7 @@ def parse_args(argv=None):
     parser.add_argument("--kp", type=replay.finite, help="MIT Kp (existing default 10 Nm/rad)")
     parser.add_argument("--kd", type=replay.finite, help="MIT Kd (existing default 0.2 Nm s/rad)")
     parser.add_argument("--current-abort-a", type=replay.finite, help="Existing measured-current trip (default 3 A)")
-    parser.add_argument("--max-lateness-ms", type=replay.finite, help="Existing packet-deadline trip (default 3 ms)")
+    parser.add_argument("--max-lateness-ms", type=replay.finite, help="Packet-deadline trip (default 20 ms)")
     parser.add_argument("--note", help="Record actual fixture, supply and firmware conditions")
     parser.add_argument("--output", type=Path, help="Exclusive output CSV path; otherwise timestamped under logs/")
     options = parser.parse_args(argv)
@@ -65,7 +66,9 @@ def main(argv=None):
         first = core[0]["target_rad"]
         print(f"{'EXECUTE' if args.execute else 'PREVIEW'} steering initial transient: {args.targets.name}")
         print(f"Source [0, {args.duration:g}) s; {len(core)} recorded targets at 50 Hz; "
-              f"MIT packets {args.packet_rate} Hz; total {len(plan) * replay.DT:g} s")
+              f"nominal MIT packets {args.packet_rate} Hz; nominal total {len(plan) * replay.DT:g} s")
+        print(f"Lateness trip {args.max_lateness_ms:g} ms; "
+              "delayed sends stretch replay, without skipped targets/bursts.")
         print(f"No preparation ramp/pre-hold. First target from straight zero: {first:.6f} rad; "
               f"target range [{min(row['target_rad'] for row in plan):.6f}, "
               f"{max(row['target_rad'] for row in plan):.6f}] rad")

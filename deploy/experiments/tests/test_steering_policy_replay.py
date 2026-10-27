@@ -21,6 +21,24 @@ import steering_policy_replay as replay
 from test_steering_sine_mit_io import FakeCAN
 
 
+@contextlib.contextmanager
+def stall_after_command(bus, io_class, delay_s, can_id, opcode=None):
+    """Inject one host-loop stall after a real command, outside send()."""
+    original = io_class.guard
+    stalled = False
+
+    def guard(controller):
+        nonlocal stalled
+        original(controller)
+        if not stalled and any(cid == can_id and (opcode is None or data[0] == opcode)
+                               for _, cid, data in bus.frames):
+            bus.now += delay_s
+            stalled = True
+
+    with patch.object(io_class, "guard", guard):
+        yield
+
+
 class ReplayCAN(FakeCAN):
     def __init__(self, fault=None):
         super().__init__(fault)
@@ -220,11 +238,61 @@ class ReplayTests(unittest.TestCase):
         self.assertEqual(plan[0]["target_rad"], replay.f32(.478))
 
     def test_missed_deadline_aborts_without_burst_or_skipped_source_targets(self):
-        args, bus = self.args(), ReplayCAN()
-        bus.pause_after_first_packet = .035
-        with self.assertRaisesRegex(RuntimeError, "deadline"):
+        args, bus = self.args("--max-lateness-ms", "3"), ReplayCAN()
+        with stall_after_command(bus, replay.ReplayIO, .035, 0x502), \
+                self.assertRaisesRegex(RuntimeError, "deadline"):
             self.run_bus(args, bus)
         self.assertEqual(sum(cid == 0x502 for _, cid, _ in bus.frames), 1)
+        self.assertFalse(bus.enabled)
+
+    def test_relaxed_timing_preserves_all_packets_and_full_last_hold_at_both_rates(self):
+        for rate, pause in ((50, .035), (200, .015)):
+            with self.subTest(rate=rate):
+                self.output = Path(self.folder.name) / f"relaxed_{rate}.csv"
+                args, bus = self.args("--packet-rate", str(rate)), ReplayCAN()
+                self.assertEqual(args.max_lateness_ms, 20.)
+                with stall_after_command(bus, replay.ReplayIO, pause, 0x502):
+                    plan = self.run_bus(args, bus)
+                rows = [r for r in self.rows() if r["record_type"] == "mit_target"]
+                times = np.array([float(r["replay_time_s"]) for r in rows])
+                self.assertEqual(len(rows), len(plan) * rate // 50)
+                self.assertTrue(np.all(np.diff(times) >= 1 / rate - 1e-9))
+                self.assertGreater(max(float(r["command_lateness_s"]) for r in rows), .003)
+                self.assertTrue(all(r["skipped_command_ticks"] == "0" for r in rows))
+                np.testing.assert_array_equal([int(r["target_index"]) for r in rows],
+                                              np.repeat(np.arange(len(plan)), rate // 50))
+                meta = json.loads(self.output.with_suffix(".json").read_text())
+                self.assertTrue(meta["completed"] and meta["disable_confirmed"])
+                self.assertEqual(meta["command_schedule"], "send_relative_no_catchup")
+                self.assertGreater(meta["actual_motion_duration_s"], meta["nominal_motion_duration_s"] + .005)
+                self.assertGreaterEqual(meta["actual_motion_duration_s"] - times[-1], 1 / rate - 1e-9)
+
+    def test_slow_send_work_stretches_instead_of_starving_queries_or_ending_early(self):
+        args, bus = self.args("--packet-rate", "200"), ReplayCAN()
+        original_send = bus.send
+
+        def slow_send(frame):
+            result = original_send(frame)
+            if replay.mit.CAN_FRAME.unpack(frame)[0] == 0x502:
+                bus.now += .006  # Longer than one 5 ms packet period.
+            return result
+
+        bus.send = slow_send
+        plan = self.run_bus(args, bus)
+        rows = [r for r in self.rows() if r["record_type"] == "mit_target"]
+        self.assertEqual(len(rows), len(plan) * 4)
+        self.assertTrue(np.all(np.diff([float(r["replay_time_s"]) for r in rows]) >= .011 - 1e-9))
+        meta = json.loads(self.output.with_suffix(".json").read_text())
+        self.assertTrue(meta["completed"] and meta["disable_confirmed"])
+        self.assertGreater(meta["actual_motion_duration_s"], .3)
+
+    def test_custom_lateness_can_exceed_packet_period_but_large_stalls_still_stop(self):
+        args = self.args("--packet-rate", "200", "--max-lateness-ms", "50")
+        self.assertEqual(args.max_lateness_ms, 50.)
+        args, bus = self.args(), ReplayCAN()
+        with stall_after_command(bus, replay.ReplayIO, .045, 0x502), \
+                self.assertRaisesRegex(RuntimeError, r"deadline.*limit 20 ms"):
+            self.run_bus(args, bus)
         self.assertFalse(bus.enabled)
 
     def test_current_abort_and_send_failure_still_disable(self):
@@ -437,14 +505,14 @@ class ReplayTests(unittest.TestCase):
         with self.clock(bus), replay.CsvLog(self.output) as log:
             motor = replay.mit.Motor("steering", 2, 1., -1, -1)
             controller = replay.ReplayIO(bus, log, motor, args)
-            bus.now = .01
+            bus.now = .025
             with self.assertRaisesRegex(RuntimeError, "deadline"):
                 controller.send(motor, bytes(8), 0x502, command_deadline_s=0.)
             self.assertFalse(bus.frames)
 
     def test_bad_intervals_and_double_conditioning_rejected(self):
         for args in (["--start", ".001"], ["--level", "conditioned", "--v1-conditioning"],
-                     ["--packet-rate", "800"], ["--max-lateness-ms", "6", "--packet-rate", "200"]):
+                     ["--packet-rate", "800"], ["--max-lateness-ms", "0"]):
             with self.subTest(args=args), contextlib.redirect_stderr(io.StringIO()):
                 with self.assertRaises(SystemExit):
                     replay.parse_args(args)
