@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rear wheel: simulation versus hardware replay</title>
+<style>
+body { max-width: 1350px; margin: 2rem auto; padding: 0 1rem; font: 17px/1.5 sans-serif; color: #17212b; }
+img { width: 100%; height: auto; } a { color: #1767a5; }
+</style>
+<h1>Rear wheel: simulation versus hardware replay</h1>
+<p>Same 50 Hz-held torque sequence. Three panels: actuator-level torque, velocity,
+and cumulative position. Blue: Isaac Lab 400 Hz. Orange: hardware.
+No fitted time shift, smoothing or position-bias correction.</p>
+<p>Torque is submitted simulation effort versus A1 current × Kt, before passive
+losses; hardware torque is an estimate. Support and plant dynamics are not fully matched.</p>
+<h2>50 Hz hardware packets</h2>
+<p><a href="rear_sim_vs_replay_50hz.svg">SVG</a> · <a href="rear_sim_vs_replay_50hz.pdf">PDF</a></p>
+<img src="rear_sim_vs_replay_50hz.png" alt="50 Hz rear replay and Isaac Lab: torque, speed and position">
+<h2>200 Hz hardware packets</h2>
+<p><a href="rear_sim_vs_replay_200hz.svg">SVG</a> · <a href="rear_sim_vs_replay_200hz.pdf">PDF</a></p>
+<img src="rear_sim_vs_replay_200hz.png" alt="200 Hz rear replay and Isaac Lab: torque, speed and position">
+<p><a href="README.md">Methods and limitations</a> · <a href="plotted_samples.csv">Plotted samples</a> ·
+<a href="statistics.json">Statistics and provenance</a></p>
+</html>

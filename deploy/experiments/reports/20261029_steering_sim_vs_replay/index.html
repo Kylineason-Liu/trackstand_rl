@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Steering simulation versus hardware replay</title>
+<style>
+body { max-width: 1350px; margin: 2rem auto; padding: 0 1rem; font: 17px/1.5 sans-serif; color: #17212b; }
+img { width: 100%; height: auto; } a { color: #1767a5; }
+</style>
+<h1>Steering simulation versus corrected-zero hardware replay</h1>
+<p>Same 50 Hz-held position targets. Three panels: actuator-level torque, steering
+velocity and position. Blue: saved Isaac Lab 400 Hz. Orange: airborne hardware.</p>
+<p>Source episode 12.5–17.5 s, displayed as 0–5 s. No time shift or bias correction.
+Torque is actuator effort versus current × Kt; physical support/dynamics and sample rates differ.</p>
+<h2>50 Hz hardware MIT packets</h2>
+<p><a href="steering_sim_vs_replay_50hz.svg">SVG</a> · <a href="steering_sim_vs_replay_50hz.pdf">PDF</a></p>
+<img src="steering_sim_vs_replay_50hz.png" alt="Steering 50 Hz hardware and Isaac Lab: torque, velocity and position">
+<h2>200 Hz hardware MIT packets</h2>
+<p><a href="steering_sim_vs_replay_200hz.svg">SVG</a> · <a href="steering_sim_vs_replay_200hz.pdf">PDF</a></p>
+<img src="steering_sim_vs_replay_200hz.png" alt="Steering 200 Hz hardware and Isaac Lab: torque, velocity and position">
+<p><a href="README.md">Methods</a> · <a href="plotted_samples.csv">Plotted samples</a> ·
+<a href="statistics.json">Statistics and provenance</a></p>
+</html>

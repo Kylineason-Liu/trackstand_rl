@@ -1,0 +1,51 @@
+{
+  "independent_method": "Standard-library CSV + raw CAN struct decoding + bisect-held TX; no NumPy/shared metrics",
+  "runs": {
+    "20261027_181229_866490_scaled_200hz_steering_initial_transient": {
+      "independent_raw_CAN_statistics": {
+        "A3_core_RMS_deg": 2.5784643497960524,
+        "A3_source_1_to_5_RMS_deg": 0.5840715762990623,
+        "A3_first_source_second_RMS_deg": 5.630064290127759,
+        "last_half_second_A3_bias_deg": -0.040296745753407776,
+        "peak_A1_current_A": 1.737,
+        "peak_F1_torque_Nm": 2.896703296703297,
+        "peak_A2_speed_rad_s": 18.080912918960454,
+        "last_half_second_A1_mean_torque_Nm": 0.0014644897422012035
+      },
+      "all_summary_values_match": true
+    },
+    "20261027_181349_675883_scaled_200hz_steering_initial_transient": {
+      "independent_raw_CAN_statistics": {
+        "A3_core_RMS_deg": 2.5850916504820223,
+        "A3_source_1_to_5_RMS_deg": 0.5925046900887384,
+        "A3_first_source_second_RMS_deg": 5.6469004529214315,
+        "last_half_second_A3_bias_deg": -0.02535533950340875,
+        "peak_A1_current_A": 2.303,
+        "peak_F1_torque_Nm": 3.010989010989011,
+        "peak_A2_speed_rad_s": 17.894511754847464,
+        "last_half_second_A1_mean_torque_Nm": -0.006653877306957637
+      },
+      "all_summary_values_match": true
+    },
+    "20261027_190254_424315_scaled_200hz_policy_replay": {
+      "independent_raw_CAN_statistics": {
+        "A3_core_RMS_deg": 2.6216215111956043,
+        "A3_source_1_to_5_RMS_deg": 0.5999773409887693,
+        "A3_first_source_second_RMS_deg": 5.721602277343855,
+        "last_half_second_A3_bias_deg": -0.537910146582489,
+        "peak_A1_current_A": 1.83,
+        "peak_F1_torque_Nm": 3.046153846153846,
+        "peak_A2_speed_rad_s": 18.17516069856815,
+        "last_half_second_A1_mean_torque_Nm": 0.09113264971849867
+      },
+      "all_summary_values_match": true
+    }
+  },
+  "source_plan_payload_and_status_checks": "Passed analyzer assertions",
+  "input_and_dependency_hashes_match": true,
+  "protected_files_unchanged": 164,
+  "protected_manifest": "/tmp/loaded_steering_analysis_m22yn1qv/before.json",
+  "production_code_changed": false,
+  "original_logs_and_reports_changed": false,
+  "progress_ledgers_changed": false
+}

@@ -1,5 +1,10 @@
 # Standalone motor feedback
 
+For controlled **rear C0 repeatability, starting-angle, breakaway and pulse/reversal
+experiments**, see [DRIVE_REPEATABILITY.md](DRIVE_REPEATABILITY.md). The new
+`drive_repeatability.py` provides preview, balanced rates, verified manual angle
+placement, automatic feedback logs and resumable sessions.
+
 For **both motors' separate recorded-target tests** and Raspberry Pi startup
 steps, see [POLICY_REPLAY.md](POLICY_REPLAY.md). Rear C0 torque replay is provided
 by `drive_policy_replay.py`; steering MIT replay remains separate. Never run the

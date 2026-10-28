@@ -1,0 +1,110 @@
+{
+  "simulation": {
+    "case_index": 4,
+    "case_name": "isaac400_dr_env0_12p5_17p5_friction_on",
+    "physics_dt_s": 0.0025,
+    "native_angle_branch_rad": 12.566370614359172,
+    "position_method": "sum native per-substep increments, resolving 4*pi branch",
+    "maximum_position_increment_rad": 0.15400028228759766
+  },
+  "core_replay_window_s": [
+    2.0,
+    7.0
+  ],
+  "source_episode_window_s": [
+    12.5,
+    17.5
+  ],
+  "common_target_hz": 50,
+  "hardware_packet_hz": [
+    50,
+    200
+  ],
+  "input_sha256": {
+    "isaaclab_train/reports/20261025_matched_target_replay/isaac400/airborne.npz": "25e4b7fb75d93354d579cb4ec88b9ef6f7bfe30c033b87cd27918b1734e5dc3c",
+    "deploy/experiments/logs/20261026_163432_217938_scaled_50hz_drive_policy_replay.csv": "0b2f6fc1f361d44a52fd90a7275443ba9bf25e7780844fe6a034ea4c3e481f2d",
+    "deploy/experiments/logs/20261026_163432_217938_scaled_50hz_drive_policy_replay.json": "a7d0d84c1bd3b788d6c202543b312e8067ae2271bdaa33f5ee9fdd6cda6d5c7d",
+    "deploy/experiments/logs/20261026_163432_217938_scaled_50hz_drive_policy_replay_plan.csv": "845fb4e5094ad05e17dbcce97c0e3835da1c6db2f57f7e5f5d9df6cdf5669c7b",
+    "deploy/experiments/logs/20261026_163545_994664_scaled_200hz_drive_policy_replay.csv": "b1315f24a0ca21dc25750214374e68efb825472c567b2df3858dbc47878883a9",
+    "deploy/experiments/logs/20261026_163545_994664_scaled_200hz_drive_policy_replay.json": "8e76ddcbb7ee2b2d656cdd8617a1f8fad8930abc66082f596b33d6a7e46b7039",
+    "deploy/experiments/logs/20261026_163545_994664_scaled_200hz_drive_policy_replay_plan.csv": "845fb4e5094ad05e17dbcce97c0e3835da1c6db2f57f7e5f5d9df6cdf5669c7b"
+  },
+  "torque_definition": "Simulation submitted effort; hardware signed A1 current times measured B0",
+  "plot_processing": "native fresh samples; no smoothing, signal time shift or fitted bias removal",
+  "graph_time_zero": "replay t=2 s, after zero-current preparation",
+  "position_zero": "each run's initial position; not rebased at core start",
+  "simulation_or_hardware_run": false,
+  "statistics": {
+    "50": {
+      "torque": {
+        "unit": "Nm",
+        "sim_min": -0.23306934535503387,
+        "sim_max": 0.009307022206485271,
+        "hardware_min": -0.2175000086426735,
+        "hardware_max": 0.012000000476837159,
+        "sim_last": -0.1485365480184555,
+        "hardware_last": -0.14490000575780868,
+        "sim_samples": 2000,
+        "hardware_samples": 495
+      },
+      "velocity": {
+        "unit": "rad/s",
+        "sim_min": -21.398212432861328,
+        "sim_max": 3.966789563492057e-08,
+        "hardware_min": -8.04876037849705,
+        "hardware_max": 0.09948376736367678,
+        "sim_last": -4.338254451751709,
+        "hardware_last": 0.027227136331111543,
+        "sim_samples": 2001,
+        "hardware_samples": 495
+      },
+      "position": {
+        "unit": "rad",
+        "sim_min": -33.290024661986195,
+        "sim_max": 2.05657713081564e-11,
+        "hardware_min": -5.282646338281177,
+        "hardware_max": 0.0,
+        "sim_last": -33.290024661986195,
+        "hardware_last": -5.282262843084205,
+        "sim_samples": 2001,
+        "hardware_samples": 495
+      }
+    },
+    "200": {
+      "torque": {
+        "unit": "Nm",
+        "sim_min": -0.23306934535503387,
+        "sim_max": 0.009307022206485271,
+        "hardware_min": -0.21900000870227812,
+        "hardware_max": 0.014100000560283661,
+        "sim_last": -0.1485365480184555,
+        "hardware_last": -0.1698000067472458,
+        "sim_samples": 2000,
+        "hardware_samples": 495
+      },
+      "velocity": {
+        "unit": "rad/s",
+        "sim_min": -21.398212432861328,
+        "sim_max": 3.966789563492057e-08,
+        "hardware_min": -2.832669375986797,
+        "hardware_max": 0.10786134777324956,
+        "sim_last": -4.338254451751709,
+        "hardware_last": 0.0020943951023931957,
+        "sim_samples": 2001,
+        "hardware_samples": 494
+      },
+      "position": {
+        "unit": "rad",
+        "sim_min": -33.290024661986195,
+        "sim_max": 2.05657713081564e-11,
+        "hardware_min": -0.335558297349984,
+        "hardware_max": 0.0,
+        "sim_last": -33.290024661986195,
+        "hardware_last": -0.3347913069560412,
+        "sim_samples": 2001,
+        "hardware_samples": 494
+      }
+    }
+  },
+  "plotting_script_sha256": "d611de38c1e34ec2fa5638a6d27b8fbeaa1e474b51e5e2e23e11a055d8459270"
+}

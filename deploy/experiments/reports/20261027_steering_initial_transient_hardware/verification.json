@@ -1,0 +1,42 @@
+{
+  "protected_existing_files_unchanged": 158,
+  "backup": "/tmp/steering_initial_runs__t_73pju",
+  "all_six_new_files_validated": true,
+  "same_plan_and_all_1200_payloads_verified": true,
+  "independent_standard_library_raw_CAN_checks": {
+    "20261027_181229_866490_scaled_200hz_steering_initial_transient": {
+      "entire_source_0_to_5_s": {
+        "fresh_samples": 522,
+        "RMS_rad": 0.04500269254923591,
+        "RMS_deg": 2.5784643497960533
+      },
+      "source_1_to_5_s": {
+        "fresh_samples": 417,
+        "RMS_rad": 0.010193972073731912,
+        "RMS_deg": 0.5840715762990623
+      },
+      "A1_peak_A": 1.737,
+      "F1_peak_equivalent_A": 3.71372231147916
+    },
+    "20261027_181349_675883_scaled_200hz_steering_initial_transient": {
+      "entire_source_0_to_5_s": {
+        "fresh_samples": 518,
+        "RMS_rad": 0.04511836076672574,
+        "RMS_deg": 2.585091650482022
+      },
+      "source_1_to_5_s": {
+        "fresh_samples": 414,
+        "RMS_rad": 0.0103411576755571,
+        "RMS_deg": 0.5925046900887385
+      },
+      "A1_peak_A": 2.303,
+      "F1_peak_equivalent_A": 3.860242463373633
+    }
+  },
+  "A1_trip_only_and_F1_equivalent_current_distinction_checked_in_source": true,
+  "protocol_PDF_pages_21_22_read": true,
+  "AST_pyflakes_120_columns_links_and_figure_artifacts_checked": true,
+  "original_recordings_old_reports_runtime_and_progress_ledgers_changed": false,
+  "hardware_CAN_new_simulation_or_policy_inference_run": false,
+  "analysis_command": "python3 -B deploy/experiments/reports/20261027_steering_initial_transient_hardware/analyze.py"
+}

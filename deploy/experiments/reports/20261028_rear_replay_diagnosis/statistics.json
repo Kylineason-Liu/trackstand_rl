@@ -1,0 +1,221 @@
+{
+  "runs": [
+    {
+      "stem": "20261026_163432_217938_scaled_50hz_drive_policy_replay",
+      "packet_hz": 50,
+      "packets": 350,
+      "zero_count": 324554,
+      "initial_native_angle_deg": 291.3134765625,
+      "last_motion_count": 338328,
+      "encoder_displacement_rad": -5.282262843084205,
+      "integrated_A2_displacement_rad": -5.203802945046271,
+      "A2_integral_vs_A3_RMS_rad": 0.04914525009411099,
+      "speed_min_rad_s": -8.04876037849705,
+      "A1_core_RMS_error_Nm": 0.015847776498921485,
+      "A1_core_bias_Nm": -0.0003890909245519938,
+      "A1_core_mean_Nm": -0.100215761557974,
+      "first_A3_displacement_over_0_002rad_s": 2.0237196694288286,
+      "first_movement_after_core_ms": 23.565217430586927,
+      "prezero_A3_minmax_rad": [
+        0.0,
+        0.0003834951969714103
+      ],
+      "prezero_A2_minmax_rad_s": [
+        -0.07644542123735162,
+        0.07853981633974483
+      ],
+      "final_prezero_A3_rad": 0.0,
+      "voltage_minmax_v": [
+        20.17,
+        20.21
+      ],
+      "temperature_minmax_c": [
+        30.0,
+        32.0
+      ],
+      "signed_command_impulse_Nm_s": -0.49901704992140977,
+      "achieved_packet_hz": 49.999694615047,
+      "duration_before_shutdown_s": 7.000102909998532,
+      "B4_raw": 0,
+      "B3_A": 82.498,
+      "firmware_Kt_Nm_A": 0.30000001192092896,
+      "query_results": [
+        "received"
+      ],
+      "windows": {
+        "2-2.2": {
+          "A1_mean_Nm": -0.0889050035327673,
+          "A1_min_Nm": -0.1728000068664551,
+          "A2_minmax_rad_s": [
+            -2.9792770331543204,
+            -0.061784655520599266
+          ],
+          "A3_minmax_rad": [
+            -0.3018107200164999,
+            0.0
+          ]
+        },
+        "2-3.44": {
+          "A1_mean_Nm": -0.0984549334897122,
+          "A1_min_Nm": -0.1947000077366829,
+          "A2_minmax_rad_s": [
+            -2.9792770331543204,
+            0.07853981633974483
+          ],
+          "A3_minmax_rad": [
+            -0.343995191683355,
+            0.0
+          ]
+        },
+        "4.16-4.86": {
+          "A1_mean_Nm": -0.10898143290196145,
+          "A1_min_Nm": -0.21210000842809676,
+          "A2_minmax_rad_s": [
+            -8.04876037849705,
+            0.0
+          ],
+          "A3_minmax_rad": [
+            -5.264622064023521,
+            -1.545869138991755
+          ]
+        },
+        "5-7": {
+          "A1_mean_Nm": -0.10571457706504132,
+          "A1_min_Nm": -0.1698000067472458,
+          "A2_minmax_rad_s": [
+            -0.05864306286700948,
+            0.06702064327658226
+          ],
+          "A3_minmax_rad": [
+            -5.282646338281177,
+            -5.281879347887234
+          ]
+        }
+      },
+      "C0_reply_errors_by_copy": {
+        "1": 0.04325687677937717
+      }
+    },
+    {
+      "stem": "20261026_163545_994664_scaled_200hz_drive_policy_replay",
+      "packet_hz": 200,
+      "packets": 1400,
+      "zero_count": 338328,
+      "initial_native_angle_deg": 233.96484375,
+      "last_motion_count": 339201,
+      "encoder_displacement_rad": -0.3347913069560412,
+      "integrated_A2_displacement_rad": -0.33082742382620395,
+      "A2_integral_vs_A3_RMS_rad": 0.003168149573400331,
+      "speed_min_rad_s": -2.832669375986797,
+      "A1_core_RMS_error_Nm": 0.016495542752989544,
+      "A1_core_bias_Nm": 0.00045818183638832746,
+      "A1_core_mean_Nm": -0.09941273122303414,
+      "first_A3_displacement_over_0_002rad_s": 3.470203779233998,
+      "first_movement_after_core_ms": 1470.0984422306647,
+      "prezero_A3_minmax_rad": [
+        0.0,
+        0.0003834951969714103
+      ],
+      "prezero_A2_minmax_rad_s": [
+        -0.05759586531581288,
+        0.061784655520599266
+      ],
+      "final_prezero_A3_rad": 0.0,
+      "voltage_minmax_v": [
+        20.19,
+        20.21
+      ],
+      "temperature_minmax_c": [
+        30.0,
+        32.0
+      ],
+      "signed_command_impulse_Nm_s": -0.498972387307307,
+      "achieved_packet_hz": 199.9987900859126,
+      "duration_before_shutdown_s": 7.000239118002355,
+      "B4_raw": 0,
+      "B3_A": 82.498,
+      "firmware_Kt_Nm_A": 0.30000001192092896,
+      "query_results": [
+        "received"
+      ],
+      "windows": {
+        "2-2.2": {
+          "A1_mean_Nm": -0.08529000338912009,
+          "A1_min_Nm": -0.19560000777244568,
+          "A2_minmax_rad_s": [
+            -0.03351032163829113,
+            0.04293509959906051
+          ],
+          "A3_minmax_rad": [
+            -0.0003834951969714103,
+            0.0
+          ]
+        },
+        "2-3.44": {
+          "A1_mean_Nm": -0.09732042640237742,
+          "A1_min_Nm": -0.20610000818967822,
+          "A2_minmax_rad_s": [
+            -0.05864306286700948,
+            0.0492182849062401
+          ],
+          "A3_minmax_rad": [
+            -0.0007669903939428206,
+            0.0
+          ]
+        },
+        "4.16-4.86": {
+          "A1_mean_Nm": -0.10466087372406671,
+          "A1_min_Nm": -0.21900000870227812,
+          "A2_minmax_rad_s": [
+            -2.832669375986797,
+            0.0879645943005142
+          ],
+          "A3_minmax_rad": [
+            -0.335558297349984,
+            -0.17333982903107745
+          ]
+        },
+        "5-7": {
+          "A1_mean_Nm": -0.10638485271220255,
+          "A1_min_Nm": -0.18180000722408293,
+          "A2_minmax_rad_s": [
+            -0.06387905062299246,
+            0.10786134777324956
+          ],
+          "A3_minmax_rad": [
+            -0.3351748021530126,
+            -0.33440781175906975
+          ]
+        }
+      },
+      "C0_reply_errors_by_copy": {
+        "1": 0.043573338532754295,
+        "2": 0.011336285556264251,
+        "3": 0.010159844890714751,
+        "4": 0.012337844710383971
+      }
+    }
+  ],
+  "comparison": {
+    "common_target_onset_max_difference_ms": 2.0249409972166177,
+    "actual_command_difference_L1_Nm_s": 0.0003532224136253009,
+    "actual_command_difference_RMS_Nm": 0.0017778234073302483,
+    "command_comparison_window_s": [
+      2,
+      6.98
+    ],
+    "displacement_magnitude_ratio": 15.777777777777777,
+    "second_start_count_equals_first_end": true,
+    "native_start_phase_difference_shortest_deg": -57.3486328125
+  },
+  "input_hashes": {
+    "deploy/experiments/logs/20261026_163432_217938_scaled_50hz_drive_policy_replay.csv": "0b2f6fc1f361d44a52fd90a7275443ba9bf25e7780844fe6a034ea4c3e481f2d",
+    "deploy/experiments/logs/20261026_163432_217938_scaled_50hz_drive_policy_replay.json": "a7d0d84c1bd3b788d6c202543b312e8067ae2271bdaa33f5ee9fdd6cda6d5c7d",
+    "deploy/experiments/logs/20261026_163432_217938_scaled_50hz_drive_policy_replay_plan.csv": "845fb4e5094ad05e17dbcce97c0e3835da1c6db2f57f7e5f5d9df6cdf5669c7b",
+    "deploy/experiments/replay_targets/2500_isaac400_env0_episode1.csv": "c799e80fbc87af307871e35dce7ad409f3e636ff662e99ed498c3800a4cf3ad6",
+    "deploy/experiments/logs/20261026_163545_994664_scaled_200hz_drive_policy_replay.csv": "b1315f24a0ca21dc25750214374e68efb825472c567b2df3858dbc47878883a9",
+    "deploy/experiments/logs/20261026_163545_994664_scaled_200hz_drive_policy_replay.json": "8e76ddcbb7ee2b2d656cdd8617a1f8fad8930abc66082f596b33d6a7e46b7039",
+    "deploy/experiments/logs/20261026_163545_994664_scaled_200hz_drive_policy_replay_plan.csv": "845fb4e5094ad05e17dbcce97c0e3835da1c6db2f57f7e5f5d9df6cdf5669c7b"
+  },
+  "interpretation": "Two confounded runs. A2 integration is a cross-check, not independent metrology. Motor acquisition timing and physical shaft torque are unknown. No hardware, model fitting or simulation executed."
+}

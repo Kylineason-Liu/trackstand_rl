@@ -1,0 +1,318 @@
+{
+  "hardware": {
+    "raw_A1_A2_A3_and_MIT_position_verified": true,
+    "fixture": "supported-loaded",
+    "packet_hz": 200,
+    "target_hz": 50,
+    "requested_kp": 10.0,
+    "requested_kd": 0.2,
+    "B1_verified": true,
+    "encoder_zero_count": 0,
+    "Kt_nm_per_a": 0.7799999713897705,
+    "source_core_actual_start_s": 0.00013909100016462617,
+    "source_core_actual_stop_s": 5.224594190000062,
+    "actual_source_target_rate_hz": 47.851880294244815,
+    "actual_motion_duration_s": 6.262662868000916,
+    "complete_core_unshifted_target_RMS_deg": 2.6216215111956056
+  },
+  "simulation": {
+    "source": "Original grounded full-bike DR evaluation; not an airborne bench replay",
+    "environment": 0,
+    "episode": 1,
+    "physics_hz": 400,
+    "policy_hz": 50,
+    "targets_match_all_250_source_samples_exactly": true,
+    "initial_position_rad": 0.0,
+    "initial_velocity_rad_s": 0.0,
+    "kp": 10.6517333984375,
+    "kd": 0.2091839611530304,
+    "sampled_DR": {
+      "environment": 0,
+      "episode": 1,
+      "start_s": 0.0,
+      "stop_s": 30.0,
+      "completed": true,
+      "body_order": [
+        "base_link",
+        "rear_wheel_link_1",
+        "steering_link_1",
+        "front_wheel_link_1"
+      ],
+      "material_order": "PhysX collision-shape slots",
+      "mass_scale": [
+        1.0451838970184326,
+        0.8040235638618469,
+        0.9593655467033386,
+        0.816123366355896
+      ],
+      "mass_kg": [
+        2.1183712482452393,
+        0.09916004538536072,
+        0.10485060513019562,
+        0.1345912516117096
+      ],
+      "com_offset_body_m": [
+        [
+          0.004877179861068726,
+          -0.0037110038101673126,
+          0.0006210356950759888
+        ],
+        [
+          0.004877186380326748,
+          -0.0037110038101673126,
+          0.0006210417486727238
+        ],
+        [
+          0.004877186845988035,
+          -0.0037110033445060253,
+          0.0006210431456565857
+        ],
+        [
+          0.004877186380326748,
+          -0.0037110033445060253,
+          0.0006210417486727238
+        ]
+      ],
+      "com_shared_offset_m": [
+        0.004877179861068726,
+        -0.0037110038101673126,
+        0.0006210356950759888
+      ],
+      "contact_static_friction": [
+        0.7410385608673096,
+        0.6817111372947693,
+        0.5920459032058716,
+        0.5326454639434814
+      ],
+      "contact_dynamic_friction": [
+        0.6144049167633057,
+        0.6117562055587769,
+        0.5349465608596802,
+        0.5326454639434814
+      ],
+      "restitution": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "kp": [
+        10.6517333984375,
+        0.0
+      ],
+      "kd": [
+        0.2091839611530304,
+        0.0
+      ],
+      "initial_roll_rad": 0.019897789542594402,
+      "initial_roll_rate_rad_s": 0.0012512505054473877,
+      "gyro_bias_rad_s": [
+        -0.00019508771947585046,
+        -0.00015068450011312962,
+        -2.6495452402741648e-05
+      ],
+      "gravity_bias_yz": [
+        0.0011535633821040392,
+        0.001922131865285337
+      ],
+      "source": "Read-only Isaac repeat; all 18 original capture arrays byte-identical"
+    }
+  },
+  "windows_s": {
+    "steering_loaded_sim_vs_replay_200hz": [
+      0.0,
+      5.0
+    ],
+    "steering_loaded_sim_vs_replay_startup": [
+      0.0,
+      0.5
+    ],
+    "steering_loaded_sim_vs_replay_detail": [
+      1.0,
+      5.0
+    ]
+  },
+  "input_sha256": {
+    "deploy/experiments/logs/20261027_190254_424315_scaled_200hz_policy_replay.csv": "0a3a2221f3ef375eb0054336802f36eca3b92b65e047e0623ffe1f7c5f55ac5a",
+    "deploy/experiments/logs/20261027_190254_424315_scaled_200hz_policy_replay.json": "443f02cb4ff5faa144f601ffecb456d19b9bdb87cb81648b49550ebbe039b74d",
+    "deploy/experiments/logs/20261027_190254_424315_scaled_200hz_policy_replay_plan.csv": "968ca29d232790d13a086d4ca5e896a20d251db5ed409cf7f5da674c3d1848bf",
+    "deploy/experiments/replay_targets/2500_isaac400_env0_episode1.csv": "c799e80fbc87af307871e35dce7ad409f3e636ff662e99ed498c3800a4cf3ad6",
+    "isaaclab_train/reports/20261025_2500_dr_comparison/isaac400/motor_samples.npz": "d6e1b712082b273daab7dc2fd0ba6a848317cc88c147a8f07f786feded6fcf1e",
+    "isaaclab_train/reports/20261025_2500_dr_comparison/isaac400/experiment.json": "349c1c4e045fdae6ba8ee3e97a7c5c98543d5b668e94d90ae497cb94810b4fa4",
+    "isaaclab_train/reports/20261025_2500_dr_comparison/sampled_dr_values.json": "2eefc49052e125d36f32653aa69c2650d3d60c776c75ef22846d50c3ef8222c9"
+  },
+  "statistics": {
+    "steering_loaded_sim_vs_replay_200hz": {
+      "torque": {
+        "simulation": {
+          "samples": 2000,
+          "min": -1.1575798988342285,
+          "max": 3.8066537380218506,
+          "last": 0.02812112309038639,
+          "first_time_s": 0.0,
+          "last_time_s": 4.9975
+        },
+        "hardware": {
+          "samples": 494,
+          "min": -1.0545599613189698,
+          "max": 1.4273999476432802,
+          "last": -0.03899999856948853,
+          "first_time_s": 0.0032812089721119264,
+          "last_time_s": 4.9928971261779225
+        }
+      },
+      "velocity": {
+        "simulation": {
+          "samples": 2001,
+          "min": -5.986917972564697,
+          "max": 20.607892990112305,
+          "last": 0.134598046541214,
+          "first_time_s": 0.0,
+          "last_time_s": 5.0
+        },
+        "hardware": {
+          "samples": 494,
+          "min": -2.5258404934861938,
+          "max": 18.17516069856815,
+          "last": -0.49637163926718736,
+          "first_time_s": 0.0024610490600025514,
+          "last_time_s": 4.992418858508245
+        }
+      },
+      "position": {
+        "simulation": {
+          "samples": 2001,
+          "min": 0.0,
+          "max": 1.3329418897628784,
+          "last": 1.2656599283218384,
+          "first_time_s": 0.0,
+          "last_time_s": 5.0
+        },
+        "hardware": {
+          "samples": 494,
+          "min": 0.0,
+          "max": 1.3330293046726223,
+          "last": 1.250577837323769,
+          "first_time_s": 0.001455876330510364,
+          "last_time_s": 4.991949650744573
+        }
+      }
+    },
+    "steering_loaded_sim_vs_replay_startup": {
+      "torque": {
+        "simulation": {
+          "samples": 201,
+          "min": -0.7925845384597778,
+          "max": 3.8066537380218506,
+          "last": -0.7925845384597778,
+          "first_time_s": 0.0,
+          "last_time_s": 0.5
+        },
+        "hardware": {
+          "samples": 50,
+          "min": -1.0545599613189698,
+          "max": 1.4273999476432802,
+          "last": -0.0608399977684021,
+          "first_time_s": 0.0032812089721119264,
+          "last_time_s": 0.4973135919371998
+        }
+      },
+      "velocity": {
+        "simulation": {
+          "samples": 201,
+          "min": -3.179753065109253,
+          "max": 20.607892990112305,
+          "last": 2.04390287399292,
+          "first_time_s": 0.0,
+          "last_time_s": 0.5
+        },
+        "hardware": {
+          "samples": 50,
+          "min": -2.2525219326238815,
+          "max": 18.17516069856815,
+          "last": 0.15707963267948966,
+          "first_time_s": 0.0024610490600025514,
+          "last_time_s": 0.4965010614196217
+        }
+      },
+      "position": {
+        "simulation": {
+          "samples": 201,
+          "min": 0.0,
+          "max": 1.1664917469024658,
+          "last": 1.0851720571517944,
+          "first_time_s": 0.0,
+          "last_time_s": 0.5
+        },
+        "hardware": {
+          "samples": 50,
+          "min": 0.0,
+          "max": 1.177713749899201,
+          "last": 1.0239321759136655,
+          "first_time_s": 0.001455876330510364,
+          "last_time_s": 0.4958487481871998
+        }
+      }
+    },
+    "steering_loaded_sim_vs_replay_detail": {
+      "torque": {
+        "simulation": {
+          "samples": 1600,
+          "min": -0.4155449867248535,
+          "max": 0.37916725873947144,
+          "last": 0.02812112309038639,
+          "first_time_s": 1.0,
+          "last_time_s": 4.9975
+        },
+        "hardware": {
+          "samples": 395,
+          "min": -0.16847999382019044,
+          "max": 0.42743998432159425,
+          "last": -0.03899999856948853,
+          "first_time_s": 1.0026651353637135,
+          "last_time_s": 4.9928971261779225
+        }
+      },
+      "velocity": {
+        "simulation": {
+          "samples": 1601,
+          "min": -2.397505760192871,
+          "max": 2.0754268169403076,
+          "last": 0.134598046541214,
+          "first_time_s": 1.0,
+          "last_time_s": 5.0
+        },
+        "hardware": {
+          "samples": 395,
+          "min": -1.527861227195836,
+          "max": 1.1760028499937794,
+          "last": -0.49637163926718736,
+          "first_time_s": 1.0021530122558033,
+          "last_time_s": 4.992418858508245
+        }
+      },
+      "position": {
+        "simulation": {
+          "samples": 1601,
+          "min": 1.2420295476913452,
+          "max": 1.3329418897628784,
+          "last": 1.2656599283218384,
+          "first_time_s": 1.0,
+          "last_time_s": 5.0
+        },
+        "hardware": {
+          "samples": 395,
+          "min": 1.244058418975255,
+          "max": 1.3330293046726223,
+          "last": 1.250577837323769,
+          "first_time_s": 1.001701685885564,
+          "last_time_s": 4.991949650744573
+        }
+      }
+    }
+  },
+  "comparison": "Original grounded DR evaluation versus supported-loaded hardware; not paired plants",
+  "processing": "Native timestamps; no smoothing, time shift, time warp or fitted bias subtraction",
+  "script_sha256": "586a7929f4a55659f594da81f46cd42c0b229c7134bcc1e7e2692bff3d644036",
+  "new_simulation_or_hardware_operation": false
+}

@@ -1,0 +1,721 @@
+{
+  "runs": {
+    "20261027_181229_866490_scaled_200hz_steering_initial_transient": {
+      "metadata": {
+        "completed": true,
+        "disable_confirmed": true,
+        "targets_sha256": "c799e80fbc87af307871e35dce7ad409f3e636ff662e99ed498c3800a4cf3ad6",
+        "script_sha256": "9a9606b39dd447df5a75aa6e728f05983edcbc69378471af0f172930a0862b17",
+        "transport_sha256": "e1ca97c2b86ebf126ed975b474fefadac55bf2454f0e8364cd63ed0845822754",
+        "arguments": {
+          "execute": true,
+          "preview": false,
+          "targets": "/home/smallbike/trackstand_rl/deploy/experiments/replay_targets/2500_isaac400_env0_episode1.csv",
+          "level": "scaled",
+          "v1_conditioning": false,
+          "start": 0.0,
+          "duration": 5.0,
+          "ramp": 0.0,
+          "pre_hold": 0.0,
+          "post_hold": 1.0,
+          "packet_rate": 200,
+          "interface": "can0",
+          "motor_id": 2,
+          "sign": -1,
+          "torque_sign": -1,
+          "kp": 10.0,
+          "kd": 0.2,
+          "query_rate": 100.0,
+          "query_timeout": 0.02,
+          "feedback_timeout": 0.1,
+          "max_lateness_ms": 20.0,
+          "current_abort_a": 3.0,
+          "fixture": "airborne",
+          "note": "",
+          "output": "/home/smallbike/trackstand_rl/deploy/experiments/logs/20261027_181229_866490_scaled_200hz_steering_initial_transient.csv",
+          "entry_point": "steering_initial_transient_replay.py",
+          "entry_point_sha256": "a15553065968fb9523f452ec067a7de7280c99469554884de5701dc24ae3c23b"
+        },
+        "target_hz": 50,
+        "packet_hz": 200,
+        "rear_motor_commanded": false,
+        "command_schedule": "send_relative_no_catchup",
+        "rate_labels_are_nominal": true,
+        "nominal_motion_duration_s": 6.0,
+        "torque_meaning": "Signed A1 Q-current times measured B0 Kt, not independent shaft torque",
+        "timestamps": "Host send-call and kernel host RX times; not motor acquisition or wire TX times",
+        "mit_ranges": [
+          3.0,
+          45.0,
+          18.0
+        ],
+        "native_zero_rad": -4.57770656900891e-05,
+        "encoder_zero_count": 0,
+        "torque_constant_nm_per_a": 0.7799999713897705,
+        "configured_B3_current_limit_a": 15.0,
+        "configured_CD_hex": "CD00881300",
+        "actual_motion_duration_s": 6.31436524899982,
+        "steering_origin_setup": {
+          "method": "B1 persistent steering origin, once per execution",
+          "attempted": true,
+          "acknowledged": true,
+          "verified": true,
+          "encoder_count_before_reset": -66,
+          "acknowledgement_hex": "B17DAB",
+          "F1_position_code": 32767,
+          "F1_native_zero_rad": -4.57770656900891e-05,
+          "A3_zero_count": 0
+        },
+        "final_fault_code": 0
+      },
+      "validation": {
+        "raw_reply_counts": {
+          "CF": 5,
+          "F0": 9,
+          "B0": 8,
+          "B3": 1,
+          "CD": 1,
+          "A3": 628,
+          "A2": 627,
+          "A1": 627,
+          "AE": 36,
+          "B1": 1,
+          "F1": 1201
+        },
+        "exact_plan_and_packets": true,
+        "zero_signs_units_status_verified": true
+      },
+      "measurement_rows": 8207,
+      "actual_windows_s": {
+        "first_source_0_to_point2_s": [
+          0.0001308899991272483,
+          0.2111109649995342
+        ],
+        "first_source_0_to_1_s": [
+          0.0001308899991272483,
+          1.0578135729992937
+        ],
+        "source_1_to_5_s": [
+          1.0578135729992937,
+          5.274624636000226
+        ],
+        "entire_source_0_to_5_s": [
+          0.0001308899991272483,
+          5.274624636000226
+        ],
+        "final_actual_half_second": [
+          5.81436524899982,
+          6.31436524899982
+        ]
+      },
+      "position_errors_rad": {
+        "A3": {
+          "first_source_0_to_point2_s": {
+            "n": 21,
+            "bias": -0.12552214907747924,
+            "rms": 0.2031389303394375,
+            "mae": 0.14746921416246728,
+            "p95_abs": 0.35733577477683687,
+            "maximum_abs": 0.4432581707939038,
+            "demeaned_rms": 0.15971729746781316
+          },
+          "first_source_0_to_1_s": {
+            "n": 105,
+            "bias": -0.029419455046361995,
+            "rms": 0.09826315896168669,
+            "mae": 0.055154044495836475,
+            "p95_abs": 0.2449555922152086,
+            "maximum_abs": 0.4432581707939038,
+            "demeaned_rms": 0.09375576821670649
+          },
+          "source_1_to_5_s": {
+            "n": 417,
+            "bias": 0.000416511401438742,
+            "rms": 0.01019397207373193,
+            "mae": 0.007643912988817934,
+            "p95_abs": 0.020071996583174552,
+            "maximum_abs": 0.04172959847704294,
+            "demeaned_rms": 0.010185459483621638
+          },
+          "entire_source_0_to_5_s": {
+            "n": 522,
+            "bias": -0.005584976102429222,
+            "rms": 0.04500269254923592,
+            "mae": 0.017200548636781433,
+            "p95_abs": 0.059632992918108314,
+            "maximum_abs": 0.4432581707939038,
+            "demeaned_rms": 0.044654791216803914
+          },
+          "final_actual_half_second": {
+            "n": 50,
+            "bias": -0.0007033108912362307,
+            "rms": 0.000764433146228342,
+            "mae": 0.0007033108912362307,
+            "p95_abs": 0.0012018546472989389,
+            "maximum_abs": 0.0012018546472989389,
+            "demeaned_rms": 0.0002995193237857292
+          }
+        },
+        "F1": {
+          "first_source_0_to_point2_s": {
+            "n": 40,
+            "bias": -0.14178530556191346,
+            "rms": 0.23253228494970707,
+            "mae": 0.16454108491645691,
+            "p95_abs": 0.47606775005722124,
+            "maximum_abs": 0.5736781872281986,
+            "demeaned_rms": 0.18430461380726906
+          },
+          "first_source_0_to_1_s": {
+            "n": 200,
+            "bias": -0.03311467154955364,
+            "rms": 0.11072851334584648,
+            "mae": 0.05921583886472879,
+            "p95_abs": 0.3042664225223163,
+            "maximum_abs": 0.5736781872281986,
+            "demeaned_rms": 0.10566088299813932
+          },
+          "source_1_to_5_s": {
+            "n": 800,
+            "bias": 0.0006113527122911344,
+            "rms": 0.01047285523850088,
+            "mae": 0.007864042114900445,
+            "p95_abs": 0.020888075074387655,
+            "maximum_abs": 0.04156557564660113,
+            "demeaned_rms": 0.010454996160103055
+          },
+          "entire_source_0_to_5_s": {
+            "n": 1000,
+            "bias": -0.0061338521400778195,
+            "rms": 0.05039747306198533,
+            "mae": 0.018134401464866116,
+            "p95_abs": 0.06055848020141926,
+            "maximum_abs": 0.5736781872281986,
+            "demeaned_rms": 0.050022806288304134
+          },
+          "final_actual_half_second": {
+            "n": 96,
+            "bias": -0.0005521858548866998,
+            "rms": 0.0006259222138744148,
+            "mae": 0.0005521858548866998,
+            "p95_abs": 0.0010070954451819603,
+            "maximum_abs": 0.0010986495765621385,
+            "demeaned_rms": 0.00029473615232016097
+          }
+        }
+      },
+      "actual_packet_hz": 190.04351129879706,
+      "actual_core_target_hz": 47.39742454055413,
+      "packet_interval_ms": {
+        "n": 1199,
+        "minimum": 5.089754999062279,
+        "mean": 5.261952871559735,
+        "median": 5.201366999244783,
+        "p95": 5.544776100578019,
+        "p99": 6.372422501335676,
+        "maximum": 8.22875700032455,
+        "rms": 5.267632808664182
+      },
+      "lateness_ms": {
+        "n": 1200,
+        "minimum": 0.03934699998353608,
+        "mean": 0.16441801166365622,
+        "median": 0.12442250044841785,
+        "p95": 0.28551950199471293,
+        "p99": 0.8547427101257188,
+        "maximum": 2.7411060018494027,
+        "rms": 0.24071645658985344
+      },
+      "target_update_interval_ms": {
+        "n": 250,
+        "minimum": 20.537132000754355,
+        "mean": 21.097974984004395,
+        "median": 20.83484650029277,
+        "p95": 22.518451099949743,
+        "p99": 25.055369169967886,
+        "maximum": 28.612722000616486,
+        "rms": 21.116441708232685
+      },
+      "motion_query_results": {
+        "received": 1920
+      },
+      "A2_speed_rad_s": {
+        "n": 625,
+        "minimum": -2.6064747049283317,
+        "mean": 0.20349310366460477,
+        "median": 0.0,
+        "p95": 1.1041650979816917,
+        "p99": 7.769703175054173,
+        "maximum": 18.080912918960454,
+        "rms": 1.6942533740216936,
+        "peak_at_replay_s": 0.041375724469617126
+      },
+      "A1_torque_nm": {
+        "n": 624,
+        "minimum": -1.1801399567127229,
+        "mean": -0.012474999542419726,
+        "median": -0.009359999656677246,
+        "p95": 0.13279499512910853,
+        "p99": 0.4900817820239067,
+        "maximum": 1.3548599503040315,
+        "rms": 0.1605066907019195,
+        "peak_at_replay_s": 0.021978465711072204
+      },
+      "F1_torque_nm": {
+        "n": 1200,
+        "minimum": -1.191208791208791,
+        "mean": -0.004168498168498132,
+        "median": -0.00439560439560438,
+        "p95": 0.11868131868131826,
+        "p99": 0.567032967032967,
+        "maximum": 2.896703296703296,
+        "rms": 0.1715877911861106,
+        "peak_at_replay_s": 0.016266194974377868
+      },
+      "A1_current_peak_abs_a": 1.737,
+      "F1_peak_equivalent_current_abs_a": 3.7137223114791587,
+      "F1_above_A1_trip_equivalent": [
+        {
+          "replay_time_s": 0.016266194974377868,
+          "torque_nm": 2.896703296703296,
+          "equivalent_current_a": 3.7137223114791587
+        }
+      ],
+      "first_detectable_F1_motion_bracket_ms": [
+        11.03886942837562,
+        16.13530497525062
+      ],
+      "alignment": {
+        "startup_actual_point1_to_point6_s": {
+          "best_shift_ms": 19.599999999999998,
+          "within_one_percent_loss_shift_range_ms": [
+            17.1,
+            20.0
+          ],
+          "minimum_rms": 0.019036879174307037,
+          "zero_shift_rms": 0.04174136598006317,
+          "offset_removed": true,
+          "window_s": [
+            0.1,
+            0.6
+          ],
+          "method": "Grid 0..100 ms, 0.1-ms spacing; actual TX zero-order hold; fixed RX samples",
+          "interpretation": "Descriptive alignment only; no motor acquisition/wire timestamps; not a confidence interval, pure latency or internal loop rate"
+        },
+        "source_1_to_5_s": {
+          "best_shift_ms": 19.400000000000002,
+          "within_one_percent_loss_shift_range_ms": [
+            16.7,
+            20.800000000000004
+          ],
+          "minimum_rms": 0.006786141758935808,
+          "zero_shift_rms": 0.010185459483621638,
+          "offset_removed": true,
+          "window_s": [
+            1.0578135729992937,
+            5.274624636000226
+          ],
+          "method": "Grid 0..100 ms, 0.1-ms spacing; actual TX zero-order hold; fixed RX samples",
+          "interpretation": "Descriptive alignment only; no motor acquisition/wire timestamps; not a confidence interval, pure latency or internal loop rate"
+        }
+      },
+      "bus_voltage_v": {
+        "n": 32,
+        "minimum": 20.19,
+        "mean": 20.2028125,
+        "median": 20.205,
+        "p95": 20.21,
+        "p99": 20.21,
+        "maximum": 20.21,
+        "rms": 20.202814083067736
+      },
+      "motor_temperature_c": {
+        "n": 32,
+        "minimum": 32.0,
+        "mean": 32.625,
+        "median": 32.0,
+        "p95": 34.0,
+        "p99": 34.0,
+        "maximum": 34.0,
+        "rms": 32.63816784073518
+      },
+      "receive_queue_delay_s": {
+        "n": 3120,
+        "minimum": 2.0937437511747703e-05,
+        "mean": 7.603480563690167e-05,
+        "median": 4.5055536247673444e-05,
+        "p95": 0.00017586992171345623,
+        "p99": 0.0008398728836982609,
+        "maximum": 0.0024940927687566727,
+        "rms": 0.00016865581120446504
+      },
+      "A3_feedback_hz": 98.86045768208305,
+      "A1_feedback_hz": 98.84722091189289,
+      "F1_feedback_hz": 190.04730864185214
+    },
+    "20261027_181349_675883_scaled_200hz_steering_initial_transient": {
+      "metadata": {
+        "completed": true,
+        "disable_confirmed": true,
+        "targets_sha256": "c799e80fbc87af307871e35dce7ad409f3e636ff662e99ed498c3800a4cf3ad6",
+        "script_sha256": "9a9606b39dd447df5a75aa6e728f05983edcbc69378471af0f172930a0862b17",
+        "transport_sha256": "e1ca97c2b86ebf126ed975b474fefadac55bf2454f0e8364cd63ed0845822754",
+        "arguments": {
+          "execute": true,
+          "preview": false,
+          "targets": "/home/smallbike/trackstand_rl/deploy/experiments/replay_targets/2500_isaac400_env0_episode1.csv",
+          "level": "scaled",
+          "v1_conditioning": false,
+          "start": 0.0,
+          "duration": 5.0,
+          "ramp": 0.0,
+          "pre_hold": 0.0,
+          "post_hold": 1.0,
+          "packet_rate": 200,
+          "interface": "can0",
+          "motor_id": 2,
+          "sign": -1,
+          "torque_sign": -1,
+          "kp": 10.0,
+          "kd": 0.2,
+          "query_rate": 100.0,
+          "query_timeout": 0.02,
+          "feedback_timeout": 0.1,
+          "max_lateness_ms": 20.0,
+          "current_abort_a": 3.0,
+          "fixture": "airborne",
+          "note": "",
+          "output": "/home/smallbike/trackstand_rl/deploy/experiments/logs/20261027_181349_675883_scaled_200hz_steering_initial_transient.csv",
+          "entry_point": "steering_initial_transient_replay.py",
+          "entry_point_sha256": "a15553065968fb9523f452ec067a7de7280c99469554884de5701dc24ae3c23b"
+        },
+        "target_hz": 50,
+        "packet_hz": 200,
+        "rear_motor_commanded": false,
+        "command_schedule": "send_relative_no_catchup",
+        "rate_labels_are_nominal": true,
+        "nominal_motion_duration_s": 6.0,
+        "torque_meaning": "Signed A1 Q-current times measured B0 Kt, not independent shaft torque",
+        "timestamps": "Host send-call and kernel host RX times; not motor acquisition or wire TX times",
+        "mit_ranges": [
+          3.0,
+          45.0,
+          18.0
+        ],
+        "native_zero_rad": -4.57770656900891e-05,
+        "encoder_zero_count": 0,
+        "torque_constant_nm_per_a": 0.7799999713897705,
+        "configured_B3_current_limit_a": 15.0,
+        "configured_CD_hex": "CD00881300",
+        "actual_motion_duration_s": 6.288535051000508,
+        "steering_origin_setup": {
+          "method": "B1 persistent steering origin, once per execution",
+          "attempted": true,
+          "acknowledged": true,
+          "verified": true,
+          "encoder_count_before_reset": -113,
+          "acknowledgement_hex": "B1EEAA",
+          "F1_position_code": 32767,
+          "F1_native_zero_rad": -4.57770656900891e-05,
+          "A3_zero_count": 0
+        },
+        "final_fault_code": 0
+      },
+      "validation": {
+        "raw_reply_counts": {
+          "CF": 5,
+          "F0": 9,
+          "B0": 8,
+          "B3": 1,
+          "CD": 1,
+          "A3": 624,
+          "A2": 623,
+          "A1": 623,
+          "AE": 36,
+          "B1": 1,
+          "F1": 1201
+        },
+        "exact_plan_and_packets": true,
+        "zero_signs_units_status_verified": true
+      },
+      "measurement_rows": 8171,
+      "actual_windows_s": {
+        "first_source_0_to_point2_s": [
+          8.859300032781903e-05,
+          0.21072232200094732
+        ],
+        "first_source_0_to_1_s": [
+          8.859300032781903e-05,
+          1.0549448270012363
+        ],
+        "source_1_to_5_s": [
+          1.0549448270012363,
+          5.249657817001207
+        ],
+        "entire_source_0_to_5_s": [
+          8.859300032781903e-05,
+          5.249657817001207
+        ],
+        "final_actual_half_second": [
+          5.788535051000508,
+          6.288535051000508
+        ]
+      },
+      "position_errors_rad": {
+        "A3": {
+          "first_source_0_to_point2_s": {
+            "n": 21,
+            "bias": -0.12393338326145481,
+            "rms": 0.20267204653082105,
+            "mae": 0.14730282883957807,
+            "p95_abs": 0.35733577477683687,
+            "maximum_abs": 0.4432581707939038,
+            "demeaned_rms": 0.16036357116989086
+          },
+          "first_source_0_to_1_s": {
+            "n": 104,
+            "bias": -0.02875727630499595,
+            "rms": 0.09855700543583805,
+            "mae": 0.055502928824278736,
+            "p95_abs": 0.24563559924602751,
+            "maximum_abs": 0.4432581707939038,
+            "demeaned_rms": 0.0942682469339381
+          },
+          "source_1_to_5_s": {
+            "n": 414,
+            "bias": 0.0008257450998144585,
+            "rms": 0.010341157675557116,
+            "mae": 0.007806339167918419,
+            "p95_abs": 0.020506453619772793,
+            "maximum_abs": 0.03948789780252837,
+            "demeaned_rms": 0.010308136936462682
+          },
+          "entire_source_0_to_5_s": {
+            "n": 518,
+            "bias": -0.005113703213120451,
+            "rms": 0.04511836076672574,
+            "mae": 0.01738248844255447,
+            "p95_abs": 0.06267831556964765,
+            "maximum_abs": 0.4432581707939038,
+            "demeaned_rms": 0.044827631185737876
+          },
+          "final_actual_half_second": {
+            "n": 50,
+            "bias": -0.0004425341572956887,
+            "rms": 0.00044577912049463314,
+            "mae": 0.0004425341572956887,
+            "p95_abs": 0.00043486425335625967,
+            "maximum_abs": 0.0008183594503277103,
+            "demeaned_rms": 5.368932757600307e-05
+          }
+        },
+        "F1": {
+          "first_source_0_to_point2_s": {
+            "n": 40,
+            "bias": -0.14034332799267565,
+            "rms": 0.23194498446753598,
+            "mae": 0.16449530785076683,
+            "p95_abs": 0.4757427328908216,
+            "maximum_abs": 0.5782558937972079,
+            "demeaned_rms": 0.1846678805520488
+          },
+          "first_source_0_to_1_s": {
+            "n": 200,
+            "bias": -0.03290775921263443,
+            "rms": 0.1105007283516849,
+            "mae": 0.0590702677958343,
+            "p95_abs": 0.3023163195239185,
+            "maximum_abs": 0.5782558937972079,
+            "demeaned_rms": 0.10548692027856406
+          },
+          "source_1_to_5_s": {
+            "n": 800,
+            "bias": 0.0010619134813458465,
+            "rms": 0.010597342754929346,
+            "mae": 0.007998054474708189,
+            "p95_abs": 0.02170290684367146,
+            "maximum_abs": 0.04037537193865881,
+            "demeaned_rms": 0.010544003661967756
+          },
+          "entire_source_0_to_5_s": {
+            "n": 1000,
+            "bias": -0.00573202105745021,
+            "rms": 0.050318238562403333,
+            "mae": 0.01821249713893341,
+            "p95_abs": 0.06235294117647038,
+            "maximum_abs": 0.5782558937972079,
+            "demeaned_rms": 0.04999068979940046
+          },
+          "final_actual_half_second": {
+            "n": 96,
+            "bias": -0.00038910505836575737,
+            "rms": 0.0003931234616003114,
+            "mae": 0.00038910505836575737,
+            "p95_abs": 0.000457770656900891,
+            "maximum_abs": 0.0005493247882810692,
+            "demeaned_rms": 5.60652264312925e-05
+          }
+        }
+      },
+      "actual_packet_hz": 190.82270222217718,
+      "actual_core_target_hz": 47.62023178640022,
+      "packet_interval_ms": {
+        "n": 1199,
+        "minimum": 5.085803999463678,
+        "mean": 5.240466613011736,
+        "median": 5.185859999983222,
+        "p95": 5.347419801000797,
+        "p99": 6.718798399415387,
+        "maximum": 9.550233000481967,
+        "rms": 5.250553197144317
+      },
+      "lateness_ms": {
+        "n": 1200,
+        "minimum": 0.03458100036368705,
+        "mean": 0.15285382411396617,
+        "median": 0.11635900045803282,
+        "p95": 0.2218262007772864,
+        "p99": 0.422661649936341,
+        "maximum": 3.9687490025244188,
+        "rms": 0.28922154576052295
+      },
+      "target_update_interval_ms": {
+        "n": 250,
+        "minimum": 20.523568000498926,
+        "mean": 20.998276896003517,
+        "median": 20.785892000276363,
+        "p95": 21.276167199448537,
+        "p99": 27.644518449669665,
+        "maximum": 29.904854998676456,
+        "rms": 21.028804612796144
+      },
+      "motion_query_results": {
+        "received": 1908
+      },
+      "A2_speed_rad_s": {
+        "n": 621,
+        "minimum": -2.5928611367627763,
+        "mean": 0.2015509592819964,
+        "median": -0.0010471975511965978,
+        "p95": 1.1330677503947189,
+        "p99": 7.780049486859964,
+        "maximum": 17.894511754847464,
+        "rms": 1.6907491009803888,
+        "peak_at_replay_s": 0.03141948679331108
+      },
+      "A1_torque_nm": {
+        "n": 620,
+        "minimum": -1.1403599581718444,
+        "mean": -0.014948322032343959,
+        "median": -0.0132599995136261,
+        "p95": 0.14145299481153464,
+        "p99": 0.5866301784825245,
+        "maximum": 1.7963399341106414,
+        "rms": 0.17053421425923507,
+        "peak_at_replay_s": 0.02243825891855522
+      },
+      "F1_torque_nm": {
+        "n": 1200,
+        "minimum": -1.2087912087912085,
+        "mean": -0.006586080586080543,
+        "median": -0.01318681318681314,
+        "p95": 0.11912087912087829,
+        "p99": 0.46241758241758196,
+        "maximum": 3.01098901098901,
+        "rms": 0.1757824126224482,
+        "peak_at_replay_s": 0.016321391853125533
+      },
+      "A1_current_peak_abs_a": 2.303,
+      "F1_peak_equivalent_current_abs_a": 3.860242463373632,
+      "F1_above_A1_trip_equivalent": [
+        {
+          "replay_time_s": 0.016321391853125533,
+          "torque_nm": 3.01098901098901,
+          "equivalent_current_a": 3.860242463373632
+        }
+      ],
+      "first_detectable_F1_motion_bracket_ms": [
+        11.087249078627792,
+        16.232798852797714
+      ],
+      "alignment": {
+        "startup_actual_point1_to_point6_s": {
+          "best_shift_ms": 20.0,
+          "within_one_percent_loss_shift_range_ms": [
+            17.5,
+            21.7
+          ],
+          "minimum_rms": 0.018911132535605096,
+          "zero_shift_rms": 0.0427727351836753,
+          "offset_removed": true,
+          "window_s": [
+            0.1,
+            0.6
+          ],
+          "method": "Grid 0..100 ms, 0.1-ms spacing; actual TX zero-order hold; fixed RX samples",
+          "interpretation": "Descriptive alignment only; no motor acquisition/wire timestamps; not a confidence interval, pure latency or internal loop rate"
+        },
+        "source_1_to_5_s": {
+          "best_shift_ms": 16.8,
+          "within_one_percent_loss_shift_range_ms": [
+            16.7,
+            17.8
+          ],
+          "minimum_rms": 0.006905250930766479,
+          "zero_shift_rms": 0.010308136936462682,
+          "offset_removed": true,
+          "window_s": [
+            1.0549448270012363,
+            5.249657817001207
+          ],
+          "method": "Grid 0..100 ms, 0.1-ms spacing; actual TX zero-order hold; fixed RX samples",
+          "interpretation": "Descriptive alignment only; no motor acquisition/wire timestamps; not a confidence interval, pure latency or internal loop rate"
+        }
+      },
+      "bus_voltage_v": {
+        "n": 32,
+        "minimum": 20.19,
+        "mean": 20.2028125,
+        "median": 20.2,
+        "p95": 20.21,
+        "p99": 20.21,
+        "maximum": 20.21,
+        "rms": 20.202813309660613
+      },
+      "motor_temperature_c": {
+        "n": 32,
+        "minimum": 32.0,
+        "mean": 33.0625,
+        "median": 34.0,
+        "p95": 34.0,
+        "p99": 34.0,
+        "maximum": 34.0,
+        "rms": 33.07756036953149
+      },
+      "receive_queue_delay_s": {
+        "n": 3108,
+        "minimum": 1.8589014871395193e-05,
+        "mean": 7.402098948392962e-05,
+        "median": 4.326233192841755e-05,
+        "p95": 0.00013341107633095816,
+        "p99": 0.0004850984133372515,
+        "maximum": 0.005972621629553032,
+        "rms": 0.00025617401434903733
+      },
+      "A3_feedback_hz": 98.62235659583735,
+      "A1_feedback_hz": 98.61068106007745,
+      "F1_feedback_hz": 190.82341892535467
+    }
+  },
+  "identical_plan_and_payload_sequence": true,
+  "user_confirmed_setup": "Front wheel airborne/free, physically straight, no hand contact; no settings changes. No failed 50 Hz logs provided; neither trip flag changed.",
+  "failed_50hz_data_available": false,
+  "input_sha256": {
+    "deploy/experiments/logs/20261027_181229_866490_scaled_200hz_steering_initial_transient.csv": "ffccf3833513d81e556ca889683423f2dab03d0e7eff0cfb1ea10608e90ceef8",
+    "deploy/experiments/logs/20261027_181229_866490_scaled_200hz_steering_initial_transient.json": "a91cb040d7e94dc34d595facaec9e20280bd3f466ed18e57a90cb1b948f6e0b2",
+    "deploy/experiments/logs/20261027_181349_675883_scaled_200hz_steering_initial_transient.csv": "b797bebaae240e4d57f5666e4ce2fc00d65c69896a194f974298bb0c9f7b769e",
+    "deploy/experiments/logs/20261027_181349_675883_scaled_200hz_steering_initial_transient.json": "093707788f8c52ce9e8adb7d57ddff88abf557d7f7b932f3126ea6552c81ff1b",
+    "deploy/experiments/logs/20261027_181229_866490_scaled_200hz_steering_initial_transient_plan.csv": "968ca29d232790d13a086d4ca5e896a20d251db5ed409cf7f5da674c3d1848bf",
+    "deploy/experiments/logs/20261027_181349_675883_scaled_200hz_steering_initial_transient_plan.csv": "968ca29d232790d13a086d4ca5e896a20d251db5ed409cf7f5da674c3d1848bf"
+  }
+}

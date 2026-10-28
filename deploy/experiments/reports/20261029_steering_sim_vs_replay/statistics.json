@@ -1,0 +1,127 @@
+{
+  "simulation": {
+    "case_index": 4,
+    "case_name": "isaac400_dr_env0_12p5_17p5_friction_on",
+    "physics_dt_s": 0.0025,
+    "position_method": "native steering angle minus fixed initial zero; no wrap/shift"
+  },
+  "core_replay_window_s": [
+    2.0,
+    7.0
+  ],
+  "source_episode_window_s": [
+    12.5,
+    17.5
+  ],
+  "common_target_hz": 50,
+  "hardware_packet_hz": [
+    50,
+    200
+  ],
+  "input_sha256": {
+    "isaaclab_train/reports/20261025_matched_target_replay/isaac400/airborne.npz": "25e4b7fb75d93354d579cb4ec88b9ef6f7bfe30c033b87cd27918b1734e5dc3c",
+    "deploy/experiments/logs/20261027_144059_652887_scaled_50hz_policy_replay.csv": "a047d7c925b091f287dba29be2d61a8baa696a484915cd6dff146717accdb498",
+    "deploy/experiments/logs/20261027_144059_652887_scaled_50hz_policy_replay.json": "57a9a625d68ac4801b0211879938ed7582438af3450d1a88faccda65cd6017ed",
+    "deploy/experiments/logs/20261027_144059_652887_scaled_50hz_policy_replay_plan.csv": "2ebf99eb71d13558503f3622a860fcd38a4ee7fe1b43ec2cdba30e663b1a008d",
+    "deploy/experiments/replay_targets/2500_isaac400_env0_episode1.csv": "c799e80fbc87af307871e35dce7ad409f3e636ff662e99ed498c3800a4cf3ad6",
+    "deploy/experiments/logs/20261027_144436_005178_scaled_200hz_policy_replay.csv": "e03ff73cbd23cf7640a49fbec8fdff3f5a99d2f1e4047314798c6d86597a69be",
+    "deploy/experiments/logs/20261027_144436_005178_scaled_200hz_policy_replay.json": "f8e637a826655e8f094f59818179d4a304fa61472ad865f0d54368b23f3158ad",
+    "deploy/experiments/logs/20261027_144436_005178_scaled_200hz_policy_replay_plan.csv": "2ebf99eb71d13558503f3622a860fcd38a4ee7fe1b43ec2cdba30e663b1a008d"
+  },
+  "torque_definition": "Simulation submitted actuator effort; hardware signed A1 current times B0",
+  "plot_processing": "native fresh samples; no smoothing, time shift or fitted bias removal",
+  "graph_time_zero": "replay t=2 s, after 1-second ramp and 1-second hold",
+  "position_zero": "verified fixed straight zero; not rebased at core start",
+  "simulation_or_hardware_run": false,
+  "statistics": {
+    "50": {
+      "torque": {
+        "unit": "Nm",
+        "sim_min": -0.45040011405944824,
+        "sim_max": 0.4239724278450012,
+        "hardware_min": -0.3470999872684479,
+        "hardware_max": 0.34319998741149904,
+        "sim_last": -0.0377667173743248,
+        "hardware_last": -0.1216799955368042,
+        "sim_samples": 2000,
+        "hardware_samples": 494
+      },
+      "velocity": {
+        "unit": "rad/s",
+        "sim_min": -3.2521064281463623,
+        "sim_max": 2.996361017227173,
+        "hardware_min": -1.2639674442942936,
+        "hardware_max": 1.3728759896187397,
+        "sim_last": -0.3920210599899292,
+        "hardware_last": -0.6942919764433443,
+        "sim_samples": 2001,
+        "hardware_samples": 495
+      },
+      "position": {
+        "unit": "rad",
+        "sim_min": 1.2419872283935547,
+        "sim_max": 1.3168253898620605,
+        "hardware_min": 1.2360050198388555,
+        "hardware_max": 1.3180729919907372,
+        "sim_last": 1.2602630853652954,
+        "hardware_last": 1.2640001692177683,
+        "sim_samples": 2001,
+        "hardware_samples": 495
+      }
+    },
+    "200": {
+      "torque": {
+        "unit": "Nm",
+        "sim_min": -0.45040011405944824,
+        "sim_max": 0.4239724278450012,
+        "hardware_min": -0.48827998208999634,
+        "hardware_max": 0.3689399864673615,
+        "sim_last": -0.0377667173743248,
+        "hardware_last": -0.05849999785423279,
+        "sim_samples": 2000,
+        "hardware_samples": 495
+      },
+      "velocity": {
+        "unit": "rad/s",
+        "sim_min": -3.2521064281463623,
+        "sim_max": 2.996361017227173,
+        "hardware_min": -1.6859880574265225,
+        "hardware_max": 1.4063863112570307,
+        "sim_last": -0.3920210599899292,
+        "hardware_last": -0.6283185307179586,
+        "sim_samples": 2001,
+        "hardware_samples": 495
+      },
+      "position": {
+        "unit": "rad",
+        "sim_min": 1.2419872283935547,
+        "sim_max": 1.3168253898620605,
+        "hardware_min": 1.237539000626741,
+        "hardware_max": 1.3100195928543377,
+        "sim_last": 1.2602630853652954,
+        "hardware_last": 1.2686021115814252,
+        "sim_samples": 2001,
+        "hardware_samples": 495
+      }
+    }
+  },
+  "checks": {
+    "50": {
+      "A3_samples": 495,
+      "core_tracking_rms_deg": 0.7011288172369824,
+      "core_tracking_bias_deg": 0.019777057050919665,
+      "B1_zero_count": 0,
+      "measured_Kt_nm_per_a": 0.7799999713897705,
+      "maximum_sim_host_requested_target_difference_rad": 0.0
+    },
+    "200": {
+      "A3_samples": 495,
+      "core_tracking_rms_deg": 0.7878123274686892,
+      "core_tracking_bias_deg": -0.13100052634129009,
+      "B1_zero_count": 0,
+      "measured_Kt_nm_per_a": 0.7799999713897705,
+      "maximum_sim_host_requested_target_difference_rad": 0.0
+    }
+  },
+  "plotting_script_sha256": "a857df9df0a671540683343ac50899081789f2aa895091e17faf2a3ec3da79da"
+}
