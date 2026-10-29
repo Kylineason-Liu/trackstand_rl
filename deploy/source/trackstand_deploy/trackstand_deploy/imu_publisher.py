@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import math
 import time
 
 import numpy as np
@@ -34,6 +35,10 @@ class ImuPublisher(Node):
         if (
             rpy_deg.shape != (3,)
             or bias_dps.shape != (3,)
+            or not np.all(np.isfinite(rpy_deg))
+            or not np.all(np.isfinite(bias_dps))
+            or not math.isfinite(publish_rate_hz)
+            or not math.isfinite(self._source_timeout_s)
             or publish_rate_hz <= 0.0
             or self._source_timeout_s <= 0.0
         ):
@@ -51,28 +56,38 @@ class ImuPublisher(Node):
         self._timer = self.create_timer(1.0 / publish_rate_hz, self._publish)
 
     def _publish(self) -> None:
-        source_time = float(self._imu.last_valid_frame_monotonic)
+        sample = self._imu.get_timed_sample()
+        if sample is None:
+            return
+        source_time, quaternion_wxyz, gyro_sensor = sample
+        source_age = time.monotonic() - source_time
         if (
             source_time <= self._last_source_time
             or source_time <= 0.0
-            or time.monotonic() - source_time > self._source_timeout_s
+            or not 0.0 <= source_age <= self._source_timeout_s
         ):
             return
         try:
-            qw, qx, qy, qz = self._imu.get_imu_quaternion_data()
-            gyro_sensor = np.asarray(self._imu.get_gyroscope_data(), dtype=float)
+            qw, qx, qy, qz = quaternion_wxyz
             quaternion, body_rate = correct_imu_sample(
                 np.array([qx, qy, qz, qw], dtype=float),
                 gyro_sensor,
                 self._sensor_to_bike,
                 self._gyro_bias_rad_s,
             )
+            if not np.all(np.isfinite(body_rate)):
+                raise ValueError("gyro values must be finite")
         except (ValueError, TypeError) as error:
             self.get_logger().warning(f"Invalid IMU sample: {error}", throttle_duration_sec=2.0)
             return
 
         message = Imu()
-        message.header.stamp = self.get_clock().now().to_msg()
+        # Preserve the older serial channel's parse age through ROS delivery;
+        # UART buffering and hardware acquisition time remain unmeasured.
+        now = self.get_clock().now()
+        stamp_ns = now.nanoseconds - round((time.monotonic() - source_time) * 1e9)
+        message.header.stamp = now.to_msg()
+        message.header.stamp.sec, message.header.stamp.nanosec = divmod(stamp_ns, 1_000_000_000)
         message.header.frame_id = self._frame_id
         for axis, value in zip("xyzw", quaternion):
             setattr(message.orientation, axis, float(value))
@@ -92,15 +107,21 @@ class ImuPublisher(Node):
 
 
 def main(args=None) -> None:
+    from rclpy.executors import ExternalShutdownException
+
     rclpy.init(args=args)
-    node = ImuPublisher()
+    node = None
     try:
+        node = ImuPublisher()
         rclpy.spin(node)
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, ExternalShutdownException):
         pass
     finally:
-        node.destroy_node()
-        rclpy.shutdown()
+        try:
+            if node is not None:
+                node.destroy_node()
+        finally:
+            rclpy.try_shutdown()
 
 
 if __name__ == "__main__":

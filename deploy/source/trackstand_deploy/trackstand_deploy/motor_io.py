@@ -11,6 +11,7 @@ import time
 import can
 import numpy as np
 import rclpy
+from rcl_interfaces.msg import ParameterDescriptor
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, ReliabilityPolicy
 from std_msgs.msg import Bool, Float64MultiArray, MultiArrayDimension, String
@@ -105,7 +106,7 @@ class MotorIo(Node):
 
     def _setup_parameters(self) -> None:
         for name, default in self._parameter_defaults.items():
-            self.declare_parameter(name, default)
+            self.declare_parameter(name, default, ParameterDescriptor(read_only=True))
 
         self._can_interface = str(self.get_parameter("can_interface").value)
         self._poll_rate_hz = float(self.get_parameter("poll_rate_hz").value)
@@ -327,7 +328,7 @@ class MotorIo(Node):
                             motor.velocity_rad_s = parse_a2_velocity(
                                 velocity_payload, motor.gear_ratio, motor.encoder_sign
                             )
-                            motor.sample_monotonic = time.monotonic()
+                            motor.sample_monotonic = position_received
                             motor.position_sample_monotonic = position_received
                             motor.velocity_sample_monotonic = velocity_received
                     except (ValueError, IndexError) as error:
@@ -347,11 +348,11 @@ class MotorIo(Node):
 
     def _command_callback(self, message: Float64MultiArray) -> None:
         if len(message.data) != 3:
-            self.get_logger().warning("motor_command must be [enable, steering_target_rad, drive_torque_nm]")
+            self._reject_command("motor_command must be [enable, steering_target_rad, drive_torque_nm]")
             return
         values = np.asarray(message.data, dtype=float)
         if not np.all(np.isfinite(values)):
-            self.get_logger().error("Rejected non-finite motor command")
+            self._reject_command("non-finite motor command")
             return
         with self._command_lock:
             self._requested_enable = bool(values[0] > 0.5)
@@ -365,6 +366,13 @@ class MotorIo(Node):
                 np.clip(values[2], -DRIVE_EFFORT_LIMIT_NM, DRIVE_EFFORT_LIMIT_NM)
             )
             self._command_monotonic = time.monotonic()
+
+    def _reject_command(self, reason: str) -> None:
+        with self._command_lock:
+            self._command_monotonic = 0.0
+            self._fault_latched = True
+            self._fault_reason = "invalid_motor_command"
+        self.get_logger().error(f"Rejected {reason}; motor disable requested")
 
     def _snapshot(self, motor: ChannelState) -> tuple:
         with motor.lock:
@@ -605,11 +613,11 @@ class MotorIo(Node):
     def _publish_state(self) -> None:
         steering = self._snapshot(self._steering)
         drive = self._snapshot(self._drive)
-        if steering[2] <= 0.0 or drive[2] <= 0.0:
-            return
         now = time.monotonic()
         if (
-            now - steering[2] > self._feedback_timeout_s
+            not 0.0 < steering[2] <= now
+            or not 0.0 < drive[2] <= now
+            or now - steering[2] > self._feedback_timeout_s
             or now - drive[2] > self._feedback_timeout_s
         ):
             return
@@ -670,15 +678,21 @@ class MotorIo(Node):
 
 
 def main(args=None) -> None:
+    from rclpy.executors import ExternalShutdownException
+
     rclpy.init(args=args)
-    node = MotorIo()
+    node = None
     try:
+        node = MotorIo()
         rclpy.spin(node)
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, ExternalShutdownException):
         pass
     finally:
-        node.destroy_node()
-        rclpy.shutdown()
+        try:
+            if node is not None:
+                node.destroy_node()
+        finally:
+            rclpy.try_shutdown()
 
 
 if __name__ == "__main__":

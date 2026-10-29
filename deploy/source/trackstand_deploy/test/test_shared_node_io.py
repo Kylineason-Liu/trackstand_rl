@@ -68,24 +68,41 @@ def test_imu_component_assignment_preserves_units_order_and_freshness(node_modul
     ))
     node = object.__new__(module.ImuPublisher)
     node._imu = SimpleNamespace(
-        last_valid_frame_monotonic=99.99,
-        get_imu_quaternion_data=lambda: [1.0, 0.0, 0.0, 0.0],
-        get_gyroscope_data=lambda: [0.2, -0.3, 0.4],
+        get_timed_sample=lambda: (99.99, (1.0, 0.0, 0.0, 0.0), (0.2, -0.3, 0.4)),
     )
     node._last_source_time, node._source_timeout_s = 0.0, 0.25
     node._frame_id = "imu_link"
     node._sensor_to_bike = np.array([0.0, 0.0, 0.0, 1.0])
     node._gyro_bias_rad_s = np.array([0.1, 0.1, 0.1])
     node._publisher = Mock()
-    node.get_clock = lambda: SimpleNamespace(now=lambda: SimpleNamespace(to_msg=lambda: "stamp"))
+    node.get_clock = lambda: SimpleNamespace(now=lambda: SimpleNamespace(
+        nanoseconds=123456000000000, to_msg=lambda: SimpleNamespace(sec=123456, nanosec=0)))
     node._publish()
     message = node._publisher.publish.call_args.args[0]
     assert [getattr(message.orientation, axis) for axis in "xyzw"] == [0.0, 0.0, 0.0, 1.0]
     assert [getattr(message.angular_velocity, axis) for axis in "xyz"] == pytest.approx([0.1, -0.4, 0.3])
-    assert message.header.stamp == "stamp" and message.header.frame_id == "imu_link"
+    assert message.header.stamp.sec == 123455 and message.header.stamp.nanosec == 990000000
+    assert message.header.frame_id == "imu_link"
     assert message.linear_acceleration_covariance[0] == -1.0
     node._publish()  # Repeated data must not be published as a fresh sample.
     assert node._publisher.publish.call_count == 1
+
+
+def test_rc_disconnect_forgets_old_confirmed_switch_and_partial_debounce(node_module):
+    module = node_module("rc_kickstand")
+    node = object.__new__(module.RcKickstand)
+    node._serial = Mock()
+    receiver = node._serial
+    node._parser = module.CrsfStreamParser()
+    node._debouncer = module.BoolDebouncer(8, confirmed=True, pending=False, pending_count=7)
+    node._close()
+    receiver.close.assert_called_once()
+    assert node._serial is None and node._debouncer.confirmed is None
+    assert node._debouncer.pending is None and node._debouncer.pending_count == 0
+    assert node._debouncer.observe(None) is None
+    for _ in range(7):
+        assert node._debouncer.observe(True) is None
+    assert node._debouncer.observe(True) is True
 
 
 @pytest.mark.parametrize("filename,classname", [
@@ -124,7 +141,7 @@ def test_shared_encoder_poller_preserves_startup_zero_and_c2_multi_turn_count(
     assert motor.zero_count == 1234
     assert motor.position_rad == pytest.approx(-256 * 2 * np.pi / 16384)
     assert motor.velocity_rad_s == pytest.approx(-2 * np.pi)
-    assert motor.position_sample_monotonic < motor.velocity_sample_monotonic == motor.sample_monotonic
+    assert motor.sample_monotonic == motor.position_sample_monotonic < motor.velocity_sample_monotonic
     assert motor.position_query_failures == motor.velocity_query_failures == 0
     assert len(node._snapshot(motor)) == (12 if filename == "motor_io_position" else 10)
     if filename == "motor_io_position":

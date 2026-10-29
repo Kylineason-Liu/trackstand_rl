@@ -1,0 +1,78 @@
+{
+  "date": "2026-10-29",
+  "baseline_tests": {
+    "passed": 584,
+    "skipped": 1
+  },
+  "tests": {
+    "passed": 649,
+    "skipped": 1
+  },
+  "skipped_reason": "Sandbox disallows kernel timestamp socket option smoke test",
+  "hardware_or_ROS_nodes_started": false,
+  "model": "2026-10-21_11-18-29/model_2500",
+  "configuration_models_training_ledgers_and_vendor_IMU_sources_unchanged": true,
+  "baseline_hashed_files": 88,
+  "changed_baseline_files": [
+    "deploy/source/trackstand_deploy/trackstand_deploy/kickstand_driver.py",
+    "deploy/source/trackstand_deploy/trackstand_deploy/imu_publisher.py",
+    "deploy/source/trackstand_deploy/trackstand_deploy/motor_io.py",
+    "deploy/source/trackstand_deploy/trackstand_deploy/motor_mit_io.py",
+    "deploy/source/trackstand_deploy/trackstand_deploy/imu_serial.py",
+    "deploy/source/trackstand_deploy/trackstand_deploy/contracts.py",
+    "deploy/source/trackstand_deploy/trackstand_deploy/rc_kickstand.py",
+    "deploy/source/trackstand_deploy/trackstand_deploy/policy_controller.py",
+    "deploy/source/trackstand_deploy/trackstand_deploy/servo_control/sms_sts.py",
+    "deploy/source/trackstand_deploy/test/test_contracts.py",
+    "deploy/source/trackstand_deploy/test/test_policy_timing.py",
+    "deploy/source/trackstand_deploy/test/test_motor_io_position.py",
+    "deploy/source/trackstand_deploy/test/test_shared_node_io.py",
+    "deploy/source/trackstand_deploy/test/test_motor_control.py",
+    "deploy/source/trackstand_deploy/test/test_motor_mit_io.py",
+    "deploy/source/trackstand_deploy/test/test_motor_state.py",
+    "deploy/requirements.txt",
+    "deploy/source/trackstand_deploy/package.xml"
+  ],
+  "preserved_baseline_files": 70,
+  "motor_parameter_defaults_unchanged": true,
+  "AST_Pyflakes_120_columns_pass": true,
+  "checked_Python_files": 19,
+  "isolated_ROS_Humble_build": "passed",
+  "all_seven_executables_installed": true,
+  "final_Python_inputs_match_isolated_copy": true,
+  "ROS_message_serialization": {
+    "real_ROS_codecs": true,
+    "synthetic_IMU_backdated_stamp_seconds": 0.025199509,
+    "policy_preserves_serial_age": true,
+    "motor_state_fields": 7,
+    "motor_control_fields": 97,
+    "no_ROS_node_or_hardware_opened": true
+  },
+  "input_sha256": {
+    "deploy/source/trackstand_deploy/test/test_contracts.py": "5b65eccfc0c482fd5985fb405642ee9e2b304ee8cf767e5cb7949e6cce101403",
+    "deploy/source/trackstand_deploy/test/test_motor_control.py": "5c22180c479cf9030287eb30d6f6402484cd62a68a13977f22e7987bbc07fd73",
+    "deploy/source/trackstand_deploy/test/test_motor_io_position.py": "72b70efce97522630adad76c7775e885b8b1b007aafdd85ec67879eb2b30fbae",
+    "deploy/source/trackstand_deploy/test/test_motor_mit_io.py": "1c4c7c3a5a9b78ee7a40409bc121f93b93a60da41814a0c9c7505304613acb95",
+    "deploy/source/trackstand_deploy/test/test_motor_state.py": "59642ae2190cc475008775d86706f9a7b1918fd1579e8e9394e0b693b2f43beb",
+    "deploy/source/trackstand_deploy/test/test_policy_timing.py": "858ac4af42a6ad7e340e089657781336eb2872b93c270713c0c4ba2a5eafb6a6",
+    "deploy/source/trackstand_deploy/test/test_shared_node_io.py": "705393f6369e36b7f9d7704b02286ca01c1dcc6e71246f33058b7a5da034172d",
+    "deploy/source/trackstand_deploy/trackstand_deploy/contracts.py": "53a9f3765bacf1ffefed2a1bc421f4372f88e5be28f5be2be29e33410360ba28",
+    "deploy/source/trackstand_deploy/trackstand_deploy/imu_publisher.py": "aa6c5a86c3b6cf135fad11ad9e7eca3863b49c67ddfe2445dca32225ce0ddfca",
+    "deploy/source/trackstand_deploy/trackstand_deploy/imu_serial.py": "45d8c0cb6fdde7eebb97c857fcaf2f9a11e4f12d06af4420a8b1d61975276662",
+    "deploy/source/trackstand_deploy/trackstand_deploy/kickstand_driver.py": "f83040ab730978a62639f43aa935a45ad7571633a6a3fa3e456b4195d87e9954",
+    "deploy/source/trackstand_deploy/trackstand_deploy/motor_io.py": "6c3f4d56be57a56a7fac804defe585b6247eca469fb3ec65be150fcb69dd51bd",
+    "deploy/source/trackstand_deploy/trackstand_deploy/motor_mit_io.py": "ba6bb0e10e097fe1a5c54531dc4f7683f0efeaa5e7e167141c6c138eaa432247",
+    "deploy/source/trackstand_deploy/trackstand_deploy/policy_controller.py": "a171329e659d2bf66da4020c35d70ce8a02a2651661ef48479d38cf861555467",
+    "deploy/source/trackstand_deploy/trackstand_deploy/rc_kickstand.py": "87c0a6cf7c63c7f04f5bc3daf870d29fb9bcad03924cee283ef57ab2cc577ee6",
+    "deploy/source/trackstand_deploy/trackstand_deploy/servo_control/sms_sts.py": "eb4f4743c4b8d2241a422cfad12ba97e98066710392afd54ffba29da56ac5f05",
+    "deploy/source/trackstand_deploy/test/test_imu_freshness.py": "fb4ae4e9e363b7838576d6674c68cc764dc8d1c00a8e7af06e36e90515926d35",
+    "deploy/source/trackstand_deploy/test/test_deployment_shutdown_servo.py": "d8a2b060cfe2403efa0d1d9c6e4dbb55d1bcc023bbdaf8db76710eff6d4157b3",
+    "deploy/experiments/reports/20261029_deployment_audit/ros_message_check.py": "e61a092809b91d6b4a201d5ec37847feb0281ed22ae76666685d17e0595a3064"
+  },
+  "limitations": [
+    "No Pi/Jazzy runtime or hardware timing measurement",
+    "MIT total torque cap unverified",
+    "Deployment does not configure CD watchdog; live setting and MIT behavior unknown",
+    "Rear replay/plant and IMU acquisition/fusion discrepancies unresolved"
+  ]
+}

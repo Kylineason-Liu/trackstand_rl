@@ -101,7 +101,7 @@ class SMS_STS:
         resp = self._read_exactly(4)
         if resp is None or resp[0] != sid or resp[1] != 2:
             return False
-        return self._checksum(resp[0:3]) == resp[3]
+        return resp[2] == 0 and self._checksum(resp[0:3]) == resp[3]
 
     def _make_packet(self, sid, inst, params=b''):
         length = 2 + len(params)
@@ -131,7 +131,7 @@ class SMS_STS:
             return None
 
         calc = self._checksum(bytes([sid, hdr[1], error]) + data)
-        if calc != csum_byte[0]:
+        if error or calc != csum_byte[0]:
             return None
         return bytes(data)
 

@@ -86,6 +86,7 @@ MOTOR_CONTROL_FIELDS = BASE_CONTROL_FIELDS + (
     "mit_encoded_feedforward_torque_motor_nm", "mit_actual_send_interval_ms",
     "steering_unwrapped_position_rad", "steering_unwrapped_position_age_ms",
     "disable_pending", "disable_confirmed", "steering_disable_confirmed", "drive_disable_confirmed",
+    "steering_driver_status_age_ms", "drive_driver_status_age_ms",
 )
 
 
@@ -112,6 +113,7 @@ class ChannelState:
     velocity_query_ms: float = math.nan
     position_query_failures: int = 0
     velocity_query_failures: int = 0
+    status_sample_monotonic: float = 0.0
     lock: threading.Lock = field(default_factory=threading.Lock)
 
 
@@ -363,11 +365,11 @@ class MotorMitIo(Node):
 
     def _command_callback(self, message: Float64MultiArray) -> None:
         if len(message.data) != 3:
-            self.get_logger().warning("motor_command must be [enable, steering_target_rad, drive_torque_nm]")
+            self._reject_command("motor_command must be [enable, steering_target_rad, drive_torque_nm]")
             return
         values = tuple(map(float, message.data))
         if not all(map(math.isfinite, values)):
-            self.get_logger().error("Rejected non-finite motor command")
+            self._reject_command("non-finite motor command")
             return
         with self._command_lock:
             self._requested_enable = bool(values[0] > 0.5)
@@ -378,6 +380,15 @@ class MotorMitIo(Node):
             self._steering_target_rad = max(-limit, min(limit, values[1]))
             self._drive_target_nm = max(-DRIVE_EFFORT_LIMIT_NM, min(DRIVE_EFFORT_LIMIT_NM, values[2]))
             self._command_monotonic = time.monotonic()
+
+    def _reject_command(self, reason: str) -> None:
+        # Never keep the previous enabled target alive after an invalid request,
+        # including a disable packet whose unused targets contain NaN.
+        with self._command_lock:
+            self._disable_generation += 1
+            self._command_monotonic = 0.0
+            self._fault("invalid_motor_command")
+        self.get_logger().error(f"Rejected {reason}; motor disable requested")
 
     def _snapshot(self, motor: ChannelState) -> tuple:
         with motor.lock:
@@ -493,6 +504,10 @@ class MotorMitIo(Node):
         elif motor is self._steering and opcode == 0xB1 and self._mit_config_ready:
             raise RuntimeError("steering origin changed after startup")
         elif opcode in (0xCF, 0xAE) and len(data) == 8:
+            if data[6] > 5:
+                raise RuntimeError(f"invalid {motor.name} driver mode")
+            with motor.lock:
+                motor.status_sample_monotonic = stamp
             if data[7]:
                 self._fault(f"{motor.name}_driver_fault", hard=True)
             disable_sent_at = self._disable_wait.get(motor.name)
@@ -640,6 +655,7 @@ class MotorMitIo(Node):
                 self._query(motor, 0xB0, 7, 0.1)
             except TimeoutError:
                 self.get_logger().warning(f"{motor.name} B0 unavailable; motor remains gated pending retry")
+            self._query(motor, 0xAE, 8, 0.1)
         self.get_logger().info(
             f"MIT preflight: F0={self._mit_ranges}, F1 zero={self._mit_zero_rad:.6f} native rad"
         )
@@ -657,7 +673,8 @@ class MotorMitIo(Node):
         if now + 1e-9 >= self._next_poll_at and not self._poll_jobs:
             self._poll_jobs.extend(((self._steering, 0xA3, 7), (self._steering, 0xA2, 5),
                                     (self._drive, 0xA3, 7), (self._drive, 0xA2, 5),
-                                    (self._steering, 0xA1, 5), (self._drive, 0xA1, 5)))
+                                    (self._steering, 0xA1, 5), (self._drive, 0xA1, 5),
+                                    (self._steering, 0xAE, 8), (self._drive, 0xAE, 8)))
             # Configuration verification/calibration retries remain at 1 s.
             if now >= self._next_b0_at:
                 for motor in (self._steering, self._drive):
@@ -870,9 +887,11 @@ class MotorMitIo(Node):
         now = max(now, time.monotonic())  # Sample after lock waits, not before them.
         steering_fresh = 0 < steering[2] <= now and now - steering[2] <= self._feedback_timeout_s
         drive_fresh = 0 < drive[2] <= now and now - drive[2] <= self._feedback_timeout_s
+        status_times = (self._steering.status_sample_monotonic, self._drive.status_sample_monotonic)
+        status_ready = tuple(0 < stamp <= now and now - stamp <= self._feedback_timeout_s for stamp in status_times)
         steering_ready = steering_fresh and steering[3] is not None
         drive_ready = drive_fresh and drive[3] is not None
-        feedback_ready = steering_ready and drive_ready
+        feedback_ready = steering_ready and drive_ready and all(status_ready)
         self._feedback_gate_fault = requested_enable and (not feedback_ready or bool(self._disable_wait))
         command_ready = 0 < command_stamp <= now and now - command_stamp <= self._command_timeout_s
         if requested_enable and (sending or (self._outputs_active and not self._disable_wait)):
@@ -891,7 +910,8 @@ class MotorMitIo(Node):
                 motor_fault_clear_allowed(requested_enable, steering_unwrapped, self._steering_fault_clear_rad)):
             self._fault_latched, self._fault_reason = False, None
         config_ready = self._mit_config_ready and self._mit_ranges is not None and self._mit_zero_rad is not None
-        disable_ready = self._disable_confirmed or self._mit_sent_this_enable or (self._dry_run and self._outputs_active)
+        disable_ready = (self._disable_confirmed or self._mit_sent_this_enable
+                         or (self._dry_run and self._outputs_active))
         enabled = (requested_enable and command_ready and feedback_ready and config_ready
                    and disable_ready and not self._disable_wait and not self._fault_latched)
         reasons = motor_disable_reasons(
@@ -902,6 +922,9 @@ class MotorMitIo(Node):
             reasons.append("mit_preflight_incomplete")
         if self._disable_wait or not disable_ready:
             reasons.append("motor_disable_unconfirmed")
+        for name, fresh in zip(("steering", "drive"), status_ready):
+            if not fresh:
+                reasons.append(f"{name}_driver_status_missing_or_stale")
         diag = {
             "requested_enable": requested_enable, "gate_enabled": enabled,
             "command_age_ms": age_ms(now, command_stamp), "command_ready": command_ready,
@@ -909,6 +932,8 @@ class MotorMitIo(Node):
             "steering_pair_age_ms": age_ms(now, steering[2]), "drive_pair_age_ms": age_ms(now, drive[2]),
             "steering_position_rad": steering[0], "steering_velocity_rad_s": steering[1],
             "drive_position_rad": drive[0], "drive_velocity_rad_s": drive[1],
+            "steering_driver_status_age_ms": age_ms(now, status_times[0]),
+            "drive_driver_status_age_ms": age_ms(now, status_times[1]),
             "mit_config_ready": config_ready, "mit_restart_required": self._hard_fault,
             "mit_f1_age_ms": age_ms(now, self._mit_f1_at),
             "mit_last_send_age_ms": age_ms(now, self._mit_last_sent_at),
@@ -967,7 +992,8 @@ class MotorMitIo(Node):
             monotonic_time_s=now, cycle_interval_ms=interval_ms, dry_run=self._dry_run,
             requested_steering_target_rad=requested_steering, requested_drive_target_nm=requested_drive,
             bounded_steering_target_rad=target_rad, bounded_drive_target_nm=target_drive_nm,
-            steering_target_clipped=requested_steering != target_rad, drive_target_clipped=requested_drive != target_drive_nm,
+            steering_target_clipped=requested_steering != target_rad,
+            drive_target_clipped=requested_drive != target_drive_nm,
         )
         guard = lambda: self._motion_allowed(token, diag, reasons)
         steer_send, drive_send, disable = MotorSendResult(), MotorSendResult(), DisableResult()
@@ -998,7 +1024,8 @@ class MotorMitIo(Node):
         diag.update(drive_damping_torque_nm=drive_damping, drive_unclipped_torque_nm=drive_unclipped,
                     drive_final_torque_nm=drive_torque, drive_torque_saturated=drive_torque != drive_unclipped)
         if diag["gate_enabled"] and not self._fault_latched and send_drive:
-            drive_send = self._send_torque(self._drive, drive_torque, float(self._drive.torque_constant_nm_per_a), guard)
+            drive_send = self._send_torque(
+                self._drive, drive_torque, float(self._drive.torque_constant_nm_per_a), guard)
         if self._fault_latched or not diag["gate_enabled"]:
             diag["gate_enabled"] = False
             if self._fault_latched:
@@ -1071,7 +1098,7 @@ class MotorMitIo(Node):
         steering, drive = self._snapshot(self._steering), self._snapshot(self._drive)
         now = time.monotonic()
         sample_times = (steering[2], drive[2])
-        if any(stamp <= 0.0 or now - stamp > self._feedback_timeout_s for stamp in sample_times):
+        if any(not 0.0 < stamp <= now or now - stamp > self._feedback_timeout_s for stamp in sample_times):
             return
         if any(stamp <= previous for stamp, previous in zip(sample_times, self._last_published_sample_times)):
             return
@@ -1092,7 +1119,9 @@ class MotorMitIo(Node):
         now = time.monotonic()
         message = String()
         ages = {"steering_torque_age_ms": self._steering.torque_sample_monotonic,
-                "drive_torque_age_ms": self._drive.torque_sample_monotonic, "mit_f1_age_ms": self._mit_f1_at}
+                "drive_torque_age_ms": self._drive.torque_sample_monotonic, "mit_f1_age_ms": self._mit_f1_at,
+                "steering_driver_status_age_ms": self._steering.status_sample_monotonic,
+                "drive_driver_status_age_ms": self._drive.status_sample_monotonic}
         message.data = json.dumps({
             "outputs_active": self._outputs_active, "fault_latched": self._fault_latched,
             **self._event_details(),
@@ -1134,9 +1163,11 @@ def main(args=None) -> None:
     except (KeyboardInterrupt, ExternalShutdownException):
         pass
     finally:
-        if node is not None:
-            node.destroy_node()
-        rclpy.try_shutdown()
+        try:
+            if node is not None:
+                node.destroy_node()
+        finally:
+            rclpy.try_shutdown()
 
 
 if __name__ == "__main__":

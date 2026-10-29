@@ -1,0 +1,36 @@
+running develop
+running egg_info
+creating trackstand_deploy.egg-info
+writing trackstand_deploy.egg-info/PKG-INFO
+writing dependency_links to trackstand_deploy.egg-info/dependency_links.txt
+writing entry points to trackstand_deploy.egg-info/entry_points.txt
+writing requirements to trackstand_deploy.egg-info/requires.txt
+writing top-level names to trackstand_deploy.egg-info/top_level.txt
+writing manifest file 'trackstand_deploy.egg-info/SOURCES.txt'
+reading manifest file 'trackstand_deploy.egg-info/SOURCES.txt'
+writing manifest file 'trackstand_deploy.egg-info/SOURCES.txt'
+running build_ext
+Creating /tmp/trackstand_deployment_audit_vnddz9vg/install/trackstand_deploy/lib/python3.10/site-packages/trackstand-deploy.egg-link (link to .)
+Installing imu_publisher script to /tmp/trackstand_deployment_audit_vnddz9vg/install/trackstand_deploy/lib/trackstand_deploy
+Installing kickstand_driver script to /tmp/trackstand_deployment_audit_vnddz9vg/install/trackstand_deploy/lib/trackstand_deploy
+Installing motor_io script to /tmp/trackstand_deployment_audit_vnddz9vg/install/trackstand_deploy/lib/trackstand_deploy
+Installing motor_io_position script to /tmp/trackstand_deployment_audit_vnddz9vg/install/trackstand_deploy/lib/trackstand_deploy
+Installing motor_mit_io script to /tmp/trackstand_deployment_audit_vnddz9vg/install/trackstand_deploy/lib/trackstand_deploy
+Installing policy_controller script to /tmp/trackstand_deployment_audit_vnddz9vg/install/trackstand_deploy/lib/trackstand_deploy
+Installing rc_kickstand script to /tmp/trackstand_deployment_audit_vnddz9vg/install/trackstand_deploy/lib/trackstand_deploy
+
+Installed /tmp/trackstand_deployment_audit_vnddz9vg/build/trackstand_deploy
+running symlink_data
+creating /tmp/trackstand_deployment_audit_vnddz9vg/install/trackstand_deploy/share/ament_index/resource_index/packages
+symbolically linking /tmp/trackstand_deployment_audit_vnddz9vg/build/trackstand_deploy/resource/trackstand_deploy -> /tmp/trackstand_deployment_audit_vnddz9vg/install/trackstand_deploy/share/ament_index/resource_index/packages
+symbolically linking /tmp/trackstand_deployment_audit_vnddz9vg/build/trackstand_deploy/package.xml -> /tmp/trackstand_deployment_audit_vnddz9vg/install/trackstand_deploy/share/trackstand_deploy
+creating /tmp/trackstand_deployment_audit_vnddz9vg/install/trackstand_deploy/share/trackstand_deploy/launch
+symbolically linking /tmp/trackstand_deployment_audit_vnddz9vg/build/trackstand_deploy/launch/trackstand.launch.py -> /tmp/trackstand_deployment_audit_vnddz9vg/install/trackstand_deploy/share/trackstand_deploy/launch
+creating /tmp/trackstand_deployment_audit_vnddz9vg/install/trackstand_deploy/share/trackstand_deploy/config
+symbolically linking /tmp/trackstand_deployment_audit_vnddz9vg/build/trackstand_deploy/config/params.yaml -> /tmp/trackstand_deployment_audit_vnddz9vg/install/trackstand_deploy/share/trackstand_deploy/config
+creating /tmp/trackstand_deployment_audit_vnddz9vg/install/trackstand_deploy/share/trackstand_deploy/models
+symbolically linking /tmp/trackstand_deployment_audit_vnddz9vg/build/trackstand_deploy/models/v1_policy_manifest.json -> /tmp/trackstand_deployment_audit_vnddz9vg/install/trackstand_deploy/share/trackstand_deploy/models
+symbolically linking /tmp/trackstand_deployment_audit_vnddz9vg/build/trackstand_deploy/models/trackstand_rl_rsl_2026-09-17_19-46-37_model_41050.onnx.data -> /tmp/trackstand_deployment_audit_vnddz9vg/install/trackstand_deploy/share/trackstand_deploy/models
+symbolically linking /tmp/trackstand_deployment_audit_vnddz9vg/build/trackstand_deploy/models/trackstand_rl_rsl_2026-09-22_19-45-06_model_91850.onnx -> /tmp/trackstand_deployment_audit_vnddz9vg/install/trackstand_deploy/share/trackstand_deploy/models
+symbolically linking /tmp/trackstand_deployment_audit_vnddz9vg/build/trackstand_deploy/models/trackstand_rl_rsl_2026-09-17_19-46-37_model_41050.onnx -> /tmp/trackstand_deployment_audit_vnddz9vg/install/trackstand_deploy/share/trackstand_deploy/models
+symbolically linking /tmp/trackstand_deployment_audit_vnddz9vg/build/trackstand_deploy/models/trackstand_rl_rsl_2026-10-21_11-18-29_model_2500.onnx -> /tmp/trackstand_deployment_audit_vnddz9vg/install/trackstand_deploy/share/trackstand_deploy/models

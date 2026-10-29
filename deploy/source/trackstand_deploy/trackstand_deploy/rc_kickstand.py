@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import math
 import time
 from typing import Sequence
 
@@ -169,6 +170,8 @@ class RcKickstand(Node):
         self._reconnect_interval_s = float(self.get_parameter("reconnect_interval_s").value)
         if (
             self._crc_mode not in CRC_MODES
+            or not all(map(math.isfinite, (read_rate_hz, self._baud_probe_s, self._reconnect_interval_s,
+                                            self._band_fraction)))
             or not 1 <= self._channel <= 16
             or not self._input_min < self._input_center < self._input_max
             or debounce_frames <= 0
@@ -244,6 +247,8 @@ class RcKickstand(Node):
                 pass
         self._serial = None
         self._parser.reset()
+        # Do not reuse a pre-disconnection UP/DOWN decision or partial debounce.
+        self._debouncer = BoolDebouncer(self._debouncer.required_frames)
 
     def _advance_baudrate(self) -> None:
         if self._baudrate_locked or len(self._baudrates) <= 1:
@@ -297,15 +302,21 @@ class RcKickstand(Node):
 
 
 def main(args=None) -> None:
+    from rclpy.executors import ExternalShutdownException
+
     rclpy.init(args=args)
-    node = RcKickstand()
+    node = None
     try:
+        node = RcKickstand()
         rclpy.spin(node)
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, ExternalShutdownException):
         pass
     finally:
-        node.destroy_node()
-        rclpy.shutdown()
+        try:
+            if node is not None:
+                node.destroy_node()
+        finally:
+            rclpy.try_shutdown()
 
 
 if __name__ == "__main__":

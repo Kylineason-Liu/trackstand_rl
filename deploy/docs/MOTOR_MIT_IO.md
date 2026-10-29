@@ -48,7 +48,7 @@ Ordinary motor latches still clear only with enable off, both disable confirmati
 | Division | Responsibility |
 | --- | --- |
 | 50 Hz (`COMMAND_RATE_HZ`) | Receive policy targets on `/trackstand/motor_command`. The policy owns this rate; callbacks are not throttled, so an incoming disable is never discarded. |
-| 100 Hz (`STATE_RATE_HZ`) | Request A3 position, A2 velocity and A1 current from **each** motor once per query round; publish `/trackstand/motor_state`, `/trackstand/motor_status` and `/trackstand/motor_fault`. |
+| 100 Hz (`STATE_RATE_HZ`) | Request A3 position, A2 velocity, A1 current and AE driver status from **each** motor once per query round; publish `/trackstand/motor_state`, `/trackstand/motor_status` and `/trackstand/motor_fault`. |
 | 200 Hz (`MIT_RATE_HZ`) | One CAN-owner actuation loop sends MIT steering and C0 rear torque, checks safety, and publishes `/trackstand/motor_control`. |
 
 Steering requests zero velocity/zero feedforward torque, Kp=10 and Kd=0.2 in
@@ -61,12 +61,12 @@ last-send deadline, avoiding extra MIT-only control ticks or catch-up bursts.
 Firmware PD loop frequency is still undocumented.
 
 The 100 Hz query rate is **per opcode per motor**, not 100 CAN frames/s;
-six live-state queries are serialized each round. F0 encoding-range
+eight live-state queries are serialized each round. F0 encoding-range
 verification and missing-B0 calibration retries retain their 1 s interval
 inside the state-query scheduler; startup/preflight queries are one-shot.
 CAN receive is continuously serviced: automatic MIT F1 and rear C0 replies
 can arrive at 200 Hz and are not discarded to enforce the ROS state rate.
-Six 2 ms query timeouts can exceed a 10 ms round; missed rounds are skipped,
+Eight 2 ms query timeouts can exceed a 10 ms round; missed rounds are skipped,
 not replayed. The profile is a nominal schedule, not a delivery guarantee.
 State publication still requires new, fresh encoder pairs from both motors,
 so its actual rate is **up to** 100 Hz. Status and fault use the same 10 ms
@@ -265,8 +265,14 @@ readback when the firmware retains its selected mode. These replies are protocol
 evidence, not an independent measurement of power-stage output: F1 reports MIT
 activity and faults, not a separate output-enable flag for every control mode.
 Physical free-state verification remains necessary with the bike supported.
-Runtime AE reports are consumed, **not actively polled at 100 Hz**; the 100 Hz
-fault/status topics are software publications, not 100 Hz hardware fault samples.
+Since the 2026-10-29 audit, both motors' AE reports are actively requested in
+each nominal 100 Hz round. Missing/stale driver status gates motion; loss during
+an active episode latches off. A nonzero hardware fault requires restart.
+The 100 Hz fault/status topics are still software publications, not guaranteed
+100 Hz hardware measurements. Status ages appear in JSON and the appended
+`steering_driver_status_age_ms` / `drive_driver_status_age_ms` control fields.
+Malformed/nonfinite commands now latch off instead of retaining the last enabled
+target until timeout. Existing field indices, motor signs/gains and limits remain.
 The node does not configure/read back the motor's CD communication watchdog.
 The local protocol documents that watchdog as nonpersistent and disabled
 by default; the bike's live setting and its behavior in MIT mode are unknown.

@@ -76,8 +76,8 @@ def normalize_quaternion_xyzw(quaternion: np.ndarray) -> np.ndarray:
     quaternion = np.asarray(quaternion, dtype=np.float64)
     if quaternion.shape != (4,) or not np.all(np.isfinite(quaternion)):
         raise ValueError("quaternion must be four finite xyzw values")
-    norm = float(np.linalg.norm(quaternion))
-    if norm < 1e-9:
+    norm = math.hypot(*quaternion)
+    if not math.isfinite(norm) or norm < 1e-9:
         raise ValueError("quaternion norm is zero")
     return quaternion / norm
 

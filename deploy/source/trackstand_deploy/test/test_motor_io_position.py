@@ -483,7 +483,8 @@ def test_constructor_registers_correct_parameters_topics_and_timers(node_module,
             self.publishers = {}
             self.timers = []
 
-        def declare_parameter(self, name, value):
+        def declare_parameter(self, name, value, descriptor=None):
+            assert descriptor.read_only
             self.params.setdefault(name, value)
 
         def get_parameter(self, name):

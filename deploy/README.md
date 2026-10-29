@@ -2,6 +2,9 @@
 
 This ROS 2 workspace deploys `Trackstand-Balance-v1` on the Tsinghua bicycle. It is a stationary-balancing controller: the RC throttle and steering sticks are intentionally ignored. The RC kickstand switch is the operating authority.
 
+The [2026-10-29 deployment audit](docs/AUDIT_2026-10-29.md) documents the current
+freshness/fault fixes, verification results and remaining hardware checks.
+
 ## Runtime flow
 
 1. Balancing starts disabled, with the RC kickstand switch down.
@@ -9,7 +12,7 @@ This ROS 2 workspace deploys `Trackstand-Balance-v1` on the Tsinghua bicycle. It
 3. RC up starts an episode only with fresh IMU, v3 motor state and RC data, no motor fault, acceptable lean, and steering within 5 degrees of its fixed straight reference.
 4. At episode start, record a new software rear-angle reference and seed the steering target limiter from measured steering. Steering's physical straight reference stays fixed.
 5. Every 20 ms: assemble 11 observations, infer two Beta mean actions, scale, clip steering to ±1.57 rad, slew by at most 0.478 rad, and publish the held steering target and rear torque.
-6. MIT sends the held steering target and gains at 200 Hz; rear C0 sends torque at 200 Hz. Queries and state/status/fault publication are nominally 100 Hz. These rates do not identify firmware's internal rate.
+6. MIT sends the held steering target and gains at 200 Hz; rear C0 sends torque at 200 Hz. A3/A2/A1/AE queries for each motor and state/status/fault publication are nominally 100 Hz. These rates do not identify firmware's internal rate.
 7. RC down disables policy and requests stands down immediately. Stale inputs, motor faults, inference errors, |gravity_y| > sin(0.5236), or inversion latch balancing off. Policy faults do not automatically lower stands; RC down does.
 
 The default is **Trackstand-Balance-v1**, DR-trained run **2026-10-21_11-18-29 / model_2500**, packaged as one self-contained ONNX file with a checked SHA-256. The export computes the deterministic Beta mean, already bounded within [-1,1]; four internal shape logits are never treated as motor actions. There is no observation normalization or added simulated sensor noise on the Pi.
@@ -61,6 +64,15 @@ The exact order is:
 Gravity is the normalized world-down vector rotated by the corrected IMU quaternion into the bike frame. Gyro is bike-frame rad/s. Positions are radians; motor speeds are rad/s. There are no linear velocity estimates and no finite ±100 clamp. Non-finite repair remains in the pure observation builder; invalid received sensor samples cannot refresh controller readiness.
 
 All motor backends publish continuous, signed, startup-relative A3 position as **motor_state_v3**. The policy subtracts the current episode's rear reference, then uses 2*atan2(sin(q/2),cos(q/2)) to match the measured v1 PhysX branch: period 4π, approximately ±2π, not single-turn ±π and not indefinitely cumulative. Steering retains its fixed straight coordinate. The controller rejects the old wrapped v2 motor-state label.
+
+IMU gyro and quaternion have separate host parse timestamps and a locked
+snapshot. An unrelated packet or a frozen channel cannot keep the combined
+sample fresh. `/trackstand/imu.header.stamp` now preserves the older channel's
+host parse time; UART buffering and hardware acquisition latency remain unknown. The policy retains this
+age and checks motor-state publication age rather than restarting either
+watchdog on delayed ROS delivery. All nodes should run with the normal wall clock.
+Motor-command publication precedes observation/raw-action diagnostics; bag arrival
+order across those topics is not an inference sequence identifier.
 
 This matches the tested simulator observation calculation. Physical IMU fusion accuracy, acquisition latency and cross-sensor synchronization still need hardware validation. Source comparisons, tests and export provenance are in the [v1 migration report](experiments/reports/20261026_v1_deployment_alignment/README.md).
 

@@ -9,6 +9,7 @@ from trackstand_deploy.contracts import (
     build_observation,
     correct_imu_sample,
     motor_fault_clear_allowed,
+    normalize_quaternion_xyzw,
     rpy_degrees_to_quaternion_xyzw,
     scale_policy_action,
 )
@@ -89,3 +90,8 @@ def test_motor_fault_clear_requires_disabled_and_steering_within_five_degrees():
     assert not motor_fault_clear_allowed(False, limit, limit)
     assert not motor_fault_clear_allowed(False, math.radians(-6.0), limit)
     assert not motor_fault_clear_allowed(True, 0.0, limit)
+
+
+def test_quaternion_normalization_does_not_overflow_on_large_finite_input():
+    assert normalize_quaternion_xyzw(np.array([1e200, 0., 0., 1e200])) == pytest.approx(
+        [1 / math.sqrt(2), 0., 0., 1 / math.sqrt(2)])

@@ -24,7 +24,7 @@ The v3 position fields are continuous signed A3 displacement from node-start zer
 
 The motor control record is sampled at nominal **200 Hz for MIT**, **50 Hz for legacy C0/C2**, including while disabled. The backend-neutral gate accepts a selected rate; legacy callers retain its 50 Hz default. It limits numeric-message construction and publication only, not CAN commands or transition detection. The first tick publishes immediately, then a fixed 5 ms (MIT) or 20 ms (legacy) phase selects the first available control tick at each deadline. Missed slots are skipped, never replayed in a catch-up burst. An overloaded host can reduce the actual publication rate. This gate does not synchronize with policy inference; MIT dispatch uses the common nominal 200 Hz actuation loop.
 
-`sequence` still counts **every control tick** so records correlate with event sequences. At a regular 200 Hz loop, legacy records use `1, 5, 9, ...`, while MIT normally publishes every tick. `cycle_interval_ms` measures consecutive control starts (normally about 5 ms), not a topic-specific sampling period. Use successive tick timestamps to measure the topic rate. Records are sampled ticks, not averages or aggregations: skipped/unsampled ticks are not reconstructed. Fault/event detection remains unthrottled; MIT fault publication itself is 100 Hz. Historical analyses must account for the backend's sampling rate before equating sequence gaps with message loss. The ordered fields and schema labels are unchanged. The record's groups are:
+`sequence` still counts **every control tick** so records correlate with event sequences. At a regular 200 Hz loop, legacy records use `1, 5, 9, ...`, while MIT normally publishes every tick. `cycle_interval_ms` measures consecutive control starts (normally about 5 ms), not a topic-specific sampling period. Use successive tick timestamps to measure the topic rate. Records are sampled ticks, not averages or aggregations: skipped/unsampled ticks are not reconstructed. Fault/event detection remains unthrottled; MIT fault publication itself is 100 Hz. Historical analyses must account for the backend's sampling rate before equating sequence gaps with message loss. Existing field indices and schema label prefixes are retained; appended fields are listed below. The record's groups are:
 
 | Group | Fields and interpretation |
 | --- | --- |
@@ -47,3 +47,21 @@ Current policy reasons include missing/freshness failures, motor_fault, restored
 MIT control-record timestamps identify tick start; command/feedback age and readiness fields are refreshed at the final safety checks before motor submissions. A stalled tick can therefore contain larger ages than those at tick start; `work_duration_ms` exposes that elapsed work. Dry-run retains logical dispatch timing but never fabricates actual sends, send intervals, or F1 receipts; the steering limiter runs only in the 50-Hz policy producer.
 
 The diagnostic numeric topics publish with best-effort QoS; unified `motor_state` keeps reliable depth-10 QoS for its policy subscriber. Inspect timestamp gaps with the intended sampling rate in mind, and verify the rosbag actually contains the expected topics. Consult [BIKE_DIAGNOSTIC_TESTS.md](BIKE_DIAGNOSTIC_TESTS.md) for the recording command and staged tests.
+
+## 2026-10-29 audit update
+
+MIT additionally requests AE driver status from both motors each nominal 100 Hz
+round. Two fields are appended to `motor_control_mit_v1`, preserving every older
+index: `steering_driver_status_age_ms`, `drive_driver_status_age_ms`. They also
+appear in `motor_status`. These are kernel CAN receipt ages, not firmware sample
+ages. Status must be fresh within the existing 50 ms feedback timeout to enable;
+active loss latches a fault. A3/A2/A1/AE share the scheduler, so actual query rates
+must be measured on the Pi.
+
+Policy `imu_age_ms` now includes the older gyro/quaternion host parse age and
+ROS delivery delay. `motor_age_ms` includes delivery delay since the motor-state
+publication timestamp; it still cannot identify exact motor acquisition time.
+RC remains an unstamped Boolean and its age is measured from callback receipt.
+IMU parse timestamps do not identify UART buffering or onboard fusion latency.
+Motor commands are published before observation/raw-action diagnostics. Do not
+interpret cross-topic bag arrival order as an exact action-to-command pairing.

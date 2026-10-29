@@ -13,7 +13,7 @@ from trackstand_deploy.telemetry import POLICY_TIMING_FIELDS
 @pytest.fixture
 def policy_node(node_module):
     module = node_module("policy_controller")
-    module.time = SimpleNamespace(monotonic=lambda: 100.0)
+    module.time = SimpleNamespace(monotonic=lambda: 100.0, time=lambda: 123456.0)
     node = object.__new__(module.PolicyController)
     node._world_from_bike = np.array([0.0, 0.0, 0.0, 1.0])
     node._body_rate_rad_s = np.zeros(3)
@@ -175,3 +175,61 @@ def test_legacy_wrapped_motor_state_never_refreshes_v1_inputs(policy_node, node_
     node._motor_callback(message)
     np.testing.assert_array_equal(node._motor_state, np.zeros(4))
     assert node._motor_monotonic == 99.99
+
+
+@pytest.mark.parametrize("age,accepted", [(.02, True), (.07, False), (-.01, False)])
+def test_imu_receipt_retains_source_age_and_rejects_delayed_or_future_message(policy_node, age, accepted):
+    node = policy_node
+    stamp_ns = round((123456 - age) * 1e9)
+    sec, nanosec = divmod(stamp_ns, 10 ** 9)
+    message = SimpleNamespace(header=SimpleNamespace(stamp=SimpleNamespace(sec=sec, nanosec=nanosec)),
+                              orientation=SimpleNamespace(x=0., y=0., z=0., w=1.),
+                              angular_velocity=SimpleNamespace(x=1., y=2., z=3.))
+    node._imu_monotonic = 99.
+    node._imu_callback(message)
+    assert node._imu_monotonic == pytest.approx(100. - age if accepted else 99.)
+    if accepted:
+        np.testing.assert_array_equal(node._body_rate_rad_s, [1., 2., 3.])
+
+
+@pytest.mark.parametrize("age,accepted", [(.02, True), (.07, False), (-.01, False), (math.nan, False)])
+def test_motor_state_publication_age_survives_ros_delivery(policy_node, node_module, age, accepted):
+    node = policy_node
+    module = node_module("policy_controller")
+    message = module.Float64MultiArray(data=[0., 0., .1, .2, 123456 - age, math.nan, math.nan])
+    message.layout.dim = [SimpleNamespace(label=module.MOTOR_STATE_LABEL)]
+    node._motor_monotonic = 99.
+    node._motor_callback(message)
+    assert node._motor_monotonic == pytest.approx(100. - age if accepted else 99.)
+
+
+def test_transient_motor_fault_pulse_latches_before_policy_timer(policy_node):
+    node = policy_node
+    node._motor_fault_callback(SimpleNamespace(data=True))
+    node._motor_fault_callback(SimpleNamespace(data=False))
+    assert node._state_machine.mode == BalanceMode.FAULT_LATCHED
+    assert node._policy_fault_reasons == ["motor_fault"]
+    node._policy_tick()
+    assert not node._state_machine.enabled
+    assert all(not call.args[0] for call in node._publish_motor_command.call_args_list)
+
+
+def test_rc_down_bypasses_readiness_and_still_lowers_stands_if_motor_publish_fails(policy_node):
+    node = policy_node
+    node._ready = Mock(side_effect=RuntimeError("readiness must not run for RC DOWN"))
+    node._publish_motor_command.side_effect = RuntimeError("injected publisher error")
+    with pytest.raises(RuntimeError, match="publisher error"):
+        node._rc_callback(SimpleNamespace(data=False))
+    assert node._state_machine.mode == BalanceMode.DOWN
+    node._command_kickstands.assert_called_once_with(False)
+    node._ready.assert_not_called()
+
+
+def test_motor_target_publication_precedes_reliable_observation_and_action_telemetry(policy_node):
+    node = policy_node
+    trace = Mock()
+    trace.attach_mock(node._publish_motor_command, "command")
+    trace.attach_mock(node._observation_publisher.publish, "observation")
+    trace.attach_mock(node._action_publisher.publish, "action")
+    node._policy_tick()
+    assert [call[0] for call in trace.mock_calls] == ["command", "observation", "action"]

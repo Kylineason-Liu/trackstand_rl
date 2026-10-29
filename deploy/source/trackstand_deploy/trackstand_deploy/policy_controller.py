@@ -27,6 +27,7 @@ from .contracts import (
     STEERING_ACTION_SCALE_RAD,
     SteeringTargetLimiter,
     build_observation,
+    normalize_quaternion_xyzw,
     rotate_vector_xyzw,
     quaternion_inverse_xyzw,
     scale_policy_action,
@@ -154,6 +155,11 @@ class PolicyController(Node):
         return digest.hexdigest()
 
     def _imu_callback(self, message: Imu) -> None:
+        received = time.monotonic()
+        stamp = message.header.stamp
+        age = (self.get_clock().now().nanoseconds - stamp.sec * 1_000_000_000 - stamp.nanosec) * 1e-9
+        if not 0.0 <= age <= self._imu_timeout_s:
+            return  # A delayed DDS delivery must not restart the sensor watchdog.
         quaternion = np.array(
             [message.orientation.x, message.orientation.y, message.orientation.z, message.orientation.w],
             dtype=float,
@@ -162,31 +168,39 @@ class PolicyController(Node):
             [message.angular_velocity.x, message.angular_velocity.y, message.angular_velocity.z],
             dtype=float,
         )
-        if np.all(np.isfinite(quaternion)) and np.linalg.norm(quaternion) > 0.5 and np.all(np.isfinite(body_rate)):
-            self._world_from_bike = quaternion / np.linalg.norm(quaternion)
+        if np.all(np.isfinite(quaternion)) and math.hypot(*quaternion) > 0.5 and np.all(np.isfinite(body_rate)):
+            try:
+                quaternion = normalize_quaternion_xyzw(quaternion)
+            except ValueError:
+                return
+            self._world_from_bike = quaternion
             self._body_rate_rad_s = body_rate
-            self._imu_monotonic = time.monotonic()
+            self._imu_monotonic = received - age
 
     def _motor_callback(self, message: Float64MultiArray) -> None:
+        received = time.monotonic()
         if (len(message.data) != len(MOTOR_STATE_FIELDS) or not message.layout.dim
                 or message.layout.dim[0].label != MOTOR_STATE_LABEL):
             # Old nodes wrap A3 at +/-pi. Never silently combine that v0 state
             # contract with episode-relative v1 observation construction.
             return
         state = np.asarray(message.data[:4], dtype=float)
-        if np.all(np.isfinite(state)):
+        age = time.time() - float(message.data[4])
+        if np.all(np.isfinite(state)) and 0.0 <= age <= self._motor_timeout_s:
             self._motor_state = state
-            self._motor_monotonic = time.monotonic()
+            self._motor_monotonic = received - age
 
     def _rc_callback(self, message: Bool) -> None:
         self._rc_monotonic = time.monotonic()
         up = bool(message.data)
         if not up:
-            self._state_machine.set_rc(False, self._ready(time.monotonic()))
+            self._state_machine.set_rc(False, False)
             self._policy_fault_reasons = []
             self._rear_episode_zero_rad = None
-            self._publish_motor_command(False, 0.0, 0.0)
-            self._command_kickstands(False)
+            try:
+                self._publish_motor_command(False, 0.0, 0.0)
+            finally:
+                self._command_kickstands(False)
             return
         mode = self._state_machine.set_rc(True, self._ready(time.monotonic()))
         if mode == BalanceMode.BALANCING:
@@ -198,6 +212,12 @@ class PolicyController(Node):
 
     def _motor_fault_callback(self, message: Bool) -> None:
         self._motor_fault = bool(message.data)
+        if self._motor_fault and self._state_machine.enabled:
+            # Even a short True pulse must survive a later False before the timer.
+            self._state_machine.mode = BalanceMode.FAULT_LATCHED
+            self._policy_fault_reasons = ["motor_fault"]
+            self._rear_episode_zero_rad = None
+            self._publish_motor_command(False, 0.0, 0.0)
 
     def _begin_episode(self) -> None:
         """Reset software episode state without changing the straight steering origin.
@@ -309,13 +329,14 @@ class PolicyController(Node):
             inference_success = True
             self._last_observation = observation
             self._last_raw_action = raw_action
+            # Deliver control before reliable diagnostics can block on a recorder.
+            self._publish_motor_command(True, steering_target, drive_torque)
             message = Float32MultiArray(data=observation.tolist())
             message.layout.dim = [MultiArrayDimension(
                 label="trackstand_v1:" + ",".join(OBSERVATION_NAMES), size=OBSERVATION_SIZE, stride=OBSERVATION_SIZE,
             )]
             self._observation_publisher.publish(message)
             self._action_publisher.publish(Float32MultiArray(data=raw_action.tolist()))
-            self._publish_motor_command(True, steering_target, drive_torque)
         finally:
             timing = Float64MultiArray()
             timing.layout.dim = [self._timing_dimension]
@@ -387,10 +408,14 @@ class PolicyController(Node):
         return None if sample_time <= 0.0 else round((now - sample_time) * 1000.0, 2)
 
     def destroy_node(self) -> None:
-        if self.context.ok():
-            self._publish_motor_command(False, 0.0, 0.0)
-            self._command_kickstands(False)
-        super().destroy_node()
+        try:
+            if self.context.ok():
+                try:
+                    self._publish_motor_command(False, 0.0, 0.0)
+                finally:
+                    self._command_kickstands(False)
+        finally:
+            super().destroy_node()
 
 
 def main(args=None) -> None:
@@ -404,9 +429,11 @@ def main(args=None) -> None:
     except (KeyboardInterrupt, ExternalShutdownException):
         pass
     finally:
-        if node is not None:
-            node.destroy_node()
-        rclpy.try_shutdown()
+        try:
+            if node is not None:
+                node.destroy_node()
+        finally:
+            rclpy.try_shutdown()
 
 
 if __name__ == "__main__":

@@ -191,6 +191,22 @@ def test_idle_ticks_do_not_fabricate_zero_current_commands(control_node):
     assert data["disable_attempted"] == 0.0
 
 
+@pytest.mark.parametrize("data", [[], [1., 0.], [0., math.nan, math.nan], [1., math.inf, 0.]])
+def test_invalid_command_stops_old_enabled_c0_request_in_same_control_tick(control_node, data):
+    node = control_node
+    node._control_tick()
+    node._tx_bus.reset_mock()
+    node._command_callback(SimpleNamespace(data=data))
+    node._control_tick()
+    assert node._fault_latched and node._command_monotonic == 0
+    assert [bytes(call.args[0].data)[0] for call in node._tx_bus.send.call_args_list] == [
+        0xC0, 0xCF, 0xC0, 0xCF,
+    ]
+    for call in node._tx_bus.send.call_args_list:
+        if call.args[0].data[0] == 0xC0:
+            assert parse_current_feedback(bytes(call.args[0].data)) == 0
+
+
 def test_v1_held_target_pd_and_zero_rear_damping_for_500_seeded_targets(control_node):
     node = control_node
     random = np.random.default_rng(42)

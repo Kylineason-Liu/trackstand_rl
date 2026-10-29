@@ -123,6 +123,7 @@ def test_torque_cache_ages_out_even_when_encoders_continue(state_node):
     (0.0, 99.99, (0.0, 0.0)), (99.99, 0.0, (0.0, 0.0)),
     (99.9, 99.99, (0.0, 0.0)), (99.99, 99.9, (0.0, 0.0)),
     (99.99, 99.99, (99.99, 99.99)), (100.0, 99.99, (99.99, 99.99)),
+    (100.1, 99.99, (0., 0.)), (99.99, 100.1, (0., 0.)),
 ])
 def test_torque_replies_do_not_make_stale_or_repeated_encoder_pairs_fresh(
     state_node, steering_at, drive_at, previous,
@@ -139,10 +140,11 @@ def test_torque_replies_do_not_make_stale_or_repeated_encoder_pairs_fresh(
 @pytest.mark.parametrize("torques", [(math.nan, math.nan), (-0.1, 0.2)])
 def test_policy_still_uses_only_kinematics_from_extended_state(node_module, torques):
     module = node_module("policy_controller")
-    module.time = SimpleNamespace(monotonic=lambda: 100.0)
+    module.time = SimpleNamespace(monotonic=lambda: 100.0, time=lambda: 123456.0)
     node = object.__new__(module.PolicyController)
     node._motor_state = None
     node._motor_monotonic = 0.0
+    node._motor_timeout_s = .06
     message = module.Float64MultiArray(data=[0.1, -0.2, 0.3, -0.4, 123456.0, *torques])
     message.layout.dim = [SimpleNamespace(label=MOTOR_STATE_LABEL)]
     node._motor_callback(message)
