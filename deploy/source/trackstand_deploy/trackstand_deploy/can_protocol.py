@@ -80,6 +80,47 @@ def q_current_payload(current_a: float) -> bytes:
     return bytes([0xC0]) + struct.pack("<i", raw)
 
 
+def c1_speed_payload(velocity_rad_s: float, gear_ratio: float, sign: float) -> bytes:
+    """Encode a joint rad/s target as C1 signed int32 0.01 rpm in the A2 native frame.
+
+    C1 regulates the same native speed that A2 reports, so the A2 encoder sign
+    converts in both directions (deploy/experiments/drive_speed_sweep.py).
+    """
+    if not math.isfinite(velocity_rad_s):
+        raise ValueError("speed must be finite")
+    if gear_ratio <= 0.0 or sign not in (-1.0, 1.0):
+        raise ValueError("gear_ratio must be positive and sign must be +/-1")
+    raw = int(round(sign * gear_ratio * float(velocity_rad_s) * 60.0 / (2.0 * math.pi) * 100.0))
+    if not -(2**31) <= raw < 2**31:
+        raise OverflowError("speed does not fit the C1 protocol")
+    return bytes([0xC1]) + struct.pack("<i", raw)
+
+
+def parse_c1_speed(payload: bytes, gear_ratio: float, sign: float) -> float:
+    """Decode a C1 command or reply speed back to joint rad/s."""
+    if len(payload) != 5 or payload[0] != 0xC1:
+        raise ValueError("invalid C1 payload")
+    return sign * struct.unpack("<i", payload[1:5])[0] * 0.01 * (2.0 * math.pi / 60.0) / gear_ratio
+
+
+def b3_current_limit_payload(current_a: float | None = None) -> bytes:
+    """B3 read (no value) or write of the volatile speed/position-loop Q-current ceiling."""
+    if current_a is None:
+        return bytes([0xB3])
+    if not math.isfinite(current_a) or current_a <= 0.0:
+        raise ValueError("B3 current ceiling must be positive and finite")
+    raw = int(math.floor(float(current_a) * 1000.0))  # Never round a ceiling upward.
+    if not 1 <= raw < 2**32:
+        raise OverflowError("current ceiling does not fit the B3 protocol")
+    return bytes([0xB3]) + struct.pack("<I", raw)
+
+
+def parse_b3_current_limit(payload: bytes) -> float:
+    if len(payload) != 5 or payload[0] != 0xB3:
+        raise ValueError("invalid B3 response")
+    return struct.unpack("<I", payload[1:5])[0] * 0.001
+
+
 def await_response(bus, feedback_id: int, command: int, timeout_s: float) -> bytes | None:
     """Receive until a feedback frame echoes the requested command."""
     deadline = time.monotonic() + timeout_s

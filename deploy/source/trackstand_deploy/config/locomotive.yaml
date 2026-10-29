@@ -1,0 +1,41 @@
+# Locomotive overlay: loaded AFTER params.yaml by locomotive.launch.py.
+# Hardware identities (serial by-id paths, CAN IDs, signs, servo poses, IMU mounting)
+# stay single-sourced in params.yaml; only locomotive-specific keys live here.
+
+trackstand_rc_kickstand:
+  ros__parameters:
+    # UNVERIFIED on this transmitter: AETR order (CH3 throttle, CH4 rudder/yaw).
+    # Check with `ros2 topic echo /locomotive/rc_sticks` (stick up / right -> +1) before riding.
+    throttle_channel: 3
+    yaw_channel: 4
+    throttle_reversed: false
+    yaw_reversed: false
+
+# trackstand_motor_io (motor_mit_velocity_io) needs no overlay: it reads every motor_mit_io
+# hardware key from params.yaml, including dry_run. Rear C1 speed control; startup lowers
+# volatile B3 to 6.28 N m / B0 torque constant (never raises it).
+
+locomotive_policy_controller:
+  ros__parameters:
+    # Rank 1 of the CycleRL cylinder top-5; switching needs filename AND manifest SHA-256.
+    model_filename: "locomotive_1900_drive03_2026-10-19_16-30-17.onnx"
+    model_sha256: "cbd76d1789b903966ba84f4330224f88efa05940d97e0213bbf178ead3ab1c9c"
+    imu_timeout_s: 0.06
+    motor_timeout_s: 0.06
+    rc_timeout_s: 0.15
+    # Below the 45 deg training termination; also gates start/inversion.
+    max_roll_rad: 0.5236
+    max_steering_start_rad: 0.0872664626
+    # Training episodes start at 1.0-2.5 m/s: hand over to the policy at >= 1.0 m/s.
+    wake_speed_m_s: 1.0
+    # Lowest trained v* among the five models is 0.3 m/s; below it, fault-latch off.
+    min_riding_speed_m_s: 0.3
+    launch_accel_m_s2: 0.5
+    command_accel_m_s2: 1.0
+    # Conservative cap inside the trained 2.5 m/s maximum.
+    max_speed_cmd_m_s: 1.5
+    max_yaw_rate_cmd_rad_s: 0.5
+    stick_deadband: 0.05
+    yaw_stick_sign: -1.0
+    # true = trained hub velocity action; false = CycleRL bike option (hub follows v*).
+    use_policy_drive: true

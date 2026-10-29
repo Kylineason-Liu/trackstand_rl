@@ -108,6 +108,20 @@ class CrsfStreamParser:
         return frames
 
 
+def normalize_axis(
+    channels: Sequence[int], input_min: int, input_center: int, input_max: int, channel: int,
+    reversed_axis: bool = False,
+) -> float:
+    """Return a proportional channel in [-1, 1]; +1 is the high (max) pulse end."""
+    value = int(channels[channel - 1])
+    if value >= input_center:
+        normalized = (value - input_center) / (input_max - input_center)
+    else:
+        normalized = (value - input_center) / (input_center - input_min)
+    normalized = max(-1.0, min(1.0, normalized))
+    return -normalized if reversed_axis else normalized
+
+
 def decode_three_position_switch(
     channels: Sequence[int],
     input_min: int,

@@ -5,6 +5,11 @@ This ROS 2 workspace deploys `Trackstand-Balance-v1` on the Tsinghua bicycle. It
 The [2026-10-29 deployment audit](docs/AUDIT_2026-10-29.md) documents the current
 freshness/fault fixes, verification results and remaining hardware checks.
 
+Branch `locomotive` additionally packages CycleRL **riding** policies (8 observations,
+RC throttle/yaw commands, rear C1 speed control) as a separate stack:
+`locomotive.launch.py`, `locomotive_controller`, `motor_mit_velocity_io`. See
+[LOCOMOTIVE.md](docs/LOCOMOTIVE.md). Everything below describes the trackstand stack.
+
 ## Runtime flow
 
 1. Balancing starts disabled, with the RC kickstand switch down.

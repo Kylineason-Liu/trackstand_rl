@@ -10,7 +10,7 @@ from typing import Sequence
 import rclpy
 from rclpy.node import Node
 import serial
-from std_msgs.msg import Bool
+from std_msgs.msg import Bool, Float32MultiArray
 
 from .crsf import (
     CRC_MODES,
@@ -18,6 +18,7 @@ from .crsf import (
     BoolDebouncer,
     CrsfStreamParser,
     decode_three_position_switch,
+    normalize_axis,
 )
 
 IMU_SYNC = b"\x7e\x23"
@@ -136,6 +137,11 @@ class RcKickstand(Node):
         self.declare_parameter("switch_debounce_frames", 8)
         self.declare_parameter("read_rate_hz", 100.0)
         self.declare_parameter("reconnect_interval_s", 1.0)
+        # Locomotive only: proportional sticks for v* / yaw-rate*. 0 disables publication.
+        self.declare_parameter("throttle_channel", 0)
+        self.declare_parameter("yaw_channel", 0)
+        self.declare_parameter("throttle_reversed", False)
+        self.declare_parameter("yaw_reversed", False)
 
         if str(self.get_parameter("input_protocol").value).lower() != "crsf":
             raise ValueError("the bike receiver input_protocol must be crsf")
@@ -168,6 +174,16 @@ class RcKickstand(Node):
         debounce_frames = int(self.get_parameter("switch_debounce_frames").value)
         read_rate_hz = float(self.get_parameter("read_rate_hz").value)
         self._reconnect_interval_s = float(self.get_parameter("reconnect_interval_s").value)
+        self._throttle_channel = int(self.get_parameter("throttle_channel").value)
+        self._yaw_channel = int(self.get_parameter("yaw_channel").value)
+        self._throttle_reversed = bool(self.get_parameter("throttle_reversed").value)
+        self._yaw_reversed = bool(self.get_parameter("yaw_reversed").value)
+        stick_channels = (self._throttle_channel, self._yaw_channel)
+        self._publish_sticks = all(stick_channels)
+        if (any(stick_channels) and not self._publish_sticks) or (self._publish_sticks and (
+                not all(1 <= value <= 16 for value in stick_channels)
+                or len({self._channel, *stick_channels}) != 3)):
+            raise ValueError("throttle/yaw channels must both be 0, or distinct CRSF channels 1..16")
         if (
             self._crc_mode not in CRC_MODES
             or not all(map(math.isfinite, (read_rate_hz, self._baud_probe_s, self._reconnect_interval_s,
@@ -190,6 +206,9 @@ class RcKickstand(Node):
         self._probe_started = 0.0
         self._baudrate_locked = not self._auto_detect_baudrate
         self._publisher = self.create_publisher(Bool, "/trackstand/kickstands_up", 10)
+        self._stick_publisher = (
+            self.create_publisher(Float32MultiArray, "/locomotive/rc_sticks", 10) if self._publish_sticks else None
+        )
         self._timer = self.create_timer(1.0 / read_rate_hz, self._read)
         self._connect()
 
@@ -295,6 +314,14 @@ class RcKickstand(Node):
             confirmed = self._debouncer.observe(switch_state)
             if confirmed is not None:
                 self._publisher.publish(Bool(data=confirmed))
+            if self._stick_publisher is not None:
+                # [throttle, yaw], each in [-1, 1] with +1 at the high-pulse end; one per frame.
+                self._stick_publisher.publish(Float32MultiArray(data=[
+                    normalize_axis(channels, self._input_min, self._input_center, self._input_max,
+                                   self._throttle_channel, self._throttle_reversed),
+                    normalize_axis(channels, self._input_min, self._input_center, self._input_max,
+                                   self._yaw_channel, self._yaw_reversed),
+                ]))
 
     def destroy_node(self) -> None:
         self._close()

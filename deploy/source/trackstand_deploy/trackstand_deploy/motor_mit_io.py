@@ -246,6 +246,8 @@ class MotorMitIo(Node):
     }
     _control_fields = MOTOR_CONTROL_FIELDS
     _control_label = "motor_control_mit_v1"
+    # Subclasses with a different drive contract must also use a different topic.
+    _command_topic = "/trackstand/motor_command"
     _snapshot_fields = (
         "position_rad", "velocity_rad_s", "sample_monotonic", "torque_constant_nm_per_a",
         "position_sample_monotonic", "velocity_sample_monotonic", "position_query_ms",
@@ -360,7 +362,7 @@ class MotorMitIo(Node):
                                      self._control_fields)):
             setattr(self, f"_{name}_dimension", MultiArrayDimension(label=label, size=len(fields), stride=len(fields)))
         self._command_subscription = self.create_subscription(
-            Float64MultiArray, "/trackstand/motor_command", self._command_callback, 10,
+            Float64MultiArray, self._command_topic, self._command_callback, 10,
         )
 
     def _command_callback(self, message: Float64MultiArray) -> None:
@@ -378,8 +380,12 @@ class MotorMitIo(Node):
             self._requested_steering_target_rad, self._requested_drive_target_nm = values[1:]
             limit = min(self._steering_limit_rad, STEERING_ACTION_SCALE_RAD)
             self._steering_target_rad = max(-limit, min(limit, values[1]))
-            self._drive_target_nm = max(-DRIVE_EFFORT_LIMIT_NM, min(DRIVE_EFFORT_LIMIT_NM, values[2]))
+            self._drive_target_nm = self._bound_drive_target(values[2])
             self._command_monotonic = time.monotonic()
+
+    @staticmethod
+    def _bound_drive_target(value: float) -> float:
+        return max(-DRIVE_EFFORT_LIMIT_NM, min(DRIVE_EFFORT_LIMIT_NM, value))
 
     def _reject_command(self, reason: str) -> None:
         # Never keep the previous enabled target alive after an invalid request,
@@ -1018,20 +1024,25 @@ class MotorMitIo(Node):
                 self._slewed_steering_target_rad = proposed
         diag["slewed_steering_target_rad"] = self._slewed_steering_target_rad
         diag["steering_error_rad"] = self._slewed_steering_target_rad - diag["steering_position_rad"]
-        drive_damping = -DRIVE_DAMPING_NM_S_PER_RAD * diag["drive_velocity_rad_s"]
-        drive_unclipped = target_drive_nm + drive_damping
-        drive_torque = max(-DRIVE_EFFORT_LIMIT_NM, min(DRIVE_EFFORT_LIMIT_NM, drive_unclipped))
-        diag.update(drive_damping_torque_nm=drive_damping, drive_unclipped_torque_nm=drive_unclipped,
-                    drive_final_torque_nm=drive_torque, drive_torque_saturated=drive_torque != drive_unclipped)
-        if diag["gate_enabled"] and not self._fault_latched and send_drive:
-            drive_send = self._send_torque(
-                self._drive, drive_torque, float(self._drive.torque_constant_nm_per_a), guard)
+        drive_send = self._actuate_drive(diag, target_drive_nm, guard, send_drive)
         if self._fault_latched or not diag["gate_enabled"]:
             diag["gate_enabled"] = False
             if self._fault_latched:
                 reasons = list(dict.fromkeys(reasons + ["fault_latched", self._fault_reason or "send_failed"]))
             disable = self._disable_outputs(force=steer_send.attempted or drive_send.attempted)
         self._publish_control_telemetry(now, diag, reasons, steer_send, drive_send, disable)
+
+    def _actuate_drive(self, diag: dict, target_drive_nm: float, guard, send_drive: bool) -> MotorSendResult:
+        """Rear C0 torque: held target plus host damping, clipped once."""
+        drive_damping = -DRIVE_DAMPING_NM_S_PER_RAD * diag["drive_velocity_rad_s"]
+        drive_unclipped = target_drive_nm + drive_damping
+        drive_torque = max(-DRIVE_EFFORT_LIMIT_NM, min(DRIVE_EFFORT_LIMIT_NM, drive_unclipped))
+        diag.update(drive_damping_torque_nm=drive_damping, drive_unclipped_torque_nm=drive_unclipped,
+                    drive_final_torque_nm=drive_torque, drive_torque_saturated=drive_torque != drive_unclipped)
+        if diag["gate_enabled"] and not self._fault_latched and send_drive:
+            return self._send_torque(
+                self._drive, drive_torque, float(self._drive.torque_constant_nm_per_a), guard)
+        return MotorSendResult()
 
     def _publish_control_telemetry(
         self, started: float, diag: dict, reasons: list[str],

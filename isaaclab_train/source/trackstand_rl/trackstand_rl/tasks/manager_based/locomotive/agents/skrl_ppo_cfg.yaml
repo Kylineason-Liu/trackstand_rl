@@ -1,0 +1,68 @@
+# Copied from ~/bike_test/CycleRL cyclerl/agents/skrl_ppo_cfg.yaml (skrl 2.1.0 PPO,
+# [512,256,128,64] ELU, RunningStandardScaler) with the cylinder top-5 budget.
+seed: 42
+
+models:
+  separate: True
+  policy:
+    class: GaussianMixin
+    clip_actions: False
+    clip_mean_actions: False
+    network:
+      - name: net
+        input: observations
+        layers: [512, 256, 128, 64]
+        activations: elu
+    output: ACTIONS
+  value:
+    class: DeterministicMixin
+    network:
+      - name: net
+        input: observations
+        layers: [512, 256, 128, 64]
+        activations: elu
+    output: ONE
+
+memory:
+  class: RandomMemory
+  memory_size: -1 
+
+agent:
+  class: PPO
+  rollouts: 16
+  mini_batches: 4
+  learning_epochs: 5
+  
+  learning_rate: 0.0001
+  learning_rate_scheduler: CosineAnnealingLR
+  learning_rate_scheduler_kwargs:
+    # Rank-1 1900_drive03: 7,500 PPO updates. Must match trainer.timesteps / rollouts.
+    T_max: 7500
+    
+  discount_factor: 0.99
+  gae_lambda: 0.95         # Updated from 'lambda'
+  ratio_clip: 0.2
+  value_clip: 0.2          # Automatically handles clip_predicted_values
+  
+  value_loss_scale: 1.0
+  entropy_loss_scale: 0.01
+  grad_norm_clip: 1.0
+  kl_threshold: 0.0
+
+  # Updated preprocessor terminology for skrl 2.1.0+
+  observation_preprocessor: RunningStandardScaler
+  observation_preprocessor_kwargs: null
+  value_preprocessor: RunningStandardScaler
+  value_preprocessor_kwargs: null
+
+  experiment:
+    directory: "locomotive"
+    experiment_name: "locomotive_ppo"
+    write_interval: 1000  # changed from auto
+    checkpoint_interval: 10000
+
+trainer:
+  class: SequentialTrainer
+  # 7,500 updates x 16 rollouts = 120k (cylinder top-5 budget). Override with --max_iterations.
+  timesteps: 120000
+  environment_info: log

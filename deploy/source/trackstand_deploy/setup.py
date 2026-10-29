@@ -28,6 +28,8 @@ setup(
             "rc_kickstand = trackstand_deploy.rc_kickstand:main",
             "kickstand_driver = trackstand_deploy.kickstand_driver:main",
             "policy_controller = trackstand_deploy.policy_controller:main",
+            "motor_mit_velocity_io = trackstand_deploy.motor_mit_velocity_io:main",
+            "locomotive_controller = trackstand_deploy.locomotive_controller:main",
         ],
     },
 )
