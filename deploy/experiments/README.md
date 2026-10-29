@@ -1,5 +1,55 @@
 # Standalone motor feedback
 
+## Rear constant-torque threshold trials
+
+`drive_torque_threshold.py` automatically runs **50 trials**: torque magnitudes
+**0.12, 0.13, 0.14, 0.15, 0.16 Nm**, both directions, five repetitions. Within each
+repetition, levels increase and each forward trial is followed by its backward
+counterpart. Every torque is held for **5 seconds**. Between trials, **CF disables
+the motor for 2 seconds of free coasting**, with no active braking or extra wait
+for zero speed. No rest is added after trial 50. Nominal total is **348 seconds**
+(5 min 48 s), excluding startup/shutdown and host timing overhead.
+
+From the repository root on the Pi, with the rear wheel airborne/free, frame
+supported, steering independently disabled, and all other CAN writers stopped:
+
+```bash
+python3 deploy/experiments/drive_torque_threshold.py             # preview, no CAN/files
+python3 deploy/experiments/drive_torque_threshold.py --execute   # full experiment + recording
+```
+
+Default C0 refresh is **50 Hz**, matching the seven October 29 rear replays;
+`--packet-rate 200` selects 200 Hz. A3/A2/A1 are queried at nominal **100 Hz each**,
+AE at 5 Hz, B0/B4/CD at 1 Hz, including during coasting. Command current is
+`-requested_torque / measured_B0_Kt`, rounded to signed int32 milliamps; rear ID
+is 1 and encoder/torque signs are -1. Positive torque means forward. No damping,
+friction compensation, encoder hardware reset, or controller-gain changes are
+applied. The existing verified temporary CD watchdog setup/restore is reused.
+
+CSV, JSON, `_plan.csv` and `_summary.csv` are automatically saved under `logs/`;
+`--output path.csv` selects another new path. Keep this script beside
+`drive_policy_replay.py`, `steering_policy_replay.py` and `steering_sine_mit_io.py`.
+No ROS nodes, separate recorder or package build are needed. Raw CAN frames and
+fresh feedback are retained. Each trial records its latest pre-command multi-turn
+count and speed, their sample ages, starting wheel phase, signed displacement,
+measured speed and A1-current torque statistics. Samples are asynchronous; they
+are not exact motor-acquisition times at the command boundary. Torque is a
+current-derived estimate, not shaft torque.
+
+**A two-second coast does not guarantee a stopped wheel.** Starting speed and
+sample ages are recorded without silently extending the rest. Separate moving
+starts from stationary starts when estimating breakaway; the script does not
+classify a threshold using an invented motion cutoff. Physical starting angle
+is recorded, not automatically matched between trials.
+
+Faults, missing feedback, current above 2 A, speed above 61.6 rad/s, temperature
+at/above 60°C or timing lateness above 20 ms stop the experiment and attempt
+disable/restore, retaining partial data. The full plan must fit the 1.5 A encoded
+command acceptance limit; commands are never clipped. Abort thresholds and
+`--hold`, `--rest`, `--repeats`, `--interface` and `--note` are configurable.
+
+## Other motor experiments
+
 For controlled **rear C0 repeatability, starting-angle, breakaway and pulse/reversal
 experiments**, see [DRIVE_REPEATABILITY.md](DRIVE_REPEATABILITY.md). The new
 `drive_repeatability.py` provides preview, balanced rates, verified manual angle
