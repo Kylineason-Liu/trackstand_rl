@@ -1,0 +1,58 @@
+<!-- Generated using Fusion2Mujoco v1.0.1 -->
+<!-- https://github.com/jgillick/Fusion2Mujoco -->
+<mujoco model="trackstand_rl_0916_bike">
+    <compiler angle="radian" />
+    <default>
+        <mesh scale="0.001 0.001 0.001" />
+        <geom contype="0" conaffinity="0" group="2" />
+        <default class="collision">
+            <geom contype="1" conaffinity="1" group="3" pos="0 0 0" mass="0.0" friction="0.75 0 0" />
+        </default>
+    </default>
+    <asset>
+        <mesh name="rear_wheel_link_visual" file="meshes\rear_wheel_link\visual.stl" />
+        <mesh name="rear_wheel_link_collision00" file="meshes\rear_wheel_link\collision00.stl" />
+        <mesh name="front_wheel_link_visual" file="meshes\front_wheel_link\visual.stl" />
+        <mesh name="front_wheel_link_collision00" file="meshes\front_wheel_link\collision00.stl" />
+        <mesh name="steering_link_visual" file="meshes\steering_link\visual.stl" />
+        <mesh name="steering_link_collision00" file="meshes\steering_link\collision00.stl" />
+        <mesh name="base_link_visual" file="meshes\base_link\visual.stl" />
+        <mesh name="base_link_collision00" file="meshes\base_link\collision00.stl" />
+        <material name="rear_wheel_link_mat" rgba="0.7922 0.8196 0.9333 1.0000" roughness="0.2000" />
+        <material name="front_wheel_link_mat" rgba="0.7922 0.8196 0.9333 1.0000" roughness="0.2000" />
+        <material name="steering_link_mat" rgba="0.9647 0.9647 0.9529 1.0000" roughness="0.2646" />
+        <material name="base_link_mat" rgba="0.7922 0.8196 0.9333 1.0000" roughness="0.2000" />
+        <texture type="2d" name="ground_plane" builtin="checker" mark="edge" rgb1="0.2 0.3 0.4" rgb2="0.1 0.2 0.3" markrgb="0.8 0.8 0.8" width="200" height="200" />
+        <material name="ground_plane" texture="ground_plane" texuniform="true" texrepeat="5 5" reflectance="0.2" />
+    </asset>
+    <worldbody>
+        <light directional="true" pos="-0.5 0.5 3" dir="0 0 -1" />
+        <geom name="floor" size="10 10 0.05" type="plane" contype="1" conaffinity="1" rgba="1 1 1 1" material="ground_plane" friction="0.75 0 0" />
+        <body name="model_root" pos="0.0 0.0 -0.015" quat="1 0 0 0">
+            <freejoint />
+            <body name="base_link" pos="0.23376071665836562 -0.1968176237560482 0.23535623822487498" quat="-0.0009379460281644743 -0.008446093012598452 0.7075812015428641 0.706580941572316">
+                <geom mesh="base_link_visual" name="base_link_base_link_visual_geom" type="mesh" pos="0 0 0" quat="1 0 0 0" material="base_link_mat" />
+                <geom mesh="base_link_collision00" name="base_link_base_link_collision00_geom" type="mesh" pos="0 0 0" quat="1 0 0 0" class="collision" />
+                <inertial mass="2.02679270030967" pos="0.07676221232557356 -0.07131592277334421 0.1554583446613422" fullinertia="0.008294490946780851 0.011768171337638121 0.01852920894352616 0.0058618060667139215 0.00021899469347582142 -0.00014423538918490326" />
+                <body name="rear_wheel_link" pos="0.44669722639617415 -0.20980720968820263 -6.217248937900877e-15" quat="-0.18521729540643794 1.958115366773854e-15 -1.7553517127835281e-15 0.9826975900460562">
+                    <joint type="hinge" name="rear_wheel_link" axis="4.538612086515147e-08 -2.8760674533173946e-09 1.0000000601575016" pos="0.20357682494237214 -0.1469997649427225 0.17423882063839632" />
+                    <geom mesh="rear_wheel_link_visual" name="rear_wheel_link_rear_wheel_link_visual_geom" type="mesh" pos="0 0 0" quat="1 0 0 0" material="rear_wheel_link_mat" />
+                    <geom mesh="rear_wheel_link_collision00" name="rear_wheel_link_rear_wheel_link_collision00_geom" type="mesh" pos="0 0 0" quat="1 0 0 0" class="collision" />
+                    <inertial mass="0.12332977036722836" pos="0.2035765312660403 -0.14699999369748018 0.15599033036856622" fullinertia="0.00017834346556958746 0.00017834371049755903 0.00032951638473937834 1.948804314491877e-10 -2.082175294137063e-10 1.48267247609993e-10" />
+                </body>
+                <body name="steering_link" pos="-0.024569362834799158 0.000270535119047679 -0.006093824690221545" quat="0.9971169448398198 0.013176451083641294 0.07472736747773397 -1.5907740677309454e-15">
+                    <joint type="hinge" name="steering_link" axis="-0.17364839528032544 -0.9848076265660004 -9.797538315821357e-08" pos="-0.05520794849515023 -0.012721976247999062 0.1562386549809226" range="-1.570796 1.570796" limited="true" />
+                    <geom mesh="steering_link_visual" name="steering_link_steering_link_visual_geom" type="mesh" pos="0 0 0" quat="1 0 0 0" material="steering_link_mat" />
+                    <geom mesh="steering_link_collision00" name="steering_link_steering_link_collision00_geom" type="mesh" pos="0 0 0" quat="1 0 0 0" class="collision" />
+                    <inertial mass="0.10929162034075492" pos="-0.06255533705425614 -0.05439132906616476 0.15623836233295121" fullinertia="0.00015662736255618668 4.421713467276797e-05 0.0001351729871218165 -2.045615495488253e-05 3.849991729930502e-06 -6.829841514891089e-07" />
+                    <body name="front_wheel_link" pos="-0.10322829343130757 -0.2999029930403198 0.321842605468342" quat="0.0016206653792580539 0.9734954890274488 -0.16377460079180567 0.15963015511619755">
+                        <joint type="hinge" name="front_wheel_link" axis="-0.1574782633260638 0.024480860491298165 0.9872191171347993" pos="-0.07865035940742715 -0.14567068984495574 0.156238644233955" />
+                        <geom mesh="front_wheel_link_visual" name="front_wheel_link_front_wheel_link_visual_geom" type="mesh" pos="0 0 0" quat="1 0 0 0" material="front_wheel_link_mat" />
+                        <geom mesh="front_wheel_link_collision00" name="front_wheel_link_front_wheel_link_collision00_geom" type="mesh" pos="0 0 0" quat="1 0 0 0" class="collision" />
+                        <inertial mass="0.16491532139005347" pos="-0.07865045382868581 -0.14567100415166598 0.15623836036224034" fullinertia="0.00023306143709204142 0.00022826122071688067 0.00044805621324316207 -8.734710717986034e-07 -3.301061897742316e-05 5.82064034007216e-06" />
+                    </body>
+                </body>
+            </body>
+        </body>
+    </worldbody>
+</mujoco>

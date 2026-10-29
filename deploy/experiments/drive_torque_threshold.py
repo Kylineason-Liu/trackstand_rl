@@ -7,6 +7,9 @@ braking or automatic waiting for zero speed; a coasting start is not breakaway
 from rest. Rear wheel airborne/free, frame supported, steering independently
 disabled, all other CAN writers stopped. Preview by default; --execute runs CAN.
 Uses the three adjacent replay helpers, Python stdlib only; no ROS or policy.
+Bench timing is permissive: late sends/endpoints are logged rather than aborted
+unless --strict-timing is set. Missing feedback and mode transitions get bounded
+grace periods; motor faults, recording errors and physical abort limits remain.
 """
 
 from __future__ import annotations
@@ -30,6 +33,8 @@ import drive_policy_replay as rear
 HERE = Path(__file__).resolve().parent
 TORQUES_NM = (.12, .13, .14, .15, .16)
 COUNTS_PER_TURN = 16384
+DISABLE_TIMEOUT_S = 1.
+DISABLE_RETRY_S = .05
 EXTRA_FIELDS = ("trial_id", "repeat", "torque_level_nm", "direction", "trial_start_count",
                 "trial_position_rad", "phase_time_s")
 PLAN_FIELDS = ("trial_id", "repeat", "torque_level_nm", "direction", "requested_torque_nm",
@@ -40,7 +45,7 @@ SUMMARY_FIELDS = ("trial_id", "repeat", "torque_level_nm", "direction", "request
                   "end_velocity_rad_s", "end_velocity_age_s", "end_position_age_s",
                   "displacement_rad", "speed_min_rad_s", "speed_max_rad_s", "torque_mean_nm",
                   "torque_min_nm", "torque_max_nm", "A1_samples", "A2_samples", "A3_samples",
-                  "C0_packets", "max_command_gap_s")
+                  "C0_packets", "max_command_gap_s", "hold_end_lateness_s")
 
 
 def parse_args(argv=None):
@@ -54,7 +59,19 @@ def parse_args(argv=None):
     parser.add_argument("--hold", type=rear.shared.finite, default=5., help="Seconds at each constant torque")
     parser.add_argument("--rest", type=rear.shared.finite, default=2., help="Disabled coast seconds BETWEEN trials")
     parser.add_argument("--repeats", type=int, default=5)
-    parser.add_argument("--max-lateness-ms", type=rear.shared.finite, default=20.)
+    parser.add_argument("--max-lateness-ms", type=rear.shared.finite, default=100.,
+                        help="Late-send/endpoint warning threshold; abort only with --strict-timing")
+    parser.add_argument("--strict-timing", action="store_true", help="Abort instead of logging excessive lateness")
+    parser.add_argument("--feedback-timeout", type=rear.shared.finite, default=1., help="A1/A2/A3/C0 age, seconds")
+    parser.add_argument("--status-timeout", type=rear.shared.finite, default=2., help="AE status age, seconds")
+    parser.add_argument("--query-timeout", type=rear.shared.finite, default=.1, help="Ordinary read deadline, seconds")
+    parser.add_argument("--disable-timeout", type=rear.shared.finite, default=DISABLE_TIMEOUT_S,
+                        help="Disabled-mode confirmation seconds; never extends the chosen rest")
+    parser.add_argument("--mode-timeout", type=rear.shared.finite, default=1., help="C0 mode-entry grace, seconds")
+    parser.add_argument("--clock-tolerance-ms", type=rear.shared.finite, default=50.,
+                        help="Clock-sampling/offset/future-timestamp tolerance; uncertain timing is annotated")
+    parser.add_argument("--startup-speed-max-rad-s", type=rear.shared.finite, default=1.,
+                        help="Accept small startup coasting up to this speed; starting speed is logged")
     parser.add_argument("--current-abort-a", type=rear.shared.finite, default=2.)
     parser.add_argument("--speed-abort-rad-s", type=rear.shared.finite, default=61.6,
                         help="Abort, do not clamp, above the configured rear motor speed limit")
@@ -63,15 +80,20 @@ def parse_args(argv=None):
     parser.add_argument("--output", type=Path, help="New CSV path; default logs/<timestamp>_drive_torque_threshold.csv")
     args = parser.parse_args(argv)
     if (min(args.hold, args.rest, args.max_lateness_ms, args.current_abort_a,
-            args.speed_abort_rad_s, args.temperature_abort_c) <= 0 or args.repeats < 1):
+            args.speed_abort_rad_s, args.temperature_abort_c, args.feedback_timeout,
+            args.status_timeout, args.query_timeout, args.disable_timeout, args.mode_timeout,
+            args.clock_tolerance_ms, args.startup_speed_max_rad_s) <= 0 or args.repeats < 1):
         parser.error("durations, repeats and abort thresholds must be positive")
+    if args.query_timeout >= min(args.feedback_timeout, args.status_timeout):
+        parser.error("query timeout must be shorter than feedback/status timeouts")
     if args.output is None:
         args.output = HERE / "logs" / f"{datetime.now():%Y%m%d_%H%M%S_%f}_drive_torque_threshold.csv"
     if args.output.suffix.lower() != ".csv":
         parser.error("--output must end in .csv")
     # Fixed, previously verified hardware mapping. These values do not load a policy/YAML.
     args.motor_id, args.encoder_sign, args.torque_sign, args.level = 1, -1, -1, "constant"
-    args.query_rate, args.query_timeout, args.feedback_timeout = 100., .02, .1
+    args.query_rate = 100.
+    args.future_timestamp_tolerance_s = args.clock_tolerance_ms * .001
     args.command_current_limit_a, args.watchdog_ms = 1.5, 500
     if args.current_abort_a <= args.command_current_limit_a:
         parser.error("--current-abort-a must exceed the 1.5 A encoded-command acceptance limit")
@@ -103,7 +125,10 @@ class ThresholdIO(rear.DriveIO):
         self.count_stamp = self.velocity_stamp = -math.inf
         self.samples = {op: [] for op in (0xA1, 0xA2, 0xA3)}
         self.last_disabled_stamp, self.last_status = -math.inf, None
+        self.disable_deadline = math.inf
+        self.active_mode_stamp = -math.inf
         self.phase_end = math.inf
+        self.interval_lateness_s = 0.
 
     def row(self, motor, kind, stamp=None, **values):
         row = super().row(motor, kind, stamp, **values)
@@ -112,6 +137,34 @@ class ThresholdIO(rear.DriveIO):
                    phase_time_s=(row["elapsed_s"] + self.start - self.phase_start
                                  if self.phase_start is not None else None))
         return row
+
+    def send(self, motor, payload, can_id=None, **values):
+        if self.args.strict_timing:
+            return super().send(motor, payload, can_id, **values)
+        deadline = values.get("command_deadline_s")
+        if deadline is not None and (time.monotonic() - deadline) * 1000 > self.args.max_lateness_ms:
+            values["can_note"] = "late command kept in bench mode; inspect actual command_interval_s/lateness"
+        # Bypass only ReplayIO's strict lateness trip; preserve raw send timestamps/logging.
+        return rear.mit.CanIO.send(self, motor, payload, can_id, **values)
+
+    def disable_timeout_error(self):
+        return f"CF disable not confirmed within {self.disable_deadline - self.phase_start:g} s"
+
+    def request(self, motor, opcode, **values):
+        if opcode != 0xCF or self.phase != "startup":
+            return super().request(motor, opcode, **values)
+        # A restarted experiment can encounter the same old-mode CF reply as inter-trial rest.
+        deadline = time.monotonic() + self.args.disable_timeout
+        while True:
+            reply = super().request(motor, opcode, **values)
+            if reply[7] or reply[6] == 0:
+                return reply
+            if time.monotonic() >= deadline:
+                raise RuntimeError("startup CF disable not confirmed before deadline")
+            until = min(deadline, time.monotonic() + DISABLE_RETRY_S)
+            while time.monotonic() < until:
+                if self.wait(until - time.monotonic()):
+                    self.receive()
 
     def decode_reply(self, motor, data, stamp, row):
         op = data[0]
@@ -150,15 +203,31 @@ class ThresholdIO(rear.DriveIO):
             self.last_status = data
             if self.phase in ("torque", "rest") and (data[7] or data[5] >= self.args.temperature_abort_c):
                 return "rear motor fault or excessive temperature"
-            if op == 0xCF and data[6] == 0:
-                self.last_disabled_stamp = stamp
             # A reply to a query from the PREVIOUS phase can arrive after the transition.
             fresh_mode_query = (self.pending is not None and self.pending.opcode == op
                                 and self.phase_start is not None
-                                and self.phase_start <= self.pending.sent_at <= stamp)
+                                and self.phase_start <= self.pending.sent_at <= stamp
+                                and not row.get("can_note", "").startswith("clock uncertainty:"))
             if fresh_mode_query and self.phase in ("torque", "rest"):
-                if data[6] != (2 if self.phase == "torque" else 0):
-                    return "rear motor mode differs from current experiment phase"
+                expected = 2 if self.phase == "torque" else 0
+                awaiting_disable = self.phase == "rest" and self.last_disabled_stamp < self.phase_start
+                if awaiting_disable:
+                    if stamp > self.disable_deadline:
+                        return self.disable_timeout_error()
+                    if data[6] == 2:
+                        row["can_note"] = "C0 mode during CF transition; awaiting fresh disabled status"
+                        return ""
+                if (self.phase == "torque" and self.active_mode_stamp < self.phase_start
+                        and data[6] == 0 and stamp <= self.phase_start + self.args.mode_timeout):
+                    row["can_note"] = "disabled status during C0 entry; awaiting current-control mode"
+                    return ""
+                if data[6] != expected:
+                    return (f"rear motor mode differs from current experiment phase: phase={self.phase}, "
+                            f"reply={op:02X}, expected={expected}, reported={data[6]}")
+                if self.phase == "rest":
+                    self.last_disabled_stamp = stamp  # Fresh CF or AE confirms mode 0.
+                else:
+                    self.active_mode_stamp = stamp
         if (self.phase == "torque" and stamp >= self.phase_start and op in self.samples):
             column = {0xA1: "torque_nm", 0xA2: "velocity_rad_s", 0xA3: "trial_position_rad"}[op]
             self.samples[op].append(row[column])
@@ -177,12 +246,17 @@ class ThresholdIO(rear.DriveIO):
     def guard(self):
         self.log.check()
         now = time.monotonic()
+        if (self.phase == "rest" and self.last_disabled_stamp < self.phase_start
+                and now > self.disable_deadline):
+            raise RuntimeError(self.disable_timeout_error())
         for op in (0xA1, 0xA2, 0xA3):
             if now - self.sample_times.get(op, -math.inf) > self.args.feedback_timeout:
                 raise RuntimeError(f"stale rear {op:02X} feedback")
-        if now - self.sample_times.get(0xAE, -math.inf) > .6:
+        if now - self.sample_times.get(0xAE, -math.inf) > self.args.status_timeout:
             raise RuntimeError("stale rear motor status")
         if self.phase == "torque":
+            if self.active_mode_stamp < self.phase_start and now - self.phase_start > self.args.mode_timeout:
+                raise RuntimeError("C0 current-control mode not confirmed before mode-entry deadline")
             if now - max(self.sample_times.get(0xC0, -math.inf), self.phase_start) > self.args.feedback_timeout:
                 raise RuntimeError("stale C0 acknowledgement")
         if not math.isfinite(self.current) or abs(self.current) > self.args.current_abort_a:
@@ -198,7 +272,10 @@ def begin_rest(io):
         io.finish_query("cancelled_phase_boundary")
     sent = io.send(io.motors[0], b"\xcf")
     io.phase_start, io.next_command = sent, math.inf
-    io.pending = rear.mit.PendingRead(io.motors[0], 0xCF, sent, sent + .5)
+    io.last_disabled_stamp = -math.inf
+    io.disable_deadline = sent + min(io.args.disable_timeout, io.args.rest)
+    io.pending = rear.mit.PendingRead(io.motors[0], 0xCF, sent,
+                                     min(io.disable_deadline, sent + io.args.query_timeout))
     return sent
 
 
@@ -207,7 +284,11 @@ def run_interval(io, end, packet=None):
     args, motor = io.args, io.motors[0]
     io.phase_end = end
     periods = {0xA3: .01, 0xA2: .01, 0xA1: .01, 0xAE: .2, 0xB0: 1., 0xB4: 1., 0xCD: 1.}
+    if packet is None:
+        periods[0xCF] = DISABLE_RETRY_S  # Repeat idempotent disable only until confirmed.
     due, jobs = dict.fromkeys(periods, time.monotonic()), deque()
+    if packet is None:
+        due[0xCF] = io.phase_start + DISABLE_RETRY_S
     previous, packets, max_gap = io.phase_start if packet else None, 1 if packet else 0, 0.
     while time.monotonic() < end:
         empty = io.drain()
@@ -222,10 +303,11 @@ def run_interval(io, end, packet=None):
             max_gap, previous, packets = max(max_gap, sent - previous), sent, packets + 1
             io.next_command = min(end, time.monotonic() + 1 / args.packet_rate)
         if io.pending is not None and now >= io.pending.deadline:
-            opcode = io.pending.opcode
             io.finish_query("timed_out")
-            if opcode == 0xCF:
-                raise RuntimeError("inter-trial CF disable not acknowledged")
+            # A missed read/disable ACK is retried; freshness and confirmation deadlines remain authoritative.
+        if packet is None and io.last_disabled_stamp >= io.phase_start:
+            periods.pop(0xCF, None)
+            due.pop(0xCF, None)  # An obsolete retry deadline must not create a busy loop.
         if not jobs and io.pending is None:
             for opcode, period in periods.items():
                 if now >= due[opcode]:
@@ -237,9 +319,12 @@ def run_interval(io, end, packet=None):
             io.pending = rear.mit.PendingRead(motor, opcode, sent, sent + args.query_timeout)
         wake = min(end, io.next_command, io.pending.deadline if io.pending else min(due.values()))
         io.wait(0 if not empty or jobs and io.pending is None else max(0., wake - time.monotonic()))
-    # A fixed-duration test must not silently become a much longer hold after a host stall.
-    if (time.monotonic() - end) * 1000 > args.max_lateness_ms:
-        raise RuntimeError("missed interval-end deadline")
+    io.interval_lateness_s = max(0., time.monotonic() - end)
+    if io.interval_lateness_s * 1000 > args.max_lateness_ms:
+        if args.strict_timing:
+            raise RuntimeError("missed interval-end deadline")
+        if packet is None:  # Torque-hold warning is emitted only AFTER CF below.
+            io.log.emit(io.row(motor, "timing_warning", can_note="late rest endpoint; actual timing retained"))
     if packet is None and io.last_disabled_stamp < io.phase_start:
         raise RuntimeError("disabled rest not confirmed; next trial cancelled")
     return packets, max_gap
@@ -254,17 +339,22 @@ def run_trial(io, trial, packet):
     io.samples = {op: [] for op in (0xA1, 0xA2, 0xA3)}
     initial_speed, initial_speed_stamp, initial_pos_stamp = io.velocity, io.velocity_stamp, io.count_stamp
     io.phase, io.phase_start = "torque", time.monotonic()
+    io.active_mode_stamp = -math.inf
     data, fields = packet
     sent = io.send(io.motors[0], data, record_type="drive_target",
                    requested_torque_nm=trial["requested_torque_nm"], **fields)
     io.phase_start = sent
     io.next_command = time.monotonic() + 1 / io.args.packet_rate
     packets, max_gap = run_interval(io, sent + trial["hold_s"], packet)
+    hold_lateness = io.interval_lateness_s
     # Capture the last actual samples, then turn output OFF before any summary I/O.
     last_count, last_speed = io.last_count, io.velocity
     last_pos_stamp, last_speed_stamp = io.count_stamp, io.velocity_stamp
     displacement = -(io.total_count - io.trial_zero) * 2 * math.pi / COUNTS_PER_TURN
     disabled_at = begin_rest(io)
+    if hold_lateness * 1000 > io.args.max_lateness_ms:
+        io.log.emit(io.row(io.motors[0], "timing_warning",
+                           can_note=f"late hold endpoint by {hold_lateness:g} s; CF has now been sent"))
     a1, a2, a3 = (io.samples[op] for op in (0xA1, 0xA2, 0xA3))
     if not a1 or not a2 or not a3:
         raise RuntimeError("trial lacks fresh A1/A2/A3 feedback")
@@ -278,7 +368,8 @@ def run_trial(io, trial, packet):
                    end_position_age_s=disabled_at - last_pos_stamp, displacement_rad=displacement,
                    speed_min_rad_s=min(a2), speed_max_rad_s=max(a2), torque_mean_nm=sum(a1) / len(a1),
                    torque_min_nm=min(a1), torque_max_nm=max(a1), A1_samples=len(a1), A2_samples=len(a2),
-                   A3_samples=len(a3), C0_packets=packets, max_command_gap_s=max_gap)
+                   A3_samples=len(a3), C0_packets=packets, max_command_gap_s=max_gap,
+                   hold_end_lateness_s=hold_lateness)
     return summary, disabled_at
 
 
@@ -327,7 +418,8 @@ def execute(args, plan):
                         metadata["completed_trials"] += 1
                         print(f"Trial {trial['trial_id']}/{len(plan)}: {trial['requested_torque_nm']:+.2f} Nm; "
                               f"start speed {summary['start_velocity_rad_s']:+.3f} rad/s; "
-                              f"displacement {summary['displacement_rad']:+.4f} rad; disabled", flush=True)
+                              f"displacement {summary['displacement_rad']:+.4f} rad; "
+                              "CF sent, awaiting disabled confirmation", flush=True)
                         if trial["rest_after_s"]:
                             run_interval(io, disabled_at + trial["rest_after_s"])
                     metadata["completed"] = True
@@ -361,6 +453,10 @@ def main(argv=None):
     levels = ", ".join(f"+/-{value:.2f}" for value in TORQUES_NM)
     print(f"Levels: {levels} Nm per repetition; "
           "+ = forward, - = backward. Actual breakaway threshold is not assumed.")
+    print(f"Timing: {'strict aborts' if args.strict_timing else 'bench warnings'} above "
+          f"{args.max_lateness_ms:g} ms; feedback/status timeouts "
+          f"{args.feedback_timeout:g}/{args.status_timeout:g} s; "
+          f"disable confirmation {args.disable_timeout:g} s or rest end")
     if not args.execute:
         for row in plan:
             print(f"{row['trial_id']:02d}: repeat {row['repeat']} {row['requested_torque_nm']:+.2f} Nm "

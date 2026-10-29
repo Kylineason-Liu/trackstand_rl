@@ -1,0 +1,34 @@
+{
+  "attempts": 21,
+  "panels": 2,
+  "red_start_lines_per_panel": 21,
+  "saved_sample_rows": 11508,
+  "cumulative_plotted_duration_s": 21.992121205999972,
+  "input_hashes": {
+    "decoded_data.npz": "0e3ec5f6ab749cb5464e00417bbff304bade79ed7e693cea7970cee8db8ea5d7",
+    "decoded_details.json.gz": "37652aeaffc5eba0edcdd11aeb1ed153532db1615e5ec406935526293c2518b9",
+    "statistics.json": "ce7a6138c653091d85397e5a3c0af0387c49ea5c661dc017e213dbf8dea7baf0"
+  },
+  "y_limits": [
+    [
+      -1.75,
+      1.75
+    ],
+    [
+      -7.0,
+      7.0
+    ]
+  ],
+  "all_finite_values_visible": true,
+  "unchanged_native_sample_values": true,
+  "rescaled_time": false,
+  "smoothing": false,
+  "fitted_delay": false,
+  "curves_joined_between_attempts": false,
+  "target": "Successful recorded MIT position / C0 current-to-torque commands",
+  "rear_feedback": "Current-derived A1 \u00d7 Kt estimate, not shaft torque",
+  "source_time": "MCAP reception time, translated by each attempt's removed idle interval",
+  "saved_csv_samples_independently_checked": 11508,
+  "local_gallery_report_links_exist": true,
+  "protected_original_inputs_unchanged": 56
+}

@@ -1,0 +1,67 @@
+{
+  "input_stem": "20261029_172218_464098_drive_torque_threshold",
+  "input_sha256": {
+    "deploy/experiments/logs/20261029_172218_464098_drive_torque_threshold.json": "2efabc16702c57efb0f8ce33b756e4f5d84ca950d6e416ae30e3b414357c1872",
+    "deploy/experiments/logs/20261029_172218_464098_drive_torque_threshold_summary.csv": "766a4552064f56cfe75de772c37d56ca0c17b3f5f7cc82f180d406f2ead56d64",
+    "deploy/experiments/logs/20261029_172218_464098_drive_torque_threshold_plan.csv": "a94238df1d9f5a54c96e3a99fba59c4ba071dd9c757297b7a7caae05e1b669cf",
+    "deploy/experiments/logs/20261029_172218_464098_drive_torque_threshold.csv": "9dbce7d460caaa82cd145ba05fcc93c7c4b0a3f7e6debfbcc3e4b4284027f66a"
+  },
+  "runtime_source_sha256": {
+    "drive_torque_threshold.py": "f66bbccae56d492ae28fee02180f11e6a31b7f65097aa7d5a29124cd8f20b2c5",
+    "drive_policy_replay.py": "44c5152e289aadc0a2dcb31c4e51231f23ae33c5af52bc1f7af73a959b7b93d5",
+    "steering_policy_replay.py": "9a9606b39dd447df5a75aa6e728f05983edcbc69378471af0f172930a0862b17",
+    "steering_sine_mit_io.py": "e1ca97c2b86ebf126ed975b474fefadac55bf2454f0e8364cd63ed0845822754"
+  },
+  "first_rest_CF_csv_line": 5086,
+  "first_CF_reply": {
+    "csv_line": 5087,
+    "phase": "rest",
+    "direction": "bus_rx",
+    "opcode": "207",
+    "elapsed_s": "5.008275752696136",
+    "ms_after_first_rest_CF": 0.6980506968830014,
+    "payload_hex": "CFE20718001E0200",
+    "mode": "2",
+    "fault": "0"
+  },
+  "first_reported_disabled_CF": {
+    "csv_line": 5091,
+    "phase": "shutdown",
+    "direction": "bus_rx",
+    "opcode": "207",
+    "elapsed_s": "5.009352689417938",
+    "ms_after_first_rest_CF": 1.7749874186847592,
+    "payload_hex": "CFE20717001E0000",
+    "mode": "0",
+    "fault": "0"
+  },
+  "first_reported_disabled_AE": {
+    "csv_line": 5092,
+    "phase": "shutdown",
+    "direction": "bus_rx",
+    "opcode": "174",
+    "elapsed_s": "5.009563928279022",
+    "ms_after_first_rest_CF": 1.9862262797687436,
+    "payload_hex": "AEE20717001E0000",
+    "mode": "0",
+    "fault": "0"
+  },
+  "completed_trials": 1,
+  "final_disable_confirmed": true,
+  "watchdog_restored": true,
+  "final_fault_code": 0,
+  "interpretation": "Immediate mode-0 assumption rejected first CF mode-2 reply; cleanup later obtained mode 0.",
+  "latency_limit": "Additional CF commands were sent during cleanup; these intervals are not isolated motor disable latency.",
+  "verification": {
+    "software_tests_passed": 18,
+    "hardware_test_of_fix": false,
+    "command": "python3 -B -m unittest discover -s deploy/experiments/tests -p test_drive_torque_threshold.py -v",
+    "syntax_pyflakes_120_columns_diff_check_passed": true,
+    "protected_existing_files_unchanged": 7
+  },
+  "changed_source_sha256": {
+    "deploy/experiments/drive_torque_threshold.py": "b336bfaae1d0998f4fdd3f6610cbcb2abe476452ab0351f110ca5eed718965ad",
+    "deploy/experiments/tests/test_drive_torque_threshold.py": "b6813f646a3044986f34b60375c8527c2557d6e64aa522f875b2803ff928ceca",
+    "deploy/experiments/README.md": "cfbd20833ad6ade7c2c17c73050740577e248f08d56d16d9422a82ba3b0aff5b"
+  }
+}

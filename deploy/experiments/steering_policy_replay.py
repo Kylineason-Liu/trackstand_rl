@@ -299,11 +299,14 @@ class ReplayIO(mit.CanIO):
         before, host_wall = time.monotonic(), time.time()
         after = time.monotonic()
         offset = host_wall - before
-        if wall is None or after - before > .001 or self.offset is not None and abs(offset - self.offset) > .001:
+        sample_span = after - before
+        offset_jump = abs(offset - self.offset) if self.offset is not None else 0.
+        clock_tolerance = getattr(self.args, "clock_tolerance_ms", 1.) * .001
+        if wall is None or sample_span > clock_tolerance or offset_jump > clock_tolerance:
             raise RuntimeError("missing timestamp or unstable system clock")
         self.offset = offset
         stamp = wall - offset
-        if stamp > after + 1e-6:
+        if stamp > after + getattr(self.args, "future_timestamp_tolerance_s", 1e-6):
             raise RuntimeError("future CAN timestamp")
         cid, length, padded = mit.CAN_FRAME.unpack(frame)
         motor = self.motors[0]
@@ -317,6 +320,10 @@ class ReplayIO(mit.CanIO):
                        receive_queue_delay_s=max(0., after - stamp), time_unix_s=wall,
                        mit_can_id=cid, can_direction="bus_rx", can_length=length, can_opcode=data[0],
                        mit_payload_hex=data.hex().upper())
+        if sample_span > .001 or offset_jump > .001 or stamp > after + 1e-6:
+            row["can_note"] = (f"clock uncertainty: sample_span={sample_span:g} s, "
+                               f"offset_jump={offset_jump:g} s, future={max(0., stamp - after):g} s; "
+                               "raw kernel timestamp retained")
         fatal = self.decode_reply(motor, data, stamp, row)
         self.log.emit(row)
         if fatal:

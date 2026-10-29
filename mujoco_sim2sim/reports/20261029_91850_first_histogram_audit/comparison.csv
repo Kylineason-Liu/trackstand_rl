@@ -1,0 +1,17 @@
+case,dr,endpoints,mean_seconds,timeouts,timeout_percent,numerical_failures
+baseline,False,64,11.5275,9,14.0625,0
+no_steer_bound_or_slew,False,64,0.6578125,0,0.0,0
+physics_800,False,64,28.1884375,60,93.75,0
+rear_startup_uncapped,False,64,0.06,0,0.0,0
+all_action_relaxations,True,64,0.16125,0,0.0,1
+baseline,True,64,5.7846875,10,15.625,0
+implicitfast_400,True,64,10.82375,20,31.25,0
+no_speed_projection,True,64,6.7471875,11,17.1875,0
+no_steer_bound_or_slew,True,64,1.4240625,2,3.125,0
+no_steer_slew,True,64,1.0799999999999998,1,1.5625,0
+no_steer_target_bound,True,64,4.93,9,14.0625,0
+physics_800,True,64,19.8596875,42,65.625,0
+rear_no_ctrl_clip,True,64,4.8284375,8,12.5,0
+rear_no_saturation,True,64,0.07906250000000001,0,0.0,0
+rear_startup_uncapped,True,64,0.07875,0,0.0,0
+refresh_dr_constants,True,64,5.0825000000000005,6,9.375,0

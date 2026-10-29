@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "protected_inputs_checked": 56,
+  "changed_protected_inputs": [],
+  "messages": 290281,
+  "episodes": 21,
+  "policy_contract_samples": 1101,
+  "saved_simulation_actor_check_samples": 2048,
+  "figures": 28,
+  "individual_attempts": 21,
+  "pdf_pages": 21,
+  "local_links_exist": true,
+  "report_python_parses": true,
+  "missing_torque_values_not_filled": true,
+  "integrity": {
+    "original_decoder_crc_validation": true,
+    "indexed_reader_check": "all indexed messages read with CRC validation",
+    "chunks": 184,
+    "messages": 290281
+  },
+  "output_scope": "This report directory only; no deployment/training/model/bag/ledger changes"
+}

@@ -5,10 +5,44 @@
 `drive_torque_threshold.py` automatically runs **50 trials**: torque magnitudes
 **0.12, 0.13, 0.14, 0.15, 0.16 Nm**, both directions, five repetitions. Within each
 repetition, levels increase and each forward trial is followed by its backward
-counterpart. Every torque is held for **5 seconds**. Between trials, **CF disables
+counterpart. Each torque hold targets **5 seconds**. Between trials, **CF disables
 the motor for 2 seconds of free coasting**, with no active braking or extra wait
 for zero speed. No rest is added after trial 50. Nominal total is **348 seconds**
 (5 min 48 s), excluding startup/shutdown and host timing overhead.
+
+The first CF reply may still report the preceding current-control mode. During
+that transition, mode 2 is tolerated for up to **1 second** (`--disable-timeout`),
+while CF is retried at nominal 50 ms intervals until a fresh CF/AE reply confirms disabled mode 0.
+Failure to confirm aborts; after confirmation, an unexpected active mode still
+aborts immediately. The two-second rest remains anchored to the first CF send,
+without adding confirmation time. The trial print says **CF sent**, not that
+physical disable has already been confirmed.
+
+The experiment now tolerates ordinary Pi scheduling delays. Late sends or
+endpoints above **100 ms** are recorded rather than aborted by default;
+`--strict-timing` restores timing aborts, and `--max-lateness-ms` sets their
+threshold. A pause can lengthen a hold/rest, so inspect the actual timestamps,
+`hold_actual_s`, `hold_end_lateness_s` and command intervals, not only nominal
+durations. The motor is disabled before writing a hold-end warning/summary.
+
+| Check | Previous default | Current default / flag |
+| --- | --- | --- |
+| A1/A2/A3/C0 freshness | 0.1 s | 1 s, `--feedback-timeout` |
+| AE status freshness | 0.6 s | 2 s, `--status-timeout` |
+| Ordinary query deadline | 0.02 s | 0.1 s, `--query-timeout` |
+| Disable-mode confirmation | 0.5 s | 1 s or rest end, whichever comes first; `--disable-timeout` |
+| Current-mode entry | First status must be mode 2 | Up to 1 s for mode 0→2; `--mode-timeout` |
+| Initial coasting speed | 0.2 rad/s | 1 rad/s, `--startup-speed-max-rad-s` |
+| Clock sampling/offset tolerance | 1 ms | 50 ms, `--clock-tolerance-ms` |
+| Future converted timestamp tolerance | 1 µs | Same clock tolerance; uncertainty annotated |
+
+A single missing query or CF reply no longer immediately aborts: reads/disables
+are retried, with the overall freshness and confirmation limits above retained.
+Startup also retries an old-mode CF reply. Raw kernel timestamps are preserved;
+frames exceeding the old clock tolerance receive a `can_note` uncertainty marker
+and cannot confirm mode transitions. This is not proof of precise hardware
+latency. Small helper changes add optional experiment settings; other replay
+scripts keep their original defaults. Transfer the updated adjacent helpers too.
 
 From the repository root on the Pi, with the rear wheel airborne/free, frame
 supported, steering independently disabled, and all other CAN writers stopped:
@@ -42,9 +76,13 @@ starts from stationary starts when estimating breakaway; the script does not
 classify a threshold using an invented motion cutoff. Physical starting angle
 is recorded, not automatically matched between trials.
 
-Faults, missing feedback, current above 2 A, speed above 61.6 rad/s, temperature
-at/above 60°C or timing lateness above 20 ms stop the experiment and attempt
-disable/restore, retaining partial data. The full plan must fit the 1.5 A encoded
+Faults, feedback missing beyond the configured tolerances, current above 2 A,
+speed above 61.6 rad/s, temperature at/above 60°C or failed mode confirmation
+stop the experiment and attempt disable/restore, retaining partial data.
+Unexpected mode after confirmation, malformed/overflow traffic, another writer,
+invalid/changed calibration/settings and logging errors still abort. The motor
+watchdog stays at at most 500 ms, independently of host timing tolerances.
+The full plan must fit the 1.5 A encoded
 command acceptance limit; commands are never clipped. Abort thresholds and
 `--hold`, `--rest`, `--repeats`, `--interface` and `--note` are configurable.
 
