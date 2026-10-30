@@ -1,5 +1,23 @@
 # Standalone motor feedback
 
+## Rear velocity sine comparison
+
+[`drive_velocity_sine.py`](drive_velocity_sine.py) compares C1 and MIT velocity
+control at **200 Hz**, **10 s per selected method** (`--method c1|mit|both`).
+`both` runs C1 then MIT. Default sine is **±4 rad/s at 0.5 Hz**; execution
+automatically logs CSV/JSON. Preview is default; add `--execute` for the motor.
+
+```bash
+python3 deploy/experiments/drive_velocity_sine.py --method c1 --execute
+```
+
+MIT reads B8/B9 and converts the current PI gains to torque gains using B0;
+Kp is zero and a host integrator provides feedforward torque. **B8/B9 internal
+units and Ki's time convention are not documented**, so MIT requires explicit
+unit/timebase flags rather than guessing or copying raw values into torque Kd.
+Read [the commands, conversion options and test conditions](DRIVE_VELOCITY_SINE.md).
+Keep the rear wheel airborne/free and stop other CAN writers. No ROS build is needed.
+
 ## Rear constant-torque threshold trials
 
 `drive_torque_threshold.py` automatically runs **50 trials**: torque magnitudes
