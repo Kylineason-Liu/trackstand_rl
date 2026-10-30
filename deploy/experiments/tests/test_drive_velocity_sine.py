@@ -53,7 +53,6 @@ class FakeCAN:
         self.speed, self.mode, self.bad_cf, self.fault = 0., 0, False, 0
         self.pause_once, self.paused, self.drop = False, False, set()
         self.drop_after = -math.inf
-        self.b3_quantization = 0
         self.cf_transition_replies = 0
         self.config = {0xB3: b"\xb3" + struct.pack("<I", 30000),
                        0xB5: b"\xb5" + struct.pack("<I", 0),
@@ -92,9 +91,7 @@ class FakeCAN:
             self.enqueue(self.status(op))
         elif op in self.config:
             if len(data) > 1:
-                if op == 0xB3:
-                    value = struct.unpack("<I", data[1:])[0] + self.b3_quantization
-                    data = bytes([op]) + struct.pack("<I", value)
+                assert op != 0xB3, "B3 must remain read-only"
                 self.config[op] = data
             self.enqueue(self.config[op])
         elif op == 0xB0:
@@ -222,7 +219,7 @@ class VelocitySineTests(unittest.TestCase):
         commands = [row for row in log.rows if row["record_type"] == "command"]
         self.assertEqual(len(commands), 4000)
         self.assertEqual(next(row for row in commands if row["method"] == "mit")["integral_error_rad"], 0.)
-        self.assertFalse(any(data[0] in (0xB1, 0xF0, 0xB5, 0xB8, 0xB9) and len(data) > 1
+        self.assertFalse(any(data[0] in (0xB1, 0xB3, 0xF0, 0xB5, 0xB8, 0xB9) and len(data) > 1
                              for _, cid, data in bus.sent if cid != 0x501))
         self.assertTrue(all(row.get("mit_kp", 0) == 0 for row in commands))
         self.assertTrue(all(set(row) <= set(sine.FIELDS) for row in log.rows))
@@ -272,53 +269,42 @@ class VelocitySineTests(unittest.TestCase):
         with patch.object(sine.select, "select", bus.select), redirect_stdout(io.StringIO()):
             test.startup()
             bus.bad_cf = True
-            previous_writes = len([x for x in bus.sent if x[2][0] == 0xB3 and len(x[2]) == 5])
+            previous_writes = len([x for x in bus.sent if x[2][0] == 0xCD and len(x[2]) == 5])
             with self.assertRaisesRegex(RuntimeError, "disabled"):
                 test.cleanup()
-        self.assertEqual(len([x for x in bus.sent if x[2][0] == 0xB3 and len(x[2]) == 5]), previous_writes)
+        self.assertEqual(len([x for x in bus.sent if x[2][0] == 0xCD and len(x[2]) == 5]), previous_writes)
 
-    def test_b3_one_milliamp_rounding_tolerance(self):
+    def test_b3_is_read_only_at_startup_motion_and_cleanup(self):
         test, bus, _, _ = self.make_io("c1")
-        bus.b3_quantization = -1
+        original = bus.config[0xB3]
         with patch.object(sine.select, "select", bus.select), redirect_stdout(io.StringIO()):
             test.startup()
+            test.run_phase("c1")
             test.cleanup()
-        self.assertEqual(struct.unpack("<I", bus.config[0xB3][1:])[0], 29999)
+        self.assertEqual(bus.config[0xB3], original)
+        self.assertNotIn("B3", test.applied_settings)
+        self.assertEqual(test.settings["B3"], original.hex().upper())
+        self.assertTrue(all(len(data) == 1 for _, cid, data in bus.sent if cid == 0x101 and data[0] == 0xB3))
 
-    def test_b3_accepts_100_milliamp_downward_difference_and_logs_actual(self):
+    def test_reported_20934_milliamp_setting_no_longer_triggers_matching_error(self):
         test, bus, log, _ = self.make_io("c1")
-        bus.b3_quantization = -100
+        original = b"\xb3" + struct.pack("<I", 20934)
+        bus.config[0xB3] = original
         with patch.object(sine.select, "select", bus.select), redirect_stdout(io.StringIO()):
             test.startup()
-            applied = bytes.fromhex(test.applied_settings["B3"])
-            expected = math.floor(sine.TORQUE_LIMIT_NM / test.kt * 1000) - 100
-            self.assertEqual(struct.unpack("<I", applied[1:])[0], expected)
+            test.run_phase("c1")
             test.cleanup()
-        self.assertEqual(struct.unpack("<I", bus.config[0xB3][1:])[0], 29900)
-        self.assertTrue(any("B3 accepted" in row.get("note", "") for row in log.rows))
+        self.assertEqual(bus.config[0xB3], original)
+        self.assertEqual(test.phases[0]["commands"], 2000)
+        self.assertTrue(any(row.get("opcode") == "B3" for row in log.rows))
 
-    def test_b3_one_percent_tolerance_accepts_200_milliamp_difference(self):
+    def test_b3_value_is_observed_without_imposing_a_software_setting_limit(self):
         test, bus, _, _ = self.make_io("c1")
-        bus.b3_quantization = -200
+        bus.config[0xB3] = b"\xb3" + struct.pack("<I", 82498)
         with patch.object(sine.select, "select", bus.select), redirect_stdout(io.StringIO()):
             test.startup()
             test.cleanup()
-        self.assertEqual(struct.unpack("<I", bus.config[0xB3][1:])[0], 29800)
-
-    def test_b3_rejects_zero_or_excess_downward_error_with_diagnostic_values(self):
-        for offset in (-500, -20933):
-            test, bus, _, _ = self.make_io("c1")
-            bus.b3_quantization = offset
-            with patch.object(sine.select, "select", bus.select), redirect_stdout(io.StringIO()):
-                with self.assertRaisesRegex(RuntimeError, "requested=.*reported=.*downward difference"):
-                    test.configure(b"\xb3" + struct.pack("<I", 20933))
-
-    def test_b3_still_rejects_even_small_upward_limit_change(self):
-        test, bus, _, _ = self.make_io("c1")
-        bus.b3_quantization = 1
-        with patch.object(sine.select, "select", bus.select), redirect_stdout(io.StringIO()):
-            with self.assertRaisesRegex(RuntimeError, "higher-than-requested"):
-                test.configure(b"\xb3" + struct.pack("<I", 20933))
+        self.assertEqual(struct.unpack("<I", bus.config[0xB3][1:])[0], 82498)
 
     def test_first_cf_active_reply_is_a_transition_not_immediate_failure(self):
         test, bus, _, _ = self.make_io("c1")
@@ -365,7 +351,7 @@ class VelocitySineTests(unittest.TestCase):
                 with sine.CsvLog(path):
                     pass
 
-    def test_cleanup_attempts_other_restorations_if_one_setting_fails(self):
+    def test_failed_watchdog_restoration_is_reported_with_b3_untouched(self):
         test, bus, _, _ = self.make_io()
         original = dict(bus.config)
         with patch.object(sine.select, "select", bus.select), redirect_stdout(io.StringIO()):

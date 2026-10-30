@@ -15,9 +15,9 @@ feedforward=converted B9 * integral(target_velocity - A2_velocity) dt.
 No angle guard, extra speed ramp, tracking-error abort, tight packet deadline or
 silent gain/integral clipping. Late slots are logged/skipped, not burst or stretched.
 Speed >61.6 rad/s, measured/estimated torque >6.28 Nm, stale feedback, driver/bus
-faults and invalid packets stop motion. B3 is temporarily lowered ONLY if above
-6.28/Kt A; CD is enabled/shortened to at most 500 ms. Both are restored after
-confirmed CF disable. B1/F0/B5/gains are never changed. B3 is not MIT protection.
+faults and invalid packets stop motion. B3 is read/logged only: no current-limit
+writes or matching checks. CD is enabled/shortened to at most 500 ms and restored
+after confirmed CF disable. B1/F0/B3/B5/gains are never changed.
 Host limits cannot guarantee a physical torque cap between feedback samples.
 """
 
@@ -43,7 +43,6 @@ import time
 
 RATE_HZ, DURATION_S = 200.0, 10.0
 SPEED_LIMIT_RAD_S, TORQUE_LIMIT_NM = 61.6, 6.28
-B3_ABSOLUTE_TOLERANCE_MA, B3_RELATIVE_TOLERANCE = 100, .01
 SIGN = -1.0  # Native positive is backward; output-side feedback, gear ratio 1.
 CAN_FRAME = struct.Struct("=IB3x8s")
 RX_OVERFLOW = getattr(socket, "SO_RXQ_OVFL", 40)
@@ -394,24 +393,11 @@ class VelocityTest:
                 select.select([self.bus], [], [], max(0., retry_at - self.clock.monotonic()))
         raise RuntimeError("CF did not confirm disabled motor within 1 s")
 
-    def configure(self, wanted):
+    def configure_watchdog(self, wanted):
         reply = self.request(wanted[0], wanted)
         reread = self.request(wanted[0])
-        for got in (reply, reread):
-            if wanted[0] == 0xB3:
-                target, actual = struct.unpack("<I", wanted[1:])[0], struct.unpack("<I", got[1:])[0]
-                tolerance = max(B3_ABSOLUTE_TOLERANCE_MA, math.ceil(target * B3_RELATIVE_TOLERANCE))
-                if not actual or not 0 <= target - actual <= tolerance:
-                    raise RuntimeError(f"B3 readback outside tolerance: requested={target / 1000:g} A, "
-                                       f"reported={actual / 1000:g} A; permitted downward difference "
-                                       f"{tolerance / 1000:g} A; zero or higher-than-requested limits rejected")
-                if actual != target:
-                    note = (f"B3 accepted: requested={target / 1000:g} A, reported={actual / 1000:g} A "
-                            f"(downward tolerance {tolerance / 1000:g} A)")
-                    self.emit("event", note=note)
-                    print(note, flush=True)
-            elif wanted != got:
-                raise RuntimeError("CD watchdog readback mismatch")
+        if wanted != reply or wanted != reread:
+            raise RuntimeError("CD watchdog readback mismatch")
         return reread
 
     def startup(self):
@@ -425,22 +411,19 @@ class VelocityTest:
                                               self.args.ki_timebase, self.args.ki_period_s)
             if not 0 <= self.kd <= 5 or self.args.amplitude > self.ranges[1]:
                 raise ValueError("converted Kd or sine velocity outside MIT encoding range; no gain/target clipping")
-        b3, cd = (bytes.fromhex(self.settings[key]) for key in ("B3", "CD"))
-        current_ma = struct.unpack("<I", b3[1:])[0]
-        limit_ma = min(current_ma, math.floor(TORQUE_LIMIT_NM / self.kt * 1000))
-        if limit_ma <= 0 or cd[1] not in (0, 1):
-            raise ValueError("invalid zero current ceiling/watchdog setting")
+        cd = bytes.fromhex(self.settings["CD"])
+        if cd[1] not in (0, 1):
+            raise ValueError("invalid watchdog setting")
         timeout_ms = min(struct.unpack("<H", cd[2:4])[0], 500) if cd[1] else 500
         if timeout_ms <= 0:
             raise ValueError("invalid enabled watchdog timeout")
-        for original, wanted in ((b3, b"\xb3" + struct.pack("<I", limit_ma)),
-                                 (cd, b"\xcd\x01" + struct.pack("<H", timeout_ms) + cd[4:])):
-            if original != wanted:
-                self.saved.append(original)
-                readback = self.configure(wanted)
-            else:
-                readback = original
-            self.applied_settings[f"{wanted[0]:02X}"] = readback.hex().upper()
+        wanted = b"\xcd\x01" + struct.pack("<H", timeout_ms) + cd[4:]
+        if cd != wanted:
+            self.saved.append(cd)
+            readback = self.configure_watchdog(wanted)
+        else:
+            readback = cd
+        self.applied_settings["CD"] = readback.hex().upper()
         for op in (0xA3, 0xA2, 0xA1, 0xAE):
             self.request(op)
         print(f"B8 Kp={self.raw_gains['B8']:.9g}, B9 Ki={self.raw_gains['B9']:.9g}, Kt={self.kt:.9g} Nm/A")
@@ -529,12 +512,12 @@ class VelocityTest:
         failures = []
         for original in reversed(self.saved):
             try:
-                self.configure(original)
+                self.configure_watchdog(original)
             except Exception as error:
                 failures.append(f"{original[0]:02X}: {error}")
         if failures:
             raise RuntimeError("disabled, but settings restoration not confirmed: " + "; ".join(failures))
-        self.emit("event", note="CF disabled confirmed; original B3/CD restored")
+        self.emit("event", note="CF disabled confirmed; original CD restored; B3 read-only")
 
 
 def json_ready(value):
@@ -603,7 +586,7 @@ def main(argv=None):
             json.dump(json_ready(report), stream, indent=2, allow_nan=False)
             stream.write("\n")
     if report["completed"]:
-        print("Completed; CF disabled confirmed, original B3/CD restored. Wheel may coast.")
+        print("Completed; CF disabled confirmed, original CD restored; B3 unchanged. Wheel may coast.")
     return 0 if report["completed"] else 1
 
 

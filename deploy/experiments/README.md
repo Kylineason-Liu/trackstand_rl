@@ -17,6 +17,8 @@ units and Ki's time convention are not documented**, so MIT requires explicit
 unit/timebase flags rather than guessing or copying raw values into torque Kd.
 Read [the commands, conversion options and test conditions](DRIVE_VELOCITY_SINE.md).
 Keep the rear wheel airborne/free and stop other CAN writers. No ROS build is needed.
+B3 is read/logged only; the script does not write or compare current-limit
+settings. Measured speed/torque and fault/feedback guards remain active.
 
 ## Rear constant-torque threshold trials
 

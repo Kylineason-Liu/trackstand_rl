@@ -92,8 +92,8 @@ Even with confirmed gain units, this is not a proof of identical controllers:
 C1 has an internal PI loop, while MIT uses internal velocity P plus a **200 Hz
 host integral using delayed feedback**. Quantization, C1's B3 current ceiling,
 B5 acceleration setting, internal filtering/feedforward, integrator initialization
-and firmware timing can differ. Original B3/B5/gains are recorded; B5 and gains
-are not modified. Compare actual recorded target timing and response.
+and firmware timing can differ. Original B3/B5/gains are recorded and remain
+unchanged. Compare actual recorded target timing and response.
 
 ## Limits and cleanup
 
@@ -116,22 +116,23 @@ These guards terminate the test; there is no continuing saturated integrator and
 no hidden anti-windup formula replacing the requested integral law. C1's internal
 integrator/anti-windup is not exposed by this protocol.
 
-Before motion, B3 is **only lowered if it exceeds 6.28/Kt A**, never raised. Its
-acknowledgement/readback now accepts a downward difference of **0.1 A or 1% of
-the requested current, whichever is larger**, replacing the overly tight 1 mA
-tolerance. Accepted differences are printed and logged, with actual applied
-readback retained in JSON. A zero value, a value above the requested ceiling,
-or a larger downward discrepancy still fails with requested/returned values
-in the error. This is a software acceptance tolerance, not a measured firmware
-quantization specification. The same tolerance applies to restoration, so the
-restored ceiling can be slightly below its original value.
-B3 protects C1 position/speed-mode current, **not proven MIT total torque**. CD is
-enabled/shortened to at most **500 ms**, preserving any shorter enabled timeout
-and existing action bits. Only after CF confirms mode zero are originals restored.
+B3 is now **read and logged only**. There are **no B3 writes, requested-versus-
+readback comparisons, tolerances or B3 restoration writes**. The observed
+20.933 A request / 20.934 A response previously failed because the comparison
+allowed downward error only. That entire temporary-setting path is removed,
+rather than imposing another rounding threshold. The existing motor-side B3
+ceiling stays as read at startup and is retained under `original_settings` in
+JSON; `applied_settings` contains only the temporary CD watchdog setting.
+
+The **61.6 rad/s measured-speed and 6.28 Nm measured/estimated-torque guards remain**.
+They are host checks, not a new programmed firmware current ceiling. B3 applies
+to C1 position/speed-mode current, not proven MIT total torque. CD is enabled/
+shortened to at most **500 ms**, preserving any shorter enabled timeout and
+existing action bits. Only after CF confirms mode zero is original CD restored.
 CF confirmation permits the first reply to retain its previous active mode,
 retrying within **one second**. Logging failure cannot block the CF attempt; a
-failed restoration does not prevent attempts for other settings. No B1/F0/B5/
-gain/fault-clear writes occur. Firmware-watchdog behavior across these modes has
+watchdog restoration failure is reported. No B1/F0/B3/B5/gain/fault-clear writes
+occur. Firmware-watchdog behavior across these modes has
 not been physically validated by this implementation; CF also does not stop coast.
 
 ## Files and feedback
@@ -154,10 +155,11 @@ converted gains, original/applied configuration, F0 ranges, per-phase counts/
 achieved rates/gaps, first A3 count, completion/disable/restore/error results and
 script hash. Missing numerical values are JSON null; partial CSVs remain on errors.
 
-Validation: **33 simulated-CAN tests passed**, covering byte layout/signs, all unit
+Validation: **31 simulated-CAN tests passed**, covering byte layout/signs, all unit
 conversions, real-dt integration, two 2,000-command phases, delays without timing
 abort, feedback loss, logger failure, CF transitions, restoration and main-program
-success/failure JSON output. This is
+success/failure JSON output. Tests forbid any B3 writes and cover the reported
+20.934 A startup value completing a full C1 phase. This is
 software verification, not a completed bike test or evidence one method is better.
 
 ```bash
