@@ -43,6 +43,7 @@ import time
 
 RATE_HZ, DURATION_S = 200.0, 10.0
 SPEED_LIMIT_RAD_S, TORQUE_LIMIT_NM = 61.6, 6.28
+B3_ABSOLUTE_TOLERANCE_MA, B3_RELATIVE_TOLERANCE = 100, .01
 SIGN = -1.0  # Native positive is backward; output-side feedback, gear ratio 1.
 CAN_FRAME = struct.Struct("=IB3x8s")
 RX_OVERFLOW = getattr(socket, "SO_RXQ_OVFL", 40)
@@ -399,8 +400,16 @@ class VelocityTest:
         for got in (reply, reread):
             if wanted[0] == 0xB3:
                 target, actual = struct.unpack("<I", wanted[1:])[0], struct.unpack("<I", got[1:])[0]
-                if not actual or not 0 <= target - actual <= 1:
-                    raise RuntimeError("B3 readback differs by more than one downward milliamp")
+                tolerance = max(B3_ABSOLUTE_TOLERANCE_MA, math.ceil(target * B3_RELATIVE_TOLERANCE))
+                if not actual or not 0 <= target - actual <= tolerance:
+                    raise RuntimeError(f"B3 readback outside tolerance: requested={target / 1000:g} A, "
+                                       f"reported={actual / 1000:g} A; permitted downward difference "
+                                       f"{tolerance / 1000:g} A; zero or higher-than-requested limits rejected")
+                if actual != target:
+                    note = (f"B3 accepted: requested={target / 1000:g} A, reported={actual / 1000:g} A "
+                            f"(downward tolerance {tolerance / 1000:g} A)")
+                    self.emit("event", note=note)
+                    print(note, flush=True)
             elif wanted != got:
                 raise RuntimeError("CD watchdog readback mismatch")
         return reread

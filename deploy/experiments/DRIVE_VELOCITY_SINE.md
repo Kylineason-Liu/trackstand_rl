@@ -116,8 +116,15 @@ These guards terminate the test; there is no continuing saturated integrator and
 no hidden anti-windup formula replacing the requested integral law. C1's internal
 integrator/anti-windup is not exposed by this protocol.
 
-Before motion, B3 is **only lowered if it exceeds 6.28/Kt A**, never raised; its
-acknowledgement/readback permits the previously observed **1 mA downward** rounding.
+Before motion, B3 is **only lowered if it exceeds 6.28/Kt A**, never raised. Its
+acknowledgement/readback now accepts a downward difference of **0.1 A or 1% of
+the requested current, whichever is larger**, replacing the overly tight 1 mA
+tolerance. Accepted differences are printed and logged, with actual applied
+readback retained in JSON. A zero value, a value above the requested ceiling,
+or a larger downward discrepancy still fails with requested/returned values
+in the error. This is a software acceptance tolerance, not a measured firmware
+quantization specification. The same tolerance applies to restoration, so the
+restored ceiling can be slightly below its original value.
 B3 protects C1 position/speed-mode current, **not proven MIT total torque**. CD is
 enabled/shortened to at most **500 ms**, preserving any shorter enabled timeout
 and existing action bits. Only after CF confirms mode zero are originals restored.
@@ -147,7 +154,7 @@ converted gains, original/applied configuration, F0 ranges, per-phase counts/
 achieved rates/gaps, first A3 count, completion/disable/restore/error results and
 script hash. Missing numerical values are JSON null; partial CSVs remain on errors.
 
-Validation: **29 simulated-CAN tests passed**, covering byte layout/signs, all unit
+Validation: **33 simulated-CAN tests passed**, covering byte layout/signs, all unit
 conversions, real-dt integration, two 2,000-command phases, delays without timing
 abort, feedback loss, logger failure, CF transitions, restoration and main-program
 success/failure JSON output. This is

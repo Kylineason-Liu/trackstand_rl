@@ -285,6 +285,41 @@ class VelocitySineTests(unittest.TestCase):
             test.cleanup()
         self.assertEqual(struct.unpack("<I", bus.config[0xB3][1:])[0], 29999)
 
+    def test_b3_accepts_100_milliamp_downward_difference_and_logs_actual(self):
+        test, bus, log, _ = self.make_io("c1")
+        bus.b3_quantization = -100
+        with patch.object(sine.select, "select", bus.select), redirect_stdout(io.StringIO()):
+            test.startup()
+            applied = bytes.fromhex(test.applied_settings["B3"])
+            expected = math.floor(sine.TORQUE_LIMIT_NM / test.kt * 1000) - 100
+            self.assertEqual(struct.unpack("<I", applied[1:])[0], expected)
+            test.cleanup()
+        self.assertEqual(struct.unpack("<I", bus.config[0xB3][1:])[0], 29900)
+        self.assertTrue(any("B3 accepted" in row.get("note", "") for row in log.rows))
+
+    def test_b3_one_percent_tolerance_accepts_200_milliamp_difference(self):
+        test, bus, _, _ = self.make_io("c1")
+        bus.b3_quantization = -200
+        with patch.object(sine.select, "select", bus.select), redirect_stdout(io.StringIO()):
+            test.startup()
+            test.cleanup()
+        self.assertEqual(struct.unpack("<I", bus.config[0xB3][1:])[0], 29800)
+
+    def test_b3_rejects_zero_or_excess_downward_error_with_diagnostic_values(self):
+        for offset in (-500, -20933):
+            test, bus, _, _ = self.make_io("c1")
+            bus.b3_quantization = offset
+            with patch.object(sine.select, "select", bus.select), redirect_stdout(io.StringIO()):
+                with self.assertRaisesRegex(RuntimeError, "requested=.*reported=.*downward difference"):
+                    test.configure(b"\xb3" + struct.pack("<I", 20933))
+
+    def test_b3_still_rejects_even_small_upward_limit_change(self):
+        test, bus, _, _ = self.make_io("c1")
+        bus.b3_quantization = 1
+        with patch.object(sine.select, "select", bus.select), redirect_stdout(io.StringIO()):
+            with self.assertRaisesRegex(RuntimeError, "higher-than-requested"):
+                test.configure(b"\xb3" + struct.pack("<I", 20933))
+
     def test_first_cf_active_reply_is_a_transition_not_immediate_failure(self):
         test, bus, _, _ = self.make_io("c1")
         bus.cf_transition_replies = 2
