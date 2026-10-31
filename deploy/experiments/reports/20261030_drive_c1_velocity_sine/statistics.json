@@ -1,0 +1,776 @@
+{
+  "fixture": "User confirmed rear wheel airborne/free, no hand contact, same power supply and firmware conditions for all five runs.",
+  "metric_window_s": [
+    2.0,
+    10.0
+  ],
+  "time_base": "Common monotonic phase origin; no independently re-zeroed channels",
+  "lag_definition": "Fundamental phase-equivalent lag vs actual held encoded input; not motor-internal latency",
+  "runs": [
+    {
+      "source_sha256": "525f474cdc3459a7d692381bce385fd458ee9b44851e4c8f372ec1a69bb2c1e8",
+      "csv_sha256": "cc73bd61d4c25fbf258a8ae0f8e167f3ae1bfb2c960762bc6e6a446bff840c2e",
+      "json_sha256": "b84801f7ea33df2a16d0c862d4d41f1b58e888d70487a3d1ceac14c484aea16c",
+      "decoded_checks": {
+        "A2": 1948,
+        "A1": 986,
+        "command": 1998,
+        "C1": 1998
+      },
+      "metadata": {
+        "arguments": {
+          "method": "c1",
+          "execute": true,
+          "interface": "can0",
+          "amplitude": 4.0,
+          "frequency": 0.5,
+          "gain_speed_unit": null,
+          "gain_current_unit": null,
+          "ki_timebase": null,
+          "ki_period_s": null,
+          "output": "/home/smallbike/trackstand_rl/deploy/experiments/logs/20261030_103805_187108_drive_velocity_sine.csv"
+        },
+        "gain_basis": "user-selected; not verified by local protocol",
+        "source_sha256": "525f474cdc3459a7d692381bce385fd458ee9b44851e4c8f372ec1a69bb2c1e8",
+        "motor_id": 1,
+        "encoder_sign": -1.0,
+        "torque_sign": -1.0,
+        "packet_rate_hz": 200.0,
+        "duration_per_method_s": 10.0,
+        "completed": true,
+        "disabled_and_restored": true,
+        "error": null,
+        "raw_gains": {
+          "B8": 0.5,
+          "B9": 0.004999999888241291
+        },
+        "torque_constant_nm_per_a": 0.30000001192092896,
+        "mit_kd_nm_s_per_rad": null,
+        "integral_ki_nm_per_rad": null,
+        "original_settings": {
+          "B0": "B0079A99993E00",
+          "B8": "B80000003F",
+          "B9": "B90AD7A33B",
+          "B3": "B342420100",
+          "B5": "B500000000",
+          "CD": "CD00881300"
+        },
+        "applied_settings": {
+          "CD": "CD01F40100"
+        },
+        "mit_encoding_ranges": null,
+        "phases": [
+          {
+            "method": "c1",
+            "duration_s": 10.000069981993875,
+            "commands": 1998,
+            "skipped_slots": 2,
+            "achieved_rate_hz": 199.80150761742763,
+            "max_packet_interval_s": 0.010901870002271608,
+            "final_integral_torque_nm": 0.0
+          }
+        ],
+        "zero_count": -6206335
+      },
+      "packet_interval_ms": {
+        "n": 1997,
+        "min": 0.3909830120392144,
+        "median": 4.999841999961063,
+        "mean": 5.0049672393601865,
+        "p95": 5.1069046050542966,
+        "p99": 6.907333113485944,
+        "max": 10.901870002271608
+      },
+      "velocity_receipt_age_at_command_ms": {
+        "n": 1998,
+        "min": 0.04346499918028712,
+        "median": 2.587768503872212,
+        "mean": 2.5275789819723293,
+        "p95": 4.417707587708718,
+        "p99": 5.880270788184134,
+        "max": 8.95271499757655
+      },
+      "a2_interval_ms": {
+        "n": 1944,
+        "min": 1.2187660031486303,
+        "median": 5.0618660025065765,
+        "mean": 5.14076109464912,
+        "p95": 5.634065699996425,
+        "p99": 7.892068231740266,
+        "max": 12.598289991728961
+      },
+      "a1_interval_ms": {
+        "n": 983,
+        "min": 2.853422993212007,
+        "median": 10.07308300177101,
+        "mean": 10.167360480157456,
+        "p95": 10.635295501560904,
+        "p99": 13.673670957214197,
+        "max": 20.820763005758636
+      },
+      "input_harmonic": {
+        "amplitude": 4.00005453927627,
+        "phase_rad": -0.007889429620000369,
+        "bias": -1.5112561803087843e-06
+      },
+      "output_harmonic": {
+        "amplitude": 3.9712586529717955,
+        "phase_rad": -0.035475906071727764,
+        "bias": -0.0031281352710670896,
+        "residual_rms": 0.31555907636330915
+      },
+      "metrics": {
+        "frequency_hz": 0.5,
+        "amplitude_requested_rad_s": 4.0,
+        "source_csv": "20261030_103805_187108_drive_velocity_sine.csv",
+        "phase_origin_monotonic_s": 72000.132708553,
+        "duration_s": 10.000069981993875,
+        "command_samples": 1998,
+        "a2_samples": 1945,
+        "a1_samples": 984,
+        "commands_skipped": 2,
+        "achieved_command_rate_hz": 199.80150761742763,
+        "held_target_fundamental_amplitude_rad_s": 4.00005453927627,
+        "measured_fundamental_amplitude_rad_s": 3.9712586529717955,
+        "amplitude_ratio_percent": 99.28011265792178,
+        "phase_equivalent_lag_from_held_target_ms": 8.781048179561136,
+        "phase_equivalent_lag_from_ideal_sine_ms": 11.292331623958514,
+        "steady_error_rms_rad_s": 0.3259641538258032,
+        "steady_error_mae_rad_s": 0.26293274717417864,
+        "steady_error_p95_abs_rad_s": 0.6576924220290236,
+        "steady_error_peak_abs_rad_s": 0.9676105373056564,
+        "steady_fraction_within_0p5_rad_s": 0.8683544303797468,
+        "steady_mean_velocity_bias_rad_s": -0.0031281352710670896,
+        "steady_velocity_nonfundamental_rms_rad_s": 0.31555907636330915,
+        "measured_peak_positive_rad_s": 4.744852104471785,
+        "measured_peak_negative_rad_s": -4.825486315913922,
+        "measured_peak_over_amplitude_percent": 20.637157897848056,
+        "peak_abs_current_torque_nm": 0.40860001623630526,
+        "current_torque_rms_nm": 0.13184519889989355,
+        "steady_current_torque_rms_nm": 0.13252338502927302,
+        "alternate_c1_reply_amplitude_rad_s": 3.9730361285700257,
+        "alternate_c1_reply_phase_lag_ms": 8.224660348720647,
+        "raw_kp": 0.5,
+        "raw_ki": 0.004999999888241291,
+        "torque_constant_nm_per_a": 0.30000001192092896,
+        "current_ceiling_a": 82.498,
+        "b5_acceleration_raw": 0,
+        "bus_voltage_min_v": 20.19,
+        "bus_voltage_max_v": 20.22,
+        "max_temperature_c": 32.0
+      }
+    },
+    {
+      "source_sha256": "525f474cdc3459a7d692381bce385fd458ee9b44851e4c8f372ec1a69bb2c1e8",
+      "csv_sha256": "cc3044c96f3fc9164974c237cbd65012133adb522bcf66e2297f81057cf18559",
+      "json_sha256": "40cfb69b090cdadedcf34c58ab1129c537265f5b34cd5c8cc8ba76643b9b0e34",
+      "decoded_checks": {
+        "A2": 1973,
+        "A1": 993,
+        "command": 2000,
+        "C1": 2000
+      },
+      "metadata": {
+        "arguments": {
+          "method": "c1",
+          "execute": true,
+          "interface": "can0",
+          "amplitude": 4.0,
+          "frequency": 1.0,
+          "gain_speed_unit": null,
+          "gain_current_unit": null,
+          "ki_timebase": null,
+          "ki_period_s": null,
+          "output": "/home/smallbike/trackstand_rl/deploy/experiments/logs/20261030_104110_521233_drive_velocity_sine.csv"
+        },
+        "gain_basis": "user-selected; not verified by local protocol",
+        "source_sha256": "525f474cdc3459a7d692381bce385fd458ee9b44851e4c8f372ec1a69bb2c1e8",
+        "motor_id": 1,
+        "encoder_sign": -1.0,
+        "torque_sign": -1.0,
+        "packet_rate_hz": 200.0,
+        "duration_per_method_s": 10.0,
+        "completed": true,
+        "disabled_and_restored": true,
+        "error": null,
+        "raw_gains": {
+          "B8": 0.5,
+          "B9": 0.004999999888241291
+        },
+        "torque_constant_nm_per_a": 0.30000001192092896,
+        "mit_kd_nm_s_per_rad": null,
+        "integral_ki_nm_per_rad": null,
+        "original_settings": {
+          "B0": "B0079A99993E00",
+          "B8": "B80000003F",
+          "B9": "B90AD7A33B",
+          "B3": "B342420100",
+          "B5": "B500000000",
+          "CD": "CD00881300"
+        },
+        "applied_settings": {
+          "CD": "CD01F40100"
+        },
+        "mit_encoding_ranges": null,
+        "phases": [
+          {
+            "method": "c1",
+            "duration_s": 10.000063981002313,
+            "commands": 2000,
+            "skipped_slots": 0,
+            "achieved_rate_hz": 200.00191801740374,
+            "max_packet_interval_s": 0.007828424000763334,
+            "final_integral_torque_nm": 0.0
+          }
+        ],
+        "zero_count": -6206405
+      },
+      "packet_interval_ms": {
+        "n": 1999,
+        "min": 2.08480900619179,
+        "median": 4.999775002943352,
+        "mean": 4.999952050024751,
+        "p95": 5.048951992648654,
+        "p99": 5.248399567208252,
+        "max": 7.828424000763334
+      },
+      "velocity_receipt_age_at_command_ms": {
+        "n": 2000,
+        "min": 0.04263099981471896,
+        "median": 2.654003503266722,
+        "mean": 2.5399973500389024,
+        "p95": 4.3020049430197105,
+        "p99": 4.546251870051492,
+        "max": 7.9328150022774935
+      },
+      "a2_interval_ms": {
+        "n": 1970,
+        "min": 1.4624549949076027,
+        "median": 5.059488001279533,
+        "mean": 5.0749848639594894,
+        "p95": 5.362383396277437,
+        "p99": 6.019841417728456,
+        "max": 8.43216700013727
+      },
+      "a1_interval_ms": {
+        "n": 990,
+        "min": 8.354477002285421,
+        "median": 10.076316502818372,
+        "mean": 10.098801963642766,
+        "p95": 10.368367104820209,
+        "p99": 10.97112639778061,
+        "max": 14.319544003228657
+      },
+      "input_harmonic": {
+        "amplitude": 3.9997770333169465,
+        "phase_rad": -0.015789353838525682,
+        "bias": 1.0572102707634423e-05
+      },
+      "output_harmonic": {
+        "amplitude": 3.923011626750381,
+        "phase_rad": -0.06006935236747136,
+        "bias": -0.0015895495741821974,
+        "residual_rms": 0.32303436831213933
+      },
+      "metrics": {
+        "frequency_hz": 1.0,
+        "amplitude_requested_rad_s": 4.0,
+        "source_csv": "20261030_104110_521233_drive_velocity_sine.csv",
+        "phase_origin_monotonic_s": 72185.467866257,
+        "duration_s": 10.000063981002313,
+        "command_samples": 2000,
+        "a2_samples": 1971,
+        "a1_samples": 991,
+        "commands_skipped": 0,
+        "achieved_command_rate_hz": 200.00191801740374,
+        "held_target_fundamental_amplitude_rad_s": 3.9997770333169465,
+        "measured_fundamental_amplitude_rad_s": 3.923011626750381,
+        "amplitude_ratio_percent": 98.08075785407206,
+        "phase_equivalent_lag_from_held_target_ms": 7.047380645983563,
+        "phase_equivalent_lag_from_ideal_sine_ms": 9.560334357611913,
+        "steady_error_rms_rad_s": 0.35240101449278527,
+        "steady_error_mae_rad_s": 0.2884648394222188,
+        "steady_error_p95_abs_rad_s": 0.65554566704907,
+        "steady_error_peak_abs_rad_s": 1.0210176124166828,
+        "steady_fraction_within_0p5_rad_s": 0.8437697659709045,
+        "steady_mean_velocity_bias_rad_s": -0.0015895495741821974,
+        "steady_velocity_nonfundamental_rms_rad_s": 0.32303436831213933,
+        "measured_peak_positive_rad_s": 4.885176576332128,
+        "measured_peak_negative_rad_s": -4.828627908567512,
+        "measured_peak_over_amplitude_percent": 22.129414408303205,
+        "peak_abs_current_torque_nm": 0.375900014936924,
+        "current_torque_rms_nm": 0.12824125101302486,
+        "steady_current_torque_rms_nm": 0.1263676061584311,
+        "alternate_c1_reply_amplitude_rad_s": 3.922606869772325,
+        "alternate_c1_reply_phase_lag_ms": 6.47597121943836,
+        "raw_kp": 0.5,
+        "raw_ki": 0.004999999888241291,
+        "torque_constant_nm_per_a": 0.30000001192092896,
+        "current_ceiling_a": 82.498,
+        "b5_acceleration_raw": 0,
+        "bus_voltage_min_v": 20.19,
+        "bus_voltage_max_v": 20.22,
+        "max_temperature_c": 32.0
+      }
+    },
+    {
+      "source_sha256": "525f474cdc3459a7d692381bce385fd458ee9b44851e4c8f372ec1a69bb2c1e8",
+      "csv_sha256": "5a57b070e222f17c95430d8827f36e4958073756313f5bd01e7be415ba722504",
+      "json_sha256": "6354412584513beddc4b35d4c0c2188168a7bdb1a3c83bd484c17d480b7bedde",
+      "decoded_checks": {
+        "A2": 1978,
+        "A1": 995,
+        "command": 2000,
+        "C1": 2000
+      },
+      "metadata": {
+        "arguments": {
+          "method": "c1",
+          "execute": true,
+          "interface": "can0",
+          "amplitude": 4.0,
+          "frequency": 2.0,
+          "gain_speed_unit": null,
+          "gain_current_unit": null,
+          "ki_timebase": null,
+          "ki_period_s": null,
+          "output": "/home/smallbike/trackstand_rl/deploy/experiments/logs/20261030_104154_932459_drive_velocity_sine.csv"
+        },
+        "gain_basis": "user-selected; not verified by local protocol",
+        "source_sha256": "525f474cdc3459a7d692381bce385fd458ee9b44851e4c8f372ec1a69bb2c1e8",
+        "motor_id": 1,
+        "encoder_sign": -1.0,
+        "torque_sign": -1.0,
+        "packet_rate_hz": 200.0,
+        "duration_per_method_s": 10.0,
+        "completed": true,
+        "disabled_and_restored": true,
+        "error": null,
+        "raw_gains": {
+          "B8": 0.5,
+          "B9": 0.004999999888241291
+        },
+        "torque_constant_nm_per_a": 0.30000001192092896,
+        "mit_kd_nm_s_per_rad": null,
+        "integral_ki_nm_per_rad": null,
+        "original_settings": {
+          "B0": "B0079A99993E00",
+          "B8": "B80000003F",
+          "B9": "B90AD7A33B",
+          "B3": "B342420100",
+          "B5": "B500000000",
+          "CD": "CD00881300"
+        },
+        "applied_settings": {
+          "CD": "CD01F40100"
+        },
+        "mit_encoding_ranges": null,
+        "phases": [
+          {
+            "method": "c1",
+            "duration_s": 10.00006592599675,
+            "commands": 2000,
+            "skipped_slots": 0,
+            "achieved_rate_hz": 200.00197730825877,
+            "max_packet_interval_s": 0.00656471100228373,
+            "final_integral_torque_nm": 0.0
+          }
+        ],
+        "zero_count": -6206464
+      },
+      "packet_interval_ms": {
+        "n": 1999,
+        "min": 3.4070449910359457,
+        "median": 4.999773009330966,
+        "mean": 4.9999505677822444,
+        "p95": 5.036627809749916,
+        "p99": 5.068468911049422,
+        "max": 6.56471100228373
+      },
+      "velocity_receipt_age_at_command_ms": {
+        "n": 2000,
+        "min": 0.04152000474277884,
+        "median": 2.6481230015633628,
+        "mean": 2.5319229059678037,
+        "p95": 4.308510141709121,
+        "p99": 4.512525452882983,
+        "max": 4.75413900858257
+      },
+      "a2_interval_ms": {
+        "n": 1975,
+        "min": 2.9025469993939623,
+        "median": 5.059463001089171,
+        "mean": 5.061946457724936,
+        "p95": 5.273017800936941,
+        "p99": 5.5571470042923465,
+        "max": 7.053779991110787
+      },
+      "a1_interval_ms": {
+        "n": 992,
+        "min": 8.661494997795671,
+        "median": 10.072700002638157,
+        "mean": 10.075942215720598,
+        "p95": 10.244269557006191,
+        "p99": 10.542151957488386,
+        "max": 11.585767002543435
+      },
+      "input_harmonic": {
+        "amplitude": 3.9993515085779543,
+        "phase_rad": -0.031569727064346145,
+        "bias": -1.3733798155447265e-05
+      },
+      "output_harmonic": {
+        "amplitude": 3.861776252305771,
+        "phase_rad": -0.10187296006014716,
+        "bias": 0.0034560873037543516,
+        "residual_rms": 0.32062569879641495
+      },
+      "metrics": {
+        "frequency_hz": 2.0,
+        "amplitude_requested_rad_s": 4.0,
+        "source_csv": "20261030_104154_932459_drive_velocity_sine.csv",
+        "phase_origin_monotonic_s": 72229.875239204,
+        "duration_s": 10.00006592599675,
+        "command_samples": 2000,
+        "a2_samples": 1976,
+        "a1_samples": 993,
+        "commands_skipped": 0,
+        "achieved_command_rate_hz": 200.00197730825877,
+        "held_target_fundamental_amplitude_rad_s": 3.9993515085779543,
+        "measured_fundamental_amplitude_rad_s": 3.861776252305771,
+        "amplitude_ratio_percent": 96.5600609004458,
+        "phase_equivalent_lag_from_held_target_ms": 5.594553523311474,
+        "phase_equivalent_lag_from_ideal_sine_ms": 8.106792580487824,
+        "steady_error_rms_rad_s": 0.39232128976536595,
+        "steady_error_mae_rad_s": 0.324796831881571,
+        "steady_error_p95_abs_rad_s": 0.7267551005304387,
+        "steady_error_peak_abs_rad_s": 1.1403981332530946,
+        "steady_fraction_within_0p5_rad_s": 0.7963314358001266,
+        "steady_mean_velocity_bias_rad_s": 0.0034560873037543516,
+        "steady_velocity_nonfundamental_rms_rad_s": 0.32062569879641495,
+        "measured_peak_positive_rad_s": 4.741710511818194,
+        "measured_peak_negative_rad_s": -4.834911093874692,
+        "measured_peak_over_amplitude_percent": 20.8727773468673,
+        "peak_abs_current_torque_nm": 0.435000017285347,
+        "current_torque_rms_nm": 0.1311058302961365,
+        "steady_current_torque_rms_nm": 0.13131823483887697,
+        "alternate_c1_reply_amplitude_rad_s": 3.863216305038507,
+        "alternate_c1_reply_phase_lag_ms": 5.4780773421564115,
+        "raw_kp": 0.5,
+        "raw_ki": 0.004999999888241291,
+        "torque_constant_nm_per_a": 0.30000001192092896,
+        "current_ceiling_a": 82.498,
+        "b5_acceleration_raw": 0,
+        "bus_voltage_min_v": 20.2,
+        "bus_voltage_max_v": 20.22,
+        "max_temperature_c": 32.0
+      }
+    },
+    {
+      "source_sha256": "525f474cdc3459a7d692381bce385fd458ee9b44851e4c8f372ec1a69bb2c1e8",
+      "csv_sha256": "7f0c2505d2658ad4b6db661c048f54577f6a0c11429fc7954994b0a84b97f4cf",
+      "json_sha256": "87e57bfd91aaac14663c7b9a048046b3cedb5774fe56c57d8d8ba92dfc93484d",
+      "decoded_checks": {
+        "A2": 1977,
+        "A1": 995,
+        "command": 2000,
+        "C1": 2000
+      },
+      "metadata": {
+        "arguments": {
+          "method": "c1",
+          "execute": true,
+          "interface": "can0",
+          "amplitude": 4.0,
+          "frequency": 5.0,
+          "gain_speed_unit": null,
+          "gain_current_unit": null,
+          "ki_timebase": null,
+          "ki_period_s": null,
+          "output": "/home/smallbike/trackstand_rl/deploy/experiments/logs/20261030_104208_835736_drive_velocity_sine.csv"
+        },
+        "gain_basis": "user-selected; not verified by local protocol",
+        "source_sha256": "525f474cdc3459a7d692381bce385fd458ee9b44851e4c8f372ec1a69bb2c1e8",
+        "motor_id": 1,
+        "encoder_sign": -1.0,
+        "torque_sign": -1.0,
+        "packet_rate_hz": 200.0,
+        "duration_per_method_s": 10.0,
+        "completed": true,
+        "disabled_and_restored": true,
+        "error": null,
+        "raw_gains": {
+          "B8": 0.5,
+          "B9": 0.004999999888241291
+        },
+        "torque_constant_nm_per_a": 0.30000001192092896,
+        "mit_kd_nm_s_per_rad": null,
+        "integral_ki_nm_per_rad": null,
+        "original_settings": {
+          "B0": "B0079A99993E00",
+          "B8": "B80000003F",
+          "B9": "B90AD7A33B",
+          "B3": "B342420100",
+          "B5": "B500000000",
+          "CD": "CD00881300"
+        },
+        "applied_settings": {
+          "CD": "CD01F40100"
+        },
+        "mit_encoding_ranges": null,
+        "phases": [
+          {
+            "method": "c1",
+            "duration_s": 10.000064926993218,
+            "commands": 2000,
+            "skipped_slots": 0,
+            "achieved_rate_hz": 200.00250748536487,
+            "max_packet_interval_s": 0.006185453996295109,
+            "final_integral_torque_nm": 0.0
+          }
+        ],
+        "zero_count": -6206516
+      },
+      "packet_interval_ms": {
+        "n": 1999,
+        "min": 3.413300000829622,
+        "median": 4.999805998522788,
+        "mean": 4.999937313651804,
+        "p95": 5.034116606111638,
+        "p99": 5.062293721712194,
+        "max": 6.185453996295109
+      },
+      "velocity_receipt_age_at_command_ms": {
+        "n": 2000,
+        "min": 0.042760002543218434,
+        "median": 2.7072150114690885,
+        "mean": 2.557212417581468,
+        "p95": 4.341362944978755,
+        "p99": 4.51721235353034,
+        "max": 4.868749994784594
+      },
+      "a2_interval_ms": {
+        "n": 1974,
+        "min": 4.188597988104448,
+        "median": 5.060280505858827,
+        "mean": 5.064139140833768,
+        "p95": 5.272229549882468,
+        "p99": 5.573806784086628,
+        "max": 7.137831998988986
+      },
+      "a1_interval_ms": {
+        "n": 992,
+        "min": 7.945224002469331,
+        "median": 10.069755997392349,
+        "mean": 10.078767586682877,
+        "p95": 10.24101645234623,
+        "p99": 10.65091185257188,
+        "max": 13.335915995412506
+      },
+      "input_harmonic": {
+        "amplitude": 3.995906738422878,
+        "phase_rad": -0.07891390628576084,
+        "bias": 4.172981625253508e-06
+      },
+      "output_harmonic": {
+        "amplitude": 3.8092081567418457,
+        "phase_rad": -0.19986520419131046,
+        "bias": -0.0030816834685952754,
+        "residual_rms": 0.2921120412050453
+      },
+      "metrics": {
+        "frequency_hz": 5.0,
+        "amplitude_requested_rad_s": 4.0,
+        "source_csv": "20261030_104208_835736_drive_velocity_sine.csv",
+        "phase_origin_monotonic_s": 72243.778486861,
+        "duration_s": 10.000064926993218,
+        "command_samples": 2000,
+        "a2_samples": 1975,
+        "a1_samples": 993,
+        "commands_skipped": 0,
+        "achieved_command_rate_hz": 200.00250748536487,
+        "held_target_fundamental_amplitude_rad_s": 3.995906738422878,
+        "measured_fundamental_amplitude_rad_s": 3.8092081567418457,
+        "amplitude_ratio_percent": 95.32775427699998,
+        "phase_equivalent_lag_from_held_target_ms": 3.849999387009732,
+        "phase_equivalent_lag_from_ideal_sine_ms": 6.3619070398236115,
+        "steady_error_rms_rad_s": 0.48332296557804466,
+        "steady_error_mae_rad_s": 0.4016515940971892,
+        "steady_error_p95_abs_rad_s": 0.8943067087218941,
+        "steady_error_peak_abs_rad_s": 1.4419910279977153,
+        "steady_fraction_within_0p5_rad_s": 0.6654016445287793,
+        "steady_mean_velocity_bias_rad_s": -0.0030816834685952754,
+        "steady_velocity_nonfundamental_rms_rad_s": 0.2921120412050453,
+        "measured_peak_positive_rad_s": 4.322831491339556,
+        "measured_peak_negative_rad_s": -4.44744799993195,
+        "measured_peak_over_amplitude_percent": 11.18619999829875,
+        "peak_abs_current_torque_nm": 0.41910001665353774,
+        "current_torque_rms_nm": 0.13541915161292328,
+        "steady_current_torque_rms_nm": 0.13646196611845426,
+        "alternate_c1_reply_amplitude_rad_s": 3.795166752539823,
+        "alternate_c1_reply_phase_lag_ms": 3.844503878355156,
+        "raw_kp": 0.5,
+        "raw_ki": 0.004999999888241291,
+        "torque_constant_nm_per_a": 0.30000001192092896,
+        "current_ceiling_a": 82.498,
+        "b5_acceleration_raw": 0,
+        "bus_voltage_min_v": 20.2,
+        "bus_voltage_max_v": 20.22,
+        "max_temperature_c": 34.0
+      }
+    },
+    {
+      "source_sha256": "525f474cdc3459a7d692381bce385fd458ee9b44851e4c8f372ec1a69bb2c1e8",
+      "csv_sha256": "073cdb3202ee43fb352774d81a2e477edf6c84b26c70d4646057f30df9eafc8d",
+      "json_sha256": "3b2d5b6a837ba14845a354c7e858dd97ad88a3c2cd8878ed34c4270ee24ca2ee",
+      "decoded_checks": {
+        "A2": 1975,
+        "A1": 995,
+        "command": 2000,
+        "C1": 2000
+      },
+      "metadata": {
+        "arguments": {
+          "method": "c1",
+          "execute": true,
+          "interface": "can0",
+          "amplitude": 4.0,
+          "frequency": 10.0,
+          "gain_speed_unit": null,
+          "gain_current_unit": null,
+          "ki_timebase": null,
+          "ki_period_s": null,
+          "output": "/home/smallbike/trackstand_rl/deploy/experiments/logs/20261030_104226_508475_drive_velocity_sine.csv"
+        },
+        "gain_basis": "user-selected; not verified by local protocol",
+        "source_sha256": "525f474cdc3459a7d692381bce385fd458ee9b44851e4c8f372ec1a69bb2c1e8",
+        "motor_id": 1,
+        "encoder_sign": -1.0,
+        "torque_sign": -1.0,
+        "packet_rate_hz": 200.0,
+        "duration_per_method_s": 10.0,
+        "completed": true,
+        "disabled_and_restored": true,
+        "error": null,
+        "raw_gains": {
+          "B8": 0.5,
+          "B9": 0.004999999888241291
+        },
+        "torque_constant_nm_per_a": 0.30000001192092896,
+        "mit_kd_nm_s_per_rad": null,
+        "integral_ki_nm_per_rad": null,
+        "original_settings": {
+          "B0": "B0079A99993E00",
+          "B8": "B80000003F",
+          "B9": "B90AD7A33B",
+          "B3": "B342420100",
+          "B5": "B500000000",
+          "CD": "CD00881300"
+        },
+        "applied_settings": {
+          "CD": "CD01F40100"
+        },
+        "mit_encoding_ranges": null,
+        "phases": [
+          {
+            "method": "c1",
+            "duration_s": 10.000065325002652,
+            "commands": 2000,
+            "skipped_slots": 0,
+            "achieved_rate_hz": 200.00105451299282,
+            "max_packet_interval_s": 0.008327910007210448,
+            "final_integral_torque_nm": 0.0
+          }
+        ],
+        "zero_count": -6206513
+      },
+      "packet_interval_ms": {
+        "n": 1999,
+        "min": 2.7710379945347086,
+        "median": 4.9997629976132885,
+        "mean": 4.999973637314179,
+        "p95": 5.037380101566669,
+        "p99": 5.078394682495855,
+        "max": 8.327910007210448
+      },
+      "velocity_receipt_age_at_command_ms": {
+        "n": 2000,
+        "min": 0.04326000635046512,
+        "median": 2.6517750084167346,
+        "mean": 2.519202981944545,
+        "p95": 4.346501790860202,
+        "p99": 4.512081682914868,
+        "max": 6.118831995991059
+      },
+      "a2_interval_ms": {
+        "n": 1972,
+        "min": 2.060277998680249,
+        "median": 5.062377997091971,
+        "mean": 5.068413728701872,
+        "p95": 5.2824111458903635,
+        "p99": 5.646157152368685,
+        "max": 9.213433004333638
+      },
+      "a1_interval_ms": {
+        "n": 992,
+        "min": 7.3531429952709,
+        "median": 10.072193501400761,
+        "mean": 10.07698374395395,
+        "p95": 10.246018400357569,
+        "p99": 10.590764678199776,
+        "max": 13.077316994895227
+      },
+      "input_harmonic": {
+        "amplitude": 3.9838148271138585,
+        "phase_rad": -0.15798404985950482,
+        "bias": 0.00014813967388442768
+      },
+      "output_harmonic": {
+        "amplitude": 3.8332745012152643,
+        "phase_rad": -0.3797477521095707,
+        "bias": 0.0020747250943696782,
+        "residual_rms": 0.27725842410807394
+      },
+      "metrics": {
+        "frequency_hz": 10.0,
+        "amplitude_requested_rad_s": 4.0,
+        "source_csv": "20261030_104226_508475_drive_velocity_sine.csv",
+        "phase_origin_monotonic_s": 72261.451030602,
+        "duration_s": 10.000065325002652,
+        "command_samples": 2000,
+        "a2_samples": 1973,
+        "a1_samples": 993,
+        "commands_skipped": 0,
+        "achieved_command_rate_hz": 200.00105451299282,
+        "held_target_fundamental_amplitude_rad_s": 3.9838148271138585,
+        "measured_fundamental_amplitude_rad_s": 3.8332745012152643,
+        "amplitude_ratio_percent": 96.22120172669634,
+        "phase_equivalent_lag_from_held_target_ms": 3.5294789411457246,
+        "phase_equivalent_lag_from_ideal_sine_ms": 6.043873187627391,
+        "steady_error_rms_rad_s": 0.7350560705254336,
+        "steady_error_mae_rad_s": 0.6002625288979723,
+        "steady_error_p95_abs_rad_s": 1.35994309986146,
+        "steady_error_peak_abs_rad_s": 2.2294835864975564,
+        "steady_fraction_within_0p5_rad_s": 0.47655259822560203,
+        "steady_mean_velocity_bias_rad_s": 0.0020747250943696782,
+        "steady_velocity_nonfundamental_rms_rad_s": 0.27725842410807394,
+        "measured_peak_positive_rad_s": 4.229630909283058,
+        "measured_peak_negative_rad_s": -4.185648612132801,
+        "measured_peak_over_amplitude_percent": 5.740772732076449,
+        "peak_abs_current_torque_nm": 0.46290001839399336,
+        "current_torque_rms_nm": 0.15523240070701924,
+        "steady_current_torque_rms_nm": 0.15373593143385958,
+        "alternate_c1_reply_amplitude_rad_s": 3.8392732427029883,
+        "alternate_c1_reply_phase_lag_ms": 3.020461821989355,
+        "raw_kp": 0.5,
+        "raw_ki": 0.004999999888241291,
+        "torque_constant_nm_per_a": 0.30000001192092896,
+        "current_ceiling_a": 82.498,
+        "b5_acceleration_raw": 0,
+        "bus_voltage_min_v": 20.2,
+        "bus_voltage_max_v": 20.22,
+        "max_temperature_c": 34.0
+      }
+    }
+  ]
+}

@@ -1,5 +1,24 @@
 # Standalone motor feedback
 
+## C1 replay of simulated rear-wheel velocity
+
+[`drive_velocity_replay.py`](drive_velocity_replay.py) replays the actual rear
+velocity from v1 model_2500's first **10 seconds**, including startup and settling.
+The prepared reference is in `replay_targets/2500_isaac_velocity_startup.csv`.
+Targets are held at **50 Hz**, resent at **200 Hz**, and feedback is logged
+automatically. The Pi needs the adjacent `drive_velocity_sine.py` helper.
+
+```bash
+python3 deploy/experiments/drive_velocity_replay.py --execute
+```
+
+Keep the rear wheel airborne/free, frame supported and other CAN writers stopped.
+There is no tight packet-deadline, angle or tracking-error abort; feedback/status
+tolerances are 1/2 s. Physical speed/torque, driver/CAN and logging checks remain.
+[`record_drive_velocity.py`](record_drive_velocity.py) records a fresh episode in
+Isaac Lab or exports an existing capture; `--plot <run.csv>` on the replay script
+creates aligned comparison plots on the PC. Read [the full workflow](DRIVE_VELOCITY_REPLAY.md).
+
 ## Rear velocity sine comparison
 
 [`drive_velocity_sine.py`](drive_velocity_sine.py) compares C1 and MIT velocity

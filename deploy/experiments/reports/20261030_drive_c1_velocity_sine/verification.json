@@ -1,0 +1,36 @@
+{
+  "passed": true,
+  "input_files_hash_checked": 12,
+  "input_files_unchanged": true,
+  "frequencies_hz": [
+    0.5,
+    1.0,
+    2.0,
+    5.0,
+    10.0
+  ],
+  "raw_packet_field_checks": true,
+  "sender_snapshot_hash_matches_all_runs": true,
+  "methods": [
+    "c1"
+  ],
+  "common_phase_time_origin": true,
+  "cached_feedback_duplicates_excluded": true,
+  "plotted_native_samples": 24792,
+  "full_figures": 5,
+  "zoom_figures": 5,
+  "summary_figures": 1,
+  "all_finite_values_within_plot_axes": true,
+  "no_smoothing_or_time_shift": true,
+  "firmware_settings_identical": true,
+  "user_fixture": "User confirmed rear wheel airborne/free, no hand contact, same power supply and firmware conditions for all five runs.",
+  "original_logs_runtime_sources_preserved": true,
+  "independently_checked_native_csv_rows": 24792,
+  "harmonic_quadrature_max_phase_error_ms": 0.0033771121453968285,
+  "harmonic_quadrature_max_amplitude_error_rad_s": 1.1918632661700457e-05,
+  "independent_rms_checks": true,
+  "full_and_zoom_figures_each_two_axes": true,
+  "full_and_zoom_pdf_pages_each": 5,
+  "local_links_exist": true,
+  "report_python_parses": true
+}
