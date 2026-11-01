@@ -1,5 +1,23 @@
 # Standalone motor feedback
 
+## Identify the rear C1 velocity-loop gains
+
+[`drive_c1_kp_identify.py`](drive_c1_kp_identify.py) measures responses across both
+directions, near-zero/higher speeds, small steps and six sine frequencies.
+**B8/Kp and B9/Ki are strictly read only.** The full default is three repetitions,
+54 steady holds, 120 step tests and 108 sine tests, about 20 minutes. Raw CSV,
+JSON and a plan CSV are recorded automatically; the Pi needs only Python and the
+adjacent `drive_velocity_sine.py` helper. Use the supported airborne setup.
+
+```bash
+python3 deploy/experiments/drive_c1_kp_identify.py --execute
+```
+
+The PC [`analyze_drive_c1_kp.py`](analyze_drive_c1_kp.py) jointly fits effective P/I
+in physical units, cross-checks time/frequency methods and separates validation
+from the third repetition's test data. It can withhold an unreliable initial
+simulation coefficient. See [the protocol, pilot command and analysis workflow](DRIVE_C1_KP_IDENTIFY.md).
+
 ## C1 replay of simulated rear-wheel velocity
 
 [`drive_velocity_replay.py`](drive_velocity_replay.py) replays the actual rear

@@ -1,0 +1,210 @@
+{
+  "method": "OLS: user-positive A1 current = a*(held C1 target-interpolated A2 velocity) + b*(integral held C1 target-interpolated A3 displacement) + offset",
+  "fitting_window_s": [
+    0.02,
+    9.98
+  ],
+  "runs": {
+    "50": {
+      "packet_hz": 50,
+      "source_csv": "20261031_223709_716988_50hz_drive_velocity_replay.csv",
+      "source_sha256": "98a7c624e6e23212af83dc1442d99af36b12ba3f943910943cd1c1a4f5332c79",
+      "raw_kp": 0.5,
+      "raw_ki": 0.004999999888241291,
+      "nominal_fit": {
+        "assumed_response_lag_ms": 0,
+        "samples": 989,
+        "effective_kp_a_per_rad_s": 0.9692534834679614,
+        "effective_ki_a_per_rad": 12.99711873702026,
+        "offset_a": 0.10937200835903127,
+        "current_rms_residual_a": 0.07953979461211164,
+        "r_squared": 0.8956984906007057,
+        "conditional_per_update_period_s": 0.0007457448696245967
+      },
+      "timing_sensitivity": [
+        {
+          "assumed_response_lag_ms": -5,
+          "samples": 989,
+          "effective_kp_a_per_rad_s": 0.2810778472411981,
+          "effective_ki_a_per_rad": 13.017587548541126,
+          "offset_a": 0.1127152587909368,
+          "current_rms_residual_a": 0.10157904554841736,
+          "r_squared": 0.8298899710180682
+        },
+        {
+          "assumed_response_lag_ms": -2,
+          "samples": 989,
+          "effective_kp_a_per_rad_s": 0.6749658560114253,
+          "effective_ki_a_per_rad": 12.999601795697098,
+          "offset_a": 0.11102113968079053,
+          "current_rms_residual_a": 0.09321547936717915,
+          "r_squared": 0.8567489751974313
+        },
+        {
+          "assumed_response_lag_ms": 0,
+          "samples": 989,
+          "effective_kp_a_per_rad_s": 0.9692534834679614,
+          "effective_ki_a_per_rad": 12.99711873702026,
+          "offset_a": 0.10937200835903127,
+          "current_rms_residual_a": 0.07953979461211164,
+          "r_squared": 0.8956984906007057,
+          "conditional_per_update_period_s": 0.0007457448696245967
+        },
+        {
+          "assumed_response_lag_ms": 2,
+          "samples": 989,
+          "effective_kp_a_per_rad_s": 0.9658516533185331,
+          "effective_ki_a_per_rad": 12.994926189768522,
+          "offset_a": 0.10929965242988438,
+          "current_rms_residual_a": 0.07612522466717285,
+          "r_squared": 0.9044614077594033
+        },
+        {
+          "assumed_response_lag_ms": 5,
+          "samples": 989,
+          "effective_kp_a_per_rad_s": 0.6431251053642043,
+          "effective_ki_a_per_rad": 12.908551680710696,
+          "offset_a": 0.11276585458202071,
+          "current_rms_residual_a": 0.09608462139544277,
+          "r_squared": 0.8477948212825679
+        }
+      ]
+    },
+    "200": {
+      "packet_hz": 200,
+      "source_csv": "20261031_223442_378454_200hz_drive_velocity_replay.csv",
+      "source_sha256": "1da937c273387511d7f0b6eedc05732304621efdd73521984f0073ce639f2e7b",
+      "raw_kp": 0.5,
+      "raw_ki": 0.004999999888241291,
+      "nominal_fit": {
+        "assumed_response_lag_ms": 0,
+        "samples": 989,
+        "effective_kp_a_per_rad_s": 0.9985158820080503,
+        "effective_ki_a_per_rad": 12.235916678950252,
+        "offset_a": 0.11091153435027756,
+        "current_rms_residual_a": 0.0635712461743105,
+        "r_squared": 0.9017461860437521,
+        "conditional_per_update_period_s": 0.0008160531702600201
+      },
+      "timing_sensitivity": [
+        {
+          "assumed_response_lag_ms": -5,
+          "samples": 989,
+          "effective_kp_a_per_rad_s": 0.005957944368586419,
+          "effective_ki_a_per_rad": 12.080146631228462,
+          "offset_a": 0.11581434215102604,
+          "current_rms_residual_a": 0.10424475803179058,
+          "r_squared": 0.7357978064927096
+        },
+        {
+          "assumed_response_lag_ms": -2,
+          "samples": 989,
+          "effective_kp_a_per_rad_s": 0.7501797538953333,
+          "effective_ki_a_per_rad": 11.938397535844283,
+          "offset_a": 0.11655612863699538,
+          "current_rms_residual_a": 0.09094488298854655,
+          "r_squared": 0.798912763938894
+        },
+        {
+          "assumed_response_lag_ms": 0,
+          "samples": 989,
+          "effective_kp_a_per_rad_s": 0.9985158820080503,
+          "effective_ki_a_per_rad": 12.235916678950252,
+          "offset_a": 0.11091153435027756,
+          "current_rms_residual_a": 0.0635712461743105,
+          "r_squared": 0.9017461860437521,
+          "conditional_per_update_period_s": 0.0008160531702600201
+        },
+        {
+          "assumed_response_lag_ms": 2,
+          "samples": 989,
+          "effective_kp_a_per_rad_s": 0.9776570940179987,
+          "effective_ki_a_per_rad": 12.29184494524621,
+          "offset_a": 0.10959176360512402,
+          "current_rms_residual_a": 0.06795245116825906,
+          "r_squared": 0.8877365920014538
+        },
+        {
+          "assumed_response_lag_ms": 5,
+          "samples": 989,
+          "effective_kp_a_per_rad_s": 0.20509292933921708,
+          "effective_ki_a_per_rad": 11.889466274382787,
+          "offset_a": 0.1179456354025934,
+          "current_rms_residual_a": 0.10606697867263745,
+          "r_squared": 0.7264804558622322
+        }
+      ]
+    },
+    "400": {
+      "packet_hz": 400,
+      "source_csv": "20261101_134940_221417_400hz_drive_velocity_replay.csv",
+      "source_sha256": "875cc1e5a2a49eab4ca0526717e392e396b115bc721f3d600ab5bd601f226812",
+      "raw_kp": 0.5,
+      "raw_ki": 0.004999999888241291,
+      "nominal_fit": {
+        "assumed_response_lag_ms": 0,
+        "samples": 989,
+        "effective_kp_a_per_rad_s": 0.9393704642120821,
+        "effective_ki_a_per_rad": 12.63607551763559,
+        "offset_a": 0.12064702532038218,
+        "current_rms_residual_a": 0.06751999694529043,
+        "r_squared": 0.9200783273703591,
+        "conditional_per_update_period_s": 0.0007434036318511076
+      },
+      "timing_sensitivity": [
+        {
+          "assumed_response_lag_ms": -5,
+          "samples": 989,
+          "effective_kp_a_per_rad_s": 0.2543432973655706,
+          "effective_ki_a_per_rad": 12.8123443003081,
+          "offset_a": 0.12184957821151521,
+          "current_rms_residual_a": 0.10004908815044956,
+          "r_squared": 0.8245206544286898
+        },
+        {
+          "assumed_response_lag_ms": -2,
+          "samples": 989,
+          "effective_kp_a_per_rad_s": 0.5669722941649286,
+          "effective_ki_a_per_rad": 12.728490046102811,
+          "offset_a": 0.12121312172729404,
+          "current_rms_residual_a": 0.09196228010852035,
+          "r_squared": 0.8517416379804849
+        },
+        {
+          "assumed_response_lag_ms": 0,
+          "samples": 989,
+          "effective_kp_a_per_rad_s": 0.9393704642120821,
+          "effective_ki_a_per_rad": 12.63607551763559,
+          "offset_a": 0.12064702532038218,
+          "current_rms_residual_a": 0.06751999694529043,
+          "r_squared": 0.9200783273703591,
+          "conditional_per_update_period_s": 0.0007434036318511076
+        },
+        {
+          "assumed_response_lag_ms": 2,
+          "samples": 989,
+          "effective_kp_a_per_rad_s": 0.7772433463897297,
+          "effective_ki_a_per_rad": 12.599096732067654,
+          "offset_a": 0.12315897102859275,
+          "current_rms_residual_a": 0.07142516441522707,
+          "r_squared": 0.9105660867656594
+        },
+        {
+          "assumed_response_lag_ms": 5,
+          "samples": 989,
+          "effective_kp_a_per_rad_s": 0.5479771624816483,
+          "effective_ki_a_per_rad": 12.681970994972515,
+          "offset_a": 0.12224927793533524,
+          "current_rms_residual_a": 0.09671763756821235,
+          "r_squared": 0.8360123674175596
+        }
+      ]
+    }
+  },
+  "kp_0p5_if_a_per_rad_s": 0.5,
+  "kp_0p5_if_ma_per_centirpm_converted_to_a_per_rad_s": 0.477464829275686,
+  "conclusion": "Firmware gain units not identified. Strong relative integral action is compatible with a per-update Ki or another internal integral scaling. P is sensitive to feedback timing.",
+  "assumptions": "Ideal PI approximation, constant gains, reconstructed error from asynchronous external feedback; internal measurement/filter/current-loop dynamics and integrator state are not observed.",
+  "conditional_period_warning": "Derived only under an ideal PI/shared unit-scale/per-update hypothesis; not a measured firmware period and not a recommended MIT gain setting.",
+  "hardware_or_simulation_run": false
+}
