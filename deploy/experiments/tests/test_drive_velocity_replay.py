@@ -26,10 +26,10 @@ class ReplayTests(unittest.TestCase):
         self.folder = Path(self.temp.name)
         self.reference_path = self.folder / "reference.csv"
         self.rows = [(i * .02, math.sin(i * .4), i * .001) for i in range(31)]
-        recorder.write_capture(self.reference_path, self.rows, .02, {"model": "test"})
+        recorder.write_capture(self.reference_path, self.rows, .02, {"model": "test"}, reference_hz=50.)
 
     def make_io(self):
-        args = replay.parse_args(["--targets", str(self.reference_path)])
+        args = replay.parse_args(["--targets", str(self.reference_path), "--packet-rate", "200"])
         clock, log = Clock(), MemoryLog()
         bus = FakeCAN(clock)
         return replay.ReplayIO(args, bus, log, clock=clock), bus, log, clock
@@ -40,6 +40,57 @@ class ReplayTests(unittest.TestCase):
         self.assertEqual(reference.at(.02)[0], self.rows[1][1])
         self.assertEqual(reference.at(.039)[0], self.rows[1][1])
         self.assertEqual(reference.at(.60)[0], self.rows[30][1])
+
+    def test_400hz_retains_every_physics_sample_and_sends_once_per_sample(self):
+        path = self.folder / "400hz.csv"
+        samples = [(i * .0025, i * .1, i * .0001) for i in range(17)]
+        metadata = recorder.write_capture(path, samples, .02, {"model": "test"})
+        reference = replay.Reference(path)
+        self.assertEqual(reference.rate_hz, 400)
+        self.assertEqual(metadata["reference_hz"], 400.)
+        self.assertEqual(metadata["policy_hz"], 50.)
+        self.assertEqual(reference.velocity, [row[1] for row in samples])
+        self.assertEqual(reference.at(.002499)[0], samples[0][1])
+        self.assertEqual(reference.at(.0025)[0], samples[1][1])
+        test, bus, log, _ = self.make_io()
+        test.args.packet_rate = 400
+        with patch.object(replay.shared.select, "select", bus.select), redirect_stdout(io.StringIO()):
+            test.startup()
+            test.run_segment("core", reference.duration, reference)
+            test.cleanup()
+        commands = [row for row in log.rows if row["record_type"] == "command"]
+        self.assertEqual(len(commands), 16)  # The t=duration sample is the endpoint, not another interval.
+        self.assertEqual([row["target_velocity_rad_s"] for row in commands], reference.velocity[:-1])
+        self.assertEqual([row["target_sample_time_s"] for row in commands], reference.times[:-1])
+        a2_queries = [row for row in log.rows if row["method"] == "core"
+                      and row["record_type"] == "tx" and row["opcode"] == "A2"]
+        self.assertGreaterEqual(len(a2_queries), 15)
+
+    def test_400hz_default_and_optional_lower_rate_are_explicit(self):
+        args = replay.parse_args([])
+        self.assertEqual(args.packet_rate, 400)
+        self.assertTrue(args.targets.name.endswith("_400hz.csv"))
+        args = replay.parse_args(["--packet-rate", "200"])
+        self.assertEqual(args.packet_rate, 200)
+
+    def test_400hz_delay_skips_samples_without_tight_lateness_abort(self):
+        path = self.folder / "delay_400hz.csv"
+        samples = [(i * .0025, math.sin(i * .2), i * .0001) for i in range(241)]
+        recorder.write_capture(path, samples, .02, {})
+        reference = replay.Reference(path)
+        test, bus, log, _ = self.make_io()
+        test.args.packet_rate, bus.pause_once = 400, True
+        with patch.object(replay.shared.select, "select", bus.select), redirect_stdout(io.StringIO()):
+            test.startup()
+            test.run_segment("core", .6, reference)
+            test.cleanup()
+        self.assertTrue(bus.paused)
+        self.assertGreater(test.phases[0]["skipped_slots"], 0)
+        self.assertLess(test.phases[0]["commands"], 240)
+        self.assertLess(test.phases[0]["actual_duration_s"], .601)
+        for row in log.rows:
+            if row["record_type"] == "command":
+                self.assertEqual(row["target_velocity_rad_s"], reference.at(row["phase_elapsed_s"])[0])
 
     def test_refuses_nonfinite_speed_irregular_time_and_over_limit_without_clipping(self):
         for rows in ([(0, 0), (.02, float("nan"))], [(0, 0), (.021, 1)], [(0, 0), (.02, 62)]):
@@ -201,7 +252,7 @@ class RecorderTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             path = Path(folder) / "trace.csv"
             samples = [(i * .0025, i * .1, i * .001) for i in range(17)]
-            result = recorder.write_capture(path, samples, .02, {})
+            result = recorder.write_capture(path, samples, .02, {}, reference_hz=50.)
             with path.open() as stream:
                 rows = list(csv.DictReader(stream))
             self.assertEqual([float(r["time_s"]) for r in rows], [0., .02, .04])
@@ -224,7 +275,7 @@ class RecorderTests(unittest.TestCase):
                 capture_completed=True, checkpoint_sha256=recorder.sha(checkpoint), motor_order=["steering", "rear"],
                 policy_dt_s=.02, physics_dt_s=.0025, num_envs=1, seed=42, dr=True)))
             args = SimpleNamespace(from_capture=capture, checkpoint=checkpoint, env_index=0, duration=.06,
-                                   output=folder / "reference.csv")
+                                   reference_rate=50, output=folder / "reference.csv")
             with redirect_stdout(io.StringIO()):
                 recorder.export_existing(args)
             manifest = json.loads(args.output.with_suffix(".json").read_text())

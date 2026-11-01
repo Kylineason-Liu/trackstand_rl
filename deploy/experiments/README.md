@@ -4,17 +4,20 @@
 
 [`drive_velocity_replay.py`](drive_velocity_replay.py) replays the actual rear
 velocity from v1 model_2500's first **10 seconds**, including startup and settling.
-The prepared reference is in `replay_targets/2500_isaac_velocity_startup.csv`.
-Targets are held at **50 Hz**, resent at **200 Hz**, and feedback is logged
-automatically. The Pi needs the adjacent `drive_velocity_sine.py` helper.
+The prepared reference is in `replay_targets/2500_isaac_velocity_startup_400hz.csv`.
+It contains every **400 Hz** simulation sample; C1 sends a new target every
+**2.5 ms** by default, and feedback is logged automatically. The source policy
+remains 50 Hz. The Pi needs the adjacent `drive_velocity_sine.py` helper.
 
 ```bash
-python3 deploy/experiments/drive_velocity_replay.py --execute
+python3 deploy/experiments/drive_velocity_replay.py --execute --packet-rate 400
 ```
 
 Keep the rear wheel airborne/free, frame supported and other CAN writers stopped.
 There is no tight packet-deadline, angle or tracking-error abort; feedback/status
 tolerances are 1/2 s. Physical speed/torque, driver/CAN and logging checks remain.
+Optional `--packet-rate 50|200` omits intermediate samples of this new reference;
+the original 50-Hz reference and its earlier logs remain unchanged.
 [`record_drive_velocity.py`](record_drive_velocity.py) records a fresh episode in
 Isaac Lab or exports an existing capture; `--plot <run.csv>` on the replay script
 creates aligned comparison plots on the PC. Read [the full workflow](DRIVE_VELOCITY_REPLAY.md).

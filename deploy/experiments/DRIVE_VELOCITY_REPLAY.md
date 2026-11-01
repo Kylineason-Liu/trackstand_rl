@@ -8,29 +8,39 @@ simulated P controller matches C1 internally.
 
 ## Prepared reference
 
-`replay_targets/2500_isaac_velocity_startup.csv` contains simulation seconds
+`replay_targets/2500_isaac_velocity_startup_400hz.csv` contains simulation seconds
 **0–10**, env 0, first episode, seed 42, **DR enabled**. There is no episode reset
 or stitching in this window. Times and velocities are in **seconds and rad/s**;
 positive rear velocity means **forward**. Native C1 and encoder signs are −1.
 
-- Reference CSV: 501 actual state samples at 50 Hz, including the final endpoint.
+- Reference CSV: 4,001 actual state samples at 400 Hz, including the final endpoint.
   The endpoint defines the duration; it is not an extra held command interval.
 - `_simulation.csv`: all 4,001 state samples, including t=0, at 400 Hz.
 - `.json`: checkpoint/source hashes, timing, units, selected environment and DR.
-- `_env.yaml`: effective configuration of the fresh simulation recording.
+- The original `2500_isaac_velocity_startup_env.yaml` remains the configuration
+  snapshot of the fresh recording; the new JSON also retains archived provenance.
 
-[Preview startup and settling](replay_targets/2500_isaac_velocity_startup_preview.png).
+[Preview startup and settling](replay_targets/2500_isaac_velocity_startup_400hz_preview.png).
 The native trace peaks at 2.484 rad/s; final 8–10 s RMS speed is 0.0513 rad/s.
-Fresh velocities exactly match the independent archived evaluation for the same
-model/seed/env. [Verification](replay_targets/2500_isaac_velocity_startup_verification.json)
-records source/data hashes, 44 passing CPU tests and end-to-end virtual CAN runs
-at both packet rates. No real motor run has been performed by this implementation.
+The new reference exports every native state from the same archived evaluation;
+it is not a new physics rollout. Its values exactly match the original full-rate
+recording. [Verification](replay_targets/2500_isaac_velocity_startup_400hz_verification.json)
+records source/data hashes and virtual CAN validation. This change has not been
+tested on the real motor.
 
-The command at each 20 ms boundary is held until the next boundary. At 200 Hz it
-is resent four times; there is no interpolation, new sine generation, amplitude
-scaling, friction compensation or hidden clipping. Sampling a 400-Hz response at
-50 Hz discards some within-interval changes; the full-rate curve is retained so
-that this difference can be inspected separately from hardware tracking error.
+Reference sampling and default C1 sending are now both **400 Hz**: a new sample
+every **2.5 ms**, held until the next packet. An on-time core sends 4,000 commands
+over 10 seconds; the endpoint defines the end, not another command. There is no
+interpolation, new sine generation, amplitude scaling, friction compensation or
+hidden clipping. The source policy still runs at 50 Hz: the reference contains
+the resulting simulated motion at 400 Hz, not new policy actions at 400 Hz.
+
+The original 50-Hz CSV, full-rate recording and prior test logs remain unchanged.
+Selecting `--packet-rate 50` or `200` with the new reference intentionally omits
+intermediate states. To reproduce the old experiment, explicitly select
+`--targets deploy/experiments/replay_targets/2500_isaac_velocity_startup.csv`
+and the desired packet rate. Sending that old reference at 400 Hz only repeats
+its 50-Hz samples; it does not restore the missing states.
 
 ## Run on the Raspberry Pi
 
@@ -49,7 +59,7 @@ cd ~/trackstand_rl
 python3 deploy/experiments/drive_velocity_replay.py
 
 # Run and automatically record all feedback.
-python3 deploy/experiments/drive_velocity_replay.py --execute
+python3 deploy/experiments/drive_velocity_replay.py --execute --packet-rate 400
 ```
 
 The sequence is **C1 zero speed for 1 s → 10 s reference → C1 zero speed for
@@ -59,9 +69,9 @@ criterion extends the test. The first A3 multi-turn reading is the software
 position origin. The core-start position/speed snapshot and A3 age are also
 recorded; velocity is never zero-offset corrected. No B1/encoder reset occurs.
 
-Optional flags: `--packet-rate 50`, `--targets file.csv`, `--pre-zero 1`,
+Optional flags: `--packet-rate 50|200|400`, `--targets file.csv`, `--pre-zero 1`,
 `--post-zero 1`, `--interface can0`, `--note 'actual fixture and supply'`, and
-`--output new.csv`. Default packets are **200 Hz**; targets remain **50 Hz**.
+`--output new.csv`. Default reference and packets are both **400 Hz**.
 Different starting wheel angles are allowed and their A3 origins are recorded.
 
 ## Logging and retained checks
@@ -75,7 +85,9 @@ Exclusive timestamped files under `logs/` are saved automatically:
   checkpoint/reference/helper hashes, source provenance and initial A3 count.
 - `_reference.csv`: exact copy of the reference used for that run.
 
-A2/A1/A3/AE queries are nominally **200/100/50/10 Hz**. Feedback is asynchronous:
+A2/A1/A3/AE queries are nominally **400/100/50/10 Hz** with 400-Hz packets.
+At 50/200-Hz packet rates A2 remains 200 Hz; the other queries are unchanged.
+Feedback is asynchronous:
 host receipt time is not a known motor acquisition time. Torque is **A1 × B0 Kt**,
 not an independent shaft-torque measurement. B8/B9/B3/B5 are read/logged only.
 
@@ -97,7 +109,7 @@ Copy the run's three files back into `deploy/experiments/logs/` on this PC:
 
 ```bash
 python3 deploy/experiments/drive_velocity_replay.py \
-  --plot deploy/experiments/logs/<timestamp>_200hz_drive_velocity_replay.csv
+  --plot deploy/experiments/logs/<timestamp>_400hz_drive_velocity_replay.csv
 ```
 
 This creates `_comparison.png`, `_comparison.svg` and `_comparison.json` beside
@@ -105,7 +117,7 @@ the log. Panels show velocity (simulation/C1 target/real A2), actual current-der
 torque, and displacement. All share the core-start clock; there is no fitted
 time shift, smoothing or amplitude adjustment. The plot uses the full 400-Hz
 simulation CSV when its local hash matches the manifest, otherwise the copied
-50-Hz state samples. Metrics state which source was used and compare fresh A2
+reference samples. Metrics state which source was used and compare fresh A2
 both to the last transmitted target and to the simulation curve. Only the latter
 comparison interpolates saved simulation states at A2 receipt times; CAN targets
 are never interpolated. Partial runs remain labelled partial.
@@ -122,7 +134,7 @@ v1 environment, rather than overwrite it:
 
 ```bash
 ~/IsaacLab/_isaac_sim/python.sh deploy/experiments/record_drive_velocity.py \
-  --dr --duration 10 --num-envs 64 --env-index 0 --seed 42 \
+  --dr --duration 10 --num-envs 64 --env-index 0 --seed 42 --reference-rate 400 \
   --output deploy/experiments/replay_targets/another_velocity_episode.csv
 ```
 
@@ -132,12 +144,15 @@ environment termination. Joint position is unwrapped at the physics rate. It
 does not change v0/v1/v2, actuator gains/friction, physics rate, checkpoint or
 termination settings. `--checkpoint` selects a compatible v1 checkpoint;
 `--duration`, `--env-index`, `--seed`, `--device` and opt-in `--dr` are configurable.
+`--reference-rate 400` is the default; `50`/`200` export exact subsets of the
+native states. No missing samples are interpolated.
 
 It can also export a previously audited capture without starting Isaac Sim:
 
 ```bash
 python3 deploy/experiments/record_drive_velocity.py \
   --from-capture isaaclab_train/reports/20261025_2500_dr_comparison/isaac400/motor_samples.npz \
+  --reference-rate 400 \
   --output deploy/experiments/replay_targets/archived_velocity_episode.csv
 ```
 

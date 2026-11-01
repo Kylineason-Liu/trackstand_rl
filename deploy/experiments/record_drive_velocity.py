@@ -2,7 +2,7 @@
 """PC only: record one policy episode's ACTUAL rear velocity for C1 replay.
 
 Run with Isaac Lab's Python. Does not change the task, actuator or checkpoint.
-The 400-Hz simulation state is saved separately from the 50-Hz held reference.
+The replay reference defaults to all 400-Hz simulation states, without downsampling.
 V1 model_2500 outputs TORQUE; its measured velocity becomes the C1 target.
 """
 
@@ -28,10 +28,10 @@ def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
-def write_capture(output, samples, policy_dt, metadata):
-    """Keep native samples and exact policy-boundary states; never interpolate."""
-    if len(samples) < 2 or policy_dt <= 0:
-        raise ValueError("at least two samples and a positive policy period required")
+def write_capture(output, samples, policy_dt, metadata, reference_hz=400.):
+    """Keep actual samples on the requested reference grid; never interpolate."""
+    if len(samples) < 2 or policy_dt <= 0 or reference_hz not in (50., 200., 400.):
+        raise ValueError("at least two samples, a positive policy period and a supported reference rate required")
     for previous, current in zip(samples, samples[1:]):
         if current[0] <= previous[0]:
             raise ValueError("simulation sample times must increase strictly")
@@ -41,9 +41,11 @@ def write_capture(output, samples, policy_dt, metadata):
     boundary_count = round(duration / policy_dt)
     if boundary_count < 1 or abs(boundary_count * policy_dt - duration) > 1e-8:
         raise ValueError("capture must end on a policy boundary")
-    reference = [row for row in samples if abs(row[0] / policy_dt - round(row[0] / policy_dt)) < 1e-7]
-    if len(reference) != boundary_count + 1:
-        raise ValueError("missing policy-boundary states; refusing to interpolate")
+    reference_dt = 1 / reference_hz
+    reference_intervals = round(duration * reference_hz)
+    reference = [row for row in samples if abs(row[0] / reference_dt - round(row[0] / reference_dt)) < 1e-7]
+    if len(reference) != reference_intervals + 1:
+        raise ValueError("missing requested reference samples; refusing to interpolate")
     output = Path(output)
     native, manifest = output.with_name(output.stem + "_simulation.csv"), output.with_suffix(".json")
     if any(p.exists() for p in (output, native, manifest)):
@@ -54,11 +56,11 @@ def write_capture(output, samples, policy_dt, metadata):
             writer = csv.writer(stream)
             writer.writerow(FIELDS)
             writer.writerows(rows)
-    metadata.update(capture_completed=True, duration_s=duration, reference_hz=1 / policy_dt,
+    metadata.update(capture_completed=True, duration_s=duration, policy_hz=1 / policy_dt, reference_hz=reference_hz,
                     reference_samples=len(reference),
                     native_samples=len(samples), reference_sha256=sha(output), native_sha256=sha(native),
                     native_file=native.name, positive_direction="rear wheel forward",
-                    reference_meaning="actual simulated rear velocity sampled at policy boundaries, NOT raw action",
+                    reference_meaning="actual simulated rear velocity on the recorded reference grid, NOT raw action",
                     position_meaning="joint displacement unwrapped at the physics rate from the initial position",
                     timing="initial state t=0; physics responses at step END, before any automatic reset",
                     maximum_absolute_velocity_rad_s=max(abs(row[1]) for row in samples))
@@ -69,6 +71,8 @@ def write_capture(output, samples, policy_dt, metadata):
 def parse_args(argv=None):
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--checkpoint", type=Path, default=CHECKPOINT)
+    parser.add_argument("--reference-rate", type=int, choices=(50, 200, 400), default=400,
+                        help="Replay reference sample rate; 400 retains every v1 physics state (default)")
     parser.add_argument("--from-capture", type=Path,
                         help="Export an existing audited motor_samples.npz instead of launching Isaac Sim")
     parser.add_argument("--duration", type=float, default=10., help="Seconds from spawn; stop sooner if episode ends")
@@ -77,7 +81,7 @@ def parse_args(argv=None):
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--dr", action="store_true")
     parser.add_argument("--device", default="cuda:0")
-    parser.add_argument("--output", type=Path, default=HERE / "replay_targets/2500_isaac_velocity_startup.csv")
+    parser.add_argument("--output", type=Path)
     args = parser.parse_args(argv)
     if (not math.isfinite(args.duration) or args.duration <= 0
             or abs(args.duration * 50 - round(args.duration * 50)) > 1e-7):
@@ -86,6 +90,8 @@ def parse_args(argv=None):
         parser.error("--env-index must select one of --num-envs")
     if not args.checkpoint.is_file():
         parser.error(f"checkpoint not found: {args.checkpoint}")
+    if args.output is None:
+        args.output = HERE / "replay_targets" / f"2500_isaac_velocity_startup_{args.reference_rate}hz.csv"
     args.output = args.output.resolve()
     if args.output.suffix != ".csv":
         parser.error("--output must end in .csv")
@@ -129,7 +135,7 @@ def export_existing(args):
         source_experiment=metadata, recorder_sha256=sha(__file__), exported_at=datetime.now().isoformat(),
         requested_duration_s=args.duration, episode_terminated=terminated,
         policy_drive_action_meaning="torque: raw Beta drive action * 6.28 Nm",
-    ))
+    ), reference_hz=args.reference_rate)
     print(f"Exported actual recorded simulation t=0..{result['duration_s']:g} s: {args.output}")
     print(f"Speed peak {result['maximum_absolute_velocity_rad_s']:.6g} rad/s; no interpolation/scaling/clipping")
     return 0
@@ -233,7 +239,7 @@ def main(argv=None):
             termination_terms=[name for name in base.termination_manager.active_terms
                                if terminated and bool(base.termination_manager.get_term(name)[index])],
             policy_drive_action_meaning="torque: raw Beta drive action * 6.28 Nm",
-        ))
+        ), reference_hz=args.reference_rate)
         print(f"Recorded {result['duration_s']:g} s from spawn: {args.output}")
         print(f"Actual speed peak {result['maximum_absolute_velocity_rad_s']:.6g} rad/s; no scaling/clipping")
         return 0

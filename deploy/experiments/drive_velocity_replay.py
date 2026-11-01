@@ -2,8 +2,9 @@
 """Replay simulated actual rear velocity through C1; automatically record feedback.
 
 Pi: stdlib only, plus adjacent drive_velocity_sine.py for the tested CAN/logger.
-Preview by default. PC plotting needs NumPy/Matplotlib. Targets are held at
-50 Hz and resent at 200 Hz by default, with no interpolation or hidden scaling.
+Preview by default. PC plotting needs NumPy/Matplotlib. Reference and commands
+default to 400 Hz: every 2.5-ms simulation sample is a new target, without
+interpolation, downsampling or hidden scaling. Legacy 50-Hz references also work.
 No angle, tracking-error, small-current or packet-lateness abort. Late slots are
 logged/skipped. Existing physical speed/torque, driver/bus and log-failure trips
 remain; feedback/status tolerances are widened to 1/2 seconds by default.
@@ -27,7 +28,7 @@ import drive_velocity_sine as shared
 
 
 HERE = Path(__file__).resolve().parent
-DEFAULT_TARGETS = HERE / "replay_targets/2500_isaac_velocity_startup.csv"
+DEFAULT_TARGETS = HERE / "replay_targets/2500_isaac_velocity_startup_400hz.csv"
 
 
 class Reference:
@@ -41,8 +42,14 @@ class Reference:
             raise ValueError("reference must start at t=0 and have an endpoint sample")
         if not all(math.isfinite(x) for x in self.times + self.velocity):
             raise ValueError("reference contains a non-finite value")
-        if any(abs(t - i * .02) > 1e-8 for i, t in enumerate(self.times)):
-            raise ValueError("expected consecutive 50-Hz reference samples, including the endpoint")
+        sample_dt = self.times[1] - self.times[0]
+        if sample_dt <= 0:
+            raise ValueError("reference times must increase")
+        self.rate_hz = round(1 / sample_dt)
+        if self.rate_hz not in (50, 200, 400):
+            raise ValueError("reference must contain 50, 200 or 400-Hz state samples")
+        if any(abs(t - i / self.rate_hz) > 1e-8 for i, t in enumerate(self.times)):
+            raise ValueError("expected consecutive reference samples at one rate, including the endpoint")
         if max(map(abs, self.velocity)) > shared.SPEED_LIMIT_RAD_S:
             raise ValueError("reference exceeds 61.6 rad/s; no clipping/scaling is applied")
         self.duration = self.times[-1]
@@ -75,7 +82,7 @@ class ReplayIO(shared.VelocityTest):
         self.method, self.phase_start = name, self.clock.monotonic()
         self.next_command = self.phase_start
         end, slot, count, skipped_total = self.phase_start + duration, 0, 0, 0
-        periods = {0xA2: .005, 0xA1: .01, 0xA3: .02, 0xAE: .1}
+        periods = {0xA2: 1 / max(200, self.args.packet_rate), 0xA1: .01, 0xA3: .02, 0xAE: .1}
         due = {op: self.phase_start for op in periods}
         intervals, previous, peak_lateness = [], None, 0.
         initial_position, initial_velocity = self.position_rad, self.velocity
@@ -173,7 +180,7 @@ def plot_run(log_path):
     indices = np.searchsorted(command_t, speed_t[valid], side="right") - 1
     errors = speed[valid] - command_v[indices]
     # Prefer the full physics-rate simulation curve when available on the PC.
-    # The reference copied to the Pi remains the exact 50-Hz command sequence.
+    # The reference copied to the Pi remains the exact recorded sample sequence.
     provenance = report.get("source_provenance", {})
     native = HERE / "replay_targets" / Path(provenance.get("native_file", "missing")).name
     simulation_path = reference.path
@@ -220,7 +227,8 @@ def plot_run(log_path):
         ax.margins(y=.12)
     axes[-1].set_xlim(0, duration)
     fig.suptitle(f"C1 rear velocity replay — {report.get('model', 'simulation reference')} — "
-                 f"{report['packet_rate_hz']:g} Hz packets — {'complete' if report['completed'] else 'PARTIAL'}")
+                 f"{reference.rate_hz} Hz reference / {report['packet_rate_hz']:g} Hz packets — "
+                 f"{'complete' if report['completed'] else 'PARTIAL'}")
     fig.tight_layout()
     for suffix in (".png", ".svg"):
         fig.savefig(log_path.with_name(log_path.stem + "_comparison").with_suffix(suffix), dpi=170)
@@ -237,7 +245,8 @@ def parse_args(argv=None):
     mode.add_argument("--execute", action="store_true", help="Open CAN and run the motor; otherwise preview")
     mode.add_argument("--plot", type=Path, help="PC only: plot a previously recorded replay CSV")
     parser.add_argument("--targets", type=Path, default=DEFAULT_TARGETS)
-    parser.add_argument("--packet-rate", type=int, choices=(50, 200), default=200)
+    parser.add_argument("--packet-rate", type=int, choices=(50, 200, 400), default=400,
+                        help="C1 sending rate (default 400); use >= reference rate to retain every sample")
     parser.add_argument("--pre-zero", type=shared.finite, default=1., help="C1 zero-speed seconds before replay")
     parser.add_argument("--post-zero", type=shared.finite, default=1., help="C1 zero-speed seconds before CF disable")
     parser.add_argument("--feedback-timeout", type=shared.finite, default=1.)
@@ -262,8 +271,12 @@ def main(argv=None):
     if args.plot:
         return plot_run(args.plot)
     reference = Reference(args.targets)
-    print(f"Rear ID 1 C1: simulation t=0..{reference.duration:g} s, held 50 Hz, packets {args.packet_rate} Hz")
+    print(f"Rear ID 1 C1: simulation t=0..{reference.duration:g} s, "
+          f"reference {reference.rate_hz} Hz, packets {args.packet_rate} Hz")
     print(f"Reference speed [{min(reference.velocity):.6g}, {max(reference.velocity):.6g}] rad/s; + = forward")
+    if args.packet_rate < reference.rate_hz:
+        print("NOTE: the lower packet rate omits intermediate reference samples. "
+              "Use --packet-rate 400 for the complete 400-Hz trace.")
     if not args.execute:
         print("PREVIEW: no CAN/files. Add --execute to replay and automatically record CSV/JSON.")
         return 0
@@ -282,7 +295,9 @@ def main(argv=None):
                   model=provenance.get("model", args.targets.name), source_sha256=hashlib.sha256(
                       Path(__file__).read_bytes()).hexdigest(), helper_sha256=hashlib.sha256(
                       Path(shared.__file__).read_bytes()).hexdigest(),
-                  packet_rate_hz=args.packet_rate, target_rate_hz=50, motor_id=1, encoder_sign=-1,
+                  packet_rate_hz=args.packet_rate, target_rate_hz=reference.rate_hz,
+                  query_rates_hz=dict(A2=max(200, args.packet_rate), A1=100, A3=50, AE=10),
+                  motor_id=1, encoder_sign=-1,
                   completed=False, disabled_and_restored=False, error=None)
     stopped = threading.Event()
     previous = {sig: signal.signal(sig, lambda *_: stopped.set()) for sig in (signal.SIGINT, signal.SIGTERM)}
