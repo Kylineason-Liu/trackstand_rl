@@ -1,0 +1,31 @@
+{
+  "protected_source_files_unchanged": 29,
+  "index_unchanged": true,
+  "python_ast_pyflakes_line_length_checks": true,
+  "local_links_resolved": 56,
+  "png_and_svg_checks_passed": true,
+  "pdf_pages": {
+    "frequency_response.pdf": 1,
+    "review_figures.pdf": 5,
+    "representative_responses.pdf": 1,
+    "steady_conditions.pdf": 1,
+    "timing_sensitivity.pdf": 1,
+    "example_3.pdf": 1,
+    "example_4.pdf": 1,
+    "all_figures.pdf": 7,
+    "tracking_by_condition.pdf": 1,
+    "integral_proxy_bias.pdf": 1,
+    "example_1.pdf": 1,
+    "gain_comparison.pdf": 1,
+    "a2_a3_consistency.pdf": 1,
+    "example_2.pdf": 1
+  },
+  "independent_numerical_checks_passed": true,
+  "plots_visually_reviewed": [
+    "gain_comparison",
+    "a2_a3_consistency",
+    "integral_proxy_bias",
+    "representative_responses",
+    "tracking_by_condition"
+  ]
+}

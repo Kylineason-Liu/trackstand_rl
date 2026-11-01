@@ -1,0 +1,210 @@
+{
+  "source": "logs/20261101_154126_577381_drive_c1_kp_identify.csv",
+  "rows": 2034518,
+  "record_types": {
+    "tx": 778459,
+    "rx": 1017258,
+    "command": 238799,
+    "event": 2
+  },
+  "packet_counts": {
+    "tx_CF": 3,
+    "rx_CF": 3,
+    "tx_B0": 1,
+    "rx_B0": 1,
+    "tx_B8": 1243,
+    "rx_B8": 1243,
+    "tx_B9": 1243,
+    "rx_B9": 1243,
+    "tx_B3": 1,
+    "rx_B3": 1,
+    "tx_B5": 1,
+    "rx_B5": 1,
+    "tx_CD": 5,
+    "rx_CD": 5,
+    "tx_A3": 59637,
+    "rx_A3": 59637,
+    "tx_A2": 352183,
+    "rx_A2": 352183,
+    "tx_A1": 352201,
+    "rx_A1": 352201,
+    "tx_AE": 11941,
+    "rx_AE": 11941,
+    "command_C1": 238799,
+    "rx_C1": 238799
+  },
+  "planned_and_completed_phases": 342,
+  "kinds": {
+    "zero": 60,
+    "steady": 54,
+    "step": 120,
+    "sine": 108
+  },
+  "duration_s": 1194.020853464992,
+  "commands": 238799,
+  "planned_commands": 238800,
+  "skipped_slots": [],
+  "total_skipped_slots": 1,
+  "event_records": [
+    {
+      "elapsed_s": "2.5579610530003265",
+      "method": "as_found_pi_zero_r1_0001",
+      "note": "Skipped slots during send; no catch-up burst",
+      "skipped_slots": "1"
+    },
+    {
+      "elapsed_s": "1194.1444933009998",
+      "method": "as_found_pi_zero_r3_0341",
+      "note": "CF disabled confirmed; original CD restored; B3 read-only",
+      "skipped_slots": ""
+    }
+  ],
+  "maximum_decode_errors": {
+    "position_rad": 0,
+    "velocity_rad_s": 0,
+    "raw_current_a": 0,
+    "torque_nm": 0,
+    "desired_target_rad_s": 0,
+    "encoded_target_rad_s": 0
+  },
+  "settings_writes": [
+    {
+      "time": 7133.665838597,
+      "opcode": "CD",
+      "payload": "cd01f40100",
+      "phase": "startup"
+    },
+    {
+      "time": 8327.803243316,
+      "opcode": "CD",
+      "payload": "cd00881300",
+      "phase": "as_found_pi_zero_r3_0341"
+    }
+  ],
+  "cd_readback_history": [
+    {
+      "time": 7133.66504815,
+      "payload": "CD00881300"
+    },
+    {
+      "time": 7133.666595766,
+      "payload": "CD01F40100"
+    },
+    {
+      "time": 7133.670718183,
+      "payload": "CD01F40100"
+    },
+    {
+      "time": 8327.803723733,
+      "payload": "CD00881300"
+    },
+    {
+      "time": 8327.804295335,
+      "payload": "CD00881300"
+    }
+  ],
+  "gain_and_setting_readbacks": {
+    "B0": [
+      "B0079A99993E00"
+    ],
+    "B8": [
+      "B80000003F"
+    ],
+    "B9": [
+      "B90AD7A33B"
+    ],
+    "B3": [
+      "B342420100"
+    ],
+    "B5": [
+      "B500000000"
+    ],
+    "CD": [
+      "CD00881300",
+      "CD01F40100"
+    ]
+  },
+  "maximum_measured_abs_speed_rad_s": 12.687845530297977,
+  "maximum_measured_abs_current_torque_nm": 3.816600151658058,
+  "voltage_min_max_v": [
+    20.17,
+    20.22
+  ],
+  "temperature_min_max_c": [
+    30,
+    44
+  ],
+  "fault_counts": {
+    "0": 11944
+  },
+  "driver_mode_counts": {
+    "0": 3,
+    "3": 11941
+  },
+  "final_statuses": [
+    {
+      "time": 8327.453700397,
+      "opcode": "AE",
+      "mode": 3,
+      "fault": 0,
+      "payload": "AEE60701002C0300",
+      "voltage_v": 20.22,
+      "bus_current_a": 0.01
+    },
+    {
+      "time": 8327.55376173,
+      "opcode": "AE",
+      "mode": 3,
+      "fault": 0,
+      "payload": "AEE60701002C0300",
+      "voltage_v": 20.22,
+      "bus_current_a": 0.01
+    },
+    {
+      "time": 8327.653819841,
+      "opcode": "AE",
+      "mode": 3,
+      "fault": 0,
+      "payload": "AEE50701002C0300",
+      "voltage_v": 20.21,
+      "bus_current_a": 0.01
+    },
+    {
+      "time": 8327.752491551,
+      "opcode": "CF",
+      "mode": 3,
+      "fault": 0,
+      "payload": "CFE50701002C0300",
+      "voltage_v": 20.21,
+      "bus_current_a": 0.01
+    },
+    {
+      "time": 8327.803145743,
+      "opcode": "CF",
+      "mode": 0,
+      "fault": 0,
+      "payload": "CFE50701002C0000",
+      "voltage_v": 20.21,
+      "bus_current_a": 0.01
+    }
+  ],
+  "command_gap_percentiles_ms": [
+    0.9229829993273597,
+    4.999762999432278,
+    5.041939999682654,
+    5.060974879706919,
+    9.030168999743182
+  ],
+  "lateness_percentiles_ms": [
+    0.01048400008585304,
+    0.07495700083381962,
+    0.09248799960914766,
+    0.1161340596627269,
+    4.331593998358585
+  ],
+  "notes": [
+    "CSV current_a is native A1 current; current_torque_nm uses verified forward-positive sign -1.",
+    "All target samples and payloads match the plan; no gain/zero/current-limit writes.",
+    "Fresh A1/A2/A3 rows only were used; repeated state snapshots are not independent samples."
+  ]
+}
