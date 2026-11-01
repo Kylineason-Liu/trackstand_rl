@@ -1,0 +1,116 @@
+{
+  "mit_current_response": {
+    "fitted_velocity_p_nm_per_rad_s": 0.27909840115165857,
+    "fitted_offset_nm": 8.630553006899908e-05,
+    "apparent_alignment_ms": 1,
+    "pretest_coefficients": [
+      0.278836738966043,
+      4.6232694174278275e-05
+    ],
+    "heldout_repeat3": {
+      "rms_nm": 0.029069494649385175,
+      "r_squared": 0.9256820754820043
+    },
+    "fixed_encoded_kd_heldout": {
+      "rms_nm": 0.03004855644008566,
+      "r_squared": 0.9205917117135552
+    },
+    "all_data": {
+      "rms_nm": 0.029084539449708336,
+      "r_squared": 0.924932861037779
+    },
+    "delay_sweep": [
+      {
+        "delay_ms": -5,
+        "validation_rms_nm": 0.08003920281934408
+      },
+      {
+        "delay_ms": -4,
+        "validation_rms_nm": 0.07523340209867994
+      },
+      {
+        "delay_ms": -3,
+        "validation_rms_nm": 0.07395607800683043
+      },
+      {
+        "delay_ms": -2,
+        "validation_rms_nm": 0.05833602438072064
+      },
+      {
+        "delay_ms": -1,
+        "validation_rms_nm": 0.04441667804259705
+      },
+      {
+        "delay_ms": 0,
+        "validation_rms_nm": 0.03418303789556651
+      },
+      {
+        "delay_ms": 1,
+        "validation_rms_nm": 0.029139175751749017
+      },
+      {
+        "delay_ms": 2,
+        "validation_rms_nm": 0.043154202769558794
+      },
+      {
+        "delay_ms": 3,
+        "validation_rms_nm": 0.052123150655776676
+      },
+      {
+        "delay_ms": 4,
+        "validation_rms_nm": 0.06674155934953381
+      },
+      {
+        "delay_ms": 5,
+        "validation_rms_nm": 0.07628115840609632
+      },
+      {
+        "delay_ms": 6,
+        "validation_rms_nm": 0.07640485596365194
+      },
+      {
+        "delay_ms": 7,
+        "validation_rms_nm": 0.08087329001539602
+      },
+      {
+        "delay_ms": 8,
+        "validation_rms_nm": 0.07823506458033469
+      },
+      {
+        "delay_ms": 9,
+        "validation_rms_nm": 0.07519078168231223
+      },
+      {
+        "delay_ms": 10,
+        "validation_rms_nm": 0.07517944045017541
+      }
+    ],
+    "repeat_fits": {
+      "1": [
+        0.27921629609222226,
+        -1.3656250693791353e-05
+      ],
+      "2": [
+        0.27845170316799184,
+        0.00010520905464753197
+      ],
+      "3": [
+        0.27961656522266704,
+        0.0001661302744890403
+      ]
+    },
+    "note": "Equal whole-trial weighting; one global offset. Uses observed A2, not forward plant prediction. Train repeat1, select alignment repeat2, test repeat3, then all-data refit. Alignment includes sensor/host effects, not measured firmware delay.",
+    "steady_mean_p_through_origin_nm_per_rad_s": 0.2986000286821645,
+    "steady_mean_fixed_kd_rms_nm": 0.0024158629812654213
+  },
+  "steady_kinematic_consistency": {
+    "MIT": {
+      "trials": 24,
+      "a3_per_a2_slope": 1.0157701871816904
+    },
+    "C1": {
+      "trials": 24,
+      "a3_per_a2_slope": 1.0158045393556787
+    }
+  }
+}

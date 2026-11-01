@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Rear MIT velocity-control tests: holds, steps and sines with adjustable P gain.
+"""Rear MIT velocity-control tests: holds, steps and sines with adjustable P/I.
 
 Preview by default; --execute runs rear ID 1 only. Needs adjacent
 drive_c1_kp_identify.py and drive_velocity_sine.py, Python stdlib, no ROS.
 --velocity-kp (alias --kd) is MIT Kd in Nm/(rad/s); MIT position Kp is exactly 0.
-No integral/friction compensation. Zero requested feedforward has a documented
-wire quantization residual, compensated in the velocity encoding only.
+--velocity-ki is host integral gain in Nm/rad; default 0 preserves P-only tests.
+Host integral torque is sent as MIT feedforward, with physical-limit anti-windup.
+Feedforward quantization residual is compensated in velocity encoding only.
 F0 Vel_Max is narrowed/read back, then original F0/CD restored after CF disable.
 F0 persists in firmware: original settings are saved durably BEFORE any write.
 Rear airborne/free, frame supported, steering disabled, all other writers stopped.
@@ -39,6 +40,8 @@ def parse_args(argv=None):
     p.add_argument("--execute", action="store_true")
     p.add_argument("--velocity-kp", "--kd", dest="velocity_kp", type=shared.finite, default=.30,
                    help="Velocity P = MIT Kd, Nm/(rad/s), default 0.30; position Kp stays zero")
+    p.add_argument("--velocity-ki", type=shared.finite, default=0.,
+                   help="Host velocity I, Nm/rad; default 0 is P-only; not the raw B9 gain")
     p.add_argument("--velocity-max", type=shared.finite,
                    help="F0 symmetric velocity range, rad/s; default max(3, 1.3*plan peak, encoding headroom)")
     p.add_argument("--suite", choices=("all", "steady", "steps", "sine"), default="all")
@@ -67,6 +70,8 @@ def parse_args(argv=None):
         kd_encoding(a.velocity_kp)
     except ValueError as error:
         p.error(str(error))
+    if a.velocity_ki < 0:
+        p.error("velocity I must be nonnegative, in Nm/rad")
     if a.velocity_max is not None and not .01 <= a.velocity_max <= 655.35:
         p.error("F0 --velocity-max must be in [0.01,655.35] rad/s")
     if a.repeats < 1 or a.sine_cycles < 1:
@@ -87,7 +92,8 @@ def parse_args(argv=None):
 
 def make_plan(args):
     # Reuse exact randomization, waveforms, counts and durations; change labels only.
-    return [replace(s, name=s.name.replace("as_found_pi", "mit_velocity_p"), mode="mit_velocity_p")
+    mode = "mit_velocity_pi" if args.velocity_ki else "mit_velocity_p"
+    return [replace(s, name=s.name.replace("as_found_pi", mode), mode=mode)
             for s in c1.make_plan(args)]
 
 
@@ -114,29 +120,31 @@ def velocity_range(plan, requested=None, kd=.3, torque_max=0.):
     return code*.01
 
 
-def velocity_p_payload(target, measured, kp, ranges):
-    """Internal P only. Cancel the unavoidable nearest-zero FF code in the target.
+def velocity_payload(target, measured, kp, ranges, integral_nm=0., integral_error_rad=0.):
+    """Internal P + host I. Cancel only the FF quantization error in velocity.
 
-    effective_target = wire_target + SIGN*wire_ff/actual_Kd (user coordinates).
-    This is a fixed codec correction, not integral/friction/feedback compensation.
-    The wire target, wire FF and actual Kd are all logged, allowing reconstruction.
+    effective_P_target = wire_target + SIGN*(wire_ff - SIGN*integral_nm)/actual_Kd.
+    Total user torque = actual_Kd*(effective_P_target - measured) + integral_nm.
+    With I=0 this produces the exact previous P-only packet and correction.
     """
     pmax, vmax, tmax = ranges
     d, actual_kd = kd_encoding(kp)
-    t = shared.encode(0., tmax, 12)
+    t = shared.encode(shared.SIGN*integral_nm, tmax, 12)
     ff = shared.decode(t, tmax, 12)
+    residual = ff-shared.SIGN*integral_nm
     p = shared.encode(0., pmax, 16)  # Position irrelevant: Kp bits are exactly zero.
-    v = shared.encode(shared.SIGN*target-ff/actual_kd, vmax, 12)
+    v = shared.encode(shared.SIGN*target-residual/actual_kd, vmax, 12)
     wire_velocity = shared.decode(v, vmax, 12)
     encoded = shared.SIGN*wire_velocity
-    effective = encoded+shared.SIGN*ff/actual_kd
-    torque = actual_kd*(effective-measured)
+    effective = encoded+shared.SIGN*residual/actual_kd
+    torque = actual_kd*(effective-measured)+integral_nm
     if not math.isfinite(torque) or abs(torque) > shared.TORQUE_LIMIT_NM:
         raise RuntimeError("estimated total MIT torque exceeds 6.28 Nm or feedback is invalid")
     packet = bytes((p >> 8, p & 255, v >> 4, (v & 15) << 4, 0,
                     d >> 4, ((d & 15) << 4) | (t >> 8), t & 255))
     fields = dict(encoded_target_velocity_rad_s=encoded, mit_kp=0., mit_kd=actual_kd,
-                  mit_feedforward_native_nm=ff, integral_error_rad=0., integral_torque_nm=0.,
+                  mit_feedforward_native_nm=ff, integral_error_rad=integral_error_rad,
+                  integral_torque_nm=integral_nm,
                   estimated_mit_total_torque_nm=torque)
     return packet, fields, effective
 
@@ -161,12 +169,47 @@ class MitVelocityTestIO(c1.IdentificationIO):
     def __init__(self, args, *values, persist=lambda: None, **kwargs):
         super().__init__(args, *values, **kwargs)
         self.plan, self.persist = make_plan(args), persist
-        self.kd, self.ki = args.velocity_kp, 0.
+        self.kd, self.ki = args.velocity_kp, args.velocity_ki
         self.command_ranges = None
         self.first_mit_at = None
         self.encoder_zero_at = None
         self.disable_confirmation_method = None
         self.maximum_effective_target_error_rad_s = 0.
+        self.reset_integral()
+
+    def reset_integral(self):
+        self.integral = shared.Integral()
+        self.integral_nm, self.integral_limited_updates = 0., 0
+
+    def update_integral(self, target, stamp):
+        if not self.ki:
+            return
+        error, previous = target-self.velocity, self.integral.error_rad
+        proposed = self.ki*self.integral.update(error, stamp)
+        _, kd = kd_encoding(self.kd)
+        # Reserve only worst-case velocity quantization error, not an arbitrary torque margin.
+        limit = shared.TORQUE_LIMIT_NM-kd*self.command_ranges[1]/4095
+        i_limit = min(limit, self.command_ranges[2])
+        candidate = max(-i_limit, min(i_limit, proposed))
+        delta = candidate-self.ki*previous
+        total = kd*error+candidate
+        if (total > limit and delta > 0) or (total < -limit and delta < 0):
+            candidate = self.ki*previous  # Freeze only accumulation further into saturation; allow unwinding.
+        self.integral_limited_updates += int(candidate != proposed)
+        self.integral.error_rad = candidate/self.ki
+        self.integral_nm = candidate
+
+    def run_segment(self, segment):
+        self.reset_integral()
+        before = len(self.phases)
+        try:
+            super().run_segment(segment)
+        finally:
+            if len(self.phases) > before:
+                self.phases[-1].update(integral_reset_at_start=True,
+                                      final_integral_error_rad=self.integral.error_rad,
+                                      final_integral_torque_nm=self.integral_nm,
+                                      integral_limited_updates=self.integral_limited_updates)
 
     def send(self, payload, can_id=0x101, **fields):
         if can_id != 0x101:
@@ -175,7 +218,9 @@ class MitVelocityTestIO(c1.IdentificationIO):
             target = fields["target_velocity_rad_s"]
             if self.command_ranges is None:
                 raise RuntimeError("MIT encoding ranges not configured")
-            packet, encoded_fields, effective = velocity_p_payload(target, self.velocity, self.kd, self.command_ranges)
+            self.update_integral(target, self.clock.monotonic())
+            packet, encoded_fields, effective = velocity_payload(
+                target, self.velocity, self.kd, self.command_ranges, self.integral_nm, self.integral.error_rad)
             fields.update(encoded_fields)
             self.maximum_effective_target_error_rad_s = max(
                 self.maximum_effective_target_error_rad_s, abs(effective-target))
@@ -195,6 +240,7 @@ class MitVelocityTestIO(c1.IdentificationIO):
 
     def disable(self):
         self.active, self.disable_confirmed = False, False
+        self.reset_integral()
         deadline = self.clock.monotonic()+1.
         while self.clock.monotonic() < deadline:
             try:
@@ -265,9 +311,10 @@ class MitVelocityTestIO(c1.IdentificationIO):
         # No synchronous JSON/fsync after enabling CD: slow Pi storage must not
         # consume the watchdog budget before the first motion packet.
         _, actual_kd = kd_encoding(self.kd)
-        print(f"MIT Kp=0, velocity P/Kd={self.kd:g} (encoded {actual_kd:.9g}) Nm/(rad/s), I=0, requested FF=0")
+        print(f"MIT Kp=0, velocity P/Kd={self.kd:g} (encoded {actual_kd:.9g}) Nm/(rad/s), "
+              f"host Ki={self.ki:g} Nm/rad, requested FF=host integral torque")
         print(f"Verified F0 velocity +/-{self.ranges[1]:g} rad/s; resolution {2*self.ranges[1]/4095:.9g} rad/s")
-        print("Nearest-zero FF quantization is cancelled in velocity encoding; wire values are recorded.")
+        print("FF quantization residual is cancelled in velocity encoding; wire values and integral are recorded.")
 
     def configuration(self):
         if self.command_ranges is None:
@@ -277,8 +324,14 @@ class MitVelocityTestIO(c1.IdentificationIO):
         ff = shared.decode(shared.encode(0., tmax, 12), tmax, 12)
         return dict(position_kp=0., velocity_kp_requested_nm_per_rad_s=self.kd,
                     velocity_kd_encoded_nm_per_rad_s=actual_kd, velocity_kd_code=code,
-                    integral_gain_nm_per_rad=0., feedforward_requested_nm=0.,
-                    feedforward_encoded_native_nm=ff, native_velocity_codec_offset_rad_s=-ff/actual_kd,
+                    integral_gain_nm_per_rad=self.ki,
+                    integral_update="Host packet rate, monotonic elapsed dt, trapezoidal A2 velocity error",
+                    integral_reset="Each segment start and motor disable; retained within steps/sines",
+                    anti_windup="I bounded by min(F0 torque range, 6.28 minus codec margin); "
+                                "freeze increments that push P+I beyond physical torque headroom",
+                    feedforward_requested="SIGN * host integral torque",
+                    zero_integral_feedforward_encoded_native_nm=ff,
+                    zero_integral_native_velocity_codec_offset_rad_s=-ff/actual_kd,
                     position_range_rad=pmax, velocity_range_rad_s=vmax, torque_range_nm=tmax,
                     velocity_resolution_rad_s=2*vmax/4095,
                     position_reference="Kp=0; absolute target irrelevant; first capture A3 is log origin only")
@@ -313,11 +366,12 @@ def main(argv=None):
     plan = make_plan(args)
     planned_range = velocity_range(plan, args.velocity_max, args.velocity_kp)
     counts = {kind: sum(s.kind == kind for s in plan) for kind in ("steady", "step", "sine", "zero")}
-    print(f"Rear ID 1 MIT P={args.velocity_kp:g} Nm/(rad/s): {counts}; {sum(s.duration_s for s in plan):g} s")
+    print(f"Rear ID 1 MIT P={args.velocity_kp:g} Nm/(rad/s), host I={args.velocity_ki:g} Nm/rad: "
+          f"{counts}; {sum(s.duration_s for s in plan):g} s")
     print(f"MIT {args.packet_rate} Hz; A1/A2 steady {args.steady_feedback_rate}, dynamic "
           f"{args.dynamic_feedback_rate} Hz; planned F0 velocity +/-{planned_range:g} rad/s")
     if not args.execute:
-        print("PREVIEW: no CAN/files. Actual F0 torque range determines final zero-encoding headroom.")
+        print("PREVIEW: no CAN/files. Actual F0 torque range determines final FF quantization headroom.")
         return 0
     args.output.parent.mkdir(parents=True, exist_ok=True)
     report_path, plan_path = args.output.with_suffix(".json"), args.output.with_name(args.output.stem+"_plan.csv")
@@ -327,15 +381,17 @@ def main(argv=None):
         writer = csv.DictWriter(stream, fieldnames=list(asdict(plan[0])))
         writer.writeheader()
         writer.writerows(asdict(s) for s in plan)
-    report = dict(schema="drive_mit_velocity_test_v1", completed=False, disabled_and_restored=False,
+    report = dict(schema="drive_mit_velocity_test_v2", completed=False, disabled_and_restored=False,
                   gains_read_only=True, error=None, motor_id=1, encoder_sign=-1, torque_sign=-1,
                   arguments={k: str(v) if isinstance(v, Path) else v for k, v in vars(args).items()},
                   source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                   scheduler_sha256=hashlib.sha256(Path(c1.__file__).read_bytes()).hexdigest(),
                   helper_sha256=hashlib.sha256(Path(shared.__file__).read_bytes()).hexdigest(),
-                  control_law="MIT Kp=0; Kd=velocity_kp; I=0; requested FF=0; zero-code residual cancelled",
+                  control_law="MIT Kp=0; Kd=velocity_kp; host FF=velocity_ki*integral(target-A2) dt; "
+                              "physical-limit anti-windup; FF quantization residual cancelled",
                   target_semantics="encoded_target_velocity is wire velocity; "
-                                   "effective target = wire + SIGN*wire_ff/Kd",
+                                   "effective P target = wire + SIGN*(wire_ff-SIGN*integral_torque_nm)/Kd; "
+                                   "total torque = Kd*(effective P target-A2)+integral_torque_nm",
                   plan=[asdict(s) for s in plan])
     c1.save_report(report_path, report)
     stopped = threading.Event()

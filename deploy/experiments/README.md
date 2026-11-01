@@ -1,10 +1,13 @@
 # Standalone motor feedback
 
-## Test rear MIT velocity P with adjustable gain
+## Test rear MIT velocity P/PI with adjustable gains
 
 [`drive_mit_velocity_test.py`](drive_mit_velocity_test.py) uses the C1 identification
 campaign's same holds/steps/sines, with MIT position Kp=0, adjustable velocity
-P/Kd (default **0.30 Nm/(rad/s)**), no integral and zero requested feedforward.
+P/Kd (default **0.30 Nm/(rad/s)**) and optional host integral via `--velocity-ki`
+in **Nm/rad**. Default Ki=0 preserves P-only operation. With Ki>0, the script
+sends integral torque through MIT feedforward, with physical-limit anti-windup
+and a reset at each segment's start. Position Kp remains zero.
 It narrows F0 velocity encoding to **±13 rad/s** for the full plan, or about
 **±3 rad/s** for small subsets, and restores the original F0/CD after disable.
 CSV/JSON/plan are recorded automatically. Pi dependencies are the adjacent
@@ -16,6 +19,9 @@ python3 deploy/experiments/drive_mit_velocity_test.py --execute \
   --suite steps --repeats 1 --step-bases 0 --step-sizes 1
 # Full C1-matching plan, about 20 minutes:
 python3 deploy/experiments/drive_mit_velocity_test.py --execute --velocity-kp 0.30
+# Same plan with host integral; 3.3 is the provisional C1 effective-I estimate:
+python3 deploy/experiments/drive_mit_velocity_test.py --execute \
+  --velocity-kp 0.30 --velocity-ki 3.3
 ```
 
 See [the gain/range flags, zero-code correction and recovery procedure](DRIVE_MIT_VELOCITY_TEST.md).

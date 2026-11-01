@@ -5,6 +5,7 @@ from dataclasses import asdict, replace
 import csv
 import io
 import json
+import math
 from pathlib import Path
 import struct
 import sys
@@ -102,12 +103,21 @@ class MitVelocityTests(unittest.TestCase):
         self.assertAlmostEqual(sum(s.duration_s for s in plan), 1194.)
         self.assertEqual(experiment.velocity_range(plan, kd=.3, torque_max=18.), 13.)
 
+    def test_pi_plan_preserves_waveforms_and_uses_distinct_labels(self):
+        args = experiment.parse_args(["--velocity-ki", "3.3"])
+        for pi, p in zip(experiment.make_plan(args), experiment.make_plan(experiment.parse_args([]))):
+            self.assertEqual(pi.mode, "mit_velocity_pi")
+            self.assertEqual(replace(pi, name=p.name, mode=p.mode), p)
+        self.assertEqual(experiment.parse_args([]).velocity_ki, 0.)
+
     def test_preview_never_opens_can_or_creates_files(self):
         with patch.object(experiment.shared, "open_bus", side_effect=AssertionError), redirect_stdout(io.StringIO()):
             self.assertEqual(experiment.main([]), 0)
+            self.assertEqual(experiment.main(["--velocity-ki", "3.3"]), 0)
 
     def test_cli_rejects_unencodable_gains_and_invalid_inputs(self):
         for flags in (["--kd", "0"], ["--kd", "0.00001"], ["--kd", "6"], ["--kd", "nan"],
+                      ["--velocity-ki", "-1"], ["--velocity-ki", "nan"], ["--velocity-ki", "inf"],
                       ["--velocity-max", "0"], ["--velocity-max", "700"], ["--repeats", "0"],
                       ["--packet-rate", "50", "--frequencies", "25"]):
             with self.subTest(flags=flags), redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):
@@ -123,7 +133,7 @@ class MitVelocityTests(unittest.TestCase):
     def test_native_sign_kp_zero_no_integral_and_torque_quantization_cancelled(self):
         for gain in (.2, .3, 1., 5.):
             for target in (-.25, -.05, 0., .05, .25):
-                packet, fields, effective = experiment.velocity_p_payload(target, 0., gain, (95.5, 3., 18.))
+                packet, fields, effective = experiment.velocity_payload(target, 0., gain, (95.5, 3., 18.))
                 kp, vcode, tcode, kd = decode_packet(packet)
                 self.assertEqual(kp, 0)
                 self.assertAlmostEqual(kd, fields["mit_kd"])
@@ -136,7 +146,7 @@ class MitVelocityTests(unittest.TestCase):
                 self.assertEqual(fields["integral_torque_nm"], 0.)
                 if target > .04:
                     self.assertLess(native_v, 0)
-        _, fields, _ = experiment.velocity_p_payload(0., 0., .3, (95.5, 3., 18.))
+        _, fields, _ = experiment.velocity_payload(0., 0., .3, (95.5, 3., 18.))
         self.assertLess(abs(fields["estimated_mit_total_torque_nm"]), .3*3/4095+.00001)
 
     def test_full_plan_quantization_stays_in_range_and_no_gain_or_target_clipping(self):
@@ -144,10 +154,106 @@ class MitVelocityTests(unittest.TestCase):
         for segment in plan:
             for time in (0., .61, .99, 1.01):
                 target = segment.target(time)
-                _, _, effective = experiment.velocity_p_payload(target, target, .3, (95.5, 13., 18.))
+                _, _, effective = experiment.velocity_payload(target, target, .3, (95.5, 13., 18.))
                 self.assertAlmostEqual(effective, target, delta=13/4095+1e-12)
         with self.assertRaises(RuntimeError):
-            experiment.velocity_p_payload(10., 0., 1., (95.5, 13., 18.))
+            experiment.velocity_payload(10., 0., 1., (95.5, 13., 18.))
+
+    def test_integral_packet_native_sign_and_only_quantization_is_cancelled(self):
+        for vmax, tmax in ((3., 18.), (13., 6.28)):
+            for target in (-.4, 0., .4):
+                for integral in (-.14, -.05, 0., .05, .14):
+                    packet, fields, effective = experiment.velocity_payload(
+                        target, .1, .3, (95.5, vmax, tmax), integral, integral/3.3)
+                    kp, vcode, tcode, kd = decode_packet(packet)
+                    native_v = experiment.shared.decode(vcode, vmax, 12)
+                    native_ff = experiment.shared.decode(tcode, tmax, 12)
+                    torque = -(kd*(native_v+.1)+native_ff)
+                    self.assertEqual(kp, 0)
+                    self.assertAlmostEqual(native_ff, -integral, delta=tmax/4095+1e-12)
+                    self.assertAlmostEqual(effective, target, delta=vmax/4095+1e-12)
+                    self.assertAlmostEqual(torque, fields["estimated_mit_total_torque_nm"])
+                    self.assertAlmostEqual(torque, kd*(target-.1)+integral, delta=kd*vmax/4095+1e-12)
+                    self.assertEqual(fields["integral_torque_nm"], integral)
+                    self.assertAlmostEqual(fields["integral_error_rad"], integral/3.3)
+        with self.assertRaises(RuntimeError):
+            experiment.velocity_payload(10., 0., .3, (95.5, 13., 18.), 4.)
+
+    def test_integral_uses_measured_speed_real_elapsed_time_and_can_unwind(self):
+        motor, _, _, _ = self.make_io(["--velocity-ki", "3.3"])
+        motor.command_ranges, motor.velocity = (95.5, 13., 18.), .5
+        motor.update_integral(1.5, 10.)
+        self.assertEqual(motor.integral_nm, 0.)
+        motor.update_integral(1.5, 10.03)  # 30 ms, not one nominal 5-ms packet period.
+        self.assertAlmostEqual(motor.integral.error_rad, .03)
+        self.assertAlmostEqual(motor.integral_nm, .099)
+        motor.update_integral(-.5, 10.04)
+        motor.update_integral(-.5, 10.05)
+        self.assertAlmostEqual(motor.integral.error_rad, .02)
+        self.assertAlmostEqual(motor.integral_nm, .066)
+        with self.assertRaisesRegex(RuntimeError, "non-monotonic"):
+            motor.update_integral(0., 9.)
+
+    def test_anti_windup_respects_total_torque_headroom_without_integrating_hidden_state(self):
+        for sign in (-1, 1):
+            motor, _, _, _ = self.make_io(["--velocity-ki", "3.3"])
+            motor.command_ranges, motor.velocity = (95.5, 30., 18.), 0.
+            values = []
+            for i in range(2000):
+                motor.update_integral(sign*20., 10.+i*.005)
+                _, fields, _ = experiment.velocity_payload(
+                    sign*20., 0., motor.kd, motor.command_ranges, motor.integral_nm, motor.integral.error_rad)
+                self.assertLessEqual(abs(fields["estimated_mit_total_torque_nm"]), 6.28)
+                values.append(motor.integral_nm)
+            self.assertGreater(motor.integral_limited_updates, 0)
+            self.assertLess(abs(motor.integral_nm), .28)
+            self.assertAlmostEqual(values[-1], values[100])
+            self.assertAlmostEqual(motor.integral.error_rad, motor.integral_nm/3.3)
+
+    def test_integral_obeys_actual_feedforward_range_and_recovers_after_saturation(self):
+        motor, _, _, _ = self.make_io(["--velocity-ki", "1"])
+        motor.command_ranges, motor.velocity = (95.5, 3., .05), 0.
+        for i in range(100):
+            motor.update_integral(1., 10.+i*.01)
+        self.assertEqual(motor.integral_nm, .05)
+        self.assertEqual(motor.integral.error_rad, .05)
+        self.assertGreater(motor.integral_limited_updates, 0)
+        motor.update_integral(-1., 11.)
+        motor.update_integral(-1., 11.01)
+        self.assertAlmostEqual(motor.integral_nm, .04)
+
+    def test_segment_reset_preserves_integral_within_step_and_zeros_it_on_disable(self):
+        motor, bus, log, _ = self.make_io(["--velocity-ki", "3.3"])
+        send = bus.send
+
+        def fixed_speed(frame):
+            result = send(frame)
+            bus.speed = 0.  # Known stationary plant; A2 independent of command/FF encoding.
+            return result
+
+        bus.send = fixed_speed
+        segment = replace(motor.plan[0], name="step1", kind="step", base_rad_s=0., amplitude_rad_s=.4,
+                          pulse_start_s=.03, pulse_end_s=.07, duration_s=.1)
+        with patch.object(experiment.shared.select, "select", bus.select), redirect_stdout(io.StringIO()):
+            motor.startup()
+            for name in ("step1", "step2"):
+                motor.run_segment(replace(segment, name=name))
+            final = motor.integral_nm
+            motor.cleanup()
+        for name in ("step1", "step2"):
+            commands = [r for r in log.rows if r["record_type"] == "command" and r["method"] == name]
+            self.assertEqual(commands[0]["integral_torque_nm"], 0.)
+            # Integral survives the return from the pulse to zero within the same segment.
+            self.assertGreater(commands[-1]["integral_torque_nm"], 0.)
+            for row in commands:
+                self.assertAlmostEqual(row["integral_torque_nm"], 3.3*row["integral_error_rad"])
+                self.assertTrue(math.isfinite(row["estimated_mit_total_torque_nm"]))
+                self.assertLessEqual(set(row), set(experiment.shared.FIELDS))
+        self.assertGreater(final, .04)
+        self.assertAlmostEqual(motor.phases[0]["final_integral_torque_nm"], final)
+        self.assertAlmostEqual(motor.phases[1]["final_integral_torque_nm"], final)
+        self.assertEqual(motor.integral_nm, 0.)
+        self.assertIsNone(motor.integral.previous_time)
 
     def test_read_only_settings_and_confirmed_disable_gate(self):
         motor, bus, _, _ = self.make_io()
@@ -291,7 +397,7 @@ class MitVelocityTests(unittest.TestCase):
                  patch.object(experiment, "MitVelocityTestIO",
                               side_effect=lambda *a, **kw: cls(*a, clock=clock, **kw)), \
                  redirect_stdout(io.StringIO()):
-                status = experiment.main(["--execute", "--suite", "steps", "--repeats", "1",
+                status = experiment.main(["--execute", "--velocity-ki", "3.3", "--suite", "steps", "--repeats", "1",
                                           "--step-bases", "0", "--step-sizes", ".25", "--output", str(output)])
             self.assertEqual(status, 0)
             report = json.loads(output.with_suffix(".json").read_text())
@@ -302,6 +408,8 @@ class MitVelocityTests(unittest.TestCase):
             self.assertLessEqual(report["encoder_zero_monotonic_s"], report["phases"][0]["start_monotonic_s"])
             config = report["mit_configuration"]
             self.assertEqual(config["position_kp"], 0.)
+            self.assertEqual(config["integral_gain_nm_per_rad"], 3.3)
+            self.assertEqual(report["schema"], "drive_mit_velocity_test_v2")
             self.assertEqual(config["velocity_kd_code"], 246)
             self.assertAlmostEqual(config["velocity_kd_encoded_nm_per_rad_s"], 246*5/4095)
             self.assertEqual(config["velocity_range_rad_s"], 3.)
@@ -312,6 +420,8 @@ class MitVelocityTests(unittest.TestCase):
             commands = [r for r in rows if r["record_type"] == "command"]
             self.assertEqual(len(commands), 1440)
             self.assertTrue(all(r["can_id"] == "501" for r in commands))
+            self.assertTrue(all(r["method"].startswith("mit_velocity_pi_") for r in commands))
+            self.assertTrue(any(abs(float(r["integral_torque_nm"])) > 1e-5 for r in commands))
             zero_events = [r for r in rows if r["note"].startswith("Capture software zero:")]
             self.assertEqual(len(zero_events), 1)
             self.assertEqual(int(zero_events[0]["multi_turn_count"]), 123456)
@@ -340,32 +450,33 @@ class MitVelocityTests(unittest.TestCase):
 
     def test_packet_rate_options_really_send_mit_at_50_200_400_hz(self):
         for rate in (50, 200, 400):
-            with self.subTest(rate=rate):
-                motor, bus, log, _ = self.make_io(["--packet-rate", str(rate)])
-                segment = replace(motor.plan[0], name="rate", duration_s=.2)
-                with patch.object(experiment.shared.select, "select", bus.select), redirect_stdout(io.StringIO()):
-                    motor.startup()
-                    motor.run_segment(segment)
-                    motor.cleanup()
-                commands = [r for r in log.rows if r["record_type"] == "command"]
-                self.assertEqual(len(commands), rate//5)
-                self.assertAlmostEqual(motor.phases[0]["achieved_rate_hz"], rate, places=6)
+            for ki in (0., 3.3):
+                with self.subTest(rate=rate, ki=ki):
+                    motor, bus, log, _ = self.make_io(["--packet-rate", str(rate), "--velocity-ki", str(ki)])
+                    segment = replace(motor.plan[0], name="rate", kind="steady", base_rad_s=.1, duration_s=.2)
+                    with patch.object(experiment.shared.select, "select", bus.select), redirect_stdout(io.StringIO()):
+                        motor.startup()
+                        motor.run_segment(segment)
+                        motor.cleanup()
+                    commands = [r for r in log.rows if r["record_type"] == "command"]
+                    self.assertEqual(len(commands), rate//5)
+                    self.assertAlmostEqual(motor.phases[0]["achieved_rate_hz"], rate, places=6)
 
     def test_gain_bounds_are_checked_before_rounding_in_all_entry_points(self):
         for gain in (0., -.01, .00001, 5.00001, float("inf"), float("nan")):
             with self.subTest(gain=gain), self.assertRaises(ValueError):
                 experiment.kd_encoding(gain)
             with self.subTest(gain=gain), self.assertRaises(ValueError):
-                experiment.velocity_p_payload(0., 0., gain, (95.5, 13., 18.))
+                experiment.velocity_payload(0., 0., gain, (95.5, 13., 18.))
 
     def test_golden_zero_packet_and_native_torque_equation(self):
-        packet, fields, effective = experiment.velocity_p_payload(0., 0., .3, (95.5, 13., 18.))
+        packet, fields, effective = experiment.velocity_payload(0., 0., .3, (95.5, 13., 18.))
         self.assertEqual(packet.hex(), "80007fd0000f6800")
         self.assertEqual(decode_packet(packet)[0], 0)
         self.assertEqual(fields["mit_kd"], 246*5/4095)
         for target in (-2., -.25, 0., .25, 2.):
             measured = .9*target
-            packet, fields, effective = experiment.velocity_p_payload(target, measured, .3, (95.5, 13., 18.))
+            packet, fields, effective = experiment.velocity_payload(target, measured, .3, (95.5, 13., 18.))
             _, v, t, kd = decode_packet(packet)
             native_v = (v*2/4095-1)*13
             native_ff = (t*2/4095-1)*18

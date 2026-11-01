@@ -1,0 +1,183 @@
+{
+  "timestamp_utc": "2026-11-01T14:45:48.778011+00:00",
+  "passed": true,
+  "protected_files_hash_verified": 91,
+  "protected_files_changed": [],
+  "git_index_unchanged": true,
+  "git_diff_check": "passed",
+  "python_ast_and_pyflakes": "passed",
+  "python_files_checked": 4,
+  "python_line_limit": 120,
+  "images_verified": [
+    {
+      "file": "mit_torque_law.png",
+      "dimensions": [
+        2975,
+        962
+      ]
+    },
+    {
+      "file": "representative_traces.png",
+      "dimensions": [
+        3325,
+        1750
+      ]
+    },
+    {
+      "file": "sine_amplitude.png",
+      "dimensions": [
+        2800,
+        1400
+      ]
+    },
+    {
+      "file": "sine_error.png",
+      "dimensions": [
+        2800,
+        1400
+      ]
+    },
+    {
+      "file": "steady_response.png",
+      "dimensions": [
+        2275,
+        1400
+      ]
+    }
+  ],
+  "svg_xml_verified": 5,
+  "pdf_pages": {
+    "all_figures.pdf": 5,
+    "mit_torque_law.pdf": 1,
+    "representative_traces.pdf": 1,
+    "sine_amplitude.pdf": 1,
+    "sine_error.pdf": 1,
+    "steady_response.pdf": 1
+  },
+  "local_links_checked": 44,
+  "independent_raw_verification": {
+    "raw_plotted_response_samples_verified": 31510,
+    "maximum_raw_export_error": 4.440892098500626e-16,
+    "baseline_metrics_reproduced": 378,
+    "extra_raw_checks": {
+      "MIT": {
+        "f1_positions_decoded": 238799,
+        "f1_position_endpoint_codes": 10126,
+        "low_steady_f1_position_endpoints": 2000,
+        "low_steady_f1_samples": 23999,
+        "low_steady_f1_position_by_trial": {
+          "mit_velocity_p_steady_r1_0006": {
+            "samples": 1000,
+            "endpoint_samples": 0
+          },
+          "mit_velocity_p_steady_r1_0010": {
+            "samples": 1000,
+            "endpoint_samples": 0
+          },
+          "mit_velocity_p_steady_r1_0012": {
+            "samples": 999,
+            "endpoint_samples": 0
+          },
+          "mit_velocity_p_steady_r1_0016": {
+            "samples": 1000,
+            "endpoint_samples": 0
+          },
+          "mit_velocity_p_steady_r1_0022": {
+            "samples": 1000,
+            "endpoint_samples": 0
+          },
+          "mit_velocity_p_steady_r1_0026": {
+            "samples": 1000,
+            "endpoint_samples": 0
+          },
+          "mit_velocity_p_steady_r1_0034": {
+            "samples": 1000,
+            "endpoint_samples": 0
+          },
+          "mit_velocity_p_steady_r1_0036": {
+            "samples": 1000,
+            "endpoint_samples": 0
+          },
+          "mit_velocity_p_steady_r2_0116": {
+            "samples": 1000,
+            "endpoint_samples": 0
+          },
+          "mit_velocity_p_steady_r2_0122": {
+            "samples": 1000,
+            "endpoint_samples": 0
+          },
+          "mit_velocity_p_steady_r2_0128": {
+            "samples": 1000,
+            "endpoint_samples": 0
+          },
+          "mit_velocity_p_steady_r2_0132": {
+            "samples": 1000,
+            "endpoint_samples": 0
+          },
+          "mit_velocity_p_steady_r2_0134": {
+            "samples": 1000,
+            "endpoint_samples": 0
+          },
+          "mit_velocity_p_steady_r2_0138": {
+            "samples": 1000,
+            "endpoint_samples": 0
+          },
+          "mit_velocity_p_steady_r2_0144": {
+            "samples": 1000,
+            "endpoint_samples": 0
+          },
+          "mit_velocity_p_steady_r2_0146": {
+            "samples": 1000,
+            "endpoint_samples": 0
+          },
+          "mit_velocity_p_steady_r3_0230": {
+            "samples": 1000,
+            "endpoint_samples": 0
+          },
+          "mit_velocity_p_steady_r3_0232": {
+            "samples": 1000,
+            "endpoint_samples": 0
+          },
+          "mit_velocity_p_steady_r3_0234": {
+            "samples": 1000,
+            "endpoint_samples": 0
+          },
+          "mit_velocity_p_steady_r3_0238": {
+            "samples": 1000,
+            "endpoint_samples": 0
+          },
+          "mit_velocity_p_steady_r3_0250": {
+            "samples": 1000,
+            "endpoint_samples": 1000
+          },
+          "mit_velocity_p_steady_r3_0252": {
+            "samples": 1000,
+            "endpoint_samples": 1000
+          },
+          "mit_velocity_p_steady_r3_0260": {
+            "samples": 1000,
+            "endpoint_samples": 0
+          },
+          "mit_velocity_p_steady_r3_0264": {
+            "samples": 1000,
+            "endpoint_samples": 0
+          }
+        }
+      },
+      "C1": {
+        "f1_positions_decoded": 0,
+        "f1_position_endpoint_codes": 0,
+        "low_steady_f1_position_endpoints": 0,
+        "low_steady_f1_samples": 0,
+        "low_steady_f1_position_by_trial": {}
+      }
+    },
+    "independent_dynamic_lstsq_coefficients": [
+      0.27909840115165874,
+      8.630553006899852e-05
+    ],
+    "passed": true,
+    "hardware_or_simulator_run": false
+  },
+  "note": "Offline analysis only. No hardware, simulation, production config or progress-record changes."
+}
