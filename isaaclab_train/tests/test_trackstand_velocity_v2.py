@@ -103,7 +103,9 @@ class TestRearVelocityV2(unittest.TestCase):
 
     def test_timing_observations_and_steering_are_unchanged(self):
         v1, v2 = self.cfg(1), self.cfg()
-        self.assertEqual((v2.sim.dt, v2.decimation, v2.episode_length_s), (.000625, 32, 30.))
+        self.assertEqual((v2.sim.dt, v2.decimation, v2.episode_length_s), (1 / 1200, 24, 30.))
+        self.assertAlmostEqual(v2.sim.dt * v2.decimation, .02)
+        self.assertEqual(v2.sim.render_interval, 24)
         self.assertEqual((v1.sim.dt, v1.decimation), (.0025, 8))
         self.assertEqual(len(v2.observations["policy"].imu.noise.std), 11)
         self.assertIs(v2.observations["policy"].imu.func, v1.observations["policy"].imu.func)
@@ -224,7 +226,7 @@ class TestRearVelocityV2(unittest.TestCase):
 
     def test_integral_updates_at_200_hz_with_held_50_hz_target(self):
         torch = self.torch
-        for physics_hz in (400, 800, 1600):
+        for physics_hz in (400, 800, 1000, 1200, 1600):
             with self.subTest(physics_hz=physics_hz):
                 action, _ = self.make_action(2, physics_dt=1 / physics_hz)
                 action.process_actions(torch.tensor([[1 / 61.6], [-1 / 61.6]]))

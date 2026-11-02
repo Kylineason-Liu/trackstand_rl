@@ -253,8 +253,12 @@ V2 inherits v1 and changes the rear action from torque to **target angular veloc
 Both raw actions remain bounded Beta outputs in [-1, 1]. The 11 observations,
 steering target processing, rewards, termination conditions and passive friction
 remain the same. Policy targets stay at 50 Hz. The external integral updates at
-200 Hz, while physics and explicit IdealPD evaluate at 1600 Hz; the inherited
-400-Hz timestep was numerically unstable for the tested rear P gain.
+200 Hz, while physics and explicit IdealPD evaluate at 1200 Hz (24 physics steps
+per policy target and six per integral update). The inherited 400-Hz timestep
+was numerically unstable for the tested rear P gain. The
+[rate comparison](reports/20261102_v2_external_pi/rate_sweep_800_1000_1200/README.md)
+found 1200 Hz matched 1600 Hz on the unloaded constant-target probe; 800 Hz and
+1000 Hz retained oscillations in some randomized environments.
 
 V2 wheel-net bookkeeping uses actual rear-angle increments after each physics
 step, unwrapping the installed PhysX 4pi branch. The existing 7.2 rad termination
@@ -278,7 +282,7 @@ Rear IdealPDActuator supplies velocity P; a separate action term maintains I:
 velocity_target = clip(61.6 * raw_drive_action, -61.6, 61.6)  # held for 20 ms
 error = velocity_target - measured_velocity
 I = trapezoidal_integral(error, Ki=3.3, rate_hz=200)  # first sample primes I=0
-torque = clip(0.30 * error + I, -6.28, 6.28)          # IdealPD at 1600 Hz
+torque = clip(0.30 * error + I, -6.28, 6.28)          # IdealPD at 1200 Hz
 ```
 
 Position Kp is zero; velocity P (IdealPD damping / MIT Kd) is 0.30 Nm/(rad/s),

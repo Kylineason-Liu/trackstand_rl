@@ -1,0 +1,211 @@
+{
+  "source_stem": "deploy/experiments/logs/20261101_154126_577381_drive_c1_kp_identify",
+  "raw_audit": {
+    "csv_sha256": "5f34e576245fee9568ba2652696d7c872985edcd117a0ca336913d4f9b9466d5",
+    "csv_rows": 2034518,
+    "fresh_replies": {
+      "CF": 3,
+      "B0": 1,
+      "B8": 1243,
+      "B9": 1243,
+      "B3": 1,
+      "B5": 1,
+      "CD": 5,
+      "A3": 59637,
+      "A2": 352183,
+      "A1": 352201,
+      "AE": 11941,
+      "C1": 238799
+    },
+    "independently_checked_raw_feedback": {
+      "A3": 59637,
+      "A2": 352183,
+      "A1": 352201
+    },
+    "faults": {
+      "0": 11944
+    },
+    "torque_constant_nm_per_a": 0.30000001192092896,
+    "voltage_range_v": [
+      20.17,
+      20.22
+    ],
+    "temperature_range_c": [
+      30,
+      44
+    ],
+    "settings": {
+      "B0": [
+        "B0079A99993E00"
+      ],
+      "B8": [
+        "B80000003F"
+      ],
+      "B9": [
+        "B90AD7A33B"
+      ],
+      "B3": [
+        "B342420100"
+      ],
+      "B5": [
+        "B500000000"
+      ]
+    }
+  },
+  "moving_target_range_rad_s": [
+    1.5,
+    10.0
+  ],
+  "moving_holds": 24,
+  "all_holds": 54,
+  "retained_fresh_a1": 16094,
+  "retained_fresh_a2": 16092,
+  "current_configuration": {
+    "B_nm_s_per_rad": 0.0,
+    "Tc_nm": 0.106,
+    "bias_nm": 0.0
+  },
+  "models": {
+    "configured": {
+      "B_nm_s_per_rad": 0.0,
+      "Tc_nm": 0.106,
+      "bias_nm": 0.0
+    },
+    "all_range_ols": {
+      "B_nm_s_per_rad": -0.0025962407615122115,
+      "Tc_nm": 0.11822181914757456,
+      "bias_nm": 0.00194824857156055,
+      "rmse_nm": 0.012914816781794177,
+      "n_holds": 54
+    },
+    "all_range_physical": {
+      "B_nm_s_per_rad": 0.0,
+      "Tc_nm": 0.11186069437832917,
+      "bias_nm": 0.001944806341760565,
+      "rmse_nm": 0.015404246618849779,
+      "n_holds": 54
+    },
+    "moving_ols": {
+      "B_nm_s_per_rad": 2.6048229824875844e-05,
+      "Tc_nm": 0.09970181181912734,
+      "bias_nm": 0.0013916802007167587,
+      "rmse_nm": 0.004114766611112226,
+      "n_holds": 24
+    },
+    "moving_physical": {
+      "B_nm_s_per_rad": 2.6048229824875844e-05,
+      "Tc_nm": 0.09970181181912734,
+      "bias_nm": 0.0013916802007167587,
+      "rmse_nm": 0.004114766611112226,
+      "n_holds": 24
+    },
+    "speed_dependent_descriptive": {
+      "B_nm_s_per_rad": 0.00026074397851753915,
+      "Tc_nm": 0.09783088793779049,
+      "low_speed_excess_nm": 0.03901257470551464,
+      "bias_nm": 0.0019705925651059835,
+      "rmse_nm": 0.00789058611504339,
+      "n_holds": 54,
+      "decay_speed_rad_s": 0.4961801309670306
+    }
+  },
+  "moving_conditional_bootstrap_95ci": {
+    "B_nm_s_per_rad": [
+      -0.0003096378388535891,
+      2.4589593163854627e-05,
+      0.00037024596780371743
+    ],
+    "Tc_nm": [
+      0.09726929421065196,
+      0.09972672435187549,
+      0.10205753035462015
+    ],
+    "bias_nm": [
+      0.0003844865195092668,
+      0.001399717607273877,
+      0.0024428621955740674
+    ]
+  },
+  "moving_zero_viscous_fit": {
+    "B_nm_s_per_rad": 0.0,
+    "Tc_nm": 0.09983528081273503,
+    "bias_nm": 0.00139173663248385,
+    "rmse_nm": 0.004115637912402482
+  },
+  "moving_a3_speed_coordinate_fit": {
+    "B_nm_s_per_rad": 4.067657818302468e-05,
+    "Tc_nm": 0.09960534790578703,
+    "bias_nm": 0.0014395407606093977,
+    "rmse_nm": 0.004088582214279967,
+    "n_holds": 24
+  },
+  "overlapping_1_to_8_rad_s_range_fit": {
+    "B_nm_s_per_rad": 0.0,
+    "Tc_nm": 0.09916130147946582,
+    "bias_nm": 0.0020102909076222726,
+    "rmse_nm": 0.004228482053571747,
+    "n_holds": 18
+  },
+  "bootstrap": {
+    "replicates": 5000,
+    "seed": 42,
+    "resampling": "whole holds within each signed target"
+  },
+  "moving_repeat_fits": {
+    "1": {
+      "B_nm_s_per_rad": -1.6085210755798487e-05,
+      "Tc_nm": 0.10163982921284763,
+      "bias_nm": 0.0020302035518648814,
+      "rmse_nm": 0.005133523976926719,
+      "n_holds": 8
+    },
+    "2": {
+      "B_nm_s_per_rad": 0.00027965115614681315,
+      "Tc_nm": 0.09705529206454991,
+      "bias_nm": 0.0010992033396799246,
+      "rmse_nm": 0.0031934704916321784,
+      "n_holds": 8
+    },
+    "3": {
+      "B_nm_s_per_rad": -0.0001855332163055792,
+      "Tc_nm": 0.10041168646282066,
+      "bias_nm": 0.0010459170167297677,
+      "rmse_nm": 0.002745162284758264,
+      "n_holds": 8
+    }
+  },
+  "moving_direction_fits": [
+    {
+      "direction": -1,
+      "B_nm_s_per_rad": 0.0006243769119816632,
+      "intercept_nm": 0.09524564075488809
+    },
+    {
+      "direction": 1,
+      "B_nm_s_per_rad": -0.0005729209462274958,
+      "intercept_nm": 0.10416385858818629
+    }
+  ],
+  "prior_20261020": {
+    "B_nm_s_per_rad": 0.0,
+    "coulomb_nm": 0.10602473549640903,
+    "offset_nm": 0.0008465922369885625,
+    "n_plateaus": 19,
+    "rmse_nm": 0.0054914239250468035,
+    "sse_nm2": 0.0005729589977669524
+  },
+  "moving_vs_configured_coulomb_percent": -5.941686963087411,
+  "configured_rmse_moving_nm": 0.007541827957334657,
+  "configured_rmse_all_nm": 0.016595807428307793,
+  "mean_torque_magnitude_moving_nm": 0.09983528081273503,
+  "peak_moving_speed_linear_trend_rad_s2": 0.01842254650435528,
+  "peak_moving_endpoint_speed_difference_rad_s": 0.10451031560941981,
+  "old_review_maximum_reproduced_torque_error_nm": 5.551115123125783e-17,
+  "notes": [
+    "Current-derived electromagnetic estimate, not independent shaft torque.",
+    "Airborne/free assembly; static breakaway and loaded tyre resistance not identified.",
+    "Near-zero ripple, controller/measurement effects and finite rotor phase coverage confound a single law.",
+    "Positive viscous slope must be distinguished from statistical/systematic uncertainty.",
+    "No simulation, deployment, firmware or progress-record configuration changed."
+  ]
+}

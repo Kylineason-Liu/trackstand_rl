@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "independent_raw_means_maximum_error": {
+    "torque_nm": 2.7755575615628914e-17,
+    "velocity_rad_s": 1.7763568394002505e-15
+  },
+  "independent_normal_equation_coefficients": [
+    2.6048229824852937e-05,
+    0.09970181181912748,
+    0.0013916802007167617
+  ],
+  "checked_fresh_a1": 16094,
+  "checked_fresh_a2": 16092,
+  "protected_existing_files_unchanged": 118,
+  "source_sha256": "5f34e576245fee9568ba2652696d7c872985edcd117a0ca336913d4f9b9466d5",
+  "ast_passed": true,
+  "python_120_columns_passed": true,
+  "local_links_checked": 32,
+  "plots_visually_reviewed": true,
+  "all_signed_levels_have_three_complete_holds": true
+}

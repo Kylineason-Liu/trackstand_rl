@@ -3,7 +3,7 @@
 Rear Beta action [-1, 1] * 61.6 rad/s -> velocity target held at 50 Hz.
 External I integrates velocity error at 200 Hz with Ki=3.3 Nm/rad; IdealPD
 computes clip(0.30 * (target_speed - measured_speed) + I, +/-6.28 Nm) at each
-1600-Hz physics step. Position Kp=0. Episode reset clears I; target changes retain it.
+1200-Hz physics step. Position Kp=0. Episode reset clears I; target changes retain it.
 Passive joint friction remains separate. This models the tested MIT P/host-I
 law, not CAN quantization, async feedback or identified firmware dynamics.
 Controller gains stay fixed even with DR enabled. Other task settings inherit
@@ -22,7 +22,7 @@ DRIVE_VELOCITY_SCALE_RAD_S = 61.6
 DRIVE_MIT_KD_NM_S_PER_RAD = 0.30
 DRIVE_VELOCITY_KI_NM_PER_RAD = 3.3
 DRIVE_INTEGRAL_RATE_HZ = 200.0
-DRIVE_PI_PHYSICS_RATE_HZ = 1600.0
+DRIVE_PI_PHYSICS_RATE_HZ = 1200.0
 
 
 @configclass
@@ -56,7 +56,7 @@ class TrackstandRLEnvCfgV2(TrackstandRLEnvCfgV1):
     def __post_init__(self):
         super().__post_init__()
         # The unloaded P=0.30 loop is numerically unstable at the inherited
-        # 400 Hz. A 1600-Hz step passes the measured-inertia/DR live probe;
+        # 400 Hz. A 1200-Hz step passes the measured-inertia/DR live probe;
         # policy/steering target updates remain 50 Hz and external I 200 Hz.
         policy_dt = self.sim.dt * self.decimation
         self.sim.dt = 1.0 / DRIVE_PI_PHYSICS_RATE_HZ
