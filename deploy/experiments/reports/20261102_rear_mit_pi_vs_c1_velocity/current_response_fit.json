@@ -1,0 +1,106 @@
+{
+  "pi_current_response": {
+    "apparent_alignment_ms": 1,
+    "fitted_p_nm_per_rad_s": 0.24319591059268938,
+    "fitted_integral_torque_factor": 0.9912415170479633,
+    "fitted_offset_nm": -9.505308069159343e-05,
+    "pretest_coefficients": [
+      0.24290814489868393,
+      0.9923315050103745,
+      -4.666390608654128e-05
+    ],
+    "heldout_repeat3_fitted": {
+      "rms_nm": 0.028675444422094507,
+      "r_squared": 0.9312097380619735
+    },
+    "heldout_repeat3_known_pi": {
+      "rms_nm": 0.03154034646053727,
+      "r_squared": 0.9167777281178111
+    },
+    "heldout_repeat3_without_i": {
+      "rms_nm": 0.09647065807528239,
+      "r_squared": 0.2214309591678978
+    },
+    "delay_sweep": [
+      {
+        "delay_ms": -5,
+        "validation_rms_nm": 0.06031767875025784
+      },
+      {
+        "delay_ms": -4,
+        "validation_rms_nm": 0.05975194544453962
+      },
+      {
+        "delay_ms": -3,
+        "validation_rms_nm": 0.05909441585891406
+      },
+      {
+        "delay_ms": -2,
+        "validation_rms_nm": 0.052074808613485304
+      },
+      {
+        "delay_ms": -1,
+        "validation_rms_nm": 0.041294161760787554
+      },
+      {
+        "delay_ms": 0,
+        "validation_rms_nm": 0.0321057977758054
+      },
+      {
+        "delay_ms": 1,
+        "validation_rms_nm": 0.02861967261492586
+      },
+      {
+        "delay_ms": 2,
+        "validation_rms_nm": 0.0392047900615941
+      },
+      {
+        "delay_ms": 3,
+        "validation_rms_nm": 0.0485499025623977
+      },
+      {
+        "delay_ms": 4,
+        "validation_rms_nm": 0.05871479891279589
+      },
+      {
+        "delay_ms": 5,
+        "validation_rms_nm": 0.06291814391643204
+      },
+      {
+        "delay_ms": 6,
+        "validation_rms_nm": 0.06352402594609316
+      },
+      {
+        "delay_ms": 7,
+        "validation_rms_nm": 0.06439640398498674
+      },
+      {
+        "delay_ms": 8,
+        "validation_rms_nm": 0.06424377575204132
+      },
+      {
+        "delay_ms": 9,
+        "validation_rms_nm": 0.06364882574829134
+      },
+      {
+        "delay_ms": 10,
+        "validation_rms_nm": 0.06329665888449257
+      }
+    ],
+    "note": "Current reconstruction uses measured A2 and logged host integral torque, not forward motion. Train repeat1, select alignment repeat2, test repeat3; one global offset; equal trial weights. Alignment is descriptive host/sensor timing, not firmware delay. I factor should approach 1, not Ki=3.3: the logged I torque already includes Ki."
+  },
+  "encoder_consistency": {
+    "C1": {
+      "trials": 24,
+      "a3_per_a2_slope": 1.0158045393556787
+    },
+    "MIT": {
+      "trials": 24,
+      "a3_per_a2_slope": 1.0157701871816904
+    },
+    "PI": {
+      "trials": 24,
+      "a3_per_a2_slope": 1.0156450322797792
+    }
+  }
+}

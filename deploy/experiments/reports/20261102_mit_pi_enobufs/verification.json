@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "utc": "2026-11-02T02:55:28.517358+00:00",
+  "input_hashes_verified": 2,
+  "raw_tail_counts_verified": true,
+  "raw_last_a1_current_ma": -73,
+  "last_target_zero_before_planned_pulse": true,
+  "pending_application_requests": 11,
+  "python_ast_pyflakes_line_limit": "passed",
+  "png_svg_one_page_pdf_verified": true,
+  "local_links_verified": 7,
+  "runtime_and_ledgers_unchanged": true,
+  "tests_rerun": false,
+  "hardware_or_simulator_run": false,
+  "caveat": "No exact rejected opcode, kernel queue occupancy, or same-session netdev counters were captured."
+}
