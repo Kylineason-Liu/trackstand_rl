@@ -251,8 +251,8 @@ Some examples of packages that can likely be excluded are:
 
 V2 inherits v1 and changes the rear action from torque to **target angular velocity**.
 Both raw actions remain bounded Beta outputs in [-1, 1]. The 11 observations,
-steering target processing, rewards, termination conditions and passive friction
-remain the same. Policy targets stay at 50 Hz. The external integral updates at
+steering target processing, finite-state rewards, termination thresholds and
+passive friction remain the same. Policy targets stay at 50 Hz. The external integral updates at
 200 Hz, while physics and explicit IdealPD evaluate at 1200 Hz (24 physics steps
 per policy target and six per integral update). The inherited 400-Hz timestep
 was numerically unstable for the tested rear P gain. The
@@ -304,6 +304,13 @@ target slew or default joint-speed offset. The PI law follows the tested
 `drive_mit_velocity_test.py --velocity-kp 0.30 --velocity-ki 3.3` arrangement,
 with ideal simulator feedback and no CAN quantization. The hardware script's
 default Ki is still zero. This is not an identified C1 or motor current-loop model.
+
+V2's divergence check also covers invalid root pose, joint position, wheel-net
+tracking and PI memory. Invalid terminal positions yield zero drift reward
+before reset, preventing NaNs in returns and episode sums; finite drift rewards
+are unchanged. `train.py --arp_w <weight>` correctly selects Trackstand's
+`rate_penalty` term (`--arp_w 0` disables it). See the
+[full v2 audit](reports/20261102_v2_full_audit/README.md) for checks and limitations.
 
 Run from this directory:
 

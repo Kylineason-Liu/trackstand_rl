@@ -99,6 +99,8 @@ class TestRearVelocityV2(unittest.TestCase):
             v2.events.randomize_actuator_gains = deepcopy(v1.events.randomize_actuator_gains)
             v2.sim.dt, v2.decimation = v1.sim.dt, v1.decimation
             v2.sim.render_interval = v1.sim.render_interval
+            v2.terminations.diverged.func = v1.terminations.diverged.func
+            v2.rewards.drift_gauss.func = v1.rewards.drift_gauss.func
             self.assertEqual(v2.to_dict(), v1.to_dict())
 
     def test_timing_observations_and_steering_are_unchanged(self):

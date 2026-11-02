@@ -1,0 +1,35 @@
+{
+  "passed": true,
+  "unit_test_methods": 104,
+  "new_containment_test_methods": 7,
+  "live_summaries": {
+    "no_dr_pass": "/home/lmbike/trackstand_rl/isaaclab_train/reports/20261102_v2_full_audit/no_dr_pass/summary.json",
+    "dr_pass": "/home/lmbike/trackstand_rl/isaaclab_train/reports/20261102_v2_full_audit/dr_pass/summary.json"
+  },
+  "changed_existing_files": [
+    "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/trackstand_bike/trackstand_rl_env_cfg_v2.py",
+    "isaaclab_train/tests/test_trackstand_velocity_v2.py",
+    "isaaclab_train/tests/test_domain_randomization.py",
+    "isaaclab_train/tests/test_trackstand_beta.py",
+    "isaaclab_train/scripts/rsl_rl/train.py",
+    "isaaclab_train/README.md"
+  ],
+  "protected_existing_files_unchanged": 75,
+  "index_unchanged": true,
+  "progress_records_unchanged": true,
+  "local_links_checked": 16,
+  "new_python_ast_120_columns_passed": true,
+  "pyflakes_passed": true,
+  "ruff_available": false,
+  "git_diff_check_passed": true,
+  "cli_verification": {
+    "passed": true,
+    "env_yaml": "cli_smoke/logs/rsl_rl/trackstand_rl_v2_rsl/2026-11-02_17-42-14_audit_weight/params/env.yaml",
+    "actor_distribution": "source.trackstand_rl.trackstand_rl.tasks.manager_based.trackstand.agents.beta_distribution:BetaDistribution",
+    "action_rate_weight": 0.17,
+    "physics_hz": 1200.0,
+    "policy_hz": 50.0,
+    "integral_hz": 200.0,
+    "iterations": 2
+  }
+}

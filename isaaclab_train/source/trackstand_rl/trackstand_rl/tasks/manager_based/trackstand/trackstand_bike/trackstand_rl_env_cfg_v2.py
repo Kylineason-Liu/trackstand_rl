@@ -7,11 +7,13 @@ computes clip(0.30 * (target_speed - measured_speed) + I, +/-6.28 Nm) at each
 Passive joint friction remains separate. This models the tested MIT P/host-I
 law, not CAN quantization, async feedback or identified firmware dynamics.
 Controller gains stay fixed even with DR enabled. Other task settings inherit
-v1, including 11 observations, steering, and the remaining DR terms.
+v1, including 11 observations, steering, and the remaining DR terms. V2 also
+contains invalid pose/joint/PI state and non-finite terminal drift rewards.
 """
 
 from isaaclab.utils.configclass import configclass
 
+from ..mdp.stationary.numerics import finite_balance_drift_gaussian, nonfinite_or_extreme_state_v2
 from ..mdp.stationary.velocity_pi import IntegralJointVelocityActionCfg
 from .trackstand_rl_env_cfg_v1 import TrackstandRLActionsCfgV1, TrackstandRLEnvCfgV1
 
@@ -68,3 +70,7 @@ class TrackstandRLEnvCfgV2(TrackstandRLEnvCfgV1):
             stiffness=0.0,
             damping=DRIVE_MIT_KD_NM_S_PER_RAD,
         )
+        # V2-only containment: pose/joint/PI NaNs must reset, and a dying env's
+        # invalid position must not poison rewards before that reset occurs.
+        self.terminations.diverged.func = nonfinite_or_extreme_state_v2
+        self.rewards.drift_gauss.func = finite_balance_drift_gaussian
