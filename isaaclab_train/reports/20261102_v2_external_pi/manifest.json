@@ -1,0 +1,28 @@
+{
+  "input_sha256": {
+    "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/mdp/stationary/velocity_pi.py": "695890403bc4a483297782f6b84f535d69a1af5e49e5ddb76c2542a5aac3a1e6",
+    "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/trackstand_bike/trackstand_rl_env_cfg_v2.py": "d594b6bddd7d6827203e7927d97a20c8bc5e35b6c22977994951421b6de45c85",
+    "isaaclab_train/tests/test_trackstand_velocity_v2.py": "257b32298af922845ad11a0f7ac01727dde4a3713c349df8da3e9bec35a8c6df",
+    "isaaclab_train/reports/20261102_v2_external_pi/validate_live.py": "d07e226b786610c20d9d1bbe80e877fb881106e8be0054fc723329e2038414e4",
+    "deploy/experiments/drive_mit_velocity_test.py": "0a5849ffb3197b54fd9ef261b7443efe816146b61234cb4f88374b5dbc853712",
+    "deploy/experiments/drive_velocity_sine.py": "525f474cdc3459a7d692381bce385fd458ee9b44851e4c8f372ec1a69bb2c1e8",
+    "deploy/experiments/drive_c1_kp_identify.py": "1fc27a21e901ed7a6d02153d93fe087e234a218e3cace2f12ab29c7ff91a7408",
+    "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/trackstand_bike/trackstand_rl_env_cfg_v1.py": "bd67c70047e27d8943ae0127ad7f181905ca432dda152e4b1c64162495e1459e"
+  },
+  "artifact_sha256": {
+    "validate_live.py": "d07e226b786610c20d9d1bbe80e877fb881106e8be0054fc723329e2038414e4",
+    "README.md": "2d12f11a0004c82e3ff1e409845877447be67272bf991c86a1600eeece9dc43a",
+    "pi_tests.log": "de129bc20d3712720396c2dfa4c833109f7663d1aae1a925c0bb9b3087f711a2",
+    "verification.json": "981a1de6ba13fa78b3a3402f7f7fa79b1b6552998e1ccdcdf29db6580a9a4b29",
+    "full_tests.log": "243c9dec566e9727a22d97d8bb6c61f9059ae43c600bfd89cb0593f6cc609bec",
+    "1600_nominal/run.log": "1148ca8d95eed0ddbf94516f14f22cca85eec060f6017d6b4dd940ac890661de",
+    "1600_nominal/unloaded.npz": "cb9cc2cd128a5feba215ac8834006031fc257e4ebfd1c1069fa3ed08aaba83da",
+    "1600_nominal/summary.json": "520f42e238fd587560e8222993f76d72e2de46a75e7b149be1720ab2d8889a28",
+    "1600_dr/run.log": "464320d33d8798a2c30d3693a6d1bbf4e7efd240704a97372c9c2d9fbd5c0e33",
+    "1600_dr/unloaded.npz": "99c8fca5b6743fd9beb1b67f5463e0a02815e8a1c16810cb667b9448436f87dd",
+    "1600_dr/summary.json": "d090364a2af2536e7263557b08d593678e8b876e009aec1c245bf2773e46a7e6",
+    "400_dr/run.log": "fc2e88771c18b47608ea21cfe3668cff70965fdb307609b3e2a6003cdf8ea961",
+    "400_dr/unloaded.npz": "9d035dbd9dadc55fc98c2ba3e130e13df837bbb3333400c54f518f8cdc24e0e8",
+    "400_dr/summary.json": "30359d97e79ccd3d1b5e104ee7780a56e12598650de1963c71240cfd97f004ff"
+  }
+}
