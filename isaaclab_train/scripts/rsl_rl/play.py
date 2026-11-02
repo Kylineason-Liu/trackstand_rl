@@ -8,7 +8,11 @@
 """Launch Isaac Sim Simulator first."""
 
 import argparse
+from pathlib import Path
 import sys
+
+# Resolve repository-local packages independently of the caller's cwd/PYTHONPATH.
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from isaaclab.app import AppLauncher
 

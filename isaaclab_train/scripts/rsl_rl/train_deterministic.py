@@ -19,7 +19,11 @@ the same CLI flags (--dr, --survival_w/--drive_w/--steer_w, ...).
 
 import argparse
 import os
+from pathlib import Path
 import sys
+
+# Resolve repository-local packages independently of the caller's cwd/PYTHONPATH.
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 # Required for deterministic cuBLAS (must be set before torch is imported below).
 os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
@@ -169,6 +173,9 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
     def _set_reward_weight(term_name, w):
         rewards = getattr(env_cfg, "rewards", None)
         term = getattr(rewards, term_name, None) if rewards is not None else None
+        if term is None and term_name == "action_rate":
+            term_name = "rate_penalty"
+            term = getattr(rewards, term_name, None)
         if term is None:
             print(f"[WARN] reward term '{term_name}' not found (or already off); skipping.")
             return

@@ -38,11 +38,10 @@ Examples assume the checkout is `~/trackstand_rl` and Isaac Lab is `~/IsaacLab`;
 
 ## 1. Isaac Lab training and evaluation
 
-Run from `isaaclab_train/`. The current task is imported directly as `source.trackstand_rl.trackstand_rl.tasks`; the old `pip install -e source/CycleRL` template instruction does not apply. Add this component directory to Python's import path:
+Run from `isaaclab_train/`. The current task is imported directly as `source.trackstand_rl.trackstand_rl.tasks`; the old `pip install -e source/CycleRL` template instruction does not apply. The RSL-RL training, play and evaluation entry points add this component directory to Python's import path automatically.
 
 ```bash
 cd ~/trackstand_rl/isaaclab_train
-export PYTHONPATH="$PWD${PYTHONPATH:+:$PYTHONPATH}"
 
 ~/IsaacLab/isaaclab.sh -p scripts/rsl_rl/train_deterministic.py \
   --task Trackstand-Balance-v1 --num_envs 4096 \

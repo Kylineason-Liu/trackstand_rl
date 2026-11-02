@@ -175,7 +175,9 @@ environment settings and PPO hyperparameters inherit v0, including
 `--dr`. V1 intentionally has no skrl entry: the existing skrl configuration is
 Gaussian-only.
 
-Run from `isaaclab_train/` using the documented Isaac Lab Python environment:
+Run from `isaaclab_train/` using the documented Isaac Lab Python environment.
+RSL-RL training/play/evaluation entry points resolve the component import path
+automatically; the explicit export below also supports standalone helper scripts:
 
 ```bash
 export PYTHONPATH="$PWD${PYTHONPATH:+:$PYTHONPATH}"
@@ -312,10 +314,10 @@ are unchanged. `train.py --arp_w <weight>` correctly selects Trackstand's
 `rate_penalty` term (`--arp_w 0` disables it). See the
 [full v2 audit](reports/20261102_v2_full_audit/README.md) for checks and limitations.
 
-Run from this directory:
+Run from this directory. Both `train.py` and `train_deterministic.py` resolve
+the repository import path automatically; no `PYTHONPATH` export is required:
 
 ```bash
-export PYTHONPATH="$PWD${PYTHONPATH:+:$PYTHONPATH}"
 ~/IsaacLab/isaaclab.sh -p scripts/rsl_rl/train.py \
   --task Trackstand-Balance-v2 --num_envs 4096 --seed 42 --headless --dr
 ~/IsaacLab/isaaclab.sh -p scripts/rsl_rl/play_eval.py \
