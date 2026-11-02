@@ -1,1 +1,2 @@
 *.npz filter=lfs diff=lfs merge=lfs -text
+deploy/experiments/logs/rosbag2_2026_10_29-14_27_32/rosbag2_2026_10_29-14_27_32_0.mcap filter=lfs diff=lfs merge=lfs -text

@@ -141,6 +141,11 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
     def _set_reward_weight(term_name, w):
         rewards = getattr(env_cfg, "rewards", None)
         term = getattr(rewards, term_name, None) if rewards is not None else None
+        if term is None and term_name == "action_rate":
+            # Trackstand calls this term rate_penalty; retain the older alias
+            # for tasks that actually declare action_rate.
+            term_name = "rate_penalty"
+            term = getattr(rewards, term_name, None)
         if term is None:
             print(f"[WARN] reward term '{term_name}' not found (or already off); skipping.")
             return

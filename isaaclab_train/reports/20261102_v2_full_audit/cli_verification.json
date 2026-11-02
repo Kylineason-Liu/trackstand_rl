@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "env_yaml": "cli_smoke/logs/rsl_rl/trackstand_rl_v2_rsl/2026-11-02_17-42-14_audit_weight/params/env.yaml",
+  "actor_distribution": "source.trackstand_rl.trackstand_rl.tasks.manager_based.trackstand.agents.beta_distribution:BetaDistribution",
+  "action_rate_weight": 0.17,
+  "physics_hz": 1200.0,
+  "policy_hz": 50.0,
+  "integral_hz": 200.0,
+  "iterations": 2
+}

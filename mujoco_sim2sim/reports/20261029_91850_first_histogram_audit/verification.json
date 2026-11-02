@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "original_histogram_episodes": 6057,
+  "original_histogram_bins": [
+    4510,
+    281,
+    111,
+    72,
+    64,
+    32,
+    36,
+    22,
+    18,
+    911
+  ],
+  "original_histogram_timeouts": 891,
+  "first_episode_length_matches": 64,
+  "startup_torque_values_checked": 160,
+  "startup_torque_max_error_nm": 0,
+  "scenarios": 16,
+  "diagnostic_endpoints": 1024,
+  "numerical_failure_endpoints": 1,
+  "all_combined_unbounded_case_excluded_from_main_plot": true,
+  "equal_initial_inputs_states_dr_draws": true,
+  "actual_simulation_time_checked": true,
+  "input_sha256": {
+    "mujoco_sim2sim/models/trackstand_rl_0916_bike/trackstand_rl_0916.xml": "6f839f2c214da9b743cbd310a72d13ed98d383e8ac4c1d1be609eb89cb003476",
+    "mujoco_sim2sim/policies/trackstand_rl_rsl_2026-09-22_19-45-06_model_91850.onnx": "9232a0723df8806e8b5f6fb4e39a7a11ccb5af8bf058d9026eddb57dab8fd806",
+    "deploy/experiments/reports/20261015_deployment_failure_analysis/question_3_observations/mujoco_observations.npz": "66b916976ac18e03219814c5b80a6c50932fab6d1d1e5bab5730fabb57c436cb"
+  }
+}

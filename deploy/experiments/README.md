@@ -1,5 +1,181 @@
 # Standalone motor feedback
 
+## Test rear MIT velocity P/PI with adjustable gains
+
+[`drive_mit_velocity_test.py`](drive_mit_velocity_test.py) uses the C1 identification
+campaign's same holds/steps/sines, with MIT position Kp=0, adjustable velocity
+P/Kd (default **0.30 Nm/(rad/s)**) and optional host integral via `--velocity-ki`
+in **Nm/rad**. Default Ki=0 preserves P-only operation. With Ki>0, the script
+sends integral torque through MIT feedforward, with physical-limit anti-windup
+and a reset at each segment's start. Position Kp remains zero.
+It narrows F0 velocity encoding to **±13 rad/s** for the full plan, or about
+**±3 rad/s** for small subsets, and restores the original F0/CD after disable.
+CSV/JSON/plan are recorded automatically. Pi dependencies are the adjacent
+`drive_c1_kp_identify.py` and `drive_velocity_sine.py`; no ROS build is needed.
+
+```bash
+# First use the airborne signed pilot, then inspect its behavior and logs.
+python3 deploy/experiments/drive_mit_velocity_test.py --execute \
+  --suite steps --repeats 1 --step-bases 0 --step-sizes 1
+# Full C1-matching plan, about 20 minutes:
+python3 deploy/experiments/drive_mit_velocity_test.py --execute --velocity-kp 0.30
+# Same plan with host integral; 3.3 is the provisional C1 effective-I estimate:
+python3 deploy/experiments/drive_mit_velocity_test.py --execute \
+  --velocity-kp 0.30 --velocity-ki 3.3
+```
+
+See [the gain/range flags, zero-code correction and recovery procedure](DRIVE_MIT_VELOCITY_TEST.md).
+Keep the rear wheel airborne/free, frame supported and other CAN writers stopped.
+F0 persists in firmware; original bytes are saved before changing its range.
+
+## Identify the rear C1 velocity-loop gains
+
+[`drive_c1_kp_identify.py`](drive_c1_kp_identify.py) measures responses across both
+directions, near-zero/higher speeds, small steps and six sine frequencies.
+**B8/Kp and B9/Ki are strictly read only.** The full default is three repetitions,
+54 steady holds, 120 step tests and 108 sine tests, about 20 minutes. Raw CSV,
+JSON and a plan CSV are recorded automatically; the Pi needs only Python and the
+adjacent `drive_velocity_sine.py` helper. Use the supported airborne setup.
+
+```bash
+python3 deploy/experiments/drive_c1_kp_identify.py --execute
+```
+
+The PC [`analyze_drive_c1_kp.py`](analyze_drive_c1_kp.py) jointly fits effective P/I
+in physical units, cross-checks time/frequency methods and separates validation
+from the third repetition's test data. It can withhold an unreliable initial
+simulation coefficient. See [the protocol, pilot command and analysis workflow](DRIVE_C1_KP_IDENTIFY.md).
+
+## C1 replay of simulated rear-wheel velocity
+
+[`drive_velocity_replay.py`](drive_velocity_replay.py) replays the actual rear
+velocity from v1 model_2500's first **10 seconds**, including startup and settling.
+The prepared reference is in `replay_targets/2500_isaac_velocity_startup_400hz.csv`.
+It contains every **400 Hz** simulation sample; C1 sends a new target every
+**2.5 ms** by default, and feedback is logged automatically. The source policy
+remains 50 Hz. The Pi needs the adjacent `drive_velocity_sine.py` helper.
+
+```bash
+python3 deploy/experiments/drive_velocity_replay.py --execute --packet-rate 400
+```
+
+Keep the rear wheel airborne/free, frame supported and other CAN writers stopped.
+There is no tight packet-deadline, angle or tracking-error abort; feedback/status
+tolerances are 1/2 s. Physical speed/torque, driver/CAN and logging checks remain.
+Optional `--packet-rate 50|200` omits intermediate samples of this new reference;
+the original 50-Hz reference and its earlier logs remain unchanged.
+[`record_drive_velocity.py`](record_drive_velocity.py) records a fresh episode in
+Isaac Lab or exports an existing capture; `--plot <run.csv>` on the replay script
+creates aligned comparison plots on the PC. Read [the full workflow](DRIVE_VELOCITY_REPLAY.md).
+
+## Rear velocity sine comparison
+
+[`drive_velocity_sine.py`](drive_velocity_sine.py) compares C1 and MIT velocity
+control at **200 Hz**, **10 s per selected method** (`--method c1|mit|both`).
+`both` runs C1 then MIT. Default sine is **±4 rad/s at 0.5 Hz**; execution
+automatically logs CSV/JSON. Preview is default; add `--execute` for the motor.
+
+```bash
+python3 deploy/experiments/drive_velocity_sine.py --method c1 --execute
+```
+
+MIT reads B8/B9 and converts the current PI gains to torque gains using B0;
+Kp is zero and a host integrator provides feedforward torque. **B8/B9 internal
+units and Ki's time convention are not documented**, so MIT requires explicit
+unit/timebase flags rather than guessing or copying raw values into torque Kd.
+Read [the commands, conversion options and test conditions](DRIVE_VELOCITY_SINE.md).
+Keep the rear wheel airborne/free and stop other CAN writers. No ROS build is needed.
+B3 is read/logged only; the script does not write or compare current-limit
+settings. Measured speed/torque and fault/feedback guards remain active.
+
+## Rear constant-torque threshold trials
+
+`drive_torque_threshold.py` automatically runs **50 trials**: torque magnitudes
+**0.12, 0.13, 0.14, 0.15, 0.16 Nm**, both directions, five repetitions. Within each
+repetition, levels increase and each forward trial is followed by its backward
+counterpart. Each torque hold targets **5 seconds**. Between trials, **CF disables
+the motor for 2 seconds of free coasting**, with no active braking or extra wait
+for zero speed. No rest is added after trial 50. Nominal total is **348 seconds**
+(5 min 48 s), excluding startup/shutdown and host timing overhead.
+
+The first CF reply may still report the preceding current-control mode. During
+that transition, mode 2 is tolerated for up to **1 second** (`--disable-timeout`),
+while CF is retried at nominal 50 ms intervals until a fresh CF/AE reply confirms disabled mode 0.
+Failure to confirm aborts; after confirmation, an unexpected active mode still
+aborts immediately. The two-second rest remains anchored to the first CF send,
+without adding confirmation time. The trial print says **CF sent**, not that
+physical disable has already been confirmed.
+
+The experiment now tolerates ordinary Pi scheduling delays. Late sends or
+endpoints above **100 ms** are recorded rather than aborted by default;
+`--strict-timing` restores timing aborts, and `--max-lateness-ms` sets their
+threshold. A pause can lengthen a hold/rest, so inspect the actual timestamps,
+`hold_actual_s`, `hold_end_lateness_s` and command intervals, not only nominal
+durations. The motor is disabled before writing a hold-end warning/summary.
+
+| Check | Previous default | Current default / flag |
+| --- | --- | --- |
+| A1/A2/A3/C0 freshness | 0.1 s | 1 s, `--feedback-timeout` |
+| AE status freshness | 0.6 s | 2 s, `--status-timeout` |
+| Ordinary query deadline | 0.02 s | 0.1 s, `--query-timeout` |
+| Disable-mode confirmation | 0.5 s | 1 s or rest end, whichever comes first; `--disable-timeout` |
+| Current-mode entry | First status must be mode 2 | Up to 1 s for mode 0→2; `--mode-timeout` |
+| Initial coasting speed | 0.2 rad/s | 1 rad/s, `--startup-speed-max-rad-s` |
+| Clock sampling/offset tolerance | 1 ms | 50 ms, `--clock-tolerance-ms` |
+| Future converted timestamp tolerance | 1 µs | Same clock tolerance; uncertainty annotated |
+
+A single missing query or CF reply no longer immediately aborts: reads/disables
+are retried, with the overall freshness and confirmation limits above retained.
+Startup also retries an old-mode CF reply. Raw kernel timestamps are preserved;
+frames exceeding the old clock tolerance receive a `can_note` uncertainty marker
+and cannot confirm mode transitions. This is not proof of precise hardware
+latency. Small helper changes add optional experiment settings; other replay
+scripts keep their original defaults. Transfer the updated adjacent helpers too.
+
+From the repository root on the Pi, with the rear wheel airborne/free, frame
+supported, steering independently disabled, and all other CAN writers stopped:
+
+```bash
+python3 deploy/experiments/drive_torque_threshold.py             # preview, no CAN/files
+python3 deploy/experiments/drive_torque_threshold.py --execute   # full experiment + recording
+```
+
+Default C0 refresh is **50 Hz**, matching the seven October 29 rear replays;
+`--packet-rate 200` selects 200 Hz. A3/A2/A1 are queried at nominal **100 Hz each**,
+AE at 5 Hz, B0/B4/CD at 1 Hz, including during coasting. Command current is
+`-requested_torque / measured_B0_Kt`, rounded to signed int32 milliamps; rear ID
+is 1 and encoder/torque signs are -1. Positive torque means forward. No damping,
+friction compensation, encoder hardware reset, or controller-gain changes are
+applied. The existing verified temporary CD watchdog setup/restore is reused.
+
+CSV, JSON, `_plan.csv` and `_summary.csv` are automatically saved under `logs/`;
+`--output path.csv` selects another new path. Keep this script beside
+`drive_policy_replay.py`, `steering_policy_replay.py` and `steering_sine_mit_io.py`.
+No ROS nodes, separate recorder or package build are needed. Raw CAN frames and
+fresh feedback are retained. Each trial records its latest pre-command multi-turn
+count and speed, their sample ages, starting wheel phase, signed displacement,
+measured speed and A1-current torque statistics. Samples are asynchronous; they
+are not exact motor-acquisition times at the command boundary. Torque is a
+current-derived estimate, not shaft torque.
+
+**A two-second coast does not guarantee a stopped wheel.** Starting speed and
+sample ages are recorded without silently extending the rest. Separate moving
+starts from stationary starts when estimating breakaway; the script does not
+classify a threshold using an invented motion cutoff. Physical starting angle
+is recorded, not automatically matched between trials.
+
+Faults, feedback missing beyond the configured tolerances, current above 2 A,
+speed above 61.6 rad/s, temperature at/above 60°C or failed mode confirmation
+stop the experiment and attempt disable/restore, retaining partial data.
+Unexpected mode after confirmation, malformed/overflow traffic, another writer,
+invalid/changed calibration/settings and logging errors still abort. The motor
+watchdog stays at at most 500 ms, independently of host timing tolerances.
+The full plan must fit the 1.5 A encoded
+command acceptance limit; commands are never clipped. Abort thresholds and
+`--hold`, `--rest`, `--repeats`, `--interface` and `--note` are configurable.
+
+## Other motor experiments
+
 For controlled **rear C0 repeatability, starting-angle, breakaway and pulse/reversal
 experiments**, see [DRIVE_REPEATABILITY.md](DRIVE_REPEATABILITY.md). The new
 `drive_repeatability.py` provides preview, balanced rates, verified manual angle

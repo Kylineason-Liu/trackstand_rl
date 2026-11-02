@@ -1,0 +1,20 @@
+{
+  "injected": [
+    "NaN root X position",
+    "NaN joint position",
+    "NaN joint speed",
+    "healthy"
+  ],
+  "inherited_diverged": [
+    false,
+    false,
+    true,
+    false
+  ],
+  "inherited_drift_reward_finite": [
+    false,
+    true,
+    true,
+    true
+  ]
+}

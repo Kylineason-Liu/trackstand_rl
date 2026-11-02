@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rear friction recheck — comprehensive C1 data</title>
+<style>
+body{max-width:1450px;margin:32px auto;padding:0 20px;font:17px/1.55 system-ui;color:#172033;background:#f8fafc}
+img{display:block;width:100%;height:auto;background:white;border:1px solid #d9e0e8;border-radius:8px}
+article{margin:30px 0}a{color:#1556a1}table{border-collapse:collapse;background:white}
+td,th{padding:9px 16px;border:1px solid #d9e0e8;text-align:left}
+</style>
+<h1>Rear friction recheck</h1>
+<p>Comprehensive C1 campaign, 2026-11-01; analysis 2026-11-02. Rear airborne and free.
+54 steady holds, nine speed magnitudes, both directions, three repeats. A1 current × B0 is a torque estimate.</p>
+<p><strong>Moderate-speed friction remains about 0.10 Nm. Positive viscous damping is unresolved.
+Near-zero effective running torque is greater and cannot be represented well by one constant.</strong></p>
+<table>
+<tr><th>Parameter</th><th>Configured</th><th>New moving-range fit, 1.5–10 rad/s</th></tr>
+<tr><td>Moving friction</td><td>0.106 Nm</td><td>0.099702 Nm (−5.94%)</td></tr>
+<tr><td>Viscous coefficient</td><td>0 Nm·s/rad</td><td>0.00002605; bootstrap interval includes zero</td></tr>
+<tr><td>Static threshold</td><td>0.106 Nm, provisional</td><td>Not identified by sustained-speed holds</td></tr>
+</table>
+<p><a href="README.md">Full methods, limitations and conclusions</a> ·
+<a href="statistics.json">Numerical results</a> · <a href="verification.json">Independent checks</a> ·
+<a href="steady_holds.csv">54 hold means</a></p>
+<article><h2>Running torque versus speed</h2>
+<p>Error bars show between-repeat standard deviation, three holds per direction/speed.
+The dotted fit is descriptive; its zero-speed extrapolation is not measured breakaway friction.</p>
+<a href="rear_friction_curve.png"><img src="rear_friction_curve.png" alt="Rear running torque versus signed and absolute speed"></a>
+<p><a href="rear_friction_curve.svg">SVG</a> · <a href="rear_friction_curve.pdf">PDF</a></p></article>
+<article><h2>Fresh feedback examples</h2>
+<p>Unsmoothed A2 speed, A1-derived torque and A3 displacement. The final three seconds are shaded.
+Near-zero A3 movement is intermittent; complete revolutions are not covered.</p>
+<a href="steady_feedback_examples.png"><img src="steady_feedback_examples.png" alt="Native speed torque and angle at three target speeds"></a>
+<p><a href="steady_feedback_examples.svg">SVG</a> · <a href="steady_feedback_examples.pdf">PDF</a></p></article>
+<p>No actuator, firmware or deployment configuration changed.</p>
+</html>

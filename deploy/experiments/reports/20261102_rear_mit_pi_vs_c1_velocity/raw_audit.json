@@ -1,0 +1,497 @@
+{
+  "C1": {
+    "csv_sha256": "5f34e576245fee9568ba2652696d7c872985edcd117a0ca336913d4f9b9466d5",
+    "rows": 2034518,
+    "packet_counts": {
+      "tx_CF": 3,
+      "rx_CF": 3,
+      "tx_B0": 1,
+      "rx_B0": 1,
+      "tx_B8": 1243,
+      "rx_B8": 1243,
+      "tx_B9": 1243,
+      "rx_B9": 1243,
+      "tx_B3": 1,
+      "rx_B3": 1,
+      "tx_B5": 1,
+      "rx_B5": 1,
+      "tx_CD": 5,
+      "rx_CD": 5,
+      "tx_A3": 59637,
+      "rx_A3": 59637,
+      "tx_A2": 352183,
+      "rx_A2": 352183,
+      "tx_A1": 352201,
+      "rx_A1": 352201,
+      "tx_AE": 11941,
+      "rx_AE": 11941,
+      "command_C1": 238799,
+      "rx_C1": 238799,
+      "event_event": 2
+    },
+    "maximum_errors": {
+      "a3_position": 0,
+      "a2_or_c1_velocity": 0,
+      "native_current": 0,
+      "current_torque": 0,
+      "desired_target": 0,
+      "wire_target": 0,
+      "maximum_effective_quantization_rad_s": 0.0005235939286833968
+    },
+    "completed_segments": 342,
+    "commands": 238799,
+    "skipped_slots": 1,
+    "duration_s": 1194.020853464992,
+    "gain_codes": {},
+    "feedforward_codes": {},
+    "configuration_writes": [
+      {
+        "time": 7133.665838597,
+        "payload": "CD01F40100"
+      },
+      {
+        "time": 8327.803243316,
+        "payload": "CD00881300"
+      }
+    ],
+    "readbacks": {
+      "B0": [
+        "B0079A99993E00"
+      ],
+      "B8": [
+        "B80000003F"
+      ],
+      "B9": [
+        "B90AD7A33B"
+      ],
+      "B3": [
+        "B342420100"
+      ],
+      "B5": [
+        "B500000000"
+      ],
+      "CD": [
+        "CD00881300",
+        "CD01F40100"
+      ]
+    },
+    "f0_history": [],
+    "final_statuses": [
+      {
+        "time": 8327.55376173,
+        "opcode": "AE",
+        "mode": 3,
+        "fault": 0
+      },
+      {
+        "time": 8327.653819841,
+        "opcode": "AE",
+        "mode": 3,
+        "fault": 0
+      },
+      {
+        "time": 8327.752491551,
+        "opcode": "CF",
+        "mode": 3,
+        "fault": 0
+      },
+      {
+        "time": 8327.803145743,
+        "opcode": "CF",
+        "mode": 0,
+        "fault": 0
+      }
+    ],
+    "fault_codes": {
+      "0": 11944
+    },
+    "driver_modes": {
+      "0": 3,
+      "3": 11941
+    },
+    "f1_flags": {},
+    "f1_endpoint_counts": {},
+    "voltage_min_max_v": [
+      20.17,
+      20.22
+    ],
+    "temperature_min_max_c": [
+      30,
+      44
+    ],
+    "peak_a1_torque_nm": 3.816600151658058,
+    "peak_a2_or_c1_speed_rad_s": 12.687845530297977,
+    "command_gap_ms": [
+      0.9229829993273597,
+      4.999762999432278,
+      5.041939999682654,
+      5.060974879706919,
+      9.030168999743182
+    ],
+    "command_lateness_ms": [
+      0.01048400008585304,
+      0.07495700083381962,
+      0.09248799960914766,
+      0.1161340596627269,
+      4.331593998358585
+    ]
+  },
+  "MIT": {
+    "csv_sha256": "3b6fdfad5a017f609878065d8a3d995613da7ba512150e0f0fd8522715d4502d",
+    "rows": 2034117,
+    "packet_counts": {
+      "tx_CF": 3,
+      "rx_CF": 3,
+      "tx_B0": 1,
+      "rx_B0": 1,
+      "tx_B8": 1243,
+      "rx_B8": 1243,
+      "tx_B9": 1243,
+      "rx_B9": 1243,
+      "tx_B3": 1,
+      "rx_B3": 1,
+      "tx_B5": 1,
+      "rx_B5": 1,
+      "tx_CD": 5,
+      "rx_CD": 5,
+      "tx_F0": 5,
+      "rx_F0": 5,
+      "tx_A3": 59636,
+      "rx_A3": 59636,
+      "event_event": 3,
+      "tx_A2": 352077,
+      "rx_A2": 352077,
+      "tx_A1": 352102,
+      "rx_A1": 352102,
+      "tx_AE": 11941,
+      "rx_AE": 11941,
+      "command_MIT": 238798,
+      "rx_F1": 238799,
+      "tx_F1": 1
+    },
+    "maximum_errors": {
+      "a3_position": 0,
+      "a2_or_c1_velocity": 0,
+      "native_current": 0,
+      "current_torque": 0,
+      "desired_target": 0,
+      "wire_ff": 0,
+      "encoded_kd": 0,
+      "position_kp": 0,
+      "integral_error": 0,
+      "integral_torque": 0,
+      "software_torque_estimate": 0,
+      "wire_target": 0,
+      "maximum_effective_quantization_rad_s": 0.0031745381334331193,
+      "f1_velocity": 0,
+      "f1_torque": 0
+    },
+    "completed_segments": 342,
+    "commands": 238798,
+    "skipped_slots": 2,
+    "duration_s": 1194.019717889969,
+    "gain_codes": {
+      "246": 238798
+    },
+    "feedforward_codes": {
+      "2048": 238798
+    },
+    "configuration_writes": [
+      {
+        "time": 27608.054409256,
+        "payload": "F0BB0314050807"
+      },
+      {
+        "time": 27608.072658419,
+        "payload": "CD01F40100"
+      },
+      {
+        "time": 28802.199429,
+        "payload": "CD00881300"
+      },
+      {
+        "time": 28802.200703394,
+        "payload": "F0BB0394110807"
+      }
+    ],
+    "readbacks": {
+      "B0": [
+        "B0079A99993E00"
+      ],
+      "B8": [
+        "B80000003F"
+      ],
+      "B9": [
+        "B90AD7A33B"
+      ],
+      "B3": [
+        "B342420100"
+      ],
+      "B5": [
+        "B500000000"
+      ],
+      "CD": [
+        "CD00881300",
+        "CD01F40100"
+      ],
+      "F0": [
+        "F0BB0314050807",
+        "F0BB0394110807"
+      ]
+    },
+    "f0_history": [
+      {
+        "time": 27608.013856705,
+        "payload": "F0BB0394110807"
+      },
+      {
+        "time": 27608.055511769,
+        "payload": "F0BB0314050807"
+      },
+      {
+        "time": 27608.056040804,
+        "payload": "F0BB0314050807"
+      },
+      {
+        "time": 28802.201818123,
+        "payload": "F0BB0394110807"
+      },
+      {
+        "time": 28802.202441246,
+        "payload": "F0BB0394110807"
+      }
+    ],
+    "final_statuses": [
+      {
+        "time": 28801.949325156,
+        "opcode": "AE",
+        "mode": 5,
+        "fault": 0
+      },
+      {
+        "time": 28802.049390593,
+        "opcode": "AE",
+        "mode": 5,
+        "fault": 0
+      },
+      {
+        "time": 28802.148084008,
+        "opcode": "CF",
+        "mode": 5,
+        "fault": 0
+      },
+      {
+        "time": 28802.199316668,
+        "opcode": "CF",
+        "mode": 0,
+        "fault": 0
+      }
+    ],
+    "fault_codes": {
+      "0": 11944
+    },
+    "driver_modes": {
+      "0": 3,
+      "5": 11941
+    },
+    "f1_flags": {
+      "1": 238799
+    },
+    "f1_endpoint_counts": {
+      "velocity_endpoint": 0,
+      "torque_endpoint": 0
+    },
+    "voltage_min_max_v": [
+      20.18,
+      20.23
+    ],
+    "temperature_min_max_c": [
+      30,
+      44
+    ],
+    "peak_a1_torque_nm": 3.243300128877163,
+    "peak_a2_or_c1_speed_rad_s": 10.540043352793756,
+    "command_gap_ms": [
+      0.6631260002905037,
+      4.999580000003334,
+      5.04387500041048,
+      5.064862150175031,
+      12.243731998751173
+    ],
+    "command_lateness_ms": [
+      0.017261998436879367,
+      0.0876949998200871,
+      0.11251214982621605,
+      0.14216266357834684,
+      7.33058899641037
+    ]
+  },
+  "PI": {
+    "csv_sha256": "9ce10e617c02480ece7ec15aaf9f5e924c33028422092df00e3f2255aa4d2c31",
+    "rows": 2032503,
+    "packet_counts": {
+      "tx_CF": 3,
+      "rx_CF": 3,
+      "tx_B0": 1,
+      "rx_B0": 1,
+      "tx_B8": 1243,
+      "rx_B8": 1243,
+      "tx_B9": 1243,
+      "rx_B9": 1243,
+      "tx_B3": 1,
+      "rx_B3": 1,
+      "tx_B5": 1,
+      "rx_B5": 1,
+      "tx_CD": 5,
+      "rx_CD": 5,
+      "tx_F0": 1,
+      "rx_F0": 1,
+      "tx_A3": 59637,
+      "rx_A3": 59637,
+      "event_event": 5,
+      "tx_A2": 351667,
+      "rx_A2": 351667,
+      "tx_A1": 351713,
+      "rx_A1": 351713,
+      "tx_AE": 11941,
+      "rx_AE": 11941,
+      "command_MIT": 238792,
+      "rx_F1": 238793,
+      "tx_F1": 1
+    },
+    "maximum_errors": {
+      "a3_position": 0,
+      "a2_velocity": 0,
+      "native_current": 0,
+      "current_torque": 0,
+      "desired_target": 0,
+      "integral_gain": 0,
+      "wire_ff": 0,
+      "wire_velocity": 0,
+      "encoded_kd": 0,
+      "position_kp": 0,
+      "estimated_torque": 0,
+      "maximum_effective_quantization_rad_s": 0.0031745995370142666,
+      "f1_velocity": 0,
+      "f1_torque": 0,
+      "f1_position": 0
+    },
+    "completed_segments": 342,
+    "commands": 238792,
+    "skipped_slots": 8,
+    "duration_s": 1194.0212116890002,
+    "peaks": {
+      "a2_velocity_rad_s": 12.127594840407799,
+      "a1_torque_nm": 3.278700130283833,
+      "estimated_torque_nm": 3.7963419260575013,
+      "integral_torque_nm": 0.43190078653604513
+    },
+    "fault_codes": {
+      "0": 11944
+    },
+    "driver_modes": {
+      "0": 3,
+      "5": 11941
+    },
+    "f1_flags": {
+      "1": 238793
+    },
+    "f1_endpoint_counts": {
+      "position": 0,
+      "velocity": 0,
+      "torque": 0
+    },
+    "readbacks": {
+      "B0": [
+        "B0079A99993E00"
+      ],
+      "B8": [
+        "B80000003F"
+      ],
+      "B9": [
+        "B90AD7A33B"
+      ],
+      "B3": [
+        "B342420100"
+      ],
+      "B5": [
+        "B500000000"
+      ],
+      "CD": [
+        "CD00881300",
+        "CD01F40100"
+      ],
+      "F0": [
+        "F0BB0314050807"
+      ]
+    },
+    "configuration_writes": [
+      {
+        "time": 457.154557673,
+        "payload": "CD01F40100"
+      },
+      {
+        "time": 1651.29009405,
+        "payload": "CD00881300"
+      }
+    ],
+    "final_statuses": [
+      {
+        "time": 1651.040221698,
+        "opcode": "AE",
+        "mode": 5,
+        "fault": 0
+      },
+      {
+        "time": 1651.140290322,
+        "opcode": "AE",
+        "mode": 5,
+        "fault": 0
+      },
+      {
+        "time": 1651.238741137,
+        "opcode": "CF",
+        "mode": 5,
+        "fault": 0
+      },
+      {
+        "time": 1651.289983368,
+        "opcode": "CF",
+        "mode": 0,
+        "fault": 0
+      }
+    ],
+    "f0_history": [
+      {
+        "time": 457.032189638,
+        "payload": "F0BB0314050807"
+      }
+    ],
+    "voltage_min_max_v": [
+      20.12,
+      20.21
+    ],
+    "temperature_min_max_c": [
+      30,
+      44
+    ],
+    "command_gap_ms": [
+      0.8719029999610939,
+      4.998938499966243,
+      5.055511199907414,
+      5.091089690012041,
+      12.712544999999409
+    ],
+    "command_lateness_ms": [
+      0.02654300010362931,
+      0.09717099987938127,
+      0.14408245001504835,
+      0.185379539952919,
+      7.801311999969585
+    ],
+    "ff_codes_used": 98,
+    "anti_windup_limited_updates": 0,
+    "integral_sample_stamp_reconstruction_max_error_rad": 0.0005948759661975785,
+    "reconstruction_note": "Sample timestamps bracket rather than equal the private integration clock."
+  }
+}

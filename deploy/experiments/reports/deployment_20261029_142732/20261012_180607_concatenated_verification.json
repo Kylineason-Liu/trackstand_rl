@@ -1,0 +1,42 @@
+{
+  "attempts": 3,
+  "panels": 2,
+  "red_start_lines_per_panel": 3,
+  "saved_sample_rows": 8500,
+  "cumulative_plotted_duration_s": 17.894803112,
+  "input_hashes": {
+    "previous_20261012_180607_data.npz": "997e714376af6f84db629af08670316205669b4dbe4876c5fedb7c736ae77b1e",
+    "previous_20261012_180607_details.json.gz": "54d762c24a9d89450370e5c300ebd8c633c90070640ce007c184944a24a94c27",
+    "../deployment_20261012_180607/summary.json": "a0496b38ca2fe55260e03eef5d491febea7876420bcd4f79df8f488e1be81989"
+  },
+  "y_limits": [
+    [
+      -1.75,
+      1.75
+    ],
+    [
+      -8.0,
+      8.0
+    ]
+  ],
+  "all_finite_values_visible": true,
+  "unchanged_native_sample_values": true,
+  "rescaled_time": false,
+  "smoothing": false,
+  "fitted_delay": false,
+  "curves_joined_between_attempts": false,
+  "drawn_curves_break_at_gap_s": 0.05,
+  "target": "Successful recorded MIT position / C0 current-to-torque commands",
+  "rear_feedback": "Current-derived A1 \u00d7 Kt estimate, not shaft torque",
+  "source_time": "MCAP reception time, translated by each attempt's removed idle interval",
+  "bag": "/home/lmbike/trackstand_rl/deploy/experiments/logs/rosbag2_2026_10_12-18_06_07/rosbag2_2026_10_12-18_06_07_0.mcap",
+  "bag_sha256": "24be09c76b25d338c58ca6ae3d95bd468107a4afb4fa5b38139a1d8e568c3e78",
+  "support_caveat": "Early kickstand contact reported",
+  "saved_csv_samples_independently_checked": 8500,
+  "all_previous_report_files_preserved": true,
+  "october29_figures_and_data_preserved": true,
+  "local_links_exist": true,
+  "protected_original_source_inputs_unchanged": 56,
+  "decoded_messages": 112856,
+  "decoder_issues": []
+}

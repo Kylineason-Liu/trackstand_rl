@@ -1,0 +1,22 @@
+{
+  "snapshot": "c4b2df7d63bf978ff784f909f872c7545e10ea58",
+  "sources": {
+    "env": "mujoco_sim2sim/src/newbike_mujoco/env.py",
+    "policy": "mujoco_sim2sim/src/newbike_mujoco/policy.py",
+    "viewer": "mujoco_sim2sim/scripts/run_deploy_viewer.py"
+  },
+  "source_sha256": {
+    "env": "72dd3f1315bbe85a697159713423cafe7aa5639d006deec3318d38886cbf204a",
+    "policy": "97cfca1f686469becb49974c4468e83a61e02b9678d8eb95d0067dbf04bdcc9e",
+    "viewer": "98ceae6a7e9035cfc97035177a62b6e242f1e0a71628378fe390611a13f3632b"
+  },
+  "input_sha256": {
+    "mujoco_sim2sim/models/trackstand_rl_0916_bike/trackstand_rl_0916.xml": "6f839f2c214da9b743cbd310a72d13ed98d383e8ac4c1d1be609eb89cb003476",
+    "mujoco_sim2sim/policies/trackstand_rl_rsl_2026-09-22_19-45-06_model_91850.onnx": "9232a0723df8806e8b5f6fb4e39a7a11ccb5af8bf058d9026eddb57dab8fd806",
+    "deploy/experiments/reports/20261015_deployment_failure_analysis/question_3_observations/mujoco_observations.npz": "66b916976ac18e03219814c5b80a6c50932fab6d1d1e5bab5730fabb57c436cb"
+  },
+  "mujoco": "3.12.0",
+  "onnxruntime": "1.23.2",
+  "script_sha256": "e11c9b48b8e05fb96080cc41683c677f9eac40ff9c4073fb7ffcfd9c291fc121",
+  "note": "Historical XML serialization/reload, 64 first episodes per case, seeds 42-105, no autoresets; not the original fixed-budget histogram population"
+}

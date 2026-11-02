@@ -1,0 +1,114 @@
+[
+  {
+    "stem": "overview",
+    "title": "Full recording and attempt timeline"
+  },
+  {
+    "stem": "attempt_durations",
+    "title": "Durations and stop reasons"
+  },
+  {
+    "stem": "attempts/attempt_01",
+    "title": "Attempt 01: roll_or_inversion_safety"
+  },
+  {
+    "stem": "attempts/attempt_02",
+    "title": "Attempt 02: roll_or_inversion_safety"
+  },
+  {
+    "stem": "attempts/attempt_03",
+    "title": "Attempt 03: roll_or_inversion_safety"
+  },
+  {
+    "stem": "attempts/attempt_04",
+    "title": "Attempt 04: roll_or_inversion_safety"
+  },
+  {
+    "stem": "attempts/attempt_05",
+    "title": "Attempt 05: roll_or_inversion_safety"
+  },
+  {
+    "stem": "attempts/attempt_06",
+    "title": "Attempt 06: roll_or_inversion_safety"
+  },
+  {
+    "stem": "attempts/attempt_07",
+    "title": "Attempt 07: roll_or_inversion_safety"
+  },
+  {
+    "stem": "attempts/attempt_08",
+    "title": "Attempt 08: roll_or_inversion_safety"
+  },
+  {
+    "stem": "attempts/attempt_09",
+    "title": "Attempt 09: roll_or_inversion_safety"
+  },
+  {
+    "stem": "attempts/attempt_10",
+    "title": "Attempt 10: roll_or_inversion_safety"
+  },
+  {
+    "stem": "attempts/attempt_11",
+    "title": "Attempt 11: roll_or_inversion_safety"
+  },
+  {
+    "stem": "attempts/attempt_12",
+    "title": "Attempt 12: roll_or_inversion_safety"
+  },
+  {
+    "stem": "attempts/attempt_13",
+    "title": "Attempt 13: motor_fault"
+  },
+  {
+    "stem": "attempts/attempt_14",
+    "title": "Attempt 14: motor_fault"
+  },
+  {
+    "stem": "attempts/attempt_15",
+    "title": "Attempt 15: roll_or_inversion_safety"
+  },
+  {
+    "stem": "attempts/attempt_16",
+    "title": "Attempt 16: roll_or_inversion_safety"
+  },
+  {
+    "stem": "attempts/attempt_17",
+    "title": "Attempt 17: roll_or_inversion_safety"
+  },
+  {
+    "stem": "attempts/attempt_18",
+    "title": "Attempt 18: roll_or_inversion_safety"
+  },
+  {
+    "stem": "attempts/attempt_19",
+    "title": "Attempt 19: RC_down"
+  },
+  {
+    "stem": "attempts/attempt_20",
+    "title": "Attempt 20: roll_or_inversion_safety"
+  },
+  {
+    "stem": "attempts/attempt_21",
+    "title": "Attempt 21: motor_state_timeout"
+  },
+  {
+    "stem": "observations",
+    "title": "Eleven observations for attempts 1, 17 and 19"
+  },
+  {
+    "stem": "feedback_faults",
+    "title": "Evidence for three feedback-related stops"
+  },
+  {
+    "stem": "simulation_context",
+    "title": "Policy and observation distributions versus saved Isaac DR evaluation"
+  },
+  {
+    "stem": "rear_torque_response",
+    "title": "Rear torque request versus current feedback and wheel speed"
+  },
+  {
+    "stem": "timing",
+    "title": "Policy, send cadence and input age distributions"
+  }
+]

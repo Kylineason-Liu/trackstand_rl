@@ -1,0 +1,742 @@
+{
+  "model": "model_2500.pt",
+  "task": "Trackstand-Balance-v1",
+  "source_dr": true,
+  "seed": 42,
+  "environment": 0,
+  "episode": 1,
+  "duration_s": 10,
+  "fixture": "User confirmed airborne/free rear wheel, no hand contact, same firmware settings and supply.",
+  "runs": {
+    "50": {
+      "rate_hz": 50,
+      "reference_hz": 50,
+      "source_csv": "20261031_223709_716988_50hz_drive_velocity_replay.csv",
+      "completed": true,
+      "disabled_and_restored": true,
+      "fault_codes": [
+        0
+      ],
+      "fixture": "User confirmed airborne/free rear wheel, no hand contact, same firmware settings and supply.",
+      "core_phase": {
+        "name": "core",
+        "start_monotonic_s": 201545.659441588,
+        "planned_duration_s": 10.0,
+        "actual_duration_s": 10.000071458984166,
+        "commands": 500,
+        "skipped_slots": 0,
+        "max_lateness_s": 0.0001361519971396774,
+        "max_packet_interval_s": 0.02010337499086745,
+        "achieved_rate_hz": 50.000467549482025,
+        "initial_position_rad": -0.0003834951969714103,
+        "initial_velocity_rad_s": 0.047123889803846894,
+        "initial_position_sample_time_s": 201545.655587581,
+        "initial_position_age_s": 0.003854007023619488
+      },
+      "decoded_rx_counts": {
+        "CF": 3,
+        "B0": 1,
+        "B8": 1,
+        "B9": 1,
+        "B3": 1,
+        "B5": 1,
+        "CD": 5,
+        "A3": 600,
+        "A2": 2364,
+        "A1": 1192,
+        "AE": 121,
+        "C1": 600
+      },
+      "decoded_tx_counts": {
+        "CF": 3,
+        "B0": 1,
+        "B8": 1,
+        "B9": 1,
+        "B3": 1,
+        "B5": 1,
+        "CD": 5,
+        "A3": 600,
+        "A2": 2364,
+        "A1": 1192,
+        "AE": 121,
+        "C1": 600
+      },
+      "settings": {
+        "B0": "B0079A99993E00",
+        "B8": "B80000003F",
+        "B9": "B90AD7A33B",
+        "B3": "B342420100",
+        "B5": "B500000000",
+        "CD": "CD00881300"
+      },
+      "gains": {
+        "B8": 0.5,
+        "B9": 0.004999999888241291
+      },
+      "torque_constant_nm_per_a": 0.30000001192092896,
+      "initial_count": -6208283,
+      "initial_native_phase_rad": 0.4805194818051771,
+      "command_interval_ms": {
+        "min": 19.83937801560387,
+        "median": 19.99961698311381,
+        "p95": 20.04179407376796,
+        "p99": 20.062807141803205,
+        "max": 20.10337499086745
+      },
+      "actual_logged_lateness_ms": {
+        "min": 0.017221987945958972,
+        "median": 0.07787499635014683,
+        "p95": 0.09699938382254912,
+        "p99": 0.12102852051611981,
+        "max": 0.28155799373053014
+      },
+      "a2_interval_ms": {
+        "min": 3.8608399918302894,
+        "median": 5.0633430073503405,
+        "p95": 5.2521597186569124,
+        "p99": 5.537424146605189,
+        "max": 6.250086997170001
+      },
+      "actual_a2_rate_hz": 197.4510401464497,
+      "source_sample_age_at_logged_send_ms": {
+        "min": 0.017221984453641426,
+        "median": 0.07787499751410465,
+        "p95": 0.09699937677937752,
+        "p99": 0.12102852872339905,
+        "max": 0.28155798325315073
+      },
+      "missing_reference_times_s": [],
+      "skipped_slots": 0,
+      "windows": {
+        "all": {
+          "lower_s": 0,
+          "upper_s": 10,
+          "samples": 1975,
+          "error_rms_rad_s": 0.08230266427876969,
+          "error_rms_vs_native_sim_rad_s": 0.10970180200090376,
+          "target_rms_rad_s": 0.31651556296704675,
+          "actual_rms_rad_s": 0.3124582364107373,
+          "correlation": 0.9642613551305756,
+          "mean_error_rad_s": -0.004133116410925307,
+          "p95_absolute_error_rad_s": 0.15184364492350666,
+          "maximum_absolute_error_rad_s": 0.7466518540031741,
+          "fraction_within_0p1_rad_s": 0.9174683544303798,
+          "torque_rms_nm": 0.10647922776939461,
+          "peak_current_derived_torque_nm": 0.2649000105261803
+        },
+        "startup": {
+          "lower_s": 0,
+          "upper_s": 2,
+          "samples": 395,
+          "error_rms_rad_s": 0.1514463511145178,
+          "error_rms_vs_native_sim_rad_s": 0.213785284187156,
+          "target_rms_rad_s": 0.7052824516605637,
+          "actual_rms_rad_s": 0.6911296504133297,
+          "correlation": 0.9725042681309429,
+          "mean_error_rad_s": 0.005384451206279211,
+          "p95_absolute_error_rad_s": 0.36756634047000575,
+          "maximum_absolute_error_rad_s": 0.7466518540031741,
+          "fraction_within_0p1_rad_s": 0.6987341772151898,
+          "torque_rms_nm": 0.07795863050964784,
+          "peak_current_derived_torque_nm": 0.2649000105261803
+        },
+        "settling": {
+          "lower_s": 2,
+          "upper_s": 10,
+          "samples": 1580,
+          "error_rms_rad_s": 0.05227964582659668,
+          "error_rms_vs_native_sim_rad_s": 0.060142079853136916,
+          "target_rms_rad_s": 0.02952613834129571,
+          "actual_rms_rad_s": 0.05121170233474335,
+          "correlation": 0.14708970464035426,
+          "mean_error_rad_s": -0.006512508315226437,
+          "p95_absolute_error_rad_s": 0.0796393737685012,
+          "maximum_absolute_error_rad_s": 0.6136577650012063,
+          "fraction_within_0p1_rad_s": 0.9721518987341772,
+          "torque_rms_nm": 0.1124998130344096,
+          "peak_current_derived_torque_nm": 0.19710000783205034
+        },
+        "last2s": {
+          "lower_s": 8,
+          "upper_s": 10,
+          "samples": 395,
+          "error_rms_rad_s": 0.0575695166669495,
+          "error_rms_vs_native_sim_rad_s": 0.06576975901972307,
+          "target_rms_rad_s": 0.032184111982301915,
+          "actual_rms_rad_s": 0.06068802621937442,
+          "correlation": 0.2545335761678093,
+          "mean_error_rad_s": -0.00027571783626442037,
+          "p95_absolute_error_rad_s": 0.08618435846347995,
+          "maximum_absolute_error_rad_s": 0.5005604294719738,
+          "fraction_within_0p1_rad_s": 0.9670886075949368,
+          "torque_rms_nm": 0.13159339584782637,
+          "peak_current_derived_torque_nm": 0.18930000752210618
+        }
+      },
+      "maximum_c1_rounding_rad_s": 0.0005231843564863503,
+      "encoder_average_100ms": {
+        "startup": {
+          "error_rms_rad_s": 0.06153416682486256,
+          "correlation": 0.9960661272901725,
+          "samples": 19
+        },
+        "settling": {
+          "error_rms_rad_s": 0.027007667659207115,
+          "correlation": 0.24460839775443272,
+          "samples": 79
+        }
+      },
+      "unchanged_encoder_intervals": [
+        {
+          "start_s": 6.305959069984965,
+          "end_s": 7.048455723997904,
+          "duration_s": 0.742496654012939,
+          "commanded_travel_rad": 0.012290893834563832,
+          "commanded_travel_encoder_counts": 32.04966823999134,
+          "actual_encoder_count_change": 0,
+          "torque_min_nm": 0.07680000305175781,
+          "torque_max_nm": 0.1917000076174736
+        },
+        {
+          "start_s": 5.8643721230037045,
+          "end_s": 6.165878657979192,
+          "duration_s": 0.30150653497548774,
+          "commanded_travel_rad": 0.0039369397855198995,
+          "commanded_travel_encoder_counts": 10.265942876498137,
+          "actual_encoder_count_change": 0,
+          "torque_min_nm": 0.07320000290870667,
+          "torque_max_nm": 0.13290000528097154
+        },
+        {
+          "start_s": 5.361786855995888,
+          "end_s": 5.603394278994529,
+          "duration_s": 0.2416074229986407,
+          "commanded_travel_rad": 0.0014028705937587649,
+          "commanded_travel_encoder_counts": 3.658117767413263,
+          "actual_encoder_count_change": 0,
+          "torque_min_nm": 0.08070000320672989,
+          "torque_max_nm": 0.12150000482797624
+        },
+        {
+          "start_s": 8.99595517499256,
+          "end_s": 9.217101392976474,
+          "duration_s": 0.22114621798391454,
+          "commanded_travel_rad": 0.005871014063347224,
+          "commanded_travel_encoder_counts": 15.309224495411113,
+          "actual_encoder_count_change": 0,
+          "torque_min_nm": 0.06780000269412995,
+          "torque_max_nm": 0.12600000500679015
+        }
+      ],
+      "apparent_startup_lag_ms": 3.500000000000045,
+      "shifted_startup_rms_rad_s": 0.19871396496588076,
+      "voltage_min_v": 20.2,
+      "voltage_max_v": 20.22,
+      "temperature_max_c": 32.0,
+      "maximum_speed_rad_s": 2.608569100030725,
+      "maximum_current_derived_torque_nm": 0.2649000105261803,
+      "final_a3_displacement_rad": 0.6741845562757394,
+      "last_a3_time_s": 9.999320042988984,
+      "transmitted_velocity_integral_rad": 0.6951159062502,
+      "final_displacement_minus_target_integral_rad": -0.020916396938806647,
+      "integrated_a2_velocity_rad": 0.6518828192883701
+    },
+    "200": {
+      "rate_hz": 200,
+      "reference_hz": 50,
+      "source_csv": "20261031_223442_378454_200hz_drive_velocity_replay.csv",
+      "completed": true,
+      "disabled_and_restored": true,
+      "fault_codes": [
+        0
+      ],
+      "fixture": "User confirmed airborne/free rear wheel, no hand contact, same firmware settings and supply.",
+      "core_phase": {
+        "name": "core",
+        "start_monotonic_s": 201398.321729002,
+        "planned_duration_s": 10.0,
+        "actual_duration_s": 10.00008879500092,
+        "commands": 2000,
+        "skipped_slots": 0,
+        "max_lateness_s": 0.00012667500413954258,
+        "max_packet_interval_s": 0.005089326004963368,
+        "achieved_rate_hz": 200.0004890056244,
+        "initial_position_rad": -0.0,
+        "initial_velocity_rad_s": 0.007330382858376185,
+        "initial_position_sample_time_s": 201398.318391062,
+        "initial_position_age_s": 0.0033379399974364787
+      },
+      "decoded_rx_counts": {
+        "CF": 3,
+        "B0": 1,
+        "B8": 1,
+        "B9": 1,
+        "B3": 1,
+        "B5": 1,
+        "CD": 5,
+        "A3": 600,
+        "A2": 2368,
+        "A1": 1192,
+        "AE": 121,
+        "C1": 2400
+      },
+      "decoded_tx_counts": {
+        "CF": 3,
+        "B0": 1,
+        "B8": 1,
+        "B9": 1,
+        "B3": 1,
+        "B5": 1,
+        "CD": 5,
+        "A3": 600,
+        "A2": 2368,
+        "A1": 1192,
+        "AE": 121,
+        "C1": 2400
+      },
+      "settings": {
+        "B0": "B0079A99993E00",
+        "B8": "B80000003F",
+        "B9": "B90AD7A33B",
+        "B3": "B342420100",
+        "B5": "B500000000",
+        "CD": "CD00881300"
+      },
+      "gains": {
+        "B8": 0.5,
+        "B9": 0.004999999888241291
+      },
+      "torque_constant_nm_per_a": 0.30000001192092896,
+      "initial_count": -6206497,
+      "initial_native_phase_rad": 1.1654419035961159,
+      "command_interval_ms": {
+        "min": 4.885939008090645,
+        "median": 4.99980800668709,
+        "p95": 5.03116087638773,
+        "p99": 5.05505874811206,
+        "max": 5.089326004963368
+      },
+      "actual_logged_lateness_ms": {
+        "min": 0.01352501567453146,
+        "median": 0.07511599687859416,
+        "p95": 0.0955452662310563,
+        "p99": 0.11960510048083961,
+        "max": 0.15230500139296055
+      },
+      "a2_interval_ms": {
+        "min": 4.3902790057472885,
+        "median": 5.0573074840940535,
+        "p95": 5.229545997281093,
+        "p99": 5.505042754521128,
+        "max": 5.77772399992682
+      },
+      "actual_a2_rate_hz": 197.6158555499614,
+      "source_sample_age_at_logged_send_ms": {
+        "min": 0.016788005596346522,
+        "median": 7.58550450322204,
+        "p95": 15.079983890114622,
+        "p99": 15.096639803832144,
+        "max": 15.147474004188533
+      },
+      "missing_reference_times_s": [],
+      "skipped_slots": 0,
+      "windows": {
+        "all": {
+          "lower_s": 0,
+          "upper_s": 10,
+          "samples": 1976,
+          "error_rms_rad_s": 0.10039132882072935,
+          "error_rms_vs_native_sim_rad_s": 0.12218025884225077,
+          "target_rms_rad_s": 0.3192189646679675,
+          "actual_rms_rad_s": 0.3211549944124639,
+          "correlation": 0.9484793054090912,
+          "mean_error_rad_s": -0.0013778915147323663,
+          "p95_absolute_error_rad_s": 0.20655971697352887,
+          "maximum_absolute_error_rad_s": 1.0869910581420685,
+          "fraction_within_0p1_rad_s": 0.8871457489878543,
+          "torque_rms_nm": 0.0914018969532889,
+          "peak_current_derived_torque_nm": 0.34650001376867295
+        },
+        "startup": {
+          "lower_s": 0,
+          "upper_s": 2,
+          "samples": 396,
+          "error_rms_rad_s": 0.1463472604133325,
+          "error_rms_vs_native_sim_rad_s": 0.20202754707607087,
+          "target_rms_rad_s": 0.7106205537115979,
+          "actual_rms_rad_s": 0.69707313948494,
+          "correlation": 0.9747084922060766,
+          "mean_error_rad_s": 0.0036255248552791272,
+          "p95_absolute_error_rad_s": 0.29688050576423547,
+          "maximum_absolute_error_rad_s": 1.0869910581420685,
+          "fraction_within_0p1_rad_s": 0.7222222222222222,
+          "torque_rms_nm": 0.07011811634648007,
+          "peak_current_derived_torque_nm": 0.34650001376867295
+        },
+        "settling": {
+          "lower_s": 2,
+          "upper_s": 10,
+          "samples": 1580,
+          "error_rms_rad_s": 0.08506742516207048,
+          "error_rms_vs_native_sim_rad_s": 0.09186867186156764,
+          "target_rms_rad_s": 0.029587615140909126,
+          "actual_rms_rad_s": 0.0848861757329128,
+          "correlation": 0.07399068776969844,
+          "mean_error_rad_s": -0.002631912326456765,
+          "p95_absolute_error_rad_s": 0.1403244718603441,
+          "maximum_absolute_error_rad_s": 0.642979296434711,
+          "fraction_within_0p1_rad_s": 0.9284810126582278,
+          "torque_rms_nm": 0.09599953506353423,
+          "peak_current_derived_torque_nm": 0.1926000076532364
+        },
+        "last2s": {
+          "lower_s": 8,
+          "upper_s": 10,
+          "samples": 395,
+          "error_rms_rad_s": 0.08612787774825834,
+          "error_rms_vs_native_sim_rad_s": 0.09836552194752311,
+          "target_rms_rad_s": 0.03229734707315968,
+          "actual_rms_rad_s": 0.09049868233320382,
+          "correlation": 0.1842940293594826,
+          "mean_error_rad_s": 0.009777378655222916,
+          "p95_absolute_error_rad_s": 0.14063863112570305,
+          "maximum_absolute_error_rad_s": 0.5864306286700947,
+          "fraction_within_0p1_rad_s": 0.9139240506329114,
+          "torque_rms_nm": 0.10899513141147807,
+          "peak_current_derived_torque_nm": 0.1926000076532364
+        }
+      },
+      "maximum_c1_rounding_rad_s": 0.0005231843564863503,
+      "encoder_average_100ms": {
+        "startup": {
+          "error_rms_rad_s": 0.055443630552437353,
+          "correlation": 0.9965489135974449,
+          "samples": 19
+        },
+        "settling": {
+          "error_rms_rad_s": 0.031841783050120066,
+          "correlation": 0.15705275137797295,
+          "samples": 79
+        }
+      },
+      "unchanged_encoder_intervals": [
+        {
+          "start_s": 2.831433729006676,
+          "end_s": 3.5128053830121644,
+          "duration_s": 0.6813716540054884,
+          "commanded_travel_rad": 0.013371610824493896,
+          "commanded_travel_encoder_counts": 34.867740013679374,
+          "actual_encoder_count_change": 0,
+          "torque_min_nm": 0.009000000357627868,
+          "torque_max_nm": 0.10170000404119492
+        },
+        {
+          "start_s": 7.124970361008309,
+          "end_s": 7.526786413014634,
+          "duration_s": 0.40181605200632475,
+          "commanded_travel_rad": 0.0009133915632555389,
+          "commanded_travel_encoder_counts": 2.381754896720734,
+          "actual_encoder_count_change": 0,
+          "torque_min_nm": 0.08520000338554383,
+          "torque_max_nm": 0.17670000702142716
+        },
+        {
+          "start_s": 9.252410696994048,
+          "end_s": 9.554293460008921,
+          "duration_s": 0.3018827630148735,
+          "commanded_travel_rad": 0.0011141366041630407,
+          "commanded_travel_encoder_counts": 2.905216578882212,
+          "actual_encoder_count_change": 0,
+          "torque_min_nm": 0.03540000140666962,
+          "torque_max_nm": 0.09810000389814377
+        },
+        {
+          "start_s": 6.8641198800178245,
+          "end_s": 7.1049287040077616,
+          "duration_s": 0.24080882398993708,
+          "commanded_travel_rad": 0.009129453455950953,
+          "commanded_travel_encoder_counts": 23.80591341964462,
+          "actual_encoder_count_change": 0,
+          "torque_min_nm": 0.08520000338554383,
+          "torque_max_nm": 0.13440000534057617
+        }
+      ],
+      "apparent_startup_lag_ms": 5.000000000000046,
+      "shifted_startup_rms_rad_s": 0.1708477165270424,
+      "voltage_min_v": 20.2,
+      "voltage_max_v": 20.22,
+      "temperature_max_c": 32.0,
+      "maximum_speed_rad_s": 2.6326546437082468,
+      "maximum_current_derived_torque_nm": 0.34650001376867295,
+      "final_a3_displacement_rad": 0.6856894121848816,
+      "last_a3_time_s": 9.996699615003308,
+      "transmitted_velocity_integral_rad": 0.6950967808000494,
+      "final_displacement_minus_target_integral_rad": -0.009334789358350526,
+      "integrated_a2_velocity_rad": 0.6838415220634161
+    },
+    "400": {
+      "rate_hz": 400,
+      "reference_hz": 400,
+      "source_csv": "20261101_134940_221417_400hz_drive_velocity_replay.csv",
+      "completed": true,
+      "disabled_and_restored": true,
+      "fault_codes": [
+        0
+      ],
+      "fixture": "User confirmed airborne/free rear wheel, no hand contact, same firmware settings and supply.",
+      "core_phase": {
+        "name": "core",
+        "start_monotonic_s": 428.284416081,
+        "planned_duration_s": 10.0,
+        "actual_duration_s": 10.00006792299996,
+        "commands": 3994,
+        "skipped_slots": 6,
+        "max_lateness_s": 0.005217067999979008,
+        "max_packet_interval_s": 0.0076529419999928905,
+        "achieved_rate_hz": 399.4000533878533,
+        "initial_position_rad": -0.0,
+        "initial_velocity_rad_s": 0.030368728984701332,
+        "initial_position_sample_time_s": 428.269194387,
+        "initial_position_age_s": 0.015221693999990293
+      },
+      "decoded_rx_counts": {
+        "CF": 3,
+        "B0": 1,
+        "B8": 1,
+        "B9": 1,
+        "B3": 1,
+        "B5": 1,
+        "CD": 5,
+        "A3": 600,
+        "A2": 4673,
+        "A1": 1194,
+        "AE": 121,
+        "C1": 4794
+      },
+      "decoded_tx_counts": {
+        "CF": 3,
+        "B0": 1,
+        "B8": 1,
+        "B9": 1,
+        "B3": 1,
+        "B5": 1,
+        "CD": 5,
+        "A3": 600,
+        "A2": 4673,
+        "A1": 1194,
+        "AE": 121,
+        "C1": 4794
+      },
+      "settings": {
+        "B0": "B0079A99993E00",
+        "B8": "B80000003F",
+        "B9": "B90AD7A33B",
+        "B3": "B342420100",
+        "B5": "B500000000",
+        "CD": "CD00881300"
+      },
+      "gains": {
+        "B8": 0.5,
+        "B9": 0.004999999888241291
+      },
+      "torque_constant_nm_per_a": 0.30000001192092896,
+      "initial_count": -210,
+      "initial_native_phase_rad": 6.20265131581559,
+      "command_interval_ms": {
+        "min": 1.7742790000170316,
+        "median": 2.49940499998047,
+        "p95": 2.5464171999828977,
+        "p99": 2.582388839964551,
+        "max": 7.6529419999928905
+      },
+      "actual_logged_lateness_ms": {
+        "min": 0.009127999987867952,
+        "median": 0.0739939999903072,
+        "p95": 0.10392974996875635,
+        "p99": 0.14757690000863036,
+        "max": 5.308362999983274
+      },
+      "a2_interval_ms": {
+        "min": 0.09959099998013698,
+        "median": 2.559286999996857,
+        "p95": 2.879927800017867,
+        "p99": 3.130556480030009,
+        "max": 13.229664999983015
+      },
+      "actual_a2_rate_hz": 389.39260679050017,
+      "source_sample_age_at_logged_send_ms": {
+        "min": 0.009127999989644309,
+        "median": 0.07399399999830081,
+        "p95": 0.10392974995934999,
+        "p99": 0.14757689998865078,
+        "max": 2.271175999974284
+      },
+      "missing_reference_times_s": [
+        1.08,
+        1.0825,
+        1.0875,
+        1.09,
+        1.555,
+        1.5625
+      ],
+      "skipped_slots": 6,
+      "windows": {
+        "all": {
+          "lower_s": 0,
+          "upper_s": 10,
+          "samples": 3894,
+          "error_rms_rad_s": 0.09556219414532378,
+          "error_rms_vs_native_sim_rad_s": 0.09601616064733887,
+          "target_rms_rad_s": 0.3301810904530865,
+          "actual_rms_rad_s": 0.321048484831966,
+          "correlation": 0.955435934176864,
+          "mean_error_rad_s": -0.0037421042436827584,
+          "p95_absolute_error_rad_s": 0.17315411509035736,
+          "maximum_absolute_error_rad_s": 1.11735978712677,
+          "fraction_within_0p1_rad_s": 0.8782742681047766,
+          "torque_rms_nm": 0.10451622024410734,
+          "peak_current_derived_torque_nm": 0.2613000103831291
+        },
+        "startup": {
+          "lower_s": 0,
+          "upper_s": 2,
+          "samples": 774,
+          "error_rms_rad_s": 0.17159925218914823,
+          "error_rms_vs_native_sim_rad_s": 0.17436395709122365,
+          "target_rms_rad_s": 0.7352534032217037,
+          "actual_rms_rad_s": 0.7116598835058805,
+          "correlation": 0.9678392308211023,
+          "mean_error_rad_s": 0.002178279143961909,
+          "p95_absolute_error_rad_s": 0.38824849210613815,
+          "maximum_absolute_error_rad_s": 1.11735978712677,
+          "fraction_within_0p1_rad_s": 0.6227390180878553,
+          "torque_rms_nm": 0.09010771690189442,
+          "peak_current_derived_torque_nm": 0.2613000103831291
+        },
+        "settling": {
+          "lower_s": 2,
+          "upper_s": 10,
+          "samples": 3120,
+          "error_rms_rad_s": 0.06397387014772925,
+          "error_rms_vs_native_sim_rad_s": 0.06295966452583374,
+          "target_rms_rad_s": 0.04421545656012821,
+          "actual_rms_rad_s": 0.05478101923631247,
+          "correlation": 0.09369498411811754,
+          "mean_error_rad_s": -0.005210814737925379,
+          "p95_absolute_error_rad_s": 0.10786134777324956,
+          "maximum_absolute_error_rad_s": 0.7236135078768491,
+          "fraction_within_0p1_rad_s": 0.9416666666666667,
+          "torque_rms_nm": 0.10780563388442542,
+          "peak_current_derived_torque_nm": 0.21900000870227812
+        },
+        "last2s": {
+          "lower_s": 8,
+          "upper_s": 10,
+          "samples": 780,
+          "error_rms_rad_s": 0.08218435367918374,
+          "error_rms_vs_native_sim_rad_s": 0.08070307533802591,
+          "target_rms_rad_s": 0.051098794447372316,
+          "actual_rms_rad_s": 0.06888360837349074,
+          "correlation": -0.020977487157669956,
+          "mean_error_rad_s": 0.0043525826422812445,
+          "p95_absolute_error_rad_s": 0.1361880415331175,
+          "maximum_absolute_error_rad_s": 0.6335545184739417,
+          "fraction_within_0p1_rad_s": 0.9064102564102564,
+          "torque_rms_nm": 0.13024053738841004,
+          "peak_current_derived_torque_nm": 0.21900000870227812
+        }
+      },
+      "maximum_c1_rounding_rad_s": 0.0005235847731563034,
+      "encoder_average_100ms": {
+        "startup": {
+          "error_rms_rad_s": 0.07430040517863148,
+          "correlation": 0.9940715786410343,
+          "samples": 19
+        },
+        "settling": {
+          "error_rms_rad_s": 0.03357053790959204,
+          "correlation": 0.1081077485566708,
+          "samples": 79
+        }
+      },
+      "unchanged_encoder_intervals": [
+        {
+          "start_s": 2.591936139999973,
+          "end_s": 3.2145005399999604,
+          "duration_s": 0.6225643999999875,
+          "commanded_travel_rad": 0.011413772733305683,
+          "commanded_travel_encoder_counts": 29.76249200366539,
+          "actual_encoder_count_change": 0,
+          "torque_min_nm": -0.016500000655651093,
+          "torque_max_nm": 0.07470000296831131
+        },
+        {
+          "start_s": 9.19402643899997,
+          "end_s": 9.816070449999984,
+          "duration_s": 0.622044011000014,
+          "commanded_travel_rad": 0.00638983541913396,
+          "commanded_travel_encoder_counts": 16.662100254701038,
+          "actual_encoder_count_change": 0,
+          "torque_min_nm": 0.059400002360343936,
+          "torque_max_nm": 0.12510000497102736
+        },
+        {
+          "start_s": 7.769063807000009,
+          "end_s": 8.150648063000006,
+          "duration_s": 0.38158425599999646,
+          "commanded_travel_rad": 0.006091954346490125,
+          "commanded_travel_encoder_counts": 15.885347181921244,
+          "actual_encoder_count_change": 0,
+          "torque_min_nm": 0.13140000522136688,
+          "torque_max_nm": 0.21900000870227812
+        },
+        {
+          "start_s": 2.190884055999959,
+          "end_s": 2.5519035579999922,
+          "duration_s": 0.3610195020000333,
+          "commanded_travel_rad": 0.011505007828185643,
+          "commanded_travel_encoder_counts": 30.000396143275154,
+          "actual_encoder_count_change": 0,
+          "torque_min_nm": -0.07980000317096711,
+          "torque_max_nm": 0.046800001859664916
+        },
+        {
+          "start_s": 6.645114676999981,
+          "end_s": 6.966484035000008,
+          "duration_s": 0.32136935800002675,
+          "commanded_travel_rad": 0.0049497832124851815,
+          "commanded_travel_encoder_counts": 12.907027914756881,
+          "actual_encoder_count_change": 0,
+          "torque_min_nm": 0.07320000290870667,
+          "torque_max_nm": 0.13590000540018082
+        },
+        {
+          "start_s": 8.451092966999965,
+          "end_s": 8.711901716,
+          "duration_s": 0.26080874900003437,
+          "commanded_travel_rad": 0.0020068390983969397,
+          "commanded_travel_encoder_counts": 5.233022771199271,
+          "actual_encoder_count_change": 0,
+          "torque_min_nm": 0.1191000047326088,
+          "torque_max_nm": 0.20670000821352005
+        }
+      ],
+      "apparent_startup_lag_ms": 5.000000000000046,
+      "shifted_startup_rms_rad_s": 0.2012299672012219,
+      "voltage_min_v": 20.2,
+      "voltage_max_v": 20.21,
+      "temperature_max_c": 34.0,
+      "maximum_speed_rad_s": 2.9551914894767983,
+      "maximum_current_derived_torque_nm": 0.2613000103831291,
+      "final_a3_displacement_rad": 0.6665146523363111,
+      "last_a3_time_s": 9.996289353000009,
+      "transmitted_velocity_integral_rad": 0.6872542804425176,
+      "final_displacement_minus_target_integral_rad": -0.020687986427096572,
+      "integrated_a2_velocity_rad": 0.6533849458321052
+    }
+  },
+  "native_velocity_integral_rad": 0.687817166413879,
+  "native_saved_joint_displacement_rad": 0.4710630178451538,
+  "comparison_caveat": "400 Hz changes reference sampling, packet rate, A2 query rate and physical starting phase.",
+  "hardware_or_simulation_run": false
+}

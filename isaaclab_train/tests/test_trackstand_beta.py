@@ -98,6 +98,8 @@ class TestTrackstandBeta(unittest.TestCase):
                 for field in ("friction", "dynamic_friction"):
                     self.assertIsNone(drive0.pop(field))
                     self.assertEqual(drive1.pop(field), 0.106)
+                self.assertIsNone(drive0.pop("viscous_friction"))
+                self.assertEqual(drive1.pop("viscous_friction"), 0.0)
                 self.assertEqual(drive0, drive1)
                 steering_actuator0 = v0["scene"]["robot"]["actuators"]["steering"]
                 steering_actuator1 = v1["scene"]["robot"]["actuators"]["steering"]

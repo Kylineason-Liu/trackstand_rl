@@ -1,0 +1,27 @@
+{
+  "workdir": "/home/lmbike/trackstand_rl/isaaclab_train/reports/20261102_v2_full_audit/cli_smoke",
+  "environment": {
+    "PYTHONPATH": "/home/lmbike/trackstand_rl/isaaclab_train"
+  },
+  "argv": [
+    "/home/lmbike/IsaacLab/_isaac_sim/python.sh",
+    "-B",
+    "/home/lmbike/trackstand_rl/isaaclab_train/scripts/rsl_rl/train.py",
+    "--task",
+    "Trackstand-Balance-v2",
+    "--num_envs",
+    "64",
+    "--max_iterations",
+    "2",
+    "--seed",
+    "42",
+    "--arp_w",
+    "0.17",
+    "--run_name",
+    "audit_weight",
+    "--headless",
+    "--device",
+    "cuda:0",
+    "--dr"
+  ]
+}

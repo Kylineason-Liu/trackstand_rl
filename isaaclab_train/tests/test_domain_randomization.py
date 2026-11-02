@@ -57,10 +57,8 @@ class TestDomainRandomizationCLI(unittest.TestCase):
 class TestTrackstandDomainRandomization(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        from isaaclab.app import AppLauncher
-
-        cls.app = AppLauncher(headless=True).app
-        cls.addClassCleanup(cls.app.close)
+        # These assertions inspect configuration only. Launching/closing Kit
+        # here requires a GPU and can exit discovery before later tests run.
         module = importlib.import_module(
             "source.trackstand_rl.trackstand_rl.tasks.manager_based.trackstand.trackstand_bike.trackstand_rl_env_cfg"
         )

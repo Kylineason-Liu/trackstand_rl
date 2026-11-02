@@ -1,0 +1,3394 @@
+[
+  {
+    "case": "baseline",
+    "dr": false,
+    "seed": 42,
+    "first_100ms_steering_torque_sign_reversals": 35,
+    "steering_speed_projection_count": 3,
+    "max_preprojection_steering_speed_rad_s": 45.07937126785153,
+    "raw_actions": [
+      [
+        1.6104955673217773,
+        16.792312622070312
+      ],
+      [
+        -0.4082425534725189,
+        0.04735761880874634
+      ],
+      [
+        -0.000577148050069809,
+        0.002404153347015381
+      ],
+      [
+        -0.45906075835227966,
+        0.030949532985687256
+      ],
+      [
+        -0.14028161764144897,
+        -0.13705599308013916
+      ]
+    ],
+    "traces": [
+      {
+        "time_s": 0.0025,
+        "position_before_rad": 0.0,
+        "velocity_before_rad_s": 0.0,
+        "position_after_rad": 0.11269842816962883,
+        "velocity_before_projection_rad_s": 45.07937126785153,
+        "actuator_force_nm": 4.779999999999999,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 6.28
+      },
+      {
+        "time_s": 0.005,
+        "position_before_rad": 0.11269842816962883,
+        "velocity_before_rad_s": 23.9,
+        "position_after_rad": 0.14587107316576442,
+        "velocity_before_projection_rad_s": 13.26905799845423,
+        "actuator_force_nm": -1.1269842816962896,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 6.052012554868807
+      },
+      {
+        "time_s": 0.0075,
+        "position_before_rad": 0.14587107316576442,
+        "velocity_before_rad_s": 13.26905799845423,
+        "position_after_rad": 0.19476804857676625,
+        "velocity_before_projection_rad_s": 19.558790164400726,
+        "actuator_force_nm": 0.6674776686515091,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 3.729247625965375
+      },
+      {
+        "time_s": 0.01,
+        "position_before_rad": 0.19476804857676625,
+        "velocity_before_rad_s": 19.558790164400726,
+        "position_after_rad": 0.21821580958822065,
+        "velocity_before_projection_rad_s": 9.379104404581758,
+        "actuator_force_nm": -1.0794385186478088,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 3.2
+      },
+      {
+        "time_s": 0.0125,
+        "position_before_rad": 0.21821580958822065,
+        "velocity_before_rad_s": 9.379104404581758,
+        "position_after_rad": 0.25867587615565835,
+        "velocity_before_projection_rad_s": 16.18402662697509,
+        "actuator_force_nm": 0.7220210232014415,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 3.2
+      },
+      {
+        "time_s": 0.015000000000000001,
+        "position_before_rad": 0.25867587615565835,
+        "velocity_before_rad_s": 16.18402662697509,
+        "position_after_rad": 0.27467714606722354,
+        "velocity_before_projection_rad_s": 6.400507964626083,
+        "actuator_force_nm": -1.0435640869516023,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 3.2
+      },
+      {
+        "time_s": 0.0175,
+        "position_before_rad": 0.27467714606722354,
+        "velocity_before_rad_s": 6.400507964626083,
+        "position_after_rad": 0.30841553305588293,
+        "velocity_before_projection_rad_s": 13.49535479546375,
+        "actuator_force_nm": 0.7531269464025474,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 5.9058663366229815
+      },
+      {
+        "time_s": 0.02,
+        "position_before_rad": 0.30841553305588293,
+        "velocity_before_rad_s": 13.49535479546375,
+        "position_after_rad": 0.31849898961276396,
+        "velocity_before_projection_rad_s": 4.033382622752406,
+        "actuator_force_nm": -1.0032262896515807,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 3.639282639449386
+      },
+      {
+        "time_s": 0.0225,
+        "position_before_rad": 0.31849898961276396,
+        "velocity_before_rad_s": 4.033382622752406,
+        "position_after_rad": 0.23450521346607428,
+        "velocity_before_projection_rad_s": -33.59751045867586,
+        "actuator_force_nm": -3.9916664206781207,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -2.7825941538810732
+      },
+      {
+        "time_s": 0.024999999999999998,
+        "position_before_rad": 0.23450521346607428,
+        "velocity_before_rad_s": -23.9,
+        "position_after_rad": 0.23215188420517793,
+        "velocity_before_projection_rad_s": -0.941331704358543,
+        "actuator_force_nm": 2.4349478653392573,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -1.7148486512383514
+      },
+      {
+        "time_s": 0.027499999999999997,
+        "position_before_rad": 0.23215188420517793,
+        "velocity_before_rad_s": -0.941331704358543,
+        "position_after_rad": 0.17951981191069424,
+        "velocity_before_projection_rad_s": -21.052828917793473,
+        "actuator_force_nm": -2.1332525011800705,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -1.0565875340308628
+      },
+      {
+        "time_s": 0.029999999999999995,
+        "position_before_rad": 0.17951981191069424,
+        "velocity_before_rad_s": -21.052828917793473,
+        "position_after_rad": 0.18382012030998257,
+        "velocity_before_projection_rad_s": 1.720123359715334,
+        "actuator_force_nm": 2.415367664451753,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -0.6511764168994125
+      },
+      {
+        "time_s": 0.032499999999999994,
+        "position_before_rad": 0.18382012030998257,
+        "velocity_before_rad_s": 1.720123359715334,
+        "position_after_rad": 0.1366857419740733,
+        "velocity_before_projection_rad_s": -18.85375133436371,
+        "actuator_force_nm": -2.1822258750428922,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -0.40114625297762924
+      },
+      {
+        "time_s": 0.034999999999999996,
+        "position_before_rad": 0.1366857419740733,
+        "velocity_before_rad_s": -18.85375133436371,
+        "position_after_rad": 0.1462122448487341,
+        "velocity_before_projection_rad_s": 3.8106011498643184,
+        "actuator_force_nm": 2.4038928471320093,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -0.2472883707223527
+      },
+      {
+        "time_s": 0.0375,
+        "position_before_rad": 0.1462122448487341,
+        "velocity_before_rad_s": 3.8106011498643184,
+        "position_after_rad": 0.10331310664782184,
+        "velocity_before_projection_rad_s": -17.159655280364902,
+        "actuator_force_nm": -2.2242426784602047,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -0.15227051227012772
+      },
+      {
+        "time_s": 0.04,
+        "position_before_rad": 0.10331310664782184,
+        "velocity_before_rad_s": -17.159655280364902,
+        "position_after_rad": 0.11695440260561717,
+        "velocity_before_projection_rad_s": 5.45651838311813,
+        "actuator_force_nm": 2.398799989594762,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -0.09392937586456435
+      },
+      {
+        "time_s": 0.0425,
+        "position_before_rad": 0.11695440260561717,
+        "velocity_before_rad_s": 5.45651838311813,
+        "position_after_rad": 0.07709409043117157,
+        "velocity_before_projection_rad_s": -15.94412486977824,
+        "actuator_force_nm": -2.269908927089177,
+        "target_rad": -0.0009061224409379065,
+        "rear_actuator_force_nm": -0.3400798744341174
+      },
+      {
+        "time_s": 0.045000000000000005,
+        "position_before_rad": 0.07709409043117157,
+        "velocity_before_rad_s": -15.94412486977824,
+        "position_after_rad": 0.09401064856813053,
+        "velocity_before_projection_rad_s": 6.766623254783582,
+        "actuator_force_nm": 2.4088228452345533,
+        "target_rad": -0.0009061224409379065,
+        "rear_actuator_force_nm": -0.20965894503766186
+      },
+      {
+        "time_s": 0.04750000000000001,
+        "position_before_rad": 0.09401064856813053,
+        "velocity_before_rad_s": 6.766623254783582,
+        "position_after_rad": 0.05665708510838152,
+        "velocity_before_projection_rad_s": -14.941425383899603,
+        "actuator_force_nm": -2.302492361047401,
+        "target_rad": -0.0009061224409379065,
+        "rear_actuator_force_nm": -0.12908657809483395
+      },
+      {
+        "time_s": 0.05000000000000001,
+        "position_before_rad": 0.05665708510838152,
+        "velocity_before_rad_s": -14.941425383899603,
+        "position_after_rad": 0.07617033323199734,
+        "velocity_before_projection_rad_s": 7.805299249446328,
+        "actuator_force_nm": 2.412653001286726,
+        "target_rad": -0.0009061224409379065,
+        "rear_actuator_force_nm": -0.07964362143589039
+      },
+      {
+        "time_s": 0.05250000000000001,
+        "position_before_rad": 0.07617033323199734,
+        "velocity_before_rad_s": 7.805299249446328,
+        "position_after_rad": 0.04072189530546687,
+        "velocity_before_projection_rad_s": -14.17937517061219,
+        "actuator_force_nm": -2.3318244066186185,
+        "target_rad": -0.0009061224409379065,
+        "rear_actuator_force_nm": -0.048971557270705984
+      },
+      {
+        "time_s": 0.055000000000000014,
+        "position_before_rad": 0.04072189530546687,
+        "velocity_before_rad_s": -14.17937517061219,
+        "position_after_rad": 0.06230375063736396,
+        "velocity_before_projection_rad_s": 8.632742132758835,
+        "actuator_force_nm": 2.41959485665839,
+        "target_rad": -0.0009061224409379065,
+        "rear_actuator_force_nm": -0.03027636136233456
+      },
+      {
+        "time_s": 0.057500000000000016,
+        "position_before_rad": 0.06230375063736396,
+        "velocity_before_rad_s": 8.632742132758835,
+        "position_after_rad": 0.028291619888346185,
+        "velocity_before_projection_rad_s": -13.60485229960711,
+        "actuator_force_nm": -2.3586471573347856,
+        "target_rad": -0.0009061224409379065,
+        "rear_actuator_force_nm": -0.01855192804696241
+      },
+      {
+        "time_s": 0.06000000000000002,
+        "position_before_rad": 0.028291619888346185,
+        "velocity_before_rad_s": -13.60485229960711,
+        "position_after_rad": 0.04763330976814527,
+        "velocity_before_projection_rad_s": 7.736675951919633,
+        "actuator_force_nm": 2.4289930366285812,
+        "target_rad": -0.0009061224409379065,
+        "rear_actuator_force_nm": -0.01153178753059384
+      },
+      {
+        "time_s": 0.06250000000000001,
+        "position_before_rad": 0.04763330976814527,
+        "velocity_before_rad_s": 7.736675951919633,
+        "position_after_rad": -0.05041977523613614,
+        "velocity_before_projection_rad_s": -39.22123400171256,
+        "actuator_force_nm": -5.6,
+        "target_rad": -0.4789061224409379,
+        "rear_actuator_force_nm": 0.10623511460908759
+      },
+      {
+        "time_s": 0.06500000000000002,
+        "position_before_rad": -0.05041977523613614,
+        "velocity_before_rad_s": -23.9,
+        "position_after_rad": -0.09840684556730708,
+        "velocity_before_projection_rad_s": -19.19482813246838,
+        "actuator_force_nm": 0.49513652795198304,
+        "target_rad": -0.4789061224409379,
+        "rear_actuator_force_nm": 0.02818239687526436
+      },
+      {
+        "time_s": 0.06750000000000002,
+        "position_before_rad": -0.09840684556730708,
+        "velocity_before_rad_s": -19.19482813246838,
+        "position_after_rad": -0.14550360767612722,
+        "velocity_before_projection_rad_s": -18.838704843528053,
+        "actuator_force_nm": 0.03397285775736858,
+        "target_rad": -0.4789061224409379,
+        "rear_actuator_force_nm": 0.01740828983999612
+      },
+      {
+        "time_s": 0.07000000000000002,
+        "position_before_rad": -0.14550360767612722,
+        "velocity_before_rad_s": -18.838704843528053,
+        "position_after_rad": -0.18160596057429726,
+        "velocity_before_projection_rad_s": -14.440941159268018,
+        "actuator_force_nm": 0.43371582105750406,
+        "target_rad": -0.4789061224409379,
+        "rear_actuator_force_nm": 0.010762441584539928
+      },
+      {
+        "time_s": 0.07250000000000002,
+        "position_before_rad": -0.18160596057429726,
+        "velocity_before_rad_s": -14.440941159268018,
+        "position_after_rad": -0.21965696487343125,
+        "velocity_before_projection_rad_s": -15.220401719653594,
+        "actuator_force_nm": -0.08481338681280182,
+        "target_rad": -0.4789061224409379,
+        "rear_actuator_force_nm": 0.051543244788052583
+      },
+      {
+        "time_s": 0.07500000000000002,
+        "position_before_rad": -0.21965696487343125,
+        "velocity_before_rad_s": -15.220401719653594,
+        "position_after_rad": -0.24703320628475472,
+        "velocity_before_projection_rad_s": -10.950496564529388,
+        "actuator_force_nm": 0.45158876825565386,
+        "target_rad": -0.4789061224409379,
+        "rear_actuator_force_nm": 0.05970573458429643
+      },
+      {
+        "time_s": 0.07750000000000003,
+        "position_before_rad": -0.24703320628475472,
+        "velocity_before_rad_s": -10.950496564529388,
+        "position_after_rad": -0.27737529203787786,
+        "velocity_before_projection_rad_s": -12.13683430124926,
+        "actuator_force_nm": -0.12862984865595362,
+        "target_rad": -0.4789061224409379,
+        "rear_actuator_force_nm": 0.07044277396256675
+      },
+      {
+        "time_s": 0.08000000000000003,
+        "position_before_rad": -0.27737529203787786,
+        "velocity_before_rad_s": -12.13683430124926,
+        "position_after_rad": -0.2979794050331446,
+        "velocity_before_projection_rad_s": -8.24164519810669,
+        "actuator_force_nm": 0.412058556219252,
+        "target_rad": -0.4789061224409379,
+        "rear_actuator_force_nm": 0.07817935045514728
+      },
+      {
+        "time_s": 0.08250000000000003,
+        "position_before_rad": -0.2979794050331446,
+        "velocity_before_rad_s": -8.24164519810669,
+        "position_after_rad": -0.27563495493514506,
+        "velocity_before_projection_rad_s": 8.937780039199806,
+        "actuator_force_nm": 2.425701663179712,
+        "target_rad": -0.22024214267730713,
+        "rear_actuator_force_nm": -0.9690424600197951
+      },
+      {
+        "time_s": 0.08500000000000003,
+        "position_before_rad": -0.27563495493514506,
+        "velocity_before_rad_s": 8.937780039199806,
+        "position_after_rad": -0.2787760031323802,
+        "velocity_before_projection_rad_s": -1.2564192788940503,
+        "actuator_force_nm": -1.2336278852615818,
+        "target_rad": -0.22024214267730713,
+        "rear_actuator_force_nm": -0.9805923997125807
+      },
+      {
+        "time_s": 0.08750000000000004,
+        "position_before_rad": -0.2787760031323802,
+        "velocity_before_rad_s": -1.2564192788940503,
+        "position_after_rad": -0.2657014861755149,
+        "velocity_before_projection_rad_s": 5.229806782746107,
+        "actuator_force_nm": 0.8366224603295409,
+        "target_rad": -0.22024214267730713,
+        "rear_actuator_force_nm": -0.9062603850972991
+      },
+      {
+        "time_s": 0.09000000000000004,
+        "position_before_rad": -0.2657014861755149,
+        "velocity_before_rad_s": 5.229806782746107,
+        "position_after_rad": -0.2645039053837307,
+        "velocity_before_projection_rad_s": 0.4790323167136812,
+        "actuator_force_nm": -0.5913679215671435,
+        "target_rad": -0.22024214267730713,
+        "rear_actuator_force_nm": -0.8613116617646478
+      },
+      {
+        "time_s": 0.09250000000000004,
+        "position_before_rad": -0.2645039053837307,
+        "velocity_before_rad_s": 0.4790323167136812,
+        "position_after_rad": -0.25626541519128504,
+        "velocity_before_projection_rad_s": 3.2953960769782538,
+        "actuator_force_nm": 0.3468111637214992,
+        "target_rad": -0.22024214267730713,
+        "rear_actuator_force_nm": -0.5374208358237071
+      },
+      {
+        "time_s": 0.09500000000000004,
+        "position_before_rad": -0.25626541519128504,
+        "velocity_before_rad_s": 3.2953960769782538,
+        "position_after_rad": -0.2540204791170856,
+        "velocity_before_projection_rad_s": 0.8979744296797714,
+        "actuator_force_nm": -0.2988464902558716,
+        "target_rad": -0.22024214267730713,
+        "rear_actuator_force_nm": -0.33891283711080544
+      },
+      {
+        "time_s": 0.09750000000000004,
+        "position_before_rad": -0.2540204791170856,
+        "velocity_before_rad_s": 0.8979744296797714,
+        "position_after_rad": -0.2486340443415809,
+        "velocity_before_projection_rad_s": 2.1545739102018766,
+        "actuator_force_nm": 0.1581884784618306,
+        "target_rad": -0.22024214267730713,
+        "rear_actuator_force_nm": -0.21429030838299323
+      },
+      {
+        "time_s": 0.10000000000000005,
+        "position_before_rad": -0.2486340443415809,
+        "velocity_before_rad_s": 2.1545739102018766,
+        "position_after_rad": -0.24612426761812645,
+        "velocity_before_projection_rad_s": 1.0039106893817809,
+        "actuator_force_nm": -0.14699576539763726,
+        "target_rad": -0.22024214267730713,
+        "rear_actuator_force_nm": -0.1378014252689318
+      }
+    ]
+  },
+  {
+    "case": "physics_800",
+    "dr": false,
+    "seed": 42,
+    "first_100ms_steering_torque_sign_reversals": 8,
+    "steering_speed_projection_count": 1,
+    "max_preprojection_steering_speed_rad_s": 23.993638424551463,
+    "raw_actions": [
+      [
+        1.6104955673217773,
+        16.792312622070312
+      ],
+      [
+        -0.46510374546051025,
+        0.043791770935058594
+      ],
+      [
+        -0.03947453200817108,
+        -0.008365273475646973
+      ],
+      [
+        -0.3357286751270294,
+        -0.09595078229904175
+      ],
+      [
+        -0.2554909288883209,
+        -0.08424746990203857
+      ]
+    ],
+    "traces": [
+      {
+        "time_s": 0.00125,
+        "position_before_rad": 0.0,
+        "velocity_before_rad_s": 0.0,
+        "position_after_rad": 0.028174607042407207,
+        "velocity_before_projection_rad_s": 22.539685633925764,
+        "actuator_force_nm": 4.779999999999999,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 6.28
+      },
+      {
+        "time_s": 0.0025,
+        "position_before_rad": 0.028174607042407207,
+        "velocity_before_rad_s": 22.539685633925764,
+        "position_after_rad": 0.05630052074918677,
+        "velocity_before_projection_rad_s": 22.50073096542365,
+        "actuator_force_nm": -0.009683197209225725,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 6.166006277434404
+      },
+      {
+        "time_s": 0.00375,
+        "position_before_rad": 0.05630052074918677,
+        "velocity_before_rad_s": 22.50073096542365,
+        "position_after_rad": 0.08275464646392613,
+        "velocity_before_projection_rad_s": 21.1633005717915,
+        "actuator_force_nm": -0.2831514005765987,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 6.056863988663196
+      },
+      {
+        "time_s": 0.005,
+        "position_before_rad": 0.08275464646392613,
+        "velocity_before_rad_s": 21.1633005717915,
+        "position_after_rad": 0.10755493828219748,
+        "velocity_before_projection_rad_s": 19.84023345461707,
+        "actuator_force_nm": -0.28020657899756163,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 4.894564466582534
+      },
+      {
+        "time_s": 0.00625,
+        "position_before_rad": 0.10755493828219748,
+        "velocity_before_rad_s": 19.84023345461707,
+        "position_after_rad": 0.13079977216456604,
+        "velocity_before_projection_rad_s": 18.59586710589484,
+        "actuator_force_nm": -0.26359607374538996,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 3.9553070075314207
+      },
+      {
+        "time_s": 0.007500000000000001,
+        "position_before_rad": 0.13079977216456604,
+        "velocity_before_rad_s": 18.59586710589484,
+        "position_after_rad": 0.1525863484824295,
+        "velocity_before_projection_rad_s": 17.429261054290777,
+        "actuator_force_nm": -0.24717114282462926,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 3.2
+      },
+      {
+        "time_s": 0.00875,
+        "position_before_rad": 0.1525863484824295,
+        "velocity_before_rad_s": 17.429261054290777,
+        "position_after_rad": 0.17300574008168876,
+        "velocity_before_projection_rad_s": 16.335513279407415,
+        "actuator_force_nm": -0.23171569568245065,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 3.2
+      },
+      {
+        "time_s": 0.01,
+        "position_before_rad": 0.17300574008168876,
+        "velocity_before_rad_s": 16.335513279407415,
+        "position_after_rad": 0.19214372945754546,
+        "velocity_before_projection_rad_s": 15.310391500685352,
+        "actuator_force_nm": -0.21716005669837202,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 3.2
+      },
+      {
+        "time_s": 0.01125,
+        "position_before_rad": 0.19214372945754546,
+        "velocity_before_rad_s": 15.310391500685352,
+        "position_after_rad": 0.21008074408885255,
+        "velocity_before_projection_rad_s": 14.349611705045676,
+        "actuator_force_nm": -0.20351559471252578,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 3.2
+      },
+      {
+        "time_s": 0.012499999999999999,
+        "position_before_rad": 0.21008074408885255,
+        "velocity_before_rad_s": 14.349611705045676,
+        "position_after_rad": 0.22689216790327468,
+        "velocity_before_projection_rad_s": 13.449139051537713,
+        "actuator_force_nm": -0.19072978189766143,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 3.2
+      },
+      {
+        "time_s": 0.013749999999999998,
+        "position_before_rad": 0.22689216790327468,
+        "velocity_before_rad_s": 13.449139051537713,
+        "position_after_rad": 0.24267782990927056,
+        "velocity_before_projection_rad_s": 12.628529604796702,
+        "actuator_force_nm": -0.17874948934029078,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 3.2
+      },
+      {
+        "time_s": 0.014999999999999998,
+        "position_before_rad": 0.24267782990927056,
+        "velocity_before_rad_s": 12.628529604796702,
+        "position_after_rad": 0.2574444395026126,
+        "velocity_before_projection_rad_s": 11.813287674673603,
+        "actuator_force_nm": -0.17248422005204667,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 4.556726456301437
+      },
+      {
+        "time_s": 0.016249999999999997,
+        "position_before_rad": 0.2574444395026126,
+        "velocity_before_rad_s": 11.813287674673603,
+        "position_after_rad": 0.2712831821409193,
+        "velocity_before_projection_rad_s": 11.070994110645376,
+        "actuator_force_nm": -0.15710192996084693,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 3.682304628650876
+      },
+      {
+        "time_s": 0.017499999999999998,
+        "position_before_rad": 0.2712831821409193,
+        "velocity_before_rad_s": 11.070994110645376,
+        "position_after_rad": 0.2842537324441814,
+        "velocity_before_projection_rad_s": 10.376440242609666,
+        "actuator_force_nm": -0.1470306435382689,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 3.2
+      },
+      {
+        "time_s": 0.01875,
+        "position_before_rad": 0.2842537324441814,
+        "velocity_before_rad_s": 10.376440242609666,
+        "position_after_rad": 0.29641037922818364,
+        "velocity_before_projection_rad_s": 9.725317427201801,
+        "actuator_force_nm": -0.1378253729637482,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 3.2
+      },
+      {
+        "time_s": 0.02,
+        "position_before_rad": 0.29641037922818364,
+        "velocity_before_rad_s": 9.725317427201801,
+        "position_after_rad": 0.3078042045390424,
+        "velocity_before_projection_rad_s": 9.115060248687007,
+        "actuator_force_nm": -0.12916727772219705,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 3.2
+      },
+      {
+        "time_s": 0.02125,
+        "position_before_rad": 0.3078042045390424,
+        "velocity_before_rad_s": 9.115060248687007,
+        "position_after_rad": 0.29033532072601786,
+        "velocity_before_projection_rad_s": -13.975107050419629,
+        "actuator_force_nm": -4.901054095127825,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -2.8049876785278323
+      },
+      {
+        "time_s": 0.022500000000000003,
+        "position_before_rad": 0.29033532072601786,
+        "velocity_before_rad_s": -13.975107050419629,
+        "position_after_rad": 0.27222897571710747,
+        "velocity_before_projection_rad_s": -14.485076007128308,
+        "actuator_force_nm": -0.10833179717625274,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -1.3735337566719255
+      },
+      {
+        "time_s": 0.023750000000000004,
+        "position_before_rad": 0.27222897571710747,
+        "velocity_before_rad_s": -14.485076007128308,
+        "position_after_rad": 0.25515292140816814,
+        "velocity_before_projection_rad_s": -13.660843447151443,
+        "actuator_force_nm": 0.17472544425458691,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -1.1099620840846185
+      },
+      {
+        "time_s": 0.025000000000000005,
+        "position_before_rad": 0.25515292140816814,
+        "velocity_before_rad_s": -13.660843447151443,
+        "position_after_rad": 0.2391418621090403,
+        "velocity_before_projection_rad_s": -12.808847439302278,
+        "actuator_force_nm": 0.18063947534860691,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -0.8969613993097016
+      },
+      {
+        "time_s": 0.026250000000000006,
+        "position_before_rad": 0.2391418621090403,
+        "velocity_before_rad_s": -12.808847439302278,
+        "position_after_rad": 0.2241350573444918,
+        "velocity_before_projection_rad_s": -12.005443811638788,
+        "actuator_force_nm": 0.17035086677005307,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -0.7248341801314038
+      },
+      {
+        "time_s": 0.027500000000000007,
+        "position_before_rad": 0.2241350573444918,
+        "velocity_before_rad_s": -12.005443811638788,
+        "position_after_rad": 0.21006988075934524,
+        "velocity_before_projection_rad_s": -11.252141268117235,
+        "actuator_force_nm": 0.15973818888283997,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -0.5857375022417768
+      },
+      {
+        "time_s": 0.028750000000000008,
+        "position_before_rad": 0.21006988075934524,
+        "velocity_before_rad_s": -11.252141268117235,
+        "position_after_rad": 0.1968872833163133,
+        "velocity_before_projection_rad_s": -10.54607795442555,
+        "actuator_force_nm": 0.1497294460299945,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -0.47333303989941694
+      },
+      {
+        "time_s": 0.03000000000000001,
+        "position_before_rad": 0.1968872833163133,
+        "velocity_before_rad_s": -10.54607795442555,
+        "position_after_rad": 0.18453189611285467,
+        "velocity_before_projection_rad_s": -9.884309762766906,
+        "actuator_force_nm": 0.1403427577219769,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -0.38249871173222433
+      },
+      {
+        "time_s": 0.03125000000000001,
+        "position_before_rad": 0.18453189611285467,
+        "velocity_before_rad_s": -9.884309762766906,
+        "position_after_rad": 0.17295182029245404,
+        "velocity_before_projection_rad_s": -9.264060656320499,
+        "actuator_force_nm": 0.1315429914248345,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -0.3090953203718519
+      },
+      {
+        "time_s": 0.03250000000000001,
+        "position_before_rad": 0.17295182029245404,
+        "velocity_before_rad_s": -9.264060656320499,
+        "position_after_rad": 0.16209841122718685,
+        "velocity_before_projection_rad_s": -8.68272725221376,
+        "actuator_force_nm": 0.12329392833955954,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -0.24977794946694204
+      },
+      {
+        "time_s": 0.03375000000000001,
+        "position_before_rad": 0.16209841122718685,
+        "velocity_before_rad_s": -8.68272725221376,
+        "position_after_rad": 0.15192607493268842,
+        "velocity_before_projection_rad_s": -8.137869035598746,
+        "actuator_force_nm": 0.11556133817088377,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -0.2018435494027082
+      },
+      {
+        "time_s": 0.03500000000000001,
+        "position_before_rad": 0.15192607493268842,
+        "velocity_before_rad_s": -8.137869035598746,
+        "position_after_rad": 0.14239789575356185,
+        "velocity_before_projection_rad_s": -7.622543343301258,
+        "actuator_force_nm": 0.10831305779286504,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -0.1631077690772465
+      },
+      {
+        "time_s": 0.03625000000000001,
+        "position_before_rad": 0.14239789575356185,
+        "velocity_before_rad_s": -7.622543343301258,
+        "position_after_rad": 0.13346487462761036,
+        "velocity_before_projection_rad_s": -7.1464169007611895,
+        "actuator_force_nm": 0.10052971112463305,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": 0.0014429473577535212
+      },
+      {
+        "time_s": 0.03750000000000001,
+        "position_before_rad": 0.13346487462761036,
+        "velocity_before_rad_s": -7.1464169007611895,
+        "position_after_rad": 0.12509067127270596,
+        "velocity_before_projection_rad_s": -6.69936268392353,
+        "actuator_force_nm": 0.09463463387613436,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": 0.08222202653522909
+      },
+      {
+        "time_s": 0.038750000000000014,
+        "position_before_rad": 0.12509067127270596,
+        "velocity_before_rad_s": -6.69936268392353,
+        "position_after_rad": 0.11724109421551442,
+        "velocity_before_projection_rad_s": -6.279661645753229,
+        "actuator_force_nm": 0.08896582405764653,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": 0.12286444269565486
+      },
+      {
+        "time_s": 0.040000000000000015,
+        "position_before_rad": 0.11724109421551442,
+        "velocity_before_rad_s": -6.279661645753229,
+        "position_after_rad": 0.10988369713134057,
+        "velocity_before_projection_rad_s": -5.885917667339083,
+        "actuator_force_nm": 0.08352138699550182,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": 0.14425717069140195
+      },
+      {
+        "time_s": 0.041250000000000016,
+        "position_before_rad": 0.10988369713134057,
+        "velocity_before_rad_s": -5.885917667339083,
+        "position_after_rad": 0.09934876163045804,
+        "velocity_before_projection_rad_s": -8.427948400706018,
+        "actuator_force_nm": -0.5414036097453845,
+        "target_rad": -0.06197501718997955,
+        "rear_actuator_force_nm": -0.1711432088571666
+      },
+      {
+        "time_s": 0.04250000000000002,
+        "position_before_rad": 0.09934876163045804,
+        "velocity_before_rad_s": -8.427948400706018,
+        "position_after_rad": 0.08924077942388844,
+        "velocity_before_projection_rad_s": -8.086385765255681,
+        "actuator_force_nm": 0.0723518919368279,
+        "target_rad": -0.06197501718997955,
+        "rear_actuator_force_nm": -0.16005745061456175
+      },
+      {
+        "time_s": 0.04375000000000002,
+        "position_before_rad": 0.08924077942388844,
+        "velocity_before_rad_s": -8.086385765255681,
+        "position_after_rad": 0.07975189351300237,
+        "velocity_before_projection_rad_s": -7.5911087287088606,
+        "actuator_force_nm": 0.10511918691245636,
+        "target_rad": -0.06197501718997955,
+        "rear_actuator_force_nm": -0.15147794062621842
+      },
+      {
+        "time_s": 0.04500000000000002,
+        "position_before_rad": 0.07975189351300237,
+        "velocity_before_rad_s": -7.5911087287088606,
+        "position_after_rad": 0.0708574587478988,
+        "velocity_before_projection_rad_s": -7.115547812082856,
+        "actuator_force_nm": 0.10095263871195292,
+        "target_rad": -0.06197501718997955,
+        "rear_actuator_force_nm": -0.14414026131216617
+      },
+      {
+        "time_s": 0.04625000000000002,
+        "position_before_rad": 0.0708574587478988,
+        "velocity_before_rad_s": -7.115547812082856,
+        "position_after_rad": 0.06252115343369731,
+        "velocity_before_projection_rad_s": -6.669044251361188,
+        "actuator_force_nm": 0.0947848030377878,
+        "target_rad": -0.06197501718997955,
+        "rear_actuator_force_nm": -0.13742799491991142
+      },
+      {
+        "time_s": 0.04750000000000002,
+        "position_before_rad": 0.06252115343369731,
+        "velocity_before_rad_s": -6.669044251361188,
+        "position_after_rad": 0.05470804757484699,
+        "velocity_before_projection_rad_s": -6.250484687080255,
+        "actuator_force_nm": 0.08884714403546923,
+        "target_rad": -0.06197501718997955,
+        "rear_actuator_force_nm": -0.13104561739707896
+      },
+      {
+        "time_s": 0.04875000000000002,
+        "position_before_rad": 0.05470804757484699,
+        "velocity_before_rad_s": -6.250484687080255,
+        "position_after_rad": 0.04738532676143419,
+        "velocity_before_projection_rad_s": -5.85817665073024,
+        "actuator_force_nm": 0.0832662897677856,
+        "target_rad": -0.06197501718997955,
+        "rear_actuator_force_nm": -0.12485215170253128
+      },
+      {
+        "time_s": 0.050000000000000024,
+        "position_before_rad": 0.04738532676143419,
+        "velocity_before_rad_s": -5.85817665073024,
+        "position_after_rad": 0.040522221169493736,
+        "velocity_before_projection_rad_s": -5.4904844735523675,
+        "actuator_force_nm": 0.07803189063191063,
+        "target_rad": -0.06197501718997955,
+        "rear_actuator_force_nm": -0.11878079345410908
+      },
+      {
+        "time_s": 0.051250000000000025,
+        "position_before_rad": 0.040522221169493736,
+        "velocity_before_rad_s": -5.4904844735523675,
+        "position_after_rad": 0.0340898861382223,
+        "velocity_before_projection_rad_s": -5.1458680250171485,
+        "actuator_force_nm": 0.07312451111574059,
+        "target_rad": -0.06197501718997955,
+        "rear_actuator_force_nm": -0.1128003182736759
+      },
+      {
+        "time_s": 0.052500000000000026,
+        "position_before_rad": 0.0340898861382223,
+        "velocity_before_rad_s": -5.1458680250171485,
+        "position_after_rad": 0.028061284430400048,
+        "velocity_before_projection_rad_s": -4.822881366257803,
+        "actuator_force_nm": 0.06852457172141113,
+        "target_rad": -0.06197501718997955,
+        "rear_actuator_force_nm": -0.10689655915226962
+      },
+      {
+        "time_s": 0.05375000000000003,
+        "position_before_rad": 0.028061284430400048,
+        "velocity_before_rad_s": -4.822881366257803,
+        "position_after_rad": 0.022411074278210645,
+        "velocity_before_projection_rad_s": -4.520168121751522,
+        "actuator_force_nm": 0.0642132570477647,
+        "target_rad": -0.06197501718997955,
+        "rear_actuator_force_nm": -0.10106351320919499
+      },
+      {
+        "time_s": 0.05500000000000003,
+        "position_before_rad": 0.022411074278210645,
+        "velocity_before_rad_s": -4.520168121751522,
+        "position_after_rad": 0.017116186619911024,
+        "velocity_before_projection_rad_s": -4.235910126639698,
+        "actuator_force_nm": 0.06017270966840238,
+        "target_rad": -0.06197501718997955,
+        "rear_actuator_force_nm": -0.09529906971026236
+      },
+      {
+        "time_s": 0.05625000000000003,
+        "position_before_rad": 0.017116186619911024,
+        "velocity_before_rad_s": -4.235910126639698,
+        "position_after_rad": 0.012549209139002891,
+        "velocity_before_projection_rad_s": -3.6535819847265065,
+        "actuator_force_nm": 0.05626998722903398,
+        "target_rad": -0.06197501718997955,
+        "rear_actuator_force_nm": -0.08803162571004114
+      },
+      {
+        "time_s": 0.05750000000000003,
+        "position_before_rad": 0.012549209139002891,
+        "velocity_before_rad_s": -3.6535819847265065,
+        "position_after_rad": 0.008149373431133132,
+        "velocity_before_projection_rad_s": -3.519868566295807,
+        "actuator_force_nm": -0.01452586634452313,
+        "target_rad": -0.06197501718997955,
+        "rear_actuator_force_nm": -0.13951112790794443
+      },
+      {
+        "time_s": 0.05875000000000003,
+        "position_before_rad": 0.008149373431133132,
+        "velocity_before_rad_s": -3.519868566295807,
+        "position_after_rad": 0.0038892119116882952,
+        "velocity_before_projection_rad_s": -3.4081292155558693,
+        "actuator_force_nm": 0.002729807048034605,
+        "target_rad": -0.06197501718997955,
+        "rear_actuator_force_nm": -0.1659735328685904
+      },
+      {
+        "time_s": 0.06000000000000003,
+        "position_before_rad": 0.0038892119116882952,
+        "velocity_before_rad_s": -3.4081292155558693,
+        "position_after_rad": -0.0001904009782315542,
+        "velocity_before_projection_rad_s": -3.2636903119358798,
+        "actuator_force_nm": 0.02298355209449543,
+        "target_rad": -0.06197501718997955,
+        "rear_actuator_force_nm": -0.17908655709531787
+      },
+      {
+        "time_s": 0.061250000000000034,
+        "position_before_rad": -0.0001904009782315542,
+        "velocity_before_rad_s": -3.2636903119358798,
+        "position_after_rad": -0.027298451678091133,
+        "velocity_before_projection_rad_s": -21.68644055988766,
+        "actuator_force_nm": -4.616298589260867,
+        "target_rad": -0.5270940661430359,
+        "rear_actuator_force_nm": -0.7352471159883535
+      },
+      {
+        "time_s": 0.06250000000000003,
+        "position_before_rad": -0.027298451678091133,
+        "velocity_before_rad_s": -21.68644055988766,
+        "position_after_rad": -0.05729049970878046,
+        "velocity_before_projection_rad_s": -23.993638424551463,
+        "actuator_force_nm": -0.6606680326719152,
+        "target_rad": -0.5270940661430359,
+        "rear_actuator_force_nm": -0.7113934721730066
+      },
+      {
+        "time_s": 0.06375000000000003,
+        "position_before_rad": -0.05729049970878046,
+        "velocity_before_rad_s": -23.9,
+        "position_after_rad": -0.08640927435646187,
+        "velocity_before_projection_rad_s": -23.29501971814513,
+        "actuator_force_nm": 0.08196433565744599,
+        "target_rad": -0.5270940661430359,
+        "rear_actuator_force_nm": -0.6874969104102745
+      },
+      {
+        "time_s": 0.06500000000000003,
+        "position_before_rad": -0.08640927435646187,
+        "velocity_before_rad_s": -23.29501971814513,
+        "position_after_rad": -0.1139321671645586,
+        "velocity_before_projection_rad_s": -22.01831424647739,
+        "actuator_force_nm": 0.252156025763286,
+        "target_rad": -0.5270940661430359,
+        "rear_actuator_force_nm": -0.55681451336567
+      },
+      {
+        "time_s": 0.06625000000000003,
+        "position_before_rad": -0.1139321671645586,
+        "velocity_before_rad_s": -22.01831424647739,
+        "position_after_rad": -0.14006670217220266,
+        "velocity_before_projection_rad_s": -20.90762800611525,
+        "actuator_force_nm": 0.2720438595107053,
+        "target_rad": -0.5270940661430359,
+        "rear_actuator_force_nm": -0.4504078683573305
+      },
+      {
+        "time_s": 0.06750000000000003,
+        "position_before_rad": -0.14006670217220266,
+        "velocity_before_rad_s": -20.90762800611525,
+        "position_after_rad": -0.16466695234115605,
+        "velocity_before_projection_rad_s": -19.680200135162714,
+        "actuator_force_nm": 0.3112519615147171,
+        "target_rad": -0.5270940661430359,
+        "rear_actuator_force_nm": -0.36525549248043565
+      },
+      {
+        "time_s": 0.06875000000000003,
+        "position_before_rad": -0.16466695234115605,
+        "velocity_before_rad_s": -19.680200135162714,
+        "position_after_rad": -0.1876524522287302,
+        "velocity_before_projection_rad_s": -18.38839991005932,
+        "actuator_force_nm": 0.3117688890137451,
+        "target_rad": -0.5270940661430359,
+        "rear_actuator_force_nm": -0.29761440152795093
+      },
+      {
+        "time_s": 0.07000000000000003,
+        "position_before_rad": -0.1876524522287302,
+        "velocity_before_rad_s": -18.38839991005932,
+        "position_after_rad": -0.20912844446120665,
+        "velocity_before_projection_rad_s": -17.180793785981173,
+        "actuator_force_nm": 0.28326384286880746,
+        "target_rad": -0.5270940661430359,
+        "rear_actuator_force_nm": -0.24295647508020785
+      },
+      {
+        "time_s": 0.07125000000000004,
+        "position_before_rad": -0.20912844446120665,
+        "velocity_before_rad_s": -17.180793785981173,
+        "position_after_rad": -0.22931001651240757,
+        "velocity_before_projection_rad_s": -16.14525764096072,
+        "actuator_force_nm": 0.2565025403779426,
+        "target_rad": -0.5270940661430359,
+        "rear_actuator_force_nm": -0.19879568002691606
+      },
+      {
+        "time_s": 0.07250000000000004,
+        "position_before_rad": -0.22931001651240757,
+        "velocity_before_rad_s": -16.14525764096072,
+        "position_after_rad": -0.24831473439071558,
+        "velocity_before_projection_rad_s": -15.203774302646409,
+        "actuator_force_nm": 0.2512110318858607,
+        "target_rad": -0.5270940661430359,
+        "rear_actuator_force_nm": -0.16355024442322347
+      },
+      {
+        "time_s": 0.07375000000000004,
+        "position_before_rad": -0.24831473439071558,
+        "velocity_before_rad_s": -15.203774302646409,
+        "position_after_rad": -0.26608021714912183,
+        "velocity_before_projection_rad_s": -14.21238620672499,
+        "actuator_force_nm": 0.2529615430060783,
+        "target_rad": -0.5270940661430359,
+        "rear_actuator_force_nm": -0.4329273922317348
+      },
+      {
+        "time_s": 0.07500000000000004,
+        "position_before_rad": -0.26608021714912183,
+        "velocity_before_rad_s": -14.21238620672499,
+        "position_after_rad": -0.2827797853795248,
+        "velocity_before_projection_rad_s": -13.359654584322385,
+        "actuator_force_nm": 0.23233875140585702,
+        "target_rad": -0.5270940661430359,
+        "rear_actuator_force_nm": -0.5557159124265062
+      },
+      {
+        "time_s": 0.07625000000000004,
+        "position_before_rad": -0.2827797853795248,
+        "velocity_before_rad_s": -13.359654584322385,
+        "position_after_rad": -0.29837055230646803,
+        "velocity_before_projection_rad_s": -12.472613541554598,
+        "actuator_force_nm": 0.22878810922936665,
+        "target_rad": -0.5270940661430359,
+        "rear_actuator_force_nm": -0.6092541732685229
+      },
+      {
+        "time_s": 0.07750000000000004,
+        "position_before_rad": -0.29837055230646803,
+        "velocity_before_rad_s": -12.472613541554598,
+        "position_after_rad": -0.312858461666601,
+        "velocity_before_projection_rad_s": -11.590327488106348,
+        "actuator_force_nm": 0.20728756994524034,
+        "target_rad": -0.5270940661430359,
+        "rear_actuator_force_nm": -0.6281664932815902
+      },
+      {
+        "time_s": 0.07875000000000004,
+        "position_before_rad": -0.312858461666601,
+        "velocity_before_rad_s": -11.590327488106348,
+        "position_after_rad": -0.32639398624431104,
+        "velocity_before_projection_rad_s": -10.82841966216803,
+        "actuator_force_nm": 0.1757094528569212,
+        "target_rad": -0.5270940661430359,
+        "rear_actuator_force_nm": -0.5112042504746455
+      },
+      {
+        "time_s": 0.08000000000000004,
+        "position_before_rad": -0.32639398624431104,
+        "velocity_before_rad_s": -10.82841966216803,
+        "position_after_rad": -0.33905942154509316,
+        "velocity_before_projection_rad_s": -10.132348240625683,
+        "actuator_force_nm": 0.15868313344635787,
+        "target_rad": -0.5270940661430359,
+        "rear_actuator_force_nm": -0.416409553781032
+      },
+      {
+        "time_s": 0.08125000000000004,
+        "position_before_rad": -0.33905942154509316,
+        "velocity_before_rad_s": -10.132348240625683,
+        "position_after_rad": -0.3442359340193236,
+        "velocity_before_projection_rad_s": -4.141209979384372,
+        "actuator_force_nm": 1.4058560445910828,
+        "target_rad": -0.40112078189849854,
+        "rear_actuator_force_nm": -0.2661166548581105
+      },
+      {
+        "time_s": 0.08250000000000005,
+        "position_before_rad": -0.3442359340193236,
+        "velocity_before_rad_s": -4.141209979384372,
+        "position_after_rad": -0.34816593434214227,
+        "velocity_before_projection_rad_s": -3.1440002582549393,
+        "actuator_force_nm": 0.25939351708512515,
+        "target_rad": -0.40112078189849854,
+        "rear_actuator_force_nm": -0.2212136797937278
+      },
+      {
+        "time_s": 0.08375000000000005,
+        "position_before_rad": -0.34816593434214227,
+        "velocity_before_rad_s": -3.1440002582549393,
+        "position_after_rad": -0.35191943743292653,
+        "velocity_before_projection_rad_s": -3.002802472627426,
+        "actuator_force_nm": 0.09925157608742552,
+        "target_rad": -0.40112078189849854,
+        "rear_actuator_force_nm": -0.1813210037832596
+      },
+      {
+        "time_s": 0.08500000000000005,
+        "position_before_rad": -0.35191943743292653,
+        "velocity_before_rad_s": -3.002802472627426,
+        "position_after_rad": -0.3553108380385882,
+        "velocity_before_projection_rad_s": -2.713120484529346,
+        "actuator_force_nm": 0.10854704986976493,
+        "target_rad": -0.40112078189849854,
+        "rear_actuator_force_nm": -0.3973938308451114
+      },
+      {
+        "time_s": 0.08625000000000005,
+        "position_before_rad": -0.3553108380385882,
+        "velocity_before_rad_s": -2.713120484529346,
+        "position_after_rad": -0.3584051689746649,
+        "velocity_before_projection_rad_s": -2.4754647488613464,
+        "actuator_force_nm": 0.08452465830676559,
+        "target_rad": -0.40112078189849854,
+        "rear_actuator_force_nm": -0.49730293814384086
+      },
+      {
+        "time_s": 0.08750000000000005,
+        "position_before_rad": -0.3584051689746649,
+        "velocity_before_rad_s": -2.4754647488613464,
+        "position_after_rad": -0.3611562513935447,
+        "velocity_before_projection_rad_s": -2.2008659351038453,
+        "actuator_force_nm": 0.0679368205339328,
+        "target_rad": -0.40112078189849854,
+        "rear_actuator_force_nm": -0.5397532671921448
+      },
+      {
+        "time_s": 0.08875000000000005,
+        "position_before_rad": -0.3611562513935447,
+        "velocity_before_rad_s": -2.2008659351038453,
+        "position_after_rad": -0.3636931112553566,
+        "velocity_before_projection_rad_s": -2.029487889449518,
+        "actuator_force_nm": 0.04052788197123025,
+        "target_rad": -0.40112078189849854,
+        "rear_actuator_force_nm": -0.4395725106176102
+      },
+      {
+        "time_s": 0.09000000000000005,
+        "position_before_rad": -0.3636931112553566,
+        "velocity_before_rad_s": -2.029487889449518,
+        "position_after_rad": -0.36605472598800987,
+        "velocity_before_projection_rad_s": -1.8892917861226315,
+        "actuator_force_nm": 0.031620871458484245,
+        "target_rad": -0.40112078189849854,
+        "rear_actuator_force_nm": -0.35844110515530825
+      },
+      {
+        "time_s": 0.09125000000000005,
+        "position_before_rad": -0.36605472598800987,
+        "velocity_before_rad_s": -1.8892917861226315,
+        "position_after_rad": -0.36825997946494915,
+        "velocity_before_projection_rad_s": -1.7642027815514232,
+        "actuator_force_nm": 0.02719779811963985,
+        "target_rad": -0.40112078189849854,
+        "rear_actuator_force_nm": -0.29274828055313207
+      },
+      {
+        "time_s": 0.09250000000000005,
+        "position_before_rad": -0.36825997946494915,
+        "velocity_before_rad_s": -1.7642027815514232,
+        "position_after_rad": -0.3705782911649431,
+        "velocity_before_projection_rad_s": -1.8546493599951837,
+        "actuator_force_nm": 0.024232531974790916,
+        "target_rad": -0.40112078189849854,
+        "rear_actuator_force_nm": -0.23955808160925574
+      },
+      {
+        "time_s": 0.09375000000000006,
+        "position_before_rad": -0.3705782911649431,
+        "velocity_before_rad_s": -1.8546493599951837,
+        "position_after_rad": -0.3727102214601449,
+        "velocity_before_projection_rad_s": -1.7055442361614197,
+        "actuator_force_nm": 0.06550496466348221,
+        "target_rad": -0.40112078189849854,
+        "rear_actuator_force_nm": -0.4188440980295258
+      },
+      {
+        "time_s": 0.09500000000000006,
+        "position_before_rad": -0.3727102214601449,
+        "velocity_before_rad_s": -1.7055442361614197,
+        "position_after_rad": -0.37466458971305366,
+        "velocity_before_projection_rad_s": -1.5634946023270486,
+        "actuator_force_nm": 0.05700324284874725,
+        "target_rad": -0.40112078189849854,
+        "rear_actuator_force_nm": -0.5022997952962251
+      },
+      {
+        "time_s": 0.09625000000000006,
+        "position_before_rad": -0.37466458971305366,
+        "velocity_before_rad_s": -1.5634946023270486,
+        "position_after_rad": -0.3764754895515586,
+        "velocity_before_projection_rad_s": -1.4487198708039102,
+        "actuator_force_nm": 0.048136998610960546,
+        "target_rad": -0.40112078189849854,
+        "rear_actuator_force_nm": -0.5387860939011687
+      },
+      {
+        "time_s": 0.09750000000000006,
+        "position_before_rad": -0.3764754895515586,
+        "velocity_before_rad_s": -1.4487198708039102,
+        "position_after_rad": -0.3780653234264474,
+        "velocity_before_projection_rad_s": -1.2718670999110695,
+        "actuator_force_nm": 0.043291050691382615,
+        "target_rad": -0.40112078189849854,
+        "rear_actuator_force_nm": -0.5522691488839441
+      },
+      {
+        "time_s": 0.09875000000000006,
+        "position_before_rad": -0.3780653234264474,
+        "velocity_before_rad_s": -1.2718670999110695,
+        "position_after_rad": -0.3795275297084933,
+        "velocity_before_projection_rad_s": -1.169765025636713,
+        "actuator_force_nm": 0.02381883526170192,
+        "target_rad": -0.40112078189849854,
+        "rear_actuator_force_nm": -0.449794690681597
+      },
+      {
+        "time_s": 0.10000000000000006,
+        "position_before_rad": -0.3795275297084933,
+        "velocity_before_rad_s": -1.169765025636713,
+        "position_after_rad": -0.3808881339990293,
+        "velocity_before_projection_rad_s": -1.0884834324288317,
+        "actuator_force_nm": 0.018020483227290107,
+        "target_rad": -0.40112078189849854,
+        "rear_actuator_force_nm": -0.3667846977600573
+      }
+    ]
+  },
+  {
+    "case": "implicitfast_400",
+    "dr": false,
+    "seed": 42,
+    "first_100ms_steering_torque_sign_reversals": 4,
+    "steering_speed_projection_count": 0,
+    "max_preprojection_steering_speed_rad_s": 19.753965883864375,
+    "raw_actions": [
+      [
+        1.6104955673217773,
+        16.792312622070312
+      ],
+      [
+        -0.2641235888004303,
+        0.04279506206512451
+      ],
+      [
+        0.19252632558345795,
+        0.014628827571868896
+      ],
+      [
+        -0.2095426768064499,
+        1.3033020496368408
+      ],
+      [
+        -0.09069511294364929,
+        -0.22229421138763428
+      ]
+    ],
+    "traces": [
+      {
+        "time_s": 0.0025,
+        "position_before_rad": 0.0,
+        "velocity_before_rad_s": 0.0,
+        "position_after_rad": 0.03905520246142067,
+        "velocity_before_projection_rad_s": 15.622080984568267,
+        "actuator_force_nm": 4.779999999999999,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 6.28
+      },
+      {
+        "time_s": 0.005,
+        "position_before_rad": 0.03905520246142067,
+        "velocity_before_rad_s": 15.622080984568267,
+        "position_after_rad": 0.0884401171710816,
+        "velocity_before_projection_rad_s": 19.753965883864375,
+        "actuator_force_nm": 1.2650317784721392,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 6.051880537991518
+      },
+      {
+        "time_s": 0.0075,
+        "position_before_rad": 0.0884401171710816,
+        "velocity_before_rad_s": 19.753965883864375,
+        "position_after_rad": 0.13737177327918082,
+        "velocity_before_projection_rad_s": 19.57266244323968,
+        "actuator_force_nm": -0.05519434848369187,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 4.373410957857508
+      },
+      {
+        "time_s": 0.01,
+        "position_before_rad": 0.13737177327918082,
+        "velocity_before_rad_s": 19.57266244323968,
+        "position_after_rad": 0.18215016608664697,
+        "velocity_before_projection_rad_s": 17.911357122986466,
+        "actuator_force_nm": -0.5082502214397451,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 3.2
+      },
+      {
+        "time_s": 0.0125,
+        "position_before_rad": 0.18215016608664697,
+        "velocity_before_rad_s": 17.911357122986466,
+        "position_after_rad": 0.2218316976473127,
+        "velocity_before_projection_rad_s": 15.872612624266287,
+        "actuator_force_nm": -0.623773085463764,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 3.2
+      },
+      {
+        "time_s": 0.015000000000000001,
+        "position_before_rad": 0.2218316976473127,
+        "velocity_before_rad_s": 15.872612624266287,
+        "position_after_rad": 0.2565057379186171,
+        "velocity_before_projection_rad_s": 13.869616108521758,
+        "actuator_force_nm": -0.612839501326385,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 3.2
+      },
+      {
+        "time_s": 0.0175,
+        "position_before_rad": 0.2565057379186171,
+        "velocity_before_rad_s": 13.869616108521758,
+        "position_after_rad": 0.2866453452381105,
+        "velocity_before_projection_rad_s": 12.055842927797386,
+        "actuator_force_nm": -0.5589806008905231,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 3.2
+      },
+      {
+        "time_s": 0.02,
+        "position_before_rad": 0.2866453452381105,
+        "velocity_before_rad_s": 12.055842927797386,
+        "position_after_rad": 0.3127172547272769,
+        "velocity_before_projection_rad_s": 10.42876379566656,
+        "actuator_force_nm": -0.4976220379405838,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 5.197176877213573
+      },
+      {
+        "time_s": 0.0225,
+        "position_before_rad": 0.3127172547272769,
+        "velocity_before_rad_s": 10.42876379566656,
+        "position_after_rad": 0.29621044882935366,
+        "velocity_before_projection_rad_s": -6.602722359169311,
+        "actuator_force_nm": -5.212925306406081,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -2.2555035307978204
+      },
+      {
+        "time_s": 0.024999999999999998,
+        "position_before_rad": 0.29621044882935366,
+        "velocity_before_rad_s": -6.602722359169311,
+        "position_after_rad": 0.2662961133563184,
+        "velocity_before_projection_rad_s": -11.965734189214105,
+        "actuator_force_nm": -1.641560016459674,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -1.630008466580257
+      },
+      {
+        "time_s": 0.027499999999999997,
+        "position_before_rad": 0.2662961133563184,
+        "velocity_before_rad_s": -11.965734189214105,
+        "position_after_rad": 0.23417865231388624,
+        "velocity_before_projection_rad_s": -12.846984416972866,
+        "actuator_force_nm": -0.2698142957203631,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -1.1779482800052246
+      },
+      {
+        "time_s": 0.029999999999999995,
+        "position_before_rad": 0.23417865231388624,
+        "velocity_before_rad_s": -12.846984416972866,
+        "position_after_rad": 0.20392092788139204,
+        "velocity_before_projection_rad_s": -12.103089772997677,
+        "actuator_force_nm": 0.2276103602557109,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -0.8512478420950793
+      },
+      {
+        "time_s": 0.032499999999999994,
+        "position_before_rad": 0.20392092788139204,
+        "velocity_before_rad_s": -12.103089772997677,
+        "position_after_rad": 0.17677904961262075,
+        "velocity_before_projection_rad_s": -10.856751307508521,
+        "actuator_force_nm": 0.381408675785615,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -0.6151507234279177
+      },
+      {
+        "time_s": 0.034999999999999996,
+        "position_before_rad": 0.17677904961262075,
+        "velocity_before_rad_s": -10.856751307508521,
+        "position_after_rad": 0.15293384413637687,
+        "velocity_before_projection_rad_s": -9.538082190497553,
+        "actuator_force_nm": 0.40355976537549676,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -0.4445330800479896
+      },
+      {
+        "time_s": 0.0375,
+        "position_before_rad": 0.15293384413637687,
+        "velocity_before_rad_s": -9.538082190497553,
+        "position_after_rad": 0.13217872376352346,
+        "velocity_before_projection_rad_s": -8.30204814914136,
+        "actuator_force_nm": 0.3782779967357419,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -0.32123610196881885
+      },
+      {
+        "time_s": 0.04,
+        "position_before_rad": 0.13217872376352346,
+        "velocity_before_rad_s": -8.30204814914136,
+        "position_after_rad": 0.11418971186069705,
+        "velocity_before_projection_rad_s": -7.195604761130563,
+        "actuator_force_nm": 0.33862239219303736,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -0.23213606690785388
+      },
+      {
+        "time_s": 0.0425,
+        "position_before_rad": 0.11418971186069705,
+        "velocity_before_rad_s": -7.195604761130563,
+        "position_after_rad": 0.1233183479355782,
+        "velocity_before_projection_rad_s": 3.651454429952458,
+        "actuator_force_nm": 3.319887128888155,
+        "target_rad": 0.30226632952690125,
+        "rear_actuator_force_nm": -0.3446325728726003
+      },
+      {
+        "time_s": 0.045000000000000005,
+        "position_before_rad": 0.1233183479355782,
+        "velocity_before_rad_s": 3.651454429952458,
+        "position_after_rad": 0.14109881754214956,
+        "velocity_before_projection_rad_s": 7.112187842628547,
+        "actuator_force_nm": 1.059188929922739,
+        "target_rad": 0.30226632952690125,
+        "rear_actuator_force_nm": -0.24901118786351548
+      },
+      {
+        "time_s": 0.04750000000000001,
+        "position_before_rad": 0.14109881754214956,
+        "velocity_before_rad_s": 7.112187842628547,
+        "position_after_rad": 0.16042518798785751,
+        "velocity_before_projection_rad_s": 7.730548178283182,
+        "actuator_force_nm": 0.1892375513218072,
+        "target_rad": 0.30226632952690125,
+        "rear_actuator_force_nm": -0.17993634110049508
+      },
+      {
+        "time_s": 0.05000000000000001,
+        "position_before_rad": 0.16042518798785751,
+        "velocity_before_rad_s": 7.730548178283182,
+        "position_after_rad": 0.1775424546828723,
+        "velocity_before_projection_rad_s": 6.8469066780059125,
+        "actuator_force_nm": -0.12769822026619915,
+        "target_rad": 0.30226632952690125,
+        "rear_actuator_force_nm": -0.13002934602996932
+      },
+      {
+        "time_s": 0.05250000000000001,
+        "position_before_rad": 0.1775424546828723,
+        "velocity_before_rad_s": 6.8469066780059125,
+        "position_after_rad": 0.19350892188718843,
+        "velocity_before_projection_rad_s": 6.386586881726448,
+        "actuator_force_nm": -0.12214258716089343,
+        "target_rad": 0.30226632952690125,
+        "rear_actuator_force_nm": -0.13128900230108637
+      },
+      {
+        "time_s": 0.055000000000000014,
+        "position_before_rad": 0.19350892188718843,
+        "velocity_before_rad_s": 6.386586881726448,
+        "position_after_rad": 0.20806139941129778,
+        "velocity_before_projection_rad_s": 5.820991009643736,
+        "actuator_force_nm": -0.18974329994816141,
+        "target_rad": 0.30226632952690125,
+        "rear_actuator_force_nm": -0.09825727493824274
+      },
+      {
+        "time_s": 0.057500000000000016,
+        "position_before_rad": 0.20806139941129778,
+        "velocity_before_rad_s": 5.820991009643736,
+        "position_after_rad": 0.22086658908569376,
+        "velocity_before_projection_rad_s": 5.122075869758388,
+        "actuator_force_nm": -0.2221489007727122,
+        "target_rad": 0.30226632952690125,
+        "rear_actuator_force_nm": -0.07628006549418884
+      },
+      {
+        "time_s": 0.06000000000000002,
+        "position_before_rad": 0.22086658908569376,
+        "velocity_before_rad_s": 5.122075869758388,
+        "position_after_rad": 0.23196595497175942,
+        "velocity_before_projection_rad_s": 4.439746354426272,
+        "actuator_force_nm": -0.21041776953960234,
+        "target_rad": 0.30226632952690125,
+        "rear_actuator_force_nm": -0.059129230429672996
+      },
+      {
+        "time_s": 0.06250000000000001,
+        "position_before_rad": 0.23196595497175942,
+        "velocity_before_rad_s": 4.439746354426272,
+        "position_after_rad": 0.20587986132487318,
+        "velocity_before_projection_rad_s": -10.434437458754491,
+        "actuator_force_nm": -4.964945525333836,
+        "target_rad": -0.17573367047309874,
+        "rear_actuator_force_nm": 6.141926609102906
+      },
+      {
+        "time_s": 0.06500000000000002,
+        "position_before_rad": 0.20587986132487318,
+        "velocity_before_rad_s": -10.434437458754491,
+        "position_after_rad": 0.16569773245859298,
+        "velocity_before_projection_rad_s": -16.072851546512084,
+        "actuator_force_nm": -1.729247826228821,
+        "target_rad": -0.17573367047309874,
+        "rear_actuator_force_nm": 4.419217865580865
+      },
+      {
+        "time_s": 0.06750000000000002,
+        "position_before_rad": 0.16569773245859298,
+        "velocity_before_rad_s": -16.072851546512084,
+        "position_after_rad": 0.12391387696807635,
+        "velocity_before_projection_rad_s": -16.713542196206657,
+        "actuator_force_nm": -0.19974372001450047,
+        "target_rad": -0.17573367047309874,
+        "rear_actuator_force_nm": 3.2
+      },
+      {
+        "time_s": 0.07000000000000002,
+        "position_before_rad": 0.12391387696807635,
+        "velocity_before_rad_s": -16.713542196206657,
+        "position_after_rad": 0.08515751586751204,
+        "velocity_before_projection_rad_s": -15.502544440225725,
+        "actuator_force_nm": 0.34623296482958077,
+        "target_rad": -0.17573367047309874,
+        "rear_actuator_force_nm": 3.2
+      },
+      {
+        "time_s": 0.07250000000000002,
+        "position_before_rad": 0.08515751586751204,
+        "velocity_before_rad_s": -15.502544440225725,
+        "position_after_rad": 0.050449863948091284,
+        "velocity_before_projection_rad_s": -13.883060767768301,
+        "actuator_force_nm": 0.49159702463903754,
+        "target_rad": -0.17573367047309874,
+        "rear_actuator_force_nm": 5.279308821137246
+      },
+      {
+        "time_s": 0.07500000000000002,
+        "position_before_rad": 0.050449863948091284,
+        "velocity_before_rad_s": -13.883060767768301,
+        "position_after_rad": 0.019972970217171447,
+        "velocity_before_projection_rad_s": -12.190757492367934,
+        "actuator_force_nm": 0.5147768093417606,
+        "target_rad": -0.17573367047309874,
+        "rear_actuator_force_nm": 5.6039421962175275
+      },
+      {
+        "time_s": 0.07750000000000003,
+        "position_before_rad": 0.019972970217171447,
+        "velocity_before_rad_s": -12.190757492367934,
+        "position_after_rad": -0.006563926030780237,
+        "velocity_before_projection_rad_s": -10.614758499180674,
+        "actuator_force_nm": 0.4810850915708853,
+        "target_rad": -0.17573367047309874,
+        "rear_actuator_force_nm": 5.533428766297603
+      },
+      {
+        "time_s": 0.08000000000000003,
+        "position_before_rad": -0.006563926030780237,
+        "velocity_before_rad_s": -10.614758499180674,
+        "position_after_rad": -0.029566109554302326,
+        "velocity_before_projection_rad_s": -9.200873409408835,
+        "actuator_force_nm": 0.4312542554129499,
+        "target_rad": -0.17573367047309874,
+        "rear_actuator_force_nm": 3.998751173832689
+      },
+      {
+        "time_s": 0.08250000000000003,
+        "position_before_rad": -0.029566109554302326,
+        "velocity_before_rad_s": -9.200873409408835,
+        "position_after_rad": -0.04673604216127736,
+        "velocity_before_projection_rad_s": -6.8679730427900125,
+        "actuator_force_nm": 0.7119223879804393,
+        "target_rad": -0.14239133894443512,
+        "rear_actuator_force_nm": -4.4760076475143435
+      },
+      {
+        "time_s": 0.08500000000000003,
+        "position_before_rad": -0.04673604216127736,
+        "velocity_before_rad_s": -6.8679730427900125,
+        "position_after_rad": -0.06048274999003051,
+        "velocity_before_projection_rad_s": -5.498683131501261,
+        "actuator_force_nm": 0.417041640726425,
+        "target_rad": -0.14239133894443512,
+        "rear_actuator_force_nm": -3.234567796487319
+      },
+      {
+        "time_s": 0.08750000000000004,
+        "position_before_rad": -0.06048274999003051,
+        "velocity_before_rad_s": -5.498683131501261,
+        "position_after_rad": -0.07192043820998179,
+        "velocity_before_projection_rad_s": -4.575075287980511,
+        "actuator_force_nm": 0.28065073675620633,
+        "target_rad": -0.14239133894443512,
+        "rear_actuator_force_nm": -2.337442515229696
+      },
+      {
+        "time_s": 0.09000000000000004,
+        "position_before_rad": -0.07192043820998179,
+        "velocity_before_rad_s": -4.575075287980511,
+        "position_after_rad": -0.08162369774461456,
+        "velocity_before_projection_rad_s": -3.881303813853112,
+        "actuator_force_nm": 0.210306050251569,
+        "target_rad": -0.14239133894443512,
+        "rear_actuator_force_nm": -1.6891352230759038
+      },
+      {
+        "time_s": 0.09250000000000004,
+        "position_before_rad": -0.08162369774461456,
+        "velocity_before_rad_s": -3.881303813853112,
+        "position_after_rad": -0.0899332470710366,
+        "velocity_before_projection_rad_s": -3.323819730568814,
+        "actuator_force_nm": 0.16858435077241674,
+        "target_rad": -0.14239133894443512,
+        "rear_actuator_force_nm": -1.220635939085378
+      },
+      {
+        "time_s": 0.09500000000000004,
+        "position_before_rad": -0.0899332470710366,
+        "velocity_before_rad_s": -3.323819730568814,
+        "position_after_rad": -0.09708096347841234,
+        "velocity_before_projection_rad_s": -2.859086562950295,
+        "actuator_force_nm": 0.14018302737977772,
+        "target_rad": -0.14239133894443512,
+        "rear_actuator_force_nm": -0.88207485469796
+      },
+      {
+        "time_s": 0.09750000000000004,
+        "position_before_rad": -0.09708096347841234,
+        "velocity_before_rad_s": -2.859086562950295,
+        "position_after_rad": -0.10324208764921838,
+        "velocity_before_projection_rad_s": -2.464449668322416,
+        "actuator_force_nm": 0.11871355792983129,
+        "target_rad": -0.14239133894443512,
+        "rear_actuator_force_nm": -0.6374136409687217
+      },
+      {
+        "time_s": 0.10000000000000005,
+        "position_before_rad": -0.10324208764921838,
+        "velocity_before_rad_s": -2.464449668322416,
+        "position_after_rad": -0.10855793204679792,
+        "velocity_before_projection_rad_s": -2.126337759031817,
+        "actuator_force_nm": 0.10139742071231583,
+        "target_rad": -0.14239133894443512,
+        "rear_actuator_force_nm": -0.46060922040018937
+      }
+    ]
+  },
+  {
+    "case": "baseline",
+    "dr": true,
+    "seed": 42,
+    "first_100ms_steering_torque_sign_reversals": 34,
+    "steering_speed_projection_count": 14,
+    "max_preprojection_steering_speed_rad_s": 42.266094790849586,
+    "raw_actions": [
+      [
+        2.2204220294952393,
+        18.82539176940918
+      ],
+      [
+        -0.3434196412563324,
+        -0.14573681354522705
+      ],
+      [
+        0.6542263031005859,
+        -0.01193767786026001
+      ],
+      [
+        0.12317778170108795,
+        -0.06275743246078491
+      ],
+      [
+        -0.0004778765141963959,
+        -0.0564650297164917
+      ]
+    ],
+    "traces": [
+      {
+        "time_s": 0.0025,
+        "position_before_rad": 0.0,
+        "velocity_before_rad_s": 0.0,
+        "position_after_rad": 0.10566523697712396,
+        "velocity_before_projection_rad_s": 42.266094790849586,
+        "actuator_force_nm": 4.357737421054747,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 6.28
+      },
+      {
+        "time_s": 0.005,
+        "position_before_rad": 0.10566523697712396,
+        "velocity_before_rad_s": 23.9,
+        "position_after_rad": 0.13181002190429947,
+        "velocity_before_projection_rad_s": 10.457913970870207,
+        "actuator_force_nm": -1.17657385854638,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 6.146966099406725
+      },
+      {
+        "time_s": 0.0075,
+        "position_before_rad": 0.13181002190429947,
+        "velocity_before_rad_s": 10.457913970870207,
+        "position_after_rad": 0.1906137919517115,
+        "velocity_before_projection_rad_s": 23.52150801896481,
+        "actuator_force_nm": 1.155945396418994,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 5.954858442151471
+      },
+      {
+        "time_s": 0.01,
+        "position_before_rad": 0.1906137919517115,
+        "velocity_before_rad_s": 23.52150801896481,
+        "position_after_rad": 0.19591151140226928,
+        "velocity_before_projection_rad_s": 2.119087780223115,
+        "actuator_force_nm": -1.878627702177508,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 5.77333609595578
+      },
+      {
+        "time_s": 0.0125,
+        "position_before_rad": 0.19591151140226928,
+        "velocity_before_rad_s": 2.119087780223115,
+        "position_after_rad": 0.2626855405123927,
+        "velocity_before_projection_rad_s": 26.70961164404937,
+        "actuator_force_nm": 2.166402574822343,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 5.591052178751309
+      },
+      {
+        "time_s": 0.015000000000000001,
+        "position_before_rad": 0.2626855405123927,
+        "velocity_before_rad_s": 23.9,
+        "position_after_rad": 0.24832375491689135,
+        "velocity_before_projection_rad_s": -5.744714238200537,
+        "actuator_force_nm": -2.608066018757709,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 3.591771956706072
+      },
+      {
+        "time_s": 0.0175,
+        "position_before_rad": 0.24832375491689135,
+        "velocity_before_rad_s": -5.744714238200537,
+        "position_after_rad": 0.3246085528910719,
+        "velocity_before_projection_rad_s": 30.513919189672208,
+        "actuator_force_nm": 3.1925750802384263,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 3.3271462452157228
+      },
+      {
+        "time_s": 0.02,
+        "position_before_rad": 0.3246085528910719,
+        "velocity_before_rad_s": 23.9,
+        "position_after_rad": 0.2942039638673255,
+        "velocity_before_projection_rad_s": -12.16183560949856,
+        "actuator_force_nm": -3.172593692956468,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 3.3271462452157228
+      },
+      {
+        "time_s": 0.0225,
+        "position_before_rad": 0.2942039638673255,
+        "velocity_before_rad_s": -12.16183560949856,
+        "position_after_rad": 0.25371546970328407,
+        "velocity_before_projection_rad_s": -16.195397665616564,
+        "actuator_force_nm": -0.356125274997404,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -3.8680809438483035
+      },
+      {
+        "time_s": 0.024999999999999998,
+        "position_before_rad": 0.25371546970328407,
+        "velocity_before_rad_s": -16.195397665616564,
+        "position_after_rad": 0.23553139495877207,
+        "velocity_before_projection_rad_s": -7.273629897804803,
+        "actuator_force_nm": 0.7844326986159702,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -2.4861007514587943
+      },
+      {
+        "time_s": 0.027499999999999997,
+        "position_before_rad": 0.23553139495877207,
+        "velocity_before_rad_s": -7.273629897804803,
+        "position_after_rad": 0.1958842297607703,
+        "velocity_before_projection_rad_s": -15.8588660792007,
+        "actuator_force_nm": -0.7561261335931024,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -1.5976941828250928
+      },
+      {
+        "time_s": 0.029999999999999995,
+        "position_before_rad": 0.1958842297607703,
+        "velocity_before_rad_s": -15.8588660792007,
+        "position_after_rad": 0.191677720217603,
+        "velocity_before_projection_rad_s": -1.6826038172669264,
+        "actuator_force_nm": 1.2472938295286309,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -1.0269845682195193
+      },
+      {
+        "time_s": 0.032499999999999994,
+        "position_before_rad": 0.191677720217603,
+        "velocity_before_rad_s": -1.6826038172669264,
+        "position_after_rad": 0.14698405787418017,
+        "velocity_before_projection_rad_s": -17.87746493736912,
+        "actuator_force_nm": -1.4256431636358267,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -0.6597464206485557
+      },
+      {
+        "time_s": 0.034999999999999996,
+        "position_before_rad": 0.14698405787418017,
+        "velocity_before_rad_s": -17.87746493736912,
+        "position_after_rad": 0.16135404942974865,
+        "velocity_before_projection_rad_s": 5.747996622227387,
+        "actuator_force_nm": 2.0791652472840703,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -0.42425933779158914
+      },
+      {
+        "time_s": 0.0375,
+        "position_before_rad": 0.16135404942974865,
+        "velocity_before_rad_s": 5.747996622227387,
+        "position_after_rad": 0.10272110250042318,
+        "velocity_before_projection_rad_s": -23.453178771730183,
+        "actuator_force_nm": -2.5703363502331076,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -0.2721628097975527
+      },
+      {
+        "time_s": 0.04,
+        "position_before_rad": 0.10272110250042318,
+        "velocity_before_rad_s": -23.453178771730183,
+        "position_after_rad": 0.14489805825603072,
+        "velocity_before_projection_rad_s": 16.87078230224301,
+        "actuator_force_nm": 3.549078281520513,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -0.17538407499897735
+      },
+      {
+        "time_s": 0.0425,
+        "position_before_rad": 0.14489805825603072,
+        "velocity_before_rad_s": 16.87078230224301,
+        "position_after_rad": 0.18167827157823724,
+        "velocity_before_projection_rad_s": 14.712085328882612,
+        "actuator_force_nm": -0.18986848120320765,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 0.7283865188471648
+      },
+      {
+        "time_s": 0.045000000000000005,
+        "position_before_rad": 0.18167827157823724,
+        "velocity_before_rad_s": 14.712085328882612,
+        "position_after_rad": 0.21526626268976018,
+        "velocity_before_projection_rad_s": 13.435196444609181,
+        "actuator_force_nm": -0.11231681820897066,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 0.4681892679415426
+      },
+      {
+        "time_s": 0.04750000000000001,
+        "position_before_rad": 0.21526626268976018,
+        "velocity_before_rad_s": 13.435196444609181,
+        "position_after_rad": 0.24390203906446767,
+        "velocity_before_projection_rad_s": 11.454310549883,
+        "actuator_force_nm": -0.17431344442525987,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 0.30096403152266105
+      },
+      {
+        "time_s": 0.05000000000000001,
+        "position_before_rad": 0.24390203906446767,
+        "velocity_before_rad_s": 11.454310549883,
+        "position_after_rad": 0.2709320671374542,
+        "velocity_before_projection_rad_s": 10.81201122919462,
+        "actuator_force_nm": -0.05651948398461393,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 0.19346915302815187
+      },
+      {
+        "time_s": 0.05250000000000001,
+        "position_before_rad": 0.2709320671374542,
+        "velocity_before_rad_s": 10.81201122919462,
+        "position_after_rad": 0.29284625862154756,
+        "velocity_before_projection_rad_s": 8.76567659363735,
+        "actuator_force_nm": -0.18009840109882447,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 0.12440424445731128
+      },
+      {
+        "time_s": 0.055000000000000014,
+        "position_before_rad": 0.29284625862154756,
+        "velocity_before_rad_s": 8.76567659363735,
+        "position_after_rad": 0.3150870023350374,
+        "velocity_before_projection_rad_s": 8.896297485395928,
+        "actuator_force_nm": 0.011491019219100451,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 0.07999042585771275
+      },
+      {
+        "time_s": 0.057500000000000016,
+        "position_before_rad": 0.3150870023350374,
+        "velocity_before_rad_s": 8.896297485395928,
+        "position_after_rad": 0.33118493335668187,
+        "velocity_before_projection_rad_s": 6.439172408657782,
+        "actuator_force_nm": -0.21625101198634944,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 0.051484941532128695
+      },
+      {
+        "time_s": 0.06000000000000002,
+        "position_before_rad": 0.33118493335668187,
+        "velocity_before_rad_s": 6.439172408657782,
+        "position_after_rad": 0.35032052705543376,
+        "velocity_before_projection_rad_s": 7.654237479500767,
+        "actuator_force_nm": 0.10692883229464734,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 0.033119770549780325
+      },
+      {
+        "time_s": 0.06250000000000001,
+        "position_before_rad": 0.35032052705543376,
+        "velocity_before_rad_s": 7.654237479500767,
+        "position_after_rad": 0.28723084889255707,
+        "velocity_before_projection_rad_s": -25.23587126515068,
+        "actuator_force_nm": -2.8945956584900916,
+        "target_rad": 0.19338911771774292,
+        "rear_actuator_force_nm": -0.29776651588172154
+      },
+      {
+        "time_s": 0.06500000000000002,
+        "position_before_rad": 0.28723084889255707,
+        "velocity_before_rad_s": -23.9,
+        "position_after_rad": 0.3330284149320171,
+        "velocity_before_projection_rad_s": 18.31902641578403,
+        "actuator_force_nm": 3.7154849597750212,
+        "target_rad": 0.19338911771774292,
+        "rear_actuator_force_nm": -0.19185105961774263
+      },
+      {
+        "time_s": 0.06750000000000002,
+        "position_before_rad": 0.3330284149320171,
+        "velocity_before_rad_s": 18.31902641578403,
+        "position_after_rad": 0.24313618857396613,
+        "velocity_before_projection_rad_s": -35.9568905432204,
+        "actuator_force_nm": -4.776648295556931,
+        "target_rad": 0.19338911771774292,
+        "rear_actuator_force_nm": -0.12247630419245253
+      },
+      {
+        "time_s": 0.07000000000000002,
+        "position_before_rad": 0.24313618857396613,
+        "velocity_before_rad_s": -23.9,
+        "position_after_rad": 0.3003498598425108,
+        "velocity_before_projection_rad_s": 22.885468507417855,
+        "actuator_force_nm": 4.117478581823184,
+        "target_rad": 0.19338911771774292,
+        "rear_actuator_force_nm": -0.07956502831132323
+      },
+      {
+        "time_s": 0.07250000000000002,
+        "position_before_rad": 0.3003498598425108,
+        "velocity_before_rad_s": 22.885468507417855,
+        "position_after_rad": 0.2055291077864621,
+        "velocity_before_projection_rad_s": -37.92830082241947,
+        "actuator_force_nm": -5.352087307470631,
+        "target_rad": 0.19338911771774292,
+        "rear_actuator_force_nm": -0.05018300906683265
+      },
+      {
+        "time_s": 0.07500000000000002,
+        "position_before_rad": 0.2055291077864621,
+        "velocity_before_rad_s": -23.9,
+        "position_after_rad": 0.27247882173821253,
+        "velocity_before_projection_rad_s": 26.779885580700174,
+        "actuator_force_nm": 4.460327500744388,
+        "target_rad": 0.19338911771774292,
+        "rear_actuator_force_nm": -0.03321867265726375
+      },
+      {
+        "time_s": 0.07750000000000003,
+        "position_before_rad": 0.27247882173821253,
+        "velocity_before_rad_s": 23.9,
+        "position_after_rad": 0.18190237186757763,
+        "velocity_before_projection_rad_s": -36.230579948253954,
+        "actuator_force_nm": -5.292032630124796,
+        "target_rad": 0.19338911771774292,
+        "rear_actuator_force_nm": -0.020276492167475013
+      },
+      {
+        "time_s": 0.08000000000000003,
+        "position_before_rad": 0.18190237186757763,
+        "velocity_before_rad_s": -23.9,
+        "position_after_rad": 0.2549686445149258,
+        "velocity_before_projection_rad_s": 29.226509058939264,
+        "actuator_force_nm": 4.675723130976817,
+        "target_rad": 0.19338911771774292,
+        "rear_actuator_force_nm": -0.013984208825539357
+      },
+      {
+        "time_s": 0.08250000000000003,
+        "position_before_rad": 0.2549686445149258,
+        "velocity_before_rad_s": 23.9,
+        "position_after_rad": 0.15564469552652144,
+        "velocity_before_projection_rad_s": -39.72957959536175,
+        "actuator_force_nm": -5.6,
+        "target_rad": -0.0007502661319449544,
+        "rear_actuator_force_nm": 0.03168192429855665
+      },
+      {
+        "time_s": 0.08500000000000003,
+        "position_before_rad": 0.15564469552652144,
+        "velocity_before_rad_s": -23.9,
+        "position_after_rad": 0.185234752207247,
+        "velocity_before_projection_rad_s": 11.83602267229022,
+        "actuator_force_nm": 3.145211835744741,
+        "target_rad": -0.0007502661319449544,
+        "rear_actuator_force_nm": 0.019351018723407165
+      },
+      {
+        "time_s": 0.08750000000000004,
+        "position_before_rad": 0.185234752207247,
+        "velocity_before_rad_s": 11.83602267229022,
+        "position_after_rad": 0.10236288253903007,
+        "velocity_before_projection_rad_s": -33.14874786728677,
+        "actuator_force_nm": -3.9592547640530844,
+        "target_rad": -0.0007502661319449544,
+        "rear_actuator_force_nm": 0.01331527270123789
+      },
+      {
+        "time_s": 0.09000000000000004,
+        "position_before_rad": 0.10236288253903007,
+        "velocity_before_rad_s": -23.9,
+        "position_after_rad": 0.1457471032639478,
+        "velocity_before_projection_rad_s": 17.35368828996709,
+        "actuator_force_nm": 3.6309611041908334,
+        "target_rad": -0.0007502661319449544,
+        "rear_actuator_force_nm": 0.007909468446455459
+      },
+      {
+        "time_s": 0.09250000000000004,
+        "position_before_rad": 0.1457471032639478,
+        "velocity_before_rad_s": 17.35368828996709,
+        "position_after_rad": 0.05692408863239365,
+        "velocity_before_projection_rad_s": -35.52920585262166,
+        "actuator_force_nm": -4.654544547407843,
+        "target_rad": -0.0007502661319449544,
+        "rear_actuator_force_nm": 0.006106342758254335
+      },
+      {
+        "time_s": 0.09500000000000004,
+        "position_before_rad": 0.05692408863239365,
+        "velocity_before_rad_s": -23.9,
+        "position_after_rad": 0.11207055671969873,
+        "velocity_before_projection_rad_s": 22.05858723492203,
+        "actuator_force_nm": 4.045208661878164,
+        "target_rad": -0.0007502661319449544,
+        "rear_actuator_force_nm": 0.003126013971982533
+      },
+      {
+        "time_s": 0.09750000000000004,
+        "position_before_rad": 0.11207055671969873,
+        "velocity_before_rad_s": 22.05858723492203,
+        "position_after_rad": 0.01817572234709354,
+        "velocity_before_projection_rad_s": -37.55793374904208,
+        "actuator_force_nm": -5.247365879681257,
+        "target_rad": -0.0007502661319449544,
+        "rear_actuator_force_nm": 0.003170394763365336
+      },
+      {
+        "time_s": 0.10000000000000005,
+        "position_before_rad": 0.01817572234709354,
+        "velocity_before_rad_s": -23.9,
+        "position_after_rad": 0.08335140068471544,
+        "velocity_before_projection_rad_s": 26.07027133504876,
+        "actuator_force_nm": 4.398462230426675,
+        "target_rad": -0.0007502661319449544,
+        "rear_actuator_force_nm": 0.0011164853057149537
+      }
+    ]
+  },
+  {
+    "case": "physics_800",
+    "dr": true,
+    "seed": 42,
+    "first_100ms_steering_torque_sign_reversals": 9,
+    "steering_speed_projection_count": 5,
+    "max_preprojection_steering_speed_rad_s": 31.256782626063416,
+    "raw_actions": [
+      [
+        2.2204220294952393,
+        18.82539176940918
+      ],
+      [
+        -0.10756337642669678,
+        0.0007933378219604492
+      ],
+      [
+        0.5838738083839417,
+        -0.09708940982818604
+      ],
+      [
+        1.2053996324539185,
+        -0.03417074680328369
+      ],
+      [
+        0.7986473441123962,
+        0.03791463375091553
+      ]
+    ],
+    "traces": [
+      {
+        "time_s": 0.00125,
+        "position_before_rad": 0.0,
+        "velocity_before_rad_s": 0.0,
+        "position_after_rad": 0.02641630924428099,
+        "velocity_before_projection_rad_s": 21.133047395424793,
+        "actuator_force_nm": 4.357737421054747,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 6.28
+      },
+      {
+        "time_s": 0.0025,
+        "position_before_rad": 0.02641630924428099,
+        "velocity_before_rad_s": 21.133047395424793,
+        "position_after_rad": 0.05310031806297755,
+        "velocity_before_projection_rad_s": 21.34720705495724,
+        "actuator_force_nm": 0.07510185511486078,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 6.213483049703362
+      },
+      {
+        "time_s": 0.00375,
+        "position_before_rad": 0.05310031806297755,
+        "velocity_before_rad_s": 21.34720705495724,
+        "position_after_rad": 0.07825165441980711,
+        "velocity_before_projection_rad_s": 20.121069085463645,
+        "actuator_force_nm": -0.2091249078565527,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 6.149158811133624
+      },
+      {
+        "time_s": 0.005,
+        "position_before_rad": 0.07825165441980711,
+        "velocity_before_rad_s": 20.121069085463645,
+        "position_after_rad": 0.10190908998360149,
+        "velocity_before_projection_rad_s": 18.925948451035506,
+        "actuator_force_nm": -0.20391426533218393,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 6.070451712579605
+      },
+      {
+        "time_s": 0.00625,
+        "position_before_rad": 0.10190908998360149,
+        "velocity_before_rad_s": 18.925948451035506,
+        "position_after_rad": 0.12416706184673307,
+        "velocity_before_projection_rad_s": 17.80637749050527,
+        "actuator_force_nm": -0.19101655009662366,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 5.982001974014221
+      },
+      {
+        "time_s": 0.007500000000000001,
+        "position_before_rad": 0.12416706184673307,
+        "velocity_before_rad_s": 17.80637749050527,
+        "position_after_rad": 0.14510611772224907,
+        "velocity_before_projection_rad_s": 16.751244700412805,
+        "actuator_force_nm": -0.17980975616673067,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 5.8983190830791665
+      },
+      {
+        "time_s": 0.00875,
+        "position_before_rad": 0.14510611772224907,
+        "velocity_before_rad_s": 16.751244700412805,
+        "position_after_rad": 0.16480526115212657,
+        "velocity_before_projection_rad_s": 15.75931474390199,
+        "actuator_force_nm": -0.16890307071852728,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 5.804483481264301
+      },
+      {
+        "time_s": 0.01,
+        "position_before_rad": 0.16480526115212657,
+        "velocity_before_rad_s": 15.75931474390199,
+        "position_after_rad": 0.1833378365199588,
+        "velocity_before_projection_rad_s": 14.826060294265783,
+        "actuator_force_nm": -0.15878047308620502,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 5.712461338848955
+      },
+      {
+        "time_s": 0.01125,
+        "position_before_rad": 0.1833378365199588,
+        "velocity_before_rad_s": 14.826060294265783,
+        "position_after_rad": 0.20079634577834998,
+        "velocity_before_projection_rad_s": 13.966807406712945,
+        "actuator_force_nm": -0.1492447395997658,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 5.6141718631016495
+      },
+      {
+        "time_s": 0.012499999999999999,
+        "position_before_rad": 0.20079634577834998,
+        "velocity_before_rad_s": 13.966807406712945,
+        "position_after_rad": 0.21722013756720923,
+        "velocity_before_projection_rad_s": 13.1390334310874,
+        "actuator_force_nm": -0.14407036420768193,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 4.610075569586899
+      },
+      {
+        "time_s": 0.013749999999999998,
+        "position_before_rad": 0.21722013756720923,
+        "velocity_before_rad_s": 13.1390334310874,
+        "position_after_rad": 0.23267238184410613,
+        "velocity_before_projection_rad_s": 12.361795421517519,
+        "actuator_force_nm": -0.1354833883562172,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 3.78574628344747
+      },
+      {
+        "time_s": 0.014999999999999998,
+        "position_before_rad": 0.23267238184410613,
+        "velocity_before_rad_s": 12.361795421517519,
+        "position_after_rad": 0.24720950622293378,
+        "velocity_before_projection_rad_s": 11.629699503062119,
+        "actuator_force_nm": -0.1277044712924873,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 3.3271462452157228
+      },
+      {
+        "time_s": 0.016249999999999997,
+        "position_before_rad": 0.24720950622293378,
+        "velocity_before_rad_s": 11.629699503062119,
+        "position_after_rad": 0.2608845951127232,
+        "velocity_before_projection_rad_s": 10.94007111183154,
+        "actuator_force_nm": -0.12021643384034952,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 3.3271462452157228
+      },
+      {
+        "time_s": 0.017499999999999998,
+        "position_before_rad": 0.2608845951127232,
+        "velocity_before_rad_s": 10.94007111183154,
+        "position_after_rad": 0.27374885439461183,
+        "velocity_before_projection_rad_s": 10.291407425510881,
+        "actuator_force_nm": -0.11299170094624955,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 3.3271462452157228
+      },
+      {
+        "time_s": 0.01875,
+        "position_before_rad": 0.27374885439461183,
+        "velocity_before_rad_s": 10.291407425510881,
+        "position_after_rad": 0.28585033910334084,
+        "velocity_before_projection_rad_s": 9.681187766983227,
+        "actuator_force_nm": -0.10620967361058486,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 3.3271462452157228
+      },
+      {
+        "time_s": 0.02,
+        "position_before_rad": 0.28585033910334084,
+        "velocity_before_rad_s": 9.681187766983227,
+        "position_after_rad": 0.29723426718381096,
+        "velocity_before_projection_rad_s": 9.10714246437609,
+        "actuator_force_nm": -0.09982635762802872,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 3.3271462452157228
+      },
+      {
+        "time_s": 0.02125,
+        "position_before_rad": 0.29723426718381096,
+        "velocity_before_rad_s": 9.10714246437609,
+        "position_after_rad": 0.2770150388643336,
+        "velocity_before_projection_rad_s": -16.175382655581885,
+        "actuator_force_nm": -4.451557321316506,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -2.947871593262366
+      },
+      {
+        "time_s": 0.022500000000000003,
+        "position_before_rad": 0.2770150388643336,
+        "velocity_before_rad_s": -16.175382655581885,
+        "position_after_rad": 0.26083645275119816,
+        "velocity_before_projection_rad_s": -12.942868890508375,
+        "actuator_force_nm": 0.5681917407788588,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -2.4215928494734027
+      },
+      {
+        "time_s": 0.023750000000000004,
+        "position_before_rad": 0.26083645275119816,
+        "velocity_before_rad_s": -12.942868890508375,
+        "position_after_rad": 0.2453549172489521,
+        "velocity_before_projection_rad_s": -12.385228401796864,
+        "actuator_force_nm": 0.09744995776870047,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -1.9888921891496596
+      },
+      {
+        "time_s": 0.025000000000000005,
+        "position_before_rad": 0.2453549172489521,
+        "velocity_before_rad_s": -12.385228401796864,
+        "position_after_rad": 0.23081459876198543,
+        "velocity_before_projection_rad_s": -11.632254789573329,
+        "actuator_force_nm": 0.13193727920901077,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -1.6335657460209607
+      },
+      {
+        "time_s": 0.026250000000000006,
+        "position_before_rad": 0.23081459876198543,
+        "velocity_before_rad_s": -11.632254789573329,
+        "position_after_rad": 0.21713358147594716,
+        "velocity_before_projection_rad_s": -10.944813828830615,
+        "actuator_force_nm": 0.1204853904332257,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -1.341723403127956
+      },
+      {
+        "time_s": 0.027500000000000007,
+        "position_before_rad": 0.21713358147594716,
+        "velocity_before_rad_s": -10.944813828830615,
+        "position_after_rad": 0.204263422209088,
+        "velocity_before_projection_rad_s": -10.296127413487334,
+        "actuator_force_nm": 0.11373306218485979,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -1.1020204798587876
+      },
+      {
+        "time_s": 0.028750000000000008,
+        "position_before_rad": 0.204263422209088,
+        "velocity_before_rad_s": -10.296127413487334,
+        "position_after_rad": 0.19215590137072655,
+        "velocity_before_projection_rad_s": -9.686016670689167,
+        "actuator_force_nm": 0.10700047563722381,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -0.9051384791893327
+      },
+      {
+        "time_s": 0.03000000000000001,
+        "position_before_rad": 0.19215590137072655,
+        "velocity_before_rad_s": -9.686016670689167,
+        "position_after_rad": 0.1807658870463373,
+        "velocity_before_projection_rad_s": -9.112011459511397,
+        "actuator_force_nm": 0.10069301938375563,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -0.7434263695033015
+      },
+      {
+        "time_s": 0.03125000000000001,
+        "position_before_rad": 0.1807658870463373,
+        "velocity_before_rad_s": -9.112011459511397,
+        "position_after_rad": 0.17005089039419322,
+        "velocity_before_projection_rad_s": -8.571997321715283,
+        "actuator_force_nm": 0.0947497156027548,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -0.6106009732628349
+      },
+      {
+        "time_s": 0.03250000000000001,
+        "position_before_rad": 0.17005089039419322,
+        "velocity_before_rad_s": -8.571997321715283,
+        "position_after_rad": 0.15997093509679597,
+        "velocity_before_projection_rad_s": -8.063964237917792,
+        "actuator_force_nm": 0.08915351683917083,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -0.5015020384763552
+      },
+      {
+        "time_s": 0.03375000000000001,
+        "position_before_rad": 0.15997093509679597,
+        "velocity_before_rad_s": -8.063964237917792,
+        "position_after_rad": 0.1504884076389618,
+        "velocity_before_projection_rad_s": -7.5860219662673405,
+        "actuator_force_nm": 0.08388444443628562,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -0.411891326525241
+      },
+      {
+        "time_s": 0.03500000000000001,
+        "position_before_rad": 0.1504884076389618,
+        "velocity_before_rad_s": -7.5860219662673405,
+        "position_after_rad": 0.14156791860521917,
+        "velocity_before_projection_rad_s": -7.1363912269941085,
+        "actuator_force_nm": 0.07892388709522535,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -0.3382877589095385
+      },
+      {
+        "time_s": 0.03625000000000001,
+        "position_before_rad": 0.14156791860521917,
+        "velocity_before_rad_s": -7.1363912269941085,
+        "position_after_rad": 0.1331761717639814,
+        "velocity_before_projection_rad_s": -6.713397472990224,
+        "actuator_force_nm": 0.07425417936989898,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -0.27783209558943006
+      },
+      {
+        "time_s": 0.03750000000000001,
+        "position_before_rad": 0.1331761717639814,
+        "velocity_before_rad_s": -6.713397472990224,
+        "position_after_rad": 0.12528184077023824,
+        "velocity_before_projection_rad_s": -6.31546479499452,
+        "actuator_force_nm": 0.06985860376504505,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -0.2281758276707128
+      },
+      {
+        "time_s": 0.038750000000000014,
+        "position_before_rad": 0.12528184077023824,
+        "velocity_before_rad_s": -6.31546479499452,
+        "position_after_rad": 0.11785545304571314,
+        "velocity_before_projection_rad_s": -5.941110179620078,
+        "actuator_force_nm": 0.06572134912309213,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -0.1873899369945177
+      },
+      {
+        "time_s": 0.040000000000000015,
+        "position_before_rad": 0.11785545304571314,
+        "velocity_before_rad_s": -5.941110179620078,
+        "position_after_rad": 0.1108692804366136,
+        "velocity_before_projection_rad_s": -5.588938087279638,
+        "actuator_force_nm": 0.06182747105997177,
+        "target_rad": 0.0,
+        "rear_actuator_force_nm": -0.15388996269744226
+      },
+      {
+        "time_s": 0.041250000000000016,
+        "position_before_rad": 0.1108692804366136,
+        "velocity_before_rad_s": -5.588938087279638,
+        "position_after_rad": 0.135238023466509,
+        "velocity_before_projection_rad_s": 19.494994423916324,
+        "actuator_force_nm": 4.415900272849211,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": -0.7410781116404563
+      },
+      {
+        "time_s": 0.04250000000000002,
+        "position_before_rad": 0.135238023466509,
+        "velocity_before_rad_s": 19.494994423916324,
+        "position_after_rad": 0.15532321743530364,
+        "velocity_before_projection_rad_s": 16.068155175035706,
+        "actuator_force_nm": -0.6036963777841367,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": -0.6082167151380212
+      },
+      {
+        "time_s": 0.04375000000000002,
+        "position_before_rad": 0.15532321743530364,
+        "velocity_before_rad_s": 16.068155175035706,
+        "position_after_rad": 0.17447776217576882,
+        "velocity_before_projection_rad_s": 15.323635792372144,
+        "actuator_force_nm": -0.13140380784890127,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": -0.4996301511232502
+      },
+      {
+        "time_s": 0.04500000000000002,
+        "position_before_rad": 0.17447776217576882,
+        "velocity_before_rad_s": 15.323635792372144,
+        "position_after_rad": 0.19247257640309978,
+        "velocity_before_projection_rad_s": 14.395851381864762,
+        "actuator_force_nm": -0.16363491611880931,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": -0.41038861210280403
+      },
+      {
+        "time_s": 0.04625000000000002,
+        "position_before_rad": 0.19247257640309978,
+        "velocity_before_rad_s": 14.395851381864762,
+        "position_after_rad": 0.20940254713277878,
+        "velocity_before_projection_rad_s": 13.543976583743197,
+        "actuator_force_nm": -0.1502428007493002,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": -0.3370911181995099
+      },
+      {
+        "time_s": 0.04750000000000002,
+        "position_before_rad": 0.20940254713277878,
+        "velocity_before_rad_s": 13.543976583743197,
+        "position_after_rad": 0.2253284455031752,
+        "velocity_before_projection_rad_s": 12.740718696317153,
+        "actuator_force_nm": -0.14166104722660577,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": -0.27688473837603106
+      },
+      {
+        "time_s": 0.04875000000000002,
+        "position_before_rad": 0.2253284455031752,
+        "velocity_before_rad_s": 12.740718696317153,
+        "position_after_rad": 0.24031004730964012,
+        "velocity_before_projection_rad_s": 11.985281445171916,
+        "actuator_force_nm": -0.13322380667474398,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": -0.22743152024452873
+      },
+      {
+        "time_s": 0.050000000000000024,
+        "position_before_rad": 0.24031004730964012,
+        "velocity_before_rad_s": 11.985281445171916,
+        "position_after_rad": 0.2544033393028609,
+        "velocity_before_projection_rad_s": 11.274633594576631,
+        "actuator_force_nm": -0.1253237396909821,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": -0.1868106191152097
+      },
+      {
+        "time_s": 0.051250000000000025,
+        "position_before_rad": 0.2544033393028609,
+        "velocity_before_rad_s": 11.274633594576631,
+        "position_after_rad": 0.26766100673876264,
+        "velocity_before_projection_rad_s": 10.606133948721382,
+        "actuator_force_nm": -0.11789151532577336,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": -0.15344434551019326
+      },
+      {
+        "time_s": 0.052500000000000026,
+        "position_before_rad": 0.26766100673876264,
+        "velocity_before_rad_s": 10.606133948721382,
+        "position_after_rad": 0.2801326058588496,
+        "velocity_before_projection_rad_s": 9.977279296069549,
+        "actuator_force_nm": -0.11090230142813162,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": -0.1260368276425209
+      },
+      {
+        "time_s": 0.05375000000000003,
+        "position_before_rad": 0.2801326058588496,
+        "velocity_before_rad_s": 9.977279296069549,
+        "position_after_rad": 0.2918647522531299,
+        "velocity_before_projection_rad_s": 9.385717115424256,
+        "actuator_force_nm": -0.10432913008830624,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": -0.10352367945833363
+      },
+      {
+        "time_s": 0.05500000000000003,
+        "position_before_rad": 0.2918647522531299,
+        "velocity_before_rad_s": 9.385717115424256,
+        "position_after_rad": 0.3029012955263461,
+        "velocity_before_projection_rad_s": 8.829234618572956,
+        "actuator_force_nm": -0.09814704497152604,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": -0.08503065159986767
+      },
+      {
+        "time_s": 0.05625000000000003,
+        "position_before_rad": 0.3029012955263461,
+        "velocity_before_rad_s": 8.829234618572956,
+        "position_after_rad": 0.3132834837320595,
+        "velocity_before_projection_rad_s": 8.305750564570708,
+        "actuator_force_nm": -0.0923325980281886,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": -0.06983966728808688
+      },
+      {
+        "time_s": 0.05750000000000003,
+        "position_before_rad": 0.3132834837320595,
+        "velocity_before_rad_s": 8.305750564570708,
+        "position_after_rad": 0.3230501179573708,
+        "velocity_before_projection_rad_s": 7.813307380249061,
+        "actuator_force_nm": -0.08686378301239017,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": -0.05736092431072648
+      },
+      {
+        "time_s": 0.05875000000000003,
+        "position_before_rad": 0.3230501179573708,
+        "velocity_before_rad_s": 7.813307380249061,
+        "position_after_rad": 0.33223769767912426,
+        "velocity_before_projection_rad_s": 7.350063777402762,
+        "actuator_force_nm": -0.08171993777495068,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": -0.04710998009476952
+      },
+      {
+        "time_s": 0.06000000000000003,
+        "position_before_rad": 0.33223769767912426,
+        "velocity_before_rad_s": 7.350063777402762,
+        "position_after_rad": 0.3408805574488425,
+        "velocity_before_projection_rad_s": 6.914287815774576,
+        "actuator_force_nm": -0.07688165741600095,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": -0.03868893003435259
+      },
+      {
+        "time_s": 0.061250000000000034,
+        "position_before_rad": 0.3408805574488425,
+        "velocity_before_rad_s": 6.914287815774576,
+        "position_after_rad": 0.37995153573142176,
+        "velocity_before_projection_rad_s": 31.256782626063416,
+        "actuator_force_nm": 4.285406707408441,
+        "target_rad": 0.956,
+        "rear_actuator_force_nm": 0.3633582557404513
+      },
+      {
+        "time_s": 0.06250000000000003,
+        "position_before_rad": 0.37995153573142176,
+        "velocity_before_rad_s": 23.9,
+        "position_after_rad": 0.4146594750442589,
+        "velocity_before_projection_rad_s": 27.766351450269674,
+        "actuator_force_nm": 0.6806035872694434,
+        "target_rad": 0.956,
+        "rear_actuator_force_nm": 0.2988827366251819
+      },
+      {
+        "time_s": 0.06375000000000003,
+        "position_before_rad": 0.4146594750442589,
+        "velocity_before_rad_s": 23.9,
+        "position_after_rad": 0.4471207770714075,
+        "velocity_before_projection_rad_s": 25.969041621718926,
+        "actuator_force_nm": 0.36418499741327715,
+        "target_rad": 0.956,
+        "rear_actuator_force_nm": 0.24555771646189845
+      },
+      {
+        "time_s": 0.06500000000000003,
+        "position_before_rad": 0.4471207770714075,
+        "velocity_before_rad_s": 23.9,
+        "position_after_rad": 0.477480819338301,
+        "velocity_before_projection_rad_s": 24.288033813514787,
+        "actuator_force_nm": 0.06824811335497927,
+        "target_rad": 0.956,
+        "rear_actuator_force_nm": 0.20172553205130894
+      },
+      {
+        "time_s": 0.06625000000000003,
+        "position_before_rad": 0.477480819338301,
+        "velocity_before_rad_s": 23.9,
+        "position_after_rad": 0.5058755872651751,
+        "velocity_before_projection_rad_s": 22.715814341499254,
+        "actuator_force_nm": -0.20853241445097304,
+        "target_rad": 0.956,
+        "rear_actuator_force_nm": 0.16569410296417408
+      },
+      {
+        "time_s": 0.06750000000000003,
+        "position_before_rad": 0.5058755872651751,
+        "velocity_before_rad_s": 22.715814341499254,
+        "position_after_rad": 0.5325602126831649,
+        "velocity_before_projection_rad_s": 21.347700334391842,
+        "actuator_force_nm": -0.240914462123607,
+        "target_rad": 0.956,
+        "rear_actuator_force_nm": 0.1360732298770424
+      },
+      {
+        "time_s": 0.06875000000000003,
+        "position_before_rad": 0.5325602126831649,
+        "velocity_before_rad_s": 21.347700334391842,
+        "position_after_rad": 0.5576652664490299,
+        "velocity_before_projection_rad_s": 20.084043012692018,
+        "actuator_force_nm": -0.2225285334898217,
+        "target_rad": 0.956,
+        "rear_actuator_force_nm": 0.11174165376303186
+      },
+      {
+        "time_s": 0.07000000000000003,
+        "position_before_rad": 0.5576652664490299,
+        "velocity_before_rad_s": 20.084043012692018,
+        "position_after_rad": 0.5812817109405605,
+        "velocity_before_projection_rad_s": 18.893155593224478,
+        "actuator_force_nm": -0.20972017379176222,
+        "target_rad": 0.956,
+        "rear_actuator_force_nm": 0.09175933555606874
+      },
+      {
+        "time_s": 0.07125000000000004,
+        "position_before_rad": 0.5812817109405605,
+        "velocity_before_rad_s": 18.893155593224478,
+        "position_after_rad": 0.6034980446724202,
+        "velocity_before_projection_rad_s": 17.77306698548773,
+        "actuator_force_nm": -0.19725838415499553,
+        "target_rad": 0.956,
+        "rear_actuator_force_nm": 0.07534880082109535
+      },
+      {
+        "time_s": 0.07250000000000004,
+        "position_before_rad": 0.6034980446724202,
+        "velocity_before_rad_s": 17.77306698548773,
+        "position_after_rad": 0.6243972508082771,
+        "velocity_before_projection_rad_s": 16.719364908685588,
+        "actuator_force_nm": -0.18557298900863195,
+        "target_rad": 0.956,
+        "rear_actuator_force_nm": 0.0618719340600834
+      },
+      {
+        "time_s": 0.07375000000000004,
+        "position_before_rad": 0.6243972508082771,
+        "velocity_before_rad_s": 16.719364908685588,
+        "position_after_rad": 0.6440574178568249,
+        "velocity_before_projection_rad_s": 15.728133638838232,
+        "actuator_force_nm": -0.17457664078456148,
+        "target_rad": 0.956,
+        "rear_actuator_force_nm": 0.050804561192401565
+      },
+      {
+        "time_s": 0.07500000000000004,
+        "position_before_rad": 0.6440574178568249,
+        "velocity_before_rad_s": 15.728133638838232,
+        "position_after_rad": 0.662552002767053,
+        "velocity_before_projection_rad_s": 14.795667928182429,
+        "actuator_force_nm": -0.16423233842681562,
+        "target_rad": 0.956,
+        "rear_actuator_force_nm": 0.04171614636051968
+      },
+      {
+        "time_s": 0.07625000000000004,
+        "position_before_rad": 0.662552002767053,
+        "velocity_before_rad_s": 14.795667928182429,
+        "position_after_rad": 0.6799501079316885,
+        "velocity_before_projection_rad_s": 13.918484131708485,
+        "actuator_force_nm": -0.15450111148050283,
+        "target_rad": 0.956,
+        "rear_actuator_force_nm": 0.034253062890659186
+      },
+      {
+        "time_s": 0.07750000000000004,
+        "position_before_rad": 0.6799501079316885,
+        "velocity_before_rad_s": 13.918484131708485,
+        "position_after_rad": 0.6963167390743703,
+        "velocity_before_projection_rad_s": 13.093304914145433,
+        "actuator_force_nm": -0.14534667343268026,
+        "target_rad": 0.956,
+        "rear_actuator_force_nm": 0.028124856733331066
+      },
+      {
+        "time_s": 0.07875000000000004,
+        "position_before_rad": 0.6963167390743703,
+        "velocity_before_rad_s": 13.093304914145433,
+        "position_after_rad": 0.7117130481087508,
+        "velocity_before_projection_rad_s": 12.31704722750441,
+        "actuator_force_nm": -0.13673484789698875,
+        "target_rad": 0.956,
+        "rear_actuator_force_nm": 0.02309296281367801
+      },
+      {
+        "time_s": 0.08000000000000004,
+        "position_before_rad": 0.7117130481087508,
+        "velocity_before_rad_s": 12.31704722750441,
+        "position_after_rad": 0.7261965615855345,
+        "velocity_before_projection_rad_s": 11.58681078142694,
+        "actuator_force_nm": -0.12863348330505886,
+        "target_rad": 0.956,
+        "rear_actuator_force_nm": 0.018961436683830574
+      },
+      {
+        "time_s": 0.08125000000000004,
+        "position_before_rad": 0.7261965615855345,
+        "velocity_before_rad_s": 11.58681078142694,
+        "position_after_rad": 0.7591037403174073,
+        "velocity_before_projection_rad_s": 26.325742985498323,
+        "actuator_force_nm": 2.594608639022459,
+        "target_rad": 1.2538763284683228,
+        "rear_actuator_force_nm": 0.4682655313994474
+      },
+      {
+        "time_s": 0.08250000000000005,
+        "position_before_rad": 0.7591037403174073,
+        "velocity_before_rad_s": 23.9,
+        "position_after_rad": 0.7868808840659026,
+        "velocity_before_projection_rad_s": 22.221714998796216,
+        "actuator_force_nm": -0.06035651061120184,
+        "target_rad": 1.2538763284683228,
+        "rear_actuator_force_nm": 0.3848197525770086
+      },
+      {
+        "time_s": 0.08375000000000005,
+        "position_before_rad": 0.7868808840659026,
+        "velocity_before_rad_s": 22.221714998796216,
+        "position_after_rad": 0.8135519912241372,
+        "velocity_before_projection_rad_s": 21.33688572658771,
+        "actuator_force_nm": 0.007391223217796394,
+        "target_rad": 1.2538763284683228,
+        "rear_actuator_force_nm": 0.27766500927874693
+      },
+      {
+        "time_s": 0.08500000000000005,
+        "position_before_rad": 0.8135519912241372,
+        "velocity_before_rad_s": 21.33688572658771,
+        "position_after_rad": 0.8389723559802801,
+        "velocity_before_projection_rad_s": 20.33629180491429,
+        "actuator_force_nm": -0.0665304013756387,
+        "target_rad": 1.2538763284683228,
+        "rear_actuator_force_nm": 0.20750897665601487
+      },
+      {
+        "time_s": 0.08625000000000005,
+        "position_before_rad": 0.8389723559802801,
+        "velocity_before_rad_s": 20.33629180491429,
+        "position_after_rad": 0.8631071362986443,
+        "velocity_before_projection_rad_s": 19.30782425469139,
+        "actuator_force_nm": -0.1069088917191845,
+        "target_rad": 1.2538763284683228,
+        "rear_actuator_force_nm": 0.1590875305722937
+      },
+      {
+        "time_s": 0.08750000000000005,
+        "position_before_rad": 0.8631071362986443,
+        "velocity_before_rad_s": 19.30782425469139,
+        "position_after_rad": 0.8859406911115766,
+        "velocity_before_projection_rad_s": 18.26684385034582,
+        "actuator_force_nm": -0.13023623518558658,
+        "target_rad": 1.2538763284683228,
+        "rear_actuator_force_nm": 0.12400986679431344
+      },
+      {
+        "time_s": 0.08875000000000005,
+        "position_before_rad": 0.8859406911115766,
+        "velocity_before_rad_s": 18.26684385034582,
+        "position_after_rad": 0.9074992521812327,
+        "velocity_before_projection_rad_s": 17.246848855724924,
+        "actuator_force_nm": -0.13930766870824307,
+        "target_rad": 1.2538763284683228,
+        "rear_actuator_force_nm": 0.09774763735718386
+      },
+      {
+        "time_s": 0.09000000000000005,
+        "position_before_rad": 0.9074992521812327,
+        "velocity_before_rad_s": 17.246848855724924,
+        "position_after_rad": 0.9278475648757232,
+        "velocity_before_projection_rad_s": 16.278650155592317,
+        "actuator_force_nm": -0.14076905928067518,
+        "target_rad": 1.2538763284683228,
+        "rear_actuator_force_nm": 0.07759416554617296
+      },
+      {
+        "time_s": 0.09125000000000005,
+        "position_before_rad": 0.9278475648757232,
+        "velocity_before_rad_s": 16.278650155592317,
+        "position_after_rad": 0.9470154139001133,
+        "velocity_before_projection_rad_s": 15.334279219512135,
+        "actuator_force_nm": -0.1411034116051333,
+        "target_rad": 1.2538763284683228,
+        "rear_actuator_force_nm": 0.06087549304266676
+      },
+      {
+        "time_s": 0.09250000000000005,
+        "position_before_rad": 0.9470154139001133,
+        "velocity_before_rad_s": 15.334279219512135,
+        "position_after_rad": 0.965072215540469,
+        "velocity_before_projection_rad_s": 14.445441312284458,
+        "actuator_force_nm": -0.13523312985075187,
+        "target_rad": 1.2538763284683228,
+        "rear_actuator_force_nm": 0.04745806843210307
+      },
+      {
+        "time_s": 0.09375000000000006,
+        "position_before_rad": 0.965072215540469,
+        "velocity_before_rad_s": 14.445441312284458,
+        "position_after_rad": 0.9820580614677505,
+        "velocity_before_projection_rad_s": 13.588676741825273,
+        "actuator_force_nm": -0.1298548566080111,
+        "target_rad": 1.2538763284683228,
+        "rear_actuator_force_nm": 0.03637371793989466
+      },
+      {
+        "time_s": 0.09500000000000006,
+        "position_before_rad": 0.9820580614677505,
+        "velocity_before_rad_s": 13.588676741825273,
+        "position_after_rad": 0.9980393633492604,
+        "velocity_before_projection_rad_s": 12.785041505207868,
+        "actuator_force_nm": -0.12084730007053501,
+        "target_rad": 1.2538763284683228,
+        "rear_actuator_force_nm": 0.02784086267581276
+      },
+      {
+        "time_s": 0.09625000000000006,
+        "position_before_rad": 0.9980393633492604,
+        "velocity_before_rad_s": 12.785041505207868,
+        "position_after_rad": 1.0130769191970455,
+        "velocity_before_projection_rad_s": 12.03004467822806,
+        "actuator_force_nm": -0.11284298141807803,
+        "target_rad": 1.2538763284683228,
+        "rear_actuator_force_nm": 0.021238449439115653
+      },
+      {
+        "time_s": 0.09750000000000006,
+        "position_before_rad": 1.0130769191970455,
+        "velocity_before_rad_s": 12.03004467822806,
+        "position_after_rad": 1.027206831503812,
+        "velocity_before_projection_rad_s": 11.30392984541328,
+        "actuator_force_nm": -0.1055372588346426,
+        "target_rad": 1.2538763284683228,
+        "rear_actuator_force_nm": 0.016128943351009256
+      },
+      {
+        "time_s": 0.09875000000000006,
+        "position_before_rad": 1.027206831503812,
+        "velocity_before_rad_s": 11.30392984541328,
+        "position_after_rad": 1.0405145674819185,
+        "velocity_before_projection_rad_s": 10.646188782485174,
+        "actuator_force_nm": -0.09548074423500807,
+        "target_rad": 1.2538763284683228,
+        "rear_actuator_force_nm": 0.011794126906533142
+      },
+      {
+        "time_s": 0.10000000000000006,
+        "position_before_rad": 1.0405145674819185,
+        "velocity_before_rad_s": 10.646188782485174,
+        "position_after_rad": 1.053045958028308,
+        "velocity_before_projection_rad_s": 10.025112437111588,
+        "actuator_force_nm": -0.09100562208812768,
+        "target_rad": 1.2538763284683228,
+        "rear_actuator_force_nm": 0.008587537581323662
+      }
+    ]
+  },
+  {
+    "case": "implicitfast_400",
+    "dr": true,
+    "seed": 42,
+    "first_100ms_steering_torque_sign_reversals": 5,
+    "steering_speed_projection_count": 0,
+    "max_preprojection_steering_speed_rad_s": 18.86001293432075,
+    "raw_actions": [
+      [
+        2.2204220294952393,
+        18.82539176940918
+      ],
+      [
+        0.029462434351444244,
+        -0.02143871784210205
+      ],
+      [
+        0.5811397433280945,
+        0.1888861060142517
+      ],
+      [
+        -0.06911323964595795,
+        -0.08465546369552612
+      ],
+      [
+        0.6623528599739075,
+        0.24883657693862915
+      ]
+    ],
+    "traces": [
+      {
+        "time_s": 0.0025,
+        "position_before_rad": 0.0,
+        "velocity_before_rad_s": 0.0,
+        "position_after_rad": 0.03330714726912251,
+        "velocity_before_projection_rad_s": 13.322858907649005,
+        "actuator_force_nm": 4.357737421054747,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 6.28
+      },
+      {
+        "time_s": 0.005,
+        "position_before_rad": 0.03330714726912251,
+        "velocity_before_rad_s": 13.322858907649005,
+        "position_after_rad": 0.08003245877763693,
+        "velocity_before_projection_rad_s": 18.690124603405764,
+        "actuator_force_nm": 1.5060211805567922,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 6.146383902504528
+      },
+      {
+        "time_s": 0.0075,
+        "position_before_rad": 0.08003245877763693,
+        "velocity_before_rad_s": 18.690124603405764,
+        "position_after_rad": 0.1271824911134388,
+        "velocity_before_projection_rad_s": 18.86001293432075,
+        "actuator_force_nm": 0.053526639769974516,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 6.005100977420522
+      },
+      {
+        "time_s": 0.01,
+        "position_before_rad": 0.1271824911134388,
+        "velocity_before_rad_s": 18.86001293432075,
+        "position_after_rad": 0.17062376568001794,
+        "velocity_before_projection_rad_s": 17.376509826631654,
+        "actuator_force_nm": -0.4088136567192304,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 5.83567940116496
+      },
+      {
+        "time_s": 0.0125,
+        "position_before_rad": 0.17062376568001794,
+        "velocity_before_rad_s": 17.376509826631654,
+        "position_after_rad": 0.20938831050005555,
+        "velocity_before_projection_rad_s": 15.505817928015041,
+        "actuator_force_nm": -0.5211227041230719,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 5.646234362709646
+      },
+      {
+        "time_s": 0.015000000000000001,
+        "position_before_rad": 0.20938831050005555,
+        "velocity_before_rad_s": 15.505817928015041,
+        "position_after_rad": 0.2435181028448507,
+        "velocity_before_projection_rad_s": 13.65191693791806,
+        "actuator_force_nm": -0.5167439215508232,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 4.158744284239461
+      },
+      {
+        "time_s": 0.0175,
+        "position_before_rad": 0.2435181028448507,
+        "velocity_before_rad_s": 13.65191693791806,
+        "position_after_rad": 0.2734031450915483,
+        "velocity_before_projection_rad_s": 11.95401689867903,
+        "actuator_force_nm": -0.4733232803298062,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 3.3271462452157228
+      },
+      {
+        "time_s": 0.02,
+        "position_before_rad": 0.2734031450915483,
+        "velocity_before_rad_s": 11.95401689867903,
+        "position_after_rad": 0.29951065722591896,
+        "velocity_before_projection_rad_s": 10.44300485374828,
+        "actuator_force_nm": -0.4210409444317955,
+        "target_rad": 0.478,
+        "rear_actuator_force_nm": 3.3271462452157228
+      },
+      {
+        "time_s": 0.0225,
+        "position_before_rad": 0.29951065722591896,
+        "velocity_before_rad_s": 10.44300485374828,
+        "position_after_rad": 0.28707555485675124,
+        "velocity_before_projection_rad_s": -4.974040947667087,
+        "actuator_force_nm": -4.306103182079451,
+        "target_rad": 0.04625602439045906,
+        "rear_actuator_force_nm": -3.0874889028326784
+      },
+      {
+        "time_s": 0.024999999999999998,
+        "position_before_rad": 0.28707555485675124,
+        "velocity_before_rad_s": -4.974040947667087,
+        "position_after_rad": 0.2635070247731525,
+        "velocity_before_projection_rad_s": -9.427412033439495,
+        "actuator_force_nm": -1.2441446813362167,
+        "target_rad": 0.04625602439045906,
+        "rear_actuator_force_nm": -2.27476634404017
+      },
+      {
+        "time_s": 0.027499999999999997,
+        "position_before_rad": 0.2635070247731525,
+        "velocity_before_rad_s": -9.427412033439495,
+        "position_after_rad": 0.2383525122498511,
+        "velocity_before_projection_rad_s": -10.061805009320562,
+        "actuator_force_nm": -0.17754861975256991,
+        "target_rad": 0.04625602439045906,
+        "rear_actuator_force_nm": -1.675934117264833
+      },
+      {
+        "time_s": 0.029999999999999995,
+        "position_before_rad": 0.2383525122498511,
+        "velocity_before_rad_s": -10.061805009320562,
+        "position_after_rad": 0.2147505912902893,
+        "velocity_before_projection_rad_s": -9.440768383824715,
+        "actuator_force_nm": 0.1731062012926486,
+        "target_rad": 0.04625602439045906,
+        "rear_actuator_force_nm": -1.2347047076925568
+      },
+      {
+        "time_s": 0.032499999999999994,
+        "position_before_rad": 0.2147505912902893,
+        "velocity_before_rad_s": -9.440768383824715,
+        "position_after_rad": 0.1935638161160752,
+        "velocity_before_projection_rad_s": -8.474710069685639,
+        "actuator_force_nm": 0.26949902263078546,
+        "target_rad": 0.04625602439045906,
+        "rear_actuator_force_nm": -0.9096025785986668
+      },
+      {
+        "time_s": 0.034999999999999996,
+        "position_before_rad": 0.1935638161160752,
+        "velocity_before_rad_s": -8.474710069685639,
+        "position_after_rad": 0.17486701487840423,
+        "velocity_before_projection_rad_s": -7.478720495068395,
+        "actuator_force_nm": 0.27788666687998514,
+        "target_rad": 0.04625602439045906,
+        "rear_actuator_force_nm": -0.6700673253137635
+      },
+      {
+        "time_s": 0.0375,
+        "position_before_rad": 0.17486701487840423,
+        "velocity_before_rad_s": -7.478720495068395,
+        "position_after_rad": 0.1584806313105817,
+        "velocity_before_projection_rad_s": -6.554553427129006,
+        "actuator_force_nm": 0.2578496872170986,
+        "target_rad": 0.04625602439045906,
+        "rear_actuator_force_nm": -0.493580343136361
+      },
+      {
+        "time_s": 0.04,
+        "position_before_rad": 0.1584806313105817,
+        "velocity_before_rad_s": -6.554553427129006,
+        "position_after_rad": 0.14415957544303037,
+        "velocity_before_projection_rad_s": -5.728422347020539,
+        "actuator_force_nm": 0.23048598021694283,
+        "target_rad": 0.04625602439045906,
+        "rear_actuator_force_nm": -0.3635485100489624
+      },
+      {
+        "time_s": 0.0425,
+        "position_before_rad": 0.14415957544303037,
+        "velocity_before_rad_s": -5.728422347020539,
+        "position_after_rad": 0.17066470186617477,
+        "velocity_before_projection_rad_s": 10.602050569257761,
+        "actuator_force_nm": 4.5607808241563985,
+        "target_rad": 0.524256024390459,
+        "rear_actuator_force_nm": 1.0530947869124425
+      },
+      {
+        "time_s": 0.045000000000000005,
+        "position_before_rad": 0.17066470186617477,
+        "velocity_before_rad_s": 10.602050569257761,
+        "position_after_rad": 0.2078743287700797,
+        "velocity_before_projection_rad_s": 14.883850761561968,
+        "actuator_force_nm": 1.1958536372297477,
+        "target_rad": 0.524256024390459,
+        "rear_actuator_force_nm": 0.7762162324398078
+      },
+      {
+        "time_s": 0.04750000000000001,
+        "position_before_rad": 0.2078743287700797,
+        "velocity_before_rad_s": 14.883850761561968,
+        "position_after_rad": 0.24542120825333807,
+        "velocity_before_projection_rad_s": 15.018751793303348,
+        "actuator_force_nm": 0.0377109298295526,
+        "target_rad": 0.524256024390459,
+        "rear_actuator_force_nm": 0.572030525096974
+      },
+      {
+        "time_s": 0.05000000000000001,
+        "position_before_rad": 0.24542120825333807,
+        "velocity_before_rad_s": 15.018751793303348,
+        "position_after_rad": 0.28001021304279267,
+        "velocity_before_projection_rad_s": 13.835601915781846,
+        "actuator_force_nm": -0.3303897023586746,
+        "target_rad": 0.524256024390459,
+        "rear_actuator_force_nm": 0.4215236069768279
+      },
+      {
+        "time_s": 0.05250000000000001,
+        "position_before_rad": 0.28001021304279267,
+        "velocity_before_rad_s": 13.835601915781846,
+        "position_after_rad": 0.31084416294381334,
+        "velocity_before_projection_rad_s": 12.333579960408278,
+        "actuator_force_nm": -0.4194402624376439,
+        "target_rad": 0.524256024390459,
+        "rear_actuator_force_nm": 0.31060956588231525
+      },
+      {
+        "time_s": 0.055000000000000014,
+        "position_before_rad": 0.31084416294381334,
+        "velocity_before_rad_s": 12.333579960408278,
+        "position_after_rad": 0.3379782508459223,
+        "velocity_before_projection_rad_s": 10.853635160843583,
+        "actuator_force_nm": -0.41327147586403257,
+        "target_rad": 0.524256024390459,
+        "rear_actuator_force_nm": 0.22888148780923012
+      },
+      {
+        "time_s": 0.057500000000000016,
+        "position_before_rad": 0.3379782508459223,
+        "velocity_before_rad_s": 10.853635160843583,
+        "position_after_rad": 0.36173181707246105,
+        "velocity_before_projection_rad_s": 9.501426490615485,
+        "actuator_force_nm": -0.37759488139005004,
+        "target_rad": 0.524256024390459,
+        "rear_actuator_force_nm": 0.16866159182775942
+      },
+      {
+        "time_s": 0.06000000000000002,
+        "position_before_rad": 0.36173181707246105,
+        "velocity_before_rad_s": 9.501426490615485,
+        "position_after_rad": 0.3824813941412049,
+        "velocity_before_projection_rad_s": 8.299830827497535,
+        "actuator_force_nm": -0.3355296233214542,
+        "target_rad": 0.524256024390459,
+        "rear_actuator_force_nm": 0.12428960606709594
+      },
+      {
+        "time_s": 0.06250000000000001,
+        "position_before_rad": 0.3824813941412049,
+        "velocity_before_rad_s": 8.299830827497535,
+        "position_after_rad": 0.36158260032239764,
+        "velocity_before_projection_rad_s": -8.359517527522916,
+        "actuator_force_nm": -4.6526211465246625,
+        "target_rad": 0.04625602439045906,
+        "rear_actuator_force_nm": -1.6262469742195833
+      },
+      {
+        "time_s": 0.06500000000000002,
+        "position_before_rad": 0.36158260032239764,
+        "velocity_before_rad_s": -8.359517527522916,
+        "position_after_rad": 0.32926426601855197,
+        "velocity_before_projection_rad_s": -12.927333721538272,
+        "actuator_force_nm": -1.275905493149017,
+        "target_rad": 0.04625602439045906,
+        "rear_actuator_force_nm": -1.1982340118062615
+      },
+      {
+        "time_s": 0.06750000000000002,
+        "position_before_rad": 0.32926426601855197,
+        "velocity_before_rad_s": -12.927333721538272,
+        "position_after_rad": 0.2959846806508412,
+        "velocity_before_projection_rad_s": -13.311834147084301,
+        "actuator_force_nm": -0.10765267854964028,
+        "target_rad": 0.04625602439045906,
+        "rear_actuator_force_nm": -0.8827148075672371
+      },
+      {
+        "time_s": 0.07000000000000002,
+        "position_before_rad": 0.2959846806508412,
+        "velocity_before_rad_s": -13.311834147084301,
+        "position_after_rad": 0.26511809244740275,
+        "velocity_before_projection_rad_s": -12.346635281375383,
+        "actuator_force_nm": 0.2692819375454381,
+        "target_rad": 0.04625602439045906,
+        "rear_actuator_force_nm": -0.6502024218835403
+      },
+      {
+        "time_s": 0.07250000000000002,
+        "position_before_rad": 0.26511809244740275,
+        "velocity_before_rad_s": -12.346635281375383,
+        "position_after_rad": 0.23753094611938666,
+        "velocity_before_projection_rad_s": -11.034858531206435,
+        "actuator_force_nm": 0.3660809924501383,
+        "target_rad": 0.04625602439045906,
+        "rear_actuator_force_nm": -0.4788900725145384
+      },
+      {
+        "time_s": 0.07500000000000002,
+        "position_before_rad": 0.23753094611938666,
+        "velocity_before_rad_s": -11.034858531206435,
+        "position_after_rad": 0.21322867890158437,
+        "velocity_before_projection_rad_s": -9.720906887120918,
+        "actuator_force_nm": 0.3666977930074143,
+        "target_rad": 0.04625602439045906,
+        "rear_actuator_force_nm": -0.35268211099907526
+      },
+      {
+        "time_s": 0.07750000000000003,
+        "position_before_rad": 0.21322867890158437,
+        "velocity_before_rad_s": -9.720906887120918,
+        "position_after_rad": 0.19194494560052822,
+        "velocity_before_projection_rad_s": -8.513493320422455,
+        "actuator_force_nm": 0.3369516865466989,
+        "target_rad": 0.04625602439045906,
+        "rear_actuator_force_nm": -0.25970872402651385
+      },
+      {
+        "time_s": 0.08000000000000003,
+        "position_before_rad": 0.19194494560052822,
+        "velocity_before_rad_s": -8.513493320422455,
+        "position_after_rad": 0.17334948307458095,
+        "velocity_before_projection_rad_s": -7.438185010378903,
+        "actuator_force_nm": 0.30006277511303076,
+        "target_rad": 0.04625602439045906,
+        "rear_actuator_force_nm": -0.19122061625651787
+      },
+      {
+        "time_s": 0.08250000000000003,
+        "position_before_rad": 0.17334948307458095,
+        "velocity_before_rad_s": -7.438185010378903,
+        "position_after_rad": 0.19612422971556479,
+        "velocity_before_projection_rad_s": 9.109898656393536,
+        "actuator_force_nm": 4.621669218493796,
+        "target_rad": 0.524256024390459,
+        "rear_actuator_force_nm": 1.9535595955129044
+      },
+      {
+        "time_s": 0.08500000000000003,
+        "position_before_rad": 0.19612422971556479,
+        "velocity_before_rad_s": 9.109898656393536,
+        "position_after_rad": 0.23007917304716266,
+        "velocity_before_projection_rad_s": 13.581977332639154,
+        "actuator_force_nm": 1.249131210858533,
+        "target_rad": 0.524256024390459,
+        "rear_actuator_force_nm": 1.4395144820197945
+      },
+      {
+        "time_s": 0.08750000000000004,
+        "position_before_rad": 0.23007917304716266,
+        "velocity_before_rad_s": 13.581977332639154,
+        "position_after_rad": 0.264787047119589,
+        "velocity_before_projection_rad_s": 13.883149628970532,
+        "actuator_force_nm": 0.08426839043566048,
+        "target_rad": 0.524256024390459,
+        "rear_actuator_force_nm": 1.0606298522950603
+      },
+      {
+        "time_s": 0.09000000000000004,
+        "position_before_rad": 0.264787047119589,
+        "velocity_before_rad_s": 13.883149628970532,
+        "position_after_rad": 0.29689994270385817,
+        "velocity_before_projection_rad_s": 12.845158233707668,
+        "actuator_force_nm": -0.2897504193055047,
+        "target_rad": 0.524256024390459,
+        "rear_actuator_force_nm": 0.7814230767619509
+      },
+      {
+        "time_s": 0.09250000000000004,
+        "position_before_rad": 0.29689994270385817,
+        "velocity_before_rad_s": 12.845158233707668,
+        "position_after_rad": 0.3255744075548358,
+        "velocity_before_projection_rad_s": 11.469785940391045,
+        "actuator_force_nm": -0.38398960578151087,
+        "target_rad": 0.524256024390459,
+        "rear_actuator_force_nm": 0.5756890619535825
+      },
+      {
+        "time_s": 0.09500000000000004,
+        "position_before_rad": 0.3255744075548358,
+        "velocity_before_rad_s": 11.469785940391045,
+        "position_after_rad": 0.35082517702279703,
+        "velocity_before_projection_rad_s": 10.1003077871845,
+        "actuator_force_nm": -0.3823560721229686,
+        "target_rad": 0.524256024390459,
+        "rear_actuator_force_nm": 0.42409784719930865
+      },
+      {
+        "time_s": 0.09750000000000004,
+        "position_before_rad": 0.35082517702279703,
+        "velocity_before_rad_s": 10.1003077871845,
+        "position_after_rad": 0.3734570530706418,
+        "velocity_before_projection_rad_s": 9.05275041913792,
+        "actuator_force_nm": -0.3506373442253885,
+        "target_rad": 0.524256024390459,
+        "rear_actuator_force_nm": 0.31240026667099996
+      },
+      {
+        "time_s": 0.10000000000000005,
+        "position_before_rad": 0.3734570530706418,
+        "velocity_before_rad_s": 9.05275041913792,
+        "position_after_rad": 0.39297333084369357,
+        "velocity_before_projection_rad_s": 7.806511109220706,
+        "actuator_force_nm": -0.3566122724804295,
+        "target_rad": 0.524256024390459,
+        "rear_actuator_force_nm": 0.16463987574562067
+      }
+    ]
+  }
+]

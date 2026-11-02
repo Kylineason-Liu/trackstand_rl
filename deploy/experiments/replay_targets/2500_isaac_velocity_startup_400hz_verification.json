@@ -1,0 +1,53 @@
+{
+  "validated_at": "2026-11-01T13:17:25+0800",
+  "hardware_run": false,
+  "source": "Exact export of existing native Isaac Lab samples; no new physics rollout",
+  "checkpoint": "model_2500.pt",
+  "checkpoint_sha256": "5389effbd6a0d3e78c9ea9caeac309ceb5082622c8ee125bb701c63d1511fe52",
+  "source_archive_sha256": "d6e1b712082b273daab7dc2fd0ba6a848317cc88c147a8f07f786feded6fcf1e",
+  "reference_sha256": "466c77d69234942f937c51ee61117e1f13778b886ee81232398d3fdb32358ad4",
+  "recorder_sha256": "9e4c06efcd83a60dc0cd3594118c458285fc36daaeb79964b657762040083dfd",
+  "replay_sha256": "f733606abfd9212d559b6f05e553e26bdfdda469b474ba424efdda52a1fe67ff",
+  "helper_sha256": "525f474cdc3459a7d692381bce385fd458ee9b44851e4c8f372ec1a69bb2c1e8",
+  "duration_s": 10,
+  "physics_hz": 400,
+  "policy_hz": 50,
+  "reference_hz": 400,
+  "packet_hz": 400,
+  "reference_rows_including_endpoint": 4001,
+  "expected_core_commands": 4000,
+  "dr": true,
+  "seed": 42,
+  "environment": 0,
+  "episode": 1,
+  "exact_native_csv_byte_match": true,
+  "exact_independent_archive_velocity_match": true,
+  "maximum_reference_error_vs_saved_physics_samples_rad_s": 0.0,
+  "minimum_velocity_rad_s": -0.5695911645889282,
+  "maximum_velocity_rad_s": 2.483943223953247,
+  "maximum_c1_encoding_error_rad_s": 0.0005235839635133743,
+  "physical_sign": "positive forward; native C1/encoder sign -1",
+  "virtual_only_validation": {
+    "artifacts": "/tmp/VIRTUAL_velocity_400hz_fgpt4cay",
+    "completed": true,
+    "disabled_and_watchdog_restored": true,
+    "phase_command_counts": [
+      400,
+      4000,
+      400
+    ],
+    "total_logged_rows": 23085,
+    "core_samples_missing_or_repeated": 0,
+    "query_rates_hz": {
+      "A2": 400,
+      "A1": 100,
+      "A3": 50,
+      "AE": 10
+    },
+    "plotting_passed": true
+  },
+  "cpu_tests_passed": 47,
+  "protected_existing_files_unchanged": 66,
+  "tolerances": "Unchanged: no packet-lateness/angle/tracking-error/small-current abort",
+  "timing_caveat": "400 Hz is nominal on Pi. Late slots are logged/skipped, never replayed in a catch-up burst."
+}

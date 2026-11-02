@@ -1,0 +1,60 @@
+{
+  "passed": true,
+  "seed": 42,
+  "domain_randomization": false,
+  "num_envs": 64,
+  "synthetic_steps": 256,
+  "physics_hz": 1200,
+  "policy_observation_hz": 50,
+  "integral_hz": 200,
+  "call_counts": {
+    "obs": 291,
+    "steer_process": 291,
+    "rear_process": 291,
+    "steer_compute": 6984,
+    "rear_compute": 6984,
+    "integral": 1164,
+    "reward": 291
+  },
+  "stress_resets": 620,
+  "stress_maxima": {
+    "obs_error": 9.5367431640625e-07,
+    "steer_torque_nm": 5.555534362792969,
+    "rear_torque_nm": 6.28000020980835,
+    "rear_preclip_nm": 36.64306640625,
+    "integral_nm": 1.717239260673523
+  },
+  "all_termination_causes": {
+    "time_out": true,
+    "fallen": true,
+    "yaw_deviation": true,
+    "drifted": true,
+    "wheel_net": true,
+    "diverged": true
+  },
+  "partial_reset_passed": true,
+  "wheel_net_same_step_passed": true,
+  "invalid_cached_state_recovery_passed": true,
+  "invalid_state_native_physics_not_tested": true,
+  "ppo_updates": 2,
+  "ppo_losses": [
+    {
+      "value": 1.4317654371261597,
+      "surrogate": -0.009608010947704314,
+      "entropy": 1.2431594789028169
+    },
+    {
+      "value": 0.8449219733476638,
+      "surrogate": -0.006966331554576754,
+      "entropy": 1.2595569849014283
+    }
+  ],
+  "white_noise_std": [
+    0.0010095094330608845,
+    0.0010092740412801504,
+    0.001197170582599938,
+    0.0011939064133912325,
+    0.0011934374924749136
+  ],
+  "note": "Functional and numerical audit; not a trained-policy survival benchmark or motor calibration."
+}

@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "independent_npz_p_plus_i_clamp_and_integral_hold_checks": true,
+  "existing_files_unchanged": 23,
+  "grounded_random_steps_per_new_case": 100,
+  "new_dr_cases": [
+    800,
+    1000,
+    1200
+  ],
+  "new_nominal_cases": [
+    1200
+  ],
+  "policy_or_hardware_evaluation": false,
+  "ast_and_120_columns_passed": true,
+  "local_links_passed": true,
+  "plot_visually_reviewed": true,
+  "git_head_before": "c7ff96d56c2e6204cd345eed3228088a7da6629e",
+  "git_head_after": "61f439ecaf83cd85d8abb621bda18e934dbb9fd7",
+  "git_change_note": "HEAD advanced concurrently; this task issued no Git mutation. Protected existing file bytes match."
+}

@@ -1,0 +1,367 @@
+{
+  "stem": "20261102_103508_240825_drive_mit_velocity_test",
+  "input_sha256": {
+    "20261102_103508_240825_drive_mit_velocity_test.csv": "1570161c2b6cf5f7bbb48b3c96bec598b73bf4d002fa13a63846d502bf701b3e",
+    "20261102_103508_240825_drive_mit_velocity_test.json": "f628f68259e3513a956d4e8cd639dec5bb0e39fb856945a3a710f75a6674ec29"
+  },
+  "source_sha256_matches_current": true,
+  "rows": 219103,
+  "counts": {
+    "tx_CF": 1,
+    "rx_CF": 1,
+    "tx_B0": 1,
+    "rx_B0": 1,
+    "tx_B8": 190,
+    "rx_B8": 190,
+    "tx_B9": 190,
+    "rx_B9": 190,
+    "tx_B3": 1,
+    "rx_B3": 1,
+    "tx_B5": 1,
+    "rx_B5": 1,
+    "tx_CD": 3,
+    "rx_CD": 3,
+    "tx_F0": 1,
+    "rx_F0": 1,
+    "tx_A3": 8811,
+    "rx_A3": 8810,
+    "event_": 2,
+    "tx_A2": 31642,
+    "rx_A2": 31638,
+    "tx_A1": 31645,
+    "rx_A1": 31641,
+    "tx_AE": 1767,
+    "rx_AE": 1767,
+    "command_MIT": 35303,
+    "rx_F1": 35301
+  },
+  "phases": 68,
+  "completed_phases": 67,
+  "phase_kind_counts": {
+    "zero": 19,
+    "steady": 18,
+    "step": 31
+  },
+  "motion_elapsed_s": 176.53926114499336,
+  "estimated_failure_monotonic_s": 75331.899991745,
+  "estimated_failure_unix_s": 1793587084.8620236,
+  "last_phase": {
+    "segment": {
+      "name": "mit_velocity_pi_step_r1_0067",
+      "mode": "mit_velocity_pi",
+      "kind": "step",
+      "repeat": 1,
+      "base_rad_s": 0.0,
+      "amplitude_rad_s": -1.0,
+      "frequency_hz": 0.0,
+      "duration_s": 1.6,
+      "settle_s": 0.6,
+      "pulse_start_s": 0.6,
+      "pulse_end_s": 1.0
+    },
+    "start_monotonic_s": 75331.373629604,
+    "initial_position_rad": -4.729646264248403,
+    "initial_velocity_rad_s": -1.8284069243892598,
+    "initial_position_age_s": 0.013967712002340704,
+    "query_rates_hz": {
+      "A1": 400.0,
+      "A2": 400.0,
+      "A3": 50.0,
+      "AE": 10.0,
+      "B8": 1.0,
+      "B9": 1.0
+    },
+    "actual_duration_s": 0.5263621409976622,
+    "commands": 106,
+    "skipped_slots": 0,
+    "maximum_logged_lateness_s": 0.0001853580033639446,
+    "maximum_packet_interval_s": 0.005092895007692277,
+    "achieved_rate_hz": 199.98110845599237,
+    "integral_reset_at_start": true,
+    "final_integral_error_rad": 0.00688073629981696,
+    "final_integral_torque_nm": 0.022706429789395965,
+    "integral_limited_updates": 0
+  },
+  "last_command": {
+    "record_type": "command",
+    "time_unix_s": "1793587084.8607821",
+    "host_monotonic_s": "75331.898750271",
+    "elapsed_s": "176.58893406399875",
+    "method": "mit_velocity_pi_step_r1_0067",
+    "phase_elapsed_s": "0.5251206669927342",
+    "can_id": "501",
+    "payload_hex": "80007FF0000F67FD",
+    "opcode": "MIT",
+    "command_index": "105",
+    "command_interval_s": "0.0050418589962646365",
+    "lateness_s": "0.00012066699855495244",
+    "skipped_slots": "0",
+    "target_velocity_rad_s": "0.0",
+    "target_sample_time_s": "0.525069834999158",
+    "encoded_target_velocity_rad_s": "0.0031746031746031633",
+    "velocity_rad_s": "-0.02932153143350474",
+    "velocity_age_s": "0.00192221999168396",
+    "current_a": "-0.035",
+    "current_age_s": "0.002942994993645698",
+    "current_torque_nm": "0.010500000417232515",
+    "position_rad": "-4.761859860794002",
+    "multi_turn_count": "",
+    "integral_error_rad": "0.00688073629981696",
+    "integral_torque_nm": "0.022706429789395965",
+    "estimated_mit_total_torque_nm": "0.03173876570646457",
+    "mit_kp": "0.0",
+    "mit_kd": "0.30036630036630035",
+    "mit_feedforward_native_nm": "-0.0219780219780219",
+    "mit_position_native_rad": "",
+    "mit_velocity_rad_s": "",
+    "mit_torque_nm": "",
+    "mit_status": "",
+    "bus_voltage_v": "",
+    "bus_current_a": "",
+    "temperature_c": "",
+    "driver_mode": "",
+    "fault_code": "",
+    "note": ""
+  },
+  "last_rx": {
+    "CF": {
+      "time_s": 75155.312807178,
+      "payload": "CFE30700001E0000",
+      "age_at_failure_ms": 176587.18456700444
+    },
+    "B0": {
+      "time_s": 75155.313342462,
+      "payload": "B0079A99993E00",
+      "age_at_failure_ms": 176586.6492829955
+    },
+    "B8": {
+      "time_s": 75331.376695225,
+      "payload": "B80000003F",
+      "age_at_failure_ms": 523.2965199975297
+    },
+    "B9": {
+      "time_s": 75331.377123383,
+      "payload": "B90AD7A33B",
+      "age_at_failure_ms": 522.86836199346
+    },
+    "B3": {
+      "time_s": 75155.314759634,
+      "payload": "B342420100",
+      "age_at_failure_ms": 176585.23211099964
+    },
+    "B5": {
+      "time_s": 75155.315433471,
+      "payload": "B500000000",
+      "age_at_failure_ms": 176584.5582740003
+    },
+    "CD": {
+      "time_s": 75155.358156064,
+      "payload": "CD01F40100",
+      "age_at_failure_ms": 176541.83568099688
+    },
+    "F0": {
+      "time_s": 75155.31655565,
+      "payload": "F0BB0314050807",
+      "age_at_failure_ms": 176583.4360949957
+    },
+    "A3": {
+      "time_s": 75331.88052937,
+      "payload": "A30C380C380000",
+      "age_at_failure_ms": 19.462374999420717
+    },
+    "A2": {
+      "time_s": 75331.896828051,
+      "payload": "A21C000000",
+      "age_at_failure_ms": 3.1636939966119826
+    },
+    "A1": {
+      "time_s": 75331.898881546,
+      "payload": "A1B7FFFFFF",
+      "age_at_failure_ms": 1.110198994865641
+    },
+    "AE": {
+      "time_s": 75331.879607444,
+      "payload": "AEE50701002A0500",
+      "age_at_failure_ms": 20.384300994919613
+    },
+    "F1": {
+      "time_s": 75331.898007601,
+      "payload": "F1875F8027FC01",
+      "age_at_failure_ms": 1.9841439934680238
+    }
+  },
+  "last_status": {
+    "time_s": 75331.879607444,
+    "opcode": "AE",
+    "mode": 5,
+    "fault": 0,
+    "volts": 20.21,
+    "temperature_c": 42
+  },
+  "status_count": 1768,
+  "peaks": {
+    "fresh_a2_velocity_rad_s": 11.710810215031552,
+    "fresh_a1_torque_nm": 3.2100001275539403,
+    "estimated_mit_total_torque_nm": 3.7029226983584467,
+    "integral_torque_nm": 0.42631228399255433,
+    "velocity_rad_s": 11.710810215031552
+  },
+  "windows": [
+    {
+      "seconds": 1.0,
+      "host_tx_hz": 1043.0,
+      "host_rx_hz": 1032.0,
+      "successful_frames_worst_stuffed_load_at_1mbps": 0.195395,
+      "fifo_pair_delays": {
+        "A1": {
+          "count": 387,
+          "median_ms": 0.4461390053620562,
+          "p99_ms": 6.749757335637691,
+          "max_ms": 9.16545900690835
+        },
+        "A2": {
+          "count": 386,
+          "median_ms": 0.8402509920415469,
+          "p99_ms": 5.922999695030681,
+          "max_ms": 10.116846999153495
+        },
+        "A3": {
+          "count": 49,
+          "median_ms": 0.6588200049009174,
+          "p99_ms": 3.634531960706216,
+          "max_ms": 4.937286998028867
+        },
+        "AE": {
+          "count": 10,
+          "median_ms": 1.3822399923810735,
+          "p99_ms": 4.807597576727858,
+          "max_ms": 5.06122900696937
+        },
+        "F1": {
+          "count": 198,
+          "median_ms": 0.6305795031948946,
+          "p99_ms": 5.997978429950311,
+          "max_ms": 9.337733004940674
+        }
+      }
+    },
+    {
+      "seconds": 5.0,
+      "host_tx_hz": 1042.2,
+      "host_rx_hz": 1040.0,
+      "successful_frames_worst_stuffed_load_at_1mbps": 0.196231,
+      "fifo_pair_delays": {
+        "A1": {
+          "count": 1946,
+          "median_ms": 0.443666496721562,
+          "p99_ms": 1.0028848046204073,
+          "max_ms": 9.16545900690835
+        },
+        "A2": {
+          "count": 1945,
+          "median_ms": 0.8380750077776611,
+          "p99_ms": 1.340877038310282,
+          "max_ms": 10.116846999153495
+        },
+        "A3": {
+          "count": 249,
+          "median_ms": 0.5903950077481568,
+          "p99_ms": 1.8923636781983113,
+          "max_ms": 4.937286998028867
+        },
+        "AE": {
+          "count": 50,
+          "median_ms": 1.2599089968716726,
+          "p99_ms": 3.6866712036135088,
+          "max_ms": 5.06122900696937
+        },
+        "F1": {
+          "count": 998,
+          "median_ms": 0.6252375023905188,
+          "p99_ms": 1.3750702144170646,
+          "max_ms": 9.337733004940674
+        }
+      }
+    },
+    {
+      "seconds": 20.0,
+      "host_tx_hz": 1042.35,
+      "host_rx_hz": 1041.8,
+      "successful_frames_worst_stuffed_load_at_1mbps": 0.19643875,
+      "fifo_pair_delays": {
+        "A1": {
+          "count": 7795,
+          "median_ms": 0.4439729964360595,
+          "p99_ms": 0.9918900200864297,
+          "max_ms": 9.16545900690835
+        },
+        "A2": {
+          "count": 7794,
+          "median_ms": 0.8353250013897195,
+          "p99_ms": 1.3354883827560111,
+          "max_ms": 10.116846999153495
+        },
+        "A3": {
+          "count": 999,
+          "median_ms": 0.5866179999429733,
+          "p99_ms": 1.9131092820316546,
+          "max_ms": 4.937286998028867
+        },
+        "AE": {
+          "count": 200,
+          "median_ms": 1.229705500009004,
+          "p99_ms": 2.491899156884753,
+          "max_ms": 5.06122900696937
+        },
+        "F1": {
+          "count": 3998,
+          "median_ms": 0.6260609952732921,
+          "p99_ms": 1.3786087652260903,
+          "max_ms": 9.337733004940674
+        }
+      }
+    }
+  ],
+  "pending_logged_queries": {
+    "A3": 1,
+    "A2": 4,
+    "A1": 4,
+    "F1": 2
+  },
+  "pending_logged_query_ages_ms": {
+    "A3": [
+      4.338965998613276
+    ],
+    "A2": [
+      10.258120993967168,
+      7.694304003962316,
+      5.1656339928740636,
+      2.6042609970318154
+    ],
+    "A1": [
+      7.711654994636774,
+      5.1807999989250675,
+      2.6199089916190132,
+      0.05573900125455111
+    ],
+    "F1": [
+      6.283333001192659,
+      1.2414740049280226
+    ]
+  },
+  "command_count": 35303,
+  "skipped_slots": 3,
+  "anti_windup_limited_updates": 0,
+  "cleanup": {
+    "execution_error": "OSError: [Errno 105] No buffer space available",
+    "cleanup_error": "OSError: [Errno 105] No buffer space available",
+    "disable_confirmed": false,
+    "disabled_and_restored": false,
+    "pending_restore_payloads": [
+      "CD00881300"
+    ]
+  },
+  "assumptions": "FIFO response pairing is descriptive host timing, not acquisition/wire latency. Failure time estimated from phase finally timestamp. Failed sends are not logged.",
+  "analysis_utc": "2026-11-02T02:49:49.151737+00:00",
+  "hardware_or_simulator_run": false
+}

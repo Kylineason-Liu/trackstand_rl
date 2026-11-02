@@ -1,0 +1,42 @@
+{
+  "paired_observations_actions_enabled_commands": 1101,
+  "independent_imu_reconstruction_max_abs_error": 2.2472484939584092e-07,
+  "independent_encoder_reconstruction_max_abs_error": 1.890072219623562e-06,
+  "onnx_saved_observations_max_abs_action_error": 0.0,
+  "steering_clip_and_50hz_slew_command_max_abs_error_rad": 2.7755575615628914e-17,
+  "rear_scale_command_max_abs_error_nm": 0.0,
+  "raw_action_min": [
+    -0.9968850016593933,
+    -0.9968701601028442
+  ],
+  "raw_action_max": [
+    0.995701789855957,
+    0.9913893938064575
+  ],
+  "motor_state_nonfinite_torque_samples": [
+    11,
+    12
+  ],
+  "steering_slew_active_fraction": 0.4841053587647593,
+  "backend_steering_clip_ticks": 0,
+  "backend_rear_clip_ticks": 0,
+  "backend_rear_damping_max_abs_nm": 0.0,
+  "successful_recorded_steering_sends": 3727,
+  "successful_recorded_rear_sends": 3726,
+  "steering_encoding_max_abs_error_rad": 4.5737413253532644e-05,
+  "rear_encoding_max_abs_error_nm": 0.00014995187520980627,
+  "encoded_gains_and_zero_quantization": {
+    "mit_encoded_kp_nm_per_motor_rad": [
+      10.012210012210012
+    ],
+    "mit_encoded_kd_nm_s_per_motor_rad": [
+      0.20024420024420025
+    ],
+    "mit_encoded_velocity_motor_rad_s": [
+      0.01098901098901095
+    ],
+    "mit_encoded_feedforward_torque_motor_nm": [
+      0.00439560439560438
+    ]
+  }
+}

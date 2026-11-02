@@ -1,0 +1,81 @@
+{
+  "passed": true,
+  "utc": "2026-11-02T03:47:08.958174+00:00",
+  "protected_inputs_unchanged": 142,
+  "git_index_unchanged": true,
+  "runtime_and_ledgers_unchanged": true,
+  "python_ast_pyflakes_120columns": "passed",
+  "python_files": 4,
+  "images": [
+    {
+      "file": "pi_controller.png",
+      "dimensions": [
+        2975,
+        1312
+      ]
+    },
+    {
+      "file": "representative_traces.png",
+      "dimensions": [
+        3500,
+        1750
+      ]
+    },
+    {
+      "file": "sine_amplitude.png",
+      "dimensions": [
+        2800,
+        1400
+      ]
+    },
+    {
+      "file": "sine_error.png",
+      "dimensions": [
+        2800,
+        1400
+      ]
+    },
+    {
+      "file": "steady_response.png",
+      "dimensions": [
+        2275,
+        1400
+      ]
+    },
+    {
+      "file": "step_responses.png",
+      "dimensions": [
+        2800,
+        1225
+      ]
+    }
+  ],
+  "svg_count": 6,
+  "pdf_pages": {
+    "all_figures.pdf": 6,
+    "pi_controller.pdf": 1,
+    "representative_traces.pdf": 1,
+    "sine_amplitude.pdf": 1,
+    "sine_error.pdf": 1,
+    "steady_response.pdf": 1,
+    "step_responses.pdf": 1
+  },
+  "local_links_verified": 51,
+  "input_sha256_verified": 9,
+  "independent_verification": {
+    "passed": true,
+    "raw_plotted_response_samples_verified": 47254,
+    "maximum_raw_export_error": 4.440892098500626e-16,
+    "previous_baseline_trials_reproduced": 684,
+    "independent_dynamic_coefficients": [
+      0.24319591059268944,
+      0.9912415170479609,
+      -9.505308069157614e-05
+    ],
+    "raw_small_step_history_fields_verified": 15,
+    "motor_or_simulator_run": false
+  },
+  "tests_rerun": false,
+  "hardware_or_simulator_run": false,
+  "all_six_figures_visually_reviewed": true
+}

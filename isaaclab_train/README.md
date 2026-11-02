@@ -247,12 +247,18 @@ Some examples of packages that can likely be excluded are:
 ...
 ```
 
-## Trackstand-Balance-v2: rear MIT velocity control
+## Trackstand-Balance-v2: rear PI velocity control
 
 V2 inherits v1 and changes the rear action from torque to **target angular velocity**.
 Both raw actions remain bounded Beta outputs in [-1, 1]. The 11 observations,
-steering action/controller, rewards, termination conditions,
-passive friction, and 50-Hz policy / 400-Hz physics rates remain the same.
+steering target processing, finite-state rewards, termination thresholds and
+passive friction remain the same. Policy targets stay at 50 Hz. The external integral updates at
+200 Hz, while physics and explicit IdealPD evaluate at 1200 Hz (24 physics steps
+per policy target and six per integral update). The inherited 400-Hz timestep
+was numerically unstable for the tested rear P gain. The
+[rate comparison](reports/20261102_v2_external_pi/rate_sweep_800_1000_1200/README.md)
+found 1200 Hz matched 1600 Hz on the unloaded constant-target probe; 800 Hz and
+1000 Hz retained oscillations in some randomized environments.
 
 V2 wheel-net bookkeeping uses actual rear-angle increments after each physics
 step, unwrapping the installed PhysX 4pi branch. The existing 7.2 rad termination
@@ -270,26 +276,41 @@ The rear scale matches v1's existing 61.6 rad/s speed constraint and the saved
 GIM3510-8 individual datasheet's 588 output rpm (61.5752 rad/s before rounding).
 It is a target bound, not proof the hardware can deliver that speed at every load.
 
-In Isaac, rear IdealPDActuator models the requested MIT velocity law:
+Rear IdealPDActuator supplies velocity P; a separate action term maintains I:
 
 ```text
 velocity_target = clip(61.6 * raw_drive_action, -61.6, 61.6)  # held for 20 ms
-torque = clip(0.2 * (velocity_target - measured_velocity), -6.28, 6.28)
+error = velocity_target - measured_velocity
+I = trapezoidal_integral(error, Ki=3.3, rate_hz=200)  # first sample primes I=0
+torque = clip(0.30 * error + I, -6.28, 6.28)          # IdealPD at 1200 Hz
 ```
 
-Rear Kp is zero, nominal Kd is 0.2 N m s/rad, and feedforward torque is zero.
-This Kd is the velocity-controller gain; passive rear losses remain separately
+Position Kp is zero; velocity P (IdealPD damping / MIT Kd) is 0.30 Nm/(rad/s),
+and host-style Ki is 3.3 Nm/rad. I is supplied through the actuator's feedforward
+effort input. Each environment resets its I, previous error and targets on
+episode reset; ordinary target changes retain memory. Conditional integration
+blocks further accumulation into saturation, allows unwinding, and bounds I by
+the 6.28-Nm effort limit. Passive rear losses remain separately
 configured as in v1: measured moving friction 0.106 N m, provisionally equal
 static friction, and viscous friction zero. Zero raw drive action actively
 commands zero speed and braking.
-Velocity error above 31.4 rad/s reaches the nominal 6.28 N m effort cap.
+With I=0, velocity error above approximately 20.93 rad/s reaches the effort cap;
+with retained I, saturation depends on the combined P+I torque.
 
 DR remains opt-in, but v2 disables controller-gain randomization for both motors.
-Steering Kp/Kd stay 10/0.2 and rear Kp/Kd stay 0/0.2, including with --dr;
+Steering Kp/Kd stay 10/0.2 and rear position-Kp/velocity-Kd stay 0/0.30, including with --dr;
 all other v1 DR terms remain unchanged. The velocity action has no extra
-target slew or default joint-speed offset. This is the nominal MIT equation in
-simulation, with a 400-Hz explicit controller; it is not a measured firmware
-loop/current model or a C1 speed-mode PI controller.
+target slew or default joint-speed offset. The PI law follows the tested
+`drive_mit_velocity_test.py --velocity-kp 0.30 --velocity-ki 3.3` arrangement,
+with ideal simulator feedback and no CAN quantization. The hardware script's
+default Ki is still zero. This is not an identified C1 or motor current-loop model.
+
+V2's divergence check also covers invalid root pose, joint position, wheel-net
+tracking and PI memory. Invalid terminal positions yield zero drift reward
+before reset, preventing NaNs in returns and episode sums; finite drift rewards
+are unchanged. `train.py --arp_w <weight>` correctly selects Trackstand's
+`rate_penalty` term (`--arp_w 0` disables it). See the
+[full v2 audit](reports/20261102_v2_full_audit/README.md) for checks and limitations.
 
 Run from this directory:
 
@@ -310,4 +331,7 @@ controllers. This change does not switch or modify the deployed v1 model/backend
 The generic ONNX exporter still exports normalized Beta means; its existing
 v1 torque-scaling console advice is not a v2 consumer contract.
 
-Implementation and validation: [v2 report](reports/20261027_v2_velocity_control/README.md).
+Current implementation, hardware comparison and validation:
+[external PI report](reports/20261102_v2_external_pi/README.md).
+The [original v2 report](reports/20261027_v2_velocity_control/README.md) records
+the earlier P-only/400-Hz configuration.

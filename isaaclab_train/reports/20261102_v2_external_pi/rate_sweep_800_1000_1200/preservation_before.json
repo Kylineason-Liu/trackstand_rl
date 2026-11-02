@@ -1,0 +1,29 @@
+{
+  "files": {
+    "isaaclab_train/reports/20261102_v2_external_pi/validate_live.py": "d07e226b786610c20d9d1bbe80e877fb881106e8be0054fc723329e2038414e4",
+    "isaaclab_train/reports/20261102_v2_external_pi/README.md": "2d12f11a0004c82e3ff1e409845877447be67272bf991c86a1600eeece9dc43a",
+    "isaaclab_train/reports/20261102_v2_external_pi/pi_tests.log": "de129bc20d3712720396c2dfa4c833109f7663d1aae1a925c0bb9b3087f711a2",
+    "isaaclab_train/reports/20261102_v2_external_pi/manifest.json": "b3417dedec0590c3dc2585650d29817f71ad5da744690abd09f83d9beb8a9b0e",
+    "isaaclab_train/reports/20261102_v2_external_pi/verification.json": "981a1de6ba13fa78b3a3402f7f7fa79b1b6552998e1ccdcdf29db6580a9a4b29",
+    "isaaclab_train/reports/20261102_v2_external_pi/full_tests.log": "243c9dec566e9727a22d97d8bb6c61f9059ae43c600bfd89cb0593f6cc609bec",
+    "isaaclab_train/reports/20261102_v2_external_pi/1600_nominal/run.log": "1148ca8d95eed0ddbf94516f14f22cca85eec060f6017d6b4dd940ac890661de",
+    "isaaclab_train/reports/20261102_v2_external_pi/1600_nominal/unloaded.npz": "cb9cc2cd128a5feba215ac8834006031fc257e4ebfd1c1069fa3ed08aaba83da",
+    "isaaclab_train/reports/20261102_v2_external_pi/1600_nominal/summary.json": "520f42e238fd587560e8222993f76d72e2de46a75e7b149be1720ab2d8889a28",
+    "isaaclab_train/reports/20261102_v2_external_pi/1600_dr/run.log": "464320d33d8798a2c30d3693a6d1bbf4e7efd240704a97372c9c2d9fbd5c0e33",
+    "isaaclab_train/reports/20261102_v2_external_pi/1600_dr/unloaded.npz": "99c8fca5b6743fd9beb1b67f5463e0a02815e8a1c16810cb667b9448436f87dd",
+    "isaaclab_train/reports/20261102_v2_external_pi/1600_dr/summary.json": "d090364a2af2536e7263557b08d593678e8b876e009aec1c245bf2773e46a7e6",
+    "isaaclab_train/reports/20261102_v2_external_pi/400_dr/run.log": "fc2e88771c18b47608ea21cfe3668cff70965fdb307609b3e2a6003cdf8ea961",
+    "isaaclab_train/reports/20261102_v2_external_pi/400_dr/unloaded.npz": "9d035dbd9dadc55fc98c2ba3e130e13df837bbb3333400c54f518f8cdc24e0e8",
+    "isaaclab_train/reports/20261102_v2_external_pi/400_dr/summary.json": "30359d97e79ccd3d1b5e104ee7780a56e12598650de1963c71240cfd97f004ff",
+    "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/mdp/stationary/velocity_pi.py": "695890403bc4a483297782f6b84f535d69a1af5e49e5ddb76c2542a5aac3a1e6",
+    "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/trackstand_bike/trackstand_rl_env_cfg_v2.py": "d594b6bddd7d6827203e7927d97a20c8bc5e35b6c22977994951421b6de45c85",
+    "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/trackstand_bike/trackstand_rl_env_cfg_v1.py": "bd67c70047e27d8943ae0127ad7f181905ca432dda152e4b1c64162495e1459e",
+    "isaaclab_train/tests/test_trackstand_velocity_v2.py": "257b32298af922845ad11a0f7ac01727dde4a3713c349df8da3e9bec35a8c6df",
+    "isaaclab_train/README.md": "8abf4403638cafe6ef8e539f97afa9e3be5c681fe77deb85539ffffc03575168",
+    "deploy/experiments/drive_mit_velocity_test.py": "0a5849ffb3197b54fd9ef261b7443efe816146b61234cb4f88374b5dbc853712",
+    "progress_record.md": "a3d5f6f4795660a6591ff12c72598b2359604b0c18e16c37f907d9255accd6ef",
+    "progress_record.txt": "63d8d34ead32a30c2dd22532ac8f270ae34fff6dafcf065647d90a11a3aeb475"
+  },
+  "git_status": "M  isaaclab_train/README.md\nA  isaaclab_train/reports/20261102_v2_external_pi/1600_dr/run.log\nA  isaaclab_train/reports/20261102_v2_external_pi/1600_dr/summary.json\nA  isaaclab_train/reports/20261102_v2_external_pi/1600_dr/unloaded.npz\nA  isaaclab_train/reports/20261102_v2_external_pi/1600_nominal/run.log\nA  isaaclab_train/reports/20261102_v2_external_pi/1600_nominal/summary.json\nA  isaaclab_train/reports/20261102_v2_external_pi/1600_nominal/unloaded.npz\nA  isaaclab_train/reports/20261102_v2_external_pi/400_dr/run.log\nA  isaaclab_train/reports/20261102_v2_external_pi/400_dr/summary.json\nA  isaaclab_train/reports/20261102_v2_external_pi/400_dr/unloaded.npz\nA  isaaclab_train/reports/20261102_v2_external_pi/README.md\nA  isaaclab_train/reports/20261102_v2_external_pi/full_tests.log\nA  isaaclab_train/reports/20261102_v2_external_pi/manifest.json\nA  isaaclab_train/reports/20261102_v2_external_pi/pi_tests.log\nA  isaaclab_train/reports/20261102_v2_external_pi/validate_live.py\nA  isaaclab_train/reports/20261102_v2_external_pi/verification.json\nA  isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/mdp/stationary/velocity_pi.py\nM  isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/trackstand_bike/trackstand_rl_env_cfg_v2.py\nM  isaaclab_train/tests/test_trackstand_velocity_v2.py\n m ros2_ws\n m \"tsinghua_bike_project/assign_2_Hardwares/assign_2_Hardwares/1.IMU/Supplementary Materials/\\346\\272\\220\\347\\240\\201/ROS\\345\\272\\224\\347\\224\\250/ROS2/yahboomcar_ws/src/robot_localization\"\n",
+  "git_head": "c7ff96d56c2e6204cd345eed3228088a7da6629e"
+}

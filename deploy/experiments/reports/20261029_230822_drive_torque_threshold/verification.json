@@ -1,0 +1,42 @@
+{
+  "passed": true,
+  "raw_csv_rows": 344039,
+  "raw_C0_transmissions": 12445,
+  "reconstructed_trial_count": 50,
+  "checked_extracted_raw_lines": 10181,
+  "data_and_runtime_source_hashes_unchanged": true,
+  "progress_reference_changes_since_analysis_snapshot": {
+    "progress_record.md": {
+      "analysis_sha256": "0214fd592a8b9f77b82a55d55a01b25fcde860b651b512e53654799fa5b4500a",
+      "verification_sha256": "903882a5131dd8c87ac8e19ce37d16fbff94ebbfb6d55d44b513fc2766ba8f19"
+    },
+    "progress_record.txt": {
+      "analysis_sha256": "1263a631bc77b1372797a1cae0069d344ea1b9961fd09ecef25537cdf616cfd0",
+      "verification_sha256": "068c8200f09c1736237c7b681cffdc5eaee50bc7e13d5573ac00da8243ddd5af"
+    }
+  },
+  "outcome_counts_verified": true,
+  "kernel_timestamp_A2_below_A3_percent_range": [
+    1.3641649208159579,
+    1.565085783169673
+  ],
+  "local_links_checked": 19,
+  "all_three_python_files_parse": true,
+  "artifacts_sha256": {
+    "README.md": "c0aa15c51d2a5a96cb0924a97c643cf7db9b96468083e6aaea2c875bd71fdb55",
+    "analyze.py": "0279eb3c7e27fb2f12dc9876178f699539fa62798759bcfdac76a25fc7790c07",
+    "groups.csv": "059993625ba71c8c8b7935f6ac0cc5f41011eb2208a6592a5e0caa2839b8056c",
+    "plot.py": "02724f78a785e121d541f6f18e9d7f1ee8ecf3cb8ff19396fd34bba1bb008934",
+    "same_command_response.pdf": "58bc4a4474531a2deb105f7db9ce82a1f13d4d7d72d66c8117e38f5a6e9482fc",
+    "same_command_response.png": "8db5fdfebc9031d518f19793b96c506be7502177eff01fa1209caa7d68bcb88b",
+    "same_command_response.svg": "f43a7c82072ecf1bdb03002dc396f449e5e404e1a3dcc209bd877830dfd2fd8f",
+    "selected_trial_traces.csv": "af6fcb09756557c843ab4e2b01819a9c961bb5f4880c8ef76adfd2fef422ae60",
+    "startup_samples.csv": "8bf3132a352bc64d2a0fcc7ebad5d0b90b59f38b856713919a96d4441990a246",
+    "statistics.json": "649daf00208436bf336f42bb15073266cf34fad31a31c30090608ed704dadb31",
+    "trial_outcomes.pdf": "07b83d52422d0afb64e94bc439828a3b8d0d552f8bc431d1c790796f5c979da4",
+    "trial_outcomes.png": "86d25ef2f1113ccbdc222779ab4dd34faebe12409978575089c50c7e24cfb33c",
+    "trial_outcomes.svg": "f2bd75d3bd6e9794e4aaa9067685408e366e7dd10dacd6ec44d69341b5e4c5c7",
+    "trials.csv": "80fb7ddba9f2a06b99d4a62183ad4729eb0701473c296d5b180d2c5540e036ad",
+    "verify.py": "8099ae7e20a182c0352a79e5f98d39bf94f069b31a47ed60c32ff04011483bb1"
+  }
+}

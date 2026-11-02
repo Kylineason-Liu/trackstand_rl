@@ -1,0 +1,16 @@
+User-supplied snapshot, received during analysis; whether/reset timing relative to the run was not supplied.
+
+3: can0: <NOARP,UP,LOWER_UP,ECHO> mtu 16 qdisc pfifo_fast state UP mode DEFAULT group default qlen 10
+    link/can  promiscuity 0  allmulti 0 minmtu 0 maxmtu 0
+    can state ERROR-ACTIVE restart-ms 0
+          bitrate 1000000 sample-point 0.666
+          tq 166 prop-seg 1 phase-seg1 2 phase-seg2 2 sjw 1 brp 1
+          mcp251x: tseg1 3..16 tseg2 2..8 sjw 1..4 brp 1..64 brp_inc 1
+          clock 6000000
+          re-started bus-errors arbit-lost error-warn error-pass bus-off
+          0          0          0          0          0          0
+          parentbus spi parentdev spi0.0
+    RX: bytes packets errors dropped missed mcast
+           16       2      0       0      0     0
+    TX: bytes packets errors dropped carrier collsns
+            1       1      0       0       0       0

@@ -264,7 +264,8 @@ def startup(io, plan):
     io.request(motor, 0xA2)
     io.request(motor, 0xA1)
     status = io.request(motor, 0xAE)
-    if (status[6] or status[7] or abs(io.velocity) > .2 or abs(io.current) > args.current_abort_a
+    if (status[6] or status[7] or abs(io.velocity) > getattr(args, "startup_speed_max_rad_s", .2)
+            or abs(io.current) > args.current_abort_a
             or status[5] >= args.temperature_abort_c):
         raise RuntimeError("rear motor must be stationary, disabled, fault-free and below test thresholds")
     return packets

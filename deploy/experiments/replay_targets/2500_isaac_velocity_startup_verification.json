@@ -1,0 +1,60 @@
+{
+  "fresh_isaac_capture": true,
+  "task": "Trackstand-Balance-v1",
+  "model": "2500",
+  "dr": true,
+  "seed": 42,
+  "environment": 0,
+  "duration_s": 10,
+  "episode_resets": 0,
+  "physics_samples": 4001,
+  "reference_samples": 501,
+  "fresh_velocity_exactly_matches_independent_archived_evaluation": true,
+  "maximum_reference_speed_rad_s": 2.3239221572875977,
+  "maximum_native_speed_rad_s": 2.483943223953247,
+  "checks": {
+    "reference_native_boundary_equality": true,
+    "checkpoint_hash": true,
+    "recorder_hash": true,
+    "native_hash": true,
+    "reference_hash": true
+  },
+  "startup_0_to_2": {
+    "rms_speed_rad_s": 0.7314744120335951,
+    "min_rad_s": -0.5695911645889282,
+    "max_rad_s": 2.483943223953247
+  },
+  "settled_8_to_10": {
+    "rms_speed_rad_s": 0.051298546362509224,
+    "min_rad_s": -0.40413200855255127,
+    "max_rad_s": 0.200189009308815
+  },
+  "reference_zoh_vs_native_rms_rad_s": 0.07222155787516754,
+  "unit_tests_passed": 44,
+  "test_log": "/tmp/drive_velocity_replay_tests.log",
+  "virtual_can_checks": [
+    {
+      "packet_rate_hz": 50,
+      "core_commands": 500,
+      "completed": true,
+      "disabled": true,
+      "comparison_uses_native_400hz_trace": true,
+      "virtual_test_velocity_rmse": 0.005480206007182514
+    },
+    {
+      "packet_rate_hz": 200,
+      "core_commands": 2000,
+      "completed": true,
+      "disabled": true,
+      "comparison_uses_native_400hz_trace": true,
+      "virtual_test_velocity_rmse": 0.005480206007182514
+    }
+  ],
+  "hardware_test_performed": false,
+  "existing_protected_inputs_unchanged": true,
+  "new_source_hashes": {
+    "record_drive_velocity.py": "0a6963bb2ac5b364b6b6131a1cad90b7fffc04462703d671043c905509c00d9a",
+    "drive_velocity_replay.py": "31cbc6cdee0bdc8f6e201d8e6fefd147b168e8e9c385267d2bfbf04045d66c14",
+    "tests/test_drive_velocity_replay.py": "885041e21ecb7970d39a3cc75d74381d356344d8b54ab0e839176496a6050b09"
+  }
+}

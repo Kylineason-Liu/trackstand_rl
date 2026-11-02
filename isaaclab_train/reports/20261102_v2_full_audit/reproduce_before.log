@@ -1,0 +1,23 @@
+Warp CUDA error 100: no CUDA-capable device is detected (in function init_cuda_driver, /builds/omniverse/warp/warp/native/cuda_util.cpp:309)
+/home/lmbike/.config/matplotlib is not a writable directory
+Matplotlib created a temporary cache directory at /tmp/matplotlib-yioaza1a because there was an issue with the default path (/home/lmbike/.config/matplotlib); it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.
+{
+  "injected": [
+    "NaN root X position",
+    "NaN joint position",
+    "NaN joint speed",
+    "healthy"
+  ],
+  "inherited_diverged": [
+    false,
+    false,
+    true,
+    false
+  ],
+  "inherited_drift_reward_finite": [
+    false,
+    true,
+    true,
+    true
+  ]
+}
