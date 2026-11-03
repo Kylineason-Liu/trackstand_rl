@@ -1,0 +1,44 @@
+[INFO] Trackstand-Balance-v2, torch: /home/lmbike/trackstand_rl/isaaclab_train/logs/rsl_rl/trackstand_rl_v2_rsl/2026-11-02_21-49-32/model_26600.pt
+[INFO] policy=50 Hz, physics/PD=1200 Hz, rear I=200 Hz; 24 physics / 4 integral updates per policy step
+[INFO] 1 envs, seed=42, DR=False; terms=['diverged', 'drifted', 'fallen', 'time_out', 'wheel_net', 'yaw_deviation']
+[WARN] speed mode=project: not a native PhysX-equivalent soft constraint
+
+===== TRACKSTAND-BALANCE-V2 METRICS (MuJoCo) =====
+  environments                  : 1
+  completed_episodes            : 0
+  mean_episode_length_steps     : None
+  mean_episode_length_s         : None
+  min_episode_length_s          : None
+  max_episode_length_s          : None
+  std_episode_length_steps      : None
+  mean_reward                   : None
+  timeout_rate                  : None
+  termination activations (may overlap):
+    time_out              : 0
+    fallen                : 0
+    diverged              : 0
+    drifted               : 0
+    yaw_deviation         : 0
+    wheel_net             : 0
+  roll_rms_deg                  : None
+  max_roll_deg                  : None
+  mean_worst_lean_deg           : None
+  mean_drift_m                  : None
+  max_drift_m                   : None
+  mean_yaw_deg                  : None
+  max_yaw_deg                   : None
+  mean_turn_deg                 : None
+  mean_drive_speed_rad_s        : None
+  max_drive_speed_rad_s         : None
+  mean_steer_speed_rad_s        : None
+  max_steer_speed_rad_s         : None
+  policy_hz                     : 50.0
+  physics_hz                    : 1200.0
+  pd_hz                         : 1200.0
+  integral_hz                   : 200.0
+  decimation                    : 24
+  Metrics include terminal state BEFORE caller reset; unfinished episodes excluded.
+[INFO] metrics written: /home/lmbike/trackstand_rl/mujoco_sim2sim/reports/20261103_v2_parallel_backend/validation/fixed_smoke/202611032154_26600_no_dr_summary.log
+[INFO] episode length distribution written: /home/lmbike/trackstand_rl/mujoco_sim2sim/reports/20261103_v2_parallel_backend/validation/fixed_smoke/202611032154_26600_no_dr_epi_len_histogram.png / .csv
+[INFO] all-environment torque profile written: /home/lmbike/trackstand_rl/mujoco_sim2sim/reports/20261103_v2_parallel_backend/validation/fixed_smoke/202611032154_26600_no_dr_torque.png / .npz
+[INFO] evaluation complete: /home/lmbike/trackstand_rl/mujoco_sim2sim/reports/20261103_v2_parallel_backend/validation/fixed_smoke/202611032154_26600_no_dr

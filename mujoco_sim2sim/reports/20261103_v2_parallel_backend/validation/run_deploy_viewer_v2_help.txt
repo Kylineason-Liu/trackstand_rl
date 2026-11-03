@@ -1,0 +1,46 @@
+usage: run_deploy_viewer_v2 [-h] [--task {deploy_sim,zero_agent,free_fall}]
+                            [--lock_steer] [--mjcf MJCF] [--scene SCENE]
+                            [--onnx ONNX] [--pt PT]
+                            [--policy_config POLICY_CONFIG]
+                            [--output_dir OUTPUT_DIR] [--seed SEED]
+                            [--physics_hz PHYSICS_HZ] [--num_envs NUM_ENVS]
+                            [--dr] [--pure_survival]
+                            [--velocity_limit_mode {project,none}]
+                            [--speed SPEED] [--base_inertia BASE_INERTIA]
+
+options:
+  -h, --help            show this help message and exit
+  --task {deploy_sim,zero_agent,free_fall}
+                        deploy_sim: run the deployed policy; zero_agent: no
+                        control + auto-reset; free_fall: no control, no reset.
+  --lock_steer          zero_agent only: weld the steering at 0 so the bike
+                        topples like a rigid body instead of caster-weaving.
+  --mjcf MJCF           Bike MJCF (default: verified trackstand0916 model).
+  --scene SCENE         Alias for --mjcf; do not supply both.
+  --onnx ONNX           Exported v2 Beta mean policy, 11 inputs / 2 actions.
+  --pt PT               V2 Beta checkpoint (default: 20261102 no-DR
+                        model26600).
+  --policy_config POLICY_CONFIG
+                        Saved v2 env.yaml or checked JSON sidecar;
+                        automatically found beside the policy.
+  --output_dir OUTPUT_DIR
+  --seed SEED
+  --physics_hz PHYSICS_HZ
+                        Physics/PD Hz (default: 1200); multiple of 200;
+                        policy=50 Hz, rear integral=200 Hz.
+  --num_envs NUM_ENVS   Number of independent bikes shown in one viewer
+                        (default: 64); use 1 for the original single-bike
+                        view. CPU physics, seeds seed+i.
+  --dr                  enable the domain-randomization terms (the sim's
+                        BalanceEventsCfg): per-episode mass/COM/tire-friction
+                        randomization (controller gains stay fixed), DR
+                        initial state (roll U(+-0.10) rad, roll-rate U(+-0.25)
+                        rad/s), and IMU turn-on residuals.
+  --pure_survival       Only time_out/fallen; default uses all six v2 terms.
+  --velocity_limit_mode {project,none}
+                        project: hard speed projection23.9/61.6 (NOT PhysX-
+                        equivalent); none: diagnostic only.
+  --speed SPEED         Playback speed (1.0 = real time, 0.5 = half speed).
+  --base_inertia BASE_INERTIA
+                        Non-v2 diagnostic override; keep1 for normal
+                        comparison.

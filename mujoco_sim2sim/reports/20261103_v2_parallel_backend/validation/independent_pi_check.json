@@ -1,0 +1,65 @@
+{
+  "passed": true,
+  "reference": "Exact AST-extracted Isaac VelocityIntegral; CPU float64",
+  "state_fields": [
+    "torque_nm",
+    "error_rad",
+    "previous_error",
+    "initialized",
+    "limited_updates"
+  ],
+  "cases": [
+    {
+      "name": "current_v2",
+      "gain_nm_per_rad": 3.3,
+      "p_nm_s_per_rad": 0.3,
+      "updates": 12000,
+      "resets": 7,
+      "max_absolute_state_error": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "exact_integral_bound_samples": 0
+    },
+    {
+      "name": "I_bound_without_P",
+      "gain_nm_per_rad": 3.3,
+      "p_nm_s_per_rad": 0.0,
+      "updates": 12000,
+      "resets": 7,
+      "max_absolute_state_error": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "exact_integral_bound_samples": 1422
+    },
+    {
+      "name": "P_only_optional",
+      "gain_nm_per_rad": 0.0,
+      "p_nm_s_per_rad": 0.3,
+      "updates": 12000,
+      "resets": 7,
+      "max_absolute_state_error": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "exact_integral_bound_samples": 0
+    }
+  ],
+  "sha256": {
+    "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/mdp/stationary/velocity_pi.py": "695890403bc4a483297782f6b84f535d69a1af5e49e5ddb76c2542a5aac3a1e6",
+    "mujoco_sim2sim/src/newbike_mujoco_v2/control.py": "6e3affa1e2865a4d886751593515810d51eeea10dd4f681d4cdffd493bfb6a5c"
+  },
+  "scope": "Controller-law/state comparison only; no MuJoCo/Isaac simulation or hardware",
+  "numpy_version": "2.2.6",
+  "torch_version": "2.12.1+cu130"
+}

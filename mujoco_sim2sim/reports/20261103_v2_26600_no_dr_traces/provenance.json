@@ -1,0 +1,15 @@
+{
+  "input_sha256": {
+    "mujoco_sim2sim/reports/20261103_v2_parallel_backend/validation/no_dr/202611032149_26600_no_dr_evaluation.npz": "ba0e296a9c697db1e6e003d6781596e1474ff3c74cdda11aaf9bdbfb3e1dea4f",
+    "mujoco_sim2sim/reports/20261103_v2_parallel_backend/validation/no_dr/202611032149_26600_no_dr_metadata.json": "4afc9f8023484eddbd655f4fcb4a1f3eaa896bd28cc1351c51d45d4ced4c6638",
+    "mujoco_sim2sim/reports/20261103_v2_parallel_backend/validation/no_dr/202611032149_26600_no_dr_summary.json": "7e669fa6c05589e6fbcb84bd3e502da1097f53a5bec6ab0b90806d1c53bb711d",
+    "mujoco_sim2sim/reports/20261103_v2_parallel_backend/validation/no_dr/202611032149_26600_no_dr_summary.log": "6e0d647827a204b27427fdb201ce2faa4b6d249e14c1e90b0de66e5ec302a291"
+  },
+  "repository_head": "93fd7ce625a107adf727e4b4afda24081f0bdfe0",
+  "command": "python3 -B analyze.py",
+  "cwd": "/home/lmbike/trackstand_rl/mujoco_sim2sim/reports/20261103_v2_26600_no_dr_traces",
+  "numpy_version": "2.2.6",
+  "matplotlib_version": "3.10.9",
+  "scope": "Offline plots of existing raw capture; no simulator run",
+  "earlier_style_reference": "isaaclab_train/reports/20261025_2500_dr_comparison/analyze.py"
+}

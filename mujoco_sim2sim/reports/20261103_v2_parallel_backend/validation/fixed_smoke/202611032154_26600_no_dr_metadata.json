@@ -1,0 +1,64 @@
+{
+  "task": "Trackstand-Balance-v2",
+  "policy": "/home/lmbike/trackstand_rl/isaaclab_train/logs/rsl_rl/trackstand_rl_v2_rsl/2026-11-02_21-49-32/model_26600.pt",
+  "policy_backend": "torch",
+  "policy_contract": {
+    "path": "/home/lmbike/trackstand_rl/isaaclab_train/logs/rsl_rl/trackstand_rl_v2_rsl/2026-11-02_21-49-32/params/env.yaml",
+    "sha256": "0652f885bcf6b9033f2027c6ccc62901564714d587aa03d9b5ae7d52e7cb8b76",
+    "task": "Trackstand-Balance-v2",
+    "drive_action": "velocity"
+  },
+  "policy_sha256": "5733e489490c6688c45085970fef46b62d1fe96a90fb7e5035c3b0de5699af7b",
+  "arguments": {
+    "mjcf": "/home/lmbike/trackstand_rl/mujoco_sim2sim/models/trackstand_rl_0916_bike/trackstand_rl_0916.xml",
+    "pt": null,
+    "onnx": null,
+    "policy_config": null,
+    "num_envs": 1,
+    "num_steps": 7,
+    "episodes": null,
+    "max_policy_steps": null,
+    "steps": 1500,
+    "seed": 42,
+    "physics_hz": 1200.0,
+    "dr": false,
+    "pure_survival": false,
+    "velocity_limit_mode": "project",
+    "base_inertia": 1.0,
+    "output_dir": "/home/lmbike/trackstand_rl/mujoco_sim2sim/reports/20261103_v2_parallel_backend/validation/fixed_smoke"
+  },
+  "caller_cwd": "/home/lmbike/trackstand_rl/mujoco_sim2sim/reports/20261103_v2_parallel_backend/validation",
+  "runtime_dir": "/home/lmbike/trackstand_rl/mujoco_sim2sim/reports/20261103_v2_parallel_backend/validation/fixed_smoke/202611032154_26600_no_dr_runtime",
+  "completed_policy_steps": 7,
+  "environment_transitions": 7,
+  "wall_time_s": 0.2136431820690632,
+  "policy_hz": 50.0,
+  "physics_hz": 1200.0,
+  "pd_hz": 1200.0,
+  "integral_hz": 200.0,
+  "decimation": 24,
+  "sample_design": "fixed policy-step budget",
+  "episode_quotas": null,
+  "completed_per_env": [
+    0
+  ],
+  "in_progress_lengths_steps": [
+    7
+  ],
+  "termination_names": [
+    "time_out",
+    "fallen",
+    "diverged",
+    "drifted",
+    "yaw_deviation",
+    "wheel_net"
+  ],
+  "episodes": [],
+  "limitations": [
+    "MuJoCo/PhysX contact, passive friction and solver dynamics differ",
+    "project hard velocity cap is stricter than PhysX soft constraint; none omits it",
+    "MuJoCo has one sliding coefficient; dynamic draw is recorded but not applied"
+  ],
+  "completed": true,
+  "stop_reason": "requested_budget_complete"
+}

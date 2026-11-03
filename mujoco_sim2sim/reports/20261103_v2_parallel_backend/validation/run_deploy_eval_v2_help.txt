@@ -1,0 +1,42 @@
+usage: run_deploy_eval_v2 [-h] [--mjcf MJCF] [--pt PT] [--onnx ONNX]
+                          [--policy_config POLICY_CONFIG]
+                          [--num_envs NUM_ENVS] [--num_steps NUM_STEPS]
+                          [--episodes EPISODES]
+                          [--max_policy_steps MAX_POLICY_STEPS]
+                          [--steps STEPS] [--seed SEED]
+                          [--physics_hz PHYSICS_HZ] [--dr] [--pure_survival]
+                          [--velocity_limit_mode {project,none}]
+                          [--base_inertia BASE_INERTIA]
+                          [--output_dir OUTPUT_DIR]
+
+Independent headless Trackstand-Balance-v2 evaluation (rear velocity PI).
+
+options:
+  -h, --help            show this help message and exit
+  --mjcf MJCF, --scene MJCF
+  --pt PT
+  --onnx ONNX
+  --policy_config POLICY_CONFIG
+                        Saved v2 env.yaml or matching JSON sidecar; discovered
+                        beside policy by default
+  --num_envs NUM_ENVS
+  --num_steps NUM_STEPS
+                        Policy steps per env in fixed-duration mode; ignored
+                        with --episodes
+  --episodes EPISODES   Exact total completions with fixed per-env quotas,
+                        rather than first-N-completions bias
+  --max_policy_steps MAX_POLICY_STEPS
+                        Finite global loop budget; defaults to num_steps or
+                        max episode quota * horizon
+  --steps STEPS         Episode horizon; default 1500 = 30 s, lower values are
+                        diagnostic
+  --seed SEED
+  --physics_hz PHYSICS_HZ
+                        Physics/PD Hz (default 1200); positive multiple of
+                        200; policy=50, I=200 Hz
+  --dr
+  --pure_survival
+  --velocity_limit_mode {project,none}
+  --base_inertia BASE_INERTIA
+                        Diagnostic override; keep 1 for reference
+  --output_dir OUTPUT_DIR

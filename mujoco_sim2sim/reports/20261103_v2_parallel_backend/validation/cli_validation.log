@@ -1,0 +1,37 @@
+/home/lmbike/.local/lib/python3.10/site-packages/matplotlib/projections/__init__.py:63: UserWarning: Unable to import Axes3D. This may be due to multiple versions of Matplotlib being installed (e.g. as a system package and as a pip package). As a result, the 3D projection is not available.
+  warnings.warn("Unable to import Axes3D. This may be due to multiple versions of "
+{
+  "quota": {
+    "metadata": "/home/lmbike/trackstand_rl/mujoco_sim2sim/reports/20261103_v2_parallel_backend/validation/quota_smoke/202611032154_26600_no_dr_metadata.json",
+    "episodes": 5,
+    "quota": [
+      3,
+      2
+    ],
+    "transitions": 15
+  },
+  "partial_budget": {
+    "metadata": "/home/lmbike/trackstand_rl/mujoco_sim2sim/reports/20261103_v2_parallel_backend/validation/partial_smoke/202611032154_26600_no_dr_metadata.json",
+    "status": 2,
+    "unfinished_lengths": [
+      1,
+      1
+    ]
+  },
+  "fixed_budget": {
+    "metadata": "/home/lmbike/trackstand_rl/mujoco_sim2sim/reports/20261103_v2_parallel_backend/validation/fixed_smoke/202611032154_26600_no_dr_metadata.json",
+    "transitions": 7,
+    "unfinished_length": 7
+  },
+  "viewer": {
+    "environments": 2,
+    "policy_steps": 3,
+    "real_GUI_opened": false,
+    "physics_and_scene_assembly_executed": true
+  },
+  "passed": true,
+  "original_working_directory_restored": true,
+  "help_checks": 2,
+  "gpu": false,
+  "hardware": false
+}

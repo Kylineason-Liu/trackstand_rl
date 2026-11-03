@@ -1,0 +1,35 @@
+test_balanced_episode_quotas (test_v2_contract.PolicyAndSamplingTests) ... /home/lmbike/.local/lib/python3.10/site-packages/matplotlib/projections/__init__.py:63: UserWarning: Unable to import Axes3D. This may be due to multiple versions of Matplotlib being installed (e.g. as a system package and as a pip package). As a result, the 3D projection is not available.
+  warnings.warn("Unable to import Axes3D. This may be due to multiple versions of "
+ok
+test_current_v2_saved_metadata_accepted (test_v2_contract.PolicyAndSamplingTests) ... ok
+test_export_sidecar_and_hash_validation (test_v2_contract.PolicyAndSamplingTests) ... ok
+test_v1_same_shape_metadata_rejected (test_v2_contract.PolicyAndSamplingTests) ... ok
+test_24_pd_and_four_integral_ticks_per_target (test_v2_contract.V2EnvironmentTests) ... ok
+test_default_and_alternate_frequencies (test_v2_contract.V2EnvironmentTests) ... ok
+test_disabled_motors_submit_zero_despite_position_or_speed_request (test_v2_contract.V2EnvironmentTests) ... ok
+test_dr_keeps_both_controller_gains_exact_and_resets_independently (test_v2_contract.V2EnvironmentTests) ... ok
+test_invalid_pose_pi_and_counter_detected_and_reward_finite (test_v2_contract.V2EnvironmentTests) ... ok
+test_passive_losses_are_separate_from_velocity_p (test_v2_contract.V2EnvironmentTests) ... ok
+test_rear_observation_branch_is_separate_from_net_rotation (test_v2_contract.V2EnvironmentTests) ... ok
+test_reset_clears_held_commands_integral_and_rotation_reference (test_v2_contract.V2EnvironmentTests) ... ok
+test_same_step_wheel_net_crossing_from_position_not_endpoint_velocity (test_v2_contract.V2EnvironmentTests) ... ok
+test_velocity_scale_and_post_pi_effort_clip (test_v2_contract.V2EnvironmentTests) ... FAIL
+test_clamping_corrects_internal_error_and_unwinds (test_v2_contract.VelocityIntegralTests) ... ok
+test_first_tick_primes_without_applying_rectangular_impulse (test_v2_contract.VelocityIntegralTests) ... ok
+test_invalid_gain (test_v2_contract.VelocityIntegralTests) ... ok
+test_reset_and_zero_gain (test_v2_contract.VelocityIntegralTests) ... ok
+test_saturation_freezes_worsening_increment_but_advances_error (test_v2_contract.VelocityIntegralTests) ... ok
+test_target_change_retains_memory (test_v2_contract.VelocityIntegralTests) ... ok
+
+======================================================================
+FAIL: test_velocity_scale_and_post_pi_effort_clip (test_v2_contract.V2EnvironmentTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/lmbike/trackstand_rl/mujoco_sim2sim/tests/test_v2_contract.py", line 121, in test_velocity_scale_and_post_pi_effort_clip
+    self.assertEqual(env._drive_cmd, 61.6)
+AssertionError: 61.599998474121094 != 61.6
+
+----------------------------------------------------------------------
+Ran 20 tests in 0.571s
+
+FAILED (failures=1)

@@ -1,0 +1,240 @@
+{
+  "task": "Trackstand-Balance-v2",
+  "policy": "/home/lmbike/trackstand_rl/isaaclab_train/logs/rsl_rl/trackstand_rl_v2_rsl/2026-11-02_21-49-32/model_26600.pt",
+  "policy_backend": "torch",
+  "policy_contract": {
+    "path": "/home/lmbike/trackstand_rl/isaaclab_train/logs/rsl_rl/trackstand_rl_v2_rsl/2026-11-02_21-49-32/params/env.yaml",
+    "sha256": "0652f885bcf6b9033f2027c6ccc62901564714d587aa03d9b5ae7d52e7cb8b76",
+    "task": "Trackstand-Balance-v2",
+    "drive_action": "velocity"
+  },
+  "policy_sha256": "5733e489490c6688c45085970fef46b62d1fe96a90fb7e5035c3b0de5699af7b",
+  "arguments": {
+    "mjcf": "/home/lmbike/trackstand_rl/mujoco_sim2sim/models/trackstand_rl_0916_bike/trackstand_rl_0916.xml",
+    "pt": null,
+    "onnx": null,
+    "policy_config": null,
+    "num_envs": 2,
+    "num_steps": 3000,
+    "episodes": 5,
+    "max_policy_steps": null,
+    "steps": 3,
+    "seed": 42,
+    "physics_hz": 1200.0,
+    "dr": false,
+    "pure_survival": false,
+    "velocity_limit_mode": "project",
+    "base_inertia": 1.0,
+    "output_dir": "/home/lmbike/trackstand_rl/mujoco_sim2sim/reports/20261103_v2_parallel_backend/validation/quota_smoke"
+  },
+  "caller_cwd": "/home/lmbike/trackstand_rl/mujoco_sim2sim/reports/20261103_v2_parallel_backend/validation",
+  "runtime_dir": "/home/lmbike/trackstand_rl/mujoco_sim2sim/reports/20261103_v2_parallel_backend/validation/quota_smoke/202611032154_26600_no_dr_runtime",
+  "completed_policy_steps": 9,
+  "environment_transitions": 15,
+  "wall_time_s": 0.25338819716125727,
+  "policy_hz": 50.0,
+  "physics_hz": 1200.0,
+  "pd_hz": 1200.0,
+  "integral_hz": 200.0,
+  "decimation": 24,
+  "sample_design": "fixed per-environment episode quotas",
+  "episode_quotas": [
+    3,
+    2
+  ],
+  "completed_per_env": [
+    3,
+    2
+  ],
+  "in_progress_lengths_steps": [
+    0,
+    0
+  ],
+  "termination_names": [
+    "time_out",
+    "fallen",
+    "diverged",
+    "drifted",
+    "yaw_deviation",
+    "wheel_net"
+  ],
+  "episodes": [
+    {
+      "env_id": 0,
+      "episode_index": 0,
+      "end_policy_step": 3,
+      "sampled_dr": null,
+      "length": 3,
+      "timeout": true,
+      "death": null,
+      "terminations": {
+        "time_out": true,
+        "fallen": false,
+        "diverged": false,
+        "drifted": false,
+        "yaw_deviation": false,
+        "wheel_net": false
+      },
+      "reward": 0.41936324536800385,
+      "roll_sq": 0.0007190140839888762,
+      "roll_max": 0.01853680671450192,
+      "drift_max": 0.0011560615840251326,
+      "drift_sum": 0.0022624594823076652,
+      "yaw_max": 1.100676800553199,
+      "yaw_sum": 2.7168257777068234,
+      "turn": 1.1006768005531988,
+      "rolls": [
+        0.010185497886390088,
+        0.016482005752468838,
+        0.01853680671450192
+      ],
+      "drive_speed_sum": 0.7075078243666829,
+      "drive_speed_max": 0.26682245577623354,
+      "steer_speed_sum": 12.877002686662767,
+      "steer_speed_max": 7.55599719797721
+    },
+    {
+      "env_id": 1,
+      "episode_index": 0,
+      "end_policy_step": 3,
+      "sampled_dr": null,
+      "length": 3,
+      "timeout": true,
+      "death": null,
+      "terminations": {
+        "time_out": true,
+        "fallen": false,
+        "diverged": false,
+        "drifted": false,
+        "yaw_deviation": false,
+        "wheel_net": false
+      },
+      "reward": 0.4193660020828247,
+      "roll_sq": 0.0007159298467676175,
+      "roll_max": 0.018448480859065537,
+      "drift_max": 0.0012793287496077781,
+      "drift_sum": 0.0024872404610554273,
+      "yaw_max": 1.096832442384516,
+      "yaw_sum": 2.714612864074488,
+      "turn": 1.0968324423845162,
+      "rolls": [
+        0.01019122486081312,
+        0.016484002444693297,
+        0.018448480859065537
+      ],
+      "drive_speed_sum": 0.7479893437707799,
+      "drive_speed_max": 0.29914738932746,
+      "steer_speed_sum": 12.90223814823359,
+      "steer_speed_max": 7.560793603677308
+    },
+    {
+      "env_id": 0,
+      "episode_index": 1,
+      "end_policy_step": 6,
+      "sampled_dr": null,
+      "length": 3,
+      "timeout": true,
+      "death": null,
+      "terminations": {
+        "time_out": true,
+        "fallen": false,
+        "diverged": false,
+        "drifted": false,
+        "yaw_deviation": false,
+        "wheel_net": false
+      },
+      "reward": 0.4193679541349411,
+      "roll_sq": 0.0007190969751852043,
+      "roll_max": 0.018476641793953294,
+      "drift_max": 0.001331993714752929,
+      "drift_sum": 0.0026455151561708993,
+      "yaw_max": 1.101426128270735,
+      "yaw_sum": 2.7263147779790504,
+      "turn": 1.1014261282707352,
+      "rolls": [
+        0.010220830091709791,
+        0.01653013355782531,
+        0.018476641793953294
+      ],
+      "drive_speed_sum": 0.6791003145760013,
+      "drive_speed_max": 0.30181061966366574,
+      "steer_speed_sum": 12.916287944968346,
+      "steer_speed_max": 7.585512972441649
+    },
+    {
+      "env_id": 1,
+      "episode_index": 1,
+      "end_policy_step": 6,
+      "sampled_dr": null,
+      "length": 3,
+      "timeout": true,
+      "death": null,
+      "terminations": {
+        "time_out": true,
+        "fallen": false,
+        "diverged": false,
+        "drifted": false,
+        "yaw_deviation": false,
+        "wheel_net": false
+      },
+      "reward": 0.41936495900154114,
+      "roll_sq": 0.0007183936380485154,
+      "roll_max": 0.018503915742006077,
+      "drift_max": 0.0012300972811149983,
+      "drift_sum": 0.0024327340564171637,
+      "yaw_max": 1.1004580036466953,
+      "yaw_sum": 2.7197863106648317,
+      "turn": 1.1004580036466953,
+      "rolls": [
+        0.010202066297509336,
+        0.016489893375109473,
+        0.018503915742006077
+      ],
+      "drive_speed_sum": 0.6827182732803917,
+      "drive_speed_max": 0.2825006857719494,
+      "steer_speed_sum": 12.888326471368842,
+      "steer_speed_max": 7.56985630960483
+    },
+    {
+      "env_id": 0,
+      "episode_index": 2,
+      "end_policy_step": 9,
+      "sampled_dr": null,
+      "length": 3,
+      "timeout": true,
+      "death": null,
+      "terminations": {
+        "time_out": true,
+        "fallen": false,
+        "diverged": false,
+        "drifted": false,
+        "yaw_deviation": false,
+        "wheel_net": false
+      },
+      "reward": 0.419366717338562,
+      "roll_sq": 0.0007195956839582392,
+      "roll_max": 0.018473110181196208,
+      "drift_max": 0.0013706636670689494,
+      "drift_sum": 0.002713492472224185,
+      "yaw_max": 1.1018434861451325,
+      "yaw_sum": 2.7279564685358553,
+      "turn": 1.1018434861451327,
+      "rolls": [
+        0.010218895015681522,
+        0.0165503495083972,
+        0.018473110181196208
+      ],
+      "drive_speed_sum": 0.6974134698565515,
+      "drive_speed_max": 0.3180281025042973,
+      "steer_speed_sum": 12.935263605298786,
+      "steer_speed_max": 7.583832861594207
+    }
+  ],
+  "limitations": [
+    "MuJoCo/PhysX contact, passive friction and solver dynamics differ",
+    "project hard velocity cap is stricter than PhysX soft constraint; none omits it",
+    "MuJoCo has one sliding coefficient; dynamic draw is recorded but not applied"
+  ],
+  "completed": true,
+  "stop_reason": "requested_budget_complete"
+}

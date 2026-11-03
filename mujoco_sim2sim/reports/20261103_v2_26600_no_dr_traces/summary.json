@@ -1,0 +1,105 @@
+{
+  "conditions": {
+    "task": "Trackstand-Balance-v2",
+    "policy": "/home/lmbike/trackstand_rl/isaaclab_train/logs/rsl_rl/trackstand_rl_v2_rsl/2026-11-02_21-49-32/model_26600.pt",
+    "policy_sha256": "5733e489490c6688c45085970fef46b62d1fe96a90fb7e5035c3b0de5699af7b",
+    "sample_design": "fixed per-environment episode quotas",
+    "policy_hz": 50.0,
+    "physics_hz": 1200.0,
+    "pd_hz": 1200.0,
+    "integral_hz": 200.0
+  },
+  "seed": 42,
+  "dr": false,
+  "native_evaluation_summary": {
+    "environments": 64,
+    "completed_episodes": 64,
+    "mean_episode_length_steps": 1500.0,
+    "mean_episode_length_s": 30.0,
+    "min_episode_length_s": 30.0,
+    "max_episode_length_s": 30.0,
+    "std_episode_length_steps": 0.0,
+    "mean_reward": 205.55371618783101,
+    "timeout_rate": 1.0,
+    "termination_counts": {
+      "time_out": 64,
+      "fallen": 0,
+      "diverged": 0,
+      "drifted": 0,
+      "yaw_deviation": 0,
+      "wheel_net": 0
+    },
+    "roll_rms_deg": 0.4607563037924239,
+    "max_roll_deg": 1.2740508924588452,
+    "mean_worst_lean_deg": 1.2397480683616255,
+    "mean_drift_m": 0.09630991094530958,
+    "max_drift_m": 0.14448483882999566,
+    "mean_yaw_deg": 18.423068890657355,
+    "max_yaw_deg": 29.417679708042797,
+    "mean_turn_deg": 102.33912894217272,
+    "mean_drive_speed_rad_s": 0.7411186649259764,
+    "max_drive_speed_rad_s": 2.084747831026785,
+    "mean_steer_speed_rad_s": 0.5606627585378305,
+    "max_steer_speed_rad_s": 7.591041741003886,
+    "policy_hz": 50.0,
+    "physics_hz": 1200.0,
+    "pd_hz": 1200.0,
+    "integral_hz": 200.0,
+    "decimation": 24
+  },
+  "capture_checks": {
+    "maximum_reconstructed_integral_error_nm": 0.0,
+    "policy_samples": 96000,
+    "physics_samples": 2304000,
+    "unique_recorded_episodes": 64,
+    "completed_timeouts": 64,
+    "actual_sampled_spawn_times_s": [
+      0.0
+    ],
+    "terminal_reset_s_without_following_samples": 30.0
+  },
+  "env0_end_interval_tracking": {
+    "env_id": 0,
+    "episode_length_s": 30.0,
+    "time_out": true,
+    "steering_end_interval_rmse_rad": 0.016313748230655175,
+    "drive_end_interval_rmse_rad_s": 0.5497687330296849,
+    "max_abs_steering_torque_nm": 3.8557225465774536,
+    "max_abs_rear_torque_nm": 0.6432394043275325,
+    "steering_torque_clip_fraction": 0.0,
+    "rear_torque_clip_fraction": 0.0
+  },
+  "figures": [
+    "mujoco_demand_vs_actuation",
+    "mujoco_demand_vs_actuation_startup",
+    "mujoco_demand_vs_actuation_detail",
+    "mujoco_motor_torque_flow",
+    "mujoco_motor_torque_flow_startup",
+    "mujoco_motor_torque_flow_detail",
+    "observation_traces",
+    "observation_traces_startup",
+    "observation_traces_detail",
+    "raw_policy_outputs",
+    "motor_speeds",
+    "all64_response_envelope"
+  ],
+  "source_inputs_sha256": {
+    "mujoco_sim2sim/reports/20261103_v2_parallel_backend/validation/no_dr/202611032149_26600_no_dr_evaluation.npz": "ba0e296a9c697db1e6e003d6781596e1474ff3c74cdda11aaf9bdbfb3e1dea4f",
+    "mujoco_sim2sim/reports/20261103_v2_parallel_backend/validation/no_dr/202611032149_26600_no_dr_metadata.json": "4afc9f8023484eddbd655f4fcb4a1f3eaa896bd28cc1351c51d45d4ced4c6638",
+    "mujoco_sim2sim/reports/20261103_v2_parallel_backend/validation/no_dr/202611032149_26600_no_dr_summary.json": "7e669fa6c05589e6fbcb84bd3e502da1097f53a5bec6ab0b90806d1c53bb711d",
+    "mujoco_sim2sim/reports/20261103_v2_parallel_backend/validation/no_dr/202611032149_26600_no_dr_summary.log": "6e0d647827a204b27427fdb201ce2faa4b6d249e14c1e90b0de66e5ec302a291"
+  },
+  "plotting_does_not_run_simulator": true,
+  "unavailable": [
+    "physics-rate steering joint position/velocity",
+    "solver net joint-axis effort",
+    "body pose/velocity histories beyond the eleven recorded policy observations"
+  ],
+  "time_semantics": {
+    "policy_inputs_actions": "20 ms interval starts",
+    "steering_motion": "Recorded 50-Hz interval-end states, plus measured initial pose",
+    "rear_motion": "Recorded1200-Hz pre-physics feedback, final50-Hz endpoint appended",
+    "torque": "Computed at physics start; actuator-force snapshot recorded after mj_step",
+    "no_latency_inference": "Substep timestamp offsets are recording boundaries, not measured motor delay"
+  }
+}

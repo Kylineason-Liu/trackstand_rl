@@ -1,0 +1,49 @@
+{
+  "passed": true,
+  "checkpoint": "/home/lmbike/trackstand_rl/isaaclab_train/logs/rsl_rl/trackstand_rl_v2_rsl/2026-11-02_21-49-32/model_26600.pt",
+  "checkpoint_sha256": "5733e489490c6688c45085970fef46b62d1fe96a90fb7e5035c3b0de5699af7b",
+  "architecture": [
+    11,
+    32,
+    32,
+    4
+  ],
+  "activation": "ELU",
+  "deterministic_transform": "exact Isaac BetaMean",
+  "tested_observations": 1024,
+  "maximum_absolute_action_error": 0.0,
+  "actual_action_minimum": [
+    -0.999947726726532,
+    -0.9998584389686584
+  ],
+  "actual_action_maximum": [
+    0.998937726020813,
+    0.9999716281890869
+  ],
+  "metadata": {
+    "path": "/home/lmbike/trackstand_rl/isaaclab_train/logs/rsl_rl/trackstand_rl_v2_rsl/2026-11-02_21-49-32/params/env.yaml",
+    "sha256": "0652f885bcf6b9033f2027c6ccc62901564714d587aa03d9b5ae7d52e7cb8b76",
+    "task": "Trackstand-Balance-v2",
+    "drive_action": "velocity"
+  },
+  "rejected_cases": [
+    {
+      "case": "v1 torque metadata",
+      "message": "Checkpoint is not a v2 velocity-integral policy (v1 torque is incompatible)"
+    },
+    {
+      "case": "nonfinite",
+      "message": "Expected a finite nonempty (N,11) v2 observation batch"
+    },
+    {
+      "case": "wrong input dimension",
+      "message": "Expected a finite nonempty (N,11) v2 observation batch"
+    }
+  ],
+  "scope": "CPU inference and contract checks only; no physics or hardware",
+  "source_sha256": {
+    "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/agents/beta_distribution.py": "aa3d98c041b8e785e60d795aaec8d3d9a10cc8688384e223ac906a54dfe899f4",
+    "mujoco_sim2sim/src/newbike_mujoco_v2/policy.py": "b5038fcdaa33595411f2f6f151f55ab51e9be5a5923ba84053e9baaf17b67fd0",
+    "mujoco_sim2sim/src/newbike_mujoco_v2/policy_contract.py": "a52f50c434cd074ebe3766ab4762c1979c8d310d76a8708d83604143c91afc73"
+  }
+}

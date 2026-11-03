@@ -1,0 +1,81 @@
+{
+  "passed": true,
+  "runs": {
+    "no_dr": {
+      "metadata": "mujoco_sim2sim/reports/20261103_v2_parallel_backend/validation/no_dr/202611032149_26600_no_dr_metadata.json",
+      "completed_episodes": 64,
+      "policy_steps": 1500,
+      "environment_transitions": 96000,
+      "physics_steps": 2304000,
+      "integral_ticks": 384000,
+      "mean_episode_seconds": 30.0,
+      "termination_counts": {
+        "time_out": 64,
+        "fallen": 0,
+        "diverged": 0,
+        "drifted": 0,
+        "yaw_deviation": 0,
+        "wheel_net": 0
+      },
+      "mean_roll_rms_deg": 0.4607563037924239,
+      "maximum_target_scale_error": 0.0,
+      "maximum_P_plus_I_error": 0.0,
+      "maximum_submitted_torque_error": 0.0,
+      "maximum_integral_reconstruction_error": 0.0,
+      "maximum_steering_slew_error": 0.0,
+      "max_motor_torque_nm": [
+        3.8726115226745605,
+        0.8224484320943144
+      ],
+      "max_absolute_integral_nm": 0.2778597135341287
+    },
+    "dr_smoke": {
+      "metadata": "mujoco_sim2sim/reports/20261103_v2_parallel_backend/validation/dr_smoke/202611032151_26600_dr_metadata.json",
+      "completed_episodes": 4,
+      "policy_steps": 106,
+      "environment_transitions": 215,
+      "physics_steps": 5160,
+      "integral_ticks": 860,
+      "mean_episode_seconds": 1.075,
+      "termination_counts": {
+        "time_out": 0,
+        "fallen": 3,
+        "diverged": 0,
+        "drifted": 0,
+        "yaw_deviation": 1,
+        "wheel_net": 0
+      },
+      "mean_roll_rms_deg": 8.130259634372878,
+      "maximum_target_scale_error": 0.0,
+      "maximum_P_plus_I_error": 0.0,
+      "maximum_submitted_torque_error": 0.0,
+      "maximum_integral_reconstruction_error": 0.0,
+      "maximum_steering_slew_error": 0.0,
+      "max_motor_torque_nm": [
+        4.195003509521484,
+        2.6450325965881345
+      ],
+      "max_absolute_integral_nm": 0.4335239800171032
+    }
+  },
+  "original_mujoco_files_unchanged": 568,
+  "original_bytes_preserved": 502647216,
+  "new_production_and_test_sha256": {
+    "mujoco_sim2sim/scripts/run_deploy_eval_v2.py": "d1808b5b1b9d8da2aeb6d5627f3d15e68c86bd0ec9c4901a9ba120def0aa0019",
+    "mujoco_sim2sim/scripts/run_deploy_viewer_v2.py": "628908155a02d5f3d633cd9a06fc433c9fc9467c89ccba7a61a3e0eae1b5df8f",
+    "mujoco_sim2sim/src/newbike_mujoco_v2/__init__.py": "f989c69b1fe607e854f805d8ee8b3f8d0c177c071ac2f9545a5a1e4db7dc1736",
+    "mujoco_sim2sim/src/newbike_mujoco_v2/contract.py": "b6958e648c79c62111a4bc54665e45609dfe426be0deb7e318169839c2eac72d",
+    "mujoco_sim2sim/src/newbike_mujoco_v2/control.py": "6e3affa1e2865a4d886751593515810d51eeea10dd4f681d4cdffd493bfb6a5c",
+    "mujoco_sim2sim/src/newbike_mujoco_v2/env.py": "3cbbd6d33496026e4f29e7895a0151a5dec551d92525683653b6b21071533b12",
+    "mujoco_sim2sim/src/newbike_mujoco_v2/model.py": "6de0901a92a05a1c382ba46573988725376a023be5461f4320522eec5e00f18e",
+    "mujoco_sim2sim/src/newbike_mujoco_v2/policy.py": "b5038fcdaa33595411f2f6f151f55ab51e9be5a5923ba84053e9baaf17b67fd0",
+    "mujoco_sim2sim/src/newbike_mujoco_v2/policy_contract.py": "a52f50c434cd074ebe3766ab4762c1979c8d310d76a8708d83604143c91afc73",
+    "mujoco_sim2sim/src/newbike_mujoco_v2/reporting.py": "e1766bf2ab4dc7e38c61459cf11031c0b6968c045a14c1b5a1d0a172083406a0",
+    "mujoco_sim2sim/src/newbike_mujoco_v2/runtime.py": "9c2704650a07d3453b64c7b3f7f202414ad85b2c5a29524695c22397d57b3fd2",
+    "mujoco_sim2sim/src/newbike_mujoco_v2/viewer_envs.py": "79c2aa500d817b8c1f0905a437fb81e29cd478256b25461e40fdfc77a6e17257",
+    "mujoco_sim2sim/tests/test_v2_contract.py": "3c7a4083579e1012d6eec3bbf40dba36e0b92942427f3d7b705ad254d2c09941",
+    "mujoco_sim2sim/tests/test_v2_runtime.py": "28f4bbf0c79fafb590f3be93d796103119cdf1defc403179b105aed5a6146d66"
+  },
+  "gpu_used": false,
+  "hardware_used": false
+}

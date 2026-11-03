@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "independent_panel_count": 885,
+  "csv_policy_rows": 1500,
+  "csv_physics_rows": 36000,
+  "csv_observation_extrema_rows": 704,
+  "csv_columns_checked": 33,
+  "actual_input_policy_observation_samples": 96000,
+  "actual_physics_samples": 2304000,
+  "figure_sets_checked": 12,
+  "large_pdf_pages": {
+    "all64_demand_vs_actuation": 64,
+    "all64_observation_traces": 64
+  },
+  "local_html_links_checked": 51,
+  "protected_input_files_hash_identical": 4,
+  "no_simulation_or_hardware": true,
+  "verified_source": "Original NPZ and separate metadata/CSV/PDF/SVG checks, without importing analyze.py",
+  "manually_reviewed_pngs": [
+    "mujoco_demand_vs_actuation.png",
+    "mujoco_motor_torque_flow_startup.png",
+    "observation_traces.png"
+  ]
+}

@@ -1,0 +1,10 @@
+[INFO] policy=50 Hz, physics/PD=1200 Hz (24 substeps/policy step), rear integral=200 Hz
+[INFO] environments: 2; independent seeds 42..43; CPU physics, batched policy inference
+[INFO] domain randomization: off
+[WARN] velocity limit mode=project; neither mode reproduces PhysX soft constraints
+[INFO] task=deploy_sim  policy backend: torch
+[INFO]   policy: /home/lmbike/trackstand_rl/isaaclab_train/logs/rsl_rl/trackstand_rl_v2_rsl/2026-11-02_21-49-32/model_26600.pt
+[INFO] terminations: ['diverged', 'drifted', 'fallen', 'time_out', 'wheel_net', 'yaw_deviation']
+[INFO] viewer open — close the window (or press Esc) to quit
+[INFO] episode length distribution written: /home/lmbike/trackstand_rl/mujoco_sim2sim/reports/20261103_v2_parallel_backend/validation/viewer_smoke/202611032154_26600_no_dr_epi_len_histogram.png / .csv
+[INFO] all-environment torque profile written: /home/lmbike/trackstand_rl/mujoco_sim2sim/reports/20261103_v2_parallel_backend/validation/viewer_smoke/202611032154_26600_no_dr_torque.png / .npz

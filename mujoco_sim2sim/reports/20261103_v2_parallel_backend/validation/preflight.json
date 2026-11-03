@@ -1,0 +1,86 @@
+{
+  "stage": "preflight; implementation and runtime checks pending",
+  "repository_head": "93fd7ce625a107adf727e4b4afda24081f0bdfe0",
+  "repository_status": " m ros2_ws\n m \"tsinghua_bike_project/assign_2_Hardwares/assign_2_Hardwares/1.IMU/Supplementary Materials/\\346\\272\\220\\347\\240\\201/ROS\\345\\272\\224\\347\\224\\250/ROS2/yahboomcar_ws/src/robot_localization\"\n",
+  "python_executable": "/usr/bin/python3",
+  "reference_sha256": {
+    "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/trackstand_bike/trackstand_rl_env_cfg_v2.py": "d5cc244c6963a46752730d60540efc6f49d9b2af7adab6b2ad1a20997c9692b0",
+    "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/trackstand_bike/trackstand_rl_env_v2.py": "21d6f11563a40a475b184681bf094b4f5ab7d18eb58010bf8fa9bc51008a814f",
+    "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/mdp/stationary/velocity_pi.py": "695890403bc4a483297782f6b84f535d69a1af5e49e5ddb76c2542a5aac3a1e6",
+    "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/mdp/stationary/wheel_net.py": "b8883b44d7e49c2f6c87793c596cc63391862f38fa94c402120ee2852c8ef9ec",
+    "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/mdp/stationary/numerics.py": "44574f7535a461da69ae8c933de8a3ccbe18f4397bb5b29a5aef3340217abdc3",
+    "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/trackstand_bike/trackstand_rl_env_cfg_v1.py": "bd67c70047e27d8943ae0127ad7f181905ca432dda152e4b1c64162495e1459e",
+    "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/mdp/stationary/observations.py": "56672d0589f1d38caf47e395f5f7c0e3e4e0462c497b7ad781f8ed8e4e298608",
+    "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/agents/beta_distribution.py": "aa3d98c041b8e785e60d795aaec8d3d9a10cc8688384e223ac906a54dfe899f4",
+    "isaaclab_train/logs/rsl_rl/trackstand_rl_v2_rsl/2026-11-02_21-49-32/model_26600.pt": "5733e489490c6688c45085970fef46b62d1fe96a90fb7e5035c3b0de5699af7b",
+    "isaaclab_train/logs/rsl_rl/trackstand_rl_v2_rsl/2026-11-02_21-49-32/params/env.yaml": "0652f885bcf6b9033f2027c6ccc62901564714d587aa03d9b5ae7d52e7cb8b76",
+    "isaaclab_train/logs/rsl_rl/trackstand_rl_v2_rsl/2026-11-02_21-49-32/params/agent.yaml": "c14cb9e1b6b3414497928cf39dc9891603da0ff777aecdb86b5404c68c891f27",
+    "mujoco_sim2sim/models/trackstand_rl_0916_bike/trackstand_rl_0916.xml": "6f839f2c214da9b743cbd310a72d13ed98d383e8ac4c1d1be609eb89cb003476"
+  },
+  "saved_env": {
+    "domain_randomization": "false",
+    "sim_dt": "0.0008333333333333334",
+    "decimation": "24",
+    "drive_action": {
+      "class_type": "source.trackstand_rl.trackstand_rl.tasks.manager_based.trackstand.mdp.stationary.velocity_pi:IntegralJointVelocityAction",
+      "asset_name": "robot",
+      "debug_vis": "false",
+      "clip": {
+        "rear_wheel_joint": [
+          "-61.6",
+          "61.6"
+        ]
+      },
+      "joint_names": [
+        "rear_wheel_joint"
+      ],
+      "scale": "61.6",
+      "offset": "0.0",
+      "preserve_order": "false",
+      "use_default_offset": "false",
+      "actuator_name": "drive",
+      "integral_gain_nm_per_rad": "3.3",
+      "integral_rate_hz": "200.0"
+    },
+    "drive_actuator": {
+      "class_type": "isaaclab.actuators.actuator_pd:IdealPDActuator",
+      "joint_names_expr": [
+        "rear_wheel_joint"
+      ],
+      "effort_limit": "6.28",
+      "velocity_limit": "61.6",
+      "effort_limit_sim": "6.28",
+      "velocity_limit_sim": "61.6",
+      "stiffness": "0.0",
+      "damping": "0.3",
+      "armature": "null",
+      "friction": "0.106",
+      "dynamic_friction": "0.106",
+      "viscous_friction": "0.0"
+    }
+  },
+  "saved_agent": {
+    "experiment_name": "trackstand_rl_v2_rsl",
+    "seed": "42",
+    "actor": {
+      "class_name": "MLPModel",
+      "hidden_dims": [
+        "32",
+        "32"
+      ],
+      "activation": "elu",
+      "obs_normalization": "false",
+      "distribution_cfg": {
+        "class_name": "source.trackstand_rl.trackstand_rl.tasks.manager_based.trackstand.agents.beta_distribution:BetaDistribution"
+      }
+    },
+    "policy": {}
+  },
+  "resource_allocation": {
+    "cpu_workers_max": 4,
+    "torch_threads": 1,
+    "gpu": false,
+    "hardware": false,
+    "evaluation_requires_coordinator_go": true
+  }
+}

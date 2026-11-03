@@ -1,0 +1,38 @@
+{
+  "passed": true,
+  "cases": [
+    "Motor gains, final effort limits, passive friction, 50/200/1200-Hz clocks",
+    "192 actual physics steps: submitted steer PD/rear P+I equations and 32 exact I ticks",
+    "Episode reset clears physical motor targets, I/error/history, wheel-net and zero references",
+    "11-observation order/units/body rotation/native 4pi rear branch, with controlled zero noise",
+    "Wheel-net crossing terminates in the same policy interval, not one interval later",
+    "30-second timeout and explicit reset bookkeeping",
+    "Eight controlled invalid-state checks: diverged and finite terminal reward, before solver stepping",
+    "20 independent DR resets retain fixed steering/rear gains while other DR draws change"
+  ],
+  "controlled_policy_steps": 8,
+  "captured_physics_steps": 192,
+  "captured_integral_updates": 32,
+  "standalone_wheel_net_policy_steps": 1,
+  "standalone_timeout_policy_steps": 1,
+  "dr_reset_count": 20,
+  "invalid_state_cases": [
+    "root_position",
+    "joint_position",
+    "zero_quaternion",
+    "integral_error",
+    "integral_torque",
+    "integral_previous_error",
+    "wheel_net",
+    "front_overspeed"
+  ],
+  "learned_policy_evaluation": false,
+  "gpu": false,
+  "hardware": false,
+  "model_sha256": "6f839f2c214da9b743cbd310a72d13ed98d383e8ac4c1d1be609eb89cb003476",
+  "versions": {
+    "mujoco": "3.12.0",
+    "numpy": "2.2.6",
+    "torch": "2.12.1+cu130"
+  }
+}

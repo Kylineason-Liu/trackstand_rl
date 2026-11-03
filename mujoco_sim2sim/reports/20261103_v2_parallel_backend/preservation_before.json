@@ -1,0 +1,2274 @@
+{
+  "mujoco_sim2sim/.vscode/settings.json": {
+    "bytes": 30,
+    "sha256": "362d6d507176944d495105bf17cdc5cf3a1dc5d9314cf116cb032557d71189da"
+  },
+  "mujoco_sim2sim/MUJOCO_LOG.TXT": {
+    "bytes": 784,
+    "sha256": "57cb5253a1bd76b949f1d7ccaa8ec54a7ed01f164a096855a1792e539a92a1b9"
+  },
+  "mujoco_sim2sim/README.md": {
+    "bytes": 10207,
+    "sha256": "33b11f182ff687cb773ef942e656aa394cdf19b7c35990c22d9e81974d810c80"
+  },
+  "mujoco_sim2sim/backup_sensor_env_2026-09-18/.trackstand_deploy_augmented.xml": {
+    "bytes": 5688,
+    "sha256": "8ac80e95e0d657e462a7d345baee2cbde431c78a578212ebe7fa49c619e6c40b"
+  },
+  "mujoco_sim2sim/backup_sensor_env_2026-09-18/README.txt": {
+    "bytes": 2670,
+    "sha256": "861c45d22d8e1508e9e50e5f83525b23be41270a7ecedf48a871d82e9f13b914"
+  },
+  "mujoco_sim2sim/backup_sensor_env_2026-09-18/__pycache__/env.cpython-310.pyc": {
+    "bytes": 9393,
+    "sha256": "158df82a37755a4b53513dd105f1fbc5afb0c4556596c9dbce91845bab0adfa3"
+  },
+  "mujoco_sim2sim/backup_sensor_env_2026-09-18/env.py": {
+    "bytes": 13084,
+    "sha256": "196bbb4d92e8f5a21200bd25326a9df59a21ddc4c0690e86e3acf052e276ff70"
+  },
+  "mujoco_sim2sim/backup_sensor_env_2026-09-18/run_backup_headless.py": {
+    "bytes": 2332,
+    "sha256": "3ea76805a1b2495ce2d721461d9dcbd64e5e3013905bf061f2ed99f8b80297bb"
+  },
+  "mujoco_sim2sim/backup_sensor_env_2026-09-18/run_deploy_viewer.py": {
+    "bytes": 19381,
+    "sha256": "4489af6eb3db0620c5cd04c73e3950f6508c7b49308a965bb8e6d87e3f9c0ad3"
+  },
+  "mujoco_sim2sim/docs/LEGACY_NEWBIKE.md": {
+    "bytes": 29661,
+    "sha256": "7507dbab225e74e56e82e34f6cdc07183597a6fdfc9736103524650d8a1d0f8b"
+  },
+  "mujoco_sim2sim/logs/202610151708_91850_dr_epi_len_histogram.csv": {
+    "bytes": 156,
+    "sha256": "e1ba468fb840ed0b46f4ba170181c3f818b1c699ea4d469cfcabb15a80f4c6ee"
+  },
+  "mujoco_sim2sim/logs/202610151708_91850_dr_epi_len_histogram.png": {
+    "bytes": 74884,
+    "sha256": "4620fcc8adfc076dd0b4ba97ab0a213ea34e8e2bfc398bfcd83efe892d8891e0"
+  },
+  "mujoco_sim2sim/logs/202610151708_91850_dr_summary.log": {
+    "bytes": 888,
+    "sha256": "bbf2aa479608b92d3ca4004b2704e635e17781c576fb182cfb46296e09c1c87c"
+  },
+  "mujoco_sim2sim/logs/202610151708_91850_dr_torque.npz": {
+    "bytes": 29988472,
+    "sha256": "533b32ebfee3d53b49997387d76657c5cd194a8a32a64c4c02c2c9568dd319d5"
+  },
+  "mujoco_sim2sim/logs/202610151708_91850_dr_torque.png": {
+    "bytes": 579586,
+    "sha256": "cd030aa9ecf410901b56ddc6c5e701898e8af53c283ceabcf43eab154e9c9b2f"
+  },
+  "mujoco_sim2sim/logs/202610231053_2500_dr_epi_len_histogram.csv": {
+    "bytes": 144,
+    "sha256": "22103c917a1d5e666de0ec11ac96aa1300b4d16d22fc8b6953f12f58b65cb2dd"
+  },
+  "mujoco_sim2sim/logs/202610231053_2500_dr_epi_len_histogram.png": {
+    "bytes": 67715,
+    "sha256": "76a6ae0c3812341749d5a0db3cffdab72a794eda59644372ebc4d1f599fc8bfc"
+  },
+  "mujoco_sim2sim/logs/202610231053_2500_dr_summary.json": {
+    "bytes": 1058,
+    "sha256": "84fd7ce372e3b048a46d707653fda19c681d69d9530ef352be2203cee72edfc0"
+  },
+  "mujoco_sim2sim/logs/202610231053_2500_dr_summary.log": {
+    "bytes": 1554,
+    "sha256": "e73ba6fbbf1d8257e13fc004fba86a5f02e3f4541246b8730d03ce5cd71bf64c"
+  },
+  "mujoco_sim2sim/logs/202610231053_2500_dr_torque.npz": {
+    "bytes": 7770384,
+    "sha256": "ef8d9d418ae4f37d8b4b30327e684d9429d24256ec573040b36408565f0ae01e"
+  },
+  "mujoco_sim2sim/logs/202610231053_2500_dr_torque.png": {
+    "bytes": 162671,
+    "sha256": "ebe69b1d2ec00a34aed0471afd79af3b1739c2537143782ac9967400836404c2"
+  },
+  "mujoco_sim2sim/logs/202610231055_2500_no_dr_epi_len_histogram.csv": {
+    "bytes": 141,
+    "sha256": "96881bf6f78d7d5096f2eeff40fd7a052bc0d38bbd2e4932ac886532092bb19c"
+  },
+  "mujoco_sim2sim/logs/202610231055_2500_no_dr_epi_len_histogram.png": {
+    "bytes": 54190,
+    "sha256": "c57df6094b8974f1b8dd70d69793f15cbc0f9190a51f049913f1dce7e86c685d"
+  },
+  "mujoco_sim2sim/logs/202610231055_2500_no_dr_torque.npz": {
+    "bytes": 892360,
+    "sha256": "f3193d1b386075c61acd0bff64a5c20879f1b5c76181a852e32108b936d1c687"
+  },
+  "mujoco_sim2sim/logs/202610231055_2500_no_dr_torque.png": {
+    "bytes": 140998,
+    "sha256": "7598504f86e76b9ad6083c69a9cfbf9b358c84b9e01d7ebc97833bada59061bb"
+  },
+  "mujoco_sim2sim/logs/202610231056_2500_no_dr_epi_len_histogram.csv": {
+    "bytes": 143,
+    "sha256": "c7daca2d811aa4fad8d2c955518cc18dc5aa67913deef5eaba744d6af43a69d0"
+  },
+  "mujoco_sim2sim/logs/202610231056_2500_no_dr_epi_len_histogram.png": {
+    "bytes": 63357,
+    "sha256": "d65183971fc6b85f1c423eb714e10370c35ef7b003319401f2c12a80067fc90b"
+  },
+  "mujoco_sim2sim/logs/202610231056_2500_no_dr_summary.json": {
+    "bytes": 1010,
+    "sha256": "ab78d6a21114b594d7a567215b439608b133661385dfc9777e41b989fda685d7"
+  },
+  "mujoco_sim2sim/logs/202610231056_2500_no_dr_summary.log": {
+    "bytes": 1506,
+    "sha256": "ec8aaeef780bc889037d6959cdc1faec7984b84d6d74356ad9fbb46ad2099dea"
+  },
+  "mujoco_sim2sim/logs/202610231056_2500_no_dr_torque.npz": {
+    "bytes": 3408360,
+    "sha256": "befbf62e9e0b52f7f4dc5d3c07816e191b1613c80f1e676fca3cedf49cb8b46b"
+  },
+  "mujoco_sim2sim/logs/202610231056_2500_no_dr_torque.png": {
+    "bytes": 245627,
+    "sha256": "66e0f00bc19edafb5d2ecc8ea31b885541fb7e0bbecb9748725846bff8a62178"
+  },
+  "mujoco_sim2sim/logs/202610231057_2500_no_dr_epi_len_histogram.csv": {
+    "bytes": 144,
+    "sha256": "cb420fd4f9661ce5663aa88e7747635e9ad6b292cb55325c1eae4e470105ff15"
+  },
+  "mujoco_sim2sim/logs/202610231057_2500_no_dr_epi_len_histogram.png": {
+    "bytes": 71059,
+    "sha256": "c3e5b274662981c7d36791f4f81a4307dc14c19fea038987631274f0e1ac62db"
+  },
+  "mujoco_sim2sim/logs/202610231057_2500_no_dr_summary.json": {
+    "bytes": 1026,
+    "sha256": "abcf1c92ac33557f0caadf238e946958011362d48f60a66807c2f766dc599289"
+  },
+  "mujoco_sim2sim/logs/202610231057_2500_no_dr_summary.log": {
+    "bytes": 1522,
+    "sha256": "4e856d87b5b8151aa1a5f2d63a05b2eae11c88f80c08ee41477aad5cec617cc0"
+  },
+  "mujoco_sim2sim/logs/202610231057_2500_no_dr_torque.npz": {
+    "bytes": 1027984,
+    "sha256": "f30aef77394cdb31de3b5d028d750b675e08d4fbb5c410bb6016a8ba98374070"
+  },
+  "mujoco_sim2sim/logs/202610231057_2500_no_dr_torque.png": {
+    "bytes": 655598,
+    "sha256": "25aa163168bb75a994307fe93014017cd1f33d3beb44bbf02497498f8f808268"
+  },
+  "mujoco_sim2sim/logs/202610231059_2500_no_dr_epi_len_histogram.csv": {
+    "bytes": 143,
+    "sha256": "d6e4ba880e0fde83803ba9240b6f6002eca569117d43c7d4f167b74ae48223fc"
+  },
+  "mujoco_sim2sim/logs/202610231059_2500_no_dr_epi_len_histogram.png": {
+    "bytes": 63159,
+    "sha256": "8af2e0aff91fc8a7486212e4d22a15383ea5c5dc4b178c166960cbf7f813a146"
+  },
+  "mujoco_sim2sim/logs/202610231059_2500_no_dr_summary.json": {
+    "bytes": 1020,
+    "sha256": "f07d028b34845ca1bc6989682c96e4fed3562a1dad96a8bd4f75af091584117a"
+  },
+  "mujoco_sim2sim/logs/202610231059_2500_no_dr_summary.log": {
+    "bytes": 1516,
+    "sha256": "fd4032fc16f795bbb58a6e5f1bfa7814c8ef35690072dc01674cbb666d186aad"
+  },
+  "mujoco_sim2sim/logs/202610231059_2500_no_dr_torque.npz": {
+    "bytes": 149512,
+    "sha256": "6cc8caa82619205e5bd9414bbe571708b62cc43ca4f683f80ba412b0a44932f6"
+  },
+  "mujoco_sim2sim/logs/202610231059_2500_no_dr_torque.png": {
+    "bytes": 1154911,
+    "sha256": "c343b0eada4bd9c19e10fb9af2ced8cecb9a94348ede51827f45e0f65c8b547f"
+  },
+  "mujoco_sim2sim/logs/202610231100_2500_dr_epi_len_histogram.csv": {
+    "bytes": 144,
+    "sha256": "ff601588297733a481b40855e5143c051dec7cec6b386be734103e9ed511c851"
+  },
+  "mujoco_sim2sim/logs/202610231100_2500_dr_epi_len_histogram.png": {
+    "bytes": 64163,
+    "sha256": "2b86fa8fdb60c4be9f1103faef4240e109b604de87b255056f5d1073f46d61b7"
+  },
+  "mujoco_sim2sim/logs/202610231100_2500_dr_summary.json": {
+    "bytes": 1037,
+    "sha256": "678c7c8c6ab4e582f2e778e133119a4924d58dbb1c120c71208b3fcbc78e6c18"
+  },
+  "mujoco_sim2sim/logs/202610231100_2500_dr_summary.log": {
+    "bytes": 1533,
+    "sha256": "1244b81fe8066d541d1100c2090def9b86a046af4f0578f6fd6d22a636628ba9"
+  },
+  "mujoco_sim2sim/logs/202610231100_2500_dr_torque.npz": {
+    "bytes": 2142232,
+    "sha256": "2ff5ff98353fcb1d6c950a9b06972d7e2ba31462000e8358395839a9b37ae4c1"
+  },
+  "mujoco_sim2sim/logs/202610231100_2500_dr_torque.png": {
+    "bytes": 363138,
+    "sha256": "7189d522b52d46113cde8d746616802a582a8d7d1e533e4cad462d47aa694634"
+  },
+  "mujoco_sim2sim/logs/202610231104_2500_dr_epi_len_histogram.csv": {
+    "bytes": 144,
+    "sha256": "116fde99b59504f35c6995b102fd481a77d174f957a8a8360d364372de3aa65a"
+  },
+  "mujoco_sim2sim/logs/202610231104_2500_dr_epi_len_histogram.png": {
+    "bytes": 64298,
+    "sha256": "19497ae709c9c40098798d4568814f2c9c2977853e16aa7e93538641214be594"
+  },
+  "mujoco_sim2sim/logs/202610231104_2500_dr_summary.json": {
+    "bytes": 1057,
+    "sha256": "50c1f1f5c70fa5e73455594cffddac8ee02a525aecc9c9f9633934f008894c21"
+  },
+  "mujoco_sim2sim/logs/202610231104_2500_dr_summary.log": {
+    "bytes": 1553,
+    "sha256": "4d1edf4f25fc5243e1ac3d6ea9805b0596f244a9599fd318bace18fa175e0710"
+  },
+  "mujoco_sim2sim/logs/202610231104_2500_dr_torque.npz": {
+    "bytes": 4168696,
+    "sha256": "cacea1e277bb7a20220d16f3c6c2b48ad912cdb7592726df08979330a5684d72"
+  },
+  "mujoco_sim2sim/logs/202610231104_2500_dr_torque.png": {
+    "bytes": 155495,
+    "sha256": "2614205a37d8e2a056f9920daef5a2727df51299f42cb3446b253a86845b4634"
+  },
+  "mujoco_sim2sim/logs/202610231149_2500_dr_epi_len_histogram.csv": {
+    "bytes": 144,
+    "sha256": "147795a17d890c508cae9b0fdd03c031eea8d0ab6d45036bab06dbcda584d74c"
+  },
+  "mujoco_sim2sim/logs/202610231149_2500_dr_epi_len_histogram.png": {
+    "bytes": 64734,
+    "sha256": "f16f5e979fd630a224a1f917787c977a12d71d82717a978562a1864a8139bde5"
+  },
+  "mujoco_sim2sim/logs/202610231149_2500_dr_summary.json": {
+    "bytes": 1056,
+    "sha256": "c128d6f3dc338261f75f40fd9f515f8cc9212124e925789fa1ac167e305c4d4a"
+  },
+  "mujoco_sim2sim/logs/202610231149_2500_dr_summary.log": {
+    "bytes": 1552,
+    "sha256": "9023fed234681a27ff5c6072fab229e8646bb77566108ba878ac13185f111232"
+  },
+  "mujoco_sim2sim/logs/202610231149_2500_dr_torque.npz": {
+    "bytes": 3484336,
+    "sha256": "296046ab45dd825834fc0f8da9a795b0da83c273e0698f74b1f8d61048008dc4"
+  },
+  "mujoco_sim2sim/logs/202610231149_2500_dr_torque.png": {
+    "bytes": 155856,
+    "sha256": "00bd2ae152ad6da639d387fd6c4559a7384a4bc436f35265091f38113de28348"
+  },
+  "mujoco_sim2sim/logs/202610241542_2500_dr_epi_len_histogram.csv": {
+    "bytes": 142,
+    "sha256": "4b4f814bb01a6245c8e4a086f3eb7c63fde50602b31362ecda6b11c6fbfbd461"
+  },
+  "mujoco_sim2sim/logs/202610241542_2500_dr_epi_len_histogram.png": {
+    "bytes": 58196,
+    "sha256": "3a38204c6d942046c91097598ff8bb2a230ccafba2b00fa2cfa97fa56e55cb4e"
+  },
+  "mujoco_sim2sim/logs/202610241542_2500_dr_summary.json": {
+    "bytes": 1012,
+    "sha256": "5adccd618e33d1a264c09072fc599059c29e4d7cd6bb352c21d7f881efff8585"
+  },
+  "mujoco_sim2sim/logs/202610241542_2500_dr_summary.log": {
+    "bytes": 1508,
+    "sha256": "879decb594a118a97587849c64efbe0038a76ed711fffef3b3d6228757ddf4df"
+  },
+  "mujoco_sim2sim/logs/202610241542_2500_dr_torque.npz": {
+    "bytes": 732560,
+    "sha256": "39e601ce570c41d60f2eabe35f86c064900f152b69c9191a1db0a4897b1f1a26"
+  },
+  "mujoco_sim2sim/logs/202610241542_2500_dr_torque.png": {
+    "bytes": 192018,
+    "sha256": "33117be729c7cda6051629ee23163ca015220b2015ccfa73a75a0cca27943b5b"
+  },
+  "mujoco_sim2sim/logs/202610241545_2500_dr_epi_len_histogram.csv": {
+    "bytes": 146,
+    "sha256": "4254c6dbbc33ef4104f7a612eedc97f336fd26e55d96fb58955962d27ada3126"
+  },
+  "mujoco_sim2sim/logs/202610241545_2500_dr_epi_len_histogram.png": {
+    "bytes": 66976,
+    "sha256": "0aea2a9389a93e25edd632dc61b2f07771d408b17ae93e30b7189b61f4474b3c"
+  },
+  "mujoco_sim2sim/logs/202610241545_2500_dr_summary.json": {
+    "bytes": 1041,
+    "sha256": "484c0937247f4b255becfdbb131f1766aad934b5bedc832e7d24c225263d8131"
+  },
+  "mujoco_sim2sim/logs/202610241545_2500_dr_summary.log": {
+    "bytes": 1537,
+    "sha256": "bea3a86ea5c798a85f0b33dc4e2caeba65f4dc4a000a407877188a6e7d501ba3"
+  },
+  "mujoco_sim2sim/logs/202610241545_2500_dr_torque.npz": {
+    "bytes": 6682560,
+    "sha256": "d6309075795aaa7f15bc8fb69dfb8bcbc6516d60d6aceb0af12d81dc38f7d025"
+  },
+  "mujoco_sim2sim/logs/202610241545_2500_dr_torque.png": {
+    "bytes": 336830,
+    "sha256": "743d5cc92386642c2f514779bb834809cc46ddc407b116a7f2c68a95b944e59a"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09111255.log": {
+    "bytes": 857,
+    "sha256": "ba18fde0ae33f23309ede85d29233785a6731a3c59f4f9588d0e5129ee9f3ccf"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09111344.log": {
+    "bytes": 928,
+    "sha256": "4ae335b0071d6761746f6638eeadaac59086d19c558b04230e32f83b659e7c72"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09111355.log": {
+    "bytes": 856,
+    "sha256": "59a47c68b5615603bd7b65c11eb24d9747244a63d0d109c583874a878f408d9e"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09111408.log": {
+    "bytes": 856,
+    "sha256": "8b98b585172c0c959edf7135c9e1fbe447e79ffe895cd33df9a896c2c2ad4226"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09111416.log": {
+    "bytes": 856,
+    "sha256": "5b6fae15424dc9684633e3895bdabd081aaccc3df54e773eefba9e9ddd25cfbf"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09111425.log": {
+    "bytes": 892,
+    "sha256": "63547216a12ef3f454a6e6351afa3f0b1d98f1a5212f0004e75f573b80247265"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09111430.log": {
+    "bytes": 856,
+    "sha256": "e79a5e26bf59c1370a71a6b2dff1e8c6e1478921303ec34f5986c78718648172"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09111438.log": {
+    "bytes": 855,
+    "sha256": "44bea5a96b08d3d617b5ac9e43ff82768cb0772264a9e9365b959e27b0b85b3e"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09111617.log": {
+    "bytes": 889,
+    "sha256": "8e7403c2420fda2d83c0e75775a21dfbc363969570294ae1d860e19102680946"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09111724.log": {
+    "bytes": 856,
+    "sha256": "b4d918bdf6bb588b0ffd89848488e79d2d73c94d5c7efde3f29d9130e845d4e0"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09111753.log": {
+    "bytes": 933,
+    "sha256": "397321afe4c376c46d1a15b0037cfeb05f358f59d9767b0272ae9110aec89f84"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09111759.log": {
+    "bytes": 855,
+    "sha256": "5879ec45ae3b0ad927e72d580d46255916f09e35cbd190e976483c3c0e419f48"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09111805.log": {
+    "bytes": 919,
+    "sha256": "965ffc16bfba1063ff60a839fdfbaaf17b6df4480d2e01f5b0d475ea6477327f"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09111806.log": {
+    "bytes": 855,
+    "sha256": "16caff3d2a44103c5e575a61d35bb08787a434346472f8bd059cd8d1df778a4a"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09111823.log": {
+    "bytes": 955,
+    "sha256": "a69d470d5f5581bf2f61532f1411926e64a052e99dd7487a36b6e419ee335f98"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09111828.log": {
+    "bytes": 856,
+    "sha256": "35394752c7f8b47e5a5be2c12e5c51f2d7c4f6a3eefabed787fcad61eaca5586"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09111903.log": {
+    "bytes": 856,
+    "sha256": "bdf6c24450366e3ceb3f522f74d1bf38803625c9868623b9d267858893555f57"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09122224.log": {
+    "bytes": 969,
+    "sha256": "513916600cf6330da1dc983c2d927335ff224922615c6d59bfd0fde8ee1b9ba0"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09122227.log": {
+    "bytes": 970,
+    "sha256": "5bd28a5a312054a5dacd63b6a1b1342d3b871712a6000775c3b69e7a5f875ff7"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09122237.log": {
+    "bytes": 1019,
+    "sha256": "d7dc2449ff606b98cae359ba43a8e3b0d812c320faa754a06b24a804f0d94475"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09122243.log": {
+    "bytes": 997,
+    "sha256": "49d0aea0b236663c1c2cbed7fd668e933cdb776f802105d6379117527b01cb77"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09130025.log": {
+    "bytes": 959,
+    "sha256": "413165dd48a7f4323821b367d3eed169af1d4a1640a2d30b0b7d3012fa6adbf7"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09131300.log": {
+    "bytes": 973,
+    "sha256": "5f406d4bd535d73c626fa2826030bcbcfb5e0e7676a27b1fd7ba0353fdddad35"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09131301.log": {
+    "bytes": 855,
+    "sha256": "646a726fa9de759ea3c83d50379ee782267637253d2f2f557c8592c442c494f2"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09131303.log": {
+    "bytes": 856,
+    "sha256": "c4cb27ed2126c155f7ac24306c0cd78db508b12186f833779cff40ebf8ec1d15"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09131317.log": {
+    "bytes": 855,
+    "sha256": "790fd2c278296eb38a243244081f321acec64d284ff2829f40801878ee98f7a0"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09131336.log": {
+    "bytes": 855,
+    "sha256": "790fd2c278296eb38a243244081f321acec64d284ff2829f40801878ee98f7a0"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09131350.log": {
+    "bytes": 856,
+    "sha256": "b58c317d3e0a213baa47dbb127824f77221829e9acadfd2f10a1e593e74aeec1"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09131350_torque_profile.npz": {
+    "bytes": 234912,
+    "sha256": "351798074c5a74441150d9d051a49fd032935227787d0b793a2f6f4f4a01d8b0"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09131350_torque_profile.png": {
+    "bytes": 144575,
+    "sha256": "04b1e2717b1daa9909b35be4d305454e948c898bc6ba8da3ddada11ca55a5b31"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09131539.log": {
+    "bytes": 856,
+    "sha256": "52a02561588e0cb178ccb90d3f6e5694bec1c7a0c2b321c5d964bbf9c10e6e6d"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09131539_torque_profile.npz": {
+    "bytes": 195816,
+    "sha256": "6cefd15c8cf0cdb11dc9714dc6916e4407e0d8c0a616199bc6e359e440b91550"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09131539_torque_profile.png": {
+    "bytes": 149486,
+    "sha256": "1db7f51dd273bdf91a789a2eb215211e4351bdbc9bf3c57c97ca8688edad7ecd"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09131544.log": {
+    "bytes": 855,
+    "sha256": "ad72bad997d33f4ca6ac01563fa7e882bdaf60416740364451e64c04dbb2eb7a"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09131544_torque_profile.npz": {
+    "bytes": 18712,
+    "sha256": "2c8fe1f7a3bf4d7833802a2580d0c4877d91113d5c9ccfe82743df80f467c753"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09131544_torque_profile.png": {
+    "bytes": 155858,
+    "sha256": "92c09994c9e9a2199073a2d043332cffd7f6a8fbfff5ac4795903ca8ded9285e"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09131545.log": {
+    "bytes": 856,
+    "sha256": "83af226bc3ad51c7a3a2dfb4a36b4006a759b36e42774471edc72c3f0be70280"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09131545_torque_profile.npz": {
+    "bytes": 91872,
+    "sha256": "b6af606c3cb0553a7d62a775ebab74d148b2d892a45046191ef6043e1961e1bd"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09131545_torque_profile.png": {
+    "bytes": 138863,
+    "sha256": "8709af4328a31ade4d29a9460d2f5bae16e0da9953be107f6944a8240793ba39"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09131546.log": {
+    "bytes": 856,
+    "sha256": "2d0d556175a1404d9699e819875c848904e24714620866c2ef360e52b42b12b3"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09131546_torque_profile.npz": {
+    "bytes": 19216,
+    "sha256": "38f11587b7113530028c9a0cf793ad58a15851120486395394062670e125175e"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09131546_torque_profile.png": {
+    "bytes": 92254,
+    "sha256": "5016265df6641988d1ec01f00c4b26b6d76fce3abe21af582da57a58d6545806"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09131547.log": {
+    "bytes": 856,
+    "sha256": "8f1d377695eeb0c2aaafa7b262685f671edc74946e69d1932da790790cfa1267"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09131547_torque_profile.npz": {
+    "bytes": 11800,
+    "sha256": "72f17bc2b6da3a421eaeaf799dcf3518e1f111224d61f9d7ecdf572ecb062914"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09131547_torque_profile.png": {
+    "bytes": 86455,
+    "sha256": "e267bb9c414a143c42fe3c590cd37a0eec03bd9869255d5fe097daebecec0cda"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09131548.log": {
+    "bytes": 855,
+    "sha256": "c2b0c132dc1536a69d8a0c38345cf202f17210dbe612ce61078776354f6c7989"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09131548_torque_profile.npz": {
+    "bytes": 46240,
+    "sha256": "b8be7632fadd8c285456e18279dd52436eafc8e94519c81dcfaf1b099762cad5"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09131548_torque_profile.png": {
+    "bytes": 127764,
+    "sha256": "fdd541de284a40e3f52d5424d1dec918b75bfacbcb31d5d4b66eff89cd9fb70e"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09131549.log": {
+    "bytes": 856,
+    "sha256": "3d4773c6ae9ac9264e68573378d3c4c1026533ecdc937ae0b9bffa3953e4ef02"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09131549_torque_profile.npz": {
+    "bytes": 9200,
+    "sha256": "4bdd900883223222b9f375d49a2779d6c64893644fb5d10a2e16957765eeed69"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09131549_torque_profile.png": {
+    "bytes": 84261,
+    "sha256": "efaca960a8c547f2ec4df099dde85f83719775c8b2c51469aea82b11f66d4ed3"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09131552.log": {
+    "bytes": 856,
+    "sha256": "c754528f11e67533d0a7aab45d435be954867c896fa9819dc58fa1d7fa3fbb63"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09131552_torque_profile.npz": {
+    "bytes": 157000,
+    "sha256": "85d190dab3db7be97536aca6b018ee0ab695d758ad576d401151c9a2f217a82a"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09131552_torque_profile.png": {
+    "bytes": 138061,
+    "sha256": "551a20af690683f5125cbb43daf8a61c03315a92d709660acc1b7cde5a58d2f5"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09131627.log": {
+    "bytes": 937,
+    "sha256": "95e48bfde383927d93e40cc0976bb796bffc75a461cff8947d569c1a3ae1b982"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09141044.log": {
+    "bytes": 979,
+    "sha256": "8771d9f40caff6f9fe3eaa3865992f899ca13ce6b3f53f45d68b4ace83c74220"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09141100.log": {
+    "bytes": 907,
+    "sha256": "68a62900beffe1f70de699d8ac9169363dc5b70f828b3161ce5ca13d2a1e45bd"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09141100_torque_profile.npz": {
+    "bytes": 13992,
+    "sha256": "78c2d111e4ec0f13e2f52018fc225a78b126b5c247c7856f9a8fbbef281e496a"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09141100_torque_profile.png": {
+    "bytes": 81600,
+    "sha256": "9a55da6d43e1988270bb42eec7ac7dcf5f5f7bb2ea1965005dd08e77990faa05"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09141111.log": {
+    "bytes": 856,
+    "sha256": "d676d55c41eb3df0fbf9218b303c737ea8f3227bb672dec8f6cd8b722cfab883"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09141111_torque_profile.npz": {
+    "bytes": 16800,
+    "sha256": "2831a79b4d0c1277d68f107d7a4319dbdd208073904be5e5640ec46608280882"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09141111_torque_profile.png": {
+    "bytes": 102808,
+    "sha256": "12842163c932c3e58196ce17517ecc257dc074d7f161d91afea8489e39196f8b"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09171243.log": {
+    "bytes": 857,
+    "sha256": "f4d7c12a3ca035fd91cbb9579070a1625b01bab31c0bc532a92addcf06514267"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09171243_torque_profile.npz": {
+    "bytes": 194056,
+    "sha256": "8b8fdc67496770473018f59b4f99609d6fc137dec4e33080d86eb7d90dba5ba1"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09171243_torque_profile.png": {
+    "bytes": 150733,
+    "sha256": "4492c9336eac51636f60b8c95812596f6fffe08fab87f96faa15f6dfd25d9100"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09171245.log": {
+    "bytes": 855,
+    "sha256": "551f554836362c442003a05291c745ef3f907f70d4746a07cecac1e5f9178f8f"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09171245_torque_profile.npz": {
+    "bytes": 92408,
+    "sha256": "ea8d3766d76eec0a5265f0abeb3283638e68cd694c9e113494d5821f7478c5d1"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09171245_torque_profile.png": {
+    "bytes": 141081,
+    "sha256": "e052759fbf313eb62244919c1e60f9bed108c8b421cc7b371df4143e1e00abab"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09171304.log": {
+    "bytes": 855,
+    "sha256": "38d2a3c725d9fac7e8fd839b0a10e84ae7a6c8e9282c34db232227515433b362"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09171304_torque_profile.npz": {
+    "bytes": 13144,
+    "sha256": "189a2d636ded1a61faeb9c0bcd4d17d83de32c89f3884076cadef9d0eccc0ae1"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09171304_torque_profile.png": {
+    "bytes": 136692,
+    "sha256": "d6af7d21efcfdb9f9639b1a2155be3c29de41009d38e1a5aa06f209c3f0c20de"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09171319.log": {
+    "bytes": 857,
+    "sha256": "787082437f2b689e296dae8068bcfd38f45eb352f474ad6ae3e41945c4478c74"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09171319_torque_profile.npz": {
+    "bytes": 529016,
+    "sha256": "63499129cb958a17d9820a01c7cc2da4f81a95836667ca5e73fc1a276480f921"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09171319_torque_profile.png": {
+    "bytes": 219190,
+    "sha256": "fabf7d599adb773aa7beb73ef9a4ffe7fa3f128a2ccfd64f32ef0cd6009a79cd"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09171357.log": {
+    "bytes": 855,
+    "sha256": "db0727f3f20c55076178ee1fa4f2b7f644d8c72ee767295b1dfbd83f6e7c538e"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09171357_torque_profile.npz": {
+    "bytes": 27208,
+    "sha256": "e3bea6e089b37d7f8e5bb84497dd0dd71de00a1d88d37b31eff6e4dc3de8725a"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09171357_torque_profile.png": {
+    "bytes": 161533,
+    "sha256": "1ace654b6250730f27f469019762eedf398d0b24db4c094913b8d4e6e9d5d9b9"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09171359.log": {
+    "bytes": 856,
+    "sha256": "6e3c30a1564fc41be8e03c4d3b7cdaf6f8cd737e04b361e0c2fa8f46a8a38eeb"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09171359_torque_profile.npz": {
+    "bytes": 84448,
+    "sha256": "d5f6c2cdb6079ed9ce988489486cadb1187e764ba6d3c24e7c5abc40fadd3076"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09171359_torque_profile.png": {
+    "bytes": 123115,
+    "sha256": "1320a901fa0dee8f5ec42d1d9bc8fb2c6fa0546cf1a3f1d2da6e66512a5e8151"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09171400_torque_profile.npz": {
+    "bytes": 65224,
+    "sha256": "1056559ba7ad682ae466ce6ba1f629213cabff2e8b5203a262d1b696c487b39e"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09171400_torque_profile.png": {
+    "bytes": 105769,
+    "sha256": "dc1631a2e30c4e27e6c3c2b8243ecab990add13a9c870f3c3ec53dd626c26910"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09181003_torque_profile.npz": {
+    "bytes": 106312,
+    "sha256": "e2d9e553e53587b58424978925fcc0dc14eaaf8e531c4952bb6684277badc63f"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09181003_torque_profile.png": {
+    "bytes": 64112,
+    "sha256": "078ed604858c62e2f7bcad054f3e167062e7ddb54cc29f6e33b1e76b33b65d78"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09181018_torque_profile.npz": {
+    "bytes": 1097896,
+    "sha256": "81f2977db737d70776b0efcd2d5ecc133b8fc7ab6504b76043506ff9fc163a04"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09181018_torque_profile.png": {
+    "bytes": 55674,
+    "sha256": "3d171604766b55d8eeab3b10ab50e3ad9c8869f29fba2cabd677074f8498251b"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09181334_torque_profile.npz": {
+    "bytes": 55288,
+    "sha256": "9509acb35decefacf976af8476c8bf3fe2b4ed91d995eb8f0e192a9c8e41ae3a"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09181334_torque_profile.png": {
+    "bytes": 66361,
+    "sha256": "f0d17700eff38fb7e46e0d40ebb70ed0b299c1d2801896d17c88ad5583aea2be"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09181335_torque_profile.npz": {
+    "bytes": 75064,
+    "sha256": "873ea35d5dd79caee48fe302ecfc3a90b4b1d629967f57532764894c073e26fd"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09181335_torque_profile.png": {
+    "bytes": 65519,
+    "sha256": "4dbda37cccf1209259add65f762a24d53698e50721e54c4dc039428a3339958f"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09181342_torque_profile.npz": {
+    "bytes": 12184,
+    "sha256": "dce53db098579adb91df4441715cf42f2b138fb37e4332ed0de3278717d5c6fe"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09181342_torque_profile.png": {
+    "bytes": 63002,
+    "sha256": "61e7ffb8b713f2ed1adef47aa2771ac2022131c7fff6f72aa5c9cb9d10b0b6c7"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09181345_torque_profile.npz": {
+    "bytes": 53632,
+    "sha256": "1e3d92f178ed4c832003f336a95ea2ecd974584c34b611ba3bbfee8c622fcfd5"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09181345_torque_profile.png": {
+    "bytes": 66515,
+    "sha256": "d58a7416bd4188145ea5e8b0f2362d450f3aad83a866983db81ce6b16d396797"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09181451_torque_profile.npz": {
+    "bytes": 418000,
+    "sha256": "407ce0908a7d813fed03d2b276ccec691a14e92a1a987e04ccd230a335087272"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09181451_torque_profile.png": {
+    "bytes": 56119,
+    "sha256": "245fcb2286155f55b55bf6ffa56d8ca2a34c6a19f2e66b2745b4333ce9408260"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09181618.log": {
+    "bytes": 855,
+    "sha256": "9a56d2bdad8086fb5906a9de7183653ca03face9310a57dc0f9c2b64ed97ae96"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09181618_torque_profile.npz": {
+    "bytes": 35280,
+    "sha256": "84e5897d4e7e2bc0c260131eaf6299987f29f162b62427a3740a30aa81250d0c"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09181618_torque_profile.png": {
+    "bytes": 90750,
+    "sha256": "2f81b1b2181cf9fd5f1dfd3c16b8faf64ef4b3e4d27f0ed3bae7dcf1e0b2a595"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09181620.log": {
+    "bytes": 855,
+    "sha256": "9a56d2bdad8086fb5906a9de7183653ca03face9310a57dc0f9c2b64ed97ae96"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09181620_torque_profile.npz": {
+    "bytes": 10272,
+    "sha256": "303c2b493041e28bf8437aafa377bc9df96a4e197dfe2fff17090ee9b65a2127"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09181620_torque_profile.png": {
+    "bytes": 87707,
+    "sha256": "99efe41b636be9aab88cbed22b34ad4b35681a81951f29ff66ea16d3505ad8a0"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09181633.log": {
+    "bytes": 855,
+    "sha256": "9a56d2bdad8086fb5906a9de7183653ca03face9310a57dc0f9c2b64ed97ae96"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09181633_torque_profile.npz": {
+    "bytes": 15048,
+    "sha256": "423435b3f4a05092f0beafeca8bb69b6143b969bb1026eab2dcbd468eb4e6e74"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09181633_torque_profile.png": {
+    "bytes": 90371,
+    "sha256": "8e0861da3436ee1bce0a060ec2dcfa1fb55d4d21efec48f2f850e4bb47bdc377"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09181701.log": {
+    "bytes": 855,
+    "sha256": "9a56d2bdad8086fb5906a9de7183653ca03face9310a57dc0f9c2b64ed97ae96"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09181701_torque_profile.npz": {
+    "bytes": 79008,
+    "sha256": "af353bfbcb7d07406cebc682e6eb4b674fdbda030a223fd6c859c3ff2fae67d0"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09181701_torque_profile.png": {
+    "bytes": 82163,
+    "sha256": "43db83292cc900f3010c96ab7831f1b79d711563d8965ea13513c38f2e8e43f1"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09181709.log": {
+    "bytes": 855,
+    "sha256": "9a56d2bdad8086fb5906a9de7183653ca03face9310a57dc0f9c2b64ed97ae96"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09181709_torque_profile.npz": {
+    "bytes": 63576,
+    "sha256": "142b8289800f2b21bcdfa4b5e86929643bb7ef9ad39c1ba59dc004a66ae05f80"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09181709_torque_profile.png": {
+    "bytes": 83032,
+    "sha256": "f383cef19b051bbc45716fa2c8889f47b7c366bde60164de559f1426ac17d0ad"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09181755.log": {
+    "bytes": 857,
+    "sha256": "f49b7f3f259dfe937dc5ab14559c9d61c9430a109a324c7958b0ec1121fa9d06"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09181755_torque_profile.npz": {
+    "bytes": 2975864,
+    "sha256": "12ea6df3de41cd410b2692fa24b8dd400ccc44245a1b753845769028f7c1df5c"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09181755_torque_profile.png": {
+    "bytes": 110933,
+    "sha256": "c646859ee522c78e2838ec9906ce6d657c7411506563e67c9291c9774fa2a7f8"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09182035.log": {
+    "bytes": 856,
+    "sha256": "24792068cbbd090298b3500f31be2073f9f0bd98d64a534520f3e0c9e67a2cae"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09182035_torque_profile.npz": {
+    "bytes": 7224,
+    "sha256": "1d689d9379477e4bc2aa4c61022756e9700b787aa5f0078ddb2a7ac12f459187"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09182035_torque_profile.png": {
+    "bytes": 77323,
+    "sha256": "6caaef5b96427bf766d3728003b8ded5e80335f26c8a7d0fba2fdfbfd9687eae"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09182053_torque_profile.npz": {
+    "bytes": 7288,
+    "sha256": "c359e92b6fda16afeca05550f2776226c7977a66de1edf6df478961da8bc1480"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09182053_torque_profile.png": {
+    "bytes": 54946,
+    "sha256": "754b120093900d161032d58908d61e95eea169d54ac6c2ac463341fd4d832c21"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09201745_torque_profile.npz": {
+    "bytes": 17896,
+    "sha256": "1188fc81c4d604ecd4474c6c001c939912b93a68191c020b97c59709962cbdf8"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09201745_torque_profile.png": {
+    "bytes": 63602,
+    "sha256": "517bc225b897ff18beb49f3edb466efa95745e23a4726596e70983186e54f00e"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09221027.log": {
+    "bytes": 819,
+    "sha256": "73b7e214808ff981d01656b5b5b9c81ab38a74cb8c8d20aae5b6e2cc2a97be66"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09221027_torque_profile.npz": {
+    "bytes": 49152,
+    "sha256": "136a11b4bb0272936e6f2ea7af67e8fba8e26889bf16421630a812fa1f189717"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09221027_torque_profile.png": {
+    "bytes": 70334,
+    "sha256": "c19608874a63c0a565bad6008f091e7abe87bb1712715eb57766524b76980acd"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09221846.log": {
+    "bytes": 819,
+    "sha256": "4aa4875fce10d42fe6c283ca1a82dc4350d83a845a2d9907c71d7c19560f577a"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09221846_torque_profile.npz": {
+    "bytes": 61464,
+    "sha256": "925dea9c8b66a09c0d6f62aa6a5a051838cde9d2eab429022fbe35ea4bfbb345"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09221846_torque_profile.png": {
+    "bytes": 69059,
+    "sha256": "e53f4d375b4b3309a7c9c6dc4fb5d43adb91021f66467434bca3348ade34f79f"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09221854.log": {
+    "bytes": 819,
+    "sha256": "4aa4875fce10d42fe6c283ca1a82dc4350d83a845a2d9907c71d7c19560f577a"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09221854_torque_profile.npz": {
+    "bytes": 51216,
+    "sha256": "987410f1b1d7a78b6ffa2c4d08ecf065c9be76a4bd9f81008a436e5769685d5f"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09221854_torque_profile.png": {
+    "bytes": 69932,
+    "sha256": "5a4422a4ef278e3f4d7725fb85d097f767a1fc192595069fa03b21b1fbb02935"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09222011_torque_profile.npz": {
+    "bytes": 10432,
+    "sha256": "f2c2f0fba30a530b413ad04a358d76d70a345abfdce85961453a22d39d6ec669"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09222011_torque_profile.png": {
+    "bytes": 58883,
+    "sha256": "c43b72bb968826eee21c6285160803ee108f058edb5733faa309a1b80ba1fda0"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09251046_torque_profile.npz": {
+    "bytes": 31840,
+    "sha256": "4c70ce9b17bfac322bb9803be9cb899c81bc387620ae5d41ef9b6c0c9f863aa2"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09251046_torque_profile.png": {
+    "bytes": 64161,
+    "sha256": "877222923d75584bcc22add1cf868561e48605a23085cfbc50c7d715457c6362"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09251100_torque_profile.npz": {
+    "bytes": 35008,
+    "sha256": "ee5fe56404a5d8561c63443ede86a7336435bae4445f57f3a0a912b80d2097f4"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09251100_torque_profile.png": {
+    "bytes": 64891,
+    "sha256": "99252c1fdcf9d4334b5fc0232eee7b855c54e4e196dd686af17b90f055458f6b"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09251103.log": {
+    "bytes": 819,
+    "sha256": "c0464d7ebc2a2db22f32e489683420eb33126a7d3e9e0e1dc8a79f767324dfd6"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09251103_torque_profile.npz": {
+    "bytes": 54576,
+    "sha256": "4131074a283647cdfb681a5ad51795e8a867e5483af5fd90efc794e003fd2cbb"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09251103_torque_profile.png": {
+    "bytes": 70246,
+    "sha256": "c774d498f0e10c3cf4ece1b7cdc14778839d629e3878c5cde8b0e67934039f75"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09271431.log": {
+    "bytes": 856,
+    "sha256": "de702462d18b07593dfb8c586f7b1fd33cb39d88b2a94138d8e3a5d2aed79cbf"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09271431_torque_profile.npz": {
+    "bytes": 123688,
+    "sha256": "1b78a3de9382a87d61e368bae5a734868884d039b88cc0cdc1f12d9cfd07beff"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_09271431_torque_profile.png": {
+    "bytes": 145138,
+    "sha256": "19a0aac16af56578e7ad0fbe190e9529c2da75ee3c00f08c528ea684b4dd501e"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_1015150637_torque_profile.npz": {
+    "bytes": 1535296,
+    "sha256": "cd615d55f95fc18f0a4d76fd50703f50cbd4f2d74763d35717c944446729b501"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_1015150637_torque_profile.png": {
+    "bytes": 95567,
+    "sha256": "e11e31c1edee5d746e6608b9fc10a5bddbdff1fb5510e935e3f94cc56acefae5"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_1015150757_torque_profile.npz": {
+    "bytes": 340240,
+    "sha256": "f9e224f2fd40596474d2b691c453278da8cb3b62b1385edc5836d7504213e377"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_1015150757_torque_profile.png": {
+    "bytes": 90940,
+    "sha256": "818aa53365728b9d1d3e15d09a675c9edee8e98fffab6baa3c74838be717949d"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_1015150841_torque_profile.npz": {
+    "bytes": 35608,
+    "sha256": "ac25f5e79f4b613d467d2dc4ff9c95e28a9cce774ad4ebac3f1c6ab935b74e19"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_1015150841_torque_profile.png": {
+    "bytes": 64724,
+    "sha256": "8c38db202d94e820a01a11d63eddd709b90c8f5234dac51e093b7389b9709e5e"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_1015153350.log": {
+    "bytes": 884,
+    "sha256": "c7706c966c3fc6a29ca7e5429a7af856fdfb4deabfcd9055900643f6278a1133"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_1015153350_torque_profile.npz": {
+    "bytes": 45768,
+    "sha256": "50e0e144600cbe5288da495c3bff1daef81e28d390e047f1fd0dcdc1d9908b8d"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_1015153350_torque_profile.png": {
+    "bytes": 245030,
+    "sha256": "1b339569b5c30a1424e04c8f1ccee851303cab328c5151d323dfa1281f130bd3"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_1015162929.log": {
+    "bytes": 888,
+    "sha256": "6d558437582db03028b798ca6e589fb50ca029f1cda16963075dacc14e3bca1d"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_1015162929_episode_length_distribution.csv": {
+    "bytes": 163,
+    "sha256": "a4ee08d3d05424d22b24313c5d101dd7742e85aefd3ea61117aca7ecd4ca8a89"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_1015162929_episode_length_distribution.png": {
+    "bytes": 70211,
+    "sha256": "8031eb8b8d4dfb52721e19eaa9a6739560832c7c94965b473c7cf2ab7bb36cc1"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_1015162929_torque_profile.npz": {
+    "bytes": 54199168,
+    "sha256": "8d98d5810dee527f9f1124bec29f54a464f5fae48128b4c188ea8a8659839bca"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_1015162929_torque_profile.png": {
+    "bytes": 387647,
+    "sha256": "4cd39727771b8320ba5154c0eb7b8e8634305eee75e63312b6478eefe03f7f7d"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_1015164824_episode_length_distribution.csv": {
+    "bytes": 141,
+    "sha256": "96881bf6f78d7d5096f2eeff40fd7a052bc0d38bbd2e4932ac886532092bb19c"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_1015164824_episode_length_distribution.png": {
+    "bytes": 54557,
+    "sha256": "642dfa4c11f47fedfb06e76cfaf3d8e30c07a6858e37183820e1a4e2b91f71db"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_1015164824_torque_profile.npz": {
+    "bytes": 707632,
+    "sha256": "811d14373c35a8a030e7c8b6bc9582c0a610735a4f8322b173874c13ac66ce5a"
+  },
+  "mujoco_sim2sim/logs/deploy_sim_1015164824_torque_profile.png": {
+    "bytes": 94402,
+    "sha256": "335c817812119fde41294725187ba3e067c5bf45f65b58f6607b8312080a6677"
+  },
+  "mujoco_sim2sim/models/newbike/assets/base_link.obj": {
+    "bytes": 6355645,
+    "sha256": "3328f8acc9587b4330b8ebcec87b7f2dc3e1f1f32afc4f6fb4a50f14fa9697c5"
+  },
+  "mujoco_sim2sim/models/newbike/assets/front_wheel_link_1.obj": {
+    "bytes": 1253766,
+    "sha256": "1b62665c3f162c31e35d54672e43501ed68330815d51aaffea49618fc4993ea1"
+  },
+  "mujoco_sim2sim/models/newbike/assets/rear_wheel_link_1.obj": {
+    "bytes": 2397505,
+    "sha256": "3bdee399bd340069843c4c0c60d4c8ad303dd242d60e25f910d1fd402e658dcc"
+  },
+  "mujoco_sim2sim/models/newbike/assets/steering_link_1.obj": {
+    "bytes": 212347,
+    "sha256": "6c2dde0d4e7dfd3c258d89a3125bed26ee7b6f232b5c706f46330e22b624f8f9"
+  },
+  "mujoco_sim2sim/models/newbike/model.xml": {
+    "bytes": 12193,
+    "sha256": "59b89a7b65f31490b7b2dc4c26e7678a21b6056263bd92bdd6642c33651cb5c8"
+  },
+  "mujoco_sim2sim/models/newbike/scene.xml": {
+    "bytes": 622,
+    "sha256": "9909e3d059c9633a633dd24b4358dc64fa491120e427e6b0bdab3eac1b010aa9"
+  },
+  "mujoco_sim2sim/models/orange_bike/.DS_Store": {
+    "bytes": 6148,
+    "sha256": "523978aba29459dde29dee5e5f78fbff510f5b80c2987e415f700b9f6708a032"
+  },
+  "mujoco_sim2sim/models/orange_bike/meshes/.DS_Store": {
+    "bytes": 6148,
+    "sha256": "d65165279105ca6773180500688df4bdc69a2c7b771752f0a46ef120b7fd8ec3"
+  },
+  "mujoco_sim2sim/models/orange_bike/meshes/base_link.STL": {
+    "bytes": 2618284,
+    "sha256": "1c28df6c0b818860b2071fad83c309036b9482a37b5e1fe47679ef2625fa400e"
+  },
+  "mujoco_sim2sim/models/orange_bike/meshes/base_link2.STL": {
+    "bytes": 1743984,
+    "sha256": "fec35fa29a0bb18c3223604a5e3c3635b615ef02e98d9dfff3f7c54a1158f4c1"
+  },
+  "mujoco_sim2sim/models/orange_bike/meshes/frontwheel.STL": {
+    "bytes": 650984,
+    "sha256": "c3933b6da0aa7c38cdfb01d00c6c861f2e71b8fab4af2c9130088fe8cfc0bf78"
+  },
+  "mujoco_sim2sim/models/orange_bike/meshes/rearwheel.STL": {
+    "bytes": 1055584,
+    "sha256": "59dcb77f41abba48f69cf42704223e9a430d9504ca6f875078a69dcb77e115fc"
+  },
+  "mujoco_sim2sim/models/orange_bike/meshes/steer.STL": {
+    "bytes": 1414984,
+    "sha256": "f2ea9acdba9058c517c1ce9bc4c6b7b234320dac1a2d1a12dc69b375c3e6d95b"
+  },
+  "mujoco_sim2sim/models/orange_bike/orange_bike_horizontal.xml": {
+    "bytes": 6413,
+    "sha256": "54297fb2393951be0d33624e08d5f4c5d0bd02fdf943a588a014bf7a7ea4cb2d"
+  },
+  "mujoco_sim2sim/models/trackstand_rl_0914_bike/meshes/base_link/collision00.stl": {
+    "bytes": 65584,
+    "sha256": "195ef56015e818be236d804cd1dd61801b1d2b41ba490f2a24d77ca07aeb09c7"
+  },
+  "mujoco_sim2sim/models/trackstand_rl_0914_bike/meshes/base_link/visual.stl": {
+    "bytes": 9212184,
+    "sha256": "0e0fabb07a55dc66d41aa43d69c85811ad2b733e65bd53e17dbfe9665b1681f9"
+  },
+  "mujoco_sim2sim/models/trackstand_rl_0914_bike/meshes/front_wheel_link/collision00.stl": {
+    "bytes": 442384,
+    "sha256": "d5de6403fabfd2b62a09a3caf4514f1aac50b98e2d837e6e925f3659e9e68f7a"
+  },
+  "mujoco_sim2sim/models/trackstand_rl_0914_bike/meshes/front_wheel_link/visual.stl": {
+    "bytes": 1868384,
+    "sha256": "929b42be21d2e5750f3bc204fdca16de7f7d9edff0bb0362c828e3d263055824"
+  },
+  "mujoco_sim2sim/models/trackstand_rl_0914_bike/meshes/rear_wheel_link/collision00.stl": {
+    "bytes": 468684,
+    "sha256": "abb491f42e1c3e16db36171949e28ed3bd38a18ba2c63c4edbb1348b97c1571e"
+  },
+  "mujoco_sim2sim/models/trackstand_rl_0914_bike/meshes/rear_wheel_link/visual.stl": {
+    "bytes": 3486684,
+    "sha256": "8e704079962a746cf2134fbda91571a613c4e70157149e53163703444051a395"
+  },
+  "mujoco_sim2sim/models/trackstand_rl_0914_bike/meshes/steering_link/collision00.stl": {
+    "bytes": 71284,
+    "sha256": "b687510db7356efc54af9a9ba6068851ccab47216d997135419e8da4d7b05e01"
+  },
+  "mujoco_sim2sim/models/trackstand_rl_0914_bike/meshes/steering_link/visual.stl": {
+    "bytes": 343384,
+    "sha256": "14a41363841c67a9b35c769935d1c3740e5524fcd6b2461ed8b7631ed5e07bca"
+  },
+  "mujoco_sim2sim/models/trackstand_rl_0914_bike/trackstand_rl.xml": {
+    "bytes": 6375,
+    "sha256": "e7a2972148db6e5aa25d6bcc5f26ce5cf45d881f99d42a50c97a39f6e1070cc6"
+  },
+  "mujoco_sim2sim/models/trackstand_rl_0916_bike/.trackstand_deploy_augmented.xml": {
+    "bytes": 5581,
+    "sha256": "ebd1d316cdda87f1d345cb2efd8f5a2eeca4630619096453c191dc6bcb03842a"
+  },
+  "mujoco_sim2sim/models/trackstand_rl_0916_bike/meshes/base_link/collision00.stl": {
+    "bytes": 65584,
+    "sha256": "195ef56015e818be236d804cd1dd61801b1d2b41ba490f2a24d77ca07aeb09c7"
+  },
+  "mujoco_sim2sim/models/trackstand_rl_0916_bike/meshes/base_link/visual.stl": {
+    "bytes": 9212184,
+    "sha256": "995563db45fce388398260fc6e61d20f48e6eb49fe44621232c6ccf259b6efd9"
+  },
+  "mujoco_sim2sim/models/trackstand_rl_0916_bike/meshes/front_wheel_link/collision00.stl": {
+    "bytes": 442384,
+    "sha256": "d5de6403fabfd2b62a09a3caf4514f1aac50b98e2d837e6e925f3659e9e68f7a"
+  },
+  "mujoco_sim2sim/models/trackstand_rl_0916_bike/meshes/front_wheel_link/visual.stl": {
+    "bytes": 1868384,
+    "sha256": "929b42be21d2e5750f3bc204fdca16de7f7d9edff0bb0362c828e3d263055824"
+  },
+  "mujoco_sim2sim/models/trackstand_rl_0916_bike/meshes/rear_wheel_link/collision00.stl": {
+    "bytes": 468684,
+    "sha256": "abb491f42e1c3e16db36171949e28ed3bd38a18ba2c63c4edbb1348b97c1571e"
+  },
+  "mujoco_sim2sim/models/trackstand_rl_0916_bike/meshes/rear_wheel_link/visual.stl": {
+    "bytes": 3486684,
+    "sha256": "8e704079962a746cf2134fbda91571a613c4e70157149e53163703444051a395"
+  },
+  "mujoco_sim2sim/models/trackstand_rl_0916_bike/meshes/steering_link/collision00.stl": {
+    "bytes": 71284,
+    "sha256": "b687510db7356efc54af9a9ba6068851ccab47216d997135419e8da4d7b05e01"
+  },
+  "mujoco_sim2sim/models/trackstand_rl_0916_bike/meshes/steering_link/visual.stl": {
+    "bytes": 343384,
+    "sha256": "14a41363841c67a9b35c769935d1c3740e5524fcd6b2461ed8b7631ed5e07bca"
+  },
+  "mujoco_sim2sim/models/trackstand_rl_0916_bike/trackstand_rl_0916.xml": {
+    "bytes": 6282,
+    "sha256": "6f839f2c214da9b743cbd310a72d13ed98d383e8ac4c1d1be609eb89cb003476"
+  },
+  "mujoco_sim2sim/policies/model_39750.onnx": {
+    "bytes": 1589,
+    "sha256": "c34c631f540c6e07c65bdfbe0c5383780d980ef8d42553f0194b60c08b5ae4a8"
+  },
+  "mujoco_sim2sim/policies/model_39750.onnx.data": {
+    "bytes": 5760,
+    "sha256": "5cdaec5ea466eb3ca696fc8c85ba4fdb6e9def50f362f7b310e0d59cbf76154f"
+  },
+  "mujoco_sim2sim/policies/model_39750.pt": {
+    "bytes": 53615,
+    "sha256": "bc1478f78ed4209319d0c933b1586d602dcf5093cdd327bd402c4221dff466f0"
+  },
+  "mujoco_sim2sim/policies/model_500.onnx": {
+    "bytes": 7132,
+    "sha256": "19fb046c2d65e267a57e31e4caf8c89926c8ec2402db8cd5cd35117831637977"
+  },
+  "mujoco_sim2sim/policies/model_500.pt": {
+    "bytes": 53499,
+    "sha256": "b308a0fe440eec864d7cedb3491370922089cf5d7ebede0bdef7457bccc9f1b5"
+  },
+  "mujoco_sim2sim/policies/trackstand_rl_rsl_2026-09-22_19-45-06_model_91850.onnx": {
+    "bytes": 14383,
+    "sha256": "9232a0723df8806e8b5f6fb4e39a7a11ccb5af8bf058d9026eddb57dab8fd806"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/COMPARISON.md": {
+    "bytes": 8230,
+    "sha256": "952fae46761b2ef85778c62a1dc2108cca90e457fb0aa55f5b4c10e26f35d4c4"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/README.md": {
+    "bytes": 14869,
+    "sha256": "7018113638df233eeb052d16f1fd0e354960dd20dd77ba590d241e693923ea32"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/analyze.py": {
+    "bytes": 7783,
+    "sha256": "763f074370dd26a70d4e95a8fa20450145818f9322f126d4fcded3bd27fbf10d"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/dr/202610221151_75300_dr_epi_len_histogram.csv": {
+    "bytes": 146,
+    "sha256": "d506ba1ff847a7f9f5284c48861282e0aface9a41903f63b1721365de76db987"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/dr/202610221151_75300_dr_epi_len_histogram.png": {
+    "bytes": 70430,
+    "sha256": "8c6e53d13d1637c10d264fed6eac1412395a928a72e79cf0d4aebd96b64e1146"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/dr/202610221151_75300_dr_evaluation.npz": {
+    "bytes": 30454815,
+    "sha256": "ef5817f456f4c7ddc16da93736fa6edd643d5b54cd260e393351c7ea14a239aa"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/dr/202610221151_75300_dr_metadata.json": {
+    "bytes": 7023377,
+    "sha256": "c87aaa696c064b37a0a821e6a2c87860cdbfc801b28baa7ce4e99116d9071820"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/dr/202610221151_75300_dr_summary.json": {
+    "bytes": 959,
+    "sha256": "ce08ce067317b3a90e8c814b9ffd507b56f280ae5acdb0581d74377db36a4f10"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/dr/202610221151_75300_dr_summary.log": {
+    "bytes": 1381,
+    "sha256": "aea98d8384ac70deca9e60d415e33b50e0ddd278bed897bca3d8c35cb710e515"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/dr/202610221151_75300_dr_torque.npz": {
+    "bytes": 3149736,
+    "sha256": "3b2b55ddb7ba15fbce10a668a9f11b37b79814132c27c8b6cdd6f1e6fcfbbc3a"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/dr/202610221151_75300_dr_torque.png": {
+    "bytes": 546726,
+    "sha256": "35636cfa8b4249f4aea0169022cd81e08b4b00759781e582d72d3c6328ad37e4"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/dr_run.log": {
+    "bytes": 172921,
+    "sha256": "4d5e41d6966bb63b59c6f1fe2cb45e5e68d4c612e3fe49ea126bdaa9cbd079f5"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/export.log": {
+    "bytes": 2113,
+    "sha256": "04b725874800de6f5e7767da6f0228991ecc5e62340f982892ad828894178511"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/isaac_angle_probe.json": {
+    "bytes": 2467,
+    "sha256": "1ad9d00068474ebb7fc1d1d4b974bf1dc17c380d6128f0de8122f1777743a1ed"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/isaac_angle_probe.log": {
+    "bytes": 12710,
+    "sha256": "eaff33c6d25fd4692a86f0a96ebbb8b44a18ce431caf998850a9ee69e6482de3"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/isaac_angle_probe.npz": {
+    "bytes": 18348,
+    "sha256": "112c75bcbb933f3649d240c94f279d4f25e2d038f0aae1de74eddef9f85ff28b"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/matched_action_replay.npz": {
+    "bytes": 12649,
+    "sha256": "38ae2bf4b07d245d3717c9f3555498688d6ce80b53e4ab5b7472edf42c9b0e31"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/matched_action_replay.pdf": {
+    "bytes": 24738,
+    "sha256": "c8426001ca540ef8d66419d7e5ad53955f06ddf61decd9c30c521bec48ddc583"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/matched_action_replay.png": {
+    "bytes": 201947,
+    "sha256": "3fed7f5b3b5ae8f6f23279ca84d48365dd2b9f089452629e1fb184a30cc9cd59"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/matched_action_replay.svg": {
+    "bytes": 97291,
+    "sha256": "de6a00696a877da7aba7f0ce3e2c520816504bfae1c6eb84b05a7b8ba6851081"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/model_75300_v1.onnx": {
+    "bytes": 19787,
+    "sha256": "4cb04d534f0d69d0ba3d50e8ad27bc48972797e43b27efecb0702a3f33a64de4"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/model_75300_v1.onnx.data": {
+    "bytes": 6016,
+    "sha256": "05e6af24b775138d8ae9272b36a844fc58647ebac0991370a50cdb6d7141539d"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/no_dr/202610221151_75300_no_dr_epi_len_histogram.csv": {
+    "bytes": 145,
+    "sha256": "cb7a5e0de21aba00dcf63ff4ca8af50243fc338939fbd946c2f5aec0cea85423"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/no_dr/202610221151_75300_no_dr_epi_len_histogram.png": {
+    "bytes": 70909,
+    "sha256": "979756d64540d5d145f1ec5f3c5fed2ce7923f210dcf6b9c85519d45b2469368"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/no_dr/202610221151_75300_no_dr_evaluation.npz": {
+    "bytes": 30424400,
+    "sha256": "3db4c46face36a65df1a6cad06ab1be448d82973b0bf29110b71ef0379877ca6"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/no_dr/202610221151_75300_no_dr_metadata.json": {
+    "bytes": 17518419,
+    "sha256": "3a84ed9cb59c49cfdb4c66710ab15304a0fc92653d870bb53a9a5be46382f95d"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/no_dr/202610221151_75300_no_dr_summary.json": {
+    "bytes": 962,
+    "sha256": "b9fa1c0879784d7d7d02b1173deeda7ed32257425c6df0a645dc4a491533c85d"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/no_dr/202610221151_75300_no_dr_summary.log": {
+    "bytes": 1384,
+    "sha256": "72609f969c3965c872302cbd129f8f54b957902e2627a50e7387158728b5dbe0"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/no_dr/202610221151_75300_no_dr_torque.npz": {
+    "bytes": 3350312,
+    "sha256": "2e2d9e1fdfc46af39d7c51c7e9ea16cf8a608508bb9dd2fe0da4bbe98eac2ae9"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/no_dr/202610221151_75300_no_dr_torque.png": {
+    "bytes": 340377,
+    "sha256": "87a22e24ea05c0a4d669ca1a5bdbea514b4bc174fa6e763ae2d3c99c4f55ec54"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/no_dr_run.log": {
+    "bytes": 820494,
+    "sha256": "8b27a86229f9763004e2a9d46a3e5a289ae1be9a7048075fbaaf9329e3503e47"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/probe_isaac_angle.py": {
+    "bytes": 4305,
+    "sha256": "9f510fb1570985e9f7438c2a01a3dbaef4303cb51461464ec74d82bcd9875371"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/protected_files.json": {
+    "bytes": 45361,
+    "sha256": "61c5ee2da1eb7cfb78ea5b01f90bd7640e2119dd2ae7bfab5a01bdbf0cc2e663"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/unit_tests_isaac.log": {
+    "bytes": 10024,
+    "sha256": "2ee000d0ca216fa9aa1c6669327af9c3f1f860bf32c89f43b82cb5a05166111f"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/unit_tests_system.log": {
+    "bytes": 6621,
+    "sha256": "1c24d57432fe36bfd1914ef577a516fd2ecd60c91b5f337ae7c73edf573c9ede"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/validation_results.json": {
+    "bytes": 4139,
+    "sha256": "4daac5664cccd278803e6b55e9d59e690306674488716993f7bd91ba92d5af32"
+  },
+  "mujoco_sim2sim/reports/20261022_v1_alignment/verification.json": {
+    "bytes": 2846,
+    "sha256": "3a27e1b170b62e80804a35110c0c1e4710221fa7f82f9aa43cab7d925edf6bba"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/202610230048_2500_dr_epi_len_comparison.png": {
+    "bytes": 93060,
+    "sha256": "a357094c55562cf7d7a4b3fa7915bb776a3aa20e43fa15630c132aa6e3964924"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/202610230048_2500_dr_v0_comparison.pdf": {
+    "bytes": 21553,
+    "sha256": "616c9f59aba2217d231746b1fad395565ce18daaa70a0d2eefa75cc9ab4a938c"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/202610230048_2500_dr_v0_comparison.png": {
+    "bytes": 146789,
+    "sha256": "b4a2373dda8666d6e145097b36208a069b18189486b69929b65e7e001413c1c5"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/202610230048_2500_dr_v0_comparison.svg": {
+    "bytes": 109437,
+    "sha256": "4ae20ef0ea005764df8554af1baca4d0837be575e0d986b1f1a9ea3c312be8e3"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/README.md": {
+    "bytes": 8264,
+    "sha256": "c31868489f4845dc110f14d8042cd8e2e7f09d8a1d1757b36f2842807cc6a123"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/analysis.log": {
+    "bytes": 3983,
+    "sha256": "12d1e2155419c0936778ea0ee738255a7a45957aee3f253da906f9d94ffc11c9"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/analyze.py": {
+    "bytes": 12286,
+    "sha256": "eaa01325a72bab6896cd054df198ebf3cdf86ee9c13b2dca1c2726ee05bb2159"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/comparison.json": {
+    "bytes": 9522,
+    "sha256": "b5978d5902463556a3d9046ed432958a16c17570f3c6f5c2e6ed913a624a5021"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/configuration_checks.json": {
+    "bytes": 5126,
+    "sha256": "56a8b6656eb0dfa226b61bf05f1edb841b2675708a38f5ab8da9af04f2a8a795"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/current400_full/202610230043_2500_dr_epi_len_histogram.csv": {
+    "bytes": 144,
+    "sha256": "ec6efdabbf2f07d1ea1e773dcd631c62a2c5f352ecbcab4fb0ac1a6553e9abba"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/current400_full/202610230043_2500_dr_epi_len_histogram.png": {
+    "bytes": 65388,
+    "sha256": "4b8925c0e7731b542808c7d4e085c43148246a1bcf1117a50933706d137cf2a9"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/current400_full/202610230043_2500_dr_evaluation.npz": {
+    "bytes": 31079801,
+    "sha256": "7d621eb3cbc0f1b7c81bde6a4ff5279ff478f65691c303f689a42f6fa1d5a105"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/current400_full/202610230043_2500_dr_metadata.json": {
+    "bytes": 4062133,
+    "sha256": "de6b340f8b17079deef37bef6796b55bb67cfcaba0eac7730897c1d88bd6d03f"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/current400_full/202610230043_2500_dr_summary.json": {
+    "bytes": 952,
+    "sha256": "969f08c6f69fe3630366d4fe76aae474bada4789cf3529936cc128d0c39d42d5"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/current400_full/202610230043_2500_dr_summary.log": {
+    "bytes": 1374,
+    "sha256": "c5254c785f05b6b57147024b9e749a0b8b77cdd483189848f3a1cce7b560dd8f"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/current400_full/202610230043_2500_dr_torque.npz": {
+    "bytes": 3103096,
+    "sha256": "fd82a80c9ff96864bd0af6e8a6aea732ceb5ae4e4288e70b95cd7a3724fd34f4"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/current400_full/202610230043_2500_dr_torque.png": {
+    "bytes": 320729,
+    "sha256": "73f6b095666d753d1ebe6799bfb8d6bf4295b3ab6cf240ac3e893d8090630932"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/current400_full/dr_draws.json": {
+    "bytes": 685264,
+    "sha256": "0282e5e99537459d9bc37e6abc1a85e0e8dba7d1ae679c9f0e6e378fa4bc3865"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/current400_full/experiment.json": {
+    "bytes": 1327,
+    "sha256": "13ce2ce16f651d1a234b7167a20a4f1bec6c4d0351f1b0ad4f016a4ad5b76857"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/current400_full/run.log": {
+    "bytes": 18397,
+    "sha256": "49be42c6a24857e972effb90ac28188b3ea27d826cf9fea0d08503b26592c654"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/current400_survival/202610230043_2500_dr_epi_len_histogram.csv": {
+    "bytes": 144,
+    "sha256": "994e8c7af20ebbac2c44bdaf990583c9c5c88b55384cd68fc577b3a7e7994710"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/current400_survival/202610230043_2500_dr_epi_len_histogram.png": {
+    "bytes": 62571,
+    "sha256": "8111b80e910fa17e5fedcba18c5644e023a438e4331a54288cc45dd002b450b6"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/current400_survival/202610230043_2500_dr_evaluation.npz": {
+    "bytes": 31074138,
+    "sha256": "61d21925ebbf7ca9c13bb7821c6806b6668211aa1e833edca02b1b33123145ee"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/current400_survival/202610230043_2500_dr_metadata.json": {
+    "bytes": 4054488,
+    "sha256": "1df90ee6bf32fd3dd4b24fe7607c368a6f0a46f4426c077bf77c325c22e1fee1"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/current400_survival/202610230043_2500_dr_summary.json": {
+    "bytes": 956,
+    "sha256": "57de4add2ee41dc0dbd9b0ca4d8f9aa840fdc8af6226caeadb8861d26dadc928"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/current400_survival/202610230043_2500_dr_summary.log": {
+    "bytes": 1378,
+    "sha256": "6824186e366b616ed8530ead1a2da4659a1f09fd74675a4c5b99b9ddf3309d9f"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/current400_survival/202610230043_2500_dr_torque.npz": {
+    "bytes": 3102328,
+    "sha256": "46ec0e6acda1368544a7d6c1bb76f77d7d1abe405bb5541d8f5b6dada0bab77a"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/current400_survival/202610230043_2500_dr_torque.png": {
+    "bytes": 306268,
+    "sha256": "dbb533086ace446bfbd80595e9165e359aae8a338e1a5d72fcfb5b467d95c3e9"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/current400_survival/dr_draws.json": {
+    "bytes": 586784,
+    "sha256": "950331e4026725646e918d98443bc06cce83024fc006bfc72adfedcf88fb29f0"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/current400_survival/experiment.json": {
+    "bytes": 1357,
+    "sha256": "64e5f28eea0d5aca329bfe2d6afeb7592dfe4f87986443bd4a24bf53f64faec7"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/current400_survival/run.log": {
+    "bytes": 15509,
+    "sha256": "a41c2fc6434f81b2c0033c58f52700063afc6fcb6d38c6c76ebf3f8e62ce726e"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/diagnostic800_full/202610230044_2500_dr_epi_len_histogram.csv": {
+    "bytes": 143,
+    "sha256": "1457add590478a7e8f48980ca35f94dcb868cdae49790a432cbd22bb61314c18"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/diagnostic800_full/202610230044_2500_dr_epi_len_histogram.png": {
+    "bytes": 63139,
+    "sha256": "82d9560b0842e2ce8e68bc52a79b9cc60457816a0b067a75b4411913c9e21d64"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/diagnostic800_full/202610230044_2500_dr_evaluation.npz": {
+    "bytes": 42823260,
+    "sha256": "6345b0b92661ef282831e0ec27c2d651428423e94edb11a5b5376c0955696f06"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/diagnostic800_full/202610230044_2500_dr_metadata.json": {
+    "bytes": 4529747,
+    "sha256": "9060cecd1c40b268432a53d693350d443b6ef1a4fb6ab8bb9711dfdfee23662f"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/diagnostic800_full/202610230044_2500_dr_summary.json": {
+    "bytes": 969,
+    "sha256": "3dd22a2bc99954e1cc2f90b96f183fa3035887dca1c9defb7c00075f15c1789a"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/diagnostic800_full/202610230044_2500_dr_summary.log": {
+    "bytes": 1391,
+    "sha256": "dc93061fbefc9f34ce357b77f25e38c1fc514a971ec09ce6b66da6426f7b2f4c"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/diagnostic800_full/202610230044_2500_dr_torque.npz": {
+    "bytes": 3101160,
+    "sha256": "ba2ac0f3c089169d10ea7ebb901d081eb17e1dab4b0b2dd8cc3cd1b64210ff8a"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/diagnostic800_full/202610230044_2500_dr_torque.png": {
+    "bytes": 149582,
+    "sha256": "c40550d372444ce1db04b1d8e56552dd2c595e47f6104d2536b0117671de4dc2"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/diagnostic800_full/dr_draws.json": {
+    "bytes": 436937,
+    "sha256": "97ce663ca640b28de7495e4545ac66f957e8c5f2f1762eaef1d90df177256733"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/diagnostic800_full/experiment.json": {
+    "bytes": 1332,
+    "sha256": "f9c3c22449ecff0b14f83ccacfa84fb0701de4603edb9f45db133d8bda3bbd24"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/diagnostic800_full/run.log": {
+    "bytes": 11961,
+    "sha256": "4987c4cfcc1ffa8903a8b4738da8f2518801dcc11a992fc35d21e2f401ce8e54"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/diagnostic800_survival/202610230044_2500_dr_epi_len_histogram.csv": {
+    "bytes": 144,
+    "sha256": "79fc15260b7f1f286746a09abd0cf8a420305754bbc959fea2f9be966f46369d"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/diagnostic800_survival/202610230044_2500_dr_epi_len_histogram.png": {
+    "bytes": 64178,
+    "sha256": "130b7dddcaef0d23f8491dade88f125e9347368426aefbb74f422edfb496c50c"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/diagnostic800_survival/202610230044_2500_dr_evaluation.npz": {
+    "bytes": 42881132,
+    "sha256": "a57fa493c688899cf7b63490f96037cc0994c0d261ddc98c971e6bfb610c37c5"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/diagnostic800_survival/202610230044_2500_dr_metadata.json": {
+    "bytes": 5039814,
+    "sha256": "2acabb18db2ad3a91a735c593e97e670cb41d480a45771c2bd1de11995d278d5"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/diagnostic800_survival/202610230044_2500_dr_summary.json": {
+    "bytes": 972,
+    "sha256": "c762188579f4713301eb4c28fd70a9906f503d968b6a9ed821ed832a605b124f"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/diagnostic800_survival/202610230044_2500_dr_summary.log": {
+    "bytes": 1394,
+    "sha256": "3a85094c053045ab4423ae92ea0b09baf1ce1c29fd6eca2637aee165fe3a59b0"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/diagnostic800_survival/202610230044_2500_dr_torque.npz": {
+    "bytes": 3101000,
+    "sha256": "f0907f2db512f40ca181a12e5d3c4a75680120c485e31244e6db85fd22cac018"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/diagnostic800_survival/202610230044_2500_dr_torque.png": {
+    "bytes": 162227,
+    "sha256": "3978b32b66301ef2f348cbe5199af4846523160586f46926f78d6381604bd9ad"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/diagnostic800_survival/dr_draws.json": {
+    "bytes": 416396,
+    "sha256": "8409ed06f54a967cde33a7bc36eb954c4db81b075bd85f5d240bdab571ecb365"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/diagnostic800_survival/experiment.json": {
+    "bytes": 1362,
+    "sha256": "716be2daf0e400a87407684e60e0766961870bde4e1a26ebcca7480f858d515c"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/diagnostic800_survival/run.log": {
+    "bytes": 11273,
+    "sha256": "11fe33000059bd10f39ff47a36e6cb53dd3126bbb222913d2a11e8daab8d7a6a"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/episodes.csv": {
+    "bytes": 63168,
+    "sha256": "5fa6d295dbf04874944ffa96d84e3526ad18037dba5ed38fcc7e0d20eb7b1062"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/experiment.py": {
+    "bytes": 11306,
+    "sha256": "819eeb2646900c12dd01d2d8624ae3cb9c69af8fed579fe443e8776afb571f65"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/historical_v0_91850_survival/dr_draws.json": {
+    "bytes": 754297,
+    "sha256": "af4e590b045b5c9e90b664a864a5995c10b9df2c2507b4722e850d87d6968d21"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/historical_v0_91850_survival/evaluation.npz": {
+    "bytes": 19664593,
+    "sha256": "2be9a2b19ffab39acc189367e36bf0ed39d2ccebd22a4321cbf36b62d293b667"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/historical_v0_91850_survival/metadata.json": {
+    "bytes": 4259495,
+    "sha256": "cd710e57619f4e05f385bd35c8b62e27dfc724f7962f556f5d79dc2143829b58"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/historical_v0_91850_survival/run.log": {
+    "bytes": 19682,
+    "sha256": "8a140d360baa97e5b1805d49ea72cfb7ce002c265bc8d71dc8ec1486430a0078"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/protected_before.json": {
+    "bytes": 9892,
+    "sha256": "db03bfb7b8b706cbf6555d26d37726327ac328cb11b5767f8fd42a9de7296c2b"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/v0_policy_validation.json": {
+    "bytes": 111,
+    "sha256": "11948b2cd302ddb3c99603f92b606af2331ad363b8f3abef7c260814ad92c555"
+  },
+  "mujoco_sim2sim/reports/20261023_2500_dr_evaluation/v1_policy_validation.json": {
+    "bytes": 295,
+    "sha256": "a24e5644e54b490a4d548f92e0792c6b3a823d2c02ef77134d3d1cd23c3155e7"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/README.md": {
+    "bytes": 5990,
+    "sha256": "982621c40bcf0e2bfc5980e3489580d56f9dd514ed95b3bf46b4b8729adba0d5"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/evaluate.py": {
+    "bytes": 16499,
+    "sha256": "633d3197956bf61522ef8f88c2da547f603a4a7695a7d0a4a05dffa8b22556e1"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/evaluate_as_run.py": {
+    "bytes": 16465,
+    "sha256": "b561a18481d6d5ebc3b89b8153571d520c60376978c6b3ab71cf9708d8f3c73f"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/finish_report.log": {
+    "bytes": 670,
+    "sha256": "34cb6810299d6a1461a4b2e5708d578336e305b969492225a34dfedbf4d62a93"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/finish_report.py": {
+    "bytes": 2065,
+    "sha256": "1768470206cceb62607f4caa2b45df260ecfe497c4c6fcf0337a63b37fe67bcf"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/experiment.json": {
+    "bytes": 4087,
+    "sha256": "c9c31654c437979043195670f9114f4f696a75effdf9f4be8428a794ab0788ec"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_00/episodes.jsonl": {
+    "bytes": 5944,
+    "sha256": "f69b3637f8ab35f1464c9804e030d834e7587140b69d5fdb1bb8b9321b002b8c"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_00/friction_bank.json": {
+    "bytes": 1788,
+    "sha256": "67e6ec3674a294a019cc007d581d0bfb7d60f529a6bedfac81ffb89ae42d5fc5"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_00/progress.json": {
+    "bytes": 187,
+    "sha256": "99d9c0034a581987ea1a54d0811074852de8cc04220be8516c5f221da55fb817"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_00.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_01/episodes.jsonl": {
+    "bytes": 1982,
+    "sha256": "17b65091a1c83ef585819113f7c346407ebd1803e7dbaad2c5495b96ef6c227e"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_01/friction_bank.json": {
+    "bytes": 1788,
+    "sha256": "67e6ec3674a294a019cc007d581d0bfb7d60f529a6bedfac81ffb89ae42d5fc5"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_01/progress.json": {
+    "bytes": 180,
+    "sha256": "44a49ae75266d69be2ebb875890e538f28f339ed600ac876eb9f552c71acb659"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_01.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_02/episodes.jsonl": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_02/friction_bank.json": {
+    "bytes": 1788,
+    "sha256": "67e6ec3674a294a019cc007d581d0bfb7d60f529a6bedfac81ffb89ae42d5fc5"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_02/progress.json": {
+    "bytes": 170,
+    "sha256": "9194da17321566d61e1af34de4c50e26dc8b5ad01f1a902e3dc08a82fcf48e25"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_02.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_03/episodes.jsonl": {
+    "bytes": 3978,
+    "sha256": "29c0e8c57299cb7423960c06eb0b37374eacfd36c6c891ed3a73013c0511eb11"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_03/friction_bank.json": {
+    "bytes": 1788,
+    "sha256": "67e6ec3674a294a019cc007d581d0bfb7d60f529a6bedfac81ffb89ae42d5fc5"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_03/progress.json": {
+    "bytes": 170,
+    "sha256": "8f7388eba7c7dd68befcbe54628245ecc6d8b0cb6ff8037c6c5c89a82400bd93"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_03.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_04/episodes.jsonl": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_04/friction_bank.json": {
+    "bytes": 1788,
+    "sha256": "67e6ec3674a294a019cc007d581d0bfb7d60f529a6bedfac81ffb89ae42d5fc5"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_04/progress.json": {
+    "bytes": 170,
+    "sha256": "70d571ef684838d45921a9464e5e9aa336556ec83fb657d69238f79b81605148"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_04.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_05/episodes.jsonl": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_05/friction_bank.json": {
+    "bytes": 1788,
+    "sha256": "67e6ec3674a294a019cc007d581d0bfb7d60f529a6bedfac81ffb89ae42d5fc5"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_05/progress.json": {
+    "bytes": 170,
+    "sha256": "13f511fc37b55e0f9acfb1ece7e8ba62e3c8538eba120675850e89d5982886e4"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_05.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_06/episodes.jsonl": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_06/friction_bank.json": {
+    "bytes": 1788,
+    "sha256": "67e6ec3674a294a019cc007d581d0bfb7d60f529a6bedfac81ffb89ae42d5fc5"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_06/progress.json": {
+    "bytes": 170,
+    "sha256": "de56edee9e82ad6304e447f05aa35bbfb3d1d16af70057b617edaad4a01fdafe"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_06.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_07/episodes.jsonl": {
+    "bytes": 5959,
+    "sha256": "d8c0842bb041dce895e8eaa82376d8ad24e3020eafdd07a5b4cea9a275050a8a"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_07/friction_bank.json": {
+    "bytes": 1788,
+    "sha256": "67e6ec3674a294a019cc007d581d0bfb7d60f529a6bedfac81ffb89ae42d5fc5"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_07/progress.json": {
+    "bytes": 170,
+    "sha256": "33ee2f2d958c61d208956b8e78915499e93c07acb3577f30c484d4cd07219a21"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_07.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_08/episodes.jsonl": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_08/friction_bank.json": {
+    "bytes": 1788,
+    "sha256": "67e6ec3674a294a019cc007d581d0bfb7d60f529a6bedfac81ffb89ae42d5fc5"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_08/progress.json": {
+    "bytes": 169,
+    "sha256": "6a7b01b1438370ddfca438c7bae74ba521f3ea477d22245366ef9e1ae96fbe90"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_08.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_09.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_10/episodes.jsonl": {
+    "bytes": 1985,
+    "sha256": "1d35ca2097ec20736349f7866b005362bcef1ce7e294065db080a9e660acfa82"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_10/friction_bank.json": {
+    "bytes": 1788,
+    "sha256": "67e6ec3674a294a019cc007d581d0bfb7d60f529a6bedfac81ffb89ae42d5fc5"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_10/progress.json": {
+    "bytes": 170,
+    "sha256": "88674f57fa215863bb1b46dc0b742d65543363c6de19d67fdd3b856bdaf25f85"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_10.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_11/episodes.jsonl": {
+    "bytes": 1987,
+    "sha256": "0aea2ae5159730d85121cd276b269bbd8f8b73d29a2b2540464c7e2fbfa00a0c"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_11/friction_bank.json": {
+    "bytes": 1788,
+    "sha256": "67e6ec3674a294a019cc007d581d0bfb7d60f529a6bedfac81ffb89ae42d5fc5"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_11/progress.json": {
+    "bytes": 181,
+    "sha256": "8f950ff89e1d66a75f7298a3b08ce2540b919ccadce27d4cdfb6557fcef22db1"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run/worker_11.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run.log": {
+    "bytes": 57,
+    "sha256": "2a77821d19873d36ef1347d42a8d68c08c44dcb1d618970c1c213af00e788204"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/completed_episodes.csv": {
+    "bytes": 183350,
+    "sha256": "969badaa21149907bda5609c4d70452cd0d766b4510dda20ec5d1b2be81b626c"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/experiment.json": {
+    "bytes": 4180,
+    "sha256": "6e475cf9ebe84c31ca572e43a0edb5a946a0ab76ff7204e332001b50b5e46d36"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/histogram_counts.csv": {
+    "bytes": 153,
+    "sha256": "26ed82536da066eea90a3b6e311335dfc17caff2e2bd355567a50a559e5340f4"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/model_2500_mujoco_800hz_6000_survival_histogram.pdf": {
+    "bytes": 21651,
+    "sha256": "b68c8d57844abb8ad61b3fdfdce226408d0e90cbdf1a0a612647b39c3dbe2c0a"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/model_2500_mujoco_800hz_6000_survival_histogram.png": {
+    "bytes": 112224,
+    "sha256": "96735af681fbf475ce67fc95d984b037aed4c92235e552f2f420ff7a69a67a07"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/model_2500_mujoco_800hz_6000_survival_histogram.svg": {
+    "bytes": 75737,
+    "sha256": "1ecdf564fd9b1ad4d55db4ee1119b9218ca35691e32d714a0f6bcfe149e35824"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/postprocessing_provenance.json": {
+    "bytes": 643,
+    "sha256": "7d0e0614fba19e6351c99c2c8f815f4ffdbd83ed82c4b95beebc430789c7421d"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/summary.json": {
+    "bytes": 6780,
+    "sha256": "0357c70568fc8e1678bd8df0c7240ee7e93f587297d188f4684c9275e0acddd4"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/verification.json": {
+    "bytes": 1714,
+    "sha256": "84f7e2c10665b4f52dbf10f95437aa107baa65e0e403e332e76b18599d1fa0b9"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_00/episodes.jsonl": {
+    "bytes": 1121941,
+    "sha256": "ae4ec1368fce0dda882e1a3314bd22beb83106247aa10163f57eae71bcee0be2"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_00/friction_bank.json": {
+    "bytes": 1788,
+    "sha256": "67e6ec3674a294a019cc007d581d0bfb7d60f529a6bedfac81ffb89ae42d5fc5"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_00/progress.json": {
+    "bytes": 223,
+    "sha256": "2388e403d7365faa199d95a761e3cbbad48274eaff12ce3c0fd7db44ec74b916"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_00.log": {
+    "bytes": 33,
+    "sha256": "ebff24a728bc42b06f79dff4a9503f683fd738206ab370cf68d4ccf989b81d47"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_01/episodes.jsonl": {
+    "bytes": 1121888,
+    "sha256": "6f1da2d944c31cd71f9bfeaeb0cff57435cf4cca208248526a3da5389813b0b0"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_01/friction_bank.json": {
+    "bytes": 1788,
+    "sha256": "67e6ec3674a294a019cc007d581d0bfb7d60f529a6bedfac81ffb89ae42d5fc5"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_01/progress.json": {
+    "bytes": 223,
+    "sha256": "9503d1ba3ded357a28a99b976821d7b7498871701d4c50c98d13715c52c84855"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_01.log": {
+    "bytes": 33,
+    "sha256": "2805bb32a34881cdc21cfdd12e6b7af2768e11c14a55c35b1e93d5f6faba13b5"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_02/episodes.jsonl": {
+    "bytes": 1121876,
+    "sha256": "f8f078cca3cf1abfefe78232103f37905a4c5e23322aebf7216f9160ced5b728"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_02/friction_bank.json": {
+    "bytes": 1788,
+    "sha256": "67e6ec3674a294a019cc007d581d0bfb7d60f529a6bedfac81ffb89ae42d5fc5"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_02/progress.json": {
+    "bytes": 222,
+    "sha256": "0f18d7a485f8389b0392bc9d7ff05647a9288da0b87fd8e770af558dc5d06b88"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_02.log": {
+    "bytes": 33,
+    "sha256": "af79e0cfdc0abb6a32f62e20b8733720a82b696831a42bc1e5db64fcdf267eec"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_03/episodes.jsonl": {
+    "bytes": 1122125,
+    "sha256": "8349634183b6eb0c383f8819f83c1e1ff972d3c3d13d68cf026dc8d9288c9764"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_03/friction_bank.json": {
+    "bytes": 1788,
+    "sha256": "67e6ec3674a294a019cc007d581d0bfb7d60f529a6bedfac81ffb89ae42d5fc5"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_03/progress.json": {
+    "bytes": 222,
+    "sha256": "6118a04fa7d438f534ad189f1d383fec6927ad71835e5bb25a58a591f5b50d02"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_03.log": {
+    "bytes": 33,
+    "sha256": "eb8111de1fca1e5c496fcde8cd6f2dce11d5f90ae659d2f3170b7931a74949f0"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_04/episodes.jsonl": {
+    "bytes": 936182,
+    "sha256": "8011a76ee2de20363cc3b034503495607f4e46a2bbfd85b65944343b5c2bc567"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_04/friction_bank.json": {
+    "bytes": 1788,
+    "sha256": "67e6ec3674a294a019cc007d581d0bfb7d60f529a6bedfac81ffb89ae42d5fc5"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_04/progress.json": {
+    "bytes": 214,
+    "sha256": "8faa862522e346cefd16dc96d385a6f8f617eb8d1c18e29c736619194a0bcf89"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_04.log": {
+    "bytes": 33,
+    "sha256": "75df8813bc2b276f8ea5cb7c91d742f8bd7df3d8446916a8f280250a5de0f6ec"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_05/episodes.jsonl": {
+    "bytes": 936171,
+    "sha256": "c676e15d1f1e4e0ed0c8caa8f7e7b0ac64a49258e3e4c5ef84a510bd860ac7ed"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_05/friction_bank.json": {
+    "bytes": 1788,
+    "sha256": "67e6ec3674a294a019cc007d581d0bfb7d60f529a6bedfac81ffb89ae42d5fc5"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_05/progress.json": {
+    "bytes": 215,
+    "sha256": "12f8989c6741ef7ec5baf1b13ec377e1ccab0180c983d8192198bf0379a8fe16"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_05.log": {
+    "bytes": 33,
+    "sha256": "7b690bb9ab570894c1ba5d6513fdcba3c6cf9780287f3c6ff0c171b4f6d15c80"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_06/episodes.jsonl": {
+    "bytes": 936047,
+    "sha256": "aacbd4951f40a7553eb67d68a62e2cb2fbdf2bd6ebda59422ed61399aca5fd3f"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_06/friction_bank.json": {
+    "bytes": 1788,
+    "sha256": "67e6ec3674a294a019cc007d581d0bfb7d60f529a6bedfac81ffb89ae42d5fc5"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_06/progress.json": {
+    "bytes": 212,
+    "sha256": "38ff19102c335aa819eb118c16ad67e6de03657ef5061299e259e3bdfc41c73f"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_06.log": {
+    "bytes": 33,
+    "sha256": "7ade737c2fa5182c51a124b4eaede305abae95b4f32dcb4fcafc5b363683d0fb"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_07/episodes.jsonl": {
+    "bytes": 936116,
+    "sha256": "bfba09fba9204ed0f76ec94c0383295fefbc2f1ac423702c89d7ca537d932c76"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_07/friction_bank.json": {
+    "bytes": 1788,
+    "sha256": "67e6ec3674a294a019cc007d581d0bfb7d60f529a6bedfac81ffb89ae42d5fc5"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_07/progress.json": {
+    "bytes": 215,
+    "sha256": "72645f3b321711d56c1ef983b19cdbb83bf3bdea7630c9de3d8e2909317020e6"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_07.log": {
+    "bytes": 33,
+    "sha256": "27cb26a894564d8263fb0cbcf587539d9225286fb038599607bd54cac65b6c2b"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_08/episodes.jsonl": {
+    "bytes": 936043,
+    "sha256": "27fa0bbb848347aea47d8c07506eee018575f6d1752f6bd1b84ddeb67b4f4643"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_08/friction_bank.json": {
+    "bytes": 1788,
+    "sha256": "67e6ec3674a294a019cc007d581d0bfb7d60f529a6bedfac81ffb89ae42d5fc5"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_08/progress.json": {
+    "bytes": 214,
+    "sha256": "27ac52c1e54e09846fd3be4a54bb09ef5f738dad4af4ff9e63fea8eb609b9581"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_08.log": {
+    "bytes": 33,
+    "sha256": "34ae6abb967990c77181c71f588d334b1fff170141097369b693a44f4174a218"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_09/episodes.jsonl": {
+    "bytes": 936241,
+    "sha256": "cdd3329826c24956d021cdaa4bbd17244f626032226d2b455d947481838d31d6"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_09/friction_bank.json": {
+    "bytes": 1788,
+    "sha256": "67e6ec3674a294a019cc007d581d0bfb7d60f529a6bedfac81ffb89ae42d5fc5"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_09/progress.json": {
+    "bytes": 215,
+    "sha256": "f738873828e59bc558a26f4dcdcc7ac76bb68cb5b81da58c7adafaff229beb02"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_09.log": {
+    "bytes": 33,
+    "sha256": "097949cbadf9ce3290ccf58d15b0c7198e538ff535ca9fafc3e2c102a1f4154a"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_10/episodes.jsonl": {
+    "bytes": 936412,
+    "sha256": "b6e18de0346e632fcabf129b62a9e66a40d97694b4747149594182686a1e1511"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_10/friction_bank.json": {
+    "bytes": 1788,
+    "sha256": "67e6ec3674a294a019cc007d581d0bfb7d60f529a6bedfac81ffb89ae42d5fc5"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_10/progress.json": {
+    "bytes": 216,
+    "sha256": "3a81ee10340ba277976dacc4de956541e3c4aa2b1c6cfef906c7a5d9f7878c51"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_10.log": {
+    "bytes": 34,
+    "sha256": "798016e39c6a9b57d29b0774f8ce723727263a2aaebc143dba4bc58701a826ca"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_11/episodes.jsonl": {
+    "bytes": 936491,
+    "sha256": "1e3b40926d0a9d3f5a43b005ca5a40d9e47d7fed48518f31431c406166ffe4af"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_11/friction_bank.json": {
+    "bytes": 1788,
+    "sha256": "67e6ec3674a294a019cc007d581d0bfb7d60f529a6bedfac81ffb89ae42d5fc5"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_11/progress.json": {
+    "bytes": 215,
+    "sha256": "98c7657327d257ea4f6c089bc1547dbfaa8d0407fcfae2a002f35ce3869e349f"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000/worker_11.log": {
+    "bytes": 34,
+    "sha256": "156066c8052e59b7f2b97dd46350882135aa88b9980e6a46aeac191c57931453"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_6000_survival/run_6000.log": {
+    "bytes": 2744,
+    "sha256": "36e840e597264fd16e8926997881eb3197ee14383e24c9f870448ccd3a430fcb"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_episode_distribution/README.md": {
+    "bytes": 4138,
+    "sha256": "cac66a0bec58612dcb12ae555c53b9962cb03ea786175aa504048653445fd62c"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_episode_distribution/completed_episodes.csv": {
+    "bytes": 4049,
+    "sha256": "57dc4e39fb9831dfdba96a2fb416d61b7a0a6684627283b7d61219f1edc6d58d"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_episode_distribution/completed_episodes_survival_only.csv": {
+    "bytes": 3799,
+    "sha256": "172d88ea2a47f2fadda2f914021d5746825c3019e9438a47158f1a0d1dd09a79"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_episode_distribution/draw_histogram.py": {
+    "bytes": 9703,
+    "sha256": "0437dee40ed100ea20645fe208ff008b4c772dc731b82eb8f05155ec883df359"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_episode_distribution/model_2500_mujoco_800hz_episode_length_distribution.csv": {
+    "bytes": 143,
+    "sha256": "1457add590478a7e8f48980ca35f94dcb868cdae49790a432cbd22bb61314c18"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_episode_distribution/model_2500_mujoco_800hz_episode_length_distribution.pdf": {
+    "bytes": 21844,
+    "sha256": "18565dc58ed60e61a3ea1102b1ace9b5914a1a378d3b1f939be4d03ef99ff120"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_episode_distribution/model_2500_mujoco_800hz_episode_length_distribution.png": {
+    "bytes": 98144,
+    "sha256": "83db2804278da6a222e7e1afaf1bf9ccdbc26663a54cd993205b255b17a5fa6a"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_episode_distribution/model_2500_mujoco_800hz_episode_length_distribution.svg": {
+    "bytes": 71639,
+    "sha256": "710a18da7353fe87ff73ce1ae11237483455f8883fb5105569bec933d15a2cb1"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_episode_distribution/model_2500_mujoco_800hz_episode_length_distribution_survival_only.csv": {
+    "bytes": 144,
+    "sha256": "79fc15260b7f1f286746a09abd0cf8a420305754bbc959fea2f9be966f46369d"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_episode_distribution/model_2500_mujoco_800hz_episode_length_distribution_survival_only.pdf": {
+    "bytes": 21709,
+    "sha256": "40f815c58a0358d34bd2c8fccbc6290912d40acae95b85127256a1ff59f73566"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_episode_distribution/model_2500_mujoco_800hz_episode_length_distribution_survival_only.png": {
+    "bytes": 102266,
+    "sha256": "31cbb06a7cb331644169b0eaacb67fa2045f548c4648d26a359cc2ac28510611"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_episode_distribution/model_2500_mujoco_800hz_episode_length_distribution_survival_only.svg": {
+    "bytes": 74021,
+    "sha256": "0af9faa2c2772f356b66dff1c9b0ef8917581115947141a0d80e800691197a0c"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_episode_distribution/verification.json": {
+    "bytes": 2146,
+    "sha256": "89cb3adeddbf464fc03d351ddc66ec764a6202fe93f29c374f43d996d25cc335"
+  },
+  "mujoco_sim2sim/reports/20261026_2500_800hz_episode_distribution/verification_survival_only.json": {
+    "bytes": 2279,
+    "sha256": "dc98fd8b7a5e1bc2e546abcdcab66f8f35721f4f01db8a3873db24c79f0f7dba"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/README.md": {
+    "bytes": 16061,
+    "sha256": "c224463131fc5dbb8d73753b0e681ffffd71c3251a7535ad4460a34b0435984d"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/analyze_startup.py": {
+    "bytes": 2916,
+    "sha256": "9514729c74b71c3f24c2ae21183e2ea867db31adf3a972bfc1cc76075a2eb271"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/comparison.csv": {
+    "bytes": 846,
+    "sha256": "e1d98cd0fb0e8ae7b86d176c6427e1ec869da6e429c12f71c9b9655000c4bbae"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/evaluate_historical.py": {
+    "bytes": 12272,
+    "sha256": "e11c9b48b8e05fb96080cc41683c677f9eac40ff9c4073fb7ffcfd9c291fc121"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/historical_ablation.pdf": {
+    "bytes": 19821,
+    "sha256": "4af86d9b24ff97a538f8c636c0cfdfae7727f191e71e6977b10a4b6e6d37ed74"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/historical_ablation.png": {
+    "bytes": 115756,
+    "sha256": "77aefe09c44891735791b48356e2fa0c7bfd97eca670178e030cc55f203d9691"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/historical_ablation.svg": {
+    "bytes": 67896,
+    "sha256": "cbc5708199a8bd61f1a553898cb4d5387c3cc25a336f674135a6a45943cdeccb"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/historical_source_manifest.json": {
+    "bytes": 1623,
+    "sha256": "7e732baebe8e380d4a413065074258b4a03ac9bce36de8add441eef997305862"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/historical_sources/isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/bicycle_cfg.py": {
+    "bytes": 2786,
+    "sha256": "848ad672f6ca41e513f75e9984ac95ee3aa7de761cdf47ad914e72c0c4ab210c"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/historical_sources/isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/trackstand_bike/trackstand_rl_env_cfg.py": {
+    "bytes": 15194,
+    "sha256": "1530f10718768732c00c6c0449a26a8f0b096e94b83d6806039b99c9776029ba"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/historical_sources/mujoco_sim2sim/models/trackstand_rl_0916_bike/trackstand_rl_0916.xml": {
+    "bytes": 6282,
+    "sha256": "6f839f2c214da9b743cbd310a72d13ed98d383e8ac4c1d1be609eb89cb003476"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/historical_sources/mujoco_sim2sim/scripts/run_deploy_viewer.py": {
+    "bytes": 24575,
+    "sha256": "98ceae6a7e9035cfc97035177a62b6e242f1e0a71628378fe390611a13f3632b"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/historical_sources/mujoco_sim2sim/src/newbike_mujoco/env.py": {
+    "bytes": 23817,
+    "sha256": "72dd3f1315bbe85a697159713423cafe7aa5639d006deec3318d38886cbf204a"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/historical_sources/mujoco_sim2sim/src/newbike_mujoco/policy.py": {
+    "bytes": 3270,
+    "sha256": "97cfca1f686469becb49974c4468e83a61e02b9678d8eb95d0067dbf04bdcc9e"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/historical_sources/mujoco_sim2sim/src/newbike_mujoco/viewer_envs.py": {
+    "bytes": 3978,
+    "sha256": "d1b40861fd0c2fbc8b8987a73759e17415439512a5f33bd66c41c706ad34de68"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/native_warning_log.txt": {
+    "bytes": 357,
+    "sha256": "b31e91e53f3a2c114010d1e3f3da5b75275311a59a66dc5b438eb050b504e485"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/original_episodes.json": {
+    "bytes": 379487,
+    "sha256": "d0a0e2d79d624d8ac4efda7a2906e6a95c40b71794b31c5aa48eeb5ec243d76c"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/original_histogram_reconstruction.json": {
+    "bytes": 954,
+    "sha256": "bc25d1af533d2a15f181d428a1e489690640ac4b796521ec9eb4b0bbc27e88fe"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/serialized_experiment.json": {
+    "bytes": 1328,
+    "sha256": "35ad57b50dc79834aca3209202ab9dda57d5414446b3a37ae7226a65ec9e53ff"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/serialized_run.log": {
+    "bytes": 3489,
+    "sha256": "025f14484d7142c0db289e4371c91d46a2cd0c314786afe049d3ba28ddbeb2a0"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/serialized_runs/all_action_relaxations_dr.json": {
+    "bytes": 177379,
+    "sha256": "8d9078e07dc743fb11188093a4d7805cea4c5ff55ce882d08ab5a3f16b56e5f3"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/serialized_runs/baseline_dr.json": {
+    "bytes": 199175,
+    "sha256": "bd4d021c35f28ea9bb12f40d9bef82b1437950fa66bb4753dbf8bdcb375e8b63"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/serialized_runs/baseline_no_dr.json": {
+    "bytes": 142015,
+    "sha256": "08162a75931bc16eef4b12683f56d714ee203799ab2557dac0fabeecc469ca8c"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/serialized_runs/implicitfast_400_dr.json": {
+    "bytes": 199212,
+    "sha256": "6410f8dc15359c38ded04dfe6ec3a8c114302e296185a9bb7ac09bdc61835888"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/serialized_runs/no_speed_projection_dr.json": {
+    "bytes": 199826,
+    "sha256": "10b8d1e326e051aee86a22c45f18097fa5b10fdeadc2c29b02afe0183dec1a53"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/serialized_runs/no_steer_bound_or_slew_dr.json": {
+    "bytes": 192303,
+    "sha256": "af0d3250dedbe87c51bccc49951e4ad4c925e835b36d82e05514dd35ac3ec5bf"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/serialized_runs/no_steer_bound_or_slew_no_dr.json": {
+    "bytes": 140880,
+    "sha256": "c86ef1af9a73c4402b6118c208a9b70f0ddb03c400414a1de673e05cbd5592e7"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/serialized_runs/no_steer_slew_dr.json": {
+    "bytes": 194362,
+    "sha256": "1985c0c4e8453ec367098449bb975cce5f699bc7c5a922f7bb53b8b215b37d9a"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/serialized_runs/no_steer_target_bound_dr.json": {
+    "bytes": 199107,
+    "sha256": "0e17942ffc45b2fd4ac4ac74e7a9cc05274090f8b792ba852b175542370c7962"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/serialized_runs/physics_800_dr.json": {
+    "bytes": 199262,
+    "sha256": "1eb4a9cbb5fa0b934c249ac6c6b2e58feea2529d46aac77d5d377a380e7ccda6"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/serialized_runs/physics_800_no_dr.json": {
+    "bytes": 142364,
+    "sha256": "d2975437e6591779d9fd9da560038ce12a790b5b3b0de71296fe1f7e8c45c0f8"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/serialized_runs/rear_no_ctrl_clip_dr.json": {
+    "bytes": 198838,
+    "sha256": "9d13f598bb83419f4c522bb53f022578cf3e2ce65a12cd7e4c3b6906843cbbd9"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/serialized_runs/rear_no_saturation_dr.json": {
+    "bytes": 159773,
+    "sha256": "79ccc6def965bc25b7e0ae9a518ef20d9db88b32d9496e6ca1b2ea083fc76e5e"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/serialized_runs/rear_startup_uncapped_dr.json": {
+    "bytes": 159723,
+    "sha256": "af295a103f5bd554795ca4c93c188fdf82cfefdbcc840ea5bb6741223379136b"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/serialized_runs/rear_startup_uncapped_no_dr.json": {
+    "bytes": 95129,
+    "sha256": "d569d7d57351b5ffc05bf3866e971de1e21b9a2b4169b7e499cc76e83edacfe4"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/serialized_runs/refresh_dr_constants_dr.json": {
+    "bytes": 199181,
+    "sha256": "dbbb19dd6e2715544c9fefe7ea5a089335462e26297e2664f53faf71f4d98106"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/serialized_summary.json": {
+    "bytes": 5078,
+    "sha256": "3cd4977091d428ff0739ccb7f58d9375225978a84cd28d67eae7b97c9fc2bb35"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/startup_comparison.pdf": {
+    "bytes": 20980,
+    "sha256": "c505813b164a86f7c29215ee13eed07eff195d48225ae877bbf35f277cf3ec76"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/startup_comparison.png": {
+    "bytes": 147892,
+    "sha256": "dd3fc6cfea4d899706e2caa7cdb605b4f51bf2afe657cec4a48c712502aadb10"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/startup_comparison.svg": {
+    "bytes": 67651,
+    "sha256": "5aabe55de999c0531386f68f3c06a4207a2eef97deb35eefc3a9907be4dd65dd"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/startup_traces.json": {
+    "bytes": 135021,
+    "sha256": "2f1c31642e441a6161118c83fd73637db959d740127b7c60102de0ff2f7327f5"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/verification.json": {
+    "bytes": 1081,
+    "sha256": "f63c9493ee3a7d53a811927e6f0fb7c65915ee743ca69781bc16133fc15ada89"
+  },
+  "mujoco_sim2sim/reports/20261029_91850_first_histogram_audit/verify_and_plot.py": {
+    "bytes": 7204,
+    "sha256": "f4b1d996631678ea55afbaf22e19d285f079bba2457146eb2a2428b083876ea9"
+  },
+  "mujoco_sim2sim/requirements.txt": {
+    "bytes": 424,
+    "sha256": "c062291479990d7b2c29c0618b29fc8d2b40ae75f636d64b61bfdd753475b04e"
+  },
+  "mujoco_sim2sim/scripts/__pycache__/run_deploy_eval.cpython-310.pyc": {
+    "bytes": 7146,
+    "sha256": "9fb88dd2a9474b52496634777d9edcd4e35144c0b318e607ae9dd6f2e032332b"
+  },
+  "mujoco_sim2sim/scripts/__pycache__/run_deploy_viewer.cpython-310.pyc": {
+    "bytes": 7906,
+    "sha256": "95e9f72d448e24ddd92ffebb62e992113c2bf39f74ab263c1cd1f24643ed8451"
+  },
+  "mujoco_sim2sim/scripts/__pycache__/run_free_fall_viewer.cpython-310.pyc": {
+    "bytes": 2708,
+    "sha256": "199afd352cbc1c97655a02f08c8c4acb2f509ab657ffa9ebd95015f000c721b6"
+  },
+  "mujoco_sim2sim/scripts/__pycache__/run_trackstand0910_viewer.cpython-310.pyc": {
+    "bytes": 1933,
+    "sha256": "2e9332159636af3be8679dc87af9b260b588420d899febd973cd72d1800bfafa"
+  },
+  "mujoco_sim2sim/scripts/run_deploy_eval.py": {
+    "bytes": 8798,
+    "sha256": "da5e8d3c3946d4a3ada3acdc9677b5a246e2e4a5a911e8a7e2ed2755a3336115"
+  },
+  "mujoco_sim2sim/scripts/run_deploy_viewer.py": {
+    "bytes": 11987,
+    "sha256": "db033ebe73817488bca883de8502ae21d0dd626ac518898b3d608dd75bab5f60"
+  },
+  "mujoco_sim2sim/scripts/run_empty_viewer.py": {
+    "bytes": 783,
+    "sha256": "9f1d43414a88abef06823e7641e2c3a23dcda946e068992e88e125d719d7110e"
+  },
+  "mujoco_sim2sim/scripts/run_free_fall_viewer.py": {
+    "bytes": 3285,
+    "sha256": "6169f9bd190464bb4506c4e63a19f8f84b9aaacb76b29e8b1e29d768a96985c2"
+  },
+  "mujoco_sim2sim/scripts/run_orange_bike_viewer.py": {
+    "bytes": 1122,
+    "sha256": "d2acc6df561f9b36141010bd5e1bbad38b2f9f5c36c0b3ba56fb874e5d72e334"
+  },
+  "mujoco_sim2sim/src/newbike_mujoco/__init__.py": {
+    "bytes": 256,
+    "sha256": "3f6a132deec5ed241e1fe23102d05d4152e17169052c5b114d9ca41e67d885a5"
+  },
+  "mujoco_sim2sim/src/newbike_mujoco/__pycache__/__init__.cpython-310.pyc": {
+    "bytes": 398,
+    "sha256": "7c5dcda110497c5e864835bdfc0a560a079d0544d80014548ec531c695be89f0"
+  },
+  "mujoco_sim2sim/src/newbike_mujoco/__pycache__/contract.cpython-310.pyc": {
+    "bytes": 2997,
+    "sha256": "9a6af79438a7569ee88161103754e8c51eee31e9aa80cacb1d483083aabb01d2"
+  },
+  "mujoco_sim2sim/src/newbike_mujoco/__pycache__/env.cpython-310.pyc": {
+    "bytes": 16334,
+    "sha256": "ad85a9f6966503e7725e3cabe7dd8d63a1c709d6513594e0f7086f95e021f697"
+  },
+  "mujoco_sim2sim/src/newbike_mujoco/__pycache__/model.cpython-310.pyc": {
+    "bytes": 3521,
+    "sha256": "d3541f0ed4bc3bb807dad625552d44b60f90d173ee5990e784053e60846f4ab1"
+  },
+  "mujoco_sim2sim/src/newbike_mujoco/__pycache__/policy.cpython-310.pyc": {
+    "bytes": 5072,
+    "sha256": "705ff7d9ef3a9324d52a69b4efcaf165f911357e0e30899461baa9faad0ce68a"
+  },
+  "mujoco_sim2sim/src/newbike_mujoco/__pycache__/reporting.cpython-310.pyc": {
+    "bytes": 11477,
+    "sha256": "d55f9b61ab5862cea65c18f020a797028c7ee01f9db2f0b806bd33906dec5631"
+  },
+  "mujoco_sim2sim/src/newbike_mujoco/__pycache__/viewer_envs.cpython-310.pyc": {
+    "bytes": 5002,
+    "sha256": "2b33cc383ae6531acb9c784a35cc2a3f0dd9380c4459251c7ed8725b045ed2a1"
+  },
+  "mujoco_sim2sim/src/newbike_mujoco/contract.py": {
+    "bytes": 2612,
+    "sha256": "2b9a57226006e2874d381d7345b83e64e5633f7da56e9a43194b6ba8b52fffb4"
+  },
+  "mujoco_sim2sim/src/newbike_mujoco/env.py": {
+    "bytes": 19966,
+    "sha256": "d243c1eb3dcc54cbb374c61a2cd877096a6d859d0f2bcbf6cb3331ff6d8b790e"
+  },
+  "mujoco_sim2sim/src/newbike_mujoco/model.py": {
+    "bytes": 3195,
+    "sha256": "42945b323e931ca455c2e3a5603e8f774f424e0126e526c9d4e7074cff6e43f9"
+  },
+  "mujoco_sim2sim/src/newbike_mujoco/policy.py": {
+    "bytes": 5308,
+    "sha256": "c25c77415932aa29e70c2f589af8cd525fb19ab9008586ae25efca5f45823b3f"
+  },
+  "mujoco_sim2sim/src/newbike_mujoco/reporting.py": {
+    "bytes": 9315,
+    "sha256": "a6f718ed28658c9d0ec4089a144b614365bbf22cb2e934eb9dcea78350a6b7e7"
+  },
+  "mujoco_sim2sim/src/newbike_mujoco/viewer_envs.py": {
+    "bytes": 4869,
+    "sha256": "79c2aa500d817b8c1f0905a437fb81e29cd478256b25461e40fdfc77a6e17257"
+  },
+  "mujoco_sim2sim/tests/__pycache__/test_isaac_parity.cpython-310.pyc": {
+    "bytes": 9297,
+    "sha256": "edd9d482678a4259364660e2770b10cfce6d6b79633ef5977552b239fb9561ca"
+  },
+  "mujoco_sim2sim/tests/__pycache__/test_v1_contract.cpython-310.pyc": {
+    "bytes": 15456,
+    "sha256": "dc90317740573155216d058eaf66c615dc74cd0f213ac464aa6c9ebc7f3acf4f"
+  },
+  "mujoco_sim2sim/tests/test_isaac_parity.py": {
+    "bytes": 9125,
+    "sha256": "2fa23ad02045ea61fcdae47f7c950395f027e5f3f263552ea370722d8eeff34b"
+  },
+  "mujoco_sim2sim/tests/test_multi_viewer.py": {
+    "bytes": 18609,
+    "sha256": "1664fa67439f172871f126bd58c2116652f6df9f8dca6adf0890a937fa0e89e0"
+  },
+  "mujoco_sim2sim/tests/test_physics_frequency.py": {
+    "bytes": 7298,
+    "sha256": "1138e6b124c2b65cd0976bda7c25d5f5cce988d1a4f60b294206b6523f8aa893"
+  },
+  "mujoco_sim2sim/tests/test_v1_contract.py": {
+    "bytes": 14830,
+    "sha256": "d279bfb7d89c7ca1ef95d96f450c25f9d0d87aa728b24429f4968a3b34892403"
+  }
+}

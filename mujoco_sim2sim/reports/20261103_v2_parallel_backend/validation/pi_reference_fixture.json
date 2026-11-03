@@ -1,0 +1,14 @@
+{
+  "stage": "reference fixture only; NumPy implementation comparison pending",
+  "origin": "exact AST-extracted Isaac VelocityIntegral class, imported without Kit or Isaac runtime",
+  "source": "isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/mdp/stationary/velocity_pi.py",
+  "source_sha256": "695890403bc4a483297782f6b84f535d69a1af5e49e5ddb76c2542a5aac3a1e6",
+  "dtype": "torch.float64 CPU",
+  "updates": 12000,
+  "resets": 7,
+  "seed": 20261103,
+  "first_update_prime_zero": true,
+  "torque_abs_max": 4.698982544257011,
+  "limited_updates_final": 15,
+  "fixture_generation_note": "First JSON metadata serialization rejected a NumPy bool; corrected by explicit Python bool. Reference NPZ was already generated successfully; no runtime simulation occurred."
+}

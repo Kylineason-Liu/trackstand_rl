@@ -1,0 +1,116 @@
+{
+  "no_dr": {
+    "cwd": "/home/lmbike/trackstand_rl/mujoco_sim2sim/reports/20261103_v2_parallel_backend/validation",
+    "env": {
+      "CUDA_VISIBLE_DEVICES": "",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "OMP_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "MPLCONFIGDIR": "/tmp/trackstand_v2_mpl"
+    },
+    "argv": [
+      "python3",
+      "-B",
+      "/home/lmbike/trackstand_rl/mujoco_sim2sim/scripts/run_deploy_eval_v2.py",
+      "--num_envs",
+      "64",
+      "--episodes",
+      "64",
+      "--max_policy_steps",
+      "1500",
+      "--seed",
+      "42",
+      "--output_dir",
+      "/home/lmbike/trackstand_rl/mujoco_sim2sim/reports/20261103_v2_parallel_backend/validation/no_dr"
+    ],
+    "stdout_stderr": "validation/no_dr_run.log",
+    "exit_code": 0
+  },
+  "dr_smoke": {
+    "cwd": "/home/lmbike/trackstand_rl/mujoco_sim2sim/reports/20261103_v2_parallel_backend/validation",
+    "env": {
+      "CUDA_VISIBLE_DEVICES": "",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "OMP_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "MPLCONFIGDIR": "/tmp/trackstand_v2_mpl"
+    },
+    "argv": [
+      "python3",
+      "-B",
+      "/home/lmbike/trackstand_rl/mujoco_sim2sim/scripts/run_deploy_eval_v2.py",
+      "--num_envs",
+      "4",
+      "--episodes",
+      "4",
+      "--max_policy_steps",
+      "1500",
+      "--seed",
+      "42",
+      "--dr",
+      "--output_dir",
+      "/home/lmbike/trackstand_rl/mujoco_sim2sim/reports/20261103_v2_parallel_backend/validation/dr_smoke"
+    ],
+    "stdout_stderr": "validation/dr_smoke_run.log",
+    "exit_code": 0
+  },
+  "unit_tests": {
+    "cwd": "/home/lmbike/trackstand_rl/mujoco_sim2sim/reports/20261103_v2_parallel_backend/validation",
+    "env": {
+      "CUDA_VISIBLE_DEVICES": "",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "OMP_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "MPLCONFIGDIR": "/tmp/trackstand_v2_mpl"
+    },
+    "argv": [
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "/home/lmbike/trackstand_rl/mujoco_sim2sim/tests",
+      "-p",
+      "test_v2*.py",
+      "-v"
+    ],
+    "stdout_stderr": "validation/v2_all_tests.log",
+    "exit_code": 0,
+    "tests_passed": 22
+  },
+  "cli_validation": {
+    "cwd": "/home/lmbike/trackstand_rl/mujoco_sim2sim/reports/20261103_v2_parallel_backend/validation",
+    "env": {
+      "CUDA_VISIBLE_DEVICES": "",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "OMP_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "MPLCONFIGDIR": "/tmp/trackstand_v2_mpl"
+    },
+    "argv": [
+      "python3",
+      "-B",
+      "validate_cli.py"
+    ],
+    "stdout_stderr": "validation/cli_validation.log",
+    "exit_code": 0,
+    "real_gui_opened": false
+  },
+  "raw_verification": {
+    "cwd": "/home/lmbike/trackstand_rl/mujoco_sim2sim/reports/20261103_v2_parallel_backend",
+    "env": {
+      "CUDA_VISIBLE_DEVICES": "",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "OMP_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1"
+    },
+    "argv": [
+      "python3",
+      "-B",
+      "verify_backend.py"
+    ],
+    "stdout_stderr": "verification.log",
+    "exit_code": 0
+  }
+}

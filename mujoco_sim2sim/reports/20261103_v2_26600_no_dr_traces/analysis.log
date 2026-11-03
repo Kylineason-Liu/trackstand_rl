@@ -1,0 +1,26 @@
+/home/lmbike/.local/lib/python3.10/site-packages/matplotlib/projections/__init__.py:63: UserWarning: Unable to import Axes3D. This may be due to multiple versions of Matplotlib being installed (e.g. as a system package and as a pip package). As a result, the 3D projection is not available.
+  warnings.warn("Unable to import Axes3D. This may be due to multiple versions of "
+Saved mujoco_demand_vs_actuation
+Saved mujoco_demand_vs_actuation_startup
+Saved mujoco_demand_vs_actuation_detail
+Saved mujoco_motor_torque_flow
+Saved mujoco_motor_torque_flow_startup
+Saved mujoco_motor_torque_flow_detail
+Saved observation_traces
+Saved observation_traces_startup
+Saved observation_traces_detail
+Saved raw_policy_outputs
+Saved motor_speeds
+Saved 64-page all64_demand_vs_actuation
+Saved 64-page all64_observation_traces
+{
+  "maximum_reconstructed_integral_error_nm": 0.0,
+  "policy_samples": 96000,
+  "physics_samples": 2304000,
+  "unique_recorded_episodes": 64,
+  "completed_timeouts": 64,
+  "actual_sampled_spawn_times_s": [
+    0.0
+  ],
+  "terminal_reset_s_without_following_samples": 30.0
+}
