@@ -1,0 +1,11 @@
+{
+  "completed": true,
+  "exit_code": 0,
+  "policy_steps": 3000,
+  "environment_transitions": 192000,
+  "completed_episodes": 128,
+  "native_summary": "eval.txt",
+  "verification": "verification.json",
+  "one_full_evaluation_completed": true,
+  "previous_attempt": "report harness config-lifecycle check stopped before environment creation; no trajectory or numerical settings changed"
+}

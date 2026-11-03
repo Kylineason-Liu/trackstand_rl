@@ -1,0 +1,17 @@
+[
+  {
+    "attempt": 1,
+    "status": "helper config-comparison lifecycle guard failed before gym.make; zero env transitions",
+    "exit_code": 0,
+    "log": "startup1_run.log",
+    "correction": "Compare environment config after construction, matching training serialization lifecycle; no production or numerical changes"
+  },
+  {
+    "attempt": 2,
+    "status": "completed requested64-environment3000-policy-step evaluation",
+    "exit_code": 0,
+    "log": "run.log",
+    "completed_episodes": 128,
+    "all_episodes_timeout": true
+  }
+]

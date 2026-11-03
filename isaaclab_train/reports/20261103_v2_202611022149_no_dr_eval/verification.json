@@ -1,0 +1,41 @@
+{
+  "passed": true,
+  "policy_steps": 3000,
+  "num_envs": 64,
+  "environment_transitions": 192000,
+  "completed_episodes": 128,
+  "mean_length_steps": 1500,
+  "mean_length_seconds": 30.0,
+  "min_length_steps": 1500,
+  "max_length_steps": 1500,
+  "std_length_steps": 0.0,
+  "timeouts": 128,
+  "timeout_rate": 1.0,
+  "non_timeout_endings": 0,
+  "termination_counts": {
+    "time_out": 128,
+    "fallen": 0,
+    "diverged": 0,
+    "drifted": 0,
+    "yaw_deviation": 0,
+    "wheel_net": 0
+  },
+  "overlapping_termination_episodes": 0,
+  "censored_trajectory_count": 0,
+  "original_run_files_identical": true,
+  "original_run_files_checked": 542,
+  "production_python_sources_identical": true,
+  "production_python_sources_checked": 45,
+  "staged_checkpoint_hash_identical": true,
+  "native_eval_and_capture_counts_agree": true,
+  "evaluation_summary_and_torque_artifacts_present": true,
+  "no_dr_confirmed": true,
+  "full_task_terminations_confirmed": [
+    "time_out",
+    "fallen",
+    "diverged",
+    "drifted",
+    "yaw_deviation",
+    "wheel_net"
+  ]
+}

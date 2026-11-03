@@ -1,0 +1,50 @@
+[
+  {
+    "path": "log_dir",
+    "saved": "/home/lmbike/trackstand_rl/logs/rsl_rl/trackstand_rl_v2_rsl/2026-11-02_21-49-32",
+    "resolved": "/home/lmbike/trackstand_rl/isaaclab_train/reports/20261103_v2_202611022149_no_dr_eval"
+  },
+  {
+    "path": "scene.dome_light.spawn.spawn_path",
+    "saved": "/World/DomeLight",
+    "resolved": null
+  },
+  {
+    "path": "scene.num_envs",
+    "saved": 4096,
+    "resolved": 64
+  },
+  {
+    "path": "scene.robot.prim_path",
+    "saved": "/World/envs/env_.*/Robot",
+    "resolved": "{ENV_REGEX_NS}/Robot"
+  },
+  {
+    "path": "scene.robot.spawn.spawn_path",
+    "saved": "/World/envs/env_0/Robot",
+    "resolved": null
+  },
+  {
+    "path": "scene.terrain.env_spacing",
+    "saved": 2.5,
+    "resolved": null
+  },
+  {
+    "path": "scene.terrain.num_envs",
+    "saved": 4096,
+    "resolved": 1
+  },
+  {
+    "path": "video_recorder.eye",
+    "saved": [
+      5.0,
+      5.0,
+      2.0
+    ],
+    "resolved": [
+      7.5,
+      7.5,
+      7.5
+    ]
+  }
+]

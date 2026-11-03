@@ -1,0 +1,27 @@
+{
+  "cwd": "/home/lmbike/trackstand_rl/isaaclab_train",
+  "argv": [
+    "/home/lmbike/IsaacLab/_isaac_sim/python.sh",
+    "-B",
+    "reports/20261103_v2_202611022149_no_dr_eval/evaluate_with_capture.py",
+    "--task",
+    "Trackstand-Balance-v2",
+    "--checkpoint",
+    "/home/lmbike/trackstand_rl/isaaclab_train/reports/20261103_v2_202611022149_no_dr_eval/model_26600.pt",
+    "--num_envs",
+    "64",
+    "--num_steps",
+    "3000",
+    "--seed",
+    "42",
+    "--headless",
+    "--device",
+    "cuda:0",
+    "agent.max_iterations=100000"
+  ],
+  "stdout_stderr": "run.log",
+  "headless": true,
+  "dr": false,
+  "pure_survival": false,
+  "production_entry_point": "scripts/rsl_rl/play_eval.py"
+}

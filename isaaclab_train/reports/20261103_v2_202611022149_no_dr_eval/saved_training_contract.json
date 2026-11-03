@@ -1,0 +1,317 @@
+{
+  "domain_randomization": false,
+  "decimation": 24,
+  "episode_length_s": 30.0,
+  "is_finite_horizon": false,
+  "physics": {
+    "device": "cuda:0",
+    "dt": 0.0008333333333333334,
+    "gravity": [
+      0.0,
+      0.0,
+      -9.81
+    ],
+    "physics_prim_path": "/physicsScene",
+    "physics_material": {
+      "func": "isaaclab.sim.spawners.materials.physics_materials:spawn_rigid_body_material",
+      "static_friction": 0.65,
+      "dynamic_friction": 0.65,
+      "restitution": 0.0,
+      "compliant_contact_stiffness": null,
+      "compliant_contact_damping": null,
+      "friction_combine_mode": "min",
+      "restitution_combine_mode": null,
+      "_usd_applied_schema": "PhysxMaterialAPI",
+      "_usd_field_exceptions": {},
+      "_usd_namespace": "physxMaterial"
+    },
+    "use_fabric": true,
+    "render_interval": 24,
+    "enable_scene_query_support": false,
+    "use_newton_actuators": false,
+    "physics": {
+      "class_type": "isaaclab_physx.physics.physx_manager:PhysxManager",
+      "solver_type": 1,
+      "solve_articulation_contact_last": false,
+      "min_position_iteration_count": 1,
+      "max_position_iteration_count": 255,
+      "min_velocity_iteration_count": 0,
+      "max_velocity_iteration_count": 255,
+      "enable_scene_query_support": false,
+      "enable_ccd": false,
+      "enable_stabilization": false,
+      "enable_external_forces_every_iteration": true,
+      "enable_enhanced_determinism": false,
+      "bounce_threshold_velocity": 0.5,
+      "friction_offset_threshold": 0.04,
+      "friction_correlation_distance": 0.025,
+      "gpu_max_rigid_contact_count": 8388608,
+      "gpu_max_rigid_patch_count": 163840,
+      "gpu_found_lost_pairs_capacity": 2097152,
+      "gpu_found_lost_aggregate_pairs_capacity": 33554432,
+      "gpu_total_aggregate_pairs_capacity": 2097152,
+      "gpu_collision_stack_size": 67108864,
+      "gpu_heap_capacity": 67108864,
+      "gpu_temp_buffer_capacity": 16777216,
+      "gpu_max_num_partitions": 8,
+      "gpu_max_soft_body_contacts": 1048576,
+      "gpu_max_particle_contacts": 1048576
+    },
+    "render": {
+      "enable_translucency": null,
+      "enable_reflections": null,
+      "enable_global_illumination": null,
+      "antialiasing_mode": null,
+      "enable_dlssg": null,
+      "enable_dl_denoiser": null,
+      "dlss_mode": null,
+      "enable_direct_lighting": null,
+      "samples_per_pixel": null,
+      "enable_shadows": null,
+      "enable_ambient_occlusion": null,
+      "dome_light_upper_lower_strategy": null,
+      "max_bounces": null,
+      "split_glass": null,
+      "split_clearcoat": null,
+      "split_rough_reflection": null,
+      "ambient_light_intensity": null,
+      "ambient_occlusion_denoiser_mode": null,
+      "view_tile_limit": null,
+      "carb_settings": null,
+      "rendering_mode": null
+    },
+    "create_stage_in_memory": false,
+    "logging_level": "WARNING",
+    "save_logs_to_file": true,
+    "log_dir": null,
+    "visualizer_cfgs": []
+  },
+  "observations": {
+    "policy": {
+      "concatenate_terms": true,
+      "concatenate_dim": -1,
+      "enable_corruption": true,
+      "history_length": null,
+      "flatten_history_dim": true,
+      "imu": {
+        "func": "source.trackstand_rl.trackstand_rl.tasks.manager_based.trackstand.mdp.stationary.observations:balance_imu_state_v1",
+        "params": {
+          "steer_joint_name": "steering_joint",
+          "drive_joint_name": "rear_wheel_joint"
+        },
+        "modifiers": null,
+        "noise": {
+          "func": "source.trackstand_rl.trackstand_rl.tasks.manager_based.trackstand.mdp.stationary.noise:per_channel_gaussian_noise",
+          "operation": "add",
+          "std": [
+            0.001,
+            0.001,
+            0.0012,
+            0.0012,
+            0.0012,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "clip": null,
+        "scale": null,
+        "history_length": 0,
+        "flatten_history_dim": true
+      }
+    }
+  },
+  "actions": {
+    "steering": {
+      "class_type": "source.trackstand_rl.trackstand_rl.tasks.manager_based.trackstand.mdp.stationary.actions:SlewLimitedJointPositionAction",
+      "asset_name": "robot",
+      "debug_vis": false,
+      "clip": {
+        "steering_joint": [
+          -1.57,
+          1.57
+        ]
+      },
+      "joint_names": [
+        "steering_joint"
+      ],
+      "scale": 1.57,
+      "offset": 0.0,
+      "preserve_order": false,
+      "use_default_offset": true,
+      "max_target_velocity_rad_s": 23.9
+    },
+    "drive": {
+      "class_type": "source.trackstand_rl.trackstand_rl.tasks.manager_based.trackstand.mdp.stationary.velocity_pi:IntegralJointVelocityAction",
+      "asset_name": "robot",
+      "debug_vis": false,
+      "clip": {
+        "rear_wheel_joint": [
+          -61.6,
+          61.6
+        ]
+      },
+      "joint_names": [
+        "rear_wheel_joint"
+      ],
+      "scale": 61.6,
+      "offset": 0.0,
+      "preserve_order": false,
+      "use_default_offset": false,
+      "actuator_name": "drive",
+      "integral_gain_nm_per_rad": 3.3,
+      "integral_rate_hz": 200.0
+    }
+  },
+  "actuators": {
+    "steering": {
+      "class_type": "isaaclab.actuators.actuator_pd:IdealPDActuator",
+      "joint_names_expr": [
+        "steering_joint"
+      ],
+      "effort_limit": 5.6,
+      "velocity_limit": 23.9,
+      "effort_limit_sim": 5.6,
+      "velocity_limit_sim": 23.9,
+      "stiffness": 10.0,
+      "damping": 0.2,
+      "armature": null,
+      "friction": 0.046036056104,
+      "dynamic_friction": 0.046036056104,
+      "viscous_friction": 0.000910713492
+    },
+    "drive": {
+      "class_type": "isaaclab.actuators.actuator_pd:IdealPDActuator",
+      "joint_names_expr": [
+        "rear_wheel_joint"
+      ],
+      "effort_limit": 6.28,
+      "velocity_limit": 61.6,
+      "effort_limit_sim": 6.28,
+      "velocity_limit_sim": 61.6,
+      "stiffness": 0.0,
+      "damping": 0.3,
+      "armature": null,
+      "friction": 0.106,
+      "dynamic_friction": 0.106,
+      "viscous_friction": 0.0
+    }
+  },
+  "terminations": {
+    "time_out": {
+      "func": "isaaclab.envs.mdp.terminations:time_out",
+      "params": {},
+      "time_out": true
+    },
+    "fallen": {
+      "func": "source.trackstand_rl.trackstand_rl.tasks.manager_based.trackstand.mdp.stationary.terminations:thubike_fallen_termination",
+      "params": {
+        "limit_angle": 0.5236
+      },
+      "time_out": false
+    },
+    "diverged": {
+      "func": "source.trackstand_rl.trackstand_rl.tasks.manager_based.trackstand.mdp.stationary.numerics:nonfinite_or_extreme_state_v2",
+      "params": {
+        "max_lin_vel": 20.0,
+        "max_ang_vel": 50.0,
+        "max_joint_vel": 300.0
+      },
+      "time_out": false
+    },
+    "drifted": {
+      "func": "source.trackstand_rl.trackstand_rl.tasks.manager_based.trackstand.mdp.stationary.terminations:balance_drift_termination",
+      "params": {
+        "max_dist": 0.5
+      },
+      "time_out": false
+    },
+    "yaw_deviation": {
+      "func": "source.trackstand_rl.trackstand_rl.tasks.manager_based.trackstand.mdp.stationary.terminations:balance_yaw_deviation_termination",
+      "params": {
+        "limit_angle": 0.5236
+      },
+      "time_out": false
+    },
+    "wheel_net": {
+      "func": "source.trackstand_rl.trackstand_rl.tasks.manager_based.trackstand.mdp.stationary.terminations:balance_wheel_net_termination",
+      "params": {
+        "limit_angle": 7.2
+      },
+      "time_out": false
+    }
+  },
+  "agent": {
+    "seed": 42,
+    "device": "cuda:0",
+    "num_steps_per_env": 16,
+    "max_iterations": 100000,
+    "empirical_normalization": {},
+    "obs_groups": {
+      "actor": [
+        "policy"
+      ],
+      "critic": [
+        "policy"
+      ]
+    },
+    "clip_actions": null,
+    "check_for_nan": true,
+    "save_interval": 50,
+    "experiment_name": "trackstand_rl_v2_rsl",
+    "run_name": "",
+    "logger": "tensorboard",
+    "neptune_project": "isaaclab",
+    "wandb_project": "isaaclab",
+    "resume": false,
+    "load_run": ".*",
+    "load_checkpoint": "model_.*.pt",
+    "class_name": "OnPolicyRunner",
+    "actor": {
+      "class_name": "MLPModel",
+      "hidden_dims": [
+        32,
+        32
+      ],
+      "activation": "elu",
+      "obs_normalization": false,
+      "distribution_cfg": {
+        "class_name": "source.trackstand_rl.trackstand_rl.tasks.manager_based.trackstand.agents.beta_distribution:BetaDistribution"
+      }
+    },
+    "critic": {
+      "class_name": "MLPModel",
+      "hidden_dims": [
+        32,
+        32
+      ],
+      "activation": "elu",
+      "obs_normalization": false,
+      "distribution_cfg": null
+    },
+    "algorithm": {
+      "class_name": "PPO",
+      "num_learning_epochs": 5,
+      "num_mini_batches": 4,
+      "learning_rate": 0.001,
+      "schedule": "adaptive",
+      "gamma": 0.99,
+      "lam": 0.95,
+      "entropy_coef": 0.005,
+      "desired_kl": 0.01,
+      "max_grad_norm": 1.0,
+      "optimizer": "adam",
+      "value_loss_coef": 1.0,
+      "use_clipped_value_loss": true,
+      "clip_param": 0.2,
+      "normalize_advantage_per_mini_batch": false,
+      "share_cnn_encoders": false,
+      "rnd_cfg": null,
+      "symmetry_cfg": null
+    },
+    "policy": {}
+  }
+}

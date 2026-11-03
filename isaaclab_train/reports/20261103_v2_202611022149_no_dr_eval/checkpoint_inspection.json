@@ -1,0 +1,36 @@
+{
+  "checkpoint": "/home/lmbike/trackstand_rl/isaaclab_train/reports/20261103_v2_202611022149_no_dr_eval/model_26600.pt",
+  "sha256": "5733e489490c6688c45085970fef46b62d1fe96a90fb7e5035c3b0de5699af7b",
+  "top_level_keys": [
+    "actor_state_dict",
+    "critic_state_dict",
+    "optimizer_state_dict",
+    "iter",
+    "infos"
+  ],
+  "iteration_field": 26600,
+  "model_shapes": {
+    "distribution._beta_policy_version": [],
+    "mlp.0.weight": [
+      32,
+      11
+    ],
+    "mlp.0.bias": [
+      32
+    ],
+    "mlp.2.weight": [
+      32,
+      32
+    ],
+    "mlp.2.bias": [
+      32
+    ],
+    "mlp.4.weight": [
+      4,
+      32
+    ],
+    "mlp.4.bias": [
+      4
+    ]
+  }
+}

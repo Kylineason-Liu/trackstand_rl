@@ -1,0 +1,39 @@
+The '--headless' CLI argument is deprecated. Omit '--viz' for default headless. If config visualizers are enabled and you want to force headless, use '--viz none'.
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+E0000 00:00:1793695843.528632 2854341 descriptor_database.cc:633] File already exists in database: grpc/health/v1/health.proto
+W0000 00:00:1793695843.528662 2854341 message.cc:301] Protobuf GeneratedMessageFactory: File is already registered: grpc/health/v1/health.proto
+[ISAACLAB] AppLauncher initialization complete
+[ISAACLAB] Kit version: 110.1.1+production.305458.6312fa25.gl
+[ISAACLAB] Kit kernel:  210.1.5+release.12978.b22b555f.gl
+[ISAACLAB] Kit hash:    6312fa25
+[INFO]: Parsing configuration from: <class 'source.trackstand_rl.trackstand_rl.tasks.manager_based.trackstand.trackstand_bike.trackstand_rl_env_cfg_v2.TrackstandRLEnvCfgV2'>
+[INFO]: Parsing configuration from: source.trackstand_rl.trackstand_rl.tasks.manager_based.trackstand.agents.rsl_rl_ppo_beta_v2_cfg:TrackstandRLVelocityBetaPPORunnerCfg
+[INFO] domain randomization: OFF (nominal physics and fixed initial state); observation white noise is unchanged.
+Loading user config located at: '/home/lmbike/.cache/packman/chk/kit-kernel/110.1.1+production.manylinux_2_35_x86_64.release/data/Kit/IsaacLab/3.0/user.config.json'
+2026-11-03T08:50:43Z [0ms] [Warning] [omni.ext.plugin] [ext: extensions] Extensions config 'extension.toml' doesn't exist '/home/lmbike/IsaacLab/source/extensions' or '/home/lmbike/IsaacLab/source/extensions/config'
+2026-11-03T08:50:43Z [365ms] [Warning] [omni.usd_config.extension] Enable omni.materialx.libs extension to use MaterialX
+2026-11-03T08:50:44Z [848ms] [Warning] [isaacsim.core.simulation_manager.plugin] USD stage is not available; stage-opened subscription is deferred
+2026-11-03T08:50:44Z [849ms] [Warning] [isaacsim.core.simulation_manager.plugin] USD stage is not available; stage-opened subscription is deferred
+Traceback (most recent call last):
+  File "/home/lmbike/trackstand_rl/isaaclab_train/reports/20261103_v2_202611022149_no_dr_eval/evaluate_with_capture.py", line 190, in <module>
+    runpy.run_path(sys.argv[0], run_name="__main__")
+  File "<frozen runpy>", line 287, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/lmbike/trackstand_rl/isaaclab_train/scripts/rsl_rl/play_eval.py", line 433, in <module>
+    main()
+  File "/home/lmbike/IsaacLab/source/isaaclab_tasks/isaaclab_tasks/utils/hydra.py", line 504, in wrapper
+    _run_hydra(task, env_cfg, agent_cfg, hydra_args, lambda e, a: func(e, a, *args, **kwargs))
+  File "/home/lmbike/IsaacLab/source/isaaclab_tasks/isaaclab_tasks/utils/hydra.py", line 445, in _run_hydra
+    callback(env_cfg, agent_cfg)
+  File "/home/lmbike/IsaacLab/source/isaaclab_tasks/isaaclab_tasks/utils/hydra.py", line 504, in <lambda>
+    _run_hydra(task, env_cfg, agent_cfg, hydra_args, lambda e, a: func(e, a, *args, **kwargs))
+                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lmbike/trackstand_rl/isaaclab_train/scripts/rsl_rl/play_eval.py", line 194, in main
+    env = gym.make(args_cli.task, cfg=env_cfg, render_mode=None)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/lmbike/trackstand_rl/isaaclab_train/reports/20261103_v2_202611022149_no_dr_eval/evaluate_with_capture.py", line 98, in captured_make
+    dump_config("env", kwargs["cfg"].to_dict(), {"scene.num_envs", "log_dir"})
+  File "/home/lmbike/trackstand_rl/isaaclab_train/reports/20261103_v2_202611022149_no_dr_eval/evaluate_with_capture.py", line 69, in dump_config
+    raise RuntimeError(f"Unexpected {kind} config changes versus training YAML: {unexpected}")
+RuntimeError: Unexpected env config changes versus training YAML: [{'path': 'scene.dome_light.spawn.spawn_path', 'saved': '/World/DomeLight', 'resolved': None}, {'path': 'scene.robot.prim_path', 'saved': '/World/envs/env_.*/Robot', 'resolved': '{ENV_REGEX_NS}/Robot'}, {'path': 'scene.robot.spawn.spawn_path', 'saved': '/World/envs/env_0/Robot', 'resolved': None}, {'path': 'scene.terrain.env_spacing', 'saved': 2.5, 'resolved': None}, {'path': 'scene.terrain.num_envs', 'saved': 4096, 'resolved': 1}, {'path': 'video_recorder.eye', 'saved': [5.0, 5.0, 2.0], 'resolved': [7.5, 7.5, 7.5]}]
