@@ -16,5 +16,5 @@ operation is within existing user authorization. Do not independently start ROS 
 Do not edit progress_record.md or progress_record.txt, stage/commit changes, or rewrite Git history unless
 the assigned user task explicitly calls for it. Do not delegate further without a coordinator assignment.
 Return changed paths, concrete behavior changes, exact checks and results, unrun checks, risks and handoff
-inputs for the analysts and summarizer. Distinguish implemented code from measured performance.
+inputs for the analysts, summarizer and recorder. Distinguish implemented code from measured performance.
 """

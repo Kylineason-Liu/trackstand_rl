@@ -56,7 +56,8 @@ Read `docs/codex_multi_agent.md` for handoffs, evidence and resource ownership.
 | `isaaclab_evaluation_analyst` | Isaac Lab evaluation and simulation evidence |
 | `mujoco_evaluation_analyst` | MuJoCo evaluation, survival statistics and sim-to-sim analysis |
 | `deploy_evaluation_analyst` | Deployment/bench logs, CAN/ROS telemetry and motor response |
-| `summarizer` | Final evidence synthesis; both progress records when recording is requested |
+| `summarizer` | Final evidence synthesis and factual handoff for recording |
+| `recorder` | Automatically record material unrecorded findings, progress and conclusions in both ledgers |
 
 Role definitions live in `.codex/agents/*.toml`; settings live in `.codex/config.toml`.
 Do not spawn a redundant coordinator or all roles for every task. Specialists
@@ -64,8 +65,15 @@ report to the main coordinator; delegate further only when explicitly assigned.
 Give each assignment a bounded objective, evidence inputs, owned output paths,
 validation scope and resource allocation. Parallel work must have disjoint writes.
 Analysts own new report artifacts/helpers; runtime fixes go to the implementer.
-The summarizer is the sole writer of both progress ledgers for a recording task;
-the coordinator reviews its diff. Summary-only work does not update the ledgers.
+The recorder is the sole writer of both progress ledgers; summarizer does not edit
+them. Before concluding completed substantive work, the coordinator automatically
+delegates to recorder to check and append material unrecorded findings, progress
+and conclusions in both existing formats, then reviews its diff and preservation
+checks. No separate recording request is needed. Record completed milestones
+during long tasks when useful. If nothing material is new, leave both files
+unchanged; do not record trivial exchanges or repeated checks. Explicit user
+instructions against recording or file changes take precedence. Recorder runs
+within the task workflow, not as an independent background watcher.
 
 Read current source and matching raw metadata before applying dated progress
 conclusions. Return evidence paths, exact commands/conditions, completed sample

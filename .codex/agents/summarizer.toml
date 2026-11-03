@@ -1,5 +1,5 @@
 name = "summarizer"
-description = "Synthesize completed specialist work and, when assigned, append verified progress to both existing ledgers in their respective formats."
+description = "Synthesize completed specialist work into a concise evidence-based summary and provide a factual handoff to recorder."
 developer_instructions = """
 Read AGENTS.md and docs/codex_multi_agent.md. Work after the coordinator's assigned analysis/implementation is
 complete. Synthesize evidence into a concise result, changes, validation, limitations and next steps.
@@ -7,17 +7,10 @@ Check important source/report/artifact references from disk; agent messages and 
 independent proof. Distinguish implemented, tested offline, evaluated, measured on hardware, proposed and pending.
 Retain failed checks, uncertainty, physical conditions and superseded conclusions with dates and evidence.
 Do not run new training/evaluations/hardware tests, change production code, or invent missing measurements.
-For a summary-only assignment, return text and links without modifying progress ledgers.
-When the user has requested progress recording and the coordinator assigns it, be the sole writer of
-progress_record.md and progress_record.txt. Read both latest files and Markdown's How to append convention;
-deduplicate against existing entries and any concurrent changes. Preserve all previous content and dates.
-Append numbered dated sections at the appropriate part of Markdown (Trackstand Part I before Part II),
-following its current numbering/style; append concise dated paragraphs to TXT in its existing format.
-Do not append after the Markdown convention footer or rewrite old conclusions as if they were current.
-Record completed work and material unresolved limitations; a proposal must not become an implemented claim.
-Use temporary backups outside the repo, inspect the diff, verify both versions agree on facts and status,
-and confirm previous content/order and unrelated files remain intact. Stop and report concurrent ledger edits
-rather than overwrite them. Return changed section IDs and verification for coordinator review.
-Write only assigned summary/report paths and, for an authorized recording task, the two ledgers. Do not
-stage/commit or delegate further. Keep provisional hardware coefficients in cited evidence, not in role rules.
+Return the summary and evidence links to the coordinator, including completed work, unresolved limitations,
+superseded conclusions and pending checks that recorder may need. A proposal must not become an implemented
+claim. Recorder independently checks disk evidence and deduplicates before changing the progress records.
+Do not edit progress_record.md or progress_record.txt; recorder is their sole writer. Write only assigned
+summary/report paths. Do not stage/commit or delegate further. Keep provisional hardware coefficients in
+cited evidence, not in role rules.
 """

@@ -1,6 +1,6 @@
 # Codex workflow for Trackstand
 
-The main CLI session coordinates five specialist roles. The project configuration is
+The main CLI session coordinates six specialist roles. The project configuration is
 `.codex/config.toml`; reusable role instructions are in `.codex/agents/*.toml`.
 `AGENTS.md` assigns the root session its coordinator behavior. The
 `main_coordinator.toml` file also defines that role for an explicit coordination
@@ -15,9 +15,10 @@ handoff; it does not automatically replace the root session or start another age
 | `isaaclab_evaluation_analyst` | Isaac Lab evaluations and result analysis | Assigned new `isaaclab_train/reports/<run_id>/` artifacts/helpers |
 | `mujoco_evaluation_analyst` | MuJoCo evaluation, survival and sim-to-sim analysis | Assigned new `mujoco_sim2sim/reports/<run_id>/` artifacts/helpers |
 | `deploy_evaluation_analyst` | Deployment/bench log analysis and motor telemetry | Assigned new `deploy/experiments/reports/<run_id>/` artifacts/helpers |
-| `summarizer` | Evidence synthesis; dual-format recording when requested | Assigned summary; both root progress ledgers only for a recording task |
+| `summarizer` | Final evidence synthesis and recording handoff | Assigned summary/report paths; no ledger edits |
+| `recorder` | Automatic recording of material unrecorded findings, progress and conclusions | Both root progress ledgers only |
 
-These are reusable instructions, not six always-running processes. Each spawned
+There are seven configured roles: the coordinator and six subagent roles. Each spawned
 agent has its own conversation thread. They share the checkout and inherit the
 session's model, reasoning effort, tools and permissions. No model or permission
 override is installed by this setup. File ownership is a workflow rule, not an
@@ -47,7 +48,7 @@ For a complete change:
 > Use the project multi-agent workflow to implement [specific change]. Have the
 > relevant analysts establish the current behavior, assign the code change to
 > implementer, evaluate the changed behavior, then have summarizer summarize the
-> verified result. Record completed progress in both ledgers.
+> verified result. Have recorder check and record any material unrecorded progress.
 
 For one component:
 
@@ -61,10 +62,11 @@ simple edits can remain in the main session. You do not need to create multiple
 independent CLI sessions.
 
 The project sets `agents.enabled = true` and
-`agents.max_concurrent_threads_per_session = 5`, excluding the primary session.
+`agents.max_concurrent_threads_per_session = 6`, excluding the primary session.
 That is a ceiling, not a request to spawn everyone. Host/runtime limits still
 apply; run independent assignments in waves if fewer slots are available. The
-summarizer normally runs after the specialists, not alongside unfinished work.
+summarizer normally runs after the specialists; recorder follows accepted results
+before the coordinator concludes. Roles activate as needed, not as persistent processes.
 
 ## Assignment and handoff
 
@@ -83,7 +85,7 @@ sample counts, checks performed, limitations and proposed next action**. Label
 proposed, implemented, tested offline, evaluated and hardware-measured status.
 
 A typical order is independent baseline analysis, coordinator review, scoped
-implementation, relevant evaluation, then summarization. Not every task needs
+implementation, relevant evaluation, summarization, then recording. Not every task needs
 every stage. Analysts can create analysis helpers in their new report directories;
 runtime fixes belong to the implementer. If code changes during analysis, retain
 the analyzed revision/hash and recheck affected conclusions against the new code.
@@ -112,17 +114,35 @@ the analyzed revision/hash and recheck affected conclusions against the new code
 
 ## Summaries and progress records
 
-The summarizer receives completed specialist handoffs and verifies material claims
-against disk. A summary-only task changes no ledger. When progress recording is
-requested, the coordinator assigns both `progress_record.md` and
-`progress_record.txt` to the summarizer as their sole writer and reviews its diff.
+The summarizer receives completed specialist handoffs and produces an evidence-based
+summary. It never edits the progress ledgers. The coordinator automatically delegates
+to `recorder` before concluding completed substantive work, and at useful completed
+milestones in long tasks. A separate recording request is not required. Recorder is
+the sole writer of `progress_record.md` and `progress_record.txt`; the coordinator
+independently reviews its diff and preservation checks.
+
+Recorder verifies claims against disk, searches both ledgers for previous coverage,
+and records only material unrecorded findings, progress, conclusions and limitations.
+If nothing is new, it leaves both files byte-identical and returns a no-op. Repeated
+checks and trivial exchanges do not create entries. Missing coverage in only one
+ledger is synchronized without duplicating the other. An explicit user instruction
+against recording or file changes overrides this automatic workflow.
+
+Automatic means the coordinator invokes the agent within an active task. This setup
+does not install a background daemon, filesystem watcher or scheduled job, and does
+not record work performed outside a participating Codex session by itself. Updating
+the ledgers does not recursively trigger another recording pass.
 
 Read both latest ledgers, deduplicate, preserve previous content, append numbered
 dated Markdown entries in the appropriate part and dated TXT paragraphs in its
 existing format. Do not append Trackstand entries after the Markdown footer or
 rewrite historical conclusions to look current. Record supersession explicitly.
 Temporary backups/checks belong outside the repository, such as a task directory
-under `/tmp`.
+under `/tmp`. Capture ledger hashes and recheck before writing; if either file
+changed concurrently, return a conflict rather than overwrite another writer.
+Distinguish proposed/implemented/offline-tested/evaluated/hardware-measured/pending
+status, retain failed checks and uncertainty, and avoid presenting historical
+validation as freshly executed.
 
 ## Installation validation
 
