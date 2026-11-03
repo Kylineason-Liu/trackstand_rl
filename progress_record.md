@@ -3282,6 +3282,44 @@ python3 deploy/experiments/drive_mit_velocity_test.py --execute \
 
 ---
 
+## 308. Six-role Codex workflow implemented for this repository (2026-11-03)
+
+- IMPLEMENTED, superseding only the agent-configuration proposal in §288: [.codex/config.toml](.codex/config.toml), six standalone TOML files under `.codex/agents/`, the additive [AGENTS.md workflow](AGENTS.md) and [usage/ownership guide](docs/codex_multi_agent.md). The main CLI session is the coordinator, with five specialist roles available; this is not a request to start every role for each question.
+
+| Role / definition | Responsibility |
+|---|---|
+| [main_coordinator](.codex/agents/main_coordinator.toml) | Scope, delegation, evidence review, shared-resource scheduling and final response |
+| [implementer](.codex/agents/implementer.toml) | Assigned production-code changes and focused validation |
+| [isaaclab_evaluation_analyst](.codex/agents/isaaclab_evaluation_analyst.toml) | Isaac Lab evaluations, episode/actuator/numerical evidence |
+| [mujoco_evaluation_analyst](.codex/agents/mujoco_evaluation_analyst.toml) | MuJoCo evaluation, survival statistics and historical/sim-to-sim comparisons |
+| [deploy_evaluation_analyst](.codex/agents/deploy_evaluation_analyst.toml) | Offline bench/deployment logs, CAN/ROS telemetry, motor response and timing |
+| [summarizer](.codex/agents/summarizer.toml) | Evidence synthesis and both progress ledgers when recording is requested |
+
+- IMPLEMENTATION BOUNDARY: root coordination is assigned through AGENTS.md; `main_coordinator.toml` also supports an explicit coordination handoff, not an automatically spawned second coordinator. Reusable skills and `docs/current_state.md` remain proposals: no project SKILL.md under `.agents`/`.codex` or current-state index exists in the checked disk inventory. Agent setup does not install those additional workflows.
+
+## 309. Agent composition, evidence handoffs and shared ownership clarified (2026-11-03)
+
+- FILES VERSUS RUNNING AGENTS: each current role TOML contains exactly **name /description /developer_instructions**. These are reusable role/task instructions, not separate Python agent implementations. Codex supplies execution and coordination; a spawned agent has its own conversation thread/context and may write/run Python as part of assigned analysis. This setup leaves model, reasoning effort, tools and permissions inherited from the parent session. Multiple independently opened chats can share checkout files but do not acquire coordinator delegation/result collection merely by sharing a directory; they retain separate conversations.
+- BOUNDED DELEGATION: independent baseline analyses may run in parallel, followed by coordinator review, scoped implementation, relevant reevaluation and summarization. Each assignment specifies objective, evidence/source revision, owned outputs, allowed edits, validation/sample budget, resources and dependencies. Return result/evidence paths/exact conditions and commands/completed sample counts/checks/limitations/next action. Read current source and experiment metadata; roles do not freeze provisional motor gains, friction values, rates or checkpoint names as universal defaults.
+- ONE WRITER PER OUTPUT: implementer owns assigned runtime source/tests; analysts own separate new report directories/helpers in **isaaclab_train/reports/**, **mujoco_sim2sim/reports/** and **deploy/experiments/reports/**. Preserve original logs/checkpoints/prior reports. The Isaac role specifically requires checking checkpoint-adjacent evaluator output and using an isolated hash-verified checkpoint copy; the MuJoCo role requires verifying loader/policy compatibility and reproducing historical baselines before causal ablations. These are instruction requirements, not newly executed evaluations.
+- EVIDENCE / RESOURCES: distinguish policy/target/controller/physics clocks, requested/encoded/submitted commands, fresh feedback and physical execution. Deployment time samples can be autocorrelated; whole trials/holds/repeats are replication units. Coordinate CPU/GPU budgets and exclusive already-authorized hardware command ownership; worktrees do not isolate GPUs/CAN. Deployment analysis is offline by default. Role/file-ownership rules are instructions, not an additional read-only OS sandbox or fresh authorization for motor movement.
+- UPDATED LEDGER OWNERSHIP: when progress recording is requested, coordinator delegates both ledgers to **summarizer as sole writer**, then independently reviews its diff. This refines §288's earlier coordinator-writes-everything proposal. A summary-only assignment changes no ledger; the summarizer verifies claims from disk, preserves dated history and labels proposed/implemented/offline-tested/evaluated/hardware-measured/pending status.
+
+## 310. Codex configuration, CLI use and actual validation scope (2026-11-03)
+
+- SETTINGS / USE: **agents.enabled=true**, **agents.max_concurrent_threads_per_session=5**, excluding the primary coordinator. This is a ceiling; lower host/runtime limits still apply and assignments can run in waves. Start a fresh trusted-project session with **codex -C /home/lmbike/trackstand_rl** (or `codex` from the repo), describe the task or request specific roles, and inspect/switch threads with **/subagents**. No separate six-agent service or role-selection flag is required by this setup; small questions/simple edits can remain in the main session.
+- SAVED COMPLETED INSTALLATION CHECKS: Codex CLI **0.164.0**; **seven TOMLs parse**, all **nine** installed setup files match reviewed drafts, prior AGENTS.md content remains an exact prefix, **codex --strict-config app-server --print-startup-config** exits **0**, and a rendered native **spawn_agent** tool includes all **six exact role descriptions**. Evidence: `/tmp/trackstand_multi_agent_20261103_g3fcib9i/{install_manifest.json,installation_result.json,final_verification.json,installed_strict_startup.stdout,installed_prompt.stdout}`. Initial sandboxed prompt rendering failed with a read-only-filesystem error; the approved outside-sandbox installation/validation later passed. That initial failure is retained in staged_validation.json rather than presented as a pass.
+- CURRENT RECHECK / LIMITS: this recording freshly parses all seven current TOMLs, matches all nine setup-file SHA256 values against the installation manifest, and independently finds each role's exact description in the saved native spawn-tool definition. Native prompt rendering/startup are saved installation results, not rerun now. Setup used three read-only Isaac/MuJoCo/deployment specialist reviews; this recording uses a delegated summarizer plus coordinator review. All-six end-to-end implementation/evaluation/deployment work was not exercised, and setup validation is not a motor, policy, simulator or hardware-performance test.
+
+## 311. Agent-workflow recording, supersession and preservation (2026-11-03)
+
+- Added §§308–311 and matching dated TXT paragraphs after comparing both ledgers through **§307**, all six role definitions, project config, AGENTS.md, usage guide and saved installation/verification evidence. §288 remains dated proposal history; only its agent-configuration/coordinator-recording portion is superseded. Prior motor/PI/friction/simulation findings are not repeated as newly obtained evidence.
+- Only root **progress_record.md /progress_record.txt** are edited for this recording. Preserve every previous Markdown byte/order, Parts II–III/footer and the entire old TXT prefix, all nine setup files, existing staged changes, Git HEAD/index and dirty-submodule state. Backup/drafts/read-only checks/diff/verification: **/tmp/trackstand_progress_agents_20261103_vjnaq0ch/**; **11 protected non-ledger hashes** cover the nine setup files plus Git index/HEAD. No new native CLI check, policy inference, simulation/evaluation/training, plot generation, hardware/CAN/ROS operation, runtime/firmware/configuration edit, staging or commit accompanies this recording.
+
+
+---
+
+
 # Part II — NewBike balance campaign (pre-trackstand, 2026-08 → 09)
 
 ## Phase 0–1: reward sweep on NewBike-Balance-v0 (no DR)

@@ -1,0 +1,7 @@
+# Project roles are discovered from .codex/agents/*.toml.
+# The root session is the coordinator; this limit excludes that session.
+[agents]
+enabled = true
+max_concurrent_threads_per_session = 5
+
+# Inherit the session's model, reasoning effort, permissions and tools.
