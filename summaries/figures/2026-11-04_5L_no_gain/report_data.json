@@ -1,0 +1,124 @@
+{
+ "panels": [
+  [
+   "isaac_nodr",
+   "Isaac, DR off"
+  ],
+  [
+   "isaac_dr",
+   "Isaac, DR on"
+  ],
+  [
+   "mujoco_nodr",
+   "MuJoCo, DR off"
+  ],
+  [
+   "mujoco_dr",
+   "MuJoCo, DR on"
+  ]
+ ],
+ "five": [
+  "5L-Base",
+  "5L-Norm",
+  "5L-Cos",
+  "5L-NormCos",
+  "5L-NormCosEnt",
+  "5L-Base-DriftQuad",
+  "5L-Base-WheelBand"
+ ],
+ "len": {
+  "isaac_nodr": {
+   "2L-Base": 30.0,
+   "2L-NormCosEnt": 2.97,
+   "5L-Base": 18.85,
+   "5L-Norm": 30.0,
+   "5L-Cos": 11.9,
+   "5L-NormCos": 28.43,
+   "5L-NormCosEnt": 30.0,
+   "5L-Base-DriftQuad": 13.7,
+   "5L-Base-WheelBand": 11.95
+  },
+  "isaac_dr": {
+   "2L-Base": 25.35,
+   "2L-NormCosEnt": 2.72,
+   "5L-Base": 21.47,
+   "5L-Norm": 17.17,
+   "5L-Cos": 8.61,
+   "5L-NormCos": 19.91,
+   "5L-NormCosEnt": 24.62,
+   "5L-Base-DriftQuad": 20.42,
+   "5L-Base-WheelBand": 14.66
+  },
+  "mujoco_nodr": {
+   "2L-Base": 13.12,
+   "2L-NormCosEnt": 1.36,
+   "5L-Base": 6.17,
+   "5L-Norm": 14.46,
+   "5L-Cos": 0.29,
+   "5L-NormCos": 1.78,
+   "5L-NormCosEnt": 1.14,
+   "5L-Base-DriftQuad": 12.24,
+   "5L-Base-WheelBand": 3.93
+  },
+  "mujoco_dr": {
+   "2L-Base": 5.39,
+   "2L-NormCosEnt": 0.88,
+   "5L-Base": 4.71,
+   "5L-Norm": 5.4,
+   "5L-Cos": 0.52,
+   "5L-NormCos": 2.06,
+   "5L-NormCosEnt": 1.12,
+   "5L-Base-DriftQuad": 4.06,
+   "5L-Base-WheelBand": 3.21
+  }
+ },
+ "train": {
+  "2L-Base": 1066.6,
+  "2L-NormCosEnt": 139.5,
+  "5L-Base": 1254.2,
+  "5L-Norm": 1297.3,
+  "5L-Cos": 408.3,
+  "5L-NormCos": 1358.3,
+  "5L-NormCosEnt": 1264.9,
+  "5L-Base-DriftQuad": 1238.2,
+  "5L-Base-WheelBand": 1240.8
+ },
+ "diag": {
+  "2L-Base": {
+   "jitter": 0.0312,
+   "steer_deg": 14.059
+  },
+  "2L-NormCosEnt": {
+   "jitter": 0.7451,
+   "steer_deg": 28.5152
+  },
+  "5L-Base": {
+   "jitter": 0.1894,
+   "steer_deg": 61.5956
+  },
+  "5L-Norm": {
+   "jitter": 0.085,
+   "steer_deg": 72.2564
+  },
+  "5L-Cos": {
+   "jitter": 0.7576,
+   "steer_deg": 43.042
+  },
+  "5L-NormCos": {
+   "jitter": 0.5481,
+   "steer_deg": 34.047
+  },
+  "5L-NormCosEnt": {
+   "jitter": 0.6785,
+   "steer_deg": 27.6027
+  },
+  "5L-Base-DriftQuad": {
+   "jitter": 0.0678,
+   "steer_deg": 66.326
+  },
+  "5L-Base-WheelBand": {
+   "jitter": 0.4375,
+   "steer_deg": 45.9814
+  }
+ }
+}

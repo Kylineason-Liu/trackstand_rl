@@ -3280,6 +3280,48 @@ python3 deploy/experiments/drive_mit_velocity_test.py --execute \
 - THIS RECORDING: compared both ledgers through **§299** with current PI/config/numerics/CLI/test source and the four saved report sets; added **§§300–307** and dated concise TXT counterparts. Fresh read-only checks match manifest artifact hashes **14 initial PI /26 rate-sweep /21 friction /38 full-audit**, and the original C1 CSV SHA above. Historical protected-ledger/source hashes remain dated snapshots, not rewritten. Only root **progress_record.md / progress_record.txt** edited; all old MD bytes/order/Parts II–III/footer and entire TXT prefix preserved, Git HEAD/index/dirty submodules/current implementation work and **184 protected non-ledger files** unchanged. Backup/drafts/checks **/tmp/trackstand_progress_v2_20261102_9flfcwgk/**. No analysis/plot regeneration, tests, simulator/PPO/training/evaluation, hardware/CAN, firmware/runtime edits, staging or commit accompanies this recording; experimental/test counts above are saved completed work.
 
 
+## 308. Trackstand-Balance-v3: yaw_deviation termination replaced by the yaw_band reward (2026-11-03)
+
+- WHY: DR ablation (summaries `2026-11-03_2303` / `_2332`): yaw > 30° ended **23–78%** of Isaac DR-on episodes (5L-Norm 78, 5L-Base 50, DriftQuad 47, 2L-Base 23); v1 rewards (survival 5 / drift_gauss 2 / rate 0.1) carry no heading term, so heading was penalised only at the 30° wall. Campaign iter9/10: recovery turns swing past 30°.
+- CHANGE: new `trackstand_rl_env_cfg_v3.py` = v1 with `terminations.yaw_deviation = None` and `rewards.yaw_band` = existing `balance_yaw_band` (plateau 0.1 rad, unclamped linear tail slope 1/(π−0.1): +1 → 0.861 at 30° → 0 at 180°), **weight 2.0**. Env class TrackstandRLEnvV1 (spawn_yaw bookkeeping), v1 Beta PPO settings, own log dir `trackstand_rl_v3_rsl`. Obs/actions/actuators/events/DR identical to v1 → v1 MuJoCo/deploy contract unchanged.
+- VERIFIED: new `tests/test_trackstand_heading_v3.py` (5: terminations, rewards, contract/plant, runner, reward values incl. ±π wrap); full Isaac suite **109 OK**. Smoke: 3 PPO iterations, 256 envs, `--dr`, seed 42 → active terminations time_out/fallen/diverged/drifted/wheel_net, 4 rewards incl. yaw_band, `env.yaml yaw_deviation: null`; smoke run deleted. No trained v3 policy yet.
+- CAVEAT: MuJoCo evaluators still apply the 30° yaw termination (no per-term switch; `--pure_survival` also drops drift/wheel_net).
+
+## 309. v3 heading term switched to a pure penalty; MuJoCo `--no_yaw_termination` (2026-11-03)
+
+- SUPERSEDES §308's reward form (user request): `yaw_band` (+1 → 0, i.e. penalty + constant +2/step alive bonus) → **`yaw_penalty` = new `balance_yaw_excess_penalty` = `balance_yaw_band − 1`**: 0 within 0.1 rad, −0.139 at 30°, −1 at 180°; weight **+2.0** (function returns ≤ 0). Heading gradient identical; the alive bonus stays v1's (survival 5 + drift ≤ 2), so v3 vs v1 isolates the heading signal. Worst step −2.0 < survival 5.0 → no early-termination incentive.
+- MuJoCo: `contract.enabled_terminations(pure_survival, no_yaw_termination)`; `--no_yaw_termination` on `run_deploy_eval.py` and `run_deploy_viewer.py` (viewer label shows non-default terms; eval metadata records the flag). **Evaluate v3 in MuJoCo with this flag.**
+- VERIFIED: Isaac suite **109 OK** (v3 tests updated: penalty values 0 / −0.139 / −1, equals band − 1, ±π wrap, weight < survival). MuJoCo suite (Isaac python) 53 run: new flag test OK; 1 pre-existing failure `test_actual_resolved_v1_configuration` (viscous 0.0 vs None, known legacy). 3-iter `--dr` smoke: yaw_penalty active (−0.0000 → −0.0002), yaw_deviation null; deleted. MuJoCo smoke (Pi-default ONNX 2500, 8 envs, 1500 steps, seed 42, `--dr`): without flag 14 episodes = fallen 10 / yaw 1 / timeout 3 (yaw max 31.0°); with flag fallen 10 / drifted 1 / timeout 3 (yaw max 44.3°).
+- NOTE: MuJoCo default `--pt` model_75300 (2026-10-21_00-41-38) is missing on this desktop; smoke used the ONNX.
+
+## 310. Locomotive stack deployed to the Pi (2026-11-04)
+
+- ALIGNMENT RE-CHECK (desktop, `9773e1d`):
+  - checkpoint SHA `7af4036d…` and ONNX SHA `ec3ccae9…` match the manifest, `locomotive.yaml` and the controller default;
+  - `locomotive_env_cfg.py` is unchanged since the 2026-10-29 run, and the saved `env.yaml` matches it (dt 0.0025×8, IdealPD steer 10/0.2/±5.6, rear 0/0.2/±6.28, scales 20° / 42.857 rad/s, lean 45°);
+  - the 8-obs order and the single ×scale/clip in deploy match Isaac; `rear_control_mode: mit` Kd 0.2 matches the training law.
+  - Local tests: 692 passed / 5 skipped / 5 failed; all 5 failures are `onnxruntime` missing in desktop system python.
+  - Stale docstrings in `locomotive_controller.py` ("C1 rear speed", "0.01 s x 2"); cosmetic.
+- PI (`smallbike`, Ubuntu 24.04.5, Jazzy, ort 1.30.0): `~/trackstand_rl` moved from `main` @ `f1b1ff1` to `locomotive` @ `9773e1d` (fast-forward; the user's moved rosbag was kept).
+  - `colcon build --symlink-install` OK on the 2nd attempt (the 1st failed on the old copied install tree).
+  - On-Pi SHA match; **on-Pi tests 702 passed** (locomotive 52, including the ONNX reference I/O).
+  - Controller-only smoke loaded the rank-0 model and started disabled.
+  - **No live launch, CAN down, no motor writes.**
+- Eval recap (unchanged, 2026-10-29, 1024 episodes per mode): flat BSR Isaac 99.9% / MuJoCo 100%, flat STE 3.51° / 2.38°, MuJoCo gravel 93.2%, MuJoCo max noise 0% (Isaac 99.9%). Table II misses STE ≤ 1.15° and CAT ≥ 27.8°.
+- Summary: `summaries/2026-11-04_0021_locomotive_pi_deploy.md`.
+
+## 311. Pi: locomotive moved to its own workspace (2026-11-04)
+
+- SUPERSEDES §310's Pi layout (user request): the two stacks now live in separate folders.
+- **`~/trackstand_rl`** is restored to `main` @ `f1b1ff1`, trackstand only.
+  - The local `locomotive` branch was deleted, and `deploy/build` + `install` were rebuilt clean (`--symlink-install`), so no locomotive executables remain.
+  - 650 tests passed; trackstand default ONNX SHA `d9701945…` OK; the user's rosbag changes were kept.
+- **`~/trackstand_rl_locomotive`** (new) is an independent clone (`--no-hardlinks --single-branch --branch locomotive`, origin = GitHub) at `9773e1d`.
+  - It has its own `deploy/{build,install}`; 702 tests passed; the controller-only smoke loaded rank 0 `ec3ccae9…` and started disabled.
+- Both workspaces build a package named `trackstand_deploy`: source only one `install/setup.bash` per shell. `~/.bashrc` sources neither.
+- No live launch, CAN down, no motor writes.
+- Summary: `summaries/2026-11-04_0029_pi_separate_locomotive_workspace.md`.
+
 ---
 
 # Part II — NewBike balance campaign (pre-trackstand, 2026-08 → 09)

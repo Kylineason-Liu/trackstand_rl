@@ -1,0 +1,421 @@
+figure,panel,run,metric,value
+episode_length,isaac_nodr,5L-Norm,len_s,30.0
+episode_length,isaac_nodr,5L-Norm,timeout_rate,1.0
+episode_length,isaac_nodr,2L-Base,len_s,30.0
+episode_length,isaac_nodr,2L-Base,timeout_rate,1.0
+episode_length,isaac_nodr,5L-Base-DriftQuad,len_s,13.7
+episode_length,isaac_nodr,5L-Base-DriftQuad,timeout_rate,0.0
+episode_length,isaac_nodr,5L-Base,len_s,18.85
+episode_length,isaac_nodr,5L-Base,timeout_rate,0.0
+episode_length,isaac_nodr,5L-Base-WheelBand,len_s,11.95
+episode_length,isaac_nodr,5L-Base-WheelBand,timeout_rate,0.0
+episode_length,isaac_nodr,5L-NormCos,len_s,28.43
+episode_length,isaac_nodr,5L-NormCos,timeout_rate,0.766
+episode_length,isaac_nodr,2L-NormCosEnt,len_s,2.97
+episode_length,isaac_nodr,2L-NormCosEnt,timeout_rate,0.0
+episode_length,isaac_nodr,5L-NormCosEnt,len_s,30.0
+episode_length,isaac_nodr,5L-NormCosEnt,timeout_rate,1.0
+episode_length,isaac_nodr,CycleRL-Recipe,len_s,8.25
+episode_length,isaac_nodr,CycleRL-Recipe,timeout_rate,0.0
+episode_length,isaac_nodr,5L-Cos,len_s,11.9
+episode_length,isaac_nodr,5L-Cos,timeout_rate,0.0
+episode_length,isaac_dr,5L-Norm,len_s,17.17
+episode_length,isaac_dr,5L-Norm,timeout_rate,0.219
+episode_length,isaac_dr,2L-Base,len_s,25.35
+episode_length,isaac_dr,2L-Base,timeout_rate,0.757
+episode_length,isaac_dr,5L-Base-DriftQuad,len_s,20.42
+episode_length,isaac_dr,5L-Base-DriftQuad,timeout_rate,0.532
+episode_length,isaac_dr,5L-Base,len_s,21.47
+episode_length,isaac_dr,5L-Base,timeout_rate,0.5
+episode_length,isaac_dr,5L-Base-WheelBand,len_s,14.66
+episode_length,isaac_dr,5L-Base-WheelBand,timeout_rate,0.149
+episode_length,isaac_dr,5L-NormCos,len_s,19.91
+episode_length,isaac_dr,5L-NormCos,timeout_rate,0.284
+episode_length,isaac_dr,2L-NormCosEnt,len_s,2.72
+episode_length,isaac_dr,2L-NormCosEnt,timeout_rate,0.0
+episode_length,isaac_dr,5L-NormCosEnt,len_s,24.62
+episode_length,isaac_dr,5L-NormCosEnt,timeout_rate,0.504
+episode_length,isaac_dr,CycleRL-Recipe,len_s,14.71
+episode_length,isaac_dr,CycleRL-Recipe,timeout_rate,0.141
+episode_length,isaac_dr,5L-Cos,len_s,8.61
+episode_length,isaac_dr,5L-Cos,timeout_rate,0.058
+episode_length,mujoco_nodr,5L-Norm,len_s,14.46
+episode_length,mujoco_nodr,5L-Norm,timeout_rate,0.021
+episode_length,mujoco_nodr,2L-Base,len_s,13.12
+episode_length,mujoco_nodr,2L-Base,timeout_rate,0.015
+episode_length,mujoco_nodr,5L-Base-DriftQuad,len_s,12.24
+episode_length,mujoco_nodr,5L-Base-DriftQuad,timeout_rate,0.126
+episode_length,mujoco_nodr,5L-Base,len_s,6.17
+episode_length,mujoco_nodr,5L-Base,timeout_rate,0.04
+episode_length,mujoco_nodr,5L-Base-WheelBand,len_s,3.93
+episode_length,mujoco_nodr,5L-Base-WheelBand,timeout_rate,0.004
+episode_length,mujoco_nodr,5L-NormCos,len_s,1.78
+episode_length,mujoco_nodr,5L-NormCos,timeout_rate,0.0
+episode_length,mujoco_nodr,2L-NormCosEnt,len_s,1.36
+episode_length,mujoco_nodr,2L-NormCosEnt,timeout_rate,0.0
+episode_length,mujoco_nodr,5L-NormCosEnt,len_s,1.14
+episode_length,mujoco_nodr,5L-NormCosEnt,timeout_rate,0.0
+episode_length,mujoco_nodr,CycleRL-Recipe,len_s,1.06
+episode_length,mujoco_nodr,CycleRL-Recipe,timeout_rate,0.0
+episode_length,mujoco_nodr,5L-Cos,len_s,0.29
+episode_length,mujoco_nodr,5L-Cos,timeout_rate,0.0
+episode_length,mujoco_dr,5L-Norm,len_s,5.4
+episode_length,mujoco_dr,5L-Norm,timeout_rate,0.04
+episode_length,mujoco_dr,2L-Base,len_s,5.39
+episode_length,mujoco_dr,2L-Base,timeout_rate,0.077
+episode_length,mujoco_dr,5L-Base-DriftQuad,len_s,4.06
+episode_length,mujoco_dr,5L-Base-DriftQuad,timeout_rate,0.07
+episode_length,mujoco_dr,5L-Base,len_s,4.71
+episode_length,mujoco_dr,5L-Base,timeout_rate,0.047
+episode_length,mujoco_dr,5L-Base-WheelBand,len_s,3.21
+episode_length,mujoco_dr,5L-Base-WheelBand,timeout_rate,0.024
+episode_length,mujoco_dr,5L-NormCos,len_s,2.06
+episode_length,mujoco_dr,5L-NormCos,timeout_rate,0.017
+episode_length,mujoco_dr,2L-NormCosEnt,len_s,0.88
+episode_length,mujoco_dr,2L-NormCosEnt,timeout_rate,0.0
+episode_length,mujoco_dr,5L-NormCosEnt,len_s,1.12
+episode_length,mujoco_dr,5L-NormCosEnt,timeout_rate,0.005
+episode_length,mujoco_dr,CycleRL-Recipe,len_s,0.74
+episode_length,mujoco_dr,CycleRL-Recipe,timeout_rate,0.0
+episode_length,mujoco_dr,5L-Cos,len_s,0.52
+episode_length,mujoco_dr,5L-Cos,timeout_rate,0.0
+terminations,isaac_nodr,5L-Norm,time_out,100.0
+terminations,isaac_nodr,2L-Base,time_out,100.0
+terminations,isaac_nodr,5L-Base-DriftQuad,time_out,0.0
+terminations,isaac_nodr,5L-Base,time_out,0.0
+terminations,isaac_nodr,5L-Base-WheelBand,time_out,0.0
+terminations,isaac_nodr,5L-NormCos,time_out,76.6
+terminations,isaac_nodr,2L-NormCosEnt,time_out,0.0
+terminations,isaac_nodr,5L-NormCosEnt,time_out,100.0
+terminations,isaac_nodr,CycleRL-Recipe,time_out,0.0
+terminations,isaac_nodr,5L-Cos,time_out,0.0
+terminations,isaac_nodr,5L-Norm,fallen,0.0
+terminations,isaac_nodr,2L-Base,fallen,0.0
+terminations,isaac_nodr,5L-Base-DriftQuad,fallen,0.0
+terminations,isaac_nodr,5L-Base,fallen,0.0
+terminations,isaac_nodr,5L-Base-WheelBand,fallen,0.0
+terminations,isaac_nodr,5L-NormCos,fallen,0.0
+terminations,isaac_nodr,2L-NormCosEnt,fallen,0.3
+terminations,isaac_nodr,5L-NormCosEnt,fallen,0.0
+terminations,isaac_nodr,CycleRL-Recipe,fallen,0.0
+terminations,isaac_nodr,5L-Cos,fallen,0.0
+terminations,isaac_nodr,5L-Norm,drifted,0.0
+terminations,isaac_nodr,2L-Base,drifted,0.0
+terminations,isaac_nodr,5L-Base-DriftQuad,drifted,0.0
+terminations,isaac_nodr,5L-Base,drifted,0.0
+terminations,isaac_nodr,5L-Base-WheelBand,drifted,0.0
+terminations,isaac_nodr,5L-NormCos,drifted,0.0
+terminations,isaac_nodr,2L-NormCosEnt,drifted,0.0
+terminations,isaac_nodr,5L-NormCosEnt,drifted,0.0
+terminations,isaac_nodr,CycleRL-Recipe,drifted,0.0
+terminations,isaac_nodr,5L-Cos,drifted,0.3
+terminations,isaac_nodr,5L-Norm,yaw_deviation,0.0
+terminations,isaac_nodr,2L-Base,yaw_deviation,0.0
+terminations,isaac_nodr,5L-Base-DriftQuad,yaw_deviation,100.0
+terminations,isaac_nodr,5L-Base,yaw_deviation,100.0
+terminations,isaac_nodr,5L-Base-WheelBand,yaw_deviation,100.0
+terminations,isaac_nodr,5L-NormCos,yaw_deviation,23.4
+terminations,isaac_nodr,2L-NormCosEnt,yaw_deviation,99.7
+terminations,isaac_nodr,5L-NormCosEnt,yaw_deviation,0.0
+terminations,isaac_nodr,CycleRL-Recipe,yaw_deviation,100.0
+terminations,isaac_nodr,5L-Cos,yaw_deviation,99.7
+terminations,isaac_nodr,5L-Norm,wheel_net,0.0
+terminations,isaac_nodr,2L-Base,wheel_net,0.0
+terminations,isaac_nodr,5L-Base-DriftQuad,wheel_net,0.0
+terminations,isaac_nodr,5L-Base,wheel_net,0.0
+terminations,isaac_nodr,5L-Base-WheelBand,wheel_net,0.0
+terminations,isaac_nodr,5L-NormCos,wheel_net,0.0
+terminations,isaac_nodr,2L-NormCosEnt,wheel_net,0.0
+terminations,isaac_nodr,5L-NormCosEnt,wheel_net,0.0
+terminations,isaac_nodr,CycleRL-Recipe,wheel_net,0.0
+terminations,isaac_nodr,5L-Cos,wheel_net,0.0
+terminations,isaac_nodr,5L-Norm,diverged,0.0
+terminations,isaac_nodr,2L-Base,diverged,0.0
+terminations,isaac_nodr,5L-Base-DriftQuad,diverged,0.0
+terminations,isaac_nodr,5L-Base,diverged,0.0
+terminations,isaac_nodr,5L-Base-WheelBand,diverged,0.0
+terminations,isaac_nodr,5L-NormCos,diverged,0.0
+terminations,isaac_nodr,2L-NormCosEnt,diverged,0.0
+terminations,isaac_nodr,5L-NormCosEnt,diverged,0.0
+terminations,isaac_nodr,CycleRL-Recipe,diverged,0.0
+terminations,isaac_nodr,5L-Cos,diverged,0.0
+terminations,isaac_dr,5L-Norm,time_out,21.9
+terminations,isaac_dr,2L-Base,time_out,75.7
+terminations,isaac_dr,5L-Base-DriftQuad,time_out,53.2
+terminations,isaac_dr,5L-Base,time_out,50.0
+terminations,isaac_dr,5L-Base-WheelBand,time_out,14.9
+terminations,isaac_dr,5L-NormCos,time_out,28.4
+terminations,isaac_dr,2L-NormCosEnt,time_out,0.0
+terminations,isaac_dr,5L-NormCosEnt,time_out,50.4
+terminations,isaac_dr,CycleRL-Recipe,time_out,14.1
+terminations,isaac_dr,5L-Cos,time_out,5.8
+terminations,isaac_dr,5L-Norm,fallen,0.0
+terminations,isaac_dr,2L-Base,fallen,0.0
+terminations,isaac_dr,5L-Base-DriftQuad,fallen,0.0
+terminations,isaac_dr,5L-Base,fallen,0.0
+terminations,isaac_dr,5L-Base-WheelBand,fallen,0.0
+terminations,isaac_dr,5L-NormCos,fallen,0.0
+terminations,isaac_dr,2L-NormCosEnt,fallen,5.4
+terminations,isaac_dr,5L-NormCosEnt,fallen,0.0
+terminations,isaac_dr,CycleRL-Recipe,fallen,0.0
+terminations,isaac_dr,5L-Cos,fallen,4.5
+terminations,isaac_dr,5L-Norm,drifted,0.0
+terminations,isaac_dr,2L-Base,drifted,1.5
+terminations,isaac_dr,5L-Base-DriftQuad,drifted,0.0
+terminations,isaac_dr,5L-Base,drifted,0.0
+terminations,isaac_dr,5L-Base-WheelBand,drifted,0.9
+terminations,isaac_dr,5L-NormCos,drifted,0.0
+terminations,isaac_dr,2L-NormCosEnt,drifted,2.7
+terminations,isaac_dr,5L-NormCosEnt,drifted,0.0
+terminations,isaac_dr,CycleRL-Recipe,drifted,0.0
+terminations,isaac_dr,5L-Cos,drifted,9.3
+terminations,isaac_dr,5L-Norm,yaw_deviation,78.1
+terminations,isaac_dr,2L-Base,yaw_deviation,22.8
+terminations,isaac_dr,5L-Base-DriftQuad,yaw_deviation,46.8
+terminations,isaac_dr,5L-Base,yaw_deviation,50.0
+terminations,isaac_dr,5L-Base-WheelBand,yaw_deviation,84.2
+terminations,isaac_dr,5L-NormCos,yaw_deviation,71.6
+terminations,isaac_dr,2L-NormCosEnt,yaw_deviation,92.1
+terminations,isaac_dr,5L-NormCosEnt,yaw_deviation,49.6
+terminations,isaac_dr,CycleRL-Recipe,yaw_deviation,83.6
+terminations,isaac_dr,5L-Cos,yaw_deviation,79.9
+terminations,isaac_dr,5L-Norm,wheel_net,0.0
+terminations,isaac_dr,2L-Base,wheel_net,0.0
+terminations,isaac_dr,5L-Base-DriftQuad,wheel_net,0.0
+terminations,isaac_dr,5L-Base,wheel_net,0.0
+terminations,isaac_dr,5L-Base-WheelBand,wheel_net,0.0
+terminations,isaac_dr,5L-NormCos,wheel_net,0.0
+terminations,isaac_dr,2L-NormCosEnt,wheel_net,0.0
+terminations,isaac_dr,5L-NormCosEnt,wheel_net,0.0
+terminations,isaac_dr,CycleRL-Recipe,wheel_net,2.3
+terminations,isaac_dr,5L-Cos,wheel_net,0.5
+terminations,isaac_dr,5L-Norm,diverged,0.0
+terminations,isaac_dr,2L-Base,diverged,0.0
+terminations,isaac_dr,5L-Base-DriftQuad,diverged,0.0
+terminations,isaac_dr,5L-Base,diverged,0.0
+terminations,isaac_dr,5L-Base-WheelBand,diverged,0.0
+terminations,isaac_dr,5L-NormCos,diverged,0.0
+terminations,isaac_dr,2L-NormCosEnt,diverged,0.0
+terminations,isaac_dr,5L-NormCosEnt,diverged,0.0
+terminations,isaac_dr,CycleRL-Recipe,diverged,0.0
+terminations,isaac_dr,5L-Cos,diverged,0.0
+terminations,mujoco_nodr,5L-Norm,time_out,2.1
+terminations,mujoco_nodr,2L-Base,time_out,1.5
+terminations,mujoco_nodr,5L-Base-DriftQuad,time_out,12.6
+terminations,mujoco_nodr,5L-Base,time_out,4.0
+terminations,mujoco_nodr,5L-Base-WheelBand,time_out,0.4
+terminations,mujoco_nodr,5L-NormCos,time_out,0.0
+terminations,mujoco_nodr,2L-NormCosEnt,time_out,0.0
+terminations,mujoco_nodr,5L-NormCosEnt,time_out,0.0
+terminations,mujoco_nodr,CycleRL-Recipe,time_out,0.0
+terminations,mujoco_nodr,5L-Cos,time_out,0.0
+terminations,mujoco_nodr,5L-Norm,fallen,0.0
+terminations,mujoco_nodr,2L-Base,fallen,21.0
+terminations,mujoco_nodr,5L-Base-DriftQuad,fallen,9.3
+terminations,mujoco_nodr,5L-Base,fallen,22.5
+terminations,mujoco_nodr,5L-Base-WheelBand,fallen,35.7
+terminations,mujoco_nodr,5L-NormCos,fallen,14.6
+terminations,mujoco_nodr,2L-NormCosEnt,fallen,34.3
+terminations,mujoco_nodr,5L-NormCosEnt,fallen,16.5
+terminations,mujoco_nodr,CycleRL-Recipe,fallen,7.0
+terminations,mujoco_nodr,5L-Cos,fallen,100.0
+terminations,mujoco_nodr,5L-Norm,drifted,0.0
+terminations,mujoco_nodr,2L-Base,drifted,70.6
+terminations,mujoco_nodr,5L-Base-DriftQuad,drifted,0.7
+terminations,mujoco_nodr,5L-Base,drifted,11.9
+terminations,mujoco_nodr,5L-Base-WheelBand,drifted,37.3
+terminations,mujoco_nodr,5L-NormCos,drifted,0.2
+terminations,mujoco_nodr,2L-NormCosEnt,drifted,12.6
+terminations,mujoco_nodr,5L-NormCosEnt,drifted,10.6
+terminations,mujoco_nodr,CycleRL-Recipe,drifted,31.1
+terminations,mujoco_nodr,5L-Cos,drifted,0.0
+terminations,mujoco_nodr,5L-Norm,yaw_deviation,97.9
+terminations,mujoco_nodr,2L-Base,yaw_deviation,1.9
+terminations,mujoco_nodr,5L-Base-DriftQuad,yaw_deviation,77.7
+terminations,mujoco_nodr,5L-Base,yaw_deviation,64.1
+terminations,mujoco_nodr,5L-Base-WheelBand,yaw_deviation,26.0
+terminations,mujoco_nodr,5L-NormCos,yaw_deviation,84.7
+terminations,mujoco_nodr,2L-NormCosEnt,yaw_deviation,36.9
+terminations,mujoco_nodr,5L-NormCosEnt,yaw_deviation,19.6
+terminations,mujoco_nodr,CycleRL-Recipe,yaw_deviation,3.3
+terminations,mujoco_nodr,5L-Cos,yaw_deviation,0.0
+terminations,mujoco_nodr,5L-Norm,wheel_net,0.0
+terminations,mujoco_nodr,2L-Base,wheel_net,7.3
+terminations,mujoco_nodr,5L-Base-DriftQuad,wheel_net,0.0
+terminations,mujoco_nodr,5L-Base,wheel_net,1.0
+terminations,mujoco_nodr,5L-Base-WheelBand,wheel_net,1.5
+terminations,mujoco_nodr,5L-NormCos,wheel_net,0.9
+terminations,mujoco_nodr,2L-NormCosEnt,wheel_net,23.5
+terminations,mujoco_nodr,5L-NormCosEnt,wheel_net,58.8
+terminations,mujoco_nodr,CycleRL-Recipe,wheel_net,67.0
+terminations,mujoco_nodr,5L-Cos,wheel_net,0.0
+terminations,mujoco_nodr,5L-Norm,diverged,0.0
+terminations,mujoco_nodr,2L-Base,diverged,0.0
+terminations,mujoco_nodr,5L-Base-DriftQuad,diverged,0.0
+terminations,mujoco_nodr,5L-Base,diverged,0.0
+terminations,mujoco_nodr,5L-Base-WheelBand,diverged,0.0
+terminations,mujoco_nodr,5L-NormCos,diverged,0.0
+terminations,mujoco_nodr,2L-NormCosEnt,diverged,0.0
+terminations,mujoco_nodr,5L-NormCosEnt,diverged,0.0
+terminations,mujoco_nodr,CycleRL-Recipe,diverged,0.0
+terminations,mujoco_nodr,5L-Cos,diverged,0.0
+terminations,mujoco_dr,5L-Norm,time_out,4.0
+terminations,mujoco_dr,2L-Base,time_out,7.7
+terminations,mujoco_dr,5L-Base-DriftQuad,time_out,7.0
+terminations,mujoco_dr,5L-Base,time_out,4.7
+terminations,mujoco_dr,5L-Base-WheelBand,time_out,2.4
+terminations,mujoco_dr,5L-NormCos,time_out,1.7
+terminations,mujoco_dr,2L-NormCosEnt,time_out,0.0
+terminations,mujoco_dr,5L-NormCosEnt,time_out,0.5
+terminations,mujoco_dr,CycleRL-Recipe,time_out,0.0
+terminations,mujoco_dr,5L-Cos,time_out,0.0
+terminations,mujoco_dr,5L-Norm,fallen,21.7
+terminations,mujoco_dr,2L-Base,fallen,36.4
+terminations,mujoco_dr,5L-Base-DriftQuad,fallen,66.5
+terminations,mujoco_dr,5L-Base,fallen,48.3
+terminations,mujoco_dr,5L-Base-WheelBand,fallen,45.7
+terminations,mujoco_dr,5L-NormCos,fallen,24.5
+terminations,mujoco_dr,2L-NormCosEnt,fallen,43.2
+terminations,mujoco_dr,5L-NormCosEnt,fallen,28.4
+terminations,mujoco_dr,CycleRL-Recipe,fallen,21.6
+terminations,mujoco_dr,5L-Cos,fallen,84.2
+terminations,mujoco_dr,5L-Norm,drifted,4.8
+terminations,mujoco_dr,2L-Base,drifted,10.8
+terminations,mujoco_dr,5L-Base-DriftQuad,drifted,0.7
+terminations,mujoco_dr,5L-Base,drifted,5.5
+terminations,mujoco_dr,5L-Base-WheelBand,drifted,14.2
+terminations,mujoco_dr,5L-NormCos,drifted,3.9
+terminations,mujoco_dr,2L-NormCosEnt,drifted,7.7
+terminations,mujoco_dr,5L-NormCosEnt,drifted,6.2
+terminations,mujoco_dr,CycleRL-Recipe,drifted,12.2
+terminations,mujoco_dr,5L-Cos,drifted,4.1
+terminations,mujoco_dr,5L-Norm,yaw_deviation,60.7
+terminations,mujoco_dr,2L-Base,yaw_deviation,21.4
+terminations,mujoco_dr,5L-Base-DriftQuad,yaw_deviation,26.1
+terminations,mujoco_dr,5L-Base,yaw_deviation,43.0
+terminations,mujoco_dr,5L-Base-WheelBand,yaw_deviation,37.3
+terminations,mujoco_dr,5L-NormCos,yaw_deviation,59.8
+terminations,mujoco_dr,2L-NormCosEnt,yaw_deviation,31.5
+terminations,mujoco_dr,5L-NormCosEnt,yaw_deviation,25.5
+terminations,mujoco_dr,CycleRL-Recipe,yaw_deviation,21.7
+terminations,mujoco_dr,5L-Cos,yaw_deviation,11.8
+terminations,mujoco_dr,5L-Norm,wheel_net,13.3
+terminations,mujoco_dr,2L-Base,wheel_net,27.0
+terminations,mujoco_dr,5L-Base-DriftQuad,wheel_net,0.1
+terminations,mujoco_dr,5L-Base,wheel_net,2.0
+terminations,mujoco_dr,5L-Base-WheelBand,wheel_net,1.4
+terminations,mujoco_dr,5L-NormCos,wheel_net,12.6
+terminations,mujoco_dr,2L-NormCosEnt,wheel_net,22.7
+terminations,mujoco_dr,5L-NormCosEnt,wheel_net,44.9
+terminations,mujoco_dr,CycleRL-Recipe,wheel_net,59.2
+terminations,mujoco_dr,5L-Cos,wheel_net,0.6
+terminations,mujoco_dr,5L-Norm,diverged,0.0
+terminations,mujoco_dr,2L-Base,diverged,0.0
+terminations,mujoco_dr,5L-Base-DriftQuad,diverged,0.0
+terminations,mujoco_dr,5L-Base,diverged,0.0
+terminations,mujoco_dr,5L-Base-WheelBand,diverged,0.0
+terminations,mujoco_dr,5L-NormCos,diverged,0.0
+terminations,mujoco_dr,2L-NormCosEnt,diverged,0.0
+terminations,mujoco_dr,5L-NormCosEnt,diverged,0.0
+terminations,mujoco_dr,CycleRL-Recipe,diverged,0.0
+terminations,mujoco_dr,5L-Cos,diverged,0.0
+diagnostics,mujoco_nodr,5L-Norm,steering jitter mean |Δa| per step,0.085
+diagnostics,mujoco_nodr,2L-Base,steering jitter mean |Δa| per step,0.0312
+diagnostics,mujoco_nodr,5L-Base-DriftQuad,steering jitter mean |Δa| per step,0.0678
+diagnostics,mujoco_nodr,5L-Base,steering jitter mean |Δa| per step,0.1894
+diagnostics,mujoco_nodr,5L-Base-WheelBand,steering jitter mean |Δa| per step,0.4375
+diagnostics,mujoco_nodr,5L-NormCos,steering jitter mean |Δa| per step,0.5481
+diagnostics,mujoco_nodr,2L-NormCosEnt,steering jitter mean |Δa| per step,0.7451
+diagnostics,mujoco_nodr,5L-NormCosEnt,steering jitter mean |Δa| per step,0.6785
+diagnostics,mujoco_nodr,CycleRL-Recipe,steering jitter mean |Δa| per step,6.099
+diagnostics,mujoco_nodr,5L-Cos,steering jitter mean |Δa| per step,0.7576
+diagnostics,mujoco_nodr,5L-Norm,mean |steering angle| (deg),72.2564
+diagnostics,mujoco_nodr,2L-Base,mean |steering angle| (deg),14.059
+diagnostics,mujoco_nodr,5L-Base-DriftQuad,mean |steering angle| (deg),66.326
+diagnostics,mujoco_nodr,5L-Base,mean |steering angle| (deg),61.5956
+diagnostics,mujoco_nodr,5L-Base-WheelBand,mean |steering angle| (deg),45.9814
+diagnostics,mujoco_nodr,5L-NormCos,mean |steering angle| (deg),34.047
+diagnostics,mujoco_nodr,2L-NormCosEnt,mean |steering angle| (deg),28.5152
+diagnostics,mujoco_nodr,5L-NormCosEnt,mean |steering angle| (deg),27.6027
+diagnostics,mujoco_nodr,CycleRL-Recipe,mean |steering angle| (deg),23.3771
+diagnostics,mujoco_nodr,5L-Cos,mean |steering angle| (deg),43.042
+diagnostics,mujoco_nodr,5L-Norm,mean |yaw rate| (rad/s),0.1971
+diagnostics,mujoco_nodr,2L-Base,mean |yaw rate| (rad/s),0.1243
+diagnostics,mujoco_nodr,5L-Base-DriftQuad,mean |yaw rate| (rad/s),0.1441
+diagnostics,mujoco_nodr,5L-Base,mean |yaw rate| (rad/s),0.271
+diagnostics,mujoco_nodr,5L-Base-WheelBand,mean |yaw rate| (rad/s),0.4095
+diagnostics,mujoco_nodr,5L-NormCos,mean |yaw rate| (rad/s),0.4829
+diagnostics,mujoco_nodr,2L-NormCosEnt,mean |yaw rate| (rad/s),0.6419
+diagnostics,mujoco_nodr,5L-NormCosEnt,mean |yaw rate| (rad/s),0.6092
+diagnostics,mujoco_nodr,CycleRL-Recipe,mean |yaw rate| (rad/s),0.6102
+diagnostics,mujoco_nodr,5L-Cos,mean |yaw rate| (rad/s),0.6729
+diagnostics,mujoco_nodr,5L-Norm,rear wheel |ω| mean (rad/s),0.1908
+diagnostics,mujoco_nodr,2L-Base,rear wheel |ω| mean (rad/s),1.9277
+diagnostics,mujoco_nodr,5L-Base-DriftQuad,rear wheel |ω| mean (rad/s),0.4735
+diagnostics,mujoco_nodr,5L-Base,rear wheel |ω| mean (rad/s),2.4943
+diagnostics,mujoco_nodr,5L-Base-WheelBand,rear wheel |ω| mean (rad/s),4.2118
+diagnostics,mujoco_nodr,5L-NormCos,rear wheel |ω| mean (rad/s),6.1698
+diagnostics,mujoco_nodr,2L-NormCosEnt,rear wheel |ω| mean (rad/s),15.7003
+diagnostics,mujoco_nodr,5L-NormCosEnt,rear wheel |ω| mean (rad/s),14.183
+diagnostics,mujoco_nodr,CycleRL-Recipe,rear wheel |ω| mean (rad/s),16.4523
+diagnostics,mujoco_nodr,5L-Cos,rear wheel |ω| mean (rad/s),29.238
+training,train,5L-Norm,final_ep_len_steps,1297.3
+training,train,5L-Norm,peak_block_ep_len_steps,1345.3
+training,train,2L-Base,final_ep_len_steps,1066.6
+training,train,2L-Base,peak_block_ep_len_steps,1229.5
+training,train,5L-Base-DriftQuad,final_ep_len_steps,1238.2
+training,train,5L-Base-DriftQuad,peak_block_ep_len_steps,1317.8
+training,train,5L-Base,final_ep_len_steps,1254.2
+training,train,5L-Base,peak_block_ep_len_steps,1346.3
+training,train,5L-Base-WheelBand,final_ep_len_steps,1240.8
+training,train,5L-Base-WheelBand,peak_block_ep_len_steps,1321.2
+training,train,5L-NormCos,final_ep_len_steps,1358.3
+training,train,5L-NormCos,peak_block_ep_len_steps,1399.4
+training,train,2L-NormCosEnt,final_ep_len_steps,139.5
+training,train,2L-NormCosEnt,peak_block_ep_len_steps,140.4
+training,train,5L-NormCosEnt,final_ep_len_steps,1264.9
+training,train,5L-NormCosEnt,peak_block_ep_len_steps,1292.5
+training,train,CycleRL-Recipe,final_ep_len_steps,898.9
+training,train,CycleRL-Recipe,peak_block_ep_len_steps,942.2
+training,train,5L-Cos,final_ep_len_steps,408.3
+training,train,5L-Cos,peak_block_ep_len_steps,424.1
+dr_vs_nodr,mujoco_nodr,5L-Norm,trained without DR,0.55
+dr_vs_nodr,mujoco_nodr,2L-Base,trained without DR,30.0
+dr_vs_nodr,mujoco_nodr,5L-Base-DriftQuad,trained without DR,0.32
+dr_vs_nodr,mujoco_nodr,5L-Base,trained without DR,1.36
+dr_vs_nodr,mujoco_nodr,5L-Base-WheelBand,trained without DR,30.0
+dr_vs_nodr,mujoco_nodr,5L-NormCos,trained without DR,0.26
+dr_vs_nodr,mujoco_nodr,2L-NormCosEnt,trained without DR,1.42
+dr_vs_nodr,mujoco_nodr,5L-NormCosEnt,trained without DR,0.43
+dr_vs_nodr,mujoco_nodr,CycleRL-Recipe,trained without DR,0.16
+dr_vs_nodr,mujoco_nodr,5L-Cos,trained without DR,30.0
+dr_vs_nodr,mujoco_nodr,5L-Norm,trained with DR,14.46
+dr_vs_nodr,mujoco_nodr,2L-Base,trained with DR,13.12
+dr_vs_nodr,mujoco_nodr,5L-Base-DriftQuad,trained with DR,12.24
+dr_vs_nodr,mujoco_nodr,5L-Base,trained with DR,6.17
+dr_vs_nodr,mujoco_nodr,5L-Base-WheelBand,trained with DR,3.93
+dr_vs_nodr,mujoco_nodr,5L-NormCos,trained with DR,1.78
+dr_vs_nodr,mujoco_nodr,2L-NormCosEnt,trained with DR,1.36
+dr_vs_nodr,mujoco_nodr,5L-NormCosEnt,trained with DR,1.14
+dr_vs_nodr,mujoco_nodr,CycleRL-Recipe,trained with DR,1.06
+dr_vs_nodr,mujoco_nodr,5L-Cos,trained with DR,0.29
+dr_vs_nodr,mujoco_dr,5L-Norm,trained without DR,0.33
+dr_vs_nodr,mujoco_dr,2L-Base,trained without DR,2.35
+dr_vs_nodr,mujoco_dr,5L-Base-DriftQuad,trained without DR,5.18
+dr_vs_nodr,mujoco_dr,5L-Base,trained without DR,1.15
+dr_vs_nodr,mujoco_dr,5L-Base-WheelBand,trained without DR,0.46
+dr_vs_nodr,mujoco_dr,5L-NormCos,trained without DR,0.36
+dr_vs_nodr,mujoco_dr,2L-NormCosEnt,trained without DR,0.87
+dr_vs_nodr,mujoco_dr,5L-NormCosEnt,trained without DR,0.5
+dr_vs_nodr,mujoco_dr,CycleRL-Recipe,trained without DR,0.23
+dr_vs_nodr,mujoco_dr,5L-Cos,trained without DR,6.23
+dr_vs_nodr,mujoco_dr,5L-Norm,trained with DR,5.4
+dr_vs_nodr,mujoco_dr,2L-Base,trained with DR,5.39
+dr_vs_nodr,mujoco_dr,5L-Base-DriftQuad,trained with DR,4.06
+dr_vs_nodr,mujoco_dr,5L-Base,trained with DR,4.71
+dr_vs_nodr,mujoco_dr,5L-Base-WheelBand,trained with DR,3.21
+dr_vs_nodr,mujoco_dr,5L-NormCos,trained with DR,2.06
+dr_vs_nodr,mujoco_dr,2L-NormCosEnt,trained with DR,0.88
+dr_vs_nodr,mujoco_dr,5L-NormCosEnt,trained with DR,1.12
+dr_vs_nodr,mujoco_dr,CycleRL-Recipe,trained with DR,0.74
+dr_vs_nodr,mujoco_dr,5L-Cos,trained with DR,0.52

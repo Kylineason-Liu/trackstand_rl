@@ -1,0 +1,19 @@
+panel,group,run,len_s
+isaac_dr,Base recipe,2L-Base,25.35
+isaac_dr,Base recipe,5L-Base,21.47
+isaac_dr,Norm+Cos+Ent recipe,2L-NormCosEnt,2.72
+isaac_dr,Norm+Cos+Ent recipe,5L-NormCosEnt,24.62
+isaac_dr,Best of each,2L-Base,25.35
+isaac_dr,Best of each,5L-Norm,17.17
+mujoco_nodr,Base recipe,2L-Base,13.12
+mujoco_nodr,Base recipe,5L-Base,6.17
+mujoco_nodr,Norm+Cos+Ent recipe,2L-NormCosEnt,1.36
+mujoco_nodr,Norm+Cos+Ent recipe,5L-NormCosEnt,1.14
+mujoco_nodr,Best of each,2L-Base,13.12
+mujoco_nodr,Best of each,5L-Norm,14.46
+mujoco_dr,Base recipe,2L-Base,5.39
+mujoco_dr,Base recipe,5L-Base,4.71
+mujoco_dr,Norm+Cos+Ent recipe,2L-NormCosEnt,0.88
+mujoco_dr,Norm+Cos+Ent recipe,5L-NormCosEnt,1.12
+mujoco_dr,Best of each,2L-Base,5.39
+mujoco_dr,Best of each,5L-Norm,5.4

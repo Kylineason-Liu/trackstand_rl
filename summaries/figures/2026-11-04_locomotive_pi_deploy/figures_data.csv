@@ -1,0 +1,49 @@
+figure,panel,item,series,metric,value
+fig1_modes,BSR,flat,Isaac Lab,bsr_pct,99.9023
+fig1_modes,BSR,no noise,Isaac Lab,bsr_pct,99.9023
+fig1_modes,BSR,dropout,Isaac Lab,bsr_pct,99.9023
+fig1_modes,BSR,normal speed,Isaac Lab,bsr_pct,100
+fig1_modes,BSR,low speed,Isaac Lab,bsr_pct,98.1445
+fig1_modes,BSR,gravel,Isaac Lab,bsr_pct,99.707
+fig1_modes,BSR,max noise,Isaac Lab,bsr_pct,99.9023
+fig1_modes,BSR,rough,Isaac Lab,bsr_pct,13.0221
+fig1_modes,BSR,slope,Isaac Lab,bsr_pct,9.26234
+fig1_modes,BSR,steps,Isaac Lab,bsr_pct,9.78774
+fig1_modes,BSR,flat,MuJoCo,bsr_pct,100
+fig1_modes,BSR,no noise,MuJoCo,bsr_pct,100
+fig1_modes,BSR,dropout,MuJoCo,bsr_pct,100
+fig1_modes,BSR,normal speed,MuJoCo,bsr_pct,100
+fig1_modes,BSR,low speed,MuJoCo,bsr_pct,98.9258
+fig1_modes,BSR,gravel,MuJoCo,bsr_pct,93.1641
+fig1_modes,BSR,max noise,MuJoCo,bsr_pct,0
+fig1_modes,BSR,rough,MuJoCo,bsr_pct,
+fig1_modes,BSR,slope,MuJoCo,bsr_pct,
+fig1_modes,BSR,steps,MuJoCo,bsr_pct,
+fig1_modes,STE,flat,Isaac Lab,ste_deg,3.51167
+fig1_modes,STE,no noise,Isaac Lab,ste_deg,3.51167
+fig1_modes,STE,dropout,Isaac Lab,ste_deg,3.54292
+fig1_modes,STE,normal speed,Isaac Lab,ste_deg,3.48408
+fig1_modes,STE,low speed,Isaac Lab,ste_deg,4.75659
+fig1_modes,STE,gravel,Isaac Lab,ste_deg,3.75807
+fig1_modes,STE,max noise,Isaac Lab,ste_deg,3.04949
+fig1_modes,STE,rough,Isaac Lab,ste_deg,8.57582
+fig1_modes,STE,slope,Isaac Lab,ste_deg,10.4003
+fig1_modes,STE,steps,Isaac Lab,ste_deg,7.84559
+fig1_modes,STE,flat,MuJoCo,ste_deg,2.3823
+fig1_modes,STE,no noise,MuJoCo,ste_deg,2.38326
+fig1_modes,STE,dropout,MuJoCo,ste_deg,2.37081
+fig1_modes,STE,normal speed,MuJoCo,ste_deg,3.56505
+fig1_modes,STE,low speed,MuJoCo,ste_deg,9.23145
+fig1_modes,STE,gravel,MuJoCo,ste_deg,2.62116
+fig1_modes,STE,max noise,MuJoCo,ste_deg,69.9297
+fig1_modes,STE,rough,MuJoCo,ste_deg,
+fig1_modes,STE,slope,MuJoCo,ste_deg,
+fig1_modes,STE,steps,MuJoCo,ste_deg,
+fig2_transfer,flat STE,"Port (deployed, rear Kd 0.2)",Isaac Lab,ste_deg,3.51167
+fig2_transfer,flat STE,CycleRL original (rear Kd 5),Isaac Lab,ste_deg,1.95457
+fig2_transfer,flat STE,"Port (deployed, rear Kd 0.2)",MuJoCo,ste_deg,2.3823
+fig2_transfer,flat STE,CycleRL original (rear Kd 5),MuJoCo,ste_deg,12.3319
+fig2_transfer,gravel BSR,"Port (deployed, rear Kd 0.2)",Isaac Lab,bsr_pct,99.707
+fig2_transfer,gravel BSR,CycleRL original (rear Kd 5),Isaac Lab,bsr_pct,100
+fig2_transfer,gravel BSR,"Port (deployed, rear Kd 0.2)",MuJoCo,bsr_pct,93.1641
+fig2_transfer,gravel BSR,CycleRL original (rear Kd 5),MuJoCo,bsr_pct,0

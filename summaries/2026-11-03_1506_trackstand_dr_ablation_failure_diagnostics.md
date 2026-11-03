@@ -1,6 +1,6 @@
 # Trackstand DR ablation: why policies succeed or fail (Isaac vs MuJoCo)
 
-- **Summary written:** 2026-11-03 15:35 HKT
+- **Summary written:** 2026-11-03 15:06 HKT
 - **Data:** the DR ablation batch (trained 2026-11-02 16:48 → 2026-11-03 03:10; evals done 03:54). See
   [2026-11-03_1501_trackstand_dr_training_ablation.md](2026-11-03_1501_trackstand_dr_training_ablation.md).
 - **Report script (new):**
