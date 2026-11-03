@@ -52,8 +52,9 @@ diverges beyond ±5σ; do not use its exports for these runs.
 
 ## Tensor contract (unchanged)
 
-`[512, 256, 128, 64]` ELU MLP, Gaussian **mean** (raw, unbounded), 50 Hz
-(trained `dt = 0.01`, decimation 2).
+`[512, 256, 128, 64]` ELU MLP, Gaussian **mean** (raw, unbounded), 50 Hz.
+The aligned default model trained at `dt = 0.0025`, decimation 8 (400 Hz physics);
+the CycleRL originals trained at `dt = 0.01`, decimation 2 (100 Hz).
 
 | # | Observation | This bike |
 |---|---|---|
@@ -65,7 +66,8 @@ diverges beyond ±5σ; do not use its exports for these runs.
 | 7 | `yaw_rate_cmd` ωz* | yaw stick × 0.5 rad/s (stick right → negative/right turn) |
 
 Actions: steering `a0 × scale` clipped to ±scale (20° or 10° per model) → MIT
-position target; rear `a1 × 42.857` clipped ±45 rad/s → C1 speed target.
+position target; rear `a1 × 42.857` clipped ±45 rad/s → rear velocity target
+(MIT Kp 0 / Kd 0.2 frames by default, or the C1 speed loop with `rear_control_mode: c1`).
 No observation LPF, speed floor or host steering slew (none were in training).
 
 ## Motor / hardware contract
@@ -135,8 +137,13 @@ Whether the bike can roll with its stands down during LAUNCH is **not verified**
 
 ## Commissioning (each step needs the previous one)
 
+On the bike's Pi the locomotive stack has its own workspace,
+`~/trackstand_rl_locomotive` (branch `locomotive`); `~/trackstand_rl` stays on `main`
+for trackstand. Both build a package named `trackstand_deploy`, so source only one
+workspace's `install/setup.bash` per shell.
+
 ```bash
-cd ~/trackstand_rl/deploy && colcon build --symlink-install --packages-select trackstand_deploy
+cd ~/trackstand_rl_locomotive/deploy && colcon build --symlink-install --packages-select trackstand_deploy
 source install/setup.bash
 P="--params-file source/trackstand_deploy/config/params.yaml --params-file source/trackstand_deploy/config/locomotive.yaml"
 ```
@@ -148,7 +155,7 @@ P="--params-file source/trackstand_deploy/config/params.yaml --params-file sourc
    `/locomotive/policy_timing` (inference_ms) and the dry-run B3 log line.
 3. Rear wheel **airborne**: live `motor_mit_velocity_io`, publish low
    `/locomotive/motor_command` speeds by hand; confirm forward rotation, the B3
-   log, `drive_c1_*` telemetry and A2 tracking.
+   and F0 log lines, `drive_mit_*` telemetry (`drive_c1_*` in `c1` mode) and A2 tracking.
 4. Supported rolling launch below wake speed, then a supported hand-over.
 
 Never run another motor backend, `motor_mit_io` included, alongside it.
@@ -183,5 +190,7 @@ trained on implicit Kd 5, which neither mode reproduces (`c1` was their previous
 Rear MIT P-only at Kd 0.2 (only Kd 0.30 tested, airborne); whether B3 bounds
 MIT current; rear C1 mode matches no training law; physical MIT steering torque cap
 (see `MOTOR_MIT_IO.md`); unverified stick channels and rolling with stands
-down; CycleRL's Isaac→MuJoCo drop (0–35% BSR) means sim success is not a
-hardware green light; no MuJoCo locomotive mirror in this repo yet.
+down; sim success is not a hardware green light (CycleRL originals lost 0–35% BSR
+Isaac→MuJoCo; the aligned model transfers well but is still sim-only). The MuJoCo
+locomotive mirror is `mujoco_sim2sim/scripts/locomotive/` (`eval_paper_suite.py`); it
+has no passive joint friction and no rough/slope/steps terrain.

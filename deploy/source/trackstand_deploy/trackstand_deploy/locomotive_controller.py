@@ -4,7 +4,7 @@ Original 8-in/2-out tensor contract (see locomotive_contracts). Hardware mapping
 calibrated /trackstand/imu, signed /trackstand/motor_state, CRSF channel-7
 authority (/trackstand/kickstands_up) and proportional sticks (/locomotive/rc_sticks).
 Output goes to /locomotive/motor_command = [enable, steering_target_rad,
-rear_velocity_rad_s], consumed only by motor_mit_velocity_io (C1 rear speed).
+rear_velocity_rad_s], consumed only by motor_mit_velocity_io (rear MIT velocity by default).
 """
 
 from __future__ import annotations
@@ -68,7 +68,7 @@ class LocomotiveController(Node):
         self._policy = LocomotiveOnnxPolicy(self._model_path, spec)
 
         if float(parameter("policy_rate_hz")) != POLICY_RATE_HZ:
-            raise ValueError("locomotive policy_rate_hz must remain exactly 50.0 (trained 0.01 s x 2)")
+            raise ValueError("locomotive policy_rate_hz must remain exactly 50.0 (the trained policy rate)")
         self._imu_timeout_s = float(parameter("imu_timeout_s"))
         self._motor_timeout_s = float(parameter("motor_timeout_s"))
         self._rc_timeout_s = float(parameter("rc_timeout_s"))
