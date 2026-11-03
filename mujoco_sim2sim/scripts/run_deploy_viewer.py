@@ -3,7 +3,8 @@
 
 Default: verified trackstand0916 MJCF, no-DR-trained model75300, 64 independent
 bikes. --dr enables reset randomization; all six v1 terminations are enabled
-unless --pure_survival selects timeout/fallen only. zero_agent disables motor
+unless --pure_survival selects timeout/fallen only; --no_yaw_termination drops
+only yaw_deviation (use it for Trackstand-Balance-v3 policies). zero_agent disables motor
 torques; free_fall additionally removes passive losses and does not auto-reset.
 
 On closing deploy_sim, save completed-episode histogram, metrics and actuator
@@ -30,7 +31,8 @@ sys.path.insert(0, os.path.join(ROOT, "src"))
 from newbike_mujoco import BikeBalanceEnv, DeployedPolicy  # noqa: E402
 from newbike_mujoco import contract as c  # noqa: E402
 from newbike_mujoco.viewer_envs import ViewerEnvGroup  # noqa: E402
-from newbike_mujoco.contract import DEFAULT_CHECKPOINT, DEFAULT_MJCF, TERMINATIONS  # noqa: E402
+from newbike_mujoco.viewer_label import label_overlay, policy_title, short_path, show_label  # noqa: E402
+from newbike_mujoco.contract import DEFAULT_CHECKPOINT, DEFAULT_MJCF, enabled_terminations  # noqa: E402
 from newbike_mujoco.model import augment_trackstand_model, build_env_from_mjcf  # noqa: E402
 from newbike_mujoco.reporting import (  # noqa: E402
     write_metrics_log, _evaluation_output_base, _plot_episode_length_distribution,
@@ -59,6 +61,8 @@ def main():
                     help="Exported v1 Beta mean policy, 11 inputs / 2 actions.")
     ap.add_argument("--pt", default=None,
                     help="V1 Beta checkpoint (default: 20261021 no-DR model75300).")
+    ap.add_argument("--label", default=None,
+                    help="Title shown in the viewer overlay (default: <dir>/<file> of the policy).")
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--physics_hz", type=float, default=None,
                     help="Physics and PD rate in Hz (default: 400); multiple of 50; policy stays at 50 Hz.")
@@ -71,6 +75,8 @@ def main():
                          "DR initial state (roll U(+-0.10) rad, roll-rate U(+-0.25) rad/s), "
                          "and IMU turn-on residuals.")
     ap.add_argument("--pure_survival", action="store_true", help="Only time_out/fallen; default uses all six v1 terms.")
+    ap.add_argument("--no_yaw_termination", action="store_true",
+                    help="Disable only yaw_deviation (30 deg); use for Trackstand-Balance-v3 policies.")
     ap.add_argument("--velocity_limit_mode", choices=("project", "none"), default="project",
                     help="project: hard speed projection23.9/61.6 (NOT PhysX-equivalent); none: diagnostic only.")
     ap.add_argument("--speed", type=float, default=1.0,
@@ -123,7 +129,7 @@ def main():
         print(f"[INFO] task=deploy_sim  policy backend: {policy.backend}")
         print(f"[INFO]   onnx: {onnx_path}")
         for instance in group.envs:
-            instance.enabled_terms = {"time_out", "fallen"} if args.pure_survival else set(TERMINATIONS)
+            instance.enabled_terms = enabled_terminations(args.pure_survival, args.no_yaw_termination)
         print(f"[INFO] terminations: {sorted(env.enabled_terms)}")
         # torque tracing: data.actuator_force = the post-forcerange-clip applied
         # torque (the MuJoCo analog of the sim's applied_torque)
@@ -153,6 +159,22 @@ def main():
                 instance.velocity_limit_mode = "none"
             print("[INFO] free_fall: no auto-reset — the bike falls once and stays")
 
+    if args.task == "deploy_sim":
+        label_title = policy_title(loaded_policy_path, args.label)
+        label_rows = [("Sim", f"MuJoCo deploy_sim, {policy.backend}"), ("File", short_path(loaded_policy_path))]
+        if args.pure_survival or args.no_yaw_termination:
+            label_rows.append(("Terms", ", ".join(sorted(env.enabled_terms))))
+    else:
+        label_title = args.label or f"{args.task} (no policy)"
+        label_rows = [("Sim", f"MuJoCo {args.task}")]
+    label_rows += [("DR", "on" if args.dr else "off"),
+                   ("Envs", f"{args.num_envs}, seed {args.seed}, physics {args.physics_hz:g} Hz")]
+
+    def label_live():
+        done_s = [r[0] * 0.02 for r in ep_records]
+        mean = f", mean {np.mean(done_s):.1f} s" if done_s else ""
+        return f"t {global_step * 0.02:.1f} s, episodes done {len(done_s)}{mean}"
+
     obs = group.reset()
     episodes = np.ones(args.num_envs, dtype=int)
     announced = np.zeros(args.num_envs, dtype=bool)
@@ -163,6 +185,8 @@ def main():
         with viewer.lock():
             group.configure_camera(viewer.cam)
             group.update_scene(viewer.user_scn, viewer.opt)
+            show_label(viewer, label_overlay(label_title, label_rows, label_live()))
+        print(f"[INFO] viewer label: {label_title}")
         print("[INFO] viewer open — close the window (or press Esc) to quit")
         while viewer.is_running():
             actions = policy.act_batch(obs) if policy is not None else np.zeros((args.num_envs, 2))
@@ -175,6 +199,8 @@ def main():
                     torque_traces.append(torque)
             with viewer.lock():
                 group.update_scene(viewer.user_scn, viewer.opt)
+                if global_step % 25 == 0:  # refresh the live line twice a second
+                    show_label(viewer, label_overlay(label_title, label_rows, label_live()))
             viewer.sync()
             for index in np.flatnonzero(done):
                 instance = group.envs[index]

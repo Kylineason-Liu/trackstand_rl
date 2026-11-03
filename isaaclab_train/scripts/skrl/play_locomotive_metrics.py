@@ -310,6 +310,9 @@ parser.add_argument(
 from play_camera import add_play_camera_args, apply_play_camera_cfg, attach_play_camera_ui
 
 add_play_camera_args(parser)
+from scripts.gui_label import add_label_arg  # noqa: E402
+
+add_label_arg(parser)
 add_launcher_args(parser)
 args_cli, hydra_args = setup_preset_cli(parser)
 
@@ -733,6 +736,17 @@ def _run_one_mode(
 
     env = SkrlVecEnvWrapper(env, ml_framework=args_cli.ml_framework)
     _camera_ui = attach_play_camera_ui(env, args_cli)
+    # on-screen label (GUI only; no-op headless) so each window says which policy is running
+    from scripts.gui_label import checkpoint_experiment, checkpoint_label, show_policy_label
+
+    show_policy_label(
+        args_cli.label or checkpoint_label(resume_path),
+        [
+            f"Isaac Lab · {args_cli.task} · eval mode {mode}",
+            f"DR always on (task cfg) · seed {args_cli.seed} · {env.num_envs} envs",
+            checkpoint_experiment(resume_path),
+        ],
+    )
 
     experiment_cfg["trainer"]["close_environment_at_exit"] = False
     experiment_cfg["agent"]["experiment"]["write_interval"] = 0

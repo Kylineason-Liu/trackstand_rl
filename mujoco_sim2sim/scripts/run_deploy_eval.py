@@ -49,6 +49,8 @@ def main():
                         help="Physics and PD rate in Hz (default: 400); multiple of 50; policy stays at 50 Hz.")
     parser.add_argument("--dr", action="store_true")
     parser.add_argument("--pure_survival", action="store_true")
+    parser.add_argument("--no_yaw_termination", action="store_true",
+                        help="Disable only yaw_deviation (30 deg); use for Trackstand-Balance-v3 policies.")
     parser.add_argument("--velocity_limit_mode", choices=("project", "none"), default="project")
     parser.add_argument("--base_inertia", type=float, default=1.,
                         help="Non-v1 diagnostic override; keep1 for comparison")
@@ -70,8 +72,7 @@ def main():
     group = ViewerEnvGroup(first, args.num_envs, args.seed)
     for env in group.envs:
         env.MAX_STEPS = args.steps
-        if args.pure_survival:
-            env.enabled_terms = {"time_out", "fallen"}
+        env.enabled_terms = c.enabled_terminations(args.pure_survival, args.no_yaw_termination)
         if args.base_inertia != 1.:
             env.model.body_inertia[env.model.body("base_link").id] *= args.base_inertia
             env.refresh_dr_nominal()

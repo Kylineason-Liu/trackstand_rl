@@ -44,6 +44,8 @@ python3 scripts/run_deploy_viewer.py --task deploy_sim \
 ```
 
 Remove `--pure_survival` for all six termination conditions. The headless
+For `Trackstand-Balance-v3` policies pass `--no_yaw_termination` (v3 replaces the 30° yaw
+termination with a reward penalty; yaw is still measured and reported).
 equivalent uses `scripts/run_deploy_eval.py --physics_hz 800` with the same
 policy/DR options and `--num_steps 3000` for a fixed evaluation budget.
 
@@ -128,7 +130,7 @@ Interface/conformance tests and learned-policy performance are separate results.
 ## Options and outputs
 
 Viewer: `--num_envs`(64), `--seed`(42), `--mjcf`/`--scene`, `--pt`/`--onnx`,
-`--dr`, `--physics_hz`(400), `--pure_survival`, `--velocity_limit_mode project|none`, `--speed`.
+`--dr`, `--physics_hz`(400), `--pure_survival`, `--no_yaw_termination`, `--velocity_limit_mode project|none`, `--speed`.
 `--task zero_agent` disables motor torque; `free_fall` also removes passive
 losses and auto-reset. `--lock_steer` is zero_agent-only. These demonstrations
 are not standard v1 evaluations. `--base_inertia` is retained as a warned,

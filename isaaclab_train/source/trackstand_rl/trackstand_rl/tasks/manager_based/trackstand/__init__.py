@@ -1,4 +1,4 @@
-"""Trackstand balance tasks: v0 Gaussian, v1 Beta torque and v2 Beta rear velocity.
+"""Trackstand balance tasks: v0 Gaussian, v1 Beta torque, v2 Beta rear velocity, v3 v1 + heading penalty.
 
 Mirrors the CycleRL cyclerl package layout: agents/, assets/, bicycle_cfg.py,
 mdp/, and a per-bike subpackage (trackstand_bike/) holding the env class and
@@ -11,6 +11,7 @@ from .trackstand_bike.trackstand_rl_env import TrackstandRLEnv
 from .trackstand_bike.trackstand_rl_env_cfg import TrackstandRLEnvCfg
 from .trackstand_bike.trackstand_rl_env_cfg_v1 import TrackstandRLEnvCfgV1
 from .trackstand_bike.trackstand_rl_env_cfg_v2 import TrackstandRLEnvCfgV2
+from .trackstand_bike.trackstand_rl_env_cfg_v3 import TrackstandRLEnvCfgV3
 
 gym.register(
     id="Trackstand-Balance-v0",
@@ -53,5 +54,20 @@ gym.register(
         "rsl_rl_cfg_entry_point": (
             f"{__name__}.agents.rsl_rl_ppo_beta_v2_cfg:TrackstandRLVelocityBetaPPORunnerCfg"
         ),
+    },
+)
+
+# v3 = v1 with yaw_deviation termination replaced by the yaw_penalty reward term. Same env class
+# (TrackstandRLEnvV1 keeps per-episode spawn_yaw) and v1 PPO settings; logs to trackstand_rl_v3_rsl.
+gym.register(
+    id="Trackstand-Balance-v3",
+    entry_point=(
+        "source.trackstand_rl.trackstand_rl.tasks.manager_based."
+        "trackstand.trackstand_bike.trackstand_rl_env:TrackstandRLEnvV1"
+    ),
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": TrackstandRLEnvCfgV3,
+        "rsl_rl_cfg_entry_point": f"{__name__}.agents.rsl_rl_ppo_beta_v3_cfg:TrackstandRLHeadingBetaPPORunnerCfg",
     },
 )

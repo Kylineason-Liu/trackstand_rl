@@ -39,6 +39,7 @@ from isaaclab.app import AppLauncher
 
 # local imports
 import cli_args  # isort: skip
+from scripts.gui_label import add_label_arg  # isort: skip
 from scripts.evaluation_options import add_evaluation_args, configure_pure_survival
 
 parser = argparse.ArgumentParser(description="Evaluate an RSL-RL checkpoint with summary metrics.")
@@ -52,6 +53,7 @@ parser.add_argument(
     help="Env steps to run (~2 episodes/env at the 1500-step / 30s cap).",
 )
 cli_args.add_rsl_rl_args(parser)
+add_label_arg(parser)
 add_evaluation_args(parser)
 AppLauncher.add_app_launcher_args(parser)
 args_cli, hydra_args = parser.parse_known_args()
@@ -191,6 +193,17 @@ def main(env_cfg, agent_cfg):
     if isinstance(env.unwrapped, DirectMARLEnv):
         env = multi_agent_to_single_agent(env)
     env = RslRlVecEnvWrapper(env, clip_actions=agent_cfg.clip_actions)
+    # on-screen label (GUI only; no-op headless) so each window says which policy is running
+    from scripts.gui_label import checkpoint_experiment, checkpoint_label, show_policy_label
+
+    show_policy_label(
+        args_cli.label or checkpoint_label(resume_path),
+        [
+            f"Isaac Lab · {args_cli.task}",
+            f"DR {'on' if args_cli.dr else 'off'} · seed {args_cli.seed} · {env.num_envs} envs",
+            checkpoint_experiment(resume_path),
+        ],
+    )
 
     print(f"[INFO] Loading checkpoint: {resume_path}")
     if agent_cfg.class_name == "OnPolicyRunner":

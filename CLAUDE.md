@@ -62,12 +62,18 @@ Both launch files are **live** (`dry_run: false`).
 | `Trackstand-Balance-v0` | Historical | 13 | Gaussian | torque ×6.28 N·m | `trackstand_rl_rsl` |
 | `Trackstand-Balance-v1` | **Active everywhere** | 11 | Beta (mean deployed) | torque ×6.28 N·m | `trackstand_rl_rsl` |
 | `Trackstand-Balance-v2` | Experimental, Isaac only | 11 | Beta | velocity ×61.6 rad/s | `trackstand_rl_v2_rsl` |
+| `Trackstand-Balance-v3` | New 2026-11-03, untrained | 11 | Beta | torque ×6.28 N·m | `trackstand_rl_v3_rsl` |
 
 - **v1** = v0 plant + Beta runner, 11 obs (no body linear velocity), steering
   target clipped ±1.57 rad and slewed at 23.9 rad/s (one step per 50 Hz action),
   explicit `IdealPDActuator` steering (Kp 10 / Kd 0.2, clipped ±5.6 N·m) and pure
   feedforward rear torque (clipped ±6.28 N·m), measured passive friction
   (steer 0.046 N·m + viscous 0.00091; rear 0.106 N·m), fixed timeout bookkeeping.
+- **v3** = v1 with the `yaw_deviation` termination removed and a dense heading penalty
+  `yaw_penalty` (weight 2.0; 0 within 0.1 rad, linear to −1 at 180°, unclamped; no alive bonus,
+  so only the heading signal changes vs v1). Same 11-obs contract as v1, so v1 MuJoCo/deploy runs
+  it. **Evaluate v3 in MuJoCo with `--no_yaw_termination`** (`run_deploy_eval.py` /
+  `run_deploy_viewer.py`), otherwise MuJoCo still ends episodes at 30° yaw.
 - **v2** = v1 with rear velocity target and MIT-equivalent law
   `clip(0.2·(v_target − v), ±6.28)` (Kp 0, no FF); actuator-gain DR is always
   disabled; wheel-net tracked at physics rate. Has an unresolved **400 Hz rear
@@ -114,7 +120,8 @@ MuJoCo and deploy.
 - Terminations (all versions): `time_out`, `fallen` (|roll| > 30° or inverted),
   `diverged`, `drifted` (> 0.5 m), `yaw_deviation` (> 30°), `wheel_net`
   (> 7.2 rad accumulated rear angle). MuJoCo v1 viewer/evaluator enable all six by
-  default; `--pure_survival` restricts to `time_out` + `fallen`.
+  default; `--pure_survival` restricts to `time_out` + `fallen`; `--no_yaw_termination`
+  drops only `yaw_deviation` (required for v3).
 
 ### Domain randomization
 
@@ -256,6 +263,8 @@ python scripts/run_deploy_viewer.py --task deploy_sim \
   --mjcf models/trackstand_rl_0916_bike/trackstand_rl_0916.xml \
   --num_envs 64 --seed 42            # default --pt = no-DR model_75300
 python scripts/run_deploy_eval.py --num_envs 64 --num_steps 3000 --seed 42
+# Trackstand-Balance-v3 policies (heading is a penalty, not a termination): add --no_yaw_termination
+python scripts/run_deploy_eval.py --pt <v3 model.pt> --num_envs 64 --num_steps 3000 --seed 42 --dr --no_yaw_termination
 ```
 
 Trackstand: use `--pt` (v1 checkpoint) or `--onnx` (v1 export); files in
@@ -273,9 +282,9 @@ and torque traces under `mujoco_sim2sim/logs/`.
 
 | Piece | Location (under `source/trackstand_rl/trackstand_rl/tasks/manager_based/`) |
 |-------|----------|
-| Trackstand registration | `trackstand/__init__.py` → v0 / v1 / v2 |
+| Trackstand registration | `trackstand/__init__.py` → v0 / v1 / v2 / v3 |
 | Trackstand env classes | `trackstand/trackstand_bike/trackstand_rl_env.py`, `trackstand_rl_env_v2.py` |
-| Trackstand env cfgs | `trackstand/trackstand_bike/trackstand_rl_env_cfg.py` (v0 base), `_cfg_v1.py`, `_cfg_v2.py` |
+| Trackstand env cfgs | `trackstand/trackstand_bike/trackstand_rl_env_cfg.py` (v0 base), `_cfg_v1.py`, `_cfg_v2.py`, `_cfg_v3.py` |
 | Robot / actuators | `trackstand/bicycle_cfg.py` (`TRACKSTAND_ROBOT_CFG`, shared with locomotive); v1/v2 and locomotive override actuators |
 | Trackstand MDP | `trackstand/mdp/stationary/` (active); `mdp/dynamic/` is legacy |
 | Trackstand PPO | `trackstand/agents/rsl_rl_ppo_cfg.py` (MLP [32,32], entropy 0.005); Beta: `rsl_rl_ppo_beta_cfg.py`, `rsl_rl_ppo_beta_v2_cfg.py`, `beta_distribution.py` |
@@ -284,6 +293,11 @@ and torque traces under `mujoco_sim2sim/logs/`.
 
 - Import trigger: `import source.trackstand_rl.trackstand_rl.tasks` with
   `PYTHONPATH=isaaclab_train`.
+- GUI play: Isaac Lab is headless unless you pass `--viz kit`. Every play script (`rsl_rl/play.py`,
+  `rsl_rl/play_eval.py`, `skrl/play_locomotive_metrics.py`) draws a top-left viewport label (title =
+  `--label` or the checkpoint's run dir, plus task / DR / seed / envs / checkpoint) via `scripts/gui_label.py`;
+  MuJoCo viewers (`run_deploy_viewer.py`, `locomotive/play_act_refine_lo.py`) do the same with a live line via
+  `src/newbike_mujoco/viewer_label.py`. Keep this on any new play/viewer script.
 - Hydra overrides use the `env.` node (e.g. `env.sim.dt=0.01`; skrl also `agent.`).
   **Do not** assign `env.step_dt` — set `sim.dt` and `decimation`.
 - Logs are gitignored.
@@ -389,7 +403,12 @@ trackstand, but not either RL contract. See `tsinghua_bike_project/CLAUDE.md`.
 must also be written as a dated Markdown file in `summaries/`, named
 `YYYY-MM-DD_HHMM_<topic>.md` (HKT, time written). Include the dates and times that matter (run
 start/finish, eval finish, summary written), the source files, setup, results tables, findings,
-caveats and next steps. Add a row at the top of `summaries/README.md`. Never rewrite earlier entries;
+caveats and next steps. **Include charts** (PNG under `summaries/figures/<date>_<topic>/`, embedded
+next to the text that explains them) for every set of results, with the key exact value printed on
+each mark (bar/segment/curve endpoint) and every plotted number also saved as `figures_data.csv`;
+open each PNG to check for overlap before finishing. Template:
+`~/bike_test/trackstand_rl_test_layer/isaaclab_train/logs/ablation_queue_dr/plot_summary.py` (run with
+Isaac python; system matplotlib fails under numpy 2). Add a row at the top of `summaries/README.md`. Never rewrite earlier entries;
 a correction is a new file that links the old one. This is in addition to `progress_record.md`
 (see the "Experiment record" row below), not a replacement for it.
 

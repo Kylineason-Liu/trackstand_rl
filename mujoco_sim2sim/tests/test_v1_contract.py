@@ -145,6 +145,19 @@ class V1ContractTests(unittest.TestCase):
         env._check_terminations()
         self.assertTrue(env.termination_flags["fallen"])
 
+    def test_no_yaw_termination_drops_only_yaw_and_still_measures_it(self):
+        self.assertEqual(c.enabled_terminations(), set(c.TERMINATIONS))
+        self.assertEqual(c.enabled_terminations(no_yaw_termination=True), set(c.TERMINATIONS) - {"yaw_deviation"})
+        self.assertEqual(c.enabled_terminations(pure_survival=True), {"time_out", "fallen"})
+        self.assertEqual(c.enabled_terminations(True, True), {"time_out", "fallen"})
+        env = first_env()
+        env.reset()
+        env.enabled_terms = c.enabled_terminations(no_yaw_termination=True)
+        env.data.qpos[3:7] = [np.cos(.4), 0., 0., np.sin(.4)]  # Upright, heading 0.8 rad (46 deg) from spawn.
+        self.assertFalse(env._check_terminations())
+        self.assertFalse(any(env.termination_flags.values()))
+        self.assertAlmostEqual(env.stats.yaw_max, np.degrees(.8), places=3)
+
     def test_wheel_net_lag_and_timeout_reset(self):
         env = first_env()
         env.reset()

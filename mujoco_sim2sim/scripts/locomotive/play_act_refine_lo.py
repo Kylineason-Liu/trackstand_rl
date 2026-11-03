@@ -55,6 +55,8 @@ _REPO = _SCRIPT_DIR.parents[2]  # trackstand_rl root
 sys.path.insert(0, str(_SCRIPT_DIR))
 
 from policy_numpy import PaperPolicy  # noqa: E402
+sys.path.insert(0, str(_REPO / "mujoco_sim2sim" / "src" / "newbike_mujoco"))  # standalone viewer_label module
+from viewer_label import label_overlay, policy_title, short_path, show_label  # noqa: E402
 from control_gui import CommandState, JoystickPanel  # noqa: E402
 from tire_from_mesh import (  # noqa: E402
     _STIFF_SOLIMP,
@@ -609,6 +611,7 @@ def _export_checkpoint(ckpt: Path, scales: dict[str, float]) -> Path:
 def _parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Standalone MuJoCo play for act_refine_lo.")
     p.add_argument("--npz", type=Path, default=None, help="Exported policy npz.")
+    p.add_argument("--label", default=None, help="Title shown in the viewer overlay (default: <dir>/<file> of the policy).")
     p.add_argument(
         "--checkpoint",
         type=Path,
@@ -776,6 +779,7 @@ def _run_video(sim: PaperBikeSim, out_path: Path, max_steps: int, width: int, he
 def main() -> None:
     args = _parse_args()
     zero_com = bool(args.zero_com)
+    ckpt = None
     if args.checkpoint is not None:
         ckpt = _resolve_checkpoint(args.checkpoint)
         scales = _scales_from_run(_run_dir(ckpt))
@@ -870,8 +874,20 @@ def main() -> None:
             f"drive={'stick' if args.drive_remote else 'policy'}"
         )
 
+    label_src = ckpt if ckpt is not None else args.npz
+    label_title = policy_title(label_src, args.label)
+    label_rows = [
+        ("Sim", "MuJoCo locomotive play"),
+        ("File", short_path(label_src)),
+        ("Plant", short_path(args.xml, 2)),
+        ("Drive", "joystick (policy steers only)" if args.drive_remote else "policy"
+         + (", steer locked" if args.lock_steer else "")),
+    ]
+    print(f"[INFO] viewer label: {label_title}")
+
     with viewer_cm as viewer:
         _follow_cam(viewer, sim.bid_base)
+        show_label(viewer, label_overlay(label_title, label_rows))
         next_policy = time.time()
         while viewer.is_running() and (max_steps is None or step_i < max_steps):
             if cmd.quit_requested:
@@ -889,6 +905,10 @@ def main() -> None:
                     info = sim.policy_step()
                     next_policy = now + _POLICY_DT
                     step_i += 1
+                    if step_i % 25 == 0:  # refresh the live line twice a second
+                        show_label(viewer, label_overlay(label_title, label_rows,
+                                   f"t {step_i * _POLICY_DT:.1f} s, vx {info['vx']:+.2f}/{sim.vx_cmd:.2f} m/s, "
+                                   f"roll {info['roll_deg']:+.1f} deg"))
                     if step_i % 50 == 0:
                         print(
                             f"t={step_i * _POLICY_DT:6.2f}s  "

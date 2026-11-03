@@ -147,6 +147,22 @@ def balance_yaw_band(
     return 1.0 - tail_slope * excess
 
 
+def balance_yaw_excess_penalty(
+    env: ManagerBasedRLEnv,
+    band: float = 0.1,  # rad (~6 deg): free heading allowance, no penalty inside
+    tail_slope: float = 0.3288,  # = 1/(pi - band): value -1 at |yaw| = pi (full reversal)
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+) -> torch.Tensor:
+    """Heading penalty: ``-tail_slope * max(|yaw - spawn_yaw| - band, 0)``, in [-1, 0].
+
+    Exactly ``balance_yaw_band - 1``: same audited heading math (raw root quaternion,
+    wrap-aware, relative to the env's per-episode ``spawn_yaw``) and the same constant,
+    unclamped gradient past the band, but zero inside the band, so it adds no alive
+    bonus of its own. Returns NEGATIVE values: keep the cfg weight POSITIVE (the reward
+    manager multiplies value * weight), as for the rate penalties.
+    """
+    return balance_yaw_band(env, band=band, tail_slope=tail_slope, asset_cfg=asset_cfg) - 1.0
+
 def balance_wheel_net_angle_band(
     env: ManagerBasedRLEnv,
     band: float = 1.0,  # rad of free NET wheel rotation since reset

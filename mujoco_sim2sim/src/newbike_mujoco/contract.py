@@ -34,6 +34,19 @@ DRIFT_LIMIT = 0.5
 WHEEL_NET_LIMIT = 7.2
 MAX_LINEAR_SPEED, MAX_ANGULAR_SPEED, MAX_JOINT_SPEED = 20.0, 50.0, 300.0
 TERMINATIONS = ("time_out", "fallen", "diverged", "drifted", "yaw_deviation", "wheel_net")
+
+
+def enabled_terminations(pure_survival=False, no_yaw_termination=False):
+    """Termination set for an evaluation run.
+
+    Default: all six v1 terms. ``pure_survival``: time_out + fallen only.
+    ``no_yaw_termination``: drop yaw_deviation only, matching Isaac Trackstand-Balance-v3
+    (heading is a reward penalty there, not a termination); yaw is still measured.
+    """
+    terms = {"time_out", "fallen"} if pure_survival else set(TERMINATIONS)
+    if no_yaw_termination:
+        terms.discard("yaw_deviation")
+    return terms
 DR_MASS = (0.8, 1.2)
 DR_COM = 0.005
 DR_FRICTION = (0.5, 0.8)

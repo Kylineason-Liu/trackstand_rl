@@ -14,6 +14,7 @@ from isaaclab.app import AppLauncher
 
 # local imports
 import cli_args  # isort: skip
+from scripts.gui_label import add_label_arg  # isort: skip
 
 # add argparse arguments
 parser = argparse.ArgumentParser(description="Train an RL agent with RSL-RL.")
@@ -40,6 +41,7 @@ parser.add_argument(
 )
 # append RSL-RL cli arguments
 cli_args.add_rsl_rl_args(parser)
+add_label_arg(parser)
 # append AppLauncher cli args
 AppLauncher.add_app_launcher_args(parser)
 # parse the arguments
@@ -172,6 +174,17 @@ def main(env_cfg: ManagerBasedRLEnvCfg | DirectRLEnvCfg | DirectMARLEnvCfg, agen
 
     # wrap around environment for rsl-rl
     env = RslRlVecEnvWrapper(env, clip_actions=agent_cfg.clip_actions)
+    # on-screen label (GUI only; no-op headless) so each window says which policy is running
+    from scripts.gui_label import checkpoint_experiment, checkpoint_label, show_policy_label
+
+    show_policy_label(
+        args_cli.label or checkpoint_label(resume_path),
+        [
+            f"Isaac Lab · {args_cli.task}",
+            f"DR {'on' if args_cli.dr else 'off'} · seed {args_cli.seed} · {env.num_envs} envs",
+            checkpoint_experiment(resume_path),
+        ],
+    )
 
     print(f"[INFO]: Loading model checkpoint from: {resume_path}")
     # load previously trained model
