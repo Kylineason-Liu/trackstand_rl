@@ -106,3 +106,38 @@ def parse_mit_motion(payload: bytes, ranges: MitRanges) -> MitCommand:
     return MitCommand(decode_symmetric(p, ranges.position_rad, 16),
                       decode_symmetric(v, ranges.velocity_rad_s, 12), kp * 500 / 4095, kd * 5 / 4095,
                       decode_symmetric(t, ranges.torque_nm, 12))
+
+
+def f0_with_velocity(payload: bytes, velocity_max_rad_s: float) -> bytes:
+    """Return F0 with only Vel_Max replaced (0.01 rad/s units, rounded up)."""
+    parse_f0(payload)
+    if not math.isfinite(velocity_max_rad_s):
+        raise ValueError("MIT velocity maximum must be finite")
+    raw = math.ceil(velocity_max_rad_s * 100 - 1e-9)
+    if not 1 <= raw <= 65535:
+        raise ValueError("MIT velocity maximum cannot be encoded in F0")
+    return payload[:3] + struct.pack("<H", raw) + payload[5:]
+
+
+def mit_velocity_payload(
+    velocity_rad_s: float, ranges: MitRanges, kd_nm_s_per_rad: float,
+) -> tuple[bytes, float, float]:
+    """Velocity-only MIT frame: Kp 0, position code irrelevant, nominal zero feedforward.
+
+    Signed 12-bit torque has no exact zero code. The residual feedforward is
+    cancelled through the velocity field, so the motor's effective law is
+    Kd_wire * (velocity_rad_s - v) to within velocity quantization.
+    Returns (payload, wire Kd, effective velocity target), all native units.
+    """
+    kd = encode(kd_nm_s_per_rad, 0.0, 5.0, 12)
+    if kd == 0:
+        raise ValueError("MIT velocity Kd is too small to encode")
+    kd_wire = kd * 5 / 4095
+    t = encode(0.0, -ranges.torque_nm, ranges.torque_nm, 12)
+    feedforward = decode_symmetric(t, ranges.torque_nm, 12)
+    v = encode(velocity_rad_s - feedforward / kd_wire, -ranges.velocity_rad_s, ranges.velocity_rad_s, 12)
+    p = encode(0.0, -ranges.position_rad, ranges.position_rad, 16)
+    payload = bytes((p >> 8, p & 255, v >> 4, (v & 15) << 4, 0,
+                     kd >> 4, ((kd & 15) << 4) | (t >> 8), t & 255))
+    effective = decode_symmetric(v, ranges.velocity_rad_s, 12) + feedforward / kd_wire
+    return payload, kd_wire, effective

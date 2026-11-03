@@ -8,7 +8,16 @@ trackstand launch, nodes or default model.
 
 ## Models
 
-Source task `CycleRL-Trackstand-Cylinder-Paper-v0`: the same `trackstand_rl_0916`
+**Default (rank 0):** `locomotive_aligned_1900_drive03_2026-10-29_17-06-47.onnx`
+(SHA-256 `ec3ccae9be48daa863eb340042a542d4c932f8e4f782b16da2c5ff8ddff91c1d`), CycleRL's
+rank-1 recipe retrained in this repo as `Locomotive-Cylinder-Aligned-v0`: same tensor
+contract, rewards, commands and DR, but 400 Hz physics, explicit trackstand steering
+(Kp 10 / Kd 0.2, measured friction) and rear τ = clip(0.2·(ω* − ω), ±6.28 N·m).
+Paper suite (1024 episodes/mode, 2026-10-29): flat BSR Isaac 99.9% / MuJoCo 100%,
+flat steering error Isaac 3.51° / MuJoCo 2.38°, MuJoCo gravel 93.2% (original 0%).
+Its rear law is MIT Kp 0 / Kd 0.2, so it needs `rear_control_mode: mit`.
+
+The CycleRL originals (ranks 1–5) remain bundled. Source task `CycleRL-Trackstand-Cylinder-Paper-v0`: the same `trackstand_rl_0916`
 cylinder-wheel USD as this repo (geometry/mass/joint payloads hash-identical; this
 repo's `base.usda` additionally authors tire friction 0.65/min). Ranked by
 flat-ground MuJoCo balance success among runs with 100% Isaac success
@@ -16,7 +25,7 @@ flat-ground MuJoCo balance success among runs with 100% Isaac success
 
 | Rank | ONNX (`models/`) | Recipe | Steer | v* range | MuJoCo BSR |
 |---|---|---|---|---|---|
-| 1 (default) | `locomotive_1900_drive03_2026-10-19_16-30-17.onnx` | 1900_drive03 | ±20° | 0.5–2.5 m/s | 100% |
+| 1 | `locomotive_1900_drive03_2026-10-19_16-30-17.onnx` | 1900_drive03 | ±20° | 0.5–2.5 m/s | 100% |
 | 2 | `locomotive_1900_2026-10-19_19-04-32.onnx` | 1900 | ±20° | 0.5–2.5 | 88.2% |
 | 3 | `locomotive_1900_drive03_2026-10-20_03-18-29.onnx` | 1900_drive03 | ±20° | 0.5–2.5 | 82.5% |
 | 4 | `locomotive_deploy_10deg_2026-10-20_04-32-20.onnx` | deploy_10deg | ±10° | 0.5–2.5 | 68.7% |
@@ -61,15 +70,33 @@ No observation LPF, speed floor or host steering slew (none were in training).
 
 ## Motor / hardware contract
 
-| | Training (Isaac) | Bike (`motor_mit_velocity_io`) |
-|---|---|---|
-| Steering | ImplicitActuator Kp 10, Kd 0.2, 5.6 N·m | firmware MIT Kp 10, Kd 0.2 (unchanged backend) |
-| Rear | ImplicitActuator τ = 5.0·(ω* − ω), clip 6.28 N·m | **C1 firmware speed PI**, B3 current ceiling = 6.28 N·m / B0 Kt |
-| Rates | physics 100 Hz, policy 50 Hz | policy 50 Hz, MIT/C1 200 Hz, feedback 100 Hz |
+| | Aligned model (default) training | CycleRL originals training | Bike (`motor_mit_velocity_io`) |
+|---|---|---|---|
+| Steering | IdealPD Kp 10, Kd 0.2, 5.6 N·m + measured friction | ImplicitActuator Kp 10, Kd 0.2 | firmware MIT Kp 10, Kd 0.2 (unchanged backend) |
+| Rear | IdealPD τ = clip(0.2·(ω* − ω), ±6.28) | ImplicitActuator τ = 5.0·(ω* − ω) | `rear_control_mode`: **`mit`** (default) or `c1` |
+| Rates | physics 400 Hz, policy 50 Hz | physics 100 Hz, policy 50 Hz | policy 50 Hz, MIT/C1 200 Hz, feedback 100 Hz |
 
-- **Rear mismatch (unresolved):** firmware C1 PI gains (B8/B9) and acceleration
-  (B5) are untouched and not identified as equal to the trained Kd = 5 P-law.
-  Both are torque-capped stiff speed servos; transient response will differ.
+- **`rear_control_mode: mit` (default):** rear MIT frames (CAN 0x501) at 200 Hz with
+  position Kp 0, velocity Kd `drive_mit_kd_nm_s_per_rad` (0.2, wire 0.20024) and the
+  nominal-zero feedforward residual cancelled through the velocity field. This is the
+  aligned model's trained P-only law; no host integral (unlike the §293 PI test). The
+  6.28 N·m clip is applied on the host at command time: ω* is bounded to
+  ω ± 6.28/Kd using the latest A2 speed, so the predicted torque never exceeds the cap.
+  Between 5 ms commands the motor's own loop is not host-clipped; B3 is lowered as a
+  backstop but **whether B3 limits MIT-mode current is not verified**. A drive F1
+  reporting MIT inactive while driving, or no drive F1 for 50 ms, is a hard fault.
+- **Drive F0 (persistent firmware setting):** MIT velocity encoding needs Vel_Max
+  ≥ the 45 rad/s action clip; the as-found drive F0 is ±13 rad/s. Startup logs the
+  original F0, writes only Vel_Max = `drive_mit_velocity_max_rad_s` (50 rad/s),
+  verifies readback, and restores the original after a confirmed shutdown disable.
+  After a crash or power loss the widened value stays; it only affects MIT encoding
+  (C0/C1 and the trackstand backends do not use the drive's F0). Restore by hand from
+  the logged value if needed. `dry_run` only reads F0.
+- **`rear_control_mode: c1`:** firmware C1 speed PI behind B3. Its gains (B8/B9) are
+  untouched and match neither training law (Kd 5 implicit or Kd 0.2 explicit).
+  Airborne hardware tests (§293–294, P-only at Kd 0.30, not 0.2) found MIT P-only
+  weak at very small speeds (|ω*| ≤ 0.4 rad/s) and ~3% short at 10 rad/s; riding
+  speeds are 14–36 rad/s. Kd 0.2 itself has not been run on hardware.
 - **B3:** startup reads B3 (observed default ≈ 82.5 A), writes
   min(existing, 6.28 / Kt) (≈ 20.9 A at Kt 0.30), and accepts acknowledgement and
   readback only ≤ request and at most 1 mA below. Never raised; volatile until
@@ -79,11 +106,12 @@ No observation LPF, speed floor or host steering slew (none were in training).
   CycleRL's own bike config (SBUS, flipped IMU, `ros_positive_steer: left`) was for a
   different stack and is not used. C1 uses the A2 native frame, so the encoder sign
   converts both ways (as `drive_speed_sweep.py`).
-- **Disable:** inherited unchanged — steering CF; rear C0 0 A then CF (coasts).
+- **Disable:** inherited unchanged in both modes — steering CF; rear C0 0 A then CF
+  (C0 also leaves MIT mode; the wheel coasts).
 - **Topics:** commands on `/locomotive/motor_command`
   `[enable, steering_target_rad, rear_velocity_rad_s]`. The trackstand
   `/trackstand/motor_command` (torque) is never read by this backend. Control
-  telemetry label `motor_control_mit_c1_v1`: its inherited
+  telemetry label `motor_control_mit_rear_velocity_v2` (adds `drive_mit_*` fields): its inherited
   `requested/bounded_drive_target_nm` fields carry rad/s here.
 - **Sticks:** `rc_kickstand` publishes `/locomotive/rc_sticks` = `[throttle, yaw]`
   in [−1, 1] only when `throttle_channel`/`yaw_channel` are set (overlay: CH3/CH4,
@@ -124,13 +152,36 @@ P="--params-file source/trackstand_deploy/config/params.yaml --params-file sourc
 4. Supported rolling launch below wake speed, then a supported hand-over.
 
 Never run another motor backend, `motor_mit_io` included, alongside it.
+
+## Session logging (automatic)
+
+`locomotive.launch.py` records every run into `~/trackstand_logs/locomotive_YYYYmmdd_HHMMSS/`
+(`log_dir:=<dir>` to change, `record:=false` to disable):
+
+| Path | Contents |
+|---|---|
+| `bag/` | `ros2 bag record -a`, split every 300 s: observations, raw actions, motor commands, `/trackstand/motor_{state,control,event,status,fault}`, `/locomotive/{status,policy_timing,policy_event,rc_sticks}`, IMU, kickstands, `/rosout` |
+| `ros_logs/` | every node's text log (`ROS_LOG_DIR`), including startup B3 and the original drive F0 value |
+| `config/` | `params.yaml` and `locomotive.yaml` exactly as loaded |
+| `session.json` | start time, host, git commit/branch/uncommitted files, model + SHA, rear mode/Kd, YAML `dry_run`, record command |
+
+Storage is the distro default (Humble sqlite3 `.db3`, Jazzy MCAP). Stop with Ctrl-C so the
+recorder closes its last segment; a power cut loses at most the open 5-minute segment. Nodes
+started individually (commissioning steps 1–3) are not recorded automatically.
+
+Plot a session (summary, matplotlib pages, interactive HTML) on the desktop:
+`python3 deploy/experiments/plot_locomotive_session.py ~/trackstand_logs/locomotive_<timestamp>`
+(see `deploy/experiments/README.md`).
 `ros2 launch trackstand_deploy locomotive.launch.py` is **live** (`dry_run: false`).
 
-Switch models by setting `model_filename` **and** its manifest `model_sha256`.
+Switch models by setting `model_filename` **and** its manifest `model_sha256`, and set
+`rear_control_mode` to match: `mit` for the aligned model; the CycleRL originals were
+trained on implicit Kd 5, which neither mode reproduces (`c1` was their previous default).
 
 ## Open items
 
-Rear C1-vs-trained-P transient mismatch; physical MIT steering torque cap
+Rear MIT P-only at Kd 0.2 (only Kd 0.30 tested, airborne); whether B3 bounds
+MIT current; rear C1 mode matches no training law; physical MIT steering torque cap
 (see `MOTOR_MIT_IO.md`); unverified stick channels and rolling with stands
 down; CycleRL's Isaac→MuJoCo drop (0–35% BSR) means sim success is not a
 hardware green light; no MuJoCo locomotive mirror in this repo yet.

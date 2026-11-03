@@ -1,5 +1,25 @@
 # Standalone motor feedback
 
+## Plot a locomotive deployment session
+
+[`plot_locomotive_session.py`](plot_locomotive_session.py) reads a session folder written by
+`locomotive.launch.py` (or a bare rosbag directory) and writes `<session>/analysis/`:
+`summary.md`/`summary.json` (ride success, lean, speed/yaw tracking, steering/rear tracking,
+saturation, loop timing, input ages, faults, node warnings), nine matplotlib PNG pages
+(overview, balance, tracking, policy actions, steering actuator, rear actuator, timing,
+health, distributions) and one offline `interactive.html` (plotly, shared time axis,
+~300 px per subplot, riding shaded green, faults marked red). Analysis only: no CAN access.
+
+```bash
+source /opt/ros/humble/setup.bash        # rosbag2_py; or `pip install rosbags` without ROS
+python3 deploy/experiments/plot_locomotive_session.py ~/trackstand_logs/locomotive_YYYYmmdd_HHMMSS
+# --out DIR, --no-png, --no-html, --max-points N (HTML min/max-envelope cap per trace, default 8000)
+```
+
+Needs matplotlib ≥ 3.8 with NumPy 2 (Ubuntu 22.04's packaged 3.5 fails to import under a
+user-installed NumPy 2: `pip install --user -U matplotlib`) and `plotly`. Roll is the exact Euler
+roll from the IMU quaternion; tracking errors use the policy observation (riding only).
+
 ## Test rear MIT velocity P/PI with adjustable gains
 
 [`drive_mit_velocity_test.py`](drive_mit_velocity_test.py) uses the C1 identification

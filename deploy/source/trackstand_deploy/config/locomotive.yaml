@@ -4,6 +4,7 @@
 
 trackstand_rc_kickstand:
   ros__parameters:
+    # CH7 (params.yaml servo_pair_switch_channel) stays the enable / kickstand switch.
     # UNVERIFIED on this transmitter: AETR order (CH3 throttle, CH4 rudder/yaw).
     # Check with `ros2 topic echo /locomotive/rc_sticks` (stick up / right -> +1) before riding.
     throttle_channel: 3
@@ -11,15 +12,24 @@ trackstand_rc_kickstand:
     throttle_reversed: false
     yaw_reversed: false
 
-# trackstand_motor_io (motor_mit_velocity_io) needs no overlay: it reads every motor_mit_io
-# hardware key from params.yaml, including dry_run. Rear C1 speed control; startup lowers
-# volatile B3 to 6.28 N m / B0 torque constant (never raises it).
+trackstand_motor_io:
+  ros__parameters:
+    # motor_mit_velocity_io; every other motor key (CAN IDs, signs, dry_run) comes from params.yaml.
+    # Must match the model's trained rear law (manifest training_actuators.drive):
+    #   mit = MIT Kp 0 / Kd below, host-bounded to 6.28 N m (Locomotive-Cylinder-Aligned-v0, default model)
+    #   c1  = firmware C1 speed PI behind B3 (CycleRL originals were trained on implicit Kd 5.0; neither matches)
+    rear_control_mode: "mit"
+    drive_mit_kd_nm_s_per_rad: 0.2
+    # F0 Vel_Max written at startup (persistent in firmware; the original is logged and restored on a
+    # clean shutdown). Must cover the 45 rad/s action clip; 50 rad/s gives 0.024 rad/s resolution.
+    drive_mit_velocity_max_rad_s: 50.0
 
 locomotive_policy_controller:
   ros__parameters:
-    # Rank 1 of the CycleRL cylinder top-5; switching needs filename AND manifest SHA-256.
-    model_filename: "locomotive_1900_drive03_2026-10-19_16-30-17.onnx"
-    model_sha256: "cbd76d1789b903966ba84f4330224f88efa05940d97e0213bbf178ead3ab1c9c"
+    # Locomotive-Cylinder-Aligned-v0 rank-1 recipe, 400 Hz trackstand motors, rear Kd 0.2.
+    # Switching needs filename AND manifest SHA-256 (and a matching rear_control_mode above).
+    model_filename: "locomotive_aligned_1900_drive03_2026-10-29_17-06-47.onnx"
+    model_sha256: "ec3ccae9be48daa863eb340042a542d4c932f8e4f782b16da2c5ff8ddff91c1d"
     imu_timeout_s: 0.06
     motor_timeout_s: 0.06
     rc_timeout_s: 0.15
@@ -28,7 +38,7 @@ locomotive_policy_controller:
     max_steering_start_rad: 0.0872664626
     # Training episodes start at 1.0-2.5 m/s: hand over to the policy at >= 1.0 m/s.
     wake_speed_m_s: 1.0
-    # Lowest trained v* among the five models is 0.3 m/s; below it, fault-latch off.
+    # Lowest trained v* is 0.5 m/s for this model; below 0.3 m/s, fault-latch off.
     min_riding_speed_m_s: 0.3
     launch_accel_m_s2: 0.5
     command_accel_m_s2: 1.0

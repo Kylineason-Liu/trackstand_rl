@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 """Export CycleRL skrl riding policies to self-contained ONNX plus a locomotive manifest.
 
+Exports this repo's Locomotive-Cylinder-Aligned-v0 rank-1 run (400 Hz, explicit
+trackstand motors, rear velocity law Kd 0.2) as the default model, followed by
+CycleRL's original cylinder top-5 (100 Hz, implicit rear Kd 5.0).
+
 The trained tensor contract is preserved exactly: 8 observations in CycleRL's
 order, skrl RunningStandardScaler (epsilon outside the square root, +/-5 clip),
 [512, 256, 128, 64] ELU MLP and the two RAW Gaussian mean actions. Scaling and
@@ -36,6 +40,11 @@ CYCLERL_LOGS = os.path.expanduser(
     "~/bike_test/CycleRL/logs/skrl/cyclerl_logs/CycleRL-Trackstand-Cylinder-Paper-v0"
 )
 TASK = "CycleRL-Trackstand-Cylinder-Paper-v0"
+ALIGNED_LOGS = os.path.normpath(os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), "..", "..", "logs", "skrl", "locomotive",
+    "Locomotive-Cylinder-Aligned-v0",
+))
+ALIGNED_TASK = "Locomotive-Cylinder-Aligned-v0"
 OBSERVATION_NAMES = (
     "gravity_y", "ang_vel_x", "ang_vel_y", "ang_vel_z", "speed", "steer", "vel_cmd", "yaw_rate_cmd",
 )
@@ -44,12 +53,20 @@ HIDDEN_LAYERS = (512, 256, 128, 64)
 
 # Ranked by flat-ground MuJoCo balance success among runs with 100% Isaac success
 # (cylinder_top5_rerun / cylinder_top5_limitfix comparison.md, paper suite).
+# (rank, recipe, campaign, run, Isaac flat BSR, MuJoCo flat BSR, logs dir, task, run suffix, eval source)
+_CYCLERL = (CYCLERL_LOGS, TASK, "_ppo_torch_bicycle_ppo")
+_RERUN = "CycleRL logs/skrl/reward_sweeps/cylinder_top5_rerun/comparison.md"
+_LIMITFIX = "CycleRL logs/skrl/reward_sweeps/cylinder_top5_limitfix/comparison.md"
 MODELS = (
-    (1, "1900_drive03", "cylinder_top5_rerun", "2026-10-19_16-30-17", 1.000, 1.000),
-    (2, "1900", "cylinder_top5_rerun", "2026-10-19_19-04-32", 1.000, 0.882),
-    (3, "1900_drive03", "cylinder_top5_limitfix", "2026-10-20_03-18-29", 1.000, 0.825),
-    (4, "deploy_10deg", "cylinder_top5_limitfix", "2026-10-20_04-32-20", 1.000, 0.687),
-    (5, "act_refine_lo", "cylinder_top5_rerun", "2026-10-19_15-30-18", 1.000, 0.647),
+    # Same 1900_drive03 recipe retrained on trackstand motors/physics; paper suite 2026-10-29.
+    (0, "aligned_1900_drive03", "locomotive_aligned", "2026-10-29_17-06-47", 0.999, 1.000,
+     ALIGNED_LOGS, ALIGNED_TASK, "_ppo_torch_locomotive_ppo", "isaaclab_train/logs/skrl/locomotive/Locomotive-Cylinder-Aligned-v0/"
+     "2026-10-29_17-06-47_ppo_torch_locomotive_ppo/transfer_report.json"),
+    (1, "1900_drive03", "cylinder_top5_rerun", "2026-10-19_16-30-17", 1.000, 1.000, *_CYCLERL, _RERUN),
+    (2, "1900", "cylinder_top5_rerun", "2026-10-19_19-04-32", 1.000, 0.882, *_CYCLERL, _RERUN),
+    (3, "1900_drive03", "cylinder_top5_limitfix", "2026-10-20_03-18-29", 1.000, 0.825, *_CYCLERL, _LIMITFIX),
+    (4, "deploy_10deg", "cylinder_top5_limitfix", "2026-10-20_04-32-20", 1.000, 0.687, *_CYCLERL, _LIMITFIX),
+    (5, "act_refine_lo", "cylinder_top5_rerun", "2026-10-19_15-30-18", 1.000, 0.647, *_CYCLERL, _RERUN),
 )
 
 
@@ -176,8 +193,8 @@ def reference_observations(contract: dict) -> np.ndarray:
     return np.asarray(rows, dtype=np.float32)
 
 
-def export(rank, recipe, campaign, run, isaac_bsr, mujoco_bsr, output_dir, opset):
-    run_dir = os.path.join(CYCLERL_LOGS, f"{run}_ppo_torch_bicycle_ppo")
+def export(rank, recipe, campaign, run, isaac_bsr, mujoco_bsr, logs, task, suffix, source, output_dir, opset):
+    run_dir = os.path.join(logs, f"{run}{suffix}")
     checkpoint = os.path.join(run_dir, "checkpoints", "best_agent.pt")
     with open(os.path.join(run_dir, "params", "env.yaml")) as stream:
         contract = contract_from_env(yaml.load(stream, Loader=_PermissiveLoader))
@@ -231,8 +248,8 @@ def export(rank, recipe, campaign, run, isaac_bsr, mujoco_bsr, output_dir, opset
         "rank": rank,
         "recipe": recipe,
         "campaign": campaign,
-        "task": TASK,
-        "run": f"{run}_ppo_torch_bicycle_ppo",
+        "task": task,
+        "run": f"{run}{suffix}",
         "checkpoint": checkpoint,
         "checkpoint_sha256": sha256(checkpoint),
         "onnx": os.path.basename(onnx_path),
@@ -249,7 +266,7 @@ def export(rank, recipe, campaign, run, isaac_bsr, mujoco_bsr, output_dir, opset
         },
         "network": {"hidden_layers": list(HIDDEN_LAYERS), "activation": "elu"},
         "evaluation": {"isaac_paper_flat_bsr": isaac_bsr, "mujoco_paper_flat_bsr": mujoco_bsr,
-                       "source": f"CycleRL logs/skrl/reward_sweeps/{campaign}/comparison.md"},
+                       "source": source},
         "contract": contract,
         "reference_io": {"observation": probes.tolist(), "raw_action": expected.astype(float).tolist(),
                          "tolerance": 1e-5, "onnxruntime_max_error": error},
@@ -269,7 +286,8 @@ def main() -> None:
     manifest = {
         "manifest_version": 1,
         "description": "CycleRL riding policies on the trackstand_rl_0916 cylinder plant; "
-                       "original 8-in/2-out tensor contract, realigned to this bike's deployment.",
+                       "original 8-in/2-out tensor contract, realigned to this bike's deployment. "
+                       "Rank 0 is the trackstand-aligned retrain (rear MIT velocity law Kd 0.2).",
         "default_model": entries[0]["onnx"],
         "models": entries,
     }

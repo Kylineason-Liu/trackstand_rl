@@ -33,10 +33,10 @@ from .locomotive_policy import LocomotiveOnnxPolicy
 from .telemetry import MOTOR_STATE_FIELDS, MOTOR_STATE_LABEL, POLICY_TIMING_FIELDS, age_ms, telemetry_values
 
 
-# Rank 1 of the CycleRL cylinder top-5 (Isaac 100% / MuJoCo 100% flat BSR).
-MODEL_FILENAME = "locomotive_1900_drive03_2026-10-19_16-30-17.onnx"
-MODEL_SHA256 = "cbd76d1789b903966ba84f4330224f88efa05940d97e0213bbf178ead3ab1c9c"
-TASK = "CycleRL-Trackstand-Cylinder-Paper-v0"
+# Default: CycleRL rank-1 recipe retrained on trackstand motors/physics (Locomotive-Cylinder-Aligned-v0;
+# paper suite flat BSR Isaac 99.9% / MuJoCo 100%). Needs rear_control_mode "mit" (Kd 0.2).
+MODEL_FILENAME = "locomotive_aligned_1900_drive03_2026-10-29_17-06-47.onnx"
+MODEL_SHA256 = "ec3ccae9be48daa863eb340042a542d4c932f8e4f782b16da2c5ff8ddff91c1d"
 # The commanded launch speed overshoots wake slightly so the measured speed can reach it.
 LAUNCH_MARGIN_M_S = 0.1
 
@@ -137,7 +137,9 @@ class LocomotiveController(Node):
             f"Loaded {model_filename} (rank {spec.rank}, {spec.recipe}, {self._model_sha256[:12]}...): "
             f"8 obs, steer x{spec.steering_scale_rad:.4f} clip {spec.steering_clip_rad:.4f} rad, "
             f"rear x{spec.drive_scale_rad_s:.3f} clip {spec.drive_clip_rad_s:g} rad/s, "
-            f"v* {spec.vel_cmd_min_m_s:g}-{max_speed:g} m/s, wake {wake:g} m/s; starts disabled"
+            f"v* {spec.vel_cmd_min_m_s:g}-{max_speed:g} m/s, wake {wake:g} m/s; trained rear "
+            f"{spec.trained_drive_actuator} Kd {spec.trained_drive_kd_nm_s_per_rad:g} "
+            f"(motor node rear_control_mode must match); starts disabled"
         )
 
     # ---- inputs (same freshness rules as policy_controller) -------------------------------
@@ -337,7 +339,8 @@ class LocomotiveController(Node):
             "sequence": self._policy_sequence, "monotonic_time_s": now, "mode": self._state_machine.mode.value,
             "ready": ready, "readiness_reasons": reasons,
             "latched_fault_reasons": list(self._state_machine.fault_reasons),
-            "task": TASK, "model": self._spec.onnx, "episode": self._episode_index, "speed_m_s": self._speed_m_s(),
+            "task": self._spec.task, "model": self._spec.onnx, "episode": self._episode_index,
+            "speed_m_s": self._speed_m_s(),
         }, sort_keys=True)))
         self._last_event_state = state
 
@@ -360,7 +363,8 @@ class LocomotiveController(Node):
             "kickstands_requested_up": self._state_machine.rc_up, "ready": self._ready(now),
             "imu_age_ms": age_ms(now, self._imu_monotonic), "motor_age_ms": age_ms(now, self._motor_monotonic),
             "rc_age_ms": age_ms(now, self._rc_monotonic), "rc_sticks_age_ms": age_ms(now, self._sticks_monotonic),
-            "motor_fault": self._motor_fault, "task": TASK, "model": self._spec.onnx, "model_rank": self._spec.rank,
+            "motor_fault": self._motor_fault, "task": self._spec.task, "model": self._spec.onnx,
+            "model_rank": self._spec.rank,
             "model_sha256": self._model_sha256, "observation_names": OBSERVATION_NAMES,
             "episode": self._episode_index, "speed_m_s": self._speed_m_s(),
             "launch_speed_m_s": self._launch_speed_m_s, "vel_cmd_m_s": self._shaper.vel_cmd_m_s,

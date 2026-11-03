@@ -53,6 +53,10 @@ class LocomotiveModelSpec:
     reference_observations: tuple
     reference_raw_actions: tuple
     reference_tolerance: float
+    # Rear actuator law the policy was trained against (manifest training_actuators.drive).
+    task: str = ""
+    trained_drive_actuator: str = ""
+    trained_drive_kd_nm_s_per_rad: float = math.nan
 
 
 def _symmetric(bounds, name: str) -> float:
@@ -92,6 +96,9 @@ def load_model_spec(manifest_path: str, onnx_filename: str) -> LocomotiveModelSp
         reference_observations=tuple(map(tuple, entry["reference_io"]["observation"])),
         reference_raw_actions=tuple(map(tuple, entry["reference_io"]["raw_action"])),
         reference_tolerance=float(entry["reference_io"]["tolerance"]),
+        task=str(entry["task"]),
+        trained_drive_actuator=str(contract["training_actuators"]["drive"]["class_type"]).rsplit(":", 1)[-1],
+        trained_drive_kd_nm_s_per_rad=float(contract["training_actuators"]["drive"]["damping"]),
     )
     values = (spec.steering_scale_rad, spec.drive_scale_rad_s, spec.wheel_radius_m, vel_min, vel_max,
               spec.initial_speed_min_m_s, spec.lean_termination_rad)

@@ -1,8 +1,346 @@
 {
   "manifest_version": 1,
-  "description": "CycleRL riding policies on the trackstand_rl_0916 cylinder plant; original 8-in/2-out tensor contract, realigned to this bike's deployment.",
-  "default_model": "locomotive_1900_drive03_2026-10-19_16-30-17.onnx",
+  "description": "CycleRL riding policies on the trackstand_rl_0916 cylinder plant; original 8-in/2-out tensor contract, realigned to this bike's deployment. Rank 0 is the trackstand-aligned retrain (rear MIT velocity law Kd 0.2).",
+  "default_model": "locomotive_aligned_1900_drive03_2026-10-29_17-06-47.onnx",
   "models": [
+    {
+      "rank": 0,
+      "recipe": "aligned_1900_drive03",
+      "campaign": "locomotive_aligned",
+      "task": "Locomotive-Cylinder-Aligned-v0",
+      "run": "2026-10-29_17-06-47_ppo_torch_locomotive_ppo",
+      "checkpoint": "/home/lmbike2/bike_test/trackstand_rl/isaaclab_train/logs/skrl/locomotive/Locomotive-Cylinder-Aligned-v0/2026-10-29_17-06-47_ppo_torch_locomotive_ppo/checkpoints/best_agent.pt",
+      "checkpoint_sha256": "7af4036d9e14be50014d22679785ab5014a180fae0e9fb7e8bbfade01918549f",
+      "onnx": "locomotive_aligned_1900_drive03_2026-10-29_17-06-47.onnx",
+      "onnx_sha256": "ec3ccae9be48daa863eb340042a542d4c932f8e4f782b16da2c5ff8ddff91c1d",
+      "onnx_opset": 18,
+      "weights_embedded": true,
+      "observation_size": 8,
+      "action_size": 2,
+      "distribution": "Gaussian mean (raw, unbounded; scaled and clipped by deployment)",
+      "observation_preprocessor": {
+        "type": "skrl RunningStandardScaler (embedded in ONNX)",
+        "formula": "clamp((x - mean) / (sqrt(var) + epsilon), -clip, clip)",
+        "epsilon": 1e-08,
+        "clip": 5.0
+      },
+      "network": {
+        "hidden_layers": [
+          512,
+          256,
+          128,
+          64
+        ],
+        "activation": "elu"
+      },
+      "evaluation": {
+        "isaac_paper_flat_bsr": 0.999,
+        "mujoco_paper_flat_bsr": 1.0,
+        "source": "isaaclab_train/logs/skrl/locomotive/Locomotive-Cylinder-Aligned-v0/2026-10-29_17-06-47_ppo_torch_locomotive_ppo/transfer_report.json"
+      },
+      "contract": {
+        "observation_names": [
+          "gravity_y",
+          "ang_vel_x",
+          "ang_vel_y",
+          "ang_vel_z",
+          "speed",
+          "steer",
+          "vel_cmd",
+          "yaw_rate_cmd"
+        ],
+        "action_names": [
+          "steering_position",
+          "rear_wheel_velocity"
+        ],
+        "steering_action_scale_rad": 0.3490658503988659,
+        "steering_action_clip_rad": [
+          -0.3490658503988659,
+          0.3490658503988659
+        ],
+        "drive_action_scale_rad_s": 42.857142857142854,
+        "drive_action_clip_rad_s": [
+          -45.0,
+          45.0
+        ],
+        "wheel_radius_m": 0.07,
+        "vel_cmd_range_m_s": [
+          0.5,
+          2.5
+        ],
+        "yaw_rate_cmd_range_rad_s": [
+          -0.5,
+          0.5
+        ],
+        "heading_control_stiffness": 0.5,
+        "command_resampling_time_s": [
+          3.0,
+          5.0
+        ],
+        "physics_dt_s": 0.0025,
+        "decimation": 8,
+        "policy_rate_hz": 50.0,
+        "episode_length_s": 64.0,
+        "lean_termination_rad": 0.7853981633974483,
+        "initial_root_velocity_x_m_s": [
+          1.0,
+          2.5
+        ],
+        "initial_roll_rad": [
+          -0.17453292519943295,
+          0.17453292519943295
+        ],
+        "training_actuators": {
+          "steering": {
+            "class_type": "isaaclab.actuators.actuator_pd:IdealPDActuator",
+            "stiffness": 10.0,
+            "damping": 0.2,
+            "effort_limit": 5.6,
+            "velocity_limit": 23.9
+          },
+          "drive": {
+            "class_type": "isaaclab.actuators.actuator_pd:IdealPDActuator",
+            "stiffness": 0.0,
+            "damping": 0.2,
+            "effort_limit": 6.28,
+            "velocity_limit": 61.6
+          }
+        },
+        "usd_path": "/home/lmbike2/bike_test/trackstand_rl/isaaclab_train/source/trackstand_rl/trackstand_rl/tasks/manager_based/trackstand/assets/trackstand_rl.usda"
+      },
+      "reference_io": {
+        "observation": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.5,
+            0.0,
+            1.5,
+            0.0
+          ],
+          [
+            -0.17000000178813934,
+            0.30000001192092896,
+            0.0,
+            0.05000000074505806,
+            1.0,
+            0.05000000074505806,
+            0.5,
+            0.20000000298023224
+          ],
+          [
+            0.17000000178813934,
+            -0.30000001192092896,
+            0.019999999552965164,
+            -0.05000000074505806,
+            2.0,
+            -0.05000000074505806,
+            2.5,
+            -0.20000000298023224
+          ],
+          [
+            -0.699999988079071,
+            4.0,
+            1.0,
+            2.0,
+            0.10000000149011612,
+            0.3400000035762787,
+            2.5,
+            0.5
+          ],
+          [
+            0.699999988079071,
+            -4.0,
+            -1.0,
+            -2.0,
+            3.0,
+            -0.3400000035762787,
+            0.5,
+            -0.5
+          ],
+          [
+            -0.1272389441728592,
+            0.8482009172439575,
+            0.12925316393375397,
+            0.1675991415977478,
+            1.1444848775863647,
+            -0.22824449837207794,
+            0.9900243878364563,
+            0.09121383726596832
+          ],
+          [
+            0.1611177772283554,
+            -0.26438871026039124,
+            -0.051577478647232056,
+            -0.007438249420374632,
+            1.1995503902435303,
+            -0.025783918797969818,
+            0.693692147731781,
+            0.28893566131591797
+          ],
+          [
+            0.0570010282099247,
+            0.7905269265174866,
+            -0.030173448845744133,
+            0.12388884276151657,
+            2.2788686752319336,
+            0.036127325147390366,
+            0.687316358089447,
+            -0.48826590180397034
+          ],
+          [
+            -0.021699286997318268,
+            0.37808507680892944,
+            -0.0019196051871404052,
+            0.009646243415772915,
+            1.5097850561141968,
+            0.07396121323108673,
+            1.2185362577438354,
+            -0.08051648736000061
+          ],
+          [
+            0.05377973988652229,
+            0.5974464416503906,
+            0.01924067549407482,
+            0.01430481020361185,
+            2.511770725250244,
+            -0.02414625510573387,
+            0.7007825970649719,
+            -0.2750619351863861
+          ],
+          [
+            0.019890448078513145,
+            0.4446246922016144,
+            0.07570970803499222,
+            -0.3608279824256897,
+            1.7282065153121948,
+            -0.09837818890810013,
+            1.3110034465789795,
+            -0.34187376499176025
+          ],
+          [
+            -0.10885829478502274,
+            -0.7920374870300293,
+            -0.02059325762093067,
+            0.01835290715098381,
+            2.511866569519043,
+            0.056183330714702606,
+            1.4709575176239014,
+            0.1778409481048584
+          ],
+          [
+            0.037531375885009766,
+            -0.2760140001773834,
+            0.12123522907495499,
+            -0.13821958005428314,
+            2.1030852794647217,
+            -0.041463349014520645,
+            1.3872261047363281,
+            0.07927083969116211
+          ],
+          [
+            -0.1269330084323883,
+            -0.31370237469673157,
+            0.16814693808555603,
+            0.05718165636062622,
+            1.688293695449829,
+            0.11973688006401062,
+            2.417620897293091,
+            0.06600821763277054
+          ],
+          [
+            -0.06035192310810089,
+            0.44010254740715027,
+            0.07658591866493225,
+            0.20684479176998138,
+            0.8708685040473938,
+            0.15187902748584747,
+            1.0252758264541626,
+            0.19039180874824524
+          ]
+        ],
+        "raw_action": [
+          [
+            0.03297928720712662,
+            0.10477939248085022
+          ],
+          [
+            -0.015923526138067245,
+            0.5116057991981506
+          ],
+          [
+            1.281014084815979,
+            0.021009445190429688
+          ],
+          [
+            -0.4341670274734497,
+            0.9569522738456726
+          ],
+          [
+            1.1562068462371826,
+            -4.719566345214844
+          ],
+          [
+            -0.8906531929969788,
+            0.5396870970726013
+          ],
+          [
+            0.7537319660186768,
+            -1.8944766521453857
+          ],
+          [
+            -0.6554465889930725,
+            0.27913594245910645
+          ],
+          [
+            0.10286270081996918,
+            0.05186152458190918
+          ],
+          [
+            0.3762628436088562,
+            0.20510262250900269
+          ],
+          [
+            -0.19772969186306,
+            0.09141936898231506
+          ],
+          [
+            -0.60694420337677,
+            0.2954876720905304
+          ],
+          [
+            0.4767548441886902,
+            0.26366305351257324
+          ],
+          [
+            -0.2431393712759018,
+            -0.08472054451704025
+          ],
+          [
+            1.0124014616012573,
+            0.24352914094924927
+          ],
+          [
+            1.114231824874878,
+            0.13913953304290771
+          ]
+        ],
+        "tolerance": 1e-05,
+        "onnxruntime_max_error": 9.5367431640625e-07
+      }
+    },
     {
       "rank": 1,
       "recipe": "1900_drive03",

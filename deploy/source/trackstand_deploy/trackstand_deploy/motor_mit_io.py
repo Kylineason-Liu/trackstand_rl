@@ -739,6 +739,8 @@ class MotorMitIo(Node):
                     if self._disable_wait:
                         self._fault("disable_ack_timeout", hard=True)
                         self.get_logger().error("Motor disable unconfirmed; inspect motor state physically")
+                    else:
+                        self._after_confirmed_shutdown_disable()
                 except Exception as error:
                     self._fault("shutdown_disable_unconfirmed", hard=True)
                     self.get_logger().error(f"Motor disable/shutdown failed: {error}")
@@ -761,6 +763,9 @@ class MotorMitIo(Node):
                 except Exception as error:
                     if self.context.ok():
                         self.get_logger().error(f"Terminal motor event unavailable: {error}")
+
+    def _after_confirmed_shutdown_disable(self) -> None:
+        """Subclass hook: both motors are confirmed disabled and the bus is still open."""
 
     def _send_torque(self, motor: ChannelState, torque_nm: float, torque_constant: float,
                      guard=None) -> MotorSendResult:

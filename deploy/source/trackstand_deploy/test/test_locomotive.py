@@ -1,4 +1,4 @@
-"""Locomotive (CycleRL riding policy) contract, models, C1 drive backend and controller."""
+"""Locomotive (CycleRL riding policy) contract, models, rear MIT/C1 drive backend and controller."""
 
 from collections import deque
 import importlib.util
@@ -22,12 +22,15 @@ from trackstand_deploy.locomotive_contracts import (
     DRIVE_VELOCITY_LIMIT_RAD_S, MANIFEST_FILENAME, OBSERVATION_NAMES, CommandShaper, LocomotiveMode,
     LocomotiveStateMachine, build_observation, load_model_spec, normalized_stick, scale_policy_action, sha256_file,
 )
-from trackstand_deploy.mit_protocol import MitRanges
+from trackstand_deploy.mit_protocol import (
+    MitRanges, f0_with_velocity, mit_velocity_payload, parse_f0, parse_mit_motion,
+)
 
 
 PACKAGE = Path(__file__).parents[1]
 MODELS = PACKAGE / "models"
 MANIFEST = MODELS / MANIFEST_FILENAME
+ALIGNED = "locomotive_aligned_1900_drive03_2026-10-29_17-06-47.onnx"
 EXPECTED = (
     "locomotive_1900_drive03_2026-10-19_16-30-17.onnx",
     "locomotive_1900_2026-10-19_19-04-32.onnx",
@@ -42,11 +45,11 @@ def manifest():
 
 
 # ---- models / manifest ------------------------------------------------------------------
-def test_manifest_lists_top5_in_rank_order_with_matching_embedded_files():
+def test_manifest_lists_aligned_then_top5_in_rank_order_with_matching_embedded_files():
     data = manifest()
-    assert [entry["onnx"] for entry in data["models"]] == list(EXPECTED)
-    assert [entry["rank"] for entry in data["models"]] == [1, 2, 3, 4, 5]
-    assert data["default_model"] == EXPECTED[0]
+    assert [entry["onnx"] for entry in data["models"]] == [ALIGNED, *EXPECTED]
+    assert [entry["rank"] for entry in data["models"]] == [0, 1, 2, 3, 4, 5]
+    assert data["default_model"] == ALIGNED
     for entry in data["models"]:
         assert entry["weights_embedded"] and not (MODELS / (entry["onnx"] + ".data")).exists()
         assert sha256_file(str(MODELS / entry["onnx"])) == entry["onnx_sha256"]
@@ -56,7 +59,7 @@ def test_manifest_lists_top5_in_rank_order_with_matching_embedded_files():
 
 
 def test_per_model_contracts_keep_the_trained_scales():
-    specs = {name: load_model_spec(str(MANIFEST), name) for name in EXPECTED}
+    specs = {name: load_model_spec(str(MANIFEST), name) for name in (ALIGNED, *EXPECTED)}
     for name, spec in specs.items():
         assert spec.drive_scale_rad_s == pytest.approx(3.0 / 0.07)
         assert spec.drive_clip_rad_s == 45.0 == DRIVE_VELOCITY_LIMIT_RAD_S
@@ -67,6 +70,18 @@ def test_per_model_contracts_keep_the_trained_scales():
         steer = math.radians(10 if "deploy_10deg" in name else 20)
         assert spec.steering_scale_rad == pytest.approx(steer) and spec.steering_clip_rad == pytest.approx(steer)
         assert spec.vel_cmd_min_m_s == (0.3 if "act_refine_lo" in name else 0.5) and spec.vel_cmd_max_m_s == 2.5
+        # Rear law the policy trained against: explicit Kd 0.2 (aligned) vs CycleRL implicit Kd 5.
+        expected_law = ("IdealPDActuator", 0.2) if name == ALIGNED else ("ImplicitActuator", 5.0)
+        assert (spec.trained_drive_actuator, spec.trained_drive_kd_nm_s_per_rad) == expected_law
+        assert spec.task == ("Locomotive-Cylinder-Aligned-v0" if name == ALIGNED
+                             else "CycleRL-Trackstand-Cylinder-Paper-v0")
+
+
+def test_aligned_model_is_the_400hz_trackstand_motor_retrain():
+    contract = next(e for e in manifest()["models"] if e["onnx"] == ALIGNED)["contract"]
+    assert (contract["physics_dt_s"], contract["decimation"]) == (0.0025, 8)
+    drive = contract["training_actuators"]["drive"]
+    assert (drive["stiffness"], drive["damping"], drive["effort_limit"]) == (0.0, 0.2, 6.28)
 
 
 def test_unknown_or_tampered_manifest_entries_are_rejected(tmp_path):
@@ -77,7 +92,7 @@ def test_unknown_or_tampered_manifest_entries_are_rejected(tmp_path):
     path = tmp_path / MANIFEST_FILENAME
     path.write_text(json.dumps(data))
     with pytest.raises(ValueError):
-        load_model_spec(str(path), EXPECTED[0])
+        load_model_spec(str(path), ALIGNED)
 
 
 @pytest.mark.parametrize("name", EXPECTED)
@@ -93,12 +108,14 @@ def test_onnx_reproduces_skrl_reference_actions(name):
         policy.act(np.zeros(11, dtype=np.float32))
 
 
-def test_controller_and_overlay_defaults_name_the_rank1_model():
+def test_controller_and_overlay_defaults_name_the_aligned_model_with_rear_mit():
     data = manifest()["models"][0]
+    assert data["onnx"] == ALIGNED
     source = (PACKAGE / "trackstand_deploy" / "locomotive_controller.py").read_text()
     overlay = (PACKAGE / "config" / "locomotive.yaml").read_text()
     for text in (source, overlay):
         assert data["onnx"] in text and data["onnx_sha256"] in text
+    assert 'rear_control_mode: "mit"' in overlay and "drive_mit_kd_nm_s_per_rad: 0.2" in overlay
 
 
 # ---- observation / action contract ------------------------------------------------------
@@ -207,6 +224,8 @@ def velocity_node(node_module):
     base = sys.modules["trackstand_deploy.motor_mit_io"]
     base.time = module.time
     node = object.__new__(module.MotorMitVelocityIo)
+    parameters = {"rear_control_mode": "c1", "drive_mit_kd_nm_s_per_rad": 0.2, "drive_mit_velocity_max_rad_s": 50.0}
+    node.get_parameter = lambda name: SimpleNamespace(value=parameters[name])
     node._initialize_command_state()
     node._steering = base.ChannelState("steering", 0x102, 2, 1, -1, -1)
     node._drive = base.ChannelState("drive", 0x101, 1, 1, -1, -1)
@@ -321,6 +340,149 @@ def test_startup_rejects_unconfirmed_b3_and_dry_run_only_reads(velocity_node, mo
         calls.append(payload), b3_current_limit_payload(82.498))[1]
     node._startup()
     assert calls == [None] and node._drive_b3_limit_a == pytest.approx(82.498)
+
+
+# ---- rear MIT velocity backend (default for the aligned model) --------------------------
+DRIVE_F0 = bytes.fromhex("F0BB0314050807")  # Bike's as-found F0: +/-95.5 rad, +/-13 rad/s, +/-18 N m.
+
+
+def test_f0_with_velocity_replaces_only_vel_max():
+    wanted = f0_with_velocity(DRIVE_F0, 50.0)
+    assert parse_f0(wanted) == MitRanges(95.5, 50.0, 18.0)
+    assert wanted[:3] == DRIVE_F0[:3] and wanted[5:] == DRIVE_F0[5:]
+    with pytest.raises(ValueError):
+        f0_with_velocity(DRIVE_F0, 1000.0)
+
+
+@pytest.mark.parametrize("target", [-45.0, -10.0, 0.0, 0.3, 31.0])
+def test_mit_velocity_payload_is_kp0_kd_law_with_feedforward_cancelled(target):
+    ranges = MitRanges(95.5, 50.0, 18.0)
+    payload, kd, effective = mit_velocity_payload(target, ranges, 0.2)
+    command = parse_mit_motion(payload, ranges)
+    assert command.kp_nm_per_rad == 0.0 and kd == command.kd_nm_s_per_rad == pytest.approx(0.2, abs=5 / 4095)
+    # Motor law at any measured speed equals Kd * (effective - v); effective is within one velocity code.
+    for measured in (-20.0, 0.0, 7.0):
+        motor = command.kd_nm_s_per_rad * (command.velocity_rad_s - measured) + command.feedforward_torque_nm
+        assert motor == pytest.approx(kd * (effective - measured), abs=1e-9)
+    assert effective == pytest.approx(target, abs=2 * 50.0 / 4095)
+
+
+@pytest.fixture
+def mit_node(velocity_node):
+    node, module, clock = velocity_node
+    node._rear_control_mode = "mit"
+    node._drive_mit_ranges = MitRanges(95.5, 50.0, 18.0)
+    node._drive.velocity_rad_s = 2.0
+    return node, module, clock
+
+
+def test_mit_backend_sends_rear_mit_frame_not_c1_or_c0(mit_node):
+    node, module, _ = mit_node
+    node._control_tick()
+    sends = [call.args for call in node._tx_bus.send.call_args_list]
+    rear = [data for can_id, data in sends if can_id == 0x501]
+    assert len(rear) == 1 and not any(can_id == 0x101 for can_id, _ in sends)
+    assert any(can_id == 0x502 for can_id, _ in sends)  # MIT steering frame unchanged.
+    native, kd, effective_native = mit_velocity_payload(-10.0, node._drive_mit_ranges, 0.2)  # Encoder sign -1.
+    assert rear[0] == native
+    data = control_record(node, module)
+    assert data["drive_mit_effective_target_rad_s"] == pytest.approx(10.0, abs=0.025)
+    assert data["drive_mit_estimated_torque_nm"] == pytest.approx(kd * (-effective_native - 2.0))
+    assert data["drive_mit_torque_limited"] == 0.0 and math.isnan(data["drive_c1_native_rpm"])
+    assert node._drive_mit_sent_this_enable
+
+
+@pytest.mark.parametrize("target,measured", [(45.0, 0.0), (-45.0, 0.0), (45.0, 40.0), (0.0, -40.0)])
+def test_mit_backend_bounds_target_so_predicted_torque_stays_inside_6_28(mit_node, target, measured):
+    node, module, _ = mit_node
+    node._drive_target_nm = target
+    node._drive.velocity_rad_s = measured
+    node._control_tick()
+    data = control_record(node, module)
+    assert abs(data["drive_mit_estimated_torque_nm"]) <= 6.28
+    limited = abs(target - measured) * 0.2 > 6.28
+    assert data["drive_mit_torque_limited"] == float(limited)
+    if limited:
+        assert abs(data["drive_mit_estimated_torque_nm"]) > 6.2
+    assert not node._fault_latched
+
+
+def test_mit_backend_without_drive_f0_never_moves_the_rear(mit_node):
+    node, _, _ = mit_node
+    node._drive_mit_ranges = None
+    node._control_tick()
+    assert not any(call.args[0] in (0x501, 0x101) for call in node._tx_bus.send.call_args_list)
+
+
+def test_mit_backend_disable_zeroes_current_then_cf(mit_node):
+    node, _, _ = mit_node
+    node._control_tick()
+    node._tx_bus.reset_mock()
+    node._command_callback(sys.modules["std_msgs.msg"].Float64MultiArray(data=[0.0, 0.0, 0.0]))
+    node._control_tick()
+    drive = [data for can_id, data in (c.args for c in node._tx_bus.send.call_args_list) if can_id == 0x101]
+    assert drive[0][0] == 0xC0 and parse_current_feedback(drive[0]) == 0.0 and drive[1] == b"\xcf"
+    assert not node._drive_mit_sent_this_enable
+
+
+def test_drive_f1_reporting_mit_inactive_while_driving_is_a_hard_fault(mit_node):
+    node, _, clock = mit_node
+    node._control_tick()
+    base = sys.modules["trackstand_deploy.motor_mit_io"]
+    frame = base.CanReply(0x001, bytes([0xF1, 0, 0, 0, 0, 0, 0]), False, 0, clock.value + 0.001)
+    node._consume(frame, frame.received_monotonic)
+    assert node._fault_latched and node._fault_reason == "drive_mit_unexpected_exit" and node._hard_fault
+
+
+def test_startup_widens_drive_f0_then_shutdown_restores_it(mit_node, monkeypatch):
+    node, module, _ = mit_node
+    monkeypatch.setattr(module.MotorMitIo, "_startup", lambda self: None)
+    node._drive_mit_ranges = None
+    state = {"f0": DRIVE_F0, "milliamps": 82498}
+    writes = []
+
+    def query(motor, opcode, length, timeout, payload=None):
+        assert motor is node._drive
+        if opcode == 0xF0:
+            if payload is not None:
+                writes.append(payload)
+                state["f0"] = payload
+            return state["f0"]
+        if payload is not None:
+            state["milliamps"] = struct.unpack("<I", payload[1:])[0]
+        return bytes([0xB3]) + struct.pack("<I", state["milliamps"])
+
+    node._query = query
+    node._startup()
+    assert writes == [f0_with_velocity(DRIVE_F0, 50.0)]
+    assert node._drive_mit_ranges == MitRanges(95.5, 50.0, 18.0)
+    node._after_confirmed_shutdown_disable()
+    assert writes[-1] == DRIVE_F0 and state["f0"] == DRIVE_F0
+
+
+def test_dry_run_startup_only_reads_drive_f0(mit_node, monkeypatch):
+    node, module, _ = mit_node
+    monkeypatch.setattr(module.MotorMitIo, "_startup", lambda self: None)
+    node._dry_run = True
+    calls = []
+    node._query = lambda motor, opcode, length, timeout, payload=None: (
+        calls.append((opcode, payload)), DRIVE_F0 if opcode == 0xF0 else b3_current_limit_payload(82.498))[1]
+    node._startup()
+    assert all(payload is None for _, payload in calls)
+    assert node._drive_mit_ranges == MitRanges(95.5, 50.0, 18.0)  # Encoding preview only.
+    node._after_confirmed_shutdown_disable()
+    assert all(payload is None for _, payload in calls)
+
+
+@pytest.mark.parametrize("name,value", [("rear_control_mode", "torque"), ("drive_mit_kd_nm_s_per_rad", 0.0),
+                                        ("drive_mit_velocity_max_rad_s", 40.0)])
+def test_invalid_rear_parameters_are_rejected(velocity_node, name, value):
+    node, _, _ = velocity_node
+    parameters = {"rear_control_mode": "mit", "drive_mit_kd_nm_s_per_rad": 0.2,
+                  "drive_mit_velocity_max_rad_s": 50.0, name: value}
+    node.get_parameter = lambda key: SimpleNamespace(value=parameters[key])
+    with pytest.raises(ValueError):
+        node._initialize_command_state()
 
 
 # ---- controller -------------------------------------------------------------------------
