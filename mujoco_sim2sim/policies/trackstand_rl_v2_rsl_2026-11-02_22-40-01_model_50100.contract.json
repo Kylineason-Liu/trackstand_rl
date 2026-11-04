@@ -1,0 +1,31 @@
+{
+  "task": "Trackstand-Balance-v2",
+  "drive_action": "velocity",
+  "observations": [
+    "gravity_y",
+    "gravity_z",
+    "ang_vel_x",
+    "ang_vel_y",
+    "ang_vel_z",
+    "steering_pos",
+    "drive_pos",
+    "steering_vel",
+    "drive_vel",
+    "sin_steer",
+    "cos_steer"
+  ],
+  "drive_velocity_scale_rad_s": 61.6,
+  "drive_velocity_p_nm_s_per_rad": 0.3,
+  "drive_integral_gain_nm_per_rad": 3.3,
+  "drive_integral_rate_hz": 200.0,
+  "drive_effort_limit_nm": 6.28,
+  "policy_sha256": "a43583ec06d3c441d74d93057378fc25d8d79255a4ad312aeca6f59ad1c25c33",
+  "source_checkpoint": "isaaclab_train/logs/rsl_rl/trackstand_rl_v2_rsl/2026-11-02_22-40-01/model_50100.pt",
+  "source_checkpoint_sha256": "32e43762691fcd25a8e72182339557f0f71f43c14cde2106bb71118eb5019af1",
+  "source_iteration": 50100,
+  "source_config": "isaaclab_train/logs/rsl_rl/trackstand_rl_v2_rsl/2026-11-02_22-40-01/params/env.yaml",
+  "source_config_sha256": "32666644cfa28b8737e894afe26b9ee7f1f0b7bc5c0c7c9832112d51272e0e79",
+  "deterministic_action": "Beta mean: 2*alpha/(alpha+beta)-1",
+  "scales_baked_into_onnx": false,
+  "training_domain_randomization": true
+}

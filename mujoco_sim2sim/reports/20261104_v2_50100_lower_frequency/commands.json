@@ -1,0 +1,78 @@
+{
+  "400": {
+    "cwd": "/home/lmbike/trackstand_rl/mujoco_sim2sim",
+    "argv": [
+      "python3",
+      "-B",
+      "-u",
+      "scripts/run_deploy_eval_v2.py",
+      "--onnx",
+      "policies/trackstand_rl_v2_rsl_2026-11-02_22-40-01_model_50100.onnx",
+      "--num_envs",
+      "64",
+      "--episodes",
+      "64",
+      "--max_policy_steps",
+      "1500",
+      "--seed",
+      "42",
+      "--physics_hz",
+      "400",
+      "--dr",
+      "--pure_survival",
+      "--output_dir",
+      "reports/20261104_v2_50100_lower_frequency/hz400"
+    ],
+    "environment": {
+      "CUDA_VISIBLE_DEVICES": "",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "OMP_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MPLCONFIGDIR": "/tmp/trackstand_50100_lower_frequency_mpl_400",
+      "MPLBACKEND": "Agg"
+    },
+    "sample_design": "One completed episode per environment, fixed quotas; time_out/fallen only; 30-second horizon",
+    "multiagent_used": false,
+    "log": "hz400.log",
+    "exit_code": 0
+  },
+  "800": {
+    "cwd": "/home/lmbike/trackstand_rl/mujoco_sim2sim",
+    "argv": [
+      "python3",
+      "-B",
+      "-u",
+      "scripts/run_deploy_eval_v2.py",
+      "--onnx",
+      "policies/trackstand_rl_v2_rsl_2026-11-02_22-40-01_model_50100.onnx",
+      "--num_envs",
+      "64",
+      "--episodes",
+      "64",
+      "--max_policy_steps",
+      "1500",
+      "--seed",
+      "42",
+      "--physics_hz",
+      "800",
+      "--dr",
+      "--pure_survival",
+      "--output_dir",
+      "reports/20261104_v2_50100_lower_frequency/hz800"
+    ],
+    "environment": {
+      "CUDA_VISIBLE_DEVICES": "",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "OMP_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MPLCONFIGDIR": "/tmp/trackstand_50100_lower_frequency_mpl_800",
+      "MPLBACKEND": "Agg"
+    },
+    "sample_design": "One completed episode per environment, fixed quotas; time_out/fallen only; 30-second horizon",
+    "multiagent_used": false,
+    "log": "hz800.log",
+    "exit_code": 0
+  }
+}

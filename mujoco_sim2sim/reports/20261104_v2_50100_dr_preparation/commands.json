@@ -1,0 +1,72 @@
+{
+  "export": {
+    "cwd": "/home/lmbike/trackstand_rl",
+    "argv": [
+      "/home/lmbike/IsaacLab/_isaac_sim/python.sh",
+      "-B",
+      "isaaclab_train/scripts/deployment/export_rsl_rl_onnx.py",
+      "--checkpoint",
+      "isaaclab_train/logs/rsl_rl/trackstand_rl_v2_rsl/2026-11-02_22-40-01/model_50100.pt",
+      "--output",
+      "mujoco_sim2sim/policies/trackstand_rl_v2_rsl_2026-11-02_22-40-01_model_50100.onnx"
+    ],
+    "exit_code": 0,
+    "log": "export.log"
+  },
+  "pack": {
+    "cwd": "/home/lmbike/trackstand_rl",
+    "argv": [
+      "/home/lmbike/IsaacLab/_isaac_sim/python.sh",
+      "-B",
+      "mujoco_sim2sim/reports/20261104_v2_50100_dr_preparation/pack_export.py"
+    ],
+    "exit_code": 0,
+    "log": "pack_export.log"
+  },
+  "verification": {
+    "cwd": "/home/lmbike/trackstand_rl",
+    "argv": [
+      "python3",
+      "-B",
+      "mujoco_sim2sim/reports/20261104_v2_50100_dr_preparation/verify_preparation.py"
+    ],
+    "exit_code": 0,
+    "log": "verification.log"
+  },
+  "cli_smoke": {
+    "cwd": "/home/lmbike/trackstand_rl/mujoco_sim2sim",
+    "argv": [
+      "python3",
+      "-B",
+      "scripts/run_deploy_eval_v2.py",
+      "--onnx",
+      "policies/trackstand_rl_v2_rsl_2026-11-02_22-40-01_model_50100.onnx",
+      "--num_envs",
+      "4",
+      "--num_steps",
+      "50",
+      "--seed",
+      "42",
+      "--physics_hz",
+      "1200",
+      "--dr",
+      "--output_dir",
+      "reports/20261104_v2_50100_dr_preparation/cli_smoke"
+    ],
+    "exit_code": 0,
+    "log": "cli_smoke.log",
+    "metadata": "cli_smoke/202611041407_50100_dr_metadata.json"
+  },
+  "environment": {
+    "CUDA_VISIBLE_DEVICES": "",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "OMP_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MPLCONFIGDIR": "/tmp/trackstand_50100_dr_mpl",
+    "MPLBACKEND": "Agg"
+  },
+  "full_evaluation_performed": false,
+  "gui_opened": false,
+  "multiagent_used": false
+}

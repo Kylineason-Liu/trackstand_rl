@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/home/lmbike/trackstand_rl/mujoco_sim2sim/reports/20261104_v2_50100_dr_eval/verify_results.py", line 90, in <module>
+    main()
+  File "/home/lmbike/trackstand_rl/mujoco_sim2sim/reports/20261104_v2_50100_dr_eval/verify_results.py", line 34, in main
+    assert float(seconds.mean()) == summary["mean_episode_length_s"]
+AssertionError

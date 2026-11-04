@@ -1,0 +1,48 @@
+/home/lmbike/.local/lib/python3.10/site-packages/matplotlib/projections/__init__.py:63: UserWarning: Unable to import Axes3D. This may be due to multiple versions of Matplotlib being installed (e.g. as a system package and as a pip package). As a result, the 3D projection is not available.
+  warnings.warn("Unable to import Axes3D. This may be due to multiple versions of "
+[INFO] Trackstand-Balance-v2, onnxruntime: /home/lmbike/trackstand_rl/mujoco_sim2sim/policies/trackstand_rl_v2_rsl_2026-11-02_22-40-01_model_50100.onnx
+[INFO] policy=50 Hz, physics/PD=1200 Hz, rear I=200 Hz; 24 physics / 4 integral updates per policy step
+[INFO] 4 envs, seed=42, DR=True; terms=['diverged', 'drifted', 'fallen', 'time_out', 'wheel_net', 'yaw_deviation']
+[WARN] speed mode=project: not a native PhysX-equivalent soft constraint
+env   3: episode   1:    18 steps ( 0.36 s)  fallen
+env   2: episode   1:    43 steps ( 0.86 s)  yaw_deviation
+
+===== TRACKSTAND-BALANCE-V2 METRICS (MuJoCo) =====
+  environments                  : 4
+  completed_episodes            : 2
+  mean_episode_length_steps     : 30.5
+  mean_episode_length_s         : 0.61
+  min_episode_length_s          : 0.36
+  max_episode_length_s          : 0.86
+  std_episode_length_steps      : 12.5
+  mean_reward                   : 4.163112688809633
+  timeout_rate                  : 0.0
+  termination activations (may overlap):
+    time_out              : 0
+    fallen                : 1
+    diverged              : 0
+    drifted               : 0
+    yaw_deviation         : 1
+    wheel_net             : 0
+  roll_rms_deg                  : 9.075292398667276
+  max_roll_deg                  : 33.778645037059675
+  mean_worst_lean_deg           : 18.657401864144393
+  mean_drift_m                  : 0.034764070273937825
+  max_drift_m                   : 0.07886426753872958
+  mean_yaw_deg                  : 9.003479702270523
+  max_yaw_deg                   : 31.008860144995573
+  mean_turn_deg                 : 22.18794819247124
+  mean_drive_speed_rad_s        : 2.4739132398320387
+  max_drive_speed_rad_s         : 14.19385191719337
+  mean_steer_speed_rad_s        : 7.530361610052121
+  max_steer_speed_rad_s         : 15.430211993517936
+  policy_hz                     : 50.0
+  physics_hz                    : 1200.0
+  pd_hz                         : 1200.0
+  integral_hz                   : 200.0
+  decimation                    : 24
+  Metrics include terminal state BEFORE caller reset; unfinished episodes excluded.
+[INFO] metrics written: /home/lmbike/trackstand_rl/mujoco_sim2sim/reports/20261104_v2_50100_dr_preparation/cli_smoke/202611041407_50100_dr_summary.log
+[INFO] episode length distribution written: /home/lmbike/trackstand_rl/mujoco_sim2sim/reports/20261104_v2_50100_dr_preparation/cli_smoke/202611041407_50100_dr_epi_len_histogram.png / .csv
+[INFO] all-environment torque profile written: /home/lmbike/trackstand_rl/mujoco_sim2sim/reports/20261104_v2_50100_dr_preparation/cli_smoke/202611041407_50100_dr_torque.png / .npz
+[INFO] evaluation complete: /home/lmbike/trackstand_rl/mujoco_sim2sim/reports/20261104_v2_50100_dr_preparation/cli_smoke/202611041407_50100_dr

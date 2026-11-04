@@ -1,0 +1,153 @@
+{
+  "passed": true,
+  "results": [
+    {
+      "physics_pd_hz": 1200,
+      "completed": 64,
+      "timeouts": 22,
+      "fallen": 42,
+      "timeout_percent": 34.375,
+      "mean_s": 12.998125,
+      "median_s": 5.51,
+      "min_s": 0.26,
+      "max_s": 30.0,
+      "transitions": 41594,
+      "physics_steps": 998256,
+      "startup_diagnostics": {
+        "speed_span_per_20ms_median_p95_max_rad_s": [
+          2.793945312889789,
+          12.77065314942793,
+          71.75246295847167
+        ],
+        "adjacent_speed_jump_p95_p99_max_rad_s": [
+          1.4743334263704937,
+          3.372112048847405,
+          19.631044597166582
+        ],
+        "rear_torque_sign_change_fraction": 0.010122282608695653,
+        "largest_span_example": {
+          "env_id": 14,
+          "policy_step": 1,
+          "target_rad_s": 61.04679870605469,
+          "velocity_rad_s": [
+            -10.152462958471663,
+            9.47858163869492,
+            29.027686534983925,
+            48.53459117696885,
+            59.30100070803304,
+            59.87204955969734,
+            59.89847080329317,
+            61.6,
+            61.6,
+            61.6,
+            61.6,
+            61.6,
+            61.6,
+            61.6,
+            61.6,
+            61.6,
+            61.6,
+            61.6,
+            61.6,
+            61.6,
+            61.6,
+            61.6,
+            61.6,
+            61.6
+          ],
+          "torque_nm": [
+            6.28,
+            6.28,
+            6.28,
+            3.515180085811985,
+            0.28525722649273,
+            0.11394257099343968,
+            0.7028838118448142,
+            0.19242505283276537,
+            0.19242505283276537,
+            0.19242505283276537,
+            0.19242505283276537,
+            0.19242505283276537,
+            0.19733484735549903,
+            0.19733484735549903,
+            0.19733484735549903,
+            0.19733484735549903,
+            0.19733484735549903,
+            0.19733484735549903,
+            0.18820702600540137,
+            0.18820702600540137,
+            0.18820702600540137,
+            0.18820702600540137,
+            0.18820702600540137,
+            0.18820702600540137
+          ]
+        }
+      }
+    },
+    {
+      "physics_pd_hz": 1600,
+      "completed": 64,
+      "timeouts": 21,
+      "fallen": 43,
+      "timeout_percent": 32.8125,
+      "mean_s": 11.9125,
+      "median_s": 3.95,
+      "min_s": 0.26,
+      "max_s": 30.0,
+      "transitions": 38120,
+      "physics_steps": 1219840,
+      "startup_diagnostics": {
+        "speed_span_per_20ms_median_p95_max_rad_s": [
+          2.9450486267835965,
+          13.216203631765822,
+          71.76660703478089
+        ],
+        "adjacent_speed_jump_p95_p99_max_rad_s": [
+          1.0720341885388136,
+          2.5796416955310586,
+          14.723578739302111
+        ],
+        "rear_torque_sign_change_fraction": 0.007862903225806451
+      },
+      "rescued_baseline_falls": 3,
+      "lost_baseline_survivors": 4
+    },
+    {
+      "physics_pd_hz": 2400,
+      "completed": 64,
+      "timeouts": 24,
+      "fallen": 40,
+      "timeout_percent": 37.5,
+      "mean_s": 13.719375,
+      "median_s": 3.87,
+      "min_s": 0.26,
+      "max_s": 30.0,
+      "transitions": 43902,
+      "physics_steps": 2107296,
+      "startup_diagnostics": {
+        "speed_span_per_20ms_median_p95_max_rad_s": [
+          2.8317626467969457,
+          12.901453625183601,
+          71.70677475762541
+        ],
+        "adjacent_speed_jump_p95_p99_max_rad_s": [
+          0.6905522097039768,
+          1.5788489428865327,
+          9.815861262386832
+        ],
+        "rear_torque_sign_change_fraction": 0.005119680851063829
+      },
+      "rescued_baseline_falls": 5,
+      "lost_baseline_survivors": 3
+    }
+  ],
+  "same_sampled_dr_all_64": true,
+  "original_inputs_unchanged": 88,
+  "physics_and_pd_changed_together": true,
+  "limitations": [
+    "One seed, 64 matched trials, not an exhaustive timestep convergence proof",
+    "Cannot separate explicit-PD discretization from contact/integration changes",
+    "Startup span/sign-change metrics describe motion; they are not identified oscillation frequencies"
+  ],
+  "multiagent_used": false
+}

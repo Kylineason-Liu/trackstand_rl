@@ -1,0 +1,18 @@
+{
+  "same_sampled_dr_per_environment": true,
+  "standard": {
+    "mean_s": 6.44625,
+    "median_s": 1.1,
+    "timeouts": 7,
+    "fallen": 21,
+    "yaw_deviation": 36
+  },
+  "pure_survival": {
+    "mean_s": 12.998125,
+    "median_s": 5.51,
+    "timeouts": 22,
+    "fallen": 42,
+    "yaw_deviation": 0
+  },
+  "limitations": "The modes have different enabled terminations; pure survival is not full stationary-task success."
+}

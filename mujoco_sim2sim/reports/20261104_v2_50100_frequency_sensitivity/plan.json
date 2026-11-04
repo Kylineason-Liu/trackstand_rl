@@ -1,0 +1,22 @@
+{
+  "baseline_physics_pd_hz": 1200,
+  "new_physics_pd_hz": [
+    1600,
+    2400
+  ],
+  "fixed": {
+    "model": 50100,
+    "dr": true,
+    "pure_survival": true,
+    "seed": 42,
+    "environments": 64,
+    "episodes": 64,
+    "policy_hz": 50,
+    "integral_hz": 200,
+    "horizon_s": 30,
+    "velocity_limit_mode": "project"
+  },
+  "baseline_report": "mujoco_sim2sim/reports/20261104_v2_50100_dr_pure_survival_eval",
+  "purpose": "Test physics/explicit-PD timestep sensitivity; timestep changes both actuator discretization and contact integration, not CAN/firmware rate",
+  "multiagent_used": false
+}

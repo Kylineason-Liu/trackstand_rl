@@ -1,0 +1,110 @@
+/home/lmbike/.local/lib/python3.10/site-packages/matplotlib/projections/__init__.py:63: UserWarning: Unable to import Axes3D. This may be due to multiple versions of Matplotlib being installed (e.g. as a system package and as a pip package). As a result, the 3D projection is not available.
+  warnings.warn("Unable to import Axes3D. This may be due to multiple versions of "
+[INFO] Trackstand-Balance-v2, onnxruntime: /home/lmbike/trackstand_rl/mujoco_sim2sim/policies/trackstand_rl_v2_rsl_2026-11-02_22-40-01_model_50100.onnx
+[INFO] policy=50 Hz, physics/PD=1200 Hz, rear I=200 Hz; 24 physics / 4 integral updates per policy step
+[INFO] 64 envs, seed=42, DR=True; terms=['fallen', 'time_out']
+[WARN] speed mode=project: not a native PhysX-equivalent soft constraint
+env  22: episode   1:    13 steps ( 0.26 s)  fallen
+env   7: episode   1:    14 steps ( 0.28 s)  fallen
+env  25: episode   1:    14 steps ( 0.28 s)  fallen
+env  29: episode   1:    14 steps ( 0.28 s)  fallen
+env  33: episode   1:    15 steps ( 0.30 s)  fallen
+env  45: episode   1:    15 steps ( 0.30 s)  fallen
+env  46: episode   1:    15 steps ( 0.30 s)  fallen
+env  60: episode   1:    15 steps ( 0.30 s)  fallen
+env  14: episode   1:    16 steps ( 0.32 s)  fallen
+env  54: episode   1:    16 steps ( 0.32 s)  fallen
+env  35: episode   1:    17 steps ( 0.34 s)  fallen
+env   3: episode   1:    18 steps ( 0.36 s)  fallen
+env  43: episode   1:    18 steps ( 0.36 s)  fallen
+env  44: episode   1:    18 steps ( 0.36 s)  fallen
+env  17: episode   1:    19 steps ( 0.38 s)  fallen
+env  12: episode   1:    20 steps ( 0.40 s)  fallen
+env  59: episode   1:    22 steps ( 0.44 s)  fallen
+env  10: episode   1:    23 steps ( 0.46 s)  fallen
+env  36: episode   1:    26 steps ( 0.52 s)  fallen
+env  20: episode   1:    32 steps ( 0.64 s)  fallen
+env  19: episode   1:    40 steps ( 0.80 s)  fallen
+env  40: episode   1:    48 steps ( 0.96 s)  fallen
+env  48: episode   1:    51 steps ( 1.02 s)  fallen
+env  27: episode   1:    53 steps ( 1.06 s)  fallen
+env   2: episode   1:    68 steps ( 1.36 s)  fallen
+env  50: episode   1:    78 steps ( 1.56 s)  fallen
+env   9: episode   1:    91 steps ( 1.82 s)  fallen
+env  15: episode   1:   116 steps ( 2.32 s)  fallen
+env  24: episode   1:   133 steps ( 2.66 s)  fallen
+env  49: episode   1:   168 steps ( 3.36 s)  fallen
+env  13: episode   1:   179 steps ( 3.58 s)  fallen
+env  26: episode   1:   267 steps ( 5.34 s)  fallen
+env   6: episode   1:   284 steps ( 5.68 s)  fallen
+env  57: episode   1:   298 steps ( 5.96 s)  fallen
+env  11: episode   1:   331 steps ( 6.62 s)  fallen
+env  32: episode   1:   478 steps ( 9.56 s)  fallen
+env  62: episode   1:   490 steps ( 9.80 s)  fallen
+env  47: episode   1:   661 steps (13.22 s)  fallen
+env  58: episode   1:   721 steps (14.42 s)  fallen
+env  61: episode   1:  1071 steps (21.42 s)  fallen
+env  23: episode   1:  1119 steps (22.38 s)  fallen
+env  41: episode   1:  1489 steps (29.78 s)  fallen
+env   0: episode   1:  1500 steps (30.00 s)  time_out
+env   1: episode   1:  1500 steps (30.00 s)  time_out
+env   4: episode   1:  1500 steps (30.00 s)  time_out
+env   5: episode   1:  1500 steps (30.00 s)  time_out
+env   8: episode   1:  1500 steps (30.00 s)  time_out
+env  16: episode   1:  1500 steps (30.00 s)  time_out
+env  18: episode   1:  1500 steps (30.00 s)  time_out
+env  21: episode   1:  1500 steps (30.00 s)  time_out
+env  28: episode   1:  1500 steps (30.00 s)  time_out
+env  30: episode   1:  1500 steps (30.00 s)  time_out
+env  31: episode   1:  1500 steps (30.00 s)  time_out
+env  34: episode   1:  1500 steps (30.00 s)  time_out
+env  37: episode   1:  1500 steps (30.00 s)  time_out
+env  38: episode   1:  1500 steps (30.00 s)  time_out
+env  39: episode   1:  1500 steps (30.00 s)  time_out
+env  42: episode   1:  1500 steps (30.00 s)  time_out
+env  51: episode   1:  1500 steps (30.00 s)  time_out
+env  52: episode   1:  1500 steps (30.00 s)  time_out
+env  53: episode   1:  1500 steps (30.00 s)  time_out
+env  55: episode   1:  1500 steps (30.00 s)  time_out
+env  56: episode   1:  1500 steps (30.00 s)  time_out
+env  63: episode   1:  1500 steps (30.00 s)  time_out
+
+===== TRACKSTAND-BALANCE-V2 METRICS (MuJoCo) =====
+  environments                  : 64
+  completed_episodes            : 64
+  mean_episode_length_steps     : 649.90625
+  mean_episode_length_s         : 12.998125
+  min_episode_length_s          : 0.26
+  max_episode_length_s          : 30.0
+  std_episode_length_steps      : 672.987688379912
+  mean_reward                   : 89.02881151554357
+  timeout_rate                  : 0.34375
+  termination activations (may overlap):
+    time_out              : 22
+    fallen                : 42
+    diverged              : 0
+    drifted               : 0
+    yaw_deviation         : 0
+    wheel_net             : 0
+  roll_rms_deg                  : 2.40766787112293
+  max_roll_deg                  : 35.96385297802566
+  mean_worst_lean_deg           : 22.57050863647053
+  mean_drift_m                  : 0.062466076408458984
+  max_drift_m                   : 0.6452351104757131
+  mean_yaw_deg                  : 43.53150721343839
+  max_yaw_deg                   : 179.98128238730087
+  mean_turn_deg                 : 107.07217465595636
+  mean_drive_speed_rad_s        : 0.5309667531031849
+  max_drive_speed_rad_s         : 61.6
+  mean_steer_speed_rad_s        : 2.5658973788337995
+  max_steer_speed_rad_s         : 15.430211993517936
+  policy_hz                     : 50.0
+  physics_hz                    : 1200.0
+  pd_hz                         : 1200.0
+  integral_hz                   : 200.0
+  decimation                    : 24
+  Metrics include terminal state BEFORE caller reset; unfinished episodes excluded.
+[INFO] metrics written: /home/lmbike/trackstand_rl/mujoco_sim2sim/reports/20261104_v2_50100_dr_pure_survival_eval/202611041419_50100_dr_summary.log
+[INFO] episode length distribution written: /home/lmbike/trackstand_rl/mujoco_sim2sim/reports/20261104_v2_50100_dr_pure_survival_eval/202611041419_50100_dr_epi_len_histogram.png / .csv
+[INFO] all-environment torque profile written: /home/lmbike/trackstand_rl/mujoco_sim2sim/reports/20261104_v2_50100_dr_pure_survival_eval/202611041419_50100_dr_torque.png / .npz
+[INFO] evaluation complete: /home/lmbike/trackstand_rl/mujoco_sim2sim/reports/20261104_v2_50100_dr_pure_survival_eval/202611041419_50100_dr

@@ -1,0 +1,63 @@
+{
+  "passed": true,
+  "native_prefix": "202611041416_50100_dr",
+  "completed_episodes": 64,
+  "mean_length_s": 6.446250000000001,
+  "median_length_s": 1.1,
+  "min_length_s": 0.26,
+  "max_length_s": 30.0,
+  "std_length_s": 9.929337764297275,
+  "quartiles_s": [
+    0.43,
+    6.75
+  ],
+  "timeouts": 7,
+  "termination_counts": {
+    "time_out": 7,
+    "fallen": 21,
+    "diverged": 0,
+    "drifted": 0,
+    "yaw_deviation": 36,
+    "wheel_net": 0
+  },
+  "histogram_counts": [
+    43,
+    3,
+    3,
+    1,
+    1,
+    4,
+    1,
+    0,
+    1,
+    7
+  ],
+  "timeout_env_ids": [
+    4,
+    16,
+    21,
+    31,
+    37,
+    38,
+    51
+  ],
+  "episode_mask_reset_flag_histogram_counts_agree": true,
+  "environment_transitions": 20628,
+  "physics_steps": 495072,
+  "integral_updates": 82512,
+  "peak_absolute_raw_actions": [
+    0.9981386065483093,
+    0.9938701391220093
+  ],
+  "peak_absolute_motor_torque_nm": [
+    5.111139697153519,
+    6.28
+  ],
+  "motor_order": [
+    "steering",
+    "rear"
+  ],
+  "original_inputs_hash_unchanged": 69,
+  "sample_scope": "64 fixed-quota initial DR episodes, seed 42, no pure_survival; one seed only",
+  "multiagent_used": false
+}
