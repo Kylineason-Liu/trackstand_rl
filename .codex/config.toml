@@ -2,6 +2,6 @@
 # The root session is the coordinator; this limit excludes that session.
 [agents]
 enabled = true
-max_concurrent_threads_per_session = 6
+max_concurrent_threads_per_session = 7
 
 # Inherit the session's model, reasoning effort, permissions and tools.

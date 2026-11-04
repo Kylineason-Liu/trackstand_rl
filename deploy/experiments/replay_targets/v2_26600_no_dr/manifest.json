@@ -1,0 +1,39 @@
+{
+  "task": "Trackstand-Balance-v2",
+  "policy": "model_26600.pt",
+  "policy_sha256": "5733e489490c6688c45085970fef46b62d1fe96a90fb7e5035c3b0de5699af7b",
+  "source_report": "isaaclab_train/reports/20261103_v2_26600_replay_capture",
+  "source_env_id": 0,
+  "source_episode": 1,
+  "domain_randomization": false,
+  "seed": 42,
+  "duration_s": 30.0,
+  "target_rate_hz": 50,
+  "actual_state_rate_hz": 1200,
+  "target_contract": {
+    "steering": "held_steering_position_target_rad (post clip/slew), rad",
+    "drive": "drive_velocity_target_rad_s, rad/s"
+  },
+  "controller": {
+    "steering_position_kp_nm_per_rad": 10.0,
+    "steering_velocity_kd_nm_s_per_rad": 0.2,
+    "drive_position_kp_nm_per_rad": 0.0,
+    "drive_velocity_p_nm_s_per_rad": 0.3,
+    "drive_velocity_ki_nm_per_rad": 3.3,
+    "integral_rate_hz": 200.0
+  },
+  "files": {
+    "policy_targets_50hz.csv": {
+      "sha256": "b22edd5b10bb64614878dc343dc1c44bddff2a6ff2bd4ef336aaf9034836cbb8",
+      "bytes": 114579
+    },
+    "joint_velocity_reference_1200hz.csv": {
+      "sha256": "5e23cf0aabf9e5b19974100cd618c0abf6c653d6e6986bd036c9c2f898c46b85",
+      "bytes": 2282032
+    },
+    "reference_metadata.json": {
+      "sha256": "3c4f91a1a7ea00941e4644c2daba54675d21f4728a9d4ac0e207e9f0cc252339",
+      "bytes": 5317
+    }
+  }
+}

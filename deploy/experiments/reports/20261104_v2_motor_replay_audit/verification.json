@@ -1,0 +1,38 @@
+{
+  "passed": true,
+  "script_sha256": "a5eaa6cc2e8185960d4a0c86323f09a1db0161fe82661e848fcfef210f7934d4",
+  "mock_origins_s": [
+    100.0,
+    1000000.0,
+    10000000.0
+  ],
+  "mock_lifecycle_cases": 3,
+  "codec_cases_per_lifecycle": 3000,
+  "source_target_rows_per_case": 500,
+  "per_motor_packets_per_case": 2000,
+  "integral_updates_per_case": 2000,
+  "focused_tests_passed": 16,
+  "clock_boundary_cases": 12,
+  "clock_boundaries_per_case": 1500,
+  "no_real_CAN_or_hardware": true,
+  "python": "3.10.12",
+  "git_head": "3bbb484549aa2b34ff2abddc356b465f291c06d6",
+  "input_sha256": {
+    "deploy/experiments/v2_motor_replay.py": "a5eaa6cc2e8185960d4a0c86323f09a1db0161fe82661e848fcfef210f7934d4",
+    "deploy/experiments/steering_policy_replay.py": "f487891078fff67075ef054ab6f58e708a862dab7f69f7ab760348f5f0e51fb1",
+    "deploy/experiments/drive_mit_velocity_test.py": "0a5849ffb3197b54fd9ef261b7443efe816146b61234cb4f88374b5dbc853712",
+    "deploy/source/trackstand_deploy/trackstand_deploy/mit_protocol.py": "4d2562b8af03cfd4c499c500a0eeb48d8489968e166a9601b4d16984c7e84a9c",
+    "deploy/source/trackstand_deploy/config/params.yaml": "19abe24e34393ba2591f44cac4830bea09aa7f5bf00f9fa69b2db21221b9c7be",
+    "deploy/experiments/replay_targets/v2_26600_no_dr/joint_velocity_reference_1200hz.csv": "5e23cf0aabf9e5b19974100cd618c0abf6c653d6e6986bd036c9c2f898c46b85",
+    "deploy/experiments/replay_targets/v2_26600_no_dr/manifest.json": "fb49f020d4249a55df04deaa6df4af15b3460611d569e3f059c0dfc71562f6d8",
+    "deploy/experiments/replay_targets/v2_26600_no_dr/policy_targets_50hz.csv": "b22edd5b10bb64614878dc343dc1c44bddff2a6ff2bd4ef336aaf9034836cbb8",
+    "deploy/experiments/replay_targets/v2_26600_no_dr/reference_metadata.json": "3c4f91a1a7ea00941e4644c2daba54675d21f4728a9d4ac0e207e9f0cc252339",
+    "tsinghua_bike_project/assign_2_Hardwares/assign_2_Hardwares/3.RearSteer Servo\u3010GIM3510-8\u3011/Supplementary Materials/2.\u81ea\u5b9a\u4e49CAN\u901a\u4fe1\u534f\u8bae/\u81ea\u5b9a\u4e49CAN\u901a\u4fe1\u534f\u8bae_3.09b0.pdf": "a1d6b0df03b2cf93db1f1a7222539fd3642c6b628e10acb5d5782fe6de96ceea"
+  },
+  "known_limits": [
+    "No real hardware response or loaded test",
+    "Native MIT post-PD effort clamp not established",
+    "Asynchronous feedback/real elapsed integration differs from simulator",
+    "Preview and all tests substitute/prohibit sockets"
+  ]
+}

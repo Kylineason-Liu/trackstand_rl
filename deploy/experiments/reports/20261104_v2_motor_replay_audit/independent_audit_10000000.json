@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "source_sha256": "a5eaa6cc2e8185960d4a0c86323f09a1db0161fe82661e848fcfef210f7934d4",
+  "reference_sha256": "b22edd5b10bb64614878dc343dc1c44bddff2a6ff2bd4ef336aaf9034836cbb8",
+  "preview_opens_no_socket": true,
+  "reference_prefix_rows": 500,
+  "wire_property_cases": 3000,
+  "mocked_devices": 2,
+  "source_prefix_seconds": 10.0,
+  "measured_mock_motion_seconds": 10.0,
+  "monotonic_origin_s": 10000000.0,
+  "steering_packets": 2000,
+  "drive_packets": 2000,
+  "integral_updates": 2000,
+  "b1_motor_ids": [
+    2
+  ],
+  "both_cf_disabled_and_settings_restored": true,
+  "rear_int32_rollover_unwrapped": true,
+  "original_short_watchdog_restored": true,
+  "real_CAN_opened": false,
+  "physical_response_validated": false
+}

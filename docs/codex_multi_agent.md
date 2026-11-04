@@ -1,160 +1,213 @@
 # Codex workflow for Trackstand
 
-The main CLI session coordinates six specialist roles. The project configuration is
-`.codex/config.toml`; reusable role instructions are in `.codex/agents/*.toml`.
-`AGENTS.md` assigns the root session its coordinator behavior. The
-`main_coordinator.toml` file also defines that role for an explicit coordination
-handoff; it does not automatically replace the root session or start another agent.
+The main session coordinates seven subagent roles. Project settings live in
+`.codex/config.toml`; instructions live in `.codex/agents/*.toml`. `AGENTS.md`
+assigns the root coordinator behavior. `main_coordinator.toml` is also available
+for an explicit coordination handoff; it does not start a second coordinator.
 
-## Roles and ownership
+## Routing and ownership
 
-| Role | Work | Owned writes |
+| User task or responsibility | Role | Owned writes |
 | --- | --- | --- |
-| `main_coordinator` | Scope, delegation, evidence review, resource scheduling and final answer | Assigned coordination documents; reviews other agents' changes |
-| `implementer` | Production code and focused validation | Explicitly assigned source/test/config files |
-| `isaaclab_evaluation_analyst` | Isaac Lab evaluations and result analysis | Assigned new `isaaclab_train/reports/<run_id>/` artifacts/helpers |
-| `mujoco_evaluation_analyst` | MuJoCo evaluation, survival and sim-to-sim analysis | Assigned new `mujoco_sim2sim/reports/<run_id>/` artifacts/helpers |
-| `deploy_evaluation_analyst` | Deployment/bench log analysis and motor telemetry | Assigned new `deploy/experiments/reports/<run_id>/` artifacts/helpers |
-| `summarizer` | Final evidence synthesis and recording handoff | Assigned summary/report paths; no ledger edits |
-| `recorder` | Automatic recording of material unrecorded findings, progress and conclusions | Both root progress ledgers only |
+| Classify work, define criteria, schedule and judge completion | `main_coordinator` | Assigned coordination documents; reviews changes |
+| Code/config/protocol/data-methodology and validation audits | `inspector` | Assigned new audit reports/helpers; no production fixes |
+| Implementation and focused tests | `implementer` | Assigned source/test/config files |
+| Isaac Lab evaluation or analysis | `isaaclab_evaluation_analyst` | Assigned new `isaaclab_train/reports/<run_id>/` artifacts/helpers |
+| MuJoCo evaluation or analysis | `mujoco_evaluation_analyst` | Assigned new `mujoco_sim2sim/reports/<run_id>/` artifacts/helpers |
+| Deployment evaluation or analysis | `deploy_evaluation_analyst` | Assigned new `deploy/experiments/reports/<run_id>/` artifacts/helpers |
+| Collect reports and synthesize criteria/conclusions | `summarizer` | Assigned summary/report paths; no ledger edits |
+| Automatically record accepted material progress | `recorder` | Both root progress ledgers only |
 
-There are seven configured roles: the coordinator and six subagent roles. Each spawned
-agent has its own conversation thread. They share the checkout and inherit the
-session's model, reasoning effort, tools and permissions. No model or permission
-override is installed by this setup. File ownership is a workflow rule, not an
-additional filesystem sandbox.
+A mixed request can create several tasks; do not force every category into every
+request. The inspector owns all kinds of requested audit, while evaluation
+analysts own their domain's evaluation and measurement analysis. An analyst who
+finds a code defect reports it; coordinator can assign inspector verification and
+implementer correction. Production changes remain with implementer.
 
-## Normal CLI use
+These eight role definitions are reusable instructions, not always-running
+processes. Spawned agents have separate conversation contexts and share the
+checkout. Model, reasoning, tools and permissions are inherited. Ownership rules
+are coordination instructions, not extra OS sandboxes or hardware authorization.
 
-Start a fresh session after installing/changing the configuration:
+## Control flow
+
+```mermaid
+flowchart TD
+    U[User task] --> C[Coordinator: classify, target, mode and criteria]
+    C --> W[Assigned inspector / implementer / evaluation analysts]
+    W --> S[Summarizer: collect expected reports and criterion table]
+    S --> M{Iterative mode?}
+    M -- Yes --> J[Coordinator judges required criteria]
+    J -- Unmet: next focused adjustment --> C
+    J -- Achieved --> R[Recorder: accepted progress]
+    J -- Blocked or explicit limit --> B[Accurate incomplete / blocked summary]
+    B --> R
+    M -- No: final report --> R
+    R --> F[Root relays summarizer's user-ready final]
+```
+
+The diagram shows logical ordering, not mandatory simultaneous execution. Dependent
+baseline/audit, implementation and revalidation steps stay ordered. Independent
+analyses can run in parallel and all assigned workers report to summarizer.
+
+## Assignment contract
+
+Coordinator first identifies `single_pass` or `iterative` intent from the request.
+Before workers start, register the following with summarizer and each worker:
+
+- `task_id`, `iteration_id`, role, objective and expected report/delivery address.
+- Mode, overall target, required criterion IDs and each acceptance condition.
+  Use user-specified metrics/thresholds with units, or explicit observable
+  qualitative checks. Do not invent numerical targets or arbitrary loop counts.
+- Candidate/source revision or hashes, checkpoint/config/model identity when
+  relevant, evidence inputs and known physical conditions. Unknown facts stay unknown.
+- Owned output paths, allowed edits, dependencies, validation/run/sample budget,
+  CPU/GPU allocation and any already authorized live hardware operations.
+- Expected task/report set for this iteration, including which criteria each task
+  supplies. Changes to the registry must be explicit and visible to summarizer.
+
+Workers receive, parse and understand the assignment before doing the task. Missing
+critical inputs are raised to coordinator; independent work can continue. Workers
+must not silently redefine scope, criteria, candidate or operating conditions.
+
+## Worker report contract and delivery
+
+Each inspector, implementer and evaluation analyst sends a full report containing the fields below.
+Recorder uses the same identity/evidence structure for its later finalization report:
+
+| Field | Required contents |
+| --- | --- |
+| Identity | `task_id`, `iteration_id`, role, candidate/source revision or hashes |
+| Task status | `completed`, `failed`, `blocked`, `cancelled` or `not_run`; reason |
+| Criterion results | For each assigned criterion: ID, requirement, observed data/result and units, `pass` / `fail` / `unknown` / `not_run`, evidence and limitations |
+| Work and validation | Changes/findings, exact commands/cwd/conditions, checks/results, completed samples where applicable, artifact paths |
+| Conclusions | Supported result, uncertainty, failed/unrun checks, blockers and next focused action |
+
+Use this contract for concise structured text or a report artifact; no separate
+orchestration program or JSON service is required. A completed task can still have
+failing criteria. Missing evidence and absent or unrun measurements are not passes.
+Keep requested, implemented, offline-tested, evaluated and hardware-measured status
+distinct. Revalidate results affected by changed code/config/model; do not reuse an
+old pass as current without a justified unchanged/revalidated source identity.
+
+Send the report directly to the designated summarizer with the available peer
+messaging tool and send coordinator a short delivery receipt. Send blockers or
+urgent findings to both promptly. Agent final responses also reach their parent,
+so a short parent receipt must not replace the full summarizer report.
+
+If peer delivery is unavailable, coordinator transparently relays the complete
+report or accessible artifact path and verifies receipt. With fewer runtime slots,
+workers can finish in waves and coordinator can resume summarizer after collecting
+reports. Do not pretend a completed thread is continuously listening or reserve a
+collector slot in a way that prevents required workers from running.
+
+## Synthesis and loop decisions
+
+Summarizer tracks the expected task/report registry and acknowledges each report.
+It accounts for every expected task, including failed/blocked/cancelled/not-run
+ones, before marking synthesis final. Missing reports remain missing until resolved
+with coordinator; they are not silently omitted. Reconcile contradictions or retain
+them as unknown/unresolved. A registry change cannot silently drop a required criterion.
+
+For every required criterion, the synthesized table includes requirement, observed
+result with units, status, evidence/candidate identity and limitations. Include
+important changes since the previous iteration, failed checks, uncertainty and
+recommended next action. A partial report is explicitly partial.
+
+For **iterative** work:
+
+1. Summarizer returns the iteration report and `continue`, `achieved` or `blocked`
+   recommendation with criterion-based reasons to coordinator.
+2. Coordinator independently judges the target. Only valid evidence establishing
+   every required criterion for the accepted candidate permits achieved status.
+   Failed, unknown, missing, stale, contradictory or unrun required evidence cannot pass.
+3. If unmet and feasible, assign the next focused improvement and relevant
+   revalidation, update iteration/candidate identity and expected reports, and
+   repeat. Reuse agent threads where useful; this is iteration, not recursively
+   spawning coordinators or delegating the whole task to another coordinator.
+4. Retain diagnostics and source/criterion history. Do not lower acceptance
+   standards to finish. If missing input, unavailable resources or an explicit
+   user/runtime limit prevents further progress, report the unmet target and
+   blocker/limit accurately. Do not claim success or repeat unchanged failures
+   indefinitely. Do not introduce an arbitrary default iteration count.
+5. After accepting completion or explaining an incomplete stop, coordinator asks
+   summarizer for the final user-ready synthesis and passes accepted progress to recorder.
+
+For **single-pass** work, summarizer authors the final user-ready report once all
+expected reports are accounted for, including incomplete results where applicable.
+No unnecessary loop is created. In this CLI only the root can deliver the final
+user-facing response: it relays summarizer's substantive report after recording,
+without writing a competing summary. This delivery detail applies the user's
+single-pass final-summary rule within the available parent/subagent interface.
+
+## Recording and shared resources
+
+Recorder alone updates `progress_record.md` and `progress_record.txt`. Coordinator
+automatically sends accepted substantive results, summarizer evidence and its
+criterion/decision status at completion or useful completed milestones; no separate
+record request is required. Recorder has no authority to decide technical acceptance
+or continue/exit the loop. Summarizer never edits the ledgers. Keep recorder out of
+the expected work-report set: work synthesis comes first, then coordinator accepts
+its result/decision and schedules recorder. Recorder sends verification directly to
+summarizer and a receipt to coordinator (or uses the same explicit relay fallback).
+Summarizer can add completed/no-op/conflict/failure recording status to its final
+user-ready report. A failed recording is disclosed without pretending the technical
+result failed or passed because of it; a ledger change does not start another loop.
+There is no circular wait for recorder before the work summary that supplies its inputs.
+
+Recorder verifies disk evidence, deduplicates both ledgers, preserves existing
+formats/history and returns a no-op when nothing material is new. Explicit user
+no-record/read-only instructions override automatic recording. Backups/checks belong
+outside the repository, such as `/tmp`; capture/recheck ledger hashes before writing
+and report concurrent edits instead of overwriting. Updating ledgers does not
+recursively trigger recording. No daemon, watcher or scheduled job is installed.
+
+Keep one writer per source/output directory; parallel writers need disjoint ownership
+or assigned worktrees. Worktrees do not isolate GPU/CAN. Coordinator schedules shared
+CPU/GPU and exclusive already-authorized hardware operations; deployment analysis
+is offline by default. Do not ask again for authorization already supplied.
+
+Preserve raw logs, checkpoints and prior reports. Inspect current evaluator output
+behavior: the Isaac role protects checkpoint-adjacent outputs using an isolated
+hash-verified checkpoint copy; the MuJoCo role verifies actual loader/policy
+compatibility. Read current source and matching metadata instead of freezing dated
+rates, provisional motor gains/friction values or checkpoints. Distinguish policy,
+target, controller and physics clocks, and commands, fresh feedback and execution.
+
+## CLI use and configuration validation
+
+Start normally from the repository, or use:
 
 ```bash
 codex -C /path/to/trackstand_rl
 ```
 
-From the repository directory, simply run `codex`. Project configuration is loaded
-for trusted projects; use the CLI's trust prompt when first opening another clone.
-There is no separate service to start. Root coordination comes from `AGENTS.md`,
-so no role-selection flag is required.
+Project config is discovered for trusted projects. Updated role instructions can
+be read and applied in an existing conversation, including explicit task handoffs.
+A new-process startup/discovery check verifies that process, not hot reload of an
+already running CLI's role registry, tools or concurrency limit. Do not require a
+restart merely to follow updated instructions, or claim a runtime reload without
+checking it. Use `/subagents` to inspect threads where supported.
 
-Describe the actual task. For example:
+The configured limit is `agents.max_concurrent_threads_per_session = 7`, excluding
+the primary coordinator; lower host/runtime limits still apply. Schedule in waves
+and use transparent report relays when needed. Inherit model/settings/permissions;
+no separate SDK, provider, daemon or service is required by this instruction workflow.
 
-> Investigate the rear-wheel discrepancy using the configured evaluation analysts
-> in parallel. Start with existing evidence. Give each analyst a separate report
-> directory and return a combined diagnosis before making production changes.
+For example:
 
-For a complete change:
+> Audit this change with inspector, implement the supported fixes with implementer,
+> and use the relevant evaluation analysts. Repeat until the specified checks pass;
+> have summarizer report each iteration's criteria to coordinator and recorder retain
+> accepted material progress.
 
-> Use the project multi-agent workflow to implement [specific change]. Have the
-> relevant analysts establish the current behavior, assign the code change to
-> implementer, evaluate the changed behavior, then have summarizer summarize the
-> verified result. Have recorder check and record any material unrecorded progress.
-
-For one component:
-
-> Delegate analysis of [log stem] to deploy_evaluation_analyst, then have summarizer
-> produce a short evidence-based summary. No new hardware run is needed.
-
-Use `/subagents` to inspect/switch between spawned threads; steer or stop them by
-asking the main coordinator. You can ask for a particular role explicitly or let
-the repository guidance select the relevant specialists. Small questions and
-simple edits can remain in the main session. You do not need to create multiple
-independent CLI sessions.
-
-The project sets `agents.enabled = true` and
-`agents.max_concurrent_threads_per_session = 6`, excluding the primary session.
-That is a ceiling, not a request to spawn everyone. Host/runtime limits still
-apply; run independent assignments in waves if fewer slots are available. The
-summarizer normally runs after the specialists; recorder follows accepted results
-before the coordinator concludes. Roles activate as needed, not as persistent processes.
-
-## Assignment and handoff
-
-The coordinator supplies each specialist with:
-
-- Objective and completion criteria, including the requested task/version.
-- Source revision or snapshot, relevant evidence paths, checkpoint/config and
-  known physical conditions. Missing facts remain explicit.
-- Owned output paths and allowed edits. Use a new run directory for each analysis.
-- Validation and run scope, seed/sample budget, device/CPU allocation and any
-  already authorized hardware operations.
-- Dependencies and what must be returned before the next step starts.
-
-Specialists return: **result, evidence paths, exact conditions/commands, completed
-sample counts, checks performed, limitations and proposed next action**. Label
-proposed, implemented, tested offline, evaluated and hardware-measured status.
-
-A typical order is independent baseline analysis, coordinator review, scoped
-implementation, relevant evaluation, summarization, then recording. Not every task needs
-every stage. Analysts can create analysis helpers in their new report directories;
-runtime fixes belong to the implementer. If code changes during analysis, retain
-the analyzed revision/hash and recheck affected conclusions against the new code.
-
-## Shared resources and evidence
-
-- Keep one writer per source file and one writer for each report directory.
-  Parallel source changes require disjoint ownership or explicitly assigned Git
-  worktrees; worktrees still share GPU and hardware resources.
-- The coordinator schedules GPU evaluations and CPU workers. Do not start an
-  extra training job or contend with existing jobs merely to use all agent slots.
-- Deployment analysis is offline by default. A live operation requires an
-  assignment within the user's existing authorization and exclusive ownership of
-  the relevant command channel. Do not ask again for authorization already given.
-  Configuring agents does not itself authorize motor movement.
-- Preserve raw logs, checkpoints, training artifacts and prior reports. The
-  current Isaac evaluator writes beside the checkpoint: inspect its behavior and
-  use a hash-verified checkpoint copy in the assigned run directory. Verify the
-  current MuJoCo policy contract before selecting a checkpoint.
-- Inspect current source and matching experiment metadata before applying dated
-  progress conclusions. Roles deliberately do not fix motor gains, rates,
-  friction coefficients or checkpoint names as universal defaults.
-- Distinguish nominal and observed timing; policy inference, target updates,
-  controller calculations and physics stepping; commands, fresh feedback and
-  physical execution; and simulated versus hardware evidence.
-
-## Summaries and progress records
-
-The summarizer receives completed specialist handoffs and produces an evidence-based
-summary. It never edits the progress ledgers. The coordinator automatically delegates
-to `recorder` before concluding completed substantive work, and at useful completed
-milestones in long tasks. A separate recording request is not required. Recorder is
-the sole writer of `progress_record.md` and `progress_record.txt`; the coordinator
-independently reviews its diff and preservation checks.
-
-Recorder verifies claims against disk, searches both ledgers for previous coverage,
-and records only material unrecorded findings, progress, conclusions and limitations.
-If nothing is new, it leaves both files byte-identical and returns a no-op. Repeated
-checks and trivial exchanges do not create entries. Missing coverage in only one
-ledger is synchronized without duplicating the other. An explicit user instruction
-against recording or file changes overrides this automatic workflow.
-
-Automatic means the coordinator invokes the agent within an active task. This setup
-does not install a background daemon, filesystem watcher or scheduled job, and does
-not record work performed outside a participating Codex session by itself. Updating
-the ledgers does not recursively trigger another recording pass.
-
-Read both latest ledgers, deduplicate, preserve previous content, append numbered
-dated Markdown entries in the appropriate part and dated TXT paragraphs in its
-existing format. Do not append Trackstand entries after the Markdown footer or
-rewrite historical conclusions to look current. Record supersession explicitly.
-Temporary backups/checks belong outside the repository, such as a task directory
-under `/tmp`. Capture ledger hashes and recheck before writing; if either file
-changed concurrently, return a conflict rather than overwrite another writer.
-Distinguish proposed/implemented/offline-tested/evaluated/hardware-measured/pending
-status, retain failed checks and uncertainty, and avoid presenting historical
-validation as freshly executed.
-
-## Installation validation
-
-Validate all TOML files and referenced paths, then use the installed CLI's strict
-configuration check from the repository root:
+Validate TOML and paths, then inspect startup using the installed CLI:
 
 ```bash
 codex --strict-config app-server --print-startup-config
 ```
 
-This checks configuration startup; it does not run a model, simulation or hardware
-test. Confirm role discovery in a fresh session before delegating real work.
-
+Configuration checks do not establish evaluation or hardware performance. Confirm
+role discovery for the process being tested without claiming every role has executed.
 References: [official subagent documentation](https://learn.chatgpt.com/docs/agent-configuration/subagents)
 and [project configuration/trust](https://learn.chatgpt.com/docs/config-file/config-basic).

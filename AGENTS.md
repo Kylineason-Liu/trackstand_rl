@@ -44,41 +44,56 @@ Recent commits use concise imperative subjects, often naming the affected model 
 
 ## Codex Multi-Agent Workflow
 
-The root Codex session acts as `main_coordinator`. For substantial implementation,
-evaluation, or cross-component audits, delegate applicable independent work to
-these project roles; small questions and simple edits may stay in the main session.
-Read `docs/codex_multi_agent.md` for handoffs, evidence and resource ownership.
+The root Codex session acts as `main_coordinator`. Read
+`docs/codex_multi_agent.md` for the assignment/report contract and loop protocol.
+Classify substantial user work and route only applicable tasks:
 
-| Role | Responsibility |
+| Task | Agent |
 | --- | --- |
-| `main_coordinator` | Scope, assignments, evidence review, shared-resource scheduling and final response |
-| `implementer` | Assigned production-code changes and focused tests |
-| `isaaclab_evaluation_analyst` | Isaac Lab evaluation and simulation evidence |
-| `mujoco_evaluation_analyst` | MuJoCo evaluation, survival statistics and sim-to-sim analysis |
-| `deploy_evaluation_analyst` | Deployment/bench logs, CAN/ROS telemetry and motor response |
-| `summarizer` | Final evidence synthesis and factual handoff for recording |
-| `recorder` | Automatically record material unrecorded findings, progress and conclusions in both ledgers |
+| Code/configuration/protocol/methodology audits | `inspector` |
+| Implementation and focused tests | `implementer` |
+| Isaac Lab evaluation or evaluation analysis | `isaaclab_evaluation_analyst` |
+| MuJoCo evaluation or evaluation analysis | `mujoco_evaluation_analyst` |
+| Deployment evaluation or analysis | `deploy_evaluation_analyst` |
+| Collect worker reports, synthesize criteria and final report | `summarizer` |
+| Automatically record accepted material progress in both ledgers | `recorder` |
 
-Role definitions live in `.codex/agents/*.toml`; settings live in `.codex/config.toml`.
-Do not spawn a redundant coordinator or all roles for every task. Specialists
-report to the main coordinator; delegate further only when explicitly assigned.
-Give each assignment a bounded objective, evidence inputs, owned output paths,
-validation scope and resource allocation. Parallel work must have disjoint writes.
-Analysts own new report artifacts/helpers; runtime fixes go to the implementer.
-The recorder is the sole writer of both progress ledgers; summarizer does not edit
-them. Before concluding completed substantive work, the coordinator automatically
-delegates to recorder to check and append material unrecorded findings, progress
-and conclusions in both existing formats, then reviews its diff and preservation
-checks. No separate recording request is needed. Record completed milestones
-during long tasks when useful. If nothing material is new, leave both files
-unchanged; do not record trivial exchanges or repeated checks. Explicit user
-instructions against recording or file changes take precedence. Recorder runs
-within the task workflow, not as an independent background watcher.
+Before delegation, coordinator identifies `single_pass` or `iterative` intent,
+defines the target and required acceptance criteria, and gives summarizer the
+expected task/report set and iteration/candidate identity. Workers parse their
+assignments, do their owned work and send complete evidence/criteria reports to
+the designated summarizer, with coordinator delivery receipts. When peer messaging
+or slots are unavailable, coordinator explicitly relays full reports and verifies
+delivery. Missing reports and unrun/stale checks cannot silently become passes.
 
-Read current source and matching raw metadata before applying dated progress
-conclusions. Return evidence paths, exact commands/conditions, completed sample
-counts, verification and limitations. Preserve raw inputs and prior reports.
-The coordinator schedules shared GPU/CPU jobs and any already authorized live
-hardware operations; deployment analysis is offline by default. Worktrees do not
-isolate GPUs or CAN. Role instructions inherit session permissions and do not
-authorize additional hardware operations.
+In iterative work, summarizer returns a criterion table, conclusions and a
+continue/achieved/blocked recommendation; coordinator judges whether the target
+is achieved. If unmet, coordinator assigns the next focused improvement and
+revalidation. Reuse threads/iterations rather than recursively spawning new
+coordinators. Never weaken criteria or equate stopping/blocked work with success.
+In single-pass work, summarizer authors the final user-ready report. The root
+relays it after recording because only the root delivers the CLI user-facing
+final; do not produce a competing synthesis. Small questions can stay in root.
+
+There are eight configured roles: one coordinator and seven subagent roles.
+Role definitions live in `.codex/agents/*.toml`; settings live in
+`.codex/config.toml`. Do not spawn redundant coordinators or all roles for every
+task. Give bounded objectives, evidence inputs, owned paths, validation scope,
+resources and dependencies. Parallel writes must be disjoint. Analysts own new
+report artifacts/helpers; implementer owns assigned production fixes. Inspector
+owns audits and assigned new audit reports, not production code changes.
+
+Recorder alone writes both progress ledgers; summarizer never edits them. Before
+concluding substantive completed work, coordinator automatically passes accepted
+summaries/decisions to recorder, then reviews its diff and preservation checks.
+No separate recording request is needed. Record useful completed milestones;
+no-op if nothing material is new, and do not recursively record recording itself.
+Explicit user no-record/read-only instructions take precedence. Recorder has no
+loop-control authority and is task-bound, not an independent background watcher.
+
+Read current source and matching metadata before applying dated conclusions.
+Return exact commands/conditions, evidence, completed sample counts, criterion
+data/status and limitations. Preserve raw inputs, prior reports and user changes.
+Coordinator schedules shared GPU/CPU and already authorized live hardware work;
+deployment analysis is offline by default. Worktrees do not isolate GPU/CAN.
+All roles inherit session permissions and do not grant hardware authorization.

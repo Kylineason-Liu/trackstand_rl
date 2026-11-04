@@ -1,0 +1,38 @@
+{
+  "passed": true,
+  "policy_samples": 1500,
+  "physics_intervals": 36000,
+  "actual_state_rows": 36001,
+  "full_duration_s": 30.0,
+  "first_episode_completed": true,
+  "completed_episodes_all_envs": 64,
+  "termination_counts": {
+    "time_out": 64,
+    "fallen": 0,
+    "diverged": 0,
+    "drifted": 0,
+    "yaw_deviation": 0,
+    "wheel_net": 0
+  },
+  "initial_native_joint_position_rad": [
+    0.0,
+    0.0
+  ],
+  "initial_joint_velocity_rad_s": [
+    0.0,
+    0.0
+  ],
+  "initial_integral_torque_nm": 0.0,
+  "target_hold_exact": true,
+  "CSV_velocity_and_targets_float32_exact": true,
+  "maximum_motor_equation_error_nm": 0.0,
+  "maximum_effort_clip_error_nm": 0.0,
+  "maximum_submitted_vs_applied_error_nm": 0.0,
+  "maximum_integral_hold_error_nm": 0.0,
+  "rear_integral_max_abs_nm": 0.23514604568481445,
+  "physics_actual_velocity_peak_rad_s": [
+    17.30059814453125,
+    1.9312330484390259
+  ],
+  "all_original_inputs_preserved": true
+}

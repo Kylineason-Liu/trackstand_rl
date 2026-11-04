@@ -1,0 +1,30 @@
+{
+  "task": "Trackstand-Balance-v2",
+  "checkpoint_source": "/home/lmbike/trackstand_rl/isaaclab_train/logs/rsl_rl/trackstand_rl_v2_rsl/2026-11-02_21-49-32/model_26600.pt",
+  "checkpoint_copy": "/home/lmbike/trackstand_rl/isaaclab_train/reports/20261103_v2_26600_replay_capture/model_26600.pt",
+  "checkpoint_sha256": "5733e489490c6688c45085970fef46b62d1fe96a90fb7e5035c3b0de5699af7b",
+  "recorder_sha256": "175bbbe2825b989dbbfa6d00e0b5c9d14168dddca2490bee1e37aa99eecd2c45",
+  "repository_commit": "93fd7ce625a107adf727e4b4afda24081f0bdfe0",
+  "repository_status": " M progress_record.md\n M progress_record.txt\n m ros2_ws\n m \"tsinghua_bike_project/assign_2_Hardwares/assign_2_Hardwares/1.IMU/Supplementary Materials/\\346\\272\\220\\347\\240\\201/ROS\\345\\272\\224\\347\\224\\250/ROS2/yahboomcar_ws/src/robot_localization\"\n?? isaaclab_train/reports/20261103_v2_26600_replay_capture/\n?? mujoco_sim2sim/README_v2.md\n?? mujoco_sim2sim/reports/20261103_v2_parallel_backend/\n?? mujoco_sim2sim/requirements_v2.txt\n?? mujoco_sim2sim/scripts/run_deploy_eval_v2.py\n?? mujoco_sim2sim/scripts/run_deploy_viewer_v2.py\n?? mujoco_sim2sim/src/newbike_mujoco_v2/\n?? mujoco_sim2sim/tests/test_v2_contract.py\n?? mujoco_sim2sim/tests/test_v2_runtime.py\n",
+  "arguments": {
+    "num_envs": 64,
+    "seed": 42,
+    "duration": 30.0,
+    "device": "cuda:0",
+    "prepare_only": false
+  },
+  "invocation": [
+    "reports/20261103_v2_26600_replay_capture/record_capture.py",
+    "--num-envs",
+    "64",
+    "--seed",
+    "42",
+    "--duration",
+    "30",
+    "--device",
+    "cuda:0"
+  ],
+  "source_files": 86,
+  "original_run_files": 542,
+  "capture_completed": false
+}

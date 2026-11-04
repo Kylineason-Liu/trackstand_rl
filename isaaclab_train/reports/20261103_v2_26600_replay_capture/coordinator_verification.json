@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "policy_samples": 1500,
+  "physics_intervals": 36000,
+  "original_input_manifests_equal": true,
+  "reference_copies_byte_identical": true,
+  "initial_state_zero": true,
+  "all64_timeout": true,
+  "motor_equations_bit_exact": true,
+  "clipped_and_submitted_torque_bit_exact": true,
+  "real_hardware_run": false,
+  "current_original_run_files_hash_verified": 542,
+  "current_training_inputs_hash_verified": 86,
+  "replay_code_offline_validation": {
+    "script": "deploy/experiments/v2_motor_replay.py",
+    "script_sha256": "a5eaa6cc2e8185960d4a0c86323f09a1db0161fe82661e848fcfef210f7934d4",
+    "unit_tests_passed": 16,
+    "unit_test_command": "PYTHONDONTWRITEBYTECODE=1 python3 -B -m unittest discover -s /home/lmbike/trackstand_rl/deploy/experiments/tests -p test_v2_motor_replay.py -v",
+    "unit_test_cwd": "/tmp",
+    "pyflakes_passed": true,
+    "preview_prefix_targets": 500,
+    "preview_duration_s": 10,
+    "real_CAN_opened": false,
+    "hardware_validation": "pending"
+  }
+}

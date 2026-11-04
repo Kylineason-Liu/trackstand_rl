@@ -1,0 +1,78 @@
+{
+  "task": "Trackstand-Balance-v2",
+  "checkpoint_source": "/home/lmbike/trackstand_rl/isaaclab_train/logs/rsl_rl/trackstand_rl_v2_rsl/2026-11-02_21-49-32/model_26600.pt",
+  "checkpoint_copy": "/home/lmbike/trackstand_rl/isaaclab_train/reports/20261103_v2_26600_replay_capture/model_26600.pt",
+  "checkpoint_sha256": "5733e489490c6688c45085970fef46b62d1fe96a90fb7e5035c3b0de5699af7b",
+  "recorder_sha256": "175bbbe2825b989dbbfa6d00e0b5c9d14168dddca2490bee1e37aa99eecd2c45",
+  "repository_commit": "93fd7ce625a107adf727e4b4afda24081f0bdfe0",
+  "repository_status": " M progress_record.md\n M progress_record.txt\n m ros2_ws\n m \"tsinghua_bike_project/assign_2_Hardwares/assign_2_Hardwares/1.IMU/Supplementary Materials/\\346\\272\\220\\347\\240\\201/ROS\\345\\272\\224\\347\\224\\250/ROS2/yahboomcar_ws/src/robot_localization\"\n?? isaaclab_train/reports/20261103_v2_26600_replay_capture/\n?? mujoco_sim2sim/README_v2.md\n?? mujoco_sim2sim/reports/20261103_v2_parallel_backend/\n?? mujoco_sim2sim/requirements_v2.txt\n?? mujoco_sim2sim/scripts/run_deploy_eval_v2.py\n?? mujoco_sim2sim/scripts/run_deploy_viewer_v2.py\n?? mujoco_sim2sim/src/newbike_mujoco_v2/\n?? mujoco_sim2sim/tests/test_v2_contract.py\n?? mujoco_sim2sim/tests/test_v2_runtime.py\n",
+  "arguments": {
+    "num_envs": 64,
+    "seed": 42,
+    "duration": 30.0,
+    "device": "cuda:0",
+    "prepare_only": false
+  },
+  "invocation": [
+    "reports/20261103_v2_26600_replay_capture/record_capture.py",
+    "--num-envs",
+    "64",
+    "--seed",
+    "42",
+    "--duration",
+    "30",
+    "--device",
+    "cuda:0"
+  ],
+  "source_files": 86,
+  "original_run_files": 542,
+  "capture_completed": true,
+  "num_envs": 64,
+  "recorded_environment": 0,
+  "recorded_episode": 1,
+  "completed_policy_steps": 1500,
+  "captured_duration_s": 30.0,
+  "physics_samples": 36000,
+  "policy_hz": 50.0,
+  "physics_hz": 1200.0,
+  "integral_hz": 200.0,
+  "policy_dt_s": 0.02,
+  "physics_dt_s": 0.0008333333333333334,
+  "decimation": 24,
+  "dr": false,
+  "observation_white_noise": true,
+  "termination_names": [
+    "time_out",
+    "fallen",
+    "diverged",
+    "drifted",
+    "yaw_deviation",
+    "wheel_net"
+  ],
+  "motor_order": [
+    "steering",
+    "rear"
+  ],
+  "target_units": [
+    "rad",
+    "rad/s"
+  ],
+  "target_meaning": [
+    "held steering position after clip and 50-Hz slew",
+    "held rear velocity after scale and clip"
+  ],
+  "body_columns": [
+    "roll_rad",
+    "drift_m",
+    "relative_yaw_rad"
+  ],
+  "timing": "Commands at physics-step start, response at step end before automatic reset",
+  "raw_archive_sha256": "3695e6331b646c1d2da8640c3dbb7e69564fe1dd04b41ba56e21d9c2c43bfbb9",
+  "wall_time_s": 195.68714764690958,
+  "versions": {
+    "python": "3.12.13",
+    "torch": "2.10.0+cu128",
+    "isaaclab": "7.2.0",
+    "rsl_rl": "5.0.1"
+  }
+}

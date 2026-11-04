@@ -1,0 +1,21 @@
+test_integral_prime_retention_antiwindup_and_error_correction (test_v2_motor_replay.EncodingAndStateTests) ... ok
+test_mit_send_invalidates_disabled_state (test_v2_motor_replay.EncodingAndStateTests) ... ok
+test_rear_internal_velocity_p_and_external_i_sign (test_v2_motor_replay.EncodingAndStateTests) ... ok
+test_signed_units_and_multiturn_rollover (test_v2_motor_replay.EncodingAndStateTests) ... ok
+test_steering_absolute_zero_sign_and_gains (test_v2_motor_replay.EncodingAndStateTests) ... ok
+test_bad_hash_and_bounded_but_wrong_held_target_are_rejected (test_v2_motor_replay.ReferenceTests) ... ok
+test_no_later_start_and_no_out_of_range_duration (test_v2_motor_replay.ReferenceTests) ... ok
+test_preview_never_opens_can_or_creates_output (test_v2_motor_replay.ReferenceTests) ... ok
+test_real_reference_full_and_prefix (test_v2_motor_replay.ReferenceTests) ... ok
+test_delays_skip_anchored_slots_without_stretch_or_burst (test_v2_motor_replay.SchedulingTests) ... ok
+test_integral_200hz_independent_of_50_or_400hz_packets (test_v2_motor_replay.SchedulingTests) ... ok
+test_large_epoch_exact_boundaries_do_not_repeat_previous_target (test_v2_motor_replay.SchedulingTests) ... ok
+test_measured_overspeed_fault_and_unexpected_B1_are_fatal (test_v2_motor_replay.SetupCleanupTests) ... ok
+test_primary_failure_retained_even_if_cleanup_fails (test_v2_motor_replay.SetupCleanupTests) ... ok
+test_retained_CF_mode_requires_inactive_F1 (test_v2_motor_replay.SetupCleanupTests) ... ok
+test_setup_B1_once_software_rear_zero_and_journal_before_writes (test_v2_motor_replay.SetupCleanupTests) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.146s
+
+OK

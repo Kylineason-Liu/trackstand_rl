@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/home/lmbike/trackstand_rl/deploy/experiments/reports/20261104_v2_motor_replay_audit/audit_replay.py", line 211, in <module>
+    assert r["target_index"] == index
+AssertionError

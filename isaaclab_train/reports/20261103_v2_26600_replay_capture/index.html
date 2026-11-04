@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IsaacLab v2 model_26600 — no-DR replay capture</title>
+  <style>
+    body { max-width: 1400px; margin: 2rem auto; padding: 0 1rem; font: 16px/1.5 system-ui, sans-serif; color: #18202a; }
+    img { width: 100%; height: auto; border: 1px solid #ddd; }
+    a { color: #175b9b; }
+    figure { margin: 2rem 0; }
+    code { background: #f0f3f5; padding: .1rem .3rem; }
+  </style>
+</head>
+<body>
+  <h1>IsaacLab v2 model_26600 — no-DR replay reference</h1>
+  <p>Seed 42; env 0, episode 1. All 64 environments reached 30 seconds.
+  Policy/targets 50 Hz, physics/PD 1200 Hz, rear integral 200 Hz.</p>
+  <p>Commands are <strong>steering position + rear velocity</strong>.
+  Steering velocity is measured response, not a policy target. Replay the
+  continuous 0–10 s prefix to retain startup and controller history.</p>
+  <p><a href="README.md">Report and reproduction command</a> ·
+  <a href="policy_targets_50hz.csv">Held commands (CSV)</a> ·
+  <a href="joint_velocity_reference_1200hz.csv">Actual states (CSV)</a> ·
+  <a href="reference_metadata.json">Reference metadata</a> ·
+  <a href="verification.json">Verification</a></p>
+  <figure><figcaption>Full 30-second episode — <a href="capture_full_episode.pdf">PDF</a></figcaption>
+  <img src="capture_full_episode.png" alt="Full episode with motor targets, actual responses and rear PI torque"></figure>
+  <figure><figcaption>Startup — <a href="capture_startup.pdf">PDF</a></figcaption>
+  <img src="capture_startup.png" alt="Startup motor command and response traces"></figure>
+  <figure><figcaption>Recommended 0–10 s replay prefix — <a href="capture_replay_first10s.pdf">PDF</a></figcaption>
+  <img src="capture_replay_first10s.png" alt="Startup and smaller ongoing balancing motion in the first ten seconds"></figure>
+  <figure><figcaption>Later balancing — <a href="capture_later_balancing.pdf">PDF</a></figcaption>
+  <img src="capture_later_balancing.png" alt="Later balancing motor command and response traces"></figure>
+  <p>Red lines mark spawn. These are simulation records; hardware response has not been measured by this capture.</p>
+</body>
+</html>

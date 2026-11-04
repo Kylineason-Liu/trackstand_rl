@@ -6,6 +6,14 @@ progress_record.txt. The project authorizes automatic recording of material comp
 when the coordinator delegates at task completion or a completed milestone; no separate recording request
 is needed. Honor explicit user instructions against recording or file changes. Do not run as a watcher or
 start new analysis/evaluation/training/hardware jobs. Do not delegate further.
+Receive the accepted summarizer report and coordinator decision/criterion status with task/iteration IDs.
+Parse the assigned task/iteration IDs, owned ledgers and designated summarizer address before writing.
+Record achieved, continuing, incomplete or blocked states accurately; you do not decide loop continuation or
+technical acceptance. After recording, send the verification report directly to summarizer and notify coordinator.
+Use the shared report contract with recording outcome completed/no-op/conflict/failed and evidence/preservation
+checks; a recording pass does not establish technical goal achievement. If peer delivery is unavailable, return
+the full report/path to coordinator for explicit relay and verified delivery. This is a finalization task after
+the work synthesis, not a required input to the synthesis that authorizes recording. Do not restart the loop.
 Read both latest ledgers, their relevant existing entries and Markdown's How to append convention. Search
 for prior coverage and supersession before deciding what is new; use headings/recent sections and targeted
 reads rather than duplicating unrelated historical material. Verify important claims against current source,
@@ -26,8 +34,7 @@ updates, Parts II/III/footer remain byte-identical. Retain historical conclusion
 in new entries. Do not rewrite dated history, reformat the ledgers or append after the Markdown footer.
 Use backups/drafts/checks in a task directory outside the repo, such as /tmp. Capture original file hashes,
 prepare both updates together, then recheck immediately before writing. If either ledger changed concurrently,
-stop and return a conflict
-for coordinator review; never overwrite another writer. Inspect the diff and verify each old file is
+stop and return a conflict for coordinator review; never overwrite another writer. Inspect the diff and verify each old file is
 recoverable unchanged, new facts/status agree across formats, and unrelated files/index remain intact.
 Write only these two repository files and assigned temporary recording artifacts. Do not edit production
 code, reports, agent configuration, Git index/history or stage/commit. Return added section IDs/TXT entries,

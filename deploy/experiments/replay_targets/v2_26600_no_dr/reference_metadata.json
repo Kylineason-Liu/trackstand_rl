@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "task": "Trackstand-Balance-v2",
+  "model": "model_26600.pt",
+  "checkpoint_sha256": "5733e489490c6688c45085970fef46b62d1fe96a90fb7e5035c3b0de5699af7b",
+  "seed": 42,
+  "dr": false,
+  "num_envs": 64,
+  "environment_index": 0,
+  "episode_index": 1,
+  "duration_s": 30.0,
+  "policy_hz": 50.0,
+  "physics_hz": 1200.0,
+  "integral_hz": 200.0,
+  "initial_native_joint_position_rad": {
+    "steering": 0.0,
+    "drive": 0.0
+  },
+  "initial_joint_velocity_rad_s": {
+    "steering": 0.0,
+    "drive": 0.0
+  },
+  "initial_integral_torque_nm": 0.0,
+  "steering_target_reference": "Isaac steering_joint position; reset initial coordinate recorded above",
+  "velocity_reference": "Isaac joint coordinates; physical direction requires verified hardware sign mapping",
+  "policy_target_columns": [
+    "time_s",
+    "raw_steering_action",
+    "raw_drive_action",
+    "scaled_steering_position_rad",
+    "held_steering_position_target_rad",
+    "drive_velocity_target_rad_s"
+  ],
+  "policy_target_samples": 1500,
+  "policy_target_first_time_s": 0.0,
+  "policy_target_last_time_s": 29.98,
+  "policy_target_coverage_end_s": 30.0,
+  "state_reference_columns": [
+    "time_s",
+    "steering_velocity_rad_s",
+    "drive_velocity_rad_s",
+    "steering_position_rad",
+    "drive_position_rad"
+  ],
+  "state_reference_samples": 36001,
+  "state_reference_first_time_s": 0.0,
+  "state_reference_last_time_s": 30.0,
+  "replay_command_columns": [
+    "held_steering_position_target_rad",
+    "drive_velocity_target_rad_s"
+  ],
+  "replay_command_meanings": [
+    "postclip/post-slew steering position, rad",
+    "held rear velocity target, rad/s"
+  ],
+  "recommended_replay_start_s": 0.0,
+  "recommended_replay_duration_s": 10.0,
+  "recommendation_basis": "0\u20131 s initial transient; 5\u201310 s lower-amplitude ongoing balancing, not zero motion",
+  "window_statistics": {
+    "0_1_s": {
+      "target_min": [
+        -0.5215870141983032,
+        -1.7774732112884521
+      ],
+      "target_max": [
+        -0.38667628169059753,
+        1.3907901048660278
+      ],
+      "actual_velocity_rms_rad_s": [
+        2.0625622272491455,
+        1.1782571077346802
+      ],
+      "actual_velocity_peak_rad_s": [
+        17.30059814453125,
+        1.9312330484390259
+      ]
+    },
+    "1_2_s": {
+      "target_min": [
+        -0.44098252058029175,
+        -1.0752562284469604
+      ],
+      "target_max": [
+        -0.3143951892852783,
+        0.625575065612793
+      ],
+      "actual_velocity_rms_rad_s": [
+        0.257787823677063,
+        0.5342591404914856
+      ],
+      "actual_velocity_peak_rad_s": [
+        0.7758468389511108,
+        0.9689937233924866
+      ]
+    },
+    "2_5_s": {
+      "target_min": [
+        -0.4131126403808594,
+        -0.9037866592407227
+      ],
+      "target_max": [
+        -0.2793734073638916,
+        1.1166210174560547
+      ],
+      "actual_velocity_rms_rad_s": [
+        0.39899468421936035,
+        0.3795472979545593
+      ],
+      "actual_velocity_peak_rad_s": [
+        1.6935418844223022,
+        0.8915976881980896
+      ]
+    },
+    "5_10_s": {
+      "target_min": [
+        -0.4220844507217407,
+        -1.0452111959457397
+      ],
+      "target_max": [
+        -0.26291757822036743,
+        1.306628704071045
+      ],
+      "actual_velocity_rms_rad_s": [
+        0.4486270248889923,
+        0.39735502004623413
+      ],
+      "actual_velocity_peak_rad_s": [
+        1.7623629570007324,
+        1.0443090200424194
+      ]
+    },
+    "10_15_s": {
+      "target_min": [
+        -0.4199736714363098,
+        -0.9007612466812134
+      ],
+      "target_max": [
+        -0.26852092146873474,
+        1.2915970087051392
+      ],
+      "actual_velocity_rms_rad_s": [
+        0.41565147042274475,
+        0.36535441875457764
+      ],
+      "actual_velocity_peak_rad_s": [
+        1.5841678380966187,
+        1.0124982595443726
+      ]
+    },
+    "15_20_s": {
+      "target_min": [
+        -0.42396456003189087,
+        -1.030436396598816
+      ],
+      "target_max": [
+        -0.2562408745288849,
+        1.4413634538650513
+      ],
+      "actual_velocity_rms_rad_s": [
+        0.44548937678337097,
+        0.39973247051239014
+      ],
+      "actual_velocity_peak_rad_s": [
+        1.9261668920516968,
+        1.1446374654769897
+      ]
+    },
+    "20_30_s": {
+      "target_min": [
+        -0.4252227246761322,
+        -1.1711559295654297
+      ],
+      "target_max": [
+        -0.2526855170726776,
+        1.532970905303955
+      ],
+      "actual_velocity_rms_rad_s": [
+        0.4667242765426636,
+        0.4133242666721344
+      ],
+      "actual_velocity_peak_rad_s": [
+        1.8870961666107178,
+        1.2342287302017212
+      ]
+    }
+  },
+  "files": {
+    "motor_samples.npz": {
+      "sha256": "3695e6331b646c1d2da8640c3dbb7e69564fe1dd04b41ba56e21d9c2c43bfbb9"
+    },
+    "policy_targets_50hz.csv": {
+      "sha256": "b22edd5b10bb64614878dc343dc1c44bddff2a6ff2bd4ef336aaf9034836cbb8"
+    },
+    "joint_velocity_reference_1200hz.csv": {
+      "sha256": "5e23cf0aabf9e5b19974100cd618c0abf6c653d6e6986bd036c9c2f898c46b85"
+    },
+    "motor_physics_1200hz.csv": {
+      "sha256": "bf46c4578f369761fa2cf54423f3c1b88fb8c9dc6437be20f3db2f4dbd99d668"
+    },
+    "experiment.json": {
+      "sha256": "690b50381907321962026f2d5b6ca17520305dccf7c36d7d7c072f9a0b29e01c"
+    }
+  }
+}
