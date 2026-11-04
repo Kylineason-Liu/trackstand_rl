@@ -1,0 +1,52 @@
+figure,panel,run,metric,value
+episode_length,isaac_nodr,2L-yaw,len_s,30.0
+episode_length,isaac_dr,2L-yaw,len_s,25.35
+episode_length,mujoco_nodr,2L-yaw,len_s,13.12
+episode_length,mujoco_dr,2L-yaw,len_s,5.39
+episode_length,isaac_nodr,2L-noyaw,len_s,30.0
+episode_length,isaac_dr,2L-noyaw,len_s,29.55
+episode_length,mujoco_nodr,2L-noyaw,len_s,13.077
+episode_length,mujoco_dr,2L-noyaw,len_s,5.853
+episode_length,isaac_nodr,v3-noyaw,len_s,30.0
+episode_length,isaac_dr,v3-noyaw,len_s,29.03
+episode_length,mujoco_nodr,v3-noyaw,len_s,3.282
+episode_length,mujoco_dr,v3-noyaw,len_s,3.992
+episode_length,mujoco_nodr,v3-yaw,len_s,1.232
+episode_length,mujoco_dr,v3-yaw,len_s,1.554
+behaviour,Isaac DR on: heading turned per episode (deg),2L-Base,value,142.7
+behaviour,Isaac DR on: heading turned per episode (deg),v3,value,1097.5
+behaviour,Isaac DR on: mean drift from spawn (m),2L-Base,value,0.343
+behaviour,Isaac DR on: mean drift from spawn (m),v3,value,0.056
+behaviour,MuJoCo DR off: mean |steering angle| (deg),2L-Base,value,14.0516
+behaviour,MuJoCo DR off: mean |steering angle| (deg),v3,value,55.1855
+behaviour,MuJoCo DR off: mean |yaw rate| (rad/s),2L-Base,value,0.1243
+behaviour,MuJoCo DR off: mean |yaw rate| (rad/s),v3,value,0.626
+behaviour,MuJoCo DR off: steering jitter |Δa| per step,2L-Base,value,0.0311
+behaviour,MuJoCo DR off: steering jitter |Δa| per step,v3,value,0.2617
+training_reward_per_alive_s,drift_gauss,2L-Base (v1),value,0.727
+training_reward_per_alive_s,yaw_penalty,2L-Base (v1),value,0.0
+training_reward_per_alive_s,heading+drift,2L-Base (v1),value,0.727
+training_reward_per_alive_s,survival,2L-Base (v1),value,5.0187
+training_reward_per_alive_s,rate_penalty,2L-Base (v1),value,-0.0053
+training_reward_per_alive_s,ep_len,2L-Base (v1),value,1064.0906
+training_reward_per_alive_s,drift_gauss,v3,value,1.8237
+training_reward_per_alive_s,yaw_penalty,v3,value,-0.8044
+training_reward_per_alive_s,heading+drift,v3,value,1.0193
+training_reward_per_alive_s,survival,v3,value,4.995
+training_reward_per_alive_s,rate_penalty,v3,value,-0.0208
+training_reward_per_alive_s,ep_len,v3,value,1435.6066
+mujoco_terminations_noyaw,"2L-Base, DR off",fallen,share_pct,22.14
+mujoco_terminations_noyaw,"2L-Base, DR off",drifted,share_pct,70.23
+mujoco_terminations_noyaw,"2L-Base, DR off",wheel_net,share_pct,8.02
+mujoco_terminations_noyaw,"2L-Base, DR off",time_out,share_pct,1.53
+mujoco_terminations_noyaw,"v3, DR off",fallen,share_pct,96.97
+mujoco_terminations_noyaw,"v3, DR off",drifted,share_pct,0.45
+mujoco_terminations_noyaw,"v3, DR off",wheel_net,share_pct,4.28
+mujoco_terminations_noyaw,"2L-Base, DR on",fallen,share_pct,45.33
+mujoco_terminations_noyaw,"2L-Base, DR on",drifted,share_pct,13.9
+mujoco_terminations_noyaw,"2L-Base, DR on",wheel_net,share_pct,35.81
+mujoco_terminations_noyaw,"2L-Base, DR on",time_out,share_pct,9.52
+mujoco_terminations_noyaw,"v3, DR on",fallen,share_pct,87.13
+mujoco_terminations_noyaw,"v3, DR on",drifted,share_pct,0.65
+mujoco_terminations_noyaw,"v3, DR on",wheel_net,share_pct,8.71
+mujoco_terminations_noyaw,"v3, DR on",time_out,share_pct,6.63

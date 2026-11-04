@@ -6,6 +6,8 @@ Newest first. Never rewrite earlier entries; write a new file instead.
 
 | Written (HKT) | Summary | Covers |
 |---|---|---|
+| 2026-11-04 01:32 | [trackstand_v3_heading_penalty](2026-11-04_0132_trackstand_v3_heading_penalty.md) | First `Trackstand-Balance-v3` run (`--dr`, seed 42) vs 2L-Base, both without yaw termination: Isaac DR on 29.03 vs 29.55 s, MuJoCo DR off **3.28 vs 13.08 s**, DR on 3.99 vs 5.85 s; v3 learned a spin-in-place pivot (1,098°/episode, 55° bar, 97% MuJoCo falls); weight-2 wrapped penalty is below break-even (drift +1.10/s vs yaw −0.80/s) |
+| 2026-11-04 01:05 | [mujoco_dr_sensitivity](2026-11-04_0105_mujoco_dr_sensitivity.md) | MuJoCo DR sweep (212 runs, 4 `--dr` policies): to match DR off, cut mass/COM/gains/init to 5–10 % of range (recB 89–121 % of DR off, 2 seeds); friction + IMU harmless at full range; mass dominates; effects add up; contract unchanged |
 | 2026-11-04 00:29 | [pi_separate_locomotive_workspace](2026-11-04_0029_pi_separate_locomotive_workspace.md) | Correction to 00:21 §2: Pi `~/trackstand_rl` restored to `main` `f1b1ff1` (650 passed); locomotive in its own clone `~/trackstand_rl_locomotive` @ `9773e1d` (702 passed) |
 | 2026-11-04 00:21 | [locomotive_pi_deploy](2026-11-04_0021_locomotive_pi_deploy.md) | Locomotive stack (`9773e1d`) deployed + built on the Pi; alignment re-check passes; on-Pi tests 702 passed; rank-0 eval recap (flat BSR 99.9%/100%, STE 3.51°/2.38°, MuJoCo gravel 93.2%); not launched live |
 | 2026-11-04 00:09 | [trackstand_5L_no_gain_report](2026-11-04_0009_trackstand_5L_no_gain_report.md) | Full 5-layer vs [32,32] report: matched pair, all 7 variants, training-vs-transfer (r = −0.48), steering, model size; keep [32,32] |

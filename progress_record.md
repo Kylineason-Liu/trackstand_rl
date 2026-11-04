@@ -3322,6 +3322,30 @@ python3 deploy/experiments/drive_mit_velocity_test.py --execute \
 - No live launch, CAN down, no motor writes.
 - Summary: `summaries/2026-11-04_0029_pi_separate_locomotive_workspace.md`.
 
+
+## 312. MuJoCo DR sensitivity: how far each DR term must shrink to match DR off (2026-11-04)
+
+- QUESTION (user): MuJoCo DR on is always much worse than DR off; how much must each DR term be reduced?
+- METHOD: new `mujoco_sim2sim/scripts/dr_sensitivity.py`. It patches `contract` DR ranges per worker (each term scale s: 1 = current range, 0 = off; DR stays enabled, so all configs draw the same RNG stream). Same env/terminations as `run_deploy_eval.py`; 64 envs x 3000 steps, seed 42. Policies: 5L-Norm, 2L-Base, 5L-Base-DriftQuad (DR ablation ONNX) and the Pi default model_2500. 212 runs in `reports/2026-11-03_dr_sensitivity/results.jsonl`. Metric: mean episode length as % of the same policy with DR off; pass >= 90 %.
+- NOISE: DR off, seed 42 vs 43, <= 2 %; DR on with every range at 0, 95-103 %. DR-on seed noise is about +-10 % for 2L-Base/DriftQuad (recSafe 2L-Base 102 % / 77 %).
+- SAFE SCALE PER TERM ALONE (min over policies): friction 1 and IMU 1 (no cut needed); COM 0.25 (2L-Base); gains 0.15 (DriftQuad); mass 0.1 (DriftQuad); init 0.1 (2L-Base). Pi alone: mass 0.15, COM 0.75, gains 0.5, init 0.25.
+- AT FULL RANGE (one term on): mass leaves Pi at 49 % and DriftQuad at 41 %; gains 51 % (DriftQuad), 74 % (Pi); init 48 % (2L-Base), 71 % (Pi); COM 67-88 %.
+- EFFECTS ADD UP: leaving out any one term still gives <= 61 % (all <= 55 % except 5L-Norm). all@0.25 gives 71-103 %. recC (Pi's per-term limits) gives Pi 83 %. recSafe (per-term minimums) passes at seed 42 but fails 2L-Base 77 % / DriftQuad 87 % at seed 43.
+- RESULT: **recB** = mass 0.05, COM 0.1, gains 0.1, init 0.1, friction 1, IMU 1. It reaches 97-121 % (seed 42) and 89-119 % (seed 43) of DR off; Pi 99/100 %, 98 % timeouts. So mass/COM/gains/init must shrink to about 5-10 % of range, effectively off.
+- INTERPRETATION: the same ranges give 17-25 s episodes in Isaac DR on vs 4-6 s in MuJoCo. The gap is MuJoCo-plant sensitivity (falls 36-65 % in `all`), not overly wide DR. No `contract.py` change.
+- RAM: a 22-worker launch (~4 GB/worker) ran the desktop out of memory (Cursor/Firefox crashed). Rerun at 5 workers with a MemAvailable < 12 GB guard; lowest MemAvailable seen 25 GB.
+- Charts: `mujoco_sim2sim/scripts/plot_dr_sensitivity.py`. Summary: `summaries/2026-11-04_0105_mujoco_dr_sensitivity.md`.
+
+## 313. Trackstand-Balance-v3 first run: heading penalty → spin-in-place pivot, worse transfer (2026-11-04)
+
+- RUN: `trackstand_rl_v3_rsl/2026-11-04_00-03-22_dr/model_7499.pt` (`--dr`, 4096 envs, 7,500 updates, seed 42; 00:03 → 01:19 HKT). Pipeline `isaaclab_train/logs/v3_queue/run.sh`; evals 64 envs × 3000 steps, seed 42, finished 01:28.
+- REFERENCE: DR-ablation 2L-Base (v1, same net/PPO/seed) re-evaluated without the yaw termination (Isaac `env.terminations.yaw_deviation=null`, MuJoCo `--no_yaw_termination`).
+- RESULT (mean episode length, s; Isaac DR off / on, MuJoCo DR off / on): v3 30.00 / 29.03 / **3.28** / 3.99; 2L-Base no-yaw 30.00 / 29.55 / **13.08** / 5.85; 2L-Base with yaw (ablation) 30.00 / 25.35 / 13.12 / 5.39; v3 under v1 MuJoCo rules 1.23 / 1.55 (yaw ends 88 % / 55 %).
+- BEHAVIOUR: v3 pivots in place. Isaac DR on: heading turned 1,098°/episode (2L-Base 143°), drift 0.056 m (0.343 m). MuJoCo DR off: |steer| 55° (14°), yaw rate 0.63 (0.12) rad/s, jitter 0.262 (0.031); ends in falls 97 % (DR off) / 87 % (DR on).
+- WHY: per second alive at end of training, drift_gauss +1.82 vs +0.73 for 2L-Base (+1.10), yaw_penalty −0.80 → net +0.29/s for pivoting. The penalty is on wrapped heading, so continuous rotation has a bounded average cost; weight 2.0 is below the ≈2.75 break-even.
+- CONCLUSIONS: removing the yaw termination alone already fixes Isaac (2L-Base 25.35 → 29.55 s); v3 adds nothing there and transfers 4× worse to MuJoCo. The 30° termination was keeping policies out of the large-angle pivot regime, which [32,32] also reaches once it is gone (the 5L runs reached it under the termination). Proposed v4 options, not started: |yaw-rate| or unwrapped-heading penalty, |steer| penalty, or keep the termination plus the penalty.
+- Summary: `summaries/2026-11-04_0132_trackstand_v3_heading_penalty.md`.
+
 ---
 
 # Part II — NewBike balance campaign (pre-trackstand, 2026-08 → 09)

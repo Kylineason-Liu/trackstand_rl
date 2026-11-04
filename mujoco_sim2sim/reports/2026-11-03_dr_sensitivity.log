@@ -143,3 +143,18 @@ START 2026-11-04 00:27:15 workers=5 guard<12GB
 [13/28    281s] Pi-v1-model_2500   only_gains@0.5         len  27.3 s  TO  82%  n=131
 [14/28    283s] Pi-v1-model_2500   only_gains@1           len  22.1 s  TO  67%  n=145
 [15/28    284s] Pi-v1-model_2500   all_except_gains       len   8.1 s  TO  24%  n=298
+[16/28    374s] Pi-v1-model_2500   only_init@0.75         len  23.3 s  TO  77%  n=137
+[17/28    374s] Pi-v1-model_2500   only_init@0.5          len  26.3 s  TO  86%  n=133
+[18/28    375s] Pi-v1-model_2500   only_init@0.25         len  28.7 s  TO  95%  n=128
+[19/28    377s] Pi-v1-model_2500   only_init@1            len  21.4 s  TO  71%  n=144
+[20/28    378s] Pi-v1-model_2500   all_except_init        len  14.9 s  TO  44%  n=185
+[21/28    469s] Pi-v1-model_2500   only_imu@0.5           len  30.0 s  TO  99%  n=128
+[22/28    470s] Pi-v1-model_2500   only_imu@0.25          len  30.0 s  TO 100%  n=128
+[23/28    471s] Pi-v1-model_2500   only_imu@0.75          len  30.0 s  TO 100%  n=128
+[24/28    472s] Pi-v1-model_2500   all_except_imu         len   9.2 s  TO  27%  n=275
+[25/28    473s] Pi-v1-model_2500   only_imu@1             len  30.0 s  TO  99%  n=128
+[26/28    558s] Pi-v1-model_2500   all@0.25               len  23.4 s  TO  69%  n=143
+[27/28    558s] Pi-v1-model_2500   all@0.5                len  18.8 s  TO  56%  n=156
+[28/28    559s] Pi-v1-model_2500   all@0.75               len  14.4 s  TO  43%  n=189
+[INFO] ALL_DONE
+END 2026-11-04 00:36:45 min MemAvailable seen 25 GB

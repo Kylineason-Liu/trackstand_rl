@@ -1,0 +1,20 @@
+START 2026-11-04 00:57:42 workers=4 guard<12GB
+[INFO] 4 jobs (200 already in reports/2026-11-03_dr_sensitivity/results.jsonl), 4 workers
+[1/4     89s] 2L-Base            recSafe                len  13.4 s  TO   8%  n=245
+[2/4     92s] 5L-Base-DriftQuad  recSafe                len  11.9 s  TO   8%  n=266
+[3/4     92s] Pi-v1-model_2500   recSafe                len  29.3 s  TO  91%  n=129
+[4/4     92s] 5L-Norm            recSafe                len  17.0 s  TO  16%  n=185
+[INFO] ALL_DONE
+END 2026-11-04 00:59:42 min MemAvailable seen 29 GB
+START 2026-11-04 00:59:42 workers=5 guard<12GB
+[INFO] 8 jobs (204 already in reports/2026-11-03_dr_sensitivity/results.jsonl), 5 workers
+[1/8     91s] 2L-Base            recB_s43               len  11.7 s  TO   4%  n=279
+[2/8     93s] 5L-Norm            recB_s43               len  17.1 s  TO  17%  n=186
+[3/8     93s] 2L-Base            recSafe_s43            len  10.1 s  TO   4%  n=320
+[4/8     94s] 5L-Norm            recSafe_s43            len  17.6 s  TO  18%  n=181
+[5/8     94s] 5L-Base-DriftQuad  recSafe_s43            len  11.1 s  TO   8%  n=305
+[6/8    180s] 5L-Base-DriftQuad  recB_s43               len  12.2 s  TO  12%  n=269
+[7/8    181s] Pi-v1-model_2500   recB_s43               len  29.9 s  TO  98%  n=128
+[8/8    181s] Pi-v1-model_2500   recSafe_s43            len  29.4 s  TO  94%  n=128
+[INFO] ALL_DONE
+END 2026-11-04 01:03:12 min MemAvailable seen 25 GB

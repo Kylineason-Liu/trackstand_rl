@@ -17,7 +17,7 @@ runtime); no source file changes. Same env / ViewerEnvGroup / DeployedPolicy / t
 run_deploy_eval.py, without the trace archive.
 
     python3 scripts/dr_sensitivity.py --policy 5L-Norm=/abs/policy.onnx --policy Pi=/abs/pi.onnx \\
-        --plan sweep --out reports/<date>_dr_sensitivity --workers 22
+        --plan sweep --out reports/<date>_dr_sensitivity --workers 5   # ~4 GB RSS per worker: keep total <= ~20 GB
     python3 scripts/dr_sensitivity.py ... --plan custom --config "rec:mass=0.5,com=1,init=0.25"
 
 Run with Isaac python (~/IsaacLab/_isaac_sim/python.sh): it has mujoco + onnxruntime.
