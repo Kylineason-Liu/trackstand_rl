@@ -1,0 +1,21 @@
+{
+  "repository_head": "9b2051485263370c1b2789789bec32cbc034c4fd",
+  "repository_status": " m ros2_ws\n m \"tsinghua_bike_project/assign_2_Hardwares/assign_2_Hardwares/1.IMU/Supplementary Materials/\\346\\272\\220\\347\\240\\201/ROS\\345\\272\\224\\347\\224\\250/ROS2/yahboomcar_ws/src/robot_localization\"\n?? isaaclab_train/reports/20261104_v2_202611022240_best_raw/\n",
+  "python": "3.12.13",
+  "torch": "2.10.0+cu128",
+  "tensorboard": "2.20.0",
+  "saved_configuration": {
+    "domain_randomization": true,
+    "experiment_name": "trackstand_rl_v2_rsl",
+    "seed": 42,
+    "policy_hz": 50.0,
+    "episode_length_s": 30.0,
+    "max_iterations": 100000,
+    "save_interval": 50,
+    "saved_historical_log_dir": "/home/lmbike/trackstand_rl/logs/rsl_rl/trackstand_rl_v2_rsl/2026-11-02_22-40-01",
+    "drive_action_class": "source.trackstand_rl.trackstand_rl.tasks.manager_based.trackstand.mdp.stationary.velocity_pi:IntegralJointVelocityAction",
+    "distribution": "source.trackstand_rl.trackstand_rl.tasks.manager_based.trackstand.agents.beta_distribution:BetaDistribution"
+  },
+  "device": "CPU only; CUDA_VISIBLE_DEVICES=''",
+  "gpu_or_simulator_started": false
+}

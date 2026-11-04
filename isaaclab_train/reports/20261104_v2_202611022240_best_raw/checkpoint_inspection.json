@@ -1,0 +1,36 @@
+{
+  "checkpoint": "/home/lmbike/trackstand_rl/isaaclab_train/logs/rsl_rl/trackstand_rl_v2_rsl/2026-11-02_22-40-01/model_50100.pt",
+  "sha256": "32e43762691fcd25a8e72182339557f0f71f43c14cde2106bb71118eb5019af1",
+  "internal_iteration": 50100,
+  "keys": [
+    "actor_state_dict",
+    "critic_state_dict",
+    "optimizer_state_dict",
+    "iter",
+    "infos"
+  ],
+  "actor_tensor_shapes": {
+    "distribution._beta_policy_version": [],
+    "mlp.0.weight": [
+      32,
+      11
+    ],
+    "mlp.0.bias": [
+      32
+    ],
+    "mlp.2.weight": [
+      32,
+      32
+    ],
+    "mlp.2.bias": [
+      32
+    ],
+    "mlp.4.weight": [
+      4,
+      32
+    ],
+    "mlp.4.bias": [
+      4
+    ]
+  }
+}

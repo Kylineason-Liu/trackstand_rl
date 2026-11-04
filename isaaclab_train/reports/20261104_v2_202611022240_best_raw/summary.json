@@ -1,0 +1,94 @@
+{
+  "task_id": "v2_dr_202611022240_best_raw",
+  "iteration_id": "i1",
+  "mode": "single_pass",
+  "role": "summarizer",
+  "status": "completed",
+  "source_revision": "9b2051485263370c1b2789789bec32cbc034c4fd",
+  "expected_reports": [
+    {
+      "task_id": "best_raw_analysis",
+      "iteration_id": "i1",
+      "role": "isaaclab_evaluation_analyst",
+      "status": "artifact_completed_delivery_interrupted",
+      "received": true,
+      "delivery": "Coordinator explicitly relayed the complete artifact set after worker usage-limit interruption"
+    }
+  ],
+  "criteria": {
+    "C1": {
+      "status": "pass",
+      "evidence": [
+        "provenance.json"
+      ],
+      "observed": "Saved v2 DR=true, seed 42, policy_dt=0.02 s"
+    },
+    "C2": {
+      "status": "pass",
+      "evidence": [
+        "checkpoint_selection.json",
+        "raw_mean_episode_length.csv",
+        "saved_checkpoint_ranking.csv"
+      ],
+      "observed": "100000 unique unsmoothed raw events, 2001 exactly matched saved checkpoints, unique eligible maximum; direct event parser and coordinator original-event scan agree"
+    },
+    "C3": {
+      "status": "pass",
+      "evidence": [
+        "checkpoint_inspection.json",
+        "checkpoint_selection.json"
+      ],
+      "observed": "model_50100.pt exists; internal iteration 50100 and selected SHA match; model_50110.pt absent"
+    },
+    "C4": {
+      "status": "pass",
+      "evidence": [
+        "preservation.json",
+        "provenance.json"
+      ],
+      "observed": "All 2006 run file-list/sizes/mtimes stable; event/config/selected content hashes stable; CPU inspection only, no evaluation/training"
+    }
+  },
+  "selected_checkpoint": "/home/lmbike/trackstand_rl/isaaclab_train/logs/rsl_rl/trackstand_rl_v2_rsl/2026-11-02_22-40-01/model_50100.pt",
+  "selected_iteration": 50100,
+  "selected_sha256": "32e43762691fcd25a8e72182339557f0f71f43c14cde2106bb71118eb5019af1",
+  "selected_raw_mean_episode_length_steps": 1296.9000244140625,
+  "selected_raw_mean_episode_length_seconds": 25.93800048828125,
+  "selected_exact_tie_count": 1,
+  "global_raw_peak_iteration": 50110,
+  "global_raw_peak_steps": 1325.760009765625,
+  "global_raw_peak_seconds": 26.515200195312502,
+  "global_peak_checkpoint_exists": false,
+  "raw_event_count": 100000,
+  "available_checkpoint_count": 2001,
+  "smoothing_applied": false,
+  "summarizer_checks": [
+    "Saved metadata independently read",
+    "CSV row counts reconciled",
+    "Unique saved maximum reconciled",
+    "Selected checkpoint SHA freshly verified",
+    "Unsaved peak checkpoint absence freshly verified"
+  ],
+  "evaluation_performed": false,
+  "limitations": [
+    "Training-log metric ranking does not establish frozen-policy evaluation performance",
+    "Full content hashing covers event/config/selected checkpoint; other original files have list/size/mtime checks"
+  ],
+  "recording_status": "completed",
+  "recording_finalization": {
+    "task_id": "record_best_raw_dr",
+    "iteration_id": "i1",
+    "outcome": "completed",
+    "criteria": {
+      "REC-COVERAGE": "pass",
+      "REC-PRESERVE": "pass",
+      "REC-SCOPE": "pass"
+    },
+    "progress_markdown_section": 327,
+    "progress_markdown_line": 3437,
+    "progress_text_line": 1748,
+    "report": "/tmp/trackstand_record_best_raw_dr_i1_20261104_jlqrvvmy/recording_report.json",
+    "verification": "/tmp/trackstand_record_best_raw_dr_i1_20261104_jlqrvvmy/recording_verification.json",
+    "technical_criteria_unchanged": true
+  }
+}

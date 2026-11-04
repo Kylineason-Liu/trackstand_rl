@@ -1,0 +1,94 @@
+{
+  "task_id": "best_raw_analysis",
+  "iteration_id": "i1",
+  "run": "/home/lmbike/trackstand_rl/isaaclab_train/logs/rsl_rl/trackstand_rl_v2_rsl/2026-11-02_22-40-01",
+  "criterion_tag": "Train/mean_episode_length",
+  "smoothing_applied": false,
+  "scalar_reservoir_size": 0,
+  "purge_orphaned_data": false,
+  "direct_event_parser_agrees": true,
+  "event_files": [
+    "events.out.tfevents.1793630409.lmbike-MS-7E06.2740235.0"
+  ],
+  "raw_event_count": 100000,
+  "raw_first_iteration": 0,
+  "raw_last_iteration": 99999,
+  "duplicate_iterations": {},
+  "conflicting_duplicate_iterations": {},
+  "target_step_regressions": 0,
+  "session_log_status_counts": {},
+  "checkpoint_count": 2001,
+  "checkpoint_first_iteration": 0,
+  "checkpoint_last_iteration": 99999,
+  "eligible_checkpoint_count": 2001,
+  "checkpoints_without_exact_scalar": [],
+  "eligible_raw_maximum_steps": 1296.9000244140625,
+  "eligible_raw_maximum_seconds": 25.93800048828125,
+  "eligible_exact_maximum_tie_count": 1,
+  "selected_iteration": 50100,
+  "selected_checkpoint": "/home/lmbike/trackstand_rl/isaaclab_train/logs/rsl_rl/trackstand_rl_v2_rsl/2026-11-02_22-40-01/model_50100.pt",
+  "selected_checkpoint_sha256": "32e43762691fcd25a8e72182339557f0f71f43c14cde2106bb71118eb5019af1",
+  "selected_checkpoint_internal_iteration": 50100,
+  "global_raw_maximum_steps": 1325.760009765625,
+  "global_raw_maximum_seconds": 26.515200195312502,
+  "global_exact_maximum_tie_count": 1,
+  "global_exact_maximum_first_iteration": 50110,
+  "global_exact_maximum_last_iteration": 50110,
+  "latest_checkpoint_raw_mean_steps": 937.969970703125,
+  "top_10_saved": [
+    {
+      "iteration": 50100,
+      "raw_mean_episode_length_steps": 1296.9000244140625,
+      "seconds": 25.93800048828125
+    },
+    {
+      "iteration": 41300,
+      "raw_mean_episode_length_steps": 1272.25,
+      "seconds": 25.445
+    },
+    {
+      "iteration": 30200,
+      "raw_mean_episode_length_steps": 1265.93994140625,
+      "seconds": 25.318798828125
+    },
+    {
+      "iteration": 46050,
+      "raw_mean_episode_length_steps": 1264.1600341796875,
+      "seconds": 25.28320068359375
+    },
+    {
+      "iteration": 28050,
+      "raw_mean_episode_length_steps": 1252.4100341796875,
+      "seconds": 25.048200683593752
+    },
+    {
+      "iteration": 45650,
+      "raw_mean_episode_length_steps": 1239.3499755859375,
+      "seconds": 24.78699951171875
+    },
+    {
+      "iteration": 16900,
+      "raw_mean_episode_length_steps": 1237.449951171875,
+      "seconds": 24.748999023437502
+    },
+    {
+      "iteration": 41500,
+      "raw_mean_episode_length_steps": 1236.5699462890625,
+      "seconds": 24.73139892578125
+    },
+    {
+      "iteration": 38500,
+      "raw_mean_episode_length_steps": 1224.510009765625,
+      "seconds": 24.4902001953125
+    },
+    {
+      "iteration": 11700,
+      "raw_mean_episode_length_steps": 1217.5400390625,
+      "seconds": 24.35080078125
+    }
+  ],
+  "policy_dt_s": 0.02,
+  "domain_randomization": true,
+  "task": "Trackstand-Balance-v2",
+  "no_new_evaluation_or_training": true
+}
