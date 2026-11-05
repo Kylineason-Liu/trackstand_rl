@@ -1,0 +1,44 @@
+[
+  {
+    "version": "v1",
+    "hz": 400,
+    "mean_delta_seconds": -0.06374999999999997,
+    "paired_bootstrap_mean_delta_95ci": [
+      -1.9244062499999999,
+      1.8215624999999998
+    ],
+    "improved": 15,
+    "worse": 17,
+    "equal": 32,
+    "survival_gained": 2,
+    "survival_lost": 3
+  },
+  {
+    "version": "v1",
+    "hz": 800,
+    "mean_delta_seconds": -0.42031250000000014,
+    "paired_bootstrap_mean_delta_95ci": [
+      -2.3137656250000003,
+      1.4249999999999998
+    ],
+    "improved": 8,
+    "worse": 6,
+    "equal": 50,
+    "survival_gained": 2,
+    "survival_lost": 3
+  },
+  {
+    "version": "v2",
+    "hz": 1200,
+    "mean_delta_seconds": 1.5074999999999998,
+    "paired_bootstrap_mean_delta_95ci": [
+      -0.07124999999999992,
+      3.397640624999998
+    ],
+    "improved": 19,
+    "worse": 13,
+    "equal": 32,
+    "survival_gained": 5,
+    "survival_lost": 2
+  }
+]

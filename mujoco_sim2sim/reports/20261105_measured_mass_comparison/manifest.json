@@ -1,0 +1,100 @@
+{
+  "seeds": [
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95,
+    96,
+    97,
+    98,
+    99,
+    100,
+    101,
+    102,
+    103,
+    104,
+    105
+  ],
+  "episodes_per_case": 64,
+  "dr": true,
+  "pure_survival": true,
+  "horizon_s": 30,
+  "policy_hz": 50,
+  "inertia_change": false,
+  "mass_kg": {
+    "front_wheel_link": 0.1107,
+    "rear_wheel_link": 0.18028,
+    "base_link": 1.99502,
+    "steering_link": 0.1581
+  },
+  "models": {
+    "current": {
+      "path": "mujoco_sim2sim/models/trackstand_rl_0916_bike/trackstand_rl_0916.xml",
+      "sha256": "6f839f2c214da9b743cbd310a72d13ed98d383e8ac4c1d1be609eb89cb003476"
+    },
+    "measured": {
+      "path": "mujoco_sim2sim/models/trackstand_rl_0916_bike/trackstand_rl_0916_measured_masses_20261105.xml",
+      "sha256": "b2baebf2a393285987a9e317df96e1b1c8c17c290075db0958d6b2f56e8a0f38"
+    }
+  },
+  "policies": {
+    "v1": {
+      "path": "deploy/source/trackstand_deploy/models/trackstand_rl_rsl_2026-10-21_11-18-29_model_2500.onnx",
+      "sha256": "d9701945b48e62fec14ea3258cf4255b0c7541d530eb8ec7789a770e9a5a63b2"
+    },
+    "v2": {
+      "path": "mujoco_sim2sim/policies/trackstand_rl_v2_rsl_2026-11-02_22-40-01_model_50100.onnx",
+      "sha256": "a43583ec06d3c441d74d93057378fc25d8d79255a4ad312aeca6f59ad1c25c33"
+    }
+  }
+}

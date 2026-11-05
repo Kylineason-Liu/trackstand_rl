@@ -1,0 +1,49 @@
+START v1_400hz_current
+v1_400hz_current step 250 remaining 32 wall_s 2.3
+v1_400hz_current step 500 remaining 31 wall_s 4.3
+v1_400hz_current step 750 remaining 31 wall_s 6.2
+v1_400hz_current step 1000 remaining 31 wall_s 8.1
+v1_400hz_current step 1250 remaining 31 wall_s 10.0
+v1_400hz_current step 1500 remaining 0 wall_s 11.9
+RESULT {'version': 'v1', 'physics_hz': 400, 'mass_configuration': 'current', 'episodes': 64, 'timeouts': 31, 'falls': 33, 'timeout_rate': 0.484375, 'mean_seconds': 15.0271875, 'median_seconds': 6.51, 'min_seconds': 0.22, 'max_seconds': 30.0, 'wall_seconds': 11.855628815945238}
+START v1_400hz_measured
+v1_400hz_measured step 250 remaining 32 wall_s 2.4
+v1_400hz_measured step 500 remaining 32 wall_s 4.3
+v1_400hz_measured step 750 remaining 31 wall_s 6.2
+v1_400hz_measured step 1000 remaining 30 wall_s 8.1
+v1_400hz_measured step 1250 remaining 30 wall_s 9.9
+v1_400hz_measured step 1500 remaining 0 wall_s 11.7
+RESULT {'version': 'v1', 'physics_hz': 400, 'mass_configuration': 'measured', 'episodes': 64, 'timeouts': 30, 'falls': 34, 'timeout_rate': 0.46875, 'mean_seconds': 14.963437499999998, 'median_seconds': 7.34, 'min_seconds': 0.2, 'max_seconds': 30.0, 'wall_seconds': 11.660422979854047}
+START v1_800hz_current
+v1_800hz_current step 250 remaining 53 wall_s 4.9
+v1_800hz_current step 500 remaining 53 wall_s 9.7
+v1_800hz_current step 750 remaining 53 wall_s 14.4
+v1_800hz_current step 1000 remaining 52 wall_s 19.1
+v1_800hz_current step 1250 remaining 52 wall_s 23.8
+v1_800hz_current step 1500 remaining 0 wall_s 28.5
+RESULT {'version': 'v1', 'physics_hz': 800, 'mass_configuration': 'current', 'episodes': 64, 'timeouts': 52, 'falls': 12, 'timeout_rate': 0.8125, 'mean_seconds': 24.675312499999997, 'median_seconds': 30.0, 'min_seconds': 0.2, 'max_seconds': 30.0, 'wall_seconds': 28.508840611902997}
+START v1_800hz_measured
+v1_800hz_measured step 250 remaining 52 wall_s 4.8
+v1_800hz_measured step 500 remaining 52 wall_s 9.4
+v1_800hz_measured step 750 remaining 52 wall_s 14.0
+v1_800hz_measured step 1000 remaining 51 wall_s 18.5
+v1_800hz_measured step 1250 remaining 51 wall_s 22.9
+v1_800hz_measured step 1500 remaining 0 wall_s 27.4
+RESULT {'version': 'v1', 'physics_hz': 800, 'mass_configuration': 'measured', 'episodes': 64, 'timeouts': 51, 'falls': 13, 'timeout_rate': 0.796875, 'mean_seconds': 24.255000000000003, 'median_seconds': 30.0, 'min_seconds': 0.2, 'max_seconds': 30.0, 'wall_seconds': 27.443954458925873}
+START v2_1200hz_current
+v2_1200hz_current step 250 remaining 33 wall_s 5.4
+v2_1200hz_current step 500 remaining 27 wall_s 9.5
+v2_1200hz_current step 750 remaining 25 wall_s 13.1
+v2_1200hz_current step 1000 remaining 25 wall_s 16.6
+v2_1200hz_current step 1250 remaining 23 wall_s 19.8
+v2_1200hz_current step 1500 remaining 0 wall_s 22.9
+RESULT {'version': 'v2', 'physics_hz': 1200, 'mass_configuration': 'current', 'episodes': 64, 'timeouts': 22, 'falls': 42, 'timeout_rate': 0.34375, 'mean_seconds': 12.998124999999998, 'median_seconds': 5.51, 'min_seconds': 0.26, 'max_seconds': 30.0, 'wall_seconds': 22.901232348987833}
+START v2_1200hz_measured
+v2_1200hz_measured step 250 remaining 34 wall_s 5.6
+v2_1200hz_measured step 500 remaining 34 wall_s 10.3
+v2_1200hz_measured step 750 remaining 29 wall_s 14.6
+v2_1200hz_measured step 1000 remaining 27 wall_s 18.4
+v2_1200hz_measured step 1250 remaining 27 wall_s 22.1
+v2_1200hz_measured step 1500 remaining 0 wall_s 25.7
+RESULT {'version': 'v2', 'physics_hz': 1200, 'mass_configuration': 'measured', 'episodes': 64, 'timeouts': 25, 'falls': 39, 'timeout_rate': 0.390625, 'mean_seconds': 14.505625, 'median_seconds': 12.5, 'min_seconds': 0.26, 'max_seconds': 30.0, 'wall_seconds': 25.68041302310303}
+DONE original XML preserved

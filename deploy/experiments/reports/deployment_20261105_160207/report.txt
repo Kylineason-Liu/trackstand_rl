@@ -1,0 +1,40 @@
+2026-11-05 deployment diagnosis
+Source: rosbag2_2026_11_05-16_02_07. 36.314092 s; 27,530 messages.
+All topic counts match metadata; MCAP CRC validation enabled. SHA256 in verification.json.
+Times below use bag reception time, not exact hardware execution timestamps.
+
+5.463 s: first manual UP. Policy accepts and servo driver logs UP at 5.482 s.
+5.475..6.214 s: 38 successful raw policy outputs from v2 model_50100.
+Inference durations min/median/max 0.279/0.374/1.724 ms. Enabled motor commands
+span 5.475..6.213 s. Motor event gate opens at 5.480 s.
+6.234 s: policy FAULT_LATCHED, reason roll_or_inversion_safety.
+IMU-derived roll 29.418 deg at 6.209 s, 31.817 deg at 6.220 s,
+33.408 deg at 6.230 s. Gravity_y crosses the nominal 0.5 magnitude threshold;
+gravity_z remains negative. Thus the roll branch, not inversion, explains stop.
+The IMU-derived angle is not independent proof of physical tilt or calibration.
+6.235 s: motor gate closes because enable_not_requested; both disables confirmed
+by 6.239 s. No motor fault: all 3,601 motor_fault messages false; no hard restart
+fault reported. Motor-state timeout around 6.585 s occurs AFTER the stop.
+8.565 s: manual DOWN. Policy clears its latch; driver logs DOWN at 8.585 s.
+8.752 s: steering_not_centered_for_start becomes the remaining readiness blocker.
+At subsequent UP requests (10.743,17.923,22.983 s), steering feedback is
+0.23738353 rad = 13.601074 deg, outside the configured/default +/-5 deg gate.
+Manual up/down messages continue correctly. Only three servo commands are in
+bag: initial down, first up, then down. Later down requests repeat the existing
+pose and are deduplicated; later up requests are intentionally rejected.
+
+Conclusion: inference worked for about 0.76 s before an IMU roll safety trip.
+Later failure to re-arm is a steering-centering interlock, not a dead terminal,
+failed policy load, settings journal, or latched motor driver fault.
+Keep request DOWN, independently support/upright bike and physically center
+steering while motors are disabled. Check motor_state[0] within +/-0.0872665 rad
+and status.ready true before a fresh UP. Do not redefine encoder zero merely to
+make a turned front wheel appear straight. No restart required by this bag's
+motor state. Do not remove the roll guard to prolong this failed episode.
+Why balance was lost still needs separate dynamics/calibration analysis; this
+report establishes the software stop/re-arm causes, not full transfer failure.
+
+Artifacts: diagnosis.png/svg, decoded.json, events.txt, analyze.py, plot.py,
+verification.json. Production code, bag and settings were not modified.
+Decode with /opt/ros/humble sourced and PYTHONPATH including
+/tmp/trackstand_bag_20261029_deps (mcap/lz4/zstandard); run analyze.py, then plot.py.

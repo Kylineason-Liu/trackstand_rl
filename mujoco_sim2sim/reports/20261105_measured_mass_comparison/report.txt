@@ -1,0 +1,41 @@
+Measured mass comparison, 2026-11-05
+
+V1 DR model_2500 (2026-10-21_11-18-29), V2 DR model_50100 (2026-11-02_22-40-01).
+64 first episodes per case, environment seeds 42..105, DR ON, pure survival
+(time_out or fallen), 30-s horizon, policy 50 Hz. No first-N-completion selection:
+every environment finishes exactly once. No retraining. Within each version/rate,
+original and measured models use exactly identical saved DR samples. DR is
+centered on each model nominal mass, not fixed to the old mass distribution.
+Cross-version DR contracts differ, so compare each version with its own baseline.
+
+Only four XML mass attributes changed. Original XML/model code/policies retained.
+New model is beside original and shares its meshes. Front fork maps to steering_link.
+Total nominal old=2.4243294124 kg, new=2.44410 kg (+0.8155%).
+Inertias and centers of mass retained: this is an isolated mass sensitivity test,
+not a claim that the measured assembly inertia has been calibrated. Existing DR
+still scales inertia by its per-body random mass multiplier in BOTH models.
+
+v1 400 Hz current: survived 31/64 (48.44%), mean 15.027 s, median 6.510 s.
+v1 400 Hz measured: survived 30/64 (46.88%), mean 14.963 s, median 7.340 s.
+v1 800 Hz current: survived 52/64 (81.25%), mean 24.675 s, median 30.000 s.
+v1 800 Hz measured: survived 51/64 (79.69%), mean 24.255 s, median 30.000 s.
+v2 1200 Hz current: survived 22/64 (34.38%), mean 12.998 s, median 5.510 s.
+v2 1200 Hz measured: survived 25/64 (39.06%), mean 14.506 s, median 12.500 s.
+
+Paired differences (measured minus current), 10000 paired bootstrap resamples:
+{"version": "v1", "hz": 400, "mean_delta_seconds": -0.06374999999999997, "paired_bootstrap_mean_delta_95ci": [-1.9244062499999999, 1.8215624999999998], "improved": 15, "worse": 17, "equal": 32, "survival_gained": 2, "survival_lost": 3}
+{"version": "v1", "hz": 800, "mean_delta_seconds": -0.42031250000000014, "paired_bootstrap_mean_delta_95ci": [-2.3137656250000003, 1.4249999999999998], "improved": 8, "worse": 6, "equal": 50, "survival_gained": 2, "survival_lost": 3}
+{"version": "v2", "hz": 1200, "mean_delta_seconds": 1.5074999999999998, "paired_bootstrap_mean_delta_95ci": [-0.07124999999999992, 3.397640624999998], "improved": 19, "worse": 13, "equal": 32, "survival_gained": 5, "survival_lost": 2}
+
+Interpret small changes cautiously with only 64 paired seeds; CIs quantify
+seed sensitivity, not model correctness. Results do not predict hardware success.
+
+Reproduce from repository root:
+OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 python3 -u mujoco_sim2sim/reports/20261105_measured_mass_comparison/evaluate.py
+MPLCONFIGDIR=/tmp/trackstand_mass_plot python3 mujoco_sim2sim/reports/20261105_measured_mass_comparison/summarize.py
+
+Evidence: manifest.json with hashes; per-case episodes.json, summary.json,
+dr.json, sampled_masses.json; run.log; summary.csv and paired_comparison.json.
+Single-thread ONNX CPU inference; same production env/model/policy classes as
+viewer, with fixed first-episode budget in this report helper. Model/policy hash checks
+and exact DR equality checks passed; 384 episodes completed across 6 cases.

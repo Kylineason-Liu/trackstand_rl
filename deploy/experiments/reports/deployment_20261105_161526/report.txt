@@ -1,0 +1,57 @@
+November 5 16:15:26 deployment: concise diagnosis
+
+12 episode indices/arming attempts; episodes 2 and 5 fail during their first
+inference and have no successful balancing event/output. Do not count only the
+10 recorded balancing transitions. Nine attempts (75%) stop on data freshness
+failures; three (25%, episodes 3/10/12) stop on roll_or_inversion_safety after
+approximately 0.758/0.615/0.618 seconds between policy events.
+
+Freshness causes: rear A2 stale (1,11); active feedback unavailable (4,6,7,8);
+motor-state timeout (2,9,11); IMU timeout (5). Overlapping causes for 11 are one
+attempt. policy_inference_error in 2/5/11 means inputs expired during inference,
+not a demonstrated ONNX/model error. Firmware motor-fault reasons, bus-off,
+CAN overflow and ENOBUFS are not observed in the recorded errors.
+
+Host loop quality is insufficiently dependable for this configuration. Nominal
+5-ms motor control cycle: median 5.048 ms, p95 10.289 ms, p99 17.638 ms,
+max 351.178 ms across finite samples. During gate-enabled samples: median
+5.046, p95 9.864, p99 13.318, max 16.497 ms. Active-only numbers exclude ticks
+that fail the gate; they must not be presented as worst failure latency.
+All recorded attempted steering/rear sends succeeded at the socket layer:
+557/557 and 554/554, respectively. This is NOT firmware delivery confirmation.
+Motor feedback-pair ages, all samples: steering/rear p99 82.235/85.774 ms,
+max 369.386/374.092 ms, versus configured 50-ms freshness limit. Includes
+inactive periods; episode-specific events establish active freshness failures.
+No inference bottleneck demonstrated: 181 calls including 3 rejected outputs,
+median 0.411 ms, p95 2.184 ms, maximum 8.962 ms. Motor-state ages across the
+whole bag include stopped-node intervals and cannot be called CAN wire delay.
+
+At 23.557,61.376,316.537 s the motor worker exits because adjacent host clock
+samples take >1 ms. motor_mit_io.py SocketCanBus receive path raises RuntimeError
+for after-before >0.001. This is host scheduling/clock-mapping uncertainty,
+not proof of a damaged CAN packet or bad bus. These three exits occur while
+policy is down, separate from the 12 attempt-ending classification.
+
+Priority: improve runtime robustness before judging/retraining the policy.
+Audit timestamp mapping to retry bounded uncertain samples/use conservative
+age accounting instead of terminating solely on a >1-ms sampling interruption;
+retain genuine stale-data/clock-change protections. Profile Pi CPU/storage and
+CAN receive/worker scheduling; compare supported tests with minimal versus
+full telemetry/recording. Collect ip -details -statistics link show can0 before
+and after without resetting. Consider reducing diagnostic publishing/serialization
+load while preserving motor command and freshness requirements. CPU load,
+recorder pressure and CAN adapter scheduling are hypotheses, not isolated causes.
+Do not blindly widen stale-feedback limits to conceal long data gaps.
+
+A separate balance/transfer issue remains: three less-interrupted attempts still
+reach the roll limit quickly. Once timing is stable, compare loaded target/actual
+steering and rear velocity plus IMU/frame signs and initialization against sim.
+This bag alone cannot identify the physical cause of those falls or rate the
+CAN electrical link as high/low quality. No production code or hardware changes.
+
+Evidence: episodes.csv, metrics.txt, events.txt, decoded.json, verification.json.
+MCAP CRC checked; per-topic counts matched metadata. Numeric times are bag
+reception times; loop/age statistics use published monotonic telemetry fields.
+Raw interval fields retain cross-episode history: do not interpret their huge
+values as within-episode motor latency. Decoder omits parameter-event contents
+but counts every message. Source script uses ROS standard-message deserialization.

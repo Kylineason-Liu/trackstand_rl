@@ -1,0 +1,13 @@
+episode,first_event_s,stop_event_s,latched_reason,classification
+1,31.375305758000003,31.460591442000002,motor_fault,rear A2 stale
+2,52.497579228000006,52.497579228000006,policy_inference_error,motor-state expired during first inference
+3,94.055916315,94.813558195,roll_or_inversion_safety,roll limit
+4,116.197498686,116.256370043,motor_fault,active rear feedback unavailable
+5,136.624723491,136.624723491,policy_inference_error,IMU expired during first inference
+6,157.793055791,158.434621486,v2_motor_backend_not_ready,active steering feedback unavailable
+7,181.94346097200003,182.035294179,v2_motor_backend_not_ready,active steering/status feedback unavailable
+8,198.370197163,198.65355821400001,motor_fault,active steering feedback unavailable
+9,205.18587126300002,205.39606099800002,motor_state_timeout,motor-state timeout; then steering MIT timeout
+10,280.779039947,281.39375120700004,roll_or_inversion_safety,roll limit
+11,286.02403721400003,286.18223098100003,policy_inference_error,rear A2 stale plus motor-state expired during inference
+12,331.974488434,332.592321156,roll_or_inversion_safety,roll limit

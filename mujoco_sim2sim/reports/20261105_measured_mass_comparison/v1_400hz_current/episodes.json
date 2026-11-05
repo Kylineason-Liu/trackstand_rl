@@ -1,0 +1,1090 @@
+[
+  {
+    "env": 0,
+    "seed": 42,
+    "steps": 1500,
+    "seconds": 30.0,
+    "timeout": true,
+    "death": null,
+    "flags": {
+      "time_out": true,
+      "fallen": false,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.057784601799688834
+  },
+  {
+    "env": 1,
+    "seed": 43,
+    "steps": 11,
+    "seconds": 0.22,
+    "timeout": false,
+    "death": "fallen",
+    "flags": {
+      "time_out": false,
+      "fallen": true,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.5887328453878288
+  },
+  {
+    "env": 2,
+    "seed": 44,
+    "steps": 1500,
+    "seconds": 30.0,
+    "timeout": true,
+    "death": null,
+    "flags": {
+      "time_out": true,
+      "fallen": false,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.07628086636601529
+  },
+  {
+    "env": 3,
+    "seed": 45,
+    "steps": 14,
+    "seconds": 0.28,
+    "timeout": false,
+    "death": "fallen",
+    "flags": {
+      "time_out": false,
+      "fallen": true,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.5413464916215545
+  },
+  {
+    "env": 4,
+    "seed": 46,
+    "steps": 1500,
+    "seconds": 30.0,
+    "timeout": true,
+    "death": null,
+    "flags": {
+      "time_out": true,
+      "fallen": false,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.08427973052809071
+  },
+  {
+    "env": 5,
+    "seed": 47,
+    "steps": 19,
+    "seconds": 0.38,
+    "timeout": false,
+    "death": "fallen",
+    "flags": {
+      "time_out": false,
+      "fallen": true,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.5835670983547644
+  },
+  {
+    "env": 6,
+    "seed": 48,
+    "steps": 1500,
+    "seconds": 30.0,
+    "timeout": true,
+    "death": null,
+    "flags": {
+      "time_out": true,
+      "fallen": false,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.03823634855024588
+  },
+  {
+    "env": 7,
+    "seed": 49,
+    "steps": 12,
+    "seconds": 0.24,
+    "timeout": false,
+    "death": "fallen",
+    "flags": {
+      "time_out": false,
+      "fallen": true,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.6139746109672671
+  },
+  {
+    "env": 8,
+    "seed": 50,
+    "steps": 23,
+    "seconds": 0.46,
+    "timeout": false,
+    "death": "fallen",
+    "flags": {
+      "time_out": false,
+      "fallen": true,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.5647297698772188
+  },
+  {
+    "env": 9,
+    "seed": 51,
+    "steps": 13,
+    "seconds": 0.26,
+    "timeout": false,
+    "death": "fallen",
+    "flags": {
+      "time_out": false,
+      "fallen": true,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.5884598948532158
+  },
+  {
+    "env": 10,
+    "seed": 52,
+    "steps": 21,
+    "seconds": 0.42,
+    "timeout": false,
+    "death": "fallen",
+    "flags": {
+      "time_out": false,
+      "fallen": true,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.548663170913851
+  },
+  {
+    "env": 11,
+    "seed": 53,
+    "steps": 20,
+    "seconds": 0.4,
+    "timeout": false,
+    "death": "fallen",
+    "flags": {
+      "time_out": false,
+      "fallen": true,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.6377853849469958
+  },
+  {
+    "env": 12,
+    "seed": 54,
+    "steps": 21,
+    "seconds": 0.42,
+    "timeout": false,
+    "death": "fallen",
+    "flags": {
+      "time_out": false,
+      "fallen": true,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.5238769592497929
+  },
+  {
+    "env": 13,
+    "seed": 55,
+    "steps": 22,
+    "seconds": 0.44,
+    "timeout": false,
+    "death": "fallen",
+    "flags": {
+      "time_out": false,
+      "fallen": true,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.5339623478138881
+  },
+  {
+    "env": 14,
+    "seed": 56,
+    "steps": 1500,
+    "seconds": 30.0,
+    "timeout": true,
+    "death": null,
+    "flags": {
+      "time_out": true,
+      "fallen": false,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.06086355461475455
+  },
+  {
+    "env": 15,
+    "seed": 57,
+    "steps": 1500,
+    "seconds": 30.0,
+    "timeout": true,
+    "death": null,
+    "flags": {
+      "time_out": true,
+      "fallen": false,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.06901459626372472
+  },
+  {
+    "env": 16,
+    "seed": 58,
+    "steps": 129,
+    "seconds": 2.58,
+    "timeout": false,
+    "death": "fallen",
+    "flags": {
+      "time_out": false,
+      "fallen": true,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.5718535862610025
+  },
+  {
+    "env": 17,
+    "seed": 59,
+    "steps": 102,
+    "seconds": 2.04,
+    "timeout": false,
+    "death": "fallen",
+    "flags": {
+      "time_out": false,
+      "fallen": true,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.5372149487566878
+  },
+  {
+    "env": 18,
+    "seed": 60,
+    "steps": 1500,
+    "seconds": 30.0,
+    "timeout": true,
+    "death": null,
+    "flags": {
+      "time_out": true,
+      "fallen": false,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.10614238837192196
+  },
+  {
+    "env": 19,
+    "seed": 61,
+    "steps": 11,
+    "seconds": 0.22,
+    "timeout": false,
+    "death": "fallen",
+    "flags": {
+      "time_out": false,
+      "fallen": true,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.5380016755216808
+  },
+  {
+    "env": 20,
+    "seed": 62,
+    "steps": 1500,
+    "seconds": 30.0,
+    "timeout": true,
+    "death": null,
+    "flags": {
+      "time_out": true,
+      "fallen": false,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.04983884532381344
+  },
+  {
+    "env": 21,
+    "seed": 63,
+    "steps": 1500,
+    "seconds": 30.0,
+    "timeout": true,
+    "death": null,
+    "flags": {
+      "time_out": true,
+      "fallen": false,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.06356132902222647
+  },
+  {
+    "env": 22,
+    "seed": 64,
+    "steps": 123,
+    "seconds": 2.46,
+    "timeout": false,
+    "death": "fallen",
+    "flags": {
+      "time_out": false,
+      "fallen": true,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.5483687441006492
+  },
+  {
+    "env": 23,
+    "seed": 65,
+    "steps": 1500,
+    "seconds": 30.0,
+    "timeout": true,
+    "death": null,
+    "flags": {
+      "time_out": true,
+      "fallen": false,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.04900517132711705
+  },
+  {
+    "env": 24,
+    "seed": 66,
+    "steps": 1500,
+    "seconds": 30.0,
+    "timeout": true,
+    "death": null,
+    "flags": {
+      "time_out": true,
+      "fallen": false,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.1278985402171431
+  },
+  {
+    "env": 25,
+    "seed": 67,
+    "steps": 1500,
+    "seconds": 30.0,
+    "timeout": true,
+    "death": null,
+    "flags": {
+      "time_out": true,
+      "fallen": false,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.05809482438419666
+  },
+  {
+    "env": 26,
+    "seed": 68,
+    "steps": 1500,
+    "seconds": 30.0,
+    "timeout": true,
+    "death": null,
+    "flags": {
+      "time_out": true,
+      "fallen": false,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.03025481050996401
+  },
+  {
+    "env": 27,
+    "seed": 69,
+    "steps": 1500,
+    "seconds": 30.0,
+    "timeout": true,
+    "death": null,
+    "flags": {
+      "time_out": true,
+      "fallen": false,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.047074068345123975
+  },
+  {
+    "env": 28,
+    "seed": 70,
+    "steps": 14,
+    "seconds": 0.28,
+    "timeout": false,
+    "death": "fallen",
+    "flags": {
+      "time_out": false,
+      "fallen": true,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.5639558419119184
+  },
+  {
+    "env": 29,
+    "seed": 71,
+    "steps": 1500,
+    "seconds": 30.0,
+    "timeout": true,
+    "death": null,
+    "flags": {
+      "time_out": true,
+      "fallen": false,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.07377197020769553
+  },
+  {
+    "env": 30,
+    "seed": 72,
+    "steps": 17,
+    "seconds": 0.34,
+    "timeout": false,
+    "death": "fallen",
+    "flags": {
+      "time_out": false,
+      "fallen": true,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.5332184275929494
+  },
+  {
+    "env": 31,
+    "seed": 73,
+    "steps": 1500,
+    "seconds": 30.0,
+    "timeout": true,
+    "death": null,
+    "flags": {
+      "time_out": true,
+      "fallen": false,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.08869179478088372
+  },
+  {
+    "env": 32,
+    "seed": 74,
+    "steps": 21,
+    "seconds": 0.42,
+    "timeout": false,
+    "death": "fallen",
+    "flags": {
+      "time_out": false,
+      "fallen": true,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.5242960116270362
+  },
+  {
+    "env": 33,
+    "seed": 75,
+    "steps": 1500,
+    "seconds": 30.0,
+    "timeout": true,
+    "death": null,
+    "flags": {
+      "time_out": true,
+      "fallen": false,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.10777168500241648
+  },
+  {
+    "env": 34,
+    "seed": 76,
+    "steps": 15,
+    "seconds": 0.3,
+    "timeout": false,
+    "death": "fallen",
+    "flags": {
+      "time_out": false,
+      "fallen": true,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.5698052504534395
+  },
+  {
+    "env": 35,
+    "seed": 77,
+    "steps": 15,
+    "seconds": 0.3,
+    "timeout": false,
+    "death": "fallen",
+    "flags": {
+      "time_out": false,
+      "fallen": true,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.5513147957693362
+  },
+  {
+    "env": 36,
+    "seed": 78,
+    "steps": 1500,
+    "seconds": 30.0,
+    "timeout": true,
+    "death": null,
+    "flags": {
+      "time_out": true,
+      "fallen": false,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.02650055026635839
+  },
+  {
+    "env": 37,
+    "seed": 79,
+    "steps": 35,
+    "seconds": 0.7000000000000001,
+    "timeout": false,
+    "death": "fallen",
+    "flags": {
+      "time_out": false,
+      "fallen": true,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.5937088541815453
+  },
+  {
+    "env": 38,
+    "seed": 80,
+    "steps": 1500,
+    "seconds": 30.0,
+    "timeout": true,
+    "death": null,
+    "flags": {
+      "time_out": true,
+      "fallen": false,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.07908998960336094
+  },
+  {
+    "env": 39,
+    "seed": 81,
+    "steps": 1500,
+    "seconds": 30.0,
+    "timeout": true,
+    "death": null,
+    "flags": {
+      "time_out": true,
+      "fallen": false,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.042302025035941736
+  },
+  {
+    "env": 40,
+    "seed": 82,
+    "steps": 1500,
+    "seconds": 30.0,
+    "timeout": true,
+    "death": null,
+    "flags": {
+      "time_out": true,
+      "fallen": false,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.01876051534825507
+  },
+  {
+    "env": 41,
+    "seed": 83,
+    "steps": 49,
+    "seconds": 0.98,
+    "timeout": false,
+    "death": "fallen",
+    "flags": {
+      "time_out": false,
+      "fallen": true,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.5269385331806514
+  },
+  {
+    "env": 42,
+    "seed": 84,
+    "steps": 1500,
+    "seconds": 30.0,
+    "timeout": true,
+    "death": null,
+    "flags": {
+      "time_out": true,
+      "fallen": false,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.02540836324264949
+  },
+  {
+    "env": 43,
+    "seed": 85,
+    "steps": 442,
+    "seconds": 8.84,
+    "timeout": false,
+    "death": "fallen",
+    "flags": {
+      "time_out": false,
+      "fallen": true,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.6653704263262001
+  },
+  {
+    "env": 44,
+    "seed": 86,
+    "steps": 23,
+    "seconds": 0.46,
+    "timeout": false,
+    "death": "fallen",
+    "flags": {
+      "time_out": false,
+      "fallen": true,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.6522442388674171
+  },
+  {
+    "env": 45,
+    "seed": 87,
+    "steps": 30,
+    "seconds": 0.6,
+    "timeout": false,
+    "death": "fallen",
+    "flags": {
+      "time_out": false,
+      "fallen": true,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.5717238232636871
+  },
+  {
+    "env": 46,
+    "seed": 88,
+    "steps": 1500,
+    "seconds": 30.0,
+    "timeout": true,
+    "death": null,
+    "flags": {
+      "time_out": true,
+      "fallen": false,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.09777867926793823
+  },
+  {
+    "env": 47,
+    "seed": 89,
+    "steps": 16,
+    "seconds": 0.32,
+    "timeout": false,
+    "death": "fallen",
+    "flags": {
+      "time_out": false,
+      "fallen": true,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.6586656062577566
+  },
+  {
+    "env": 48,
+    "seed": 90,
+    "steps": 14,
+    "seconds": 0.28,
+    "timeout": false,
+    "death": "fallen",
+    "flags": {
+      "time_out": false,
+      "fallen": true,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.5536064821491076
+  },
+  {
+    "env": 49,
+    "seed": 91,
+    "steps": 60,
+    "seconds": 1.2,
+    "timeout": false,
+    "death": "fallen",
+    "flags": {
+      "time_out": false,
+      "fallen": true,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.6708231183932085
+  },
+  {
+    "env": 50,
+    "seed": 92,
+    "steps": 1500,
+    "seconds": 30.0,
+    "timeout": true,
+    "death": null,
+    "flags": {
+      "time_out": true,
+      "fallen": false,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.09537494056581132
+  },
+  {
+    "env": 51,
+    "seed": 93,
+    "steps": 14,
+    "seconds": 0.28,
+    "timeout": false,
+    "death": "fallen",
+    "flags": {
+      "time_out": false,
+      "fallen": true,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.5807693310353128
+  },
+  {
+    "env": 52,
+    "seed": 94,
+    "steps": 16,
+    "seconds": 0.32,
+    "timeout": false,
+    "death": "fallen",
+    "flags": {
+      "time_out": false,
+      "fallen": true,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.5402930427212179
+  },
+  {
+    "env": 53,
+    "seed": 95,
+    "steps": 209,
+    "seconds": 4.18,
+    "timeout": false,
+    "death": "fallen",
+    "flags": {
+      "time_out": false,
+      "fallen": true,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.6321560681658975
+  },
+  {
+    "env": 54,
+    "seed": 96,
+    "steps": 1500,
+    "seconds": 30.0,
+    "timeout": true,
+    "death": null,
+    "flags": {
+      "time_out": true,
+      "fallen": false,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.033340009242057565
+  },
+  {
+    "env": 55,
+    "seed": 97,
+    "steps": 1500,
+    "seconds": 30.0,
+    "timeout": true,
+    "death": null,
+    "flags": {
+      "time_out": true,
+      "fallen": false,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.021483785361489784
+  },
+  {
+    "env": 56,
+    "seed": 98,
+    "steps": 1500,
+    "seconds": 30.0,
+    "timeout": true,
+    "death": null,
+    "flags": {
+      "time_out": true,
+      "fallen": false,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.04504447363811873
+  },
+  {
+    "env": 57,
+    "seed": 99,
+    "steps": 1500,
+    "seconds": 30.0,
+    "timeout": true,
+    "death": null,
+    "flags": {
+      "time_out": true,
+      "fallen": false,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.054178518826550136
+  },
+  {
+    "env": 58,
+    "seed": 100,
+    "steps": 23,
+    "seconds": 0.46,
+    "timeout": false,
+    "death": "fallen",
+    "flags": {
+      "time_out": false,
+      "fallen": true,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.6388502530957335
+  },
+  {
+    "env": 59,
+    "seed": 101,
+    "steps": 1500,
+    "seconds": 30.0,
+    "timeout": true,
+    "death": null,
+    "flags": {
+      "time_out": true,
+      "fallen": false,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.02405041459902343
+  },
+  {
+    "env": 60,
+    "seed": 102,
+    "steps": 1500,
+    "seconds": 30.0,
+    "timeout": true,
+    "death": null,
+    "flags": {
+      "time_out": true,
+      "fallen": false,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.05343613142011524
+  },
+  {
+    "env": 61,
+    "seed": 103,
+    "steps": 12,
+    "seconds": 0.24,
+    "timeout": false,
+    "death": "fallen",
+    "flags": {
+      "time_out": false,
+      "fallen": true,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.6585033530496263
+  },
+  {
+    "env": 62,
+    "seed": 104,
+    "steps": 21,
+    "seconds": 0.42,
+    "timeout": false,
+    "death": "fallen",
+    "flags": {
+      "time_out": false,
+      "fallen": true,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.6059873784119669
+  },
+  {
+    "env": 63,
+    "seed": 105,
+    "steps": 1500,
+    "seconds": 30.0,
+    "timeout": true,
+    "death": null,
+    "flags": {
+      "time_out": true,
+      "fallen": false,
+      "diverged": false,
+      "drifted": false,
+      "yaw_deviation": false,
+      "wheel_net": false
+    },
+    "roll_max_rad": 0.08047130570911415
+  }
+]
