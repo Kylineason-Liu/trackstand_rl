@@ -17,7 +17,7 @@ def test_v2_entry_points_and_model_sidecar_are_packaged(monkeypatch):
     monkeypatch.chdir(PACKAGE)
     runpy.run_path(str(PACKAGE/'setup.py'))
     entries = configuration['entry_points']['console_scripts']
-    for name in ('motor_mit_io_v2', 'policy_controller_v2'):
+    for name in ('motor_mit_io_v2', 'policy_controller_v2', 'manual_kickstand'):
         assert f'{name} = trackstand_deploy.{name}:main' in entries
         tree = ast.parse((PACKAGE/'trackstand_deploy'/f'{name}.py').read_text())
         assert any(isinstance(node, ast.FunctionDef) and node.name == 'main' for node in tree.body)

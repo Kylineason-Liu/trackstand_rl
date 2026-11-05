@@ -62,6 +62,12 @@ readiness. Run only one policy/backend. See [v2 commands, telemetry, settings
 recovery and remaining actuator limits](docs/V2_DEPLOYMENT.md). The original
 launch/configuration and v1 default policy remain unchanged.
 
+For terminal kickstand control, replace `rc_kickstand` with
+`ros2 run trackstand_deploy manual_kickstand`, then type `up` or `down` and Enter.
+It starts down and retains the existing topics and policy interlocks. For the
+v2 launch, use `use_rc:=false` and run the manual node in another terminal.
+See [manual control instructions](docs/MANUAL_KICKSTAND.md).
+
 ## Observation contract
 
 The exact order is:

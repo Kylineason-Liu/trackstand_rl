@@ -91,6 +91,11 @@ Alternatively, the complete v2 launch is:
 ros2 launch trackstand_deploy trackstand_v2.launch.py
 ```
 
+Without RC, launch with `use_rc:=false`, then run
+`ros2 run trackstand_deploy manual_kickstand` in a separate sourced terminal.
+Type `up` or `down` and Enter; startup defaults to down. Do not also start
+`rc_kickstand`. See [manual control](MANUAL_KICKSTAND.md) for behavior and limits.
+
 Use `-p dry_run:=true` on the **motor node** for read-only CAN/inference checks.
 It still queries real feedback, but sends no motion, B1, F0 or CD writes.
 For these checks, leave `kickstand_driver` stopped and support the bike;

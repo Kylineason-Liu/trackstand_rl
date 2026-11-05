@@ -168,6 +168,11 @@ accidental torque/velocity mixing. See the [v2 guide](deploy/docs/V2_DEPLOYMENT.
 for node-by-node commands, settings recovery and the unverified total MIT
 torque clamps. Do not run the v1 and v2 paths together.
 
+For terminal control of kickstands, use the v2 launch with `use_rc:=false` and
+run `ros2 run trackstand_deploy manual_kickstand` in another sourced terminal.
+Type `up` or `down` and Enter; default is down. See the
+[manual control guide](deploy/docs/MANUAL_KICKSTAND.md).
+
 ### Operating contract and important limits
 
 Policy inference is **50 Hz**. Isaac physics is **400 Hz**; MuJoCo physics/PD defaults to **400 Hz**, configurable with `--physics_hz`. MIT deployment sends steering MIT/rear C0 at nominal **200 Hz** and queries/publishes motor feedback at **100 Hz** (state only when new/fresh). These rates do not establish the motor firmware's undocumented internal-loop frequency.

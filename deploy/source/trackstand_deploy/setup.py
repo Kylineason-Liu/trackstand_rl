@@ -27,6 +27,7 @@ setup(
             "motor_mit_io = trackstand_deploy.motor_mit_io:main",
             "motor_mit_io_v2 = trackstand_deploy.motor_mit_io_v2:main",
             "rc_kickstand = trackstand_deploy.rc_kickstand:main",
+            "manual_kickstand = trackstand_deploy.manual_kickstand:main",
             "kickstand_driver = trackstand_deploy.kickstand_driver:main",
             "policy_controller = trackstand_deploy.policy_controller:main",
             "policy_controller_v2 = trackstand_deploy.policy_controller_v2:main",
