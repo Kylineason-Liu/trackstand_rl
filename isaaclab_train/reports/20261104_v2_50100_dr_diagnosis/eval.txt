@@ -1,0 +1,28 @@
+================================================================
+  EVAL SUMMARY  —  model_50100.pt
+  64 envs x 1500 steps  |  64 completed episodes
+  termination_mode       : pure_survival (time_out, fallen only)
+================================================================
+  mean_reward            :    187.659   (episodic return; not comparable across reward-weight changes)
+  mean_episode_length    :     1364.6 steps  ( 27.29 s)
+  min_episode_length     :       16.0 steps  (  0.32 s)
+  max_episode_length     :     1500.0 steps  ( 30.00 s)
+  std_episode_length     :      420.9 steps
+  timeout_rate (survived):      0.906   (reached the horizon vs fell)
+  fall_rate              :      0.094
+  ------------------------------------------------------------
+  death breakdown (share of completed episodes; a step may fire >1 term):
+    time_out              :   90.6%
+    fallen                :    9.4%
+  ------------------------------------------------------------
+  mean_roll_angle        :       1.29 deg   (mean over all steps)
+  max_roll_angle         :      29.57 deg
+  roll_RMS               :       1.54 deg   (tightness of balance; lower = steadier)
+  mean_worst_lean/episode:       6.80 deg
+  ------------------------------------------------------------
+  drive_speed mean/max   :     0.15 /   55.98 rad/s
+  steer_speed mean/max   :     0.77 /   18.87 rad/s
+  drift mean/max         :    0.061 /   0.565 m   (position drift from spawn)
+  yaw mean/max           :    28.60 /  178.61 deg (heading vs spawn)
+  turn/episode mean      :    148.6 deg (orbiting detection: 360 deg = full circle)
+================================================================

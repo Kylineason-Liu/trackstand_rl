@@ -1,0 +1,63 @@
+[
+  {
+    "path": "log_dir",
+    "saved": "/home/lmbike/trackstand_rl/logs/rsl_rl/trackstand_rl_v2_rsl/2026-11-02_22-40-01",
+    "resolved": "/home/lmbike/trackstand_rl/isaaclab_train/reports/20261104_v2_50100_dr_diagnosis"
+  },
+  {
+    "path": "scene.num_envs",
+    "saved": 4096,
+    "resolved": 64
+  },
+  {
+    "path": "scene.terrain.num_envs",
+    "saved": 4096,
+    "resolved": 64
+  },
+  {
+    "path": "terminations.diverged",
+    "saved": {
+      "func": "source.trackstand_rl.trackstand_rl.tasks.manager_based.trackstand.mdp.stationary.numerics:nonfinite_or_extreme_state_v2",
+      "params": {
+        "max_lin_vel": 20.0,
+        "max_ang_vel": 50.0,
+        "max_joint_vel": 300.0
+      },
+      "time_out": false
+    },
+    "resolved": null
+  },
+  {
+    "path": "terminations.drifted",
+    "saved": {
+      "func": "source.trackstand_rl.trackstand_rl.tasks.manager_based.trackstand.mdp.stationary.terminations:balance_drift_termination",
+      "params": {
+        "max_dist": 0.5
+      },
+      "time_out": false
+    },
+    "resolved": null
+  },
+  {
+    "path": "terminations.wheel_net",
+    "saved": {
+      "func": "source.trackstand_rl.trackstand_rl.tasks.manager_based.trackstand.mdp.stationary.terminations:balance_wheel_net_termination",
+      "params": {
+        "limit_angle": 7.2
+      },
+      "time_out": false
+    },
+    "resolved": null
+  },
+  {
+    "path": "terminations.yaw_deviation",
+    "saved": {
+      "func": "source.trackstand_rl.trackstand_rl.tasks.manager_based.trackstand.mdp.stationary.terminations:balance_yaw_deviation_termination",
+      "params": {
+        "limit_angle": 0.5236
+      },
+      "time_out": false
+    },
+    "resolved": null
+  }
+]

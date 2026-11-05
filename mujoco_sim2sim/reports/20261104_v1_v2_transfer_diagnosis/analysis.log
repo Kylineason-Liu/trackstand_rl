@@ -1,0 +1,133 @@
+/home/lmbike/.local/lib/python3.10/site-packages/matplotlib/projections/__init__.py:63: UserWarning: Unable to import Axes3D. This may be due to multiple versions of Matplotlib being installed (e.g. as a system package and as a pip package). As a result, the 3D projection is not available.
+  warnings.warn("Unable to import Axes3D. This may be due to multiple versions of "
+{
+  "passed": true,
+  "isaac_v2_frozen_policy": {
+    "timeouts": 58,
+    "mean_s": 27.2928125,
+    "first_completed_episodes": 64,
+    "same_draws_as_mujoco": false
+  },
+  "matched_v1": {
+    "800": {
+      "policy": "/home/lmbike/trackstand_rl/isaaclab_train/logs/rsl_rl/trackstand_rl_rsl/2026-10-21_11-18-29/model_2500.pt",
+      "policy_sha256": "5389effbd6a0d3e78c9ea9caeac309ceb5082622c8ee125bb701c63d1511fe52",
+      "physics_pd_hz": 800,
+      "policy_hz": 50,
+      "completed": 64,
+      "timeouts": 54,
+      "fallen": 10,
+      "mean_s": 25.3790625,
+      "median_s": 30.0,
+      "reference_plant": "Exact v2 DR reset plant/state/IMU residuals/noise stream; fixed gains",
+      "interpretation": "Policy and rear action/controller differ together; not a controller-only ablation",
+      "standard_v1_gain_randomization_applied": false,
+      "production_source_modified": false
+    },
+    "1200": {
+      "policy": "/home/lmbike/trackstand_rl/isaaclab_train/logs/rsl_rl/trackstand_rl_rsl/2026-10-21_11-18-29/model_2500.pt",
+      "policy_sha256": "5389effbd6a0d3e78c9ea9caeac309ceb5082622c8ee125bb701c63d1511fe52",
+      "physics_pd_hz": 1200,
+      "policy_hz": 50,
+      "completed": 64,
+      "timeouts": 53,
+      "fallen": 11,
+      "mean_s": 24.8946875,
+      "median_s": 30.0,
+      "reference_plant": "Exact v2 DR reset plant/state/IMU residuals/noise stream; fixed gains",
+      "interpretation": "Policy and rear action/controller differ together; not a controller-only ablation",
+      "standard_v1_gain_randomization_applied": false,
+      "production_source_modified": false
+    }
+  },
+  "v2_ablations": [
+    {
+      "case": "full_dr_baseline",
+      "timeouts": 22,
+      "fallen": 42,
+      "mean_s": 12.998125
+    },
+    {
+      "case": "nominal",
+      "timeouts": 47,
+      "fallen": 17,
+      "mean_s": 26.716250000000002
+    },
+    {
+      "case": "zero_initial",
+      "timeouts": 22,
+      "fallen": 42,
+      "mean_s": 13.110312500000001
+    },
+    {
+      "case": "zero_com",
+      "timeouts": 40,
+      "fallen": 24,
+      "mean_s": 19.7575
+    },
+    {
+      "case": "zero_lateral_com",
+      "timeouts": 36,
+      "fallen": 28,
+      "mean_s": 18.9771875
+    },
+    {
+      "case": "only_lateral_com",
+      "timeouts": 20,
+      "fallen": 44,
+      "mean_s": 11.4378125
+    },
+    {
+      "case": "nominal_mass",
+      "timeouts": 23,
+      "fallen": 41,
+      "mean_s": 12.631562500000001
+    },
+    {
+      "case": "nominal_contact",
+      "timeouts": 20,
+      "fallen": 44,
+      "mean_s": 12.095
+    },
+    {
+      "case": "zero_imu_residual",
+      "timeouts": 19,
+      "fallen": 45,
+      "mean_s": 11.755
+    },
+    {
+      "case": "no_speed_projection",
+      "timeouts": 20,
+      "fallen": 44,
+      "mean_s": 12.8421875
+    },
+    {
+      "case": "zero_integral",
+      "timeouts": 27,
+      "fallen": 37,
+      "mean_s": 14.7765625
+    }
+  ],
+  "initial_demand_comparison": {
+    "initial_observations_equal_all64": true,
+    "initial_abs_steering_raw_median_v1_v2": [
+      0.24194717407226562,
+      0.9483561515808105
+    ],
+    "initial_abs_rear_torque_median_v1_v2_nm": [
+      0.10612379014492035,
+      1.2060244917869567
+    ],
+    "initial_abs_rear_torque_p95_v1_v2_nm": [
+      0.6190906167030334,
+      3.894636197090149
+    ],
+    "v1_torque_provenance": "computed 6.28*raw rear action; native v1 torque law",
+    "v2_torque_provenance": "actual first-physics-step actuator_force archive"
+  },
+  "preserved_inputs": 154,
+  "new_mujoco_completed_episodes": 768,
+  "new_isaac_completed_first_episodes": 64,
+  "production_changes": false,
+  "multiagent_used": false
+}

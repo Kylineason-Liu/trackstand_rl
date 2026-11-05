@@ -1,0 +1,161 @@
+{
+  "nominal": {
+    "cwd": "/home/lmbike/trackstand_rl/mujoco_sim2sim",
+    "argv": [
+      "python3",
+      "-B",
+      "reports/20261104_v1_v2_transfer_diagnosis/run_ablation.py",
+      "nominal"
+    ],
+    "exit_code": 0,
+    "native_invocation": "nominal/case.json",
+    "log": "nominal.log"
+  },
+  "zero_initial": {
+    "cwd": "/home/lmbike/trackstand_rl/mujoco_sim2sim",
+    "argv": [
+      "python3",
+      "-B",
+      "reports/20261104_v1_v2_transfer_diagnosis/run_ablation.py",
+      "zero_initial"
+    ],
+    "exit_code": 0,
+    "native_invocation": "zero_initial/case.json",
+    "log": "zero_initial.log"
+  },
+  "zero_com": {
+    "cwd": "/home/lmbike/trackstand_rl/mujoco_sim2sim",
+    "argv": [
+      "python3",
+      "-B",
+      "reports/20261104_v1_v2_transfer_diagnosis/run_ablation.py",
+      "zero_com"
+    ],
+    "exit_code": 0,
+    "native_invocation": "zero_com/case.json",
+    "log": "zero_com.log"
+  },
+  "zero_lateral_com": {
+    "cwd": "/home/lmbike/trackstand_rl/mujoco_sim2sim",
+    "argv": [
+      "python3",
+      "-B",
+      "reports/20261104_v1_v2_transfer_diagnosis/run_ablation.py",
+      "zero_lateral_com"
+    ],
+    "exit_code": 0,
+    "native_invocation": "zero_lateral_com/case.json",
+    "log": "zero_lateral_com.log"
+  },
+  "only_lateral_com": {
+    "cwd": "/home/lmbike/trackstand_rl/mujoco_sim2sim",
+    "argv": [
+      "python3",
+      "-B",
+      "reports/20261104_v1_v2_transfer_diagnosis/run_ablation.py",
+      "only_lateral_com"
+    ],
+    "exit_code": 0,
+    "native_invocation": "only_lateral_com/case.json",
+    "log": "only_lateral_com.log"
+  },
+  "nominal_mass": {
+    "cwd": "/home/lmbike/trackstand_rl/mujoco_sim2sim",
+    "argv": [
+      "python3",
+      "-B",
+      "reports/20261104_v1_v2_transfer_diagnosis/run_ablation.py",
+      "nominal_mass"
+    ],
+    "exit_code": 0,
+    "native_invocation": "nominal_mass/case.json",
+    "log": "nominal_mass.log"
+  },
+  "nominal_contact": {
+    "cwd": "/home/lmbike/trackstand_rl/mujoco_sim2sim",
+    "argv": [
+      "python3",
+      "-B",
+      "reports/20261104_v1_v2_transfer_diagnosis/run_ablation.py",
+      "nominal_contact"
+    ],
+    "exit_code": 0,
+    "native_invocation": "nominal_contact/case.json",
+    "log": "nominal_contact.log"
+  },
+  "zero_imu_residual": {
+    "cwd": "/home/lmbike/trackstand_rl/mujoco_sim2sim",
+    "argv": [
+      "python3",
+      "-B",
+      "reports/20261104_v1_v2_transfer_diagnosis/run_ablation.py",
+      "zero_imu_residual"
+    ],
+    "exit_code": 0,
+    "native_invocation": "zero_imu_residual/case.json",
+    "log": "zero_imu_residual.log"
+  },
+  "no_speed_projection": {
+    "cwd": "/home/lmbike/trackstand_rl/mujoco_sim2sim",
+    "argv": [
+      "python3",
+      "-B",
+      "reports/20261104_v1_v2_transfer_diagnosis/run_ablation.py",
+      "no_speed_projection"
+    ],
+    "exit_code": 0,
+    "native_invocation": "no_speed_projection/case.json",
+    "log": "no_speed_projection.log"
+  },
+  "zero_integral": {
+    "cwd": "/home/lmbike/trackstand_rl/mujoco_sim2sim",
+    "argv": [
+      "python3",
+      "-B",
+      "reports/20261104_v1_v2_transfer_diagnosis/run_ablation.py",
+      "zero_integral"
+    ],
+    "exit_code": 0,
+    "native_invocation": "zero_integral/case.json",
+    "log": "zero_integral.log"
+  },
+  "matched_v1_800": {
+    "cwd": "/home/lmbike/trackstand_rl/mujoco_sim2sim",
+    "argv": [
+      "python3",
+      "-B",
+      "reports/20261104_v1_v2_transfer_diagnosis/matched_v1.py",
+      "--physics_hz",
+      "800"
+    ],
+    "exit_code": 0,
+    "log": "matched_v1_800.log"
+  },
+  "matched_v1_1200": {
+    "cwd": "/home/lmbike/trackstand_rl/mujoco_sim2sim",
+    "argv": [
+      "python3",
+      "-B",
+      "reports/20261104_v1_v2_transfer_diagnosis/matched_v1.py",
+      "--physics_hz",
+      "1200"
+    ],
+    "exit_code": 0,
+    "log": "matched_v1_1200.log"
+  },
+  "isaac": {
+    "command_file": "isaaclab_train/reports/20261104_v2_50100_dr_diagnosis/command.json",
+    "exit_code": 0,
+    "sandbox_startup_failure_preserved": true
+  },
+  "cpu_environment": {
+    "CUDA_VISIBLE_DEVICES": "",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "OMP_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MPLBACKEND": "Agg",
+    "MPLCONFIGDIR": "case-specific /tmp/trackstand_transfer_<case>",
+    "onnxruntime_threads": "intra/inter-op=1 for ablations"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "policy": "/home/lmbike/trackstand_rl/isaaclab_train/logs/rsl_rl/trackstand_rl_rsl/2026-10-21_11-18-29/model_2500.pt",
+  "policy_sha256": "5389effbd6a0d3e78c9ea9caeac309ceb5082622c8ee125bb701c63d1511fe52",
+  "physics_pd_hz": 1200,
+  "policy_hz": 50,
+  "completed": 64,
+  "timeouts": 53,
+  "fallen": 11,
+  "mean_s": 24.8946875,
+  "median_s": 30.0,
+  "reference_plant": "Exact v2 DR reset plant/state/IMU residuals/noise stream; fixed gains",
+  "interpretation": "Policy and rear action/controller differ together; not a controller-only ablation",
+  "standard_v1_gain_randomization_applied": false,
+  "production_source_modified": false
+}

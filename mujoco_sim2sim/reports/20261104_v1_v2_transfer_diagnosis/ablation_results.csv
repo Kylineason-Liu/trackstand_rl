@@ -1,0 +1,12 @@
+case,timeouts,fallen,mean_s
+full_dr_baseline,22,42,12.998125
+nominal,47,17,26.716250000000002
+zero_initial,22,42,13.110312500000001
+zero_com,40,24,19.7575
+zero_lateral_com,36,28,18.9771875
+only_lateral_com,20,44,11.4378125
+nominal_mass,23,41,12.631562500000001
+nominal_contact,20,44,12.095
+zero_imu_residual,19,45,11.755
+no_speed_projection,20,44,12.8421875
+zero_integral,27,37,14.7765625

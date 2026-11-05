@@ -1,0 +1,36 @@
+{
+  "case": "zero_initial",
+  "constants_overridden": {
+    "DR_INIT_ROLL": [
+      0.0,
+      0.0
+    ],
+    "DR_INIT_ROLL_RATE": [
+      0.0,
+      0.0
+    ]
+  },
+  "native_argv": [
+    "/home/lmbike/trackstand_rl/mujoco_sim2sim/scripts/run_deploy_eval_v2.py",
+    "--onnx",
+    "/home/lmbike/trackstand_rl/mujoco_sim2sim/policies/trackstand_rl_v2_rsl_2026-11-02_22-40-01_model_50100.onnx",
+    "--num_envs",
+    "64",
+    "--episodes",
+    "64",
+    "--max_policy_steps",
+    "1500",
+    "--seed",
+    "42",
+    "--physics_hz",
+    "1200",
+    "--pure_survival",
+    "--output_dir",
+    "/home/lmbike/trackstand_rl/mujoco_sim2sim/reports/20261104_v1_v2_transfer_diagnosis/zero_initial",
+    "--dr"
+  ],
+  "runtime_integral_gain_override": null,
+  "thread_limits": "ONNX Runtime intra/inter-op=1; numerical controller unchanged",
+  "production_source_modified": false,
+  "multiagent_used": false
+}
