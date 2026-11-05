@@ -2,7 +2,7 @@
 
 Reinforcement-learning-based **stationary bicycle balancing**, from Isaac Lab training to MuJoCo sim-to-sim validation and Raspberry Pi deployment with ROS 2.
 
-Training, sim-to-sim and Raspberry Pi deployment now use the `Trackstand-Balance-v1` contract: 11 observations and bounded Beta actions. V0 remains available for historical experiments. A policy commands steering **position** and rear-wheel **torque** for stationary balance. RC controls the kickstands and authorizes balancing, not steering/throttle policy inputs. Matching software contracts does not establish identical physical actuator response or successful hardware balance.
+The repository retains `Trackstand-Balance-v0`, v1 and v2. V1 uses 11 observations and bounded Beta actions for steering **position** and rear-wheel **torque**; v2 keeps those observations and commands rear-wheel **velocity** with PI control. The typical commands below select v1 unless stated otherwise; the parallel [v2 deployment](deploy/docs/V2_DEPLOYMENT.md) is also available. RC controls the kickstands and authorizes balancing, not steering/throttle policy inputs. Matching software contracts does not establish identical physical actuator response or successful hardware balance.
 
 The workflow is **train → evaluate → export ONNX → validate in MuJoCo → commission on the supported bike**. Simulation results and unloaded motor experiments are recorded, but this is a research codebase, not a certified autonomous or road-ready system.
 
@@ -152,10 +152,21 @@ For a supported powered test **after commissioning**, stop the dry-run motor nod
 | `motor_io` | Host PD → C0 current | C0 current, v1 pure torque feedforward |
 | `motor_io_position` | Firmware C2 absolute position | Same C0 rear path |
 | `motor_mit_io` | Firmware MIT position-PD | Same C0 rear path |
+| `motor_mit_io_v2` | Firmware MIT position-PD | V2 MIT velocity P + host integral |
 
 Run **exactly one** backend, never alongside standalone selected-motor CAN writers/recorders. The all-node launch is `ros2 launch trackstand_deploy trackstand.launch.py`: it now selects **`motor_mit_io`**, and uses the checked-in `dry_run: false` setting. It is not a dry-run shortcut.
 
 The bundled deployment default is **2026-10-21_11-18-29 / model_2500**, the DR-trained v1 Beta actor, in a self-contained ONNX file checked by SHA-256. See [policy_controller.py](deploy/source/trackstand_deploy/trackstand_deploy/policy_controller.py) and the [policy manifest](deploy/source/trackstand_deploy/models/v1_policy_manifest.json). Another compatible v1 export requires both `model_path` and matching `model_sha256` startup parameters. Old 13-input 41050/91850 actors are rejected.
+
+For v2, rebuild and run `ros2 launch trackstand_deploy trackstand_v2.launch.py`.
+This selects DR **2026-11-02_22-40-01 / model_50100**, `policy_controller_v2`,
+`motor_mit_io_v2` and `params_v2.yaml`. Rear actions scale by **61.6 rad/s**;
+MIT Kp=0/Kd=0.30 plus host Ki=3.3 N·m/rad implements velocity PI.
+Policy/queries/packets remain **50/100/200 Hz**, with host I at 200 Hz.
+The separate `/trackstand/motor_command_v2` and backend-readiness check prevent
+accidental torque/velocity mixing. See the [v2 guide](deploy/docs/V2_DEPLOYMENT.md)
+for node-by-node commands, settings recovery and the unverified total MIT
+torque clamps. Do not run the v1 and v2 paths together.
 
 ### Operating contract and important limits
 
@@ -180,7 +191,7 @@ PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s deploy/experiments/tes
 PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s mujoco_sim2sim/tests
 ```
 
-These are offline tests, not permission to enable hardware. The current deployment suite has known fixture/safety-expectation failures documented in the audit; historical passing counts do not certify the current source. Isaac-specific tests require the Isaac Lab interpreter, for example `~/IsaacLab/isaaclab.sh -p -m unittest discover -s tests` from `isaaclab_train/` with its import path configured.
+These are offline tests, not physical motor validation. The [2026-11-05 deployment check](deploy/experiments/reports/20261105_v2_ros_deployment/README.md) records 695 passing tests and one sandbox-dependent kernel-timestamp skip; dated older audits describe earlier sources. Isaac-specific tests require the Isaac Lab interpreter, for example `~/IsaacLab/isaaclab.sh -p -m unittest discover -s tests` from `isaaclab_train/` with its import path configured.
 
 Follow [AGENTS.md](AGENTS.md). For a behavior change, include the affected component, checkpoint/hash, effective configuration, DR setting, seed, commands and quantitative results. Submit a GitHub issue or focused pull request; include logs/plots where appropriate, but do not unintentionally commit secrets, raw bags, checkpoints or generated build trees. Preserve third-party material and its notices.
 

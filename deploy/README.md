@@ -50,6 +50,18 @@ ros2 run trackstand_deploy motor_mit_io --ros-args \
 
 If `ros2 run` says `No executable found`, rebuild the synchronized package and source its installation; sourcing alone does not create the entry point. Check `ros2 pkg prefix trackstand_deploy` for an unintended overlay. MIT's 21 parameters are startup-only/read-only; changing `dry_run` at runtime is not a stop mechanism. Powered MIT requires CAN already UP, steering straight and stationary, and kickstands down during persistent-origin setup. Confirm CF/F1 disable handling as described in the MIT guide; neither send success nor an inactive-MIT reply alone proves a physical free state.
 
+## Parallel v2 deployment
+
+Use `ros2 launch trackstand_deploy trackstand_v2.launch.py` after rebuilding
+to select **model_50100** (DR run 2026-11-02_22-40-01), `policy_controller_v2`
+and `motor_mit_io_v2`. V2 retains the eleven observations and steering
+conditioning; its rear action means **velocity**, scaled by 61.6 rad/s,
+with MIT Kp=0/Kd=0.30 and a 200-Hz host integral (Ki=3.3 N·m/rad).
+It uses the distinct `/trackstand/motor_command_v2` topic and verifies backend
+readiness. Run only one policy/backend. See [v2 commands, telemetry, settings
+recovery and remaining actuator limits](docs/V2_DEPLOYMENT.md). The original
+launch/configuration and v1 default policy remain unchanged.
+
 ## Observation contract
 
 The exact order is:

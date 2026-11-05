@@ -230,6 +230,10 @@ class SocketCan:
 class MotorMitIo(Node):
     """Independent MIT/C0 node implementing the established ROS motor contracts."""
 
+    _node_name = "trackstand_motor_io"
+    _command_topic = "/trackstand/motor_command"
+    _backend_description = "MIT steering/C0 drive/control"
+
     _parameter_defaults = {
         "can_interface": "can0", "steering_host_id": "102", "steering_feedback_id": "002",
         "drive_host_id": "101", "drive_feedback_id": "001", "steering_gear_ratio": 1.0,
@@ -246,6 +250,7 @@ class MotorMitIo(Node):
     }
     _control_fields = MOTOR_CONTROL_FIELDS
     _control_label = "motor_control_mit_v1"
+    _shutdown_timeout_s = 1.0
     _snapshot_fields = (
         "position_rad", "velocity_rad_s", "sample_monotonic", "torque_constant_nm_per_a",
         "position_sample_monotonic", "velocity_sample_monotonic", "position_query_ms",
@@ -254,7 +259,7 @@ class MotorMitIo(Node):
 
     def __init__(self) -> None:
         # One CAN owner prevents competing pollers from stealing replies.
-        Node.__init__(self, "trackstand_motor_io")
+        Node.__init__(self, self._node_name)
         for name, default in self._parameter_defaults.items():
             self.declare_parameter(name, default, ParameterDescriptor(read_only=True))
         parameter = lambda name: self.get_parameter(name).value
@@ -323,15 +328,19 @@ class MotorMitIo(Node):
         self._disable_confirmed = False
         self._disable_deadline_at = self._next_disable_retry_at = 0.0
 
+        self._initialize_backend()
         self._create_interfaces()
         self._publish_timer = self.create_timer(STATE_DT_S, self._publish_feedback)
         self._worker = threading.Thread(target=self._run_io, name="trackstand_mit_can", daemon=True)
         self.get_logger().info(
             f"Policy input {COMMAND_RATE_HZ:g} Hz, state/query {STATE_RATE_HZ:g} Hz, "
-            f"MIT steering/C0 drive/control {MIT_RATE_HZ:g} Hz on {self._can_interface}; "
+            f"{self._backend_description} {MIT_RATE_HZ:g} Hz on {self._can_interface}; "
             f"dry_run={self._dry_run}"
         )
         self._worker.start()
+
+    def _initialize_backend(self) -> None:
+        """Version-specific setup, before ROS callbacks or the CAN worker start."""
 
     def _initialize_command_state(self) -> None:
         self._running = True
@@ -360,7 +369,7 @@ class MotorMitIo(Node):
                                      self._control_fields)):
             setattr(self, f"_{name}_dimension", MultiArrayDimension(label=label, size=len(fields), stride=len(fields)))
         self._command_subscription = self.create_subscription(
-            Float64MultiArray, "/trackstand/motor_command", self._command_callback, 10,
+            Float64MultiArray, self._command_topic, self._command_callback, 10,
         )
 
     def _command_callback(self, message: Float64MultiArray) -> None:
@@ -486,21 +495,12 @@ class MotorMitIo(Node):
                     motor.position_sample_monotonic = position[1]
                     motor.velocity_sample_monotonic = stamp
                     motor._pending_position = None
-        elif motor is self._steering and opcode == 0xF0 and len(data) == 7:
-            ranges = parse_f0(data)
-            if self._mit_config_ready and ranges != self._mit_ranges:
-                raise RuntimeError("steering F0 encoding ranges changed")
-            self._mit_ranges = ranges
+        elif opcode == 0xF0 and len(data) == 7:
+            self._consume_ranges(motor, data)
         elif opcode == 0xF1 and len(data) == 7:
             if data[6] & 2:
                 self._fault(f"{motor.name}_mit_system_fault", hard=True)
-            if motor is self._steering and self._mit_ranges is not None:
-                feedback = parse_f1(data, self._mit_ranges)
-                if stamp >= self._mit_f1_at:
-                    self._mit_feedback, self._mit_f1_at = feedback, stamp
-                if (self._mit_sent_this_enable and stamp >= self._mit_first_sent_at
-                        and not feedback.mode_active):
-                    self._fault("steering_mit_unexpected_exit", hard=True)
+            self._consume_mit_feedback(motor, data, stamp)
         elif motor is self._steering and opcode == 0xB1 and self._mit_config_ready:
             raise RuntimeError("steering origin changed after startup")
         elif opcode in (0xCF, 0xAE) and len(data) == 8:
@@ -534,7 +534,7 @@ class MotorMitIo(Node):
                     self._fault(f"{motor.name}_disable_not_confirmed", hard=True)
                     self._disable_wait[motor.name] = None
                     self._disable_f1_wait.pop(motor.name, None)
-            elif (self._mit_sent_this_enable and stamp >= self._mit_first_sent_at and data[6] == 0):
+            elif self._expects_active_mode(motor, stamp) and data[6] == 0:
                 reason = "steering_driver_left_mit_mode" if motor is self._steering else "drive_driver_unexpected_exit"
                 self._fault(reason, hard=True)
         elif opcode in (0xA1, 0xA2, 0xA3, 0xB0, 0xF0, 0xF1, 0xCF, 0xAE):
@@ -544,6 +544,25 @@ class MotorMitIo(Node):
         if (pending is not None and pending[0] is motor and opcode == pending[1]
                 and len(data) == pending[4] and pending[2] <= stamp <= pending[3]):
             self._pending = None
+
+    def _consume_ranges(self, motor: ChannelState, data: bytes) -> None:
+        if motor is not self._steering:
+            raise RuntimeError(f"malformed {motor.name} F0 feedback")
+        ranges = parse_f0(data)
+        if self._mit_config_ready and ranges != self._mit_ranges:
+            raise RuntimeError("steering F0 encoding ranges changed")
+        self._mit_ranges = ranges
+
+    def _consume_mit_feedback(self, motor: ChannelState, data: bytes, stamp: float) -> None:
+        if motor is self._steering and self._mit_ranges is not None:
+            feedback = parse_f1(data, self._mit_ranges)
+            if stamp >= self._mit_f1_at:
+                self._mit_feedback, self._mit_f1_at = feedback, stamp
+            if self._expects_active_mode(motor, stamp) and not feedback.mode_active:
+                self._fault("steering_mit_unexpected_exit", hard=True)
+
+    def _expects_active_mode(self, motor: ChannelState, stamp: float) -> bool:
+        return self._mit_sent_this_enable and stamp >= self._mit_first_sent_at
 
     def _confirm_disable(self, motor: ChannelState) -> None:
         self._disable_wait.pop(motor.name, None)
@@ -572,7 +591,7 @@ class MotorMitIo(Node):
         self._pending = (motor, opcode, sent_at, deadline, expected_length)
         try:
             self._send(motor.host_id, bytes([opcode]) if payload is None else payload)
-            while self._running and time.monotonic() < deadline:
+            while (self._running or getattr(self, "_restoring_configuration", False)) and time.monotonic() < deadline:
                 frame = self._receive_one(max(0.0, deadline - time.monotonic()))
                 if frame is None:
                     continue
@@ -606,9 +625,7 @@ class MotorMitIo(Node):
         steer, drive = self._steering, self._drive
         if not self._dry_run:
             # CF exits MIT; B1 sets the persistent origin once per process, not per episode.
-            for motor in (steer, drive):
-                self._send(motor.host_id, q_current_payload(0.0))
-                self._verify_startup_disable(motor)
+            self._startup_disable()
             with self._command_lock:
                 if self._requested_enable:
                     raise RuntimeError("kickstands must remain down during MIT origin setup")
@@ -660,6 +677,17 @@ class MotorMitIo(Node):
             f"MIT preflight: F0={self._mit_ranges}, F1 zero={self._mit_zero_rad:.6f} native rad"
         )
 
+    def _startup_disable(self) -> None:
+        for motor in (self._steering, self._drive):
+            self._send(motor.host_id, q_current_payload(0.0))
+            self._verify_startup_disable(motor)
+
+    def _extra_configuration_queries(self) -> tuple:
+        return ()
+
+    def _restore_backend_configuration(self) -> None:
+        """Optional shutdown restoration after both motors confirm disable."""
+
     def _schedule_polls(self, now: float) -> None:
         if self._pending is not None and now > self._pending[3]:
             motor, opcode = self._pending[:2]
@@ -683,6 +711,7 @@ class MotorMitIo(Node):
                 self._next_b0_at = now + 1.0
             if now >= self._next_f0_at:
                 self._poll_jobs.append((self._steering, 0xF0, 7))
+                self._poll_jobs.extend(self._extra_configuration_queries())
                 self._next_f0_at = now + 1.0
             if self._next_poll_at <= 0.0:
                 self._next_poll_at = now + STATE_DT_S
@@ -705,12 +734,7 @@ class MotorMitIo(Node):
                 now = time.monotonic()
                 if now >= next_control:
                     self._control_tick()
-                    next_control += 1.0 / self._control_rate_hz
-                    # Align both motors, respecting the actual MIT send deadline.
-                    if self._outputs_active and not self._disable_wait:
-                        next_control = max(next_control, self._next_mit_at)
-                    if next_control <= time.monotonic():
-                        next_control = time.monotonic() + 1.0 / self._control_rate_hz
+                    next_control = self._next_control_deadline(next_control)
                 self._schedule_polls(time.monotonic())
                 deadline = next_control
                 if self._pending is not None:
@@ -733,6 +757,8 @@ class MotorMitIo(Node):
                     if self._disable_wait:
                         self._fault("disable_ack_timeout", hard=True)
                         self.get_logger().error("Motor disable unconfirmed; inspect motor state physically")
+                    if self._disable_confirmed and not self._disable_wait:
+                        self._restore_backend_configuration()
                 except Exception as error:
                     self._fault("shutdown_disable_unconfirmed", hard=True)
                     self.get_logger().error(f"Motor disable/shutdown failed: {error}")
@@ -779,6 +805,15 @@ class MotorMitIo(Node):
             self.get_logger().error(f"{motor.name} C0 send failed: {error}")
         result.duration_ms = (time.monotonic() - started) * 1000.0
         return result
+
+    def _next_control_deadline(self, previous: float) -> float:
+        next_control = previous + 1.0 / self._control_rate_hz
+        # V1 preserves its existing minimum steering-packet gap.
+        if self._outputs_active and not self._disable_wait:
+            next_control = max(next_control, self._next_mit_at)
+        if next_control <= time.monotonic():
+            next_control = time.monotonic() + 1.0 / self._control_rate_hz
+        return next_control
 
     def _send_mit(self, target_rad: float, guard=None) -> tuple[MotorSendResult, float]:
         result = MotorSendResult()
@@ -846,14 +881,7 @@ class MotorMitIo(Node):
         if self._tx_bus is not None:
             result.attempted = True
             errors = []
-            operations = []
-            if ("steering" in self._disable_wait and
-                    (self._disable_wait["steering"] is None or now >= self._disable_deadline_at)):
-                operations.append((self._steering, "disable", bytes([0xCF])))
-            if ("drive" in self._disable_wait and
-                    (self._disable_wait["drive"] is None or now >= self._disable_deadline_at)):
-                operations.extend(((self._drive, "zero", q_current_payload(0.0)),
-                                   (self._drive, "disable", bytes([0xCF]))))
+            operations = self._disable_operations(now)
             for motor, operation, payload in operations:
                 try:
                     sent_at = time.monotonic()
@@ -873,6 +901,17 @@ class MotorMitIo(Node):
         # Socket send success is not evidence that either motor disabled.
         self._outputs_active = bool(self._disable_wait)
         return result
+
+    def _disable_operations(self, now: float) -> list:
+        operations = []
+        if ("steering" in self._disable_wait and
+                (self._disable_wait["steering"] is None or now >= self._disable_deadline_at)):
+            operations.append((self._steering, "disable", bytes([0xCF])))
+        if ("drive" in self._disable_wait and
+                (self._disable_wait["drive"] is None or now >= self._disable_deadline_at)):
+            operations.extend(((self._drive, "zero", q_current_payload(0.0)),
+                               (self._drive, "disable", bytes([0xCF]))))
+        return operations
 
     def _gate_state(self, now: float, requested_enable: bool, command_stamp: float,
                     sending: bool = False) -> tuple[dict, list[str]]:
@@ -1140,15 +1179,21 @@ class MotorMitIo(Node):
             "state_status_fault_rate_hz": STATE_RATE_HZ,
             "motor_control_rate_hz": MIT_RATE_HZ,
             "drive_command_rate_hz": self._control_rate_hz,
+            **self._status_additions(),
         }, sort_keys=True, allow_nan=False)
         self._status_publisher.publish(message)
+
+    def _status_additions(self) -> dict:
+        return {}
 
     def destroy_node(self) -> None:
         self._running = False
         if hasattr(self, "_worker"):
-            self._worker.join(timeout=1.0)
+            self._worker.join(timeout=self._shutdown_timeout_s)
             if self._worker.is_alive():
-                self.get_logger().error("MIT CAN worker did not stop within 1 s; inspect motor disable physically")
+                self.get_logger().error(
+                    f"MIT CAN worker did not stop within {self._shutdown_timeout_s:g} s; inspect motor disable physically"
+                )
         Node.destroy_node(self)
 
 

@@ -49,6 +49,8 @@ def node_module(monkeypatch):
     def load(filename, canonical=False):
         if filename == "motor_io_position":
             load("motor_io", canonical=True)  # Bind inherited methods to this test's ROS/CAN stubs.
+        if filename in ("motor_mit_io_v2", "policy_controller_v2"):
+            load(filename.removesuffix("_v2"), canonical=True)
         path = Path(__file__).parents[1] / "trackstand_deploy" / f"{filename}.py"
         name = f"trackstand_deploy.{filename}" if canonical else f"trackstand_deploy._{filename}_telemetry_test"
         spec = importlib.util.spec_from_file_location(name, path)

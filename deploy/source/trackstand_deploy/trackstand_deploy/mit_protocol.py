@@ -85,11 +85,18 @@ def mit_motion_payload(
     position_rad: float, ranges: MitRanges, kp_nm_per_rad: float, kd_nm_s_per_rad: float,
 ) -> bytes:
     """Position absolute; velocity/feedforward torque zero; gains use unsigned ranges."""
+    return mit_command_payload(MitCommand(position_rad, 0.0, kp_nm_per_rad, kd_nm_s_per_rad, 0.0), ranges)
+
+
+def mit_command_payload(command: MitCommand, ranges: MitRanges) -> bytes:
+    """Encode all five native SI fields; no clipping or guessed firmware limits."""
+    position_rad = command.position_rad
+    kp_nm_per_rad, kd_nm_s_per_rad = command.kp_nm_per_rad, command.kd_nm_s_per_rad
     p = encode(position_rad, -ranges.position_rad, ranges.position_rad, 16)
-    v = encode(0.0, -ranges.velocity_rad_s, ranges.velocity_rad_s, 12)
+    v = encode(command.velocity_rad_s, -ranges.velocity_rad_s, ranges.velocity_rad_s, 12)
     kp = encode(kp_nm_per_rad, 0.0, 500.0, 12)
     kd = encode(kd_nm_s_per_rad, 0.0, 5.0, 12)
-    t = encode(0.0, -ranges.torque_nm, ranges.torque_nm, 12)
+    t = encode(command.feedforward_torque_nm, -ranges.torque_nm, ranges.torque_nm, 12)
     return bytes((p >> 8, p & 255, v >> 4, ((v & 15) << 4) | (kp >> 8), kp & 255,
                   kd >> 4, ((kd & 15) << 4) | (t >> 8), t & 255))
 
