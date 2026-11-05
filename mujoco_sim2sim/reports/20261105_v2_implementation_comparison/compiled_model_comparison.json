@@ -1,0 +1,157 @@
+{
+  "mujoco_version": "3.12.0",
+  "model_options": {
+    "integrator": "mjINT_EULER",
+    "solver": "mjSOL_NEWTON",
+    "iterations": 100,
+    "ls_iterations": 50,
+    "tolerance": 1e-08,
+    "cone": "mjCONE_PYRAMIDAL",
+    "timestep": 0.0008333333333333334,
+    "gravity": [
+      0.0,
+      0.0,
+      -9.81
+    ]
+  },
+  "bodies": {
+    "base_link": {
+      "mass_kg": 2.02679270030967,
+      "world_com_at_zero_root": [
+        0.15570562376425257,
+        -0.04248823161464377,
+        0.16299923302475136
+      ],
+      "mj_principal_inertia": [
+        0.003912938325610799,
+        0.01614493587751088,
+        0.018533997024823435
+      ],
+      "usd_authored_principal_inertia": [
+        0.0039133737,
+        0.016144622,
+        0.018534005
+      ],
+      "relative_inertia_difference_percent": [
+        -0.011125295527003587,
+        0.0019441614110160543,
+        -4.30299687770308e-05
+      ]
+    },
+    "rear_wheel_link": {
+      "mass_kg": 0.12332977036722836,
+      "world_com_at_zero_root": [
+        0.029706836877675974,
+        -0.043741867142508106,
+        0.08597341669083003
+      ],
+      "mj_principal_inertia": [
+        0.00017834346556958746,
+        0.00017834371049755903,
+        0.00032951638473937834
+      ],
+      "usd_authored_principal_inertia": [
+        0.00017797352,
+        0.000178,
+        0.0003290265
+      ],
+      "relative_inertia_difference_percent": [
+        0.2078655125703266,
+        0.19309578514552506,
+        0.14888914399853181
+      ]
+    },
+    "steering_link": {
+      "mass_kg": 0.10929162034075492,
+      "world_com_at_zero_root": [
+        0.295549200644346,
+        -0.03983174257243652,
+        0.17746799022391058
+      ],
+      "mj_principal_inertia": [
+        4.061030056122427e-05,
+        0.00013457709432453701,
+        0.0001608300894650099
+      ],
+      "usd_authored_principal_inertia": [
+        4.0833565e-05,
+        0.000135,
+        0.00016116643
+      ],
+      "relative_inertia_difference_percent": [
+        -0.5467669520790808,
+        -0.3132634633059128,
+        -0.20869143468035256
+      ]
+    },
+    "front_wheel_link": {
+      "mass_kg": 0.16491532139005347,
+      "world_com_at_zero_root": [
+        0.3126120254949556,
+        -0.03974072684650834,
+        0.08636433619103245
+      ],
+      "mj_principal_inertia": [
+        0.00022810703135041759,
+        0.000228107260004704,
+        0.00045316457969696224
+      ],
+      "usd_authored_principal_inertia": [
+        0.00022799111,
+        0.000228,
+        0.0004530089
+      ],
+      "relative_inertia_difference_percent": [
+        0.05084468004807885,
+        0.047043861712281476,
+        0.03436570384427462
+      ]
+    }
+  },
+  "collision_meshes": {
+    "rear_wheel_link": {
+      "type": "mjGEOM_MESH",
+      "vertices": 4688,
+      "radial_range_m": [
+        0.025734785989439332,
+        0.0707277824252026
+      ],
+      "axial_width_m": 0.038539189657229495,
+      "condim": 3,
+      "margin_m": 0.0,
+      "solref": [
+        0.005,
+        1.5
+      ],
+      "solimp": [
+        0.9,
+        0.95,
+        0.001,
+        0.5,
+        2.0
+      ]
+    },
+    "front_wheel_link": {
+      "type": "mjGEOM_MESH",
+      "vertices": 4425,
+      "radial_range_m": [
+        0.01251255143908687,
+        0.07071334573560957
+      ],
+      "axial_width_m": 0.018798572199946524,
+      "condim": 3,
+      "margin_m": 0.0,
+      "solref": [
+        0.005,
+        1.5
+      ],
+      "solimp": [
+        0.9,
+        0.95,
+        0.001,
+        0.5,
+        2.0
+      ]
+    }
+  }
+}
