@@ -1,0 +1,168 @@
+CAN/ROS latency isolation — supported bike, no policy required
+============================================================
+
+Purpose
+-------
+Step 1: establish delays with BOTH motors disabled, no policy inference and
+roughly the same bus load as active v2 deployment. Compare identical workloads
+with minimal versus full ROS recording. Step 2: localize host/query/receive/ROS
+latency. Neither disabled test proves firmware behavior while actuating.
+A separate PASSIVE mode observes real supported replay/deployment without sending
+anything. It uses the real traffic rather than synthetic replacements.
+
+Files to copy/pull to the Pi under deploy/experiments/
+---------------------------------------------------
+can_latency_probe.py, ros_latency_observer.py, latency_common.py,
+analyze_latency.py, run_latency_ab.sh, this guide. No colcon build needed.
+Standalone probe/analyzer use Python standard library. --ros and the observer
+need the Pi's ROS 2 environment sourced. Do not run these with sudo unless your
+normal motor scripts already require it. Interface must already be up; scripts
+do not reset it, change bitrate, increase queue length or reset counters.
+
+Support the bike independently, initially kickstands down. Stop ALL existing
+motor CAN writers: motor_io variants, motor_mit_io variants and experiment
+scripts. Stop the policy nodes/manual_kickstand/rc_kickstand for the disabled
+experiment. The diagnostic never commands kickstands. IMU publisher may stay
+running for BOTH conditions. Do not change firmware, supply, support or logging
+settings between comparisons. Do not reboot/reset CAN between before/after
+counter measurements; a previous runtime settings journal remains untouched.
+
+1. Preview (no CAN access or files)
+---------------------------------
+cd ~/trackstand_rl
+python3 deploy/experiments/can_latency_probe.py
+
+2. Main disabled-load A/B experiment (recommended)
+-------------------------------------------------
+With ROS 2 sourced, run:
+
+bash deploy/experiments/run_latency_ab.sh 120
+
+Four trials: minimal, full, full, minimal, 120 seconds each (about 8 minutes).
+This ABBA order reduces warm-up/time-order confounding. Same CAN workload,
+synthetic ROS publishers, observer and local CSV logging in all four trials;
+only rosbag recording changes. Full records diagnostic state/control/status/fault,
+IMU if running, and rosout. Observer emulates policy input consumption at 50 Hz
+but performs NO inference, outputs, motor enable or servo command.
+
+The wrapper starts/stops observer and recorder automatically. Do not start
+production motor/policy nodes for these four trials. Stop with Ctrl-C. Failed
+startup/disabled confirmation or competing CAN writers stops the experiment.
+See observer.log/recorder.log if either process fails to start. Keep all files.
+This is synthetic deployment-like ROS load, not exact production serialization
+or callback cost. A/B results identify sensitivity, not a complete causal proof.
+
+Optional single trial without ROS (isolates CAN/Python from ROS):
+
+python3 deploy/experiments/can_latency_probe.py --execute --duration 120 --label can_only
+
+Optional single trial with publisher load (observer separately if wanted):
+
+python3 deploy/experiments/ros_latency_observer.py --source probe --duration 150
+python3 deploy/experiments/can_latency_probe.py --execute --ros --duration 120 --label manual_trial
+
+The last two commands belong in separate terminals on the SAME PI.
+
+Traffic design and acceptance
+-----------------------------
+Real v2 steady-state nominal traffic:
+- 100 batches/s: steering A3,A2, rear A3,A2, steering A1,rear A1, steering AE,rear AE.
+- 200 MIT command/s per motor, normally with F1 replies.
+- Read-only F0/CD checks at 1 Hz. B0 is needed at startup/calibration only and
+  is not a steady-state stream after calibration succeeds.
+Disabled diagnostic:
+- Same eight queries/100-Hz batch and 2-ms sequential query scheduling budget.
+- No MIT commands: use F1 reads at approximately 270.886 Hz PER MOTOR to replace
+  the approximate combined request/reply airtime of 200-Hz MIT packets.
+- CF disables at startup/exit, F1 verifies inactive/fault-free before measurement.
+- Only one-byte CF or read requests are allowed. No C0/C1/C2/C3/B1, F0/CD writes,
+  torque/position/velocity actuation, encoder zeroing or gain/range changes.
+
+Standard Classical CAN frame estimate = 47 + 8*DLC bits, includes intermission,
+excludes bit stuffing, retransmissions and physical-adapter overhead. Eight
+queries plus replies: 121600 bit/s; MIT streams plus replies: 85600 bit/s;
+total reference 207200 bit/s (~20.72% at 1 Mbit/s before stuffing). Replacement
+matches this estimate but produces ~2684 versus ~2400 frames/s (+11.8%). It
+therefore stresses frame-processing somewhat MORE, with different payloads and
+firmware code paths. It is not exact electrical/CPU load equivalence.
+
+Analyzer reports achieved estimated bitrate/frame/query rates. If below 90% of
+the planned/reference airtime, DO NOT conclude deployment load passed. Investigate
+missed query slots/replies/host scheduling. --load-scale permits a deliberate
+0..2x diagnostic sweep (strictly >0), default 1; do not silently compare different
+scales. At true deployment-rate capture, inspect actual DLCs/rates and compare
+against synthetic measured traffic; bit stuffing/retries require bus-level data.
+
+3. Passive capture during actual actuation (separate test)
+---------------------------------------------------------
+Stop the disabled-load probe first. Independently support the bike according to
+the existing replay instructions. Start this before the real motor writer:
+
+python3 deploy/experiments/can_latency_probe.py --execute --mode passive --duration 120 --label supported_actual
+
+This mode sends ZERO frames, including startup/exit; it does not disable or
+protect motors. Motor safety remains the responsibility of the existing replay
+or deployment code. Then run your existing supported v2 replay. For example,
+inspect its preview first (no --execute):
+
+python3 deploy/experiments/v2_motor_replay.py --motors both --packet-rate 200 --duration 10
+
+Only after the existing fixture/startup requirements are satisfied, add --execute
+in the replay terminal. Replay's own CSV and passive capture must both be saved.
+Do not run a replay and production motor node together. Replay queries differ
+from full deployment, so check actual captured traffic rather than assume equality.
+
+For actual production motor_mit_io_v2 + policy trials, additionally run:
+
+python3 deploy/experiments/ros_latency_observer.py --source production --duration 150
+
+Keep the normal diagnostic rosbag (/motor_control, /motor_state, /motor_status,
+/policy_timing, /policy_event, /motor_event, /motor_fault, /motor_command_v2 and
+/imu). Observer publishes nothing. Production-source motor_state timestamp is
+PUBLICATION time, not acquisition time; observer labels it accordingly. Active
+capture cannot obtain the sender syscall start/duration from another process;
+use existing sender telemetry/replay CSV to complement its local TX echoes.
+A local TX echo is not proof of the motor's application-level command acceptance.
+
+Measurements and interpretation
+-------------------------------
+- Scheduled batch/query time -> send syscall: dispatch lateness (includes the
+  intentional sequential order inside a batch; inspect opcode-specific data).
+- send_start/end: host socket-call duration, NOT actual wire transmit duration.
+- kernel receive wall timestamp -> user dequeue: receive backlog, mapped with
+  bracketed wall/monotonic samples. Raw clocks and uncertainty retained.
+- dequeue -> processed: diagnostic parsing/processing cost, not the production
+  node's exact processing cost. Clock sampling overhead is included.
+- query send -> matching kernel reply: round-trip aggregate only; combines host
+  TX queue/adapter, wire, motor response, RX adapter/kernel path. No claim of
+  firmware-only latency. Missing/overlapping queries have NO transaction IDs:
+  RTT becomes conservatively untrusted for that motor/opcode for the rest of run.
+  Raw frame/kernel backlog measurements remain useful even when RTT is ambiguous.
+- Synthetic ROS publish -> callback -> 50-Hz consumer: DDS/executor plus scheduling;
+  a 50-Hz consumer inherently waits up to ~20 ms. No real policy inference cost.
+- /proc CPU/load/memory/disk and temperature samples; ip CAN counters before,
+  during and after. Do not mistake counters inherited from earlier runs for new
+  errors; take deltas. Same-Pi boot IDs are saved for monotonic correlation.
+
+The >1-ms clock check is logged as uncertain, NOT a reason to terminate this
+query-only/passive diagnostic. Invalid mappings do not create trusted latency.
+2-ms query budget violations/50-ms reply expirations are recorded without stopping.
+Real production guards are UNCHANGED. No permissive motor actuation is introduced.
+RX overflow is counted; clock-uncertain/lost data limit conclusions. Fatal socket,
+logging or malformed-frame errors stop and retain partial output. Disabled mode
+also stops on active/faulted F1 or competing CAN writers. Hardware status/angle
+is not re-zeroed. Logs do not guarantee the bike physically remains stationary.
+
+Analysis and upload
+-------------------
+Each run creates a unique logs/..._can_latency or ..._ros_latency directory with
+CSV and JSON metadata. ABBA contains these plus full-trial bags and process logs.
+On PC or Pi, for each actual run directory (not the outer ABBA directory):
+
+python3 deploy/experiments/analyze_latency.py path/to/run_can_latency path/to/run_ros_latency
+
+Saves analysis.json/analysis.txt; no ROS or plotting packages required. Upload the
+ENTIRE ABBA directory (including bags) and any passive-run/replay logs. No need to
+manually pick timing rows. Logs quantify whether Step 1 delays exist and narrow
+Step 2's location; electrical versus firmware delay still may need external CAN
+instrumentation. No live bike/ROS/CAN run has been performed by the offline tests.
