@@ -10,8 +10,9 @@ python3 "$script_dir/can_latency_probe.py" --duration "$duration"
 mkdir -p "$output"
 observer_pid=""
 recorder_pid=""
+# Bash starts & jobs with SIGINT ignored and ros2 bag record keeps that, so use SIGTERM.
 cleanup() {
-    if [[ -n "$recorder_pid" ]]; then kill -INT "$recorder_pid" 2>/dev/null || true; wait "$recorder_pid" || true; recorder_pid=""; fi
+    if [[ -n "$recorder_pid" ]]; then kill -TERM "$recorder_pid" 2>/dev/null || true; wait "$recorder_pid" || true; recorder_pid=""; fi
     if [[ -n "$observer_pid" ]]; then kill -INT "$observer_pid" 2>/dev/null || true; wait "$observer_pid" || true; observer_pid=""; fi
 }
 trap cleanup EXIT
