@@ -1,0 +1,27 @@
+settings:
+  digits: 3
+  prefix: RES
+  sep: ''
+  parent: TST
+attributes:
+  defaults:
+    category: not specified
+    status: untested
+    hypothesis: not specified
+    acceptance: not specified
+    configuration: not specified
+    environment: not specified
+    evidence: not specified
+    uncertainty: not specified
+    next_action: not specified
+  reviewed: &id001
+  - category
+  - status
+  - hypothesis
+  - acceptance
+  - configuration
+  - environment
+  - evidence
+  - uncertainty
+  - next_action
+  publish: *id001

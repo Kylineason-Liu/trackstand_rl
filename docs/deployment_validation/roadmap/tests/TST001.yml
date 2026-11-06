@@ -1,0 +1,31 @@
+acceptance: |
+  Follow the existing procedure and its traffic checks. Compare distributions and counts at matched load; do not invent a universal latency pass threshold.
+active: true
+category: deployment/control
+configuration: |
+  Record the exact Git revision, motor parameters and Pi/CAN setup before testing.
+derived: false
+environment: |
+  Real Raspberry Pi; bike independently supported; motor actuation disabled for this test.
+evidence: No new measurement attached. This is a usage template.
+header: |
+  Compare minimal and full recording load
+hypothesis: |
+  Full recording increases host processing delay while kernel reception remains timely.
+level: 1.0
+links:
+- REQ001: pwk8byevJHbbbNPlpKLJIioSdl6W6-YPDvgm5xYPcsA=
+next_action: |
+  Run the documented procedure when hardware testing is authorized; attach a new result item.
+normative: true
+ref: ''
+reviewed: EINUojwAEUYQm2s1Q4uTidYMlCvqQicWuaTOP6RzcC0=
+status: untested
+text: |
+  Use the existing disabled-actuation latency diagnostic procedure. Keep the CAN traffic profile and hardware configuration fixed while comparing minimal/full/full/minimal recording. Inspect achieved rates, kernel receive times, worker delays and policy callback ages.
+
+  [Existing diagnostic procedure](../../../../deploy/experiments/LATENCY_DIAGNOSTICS.txt)
+
+  [Historical report, not a result of this test](../../../../deploy/experiments/reports/deployment_20261105_161526/report.txt)
+uncertainty: |
+  This example does not establish CAN quality or deployment readiness.

@@ -1,0 +1,27 @@
+acceptance: |
+  A conclusion cites actual data, exact conditions and remaining uncertainty.
+active: true
+category: deployment/control
+configuration: |
+  Record the exact Git revision, motor parameters and Pi/CAN setup before testing.
+derived: false
+environment: |
+  Real Raspberry Pi; bike independently supported; motor actuation disabled for this test.
+evidence: No new measurement attached. This is a usage template.
+header: |
+  Timing comparison result placeholder
+hypothesis: |
+  To be supported, contradicted or left inconclusive after measurement.
+level: 1.0
+links:
+- TST001: GzuTcO4gppz62vrY6_TC93xRDnu8kl51JpvuuFeEytw=
+next_action: |
+  After a real run, fill evidence and status; review the document only after checking the evidence.
+normative: true
+ref: ''
+reviewed: 9YEGuS-2INVmp61PE2_M052agj6lUrBUKJwFq_1pVHQ=
+status: untested
+text: |
+  No run has been performed for this example. Replace this placeholder with actual run identifiers, counts, timing statistics, evidence links and a scoped conclusion after the test. Preserve older results as separate records.
+uncertainty: |
+  This example does not establish CAN quality or deployment readiness.

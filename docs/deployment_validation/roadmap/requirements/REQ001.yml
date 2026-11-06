@@ -1,0 +1,26 @@
+acceptance: |
+  Each reported delay has defined endpoints and units; unknown firmware processing delay stays unknown.
+active: true
+category: deployment/control
+configuration: |
+  Record the exact Git revision, motor parameters and Pi/CAN setup before testing.
+derived: false
+environment: |
+  Real Raspberry Pi; bike independently supported; motor actuation disabled for this test.
+evidence: No new measurement attached. This is a usage template.
+header: |
+  Motor feedback freshness must be attributable
+hypothesis: |
+  A stale-data stop may arise from host backlog rather than a damaged CAN bus.
+level: 1.0
+links: []
+next_action: |
+  Review TST001 and fill exact configuration identity before collecting data.
+normative: true
+ref: ''
+reviewed: pwk8byevJHbbbNPlpKLJIioSdl6W6-YPDvgm5xYPcsA=
+status: untested
+text: |
+  A timing investigation shall distinguish query scheduling, kernel reception, host processing and policy reception. Report achieved traffic and data ages against the active deployment configuration. This is a template requirement, not a claim that the system passes.
+uncertainty: |
+  This example does not establish CAN quality or deployment readiness.

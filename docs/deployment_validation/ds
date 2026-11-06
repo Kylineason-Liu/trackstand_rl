@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Scope scans to this register; validation must not silently review new records.
+set -euo pipefail
+validation_dir="$(cd -- "$(dirname -- "$0")" && pwd)"
+repo_dir="$(cd -- "$validation_dir/../.." && pwd)"
+cd "$validation_dir"
+exec "$repo_dir/doorstop/.venv/bin/python" -c '
+import sys
+from doorstop import settings
+from doorstop.cli.main import main
+settings.REVIEW_NEW_ITEMS = False
+settings.STAMP_NEW_LINKS = False
+raise SystemExit(main(["--no-reformat", *sys.argv[2:], "--project", sys.argv[1]]))
+' "$validation_dir/roadmap" "$@"
