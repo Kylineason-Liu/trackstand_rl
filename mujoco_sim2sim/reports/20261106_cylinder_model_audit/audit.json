@@ -1,0 +1,89 @@
+{
+  "source_revision": "59c3a029a074fd079e239e83817963fa550acd0d",
+  "mujoco_version": "3.12.0",
+  "new_sha256": "9ccd397cbf6adabba8ac2858a35df0d91c0af5f18108aaa986783e22a4f67e87",
+  "original_matches_HEAD": true,
+  "loaders": {
+    "v1": {
+      "preserved_arrays": [
+        "body_mass",
+        "body_inertia",
+        "body_ipos",
+        "body_iquat",
+        "body_pos",
+        "body_quat",
+        "jnt_pos",
+        "jnt_axis",
+        "jnt_range",
+        "jnt_limited",
+        "geom_contype",
+        "geom_conaffinity",
+        "geom_friction",
+        "geom_solref",
+        "geom_solimp"
+      ],
+      "total_mass_kg": 2.424329412407707,
+      "wheel_checks": {
+        "rear": {
+          "center_max_abs_error_m": 1.5154544286133387e-14,
+          "axis_max_abs_error": 1.1102230246251565e-16,
+          "center_world_m": [
+            0.02946499999998492,
+            -0.04349500000000002,
+            0.07094599999999601
+          ]
+        },
+        "front": {
+          "center_max_abs_error_m": 8.881784197001252e-16,
+          "axis_max_abs_error": 5.551115123125783e-16,
+          "center_world_m": [
+            0.3126119999999991,
+            -0.039740999999999194,
+            0.07136400000000015
+          ]
+        }
+      }
+    },
+    "v2": {
+      "preserved_arrays": [
+        "body_mass",
+        "body_inertia",
+        "body_ipos",
+        "body_iquat",
+        "body_pos",
+        "body_quat",
+        "jnt_pos",
+        "jnt_axis",
+        "jnt_range",
+        "jnt_limited",
+        "geom_contype",
+        "geom_conaffinity",
+        "geom_friction",
+        "geom_solref",
+        "geom_solimp"
+      ],
+      "total_mass_kg": 2.424329412407707,
+      "wheel_checks": {
+        "rear": {
+          "center_max_abs_error_m": 1.5154544286133387e-14,
+          "axis_max_abs_error": 1.1102230246251565e-16,
+          "center_world_m": [
+            0.02946499999998492,
+            -0.04349500000000002,
+            0.07094599999999601
+          ]
+        },
+        "front": {
+          "center_max_abs_error_m": 8.881784197001252e-16,
+          "axis_max_abs_error": 5.551115123125783e-16,
+          "center_world_m": [
+            0.3126119999999991,
+            -0.039740999999999194,
+            0.07136400000000015
+          ]
+        }
+      }
+    }
+  },
+  "direct_xml_compiles": true
+}

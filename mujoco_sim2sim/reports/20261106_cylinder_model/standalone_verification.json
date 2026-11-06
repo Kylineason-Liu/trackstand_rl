@@ -1,0 +1,9 @@
+{
+  "standalone": true,
+  "xml_sha256": "99e8a946021029297d500568af6e1819871ac4c4098a91df2e9767553d9cdfaa",
+  "checks": {
+    "raw": "isolated copy compiles, arrays equal, finite forward/step",
+    "v1": "isolated copy compiles, arrays equal, finite forward/step",
+    "v2": "isolated copy compiles, arrays equal, finite forward/step"
+  }
+}
