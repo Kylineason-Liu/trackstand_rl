@@ -1,0 +1,36 @@
+{
+  "urdf_sha256": "4e23b41309467f6a72a38ee9d4dd0f889e690715c8012db9e6d8478b5b860511",
+  "source_urdf_sha256": "05c122017d968385bdd738103d6633a3721541e85adcf215cb45d4222c47811e",
+  "original_mesh_urdf_sha256": "4c320adfabbe1a441e475a379c9e28e0164b3c36f32844caf3d705ea309b44b0",
+  "mesh_sha256": {
+    "base_link.stl": "7ededed10764d4f39bcdc5155960f0c561517398bb525d9974baaf9010aee24f",
+    "rear_wheel_link_1.stl": "0aa728c6939ad677dd82def315cb08fcbf942420f06d6e31ff9c44a6c7cfefb4",
+    "steering_link_1.stl": "8b94b3fffcc91fd753e81342e08fd06faa39cc58d821f63616159eac84fe367f",
+    "front_wheel_link_1.stl": "a675a06197d9f49aff9c3eccc51636ddcc7ef67b51542be505eb2fe79f063d56"
+  },
+  "protected_file_count": 50,
+  "source_files_unchanged": true,
+  "isolated_resource_resolution": true,
+  "link_count": 4,
+  "joint_count": 3,
+  "visual_and_inertial_and_joint_values_preserved": true,
+  "wheel_collision_origins": {
+    "rear_wheel_link_1": {
+      "xyz": "-0.029465 0.025495 -0.085946",
+      "rpy": "0 0 0"
+    },
+    "front_wheel_link_1": {
+      "xyz": "-0.312612 0.039741 -0.086364",
+      "rpy": "0 0 0"
+    }
+  },
+  "mass_total_kg": 2.424329412407707,
+  "fresh_isaac_import_performed": false,
+  "isolated_urdf_parser": {
+    "library": "MuJoCo",
+    "version": "3.12.0",
+    "body_count": 4,
+    "joint_count": 3,
+    "collision_geom_count": 4
+  }
+}

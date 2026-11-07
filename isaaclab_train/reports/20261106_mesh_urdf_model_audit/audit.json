@@ -1,0 +1,26 @@
+{
+  "candidate": "ee7d1eaa69f4d322071ac23dbf479d9716141dc2",
+  "new_urdf_sha256": "4e23b41309467f6a72a38ee9d4dd0f889e690715c8012db9e6d8478b5b860511",
+  "checked_links": [
+    "base_link",
+    "rear_wheel_link_1",
+    "steering_link_1",
+    "front_wheel_link_1"
+  ],
+  "joints_preserved": 3,
+  "unique_local_meshes": {
+    "../meshes/base_link.stl": "7ededed10764d4f39bcdc5155960f0c561517398bb525d9974baaf9010aee24f",
+    "../meshes/rear_wheel_link_1.stl": "0aa728c6939ad677dd82def315cb08fcbf942420f06d6e31ff9c44a6c7cfefb4",
+    "../meshes/steering_link_1.stl": "8b94b3fffcc91fd753e81342e08fd06faa39cc58d821f63616159eac84fe367f",
+    "../meshes/front_wheel_link_1.stl": "a675a06197d9f49aff9c3eccc51636ddcc7ef67b51542be505eb2fe79f063d56"
+  },
+  "all_8_mesh_references_resolve": true,
+  "active_usd_tree_matches_HEAD": true,
+  "actual_isaac_import_performed": false,
+  "isolated_mujoco_urdf_parse": {
+    "succeeded": true,
+    "nbody": 4,
+    "ngeom": 4,
+    "note": "Resource/parser smoke only, not Isaac import or dynamics equivalence."
+  }
+}
