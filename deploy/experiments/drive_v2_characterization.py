@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Rear-only v2 MIT PI characterization; preview unless --execute.
 
-300 positive holds (0.1..30 rad/s, 5 s each), each followed by CF-disabled
+600 signed holds (+0.1,-0.1,...,+30,-30 rad/s, 5 s each), each followed by CF-disabled
 2 s coasting, then +/-4 rad/s sines at .5,1,2,5,10 Hz (10 s each).
 No steering traffic. Uses production v2 codec/integrator, requires numpy.
 """
@@ -49,8 +49,9 @@ class Trial:
 
 
 def make_plan(args):
-    holds = [Trial(i, 'hold', i / 10, 0., 5.) for i in range(1, 301)]
-    sines = [Trial(301+i, 'sine', args.amplitude, f, args.sine_duration)
+    levels = [sign * i / 10 for i in range(1, 301) for sign in (1, -1)]
+    holds = [Trial(i, 'hold', target, 0., 5.) for i, target in enumerate(levels, 1)]
+    sines = [Trial(601+i, 'sine', args.amplitude, f, args.sine_duration)
              for i, f in enumerate(args.frequencies)]
     return holds + sines
 
@@ -299,7 +300,7 @@ def main(argv=None):
             payload = bytes.fromhex(raw)
             if not payload or payload[0] not in (0xF0, 0xCD) or len(payload) != shared.LENGTHS[payload[0]]:
                 raise ValueError('invalid pending restore payload')
-    print(f'Rear only: {len(plan)} trials (300 holds + 5 sines by default; recovery runs none); '
+    print(f'Rear only: {len(plan)} trials (600 holds + 5 sines by default; recovery runs none); '
           f'{sum(t.duration_s+t.rest_s for t in plan):g} s nominal, excluding setup/CF acknowledgement.')
     print('MIT Kp=0, Kd=.3, host Ki=3.3; packets/integral 200 Hz, queries 100 Hz.')
     if not args.execute:

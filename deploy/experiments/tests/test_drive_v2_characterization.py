@@ -18,10 +18,15 @@ class Bus:
 class Tests(unittest.TestCase):
     def test_plan(self):
         plan=m.make_plan(m.parse_args([]))
-        self.assertEqual(len(plan),305)
-        self.assertEqual([t.target_rad_s for t in plan[:300]],[i/10 for i in range(1,301)])
-        self.assertTrue(all(t.duration_s==5 and t.rest_s==2 for t in plan[:300]))
-        self.assertEqual(sum(t.duration_s+t.rest_s for t in plan),2160)
+        self.assertEqual(len(plan),605)
+        self.assertEqual([t.target_rad_s for t in plan[:600]],[sign*i/10 for i in range(1,301) for sign in (1,-1)])
+        self.assertTrue(all(t.duration_s==5 and t.rest_s==2 for t in plan[:600]))
+        self.assertEqual(sum(t.duration_s+t.rest_s for t in plan),4260)
+        self.assertEqual([t.trial for t in plan],list(range(1,606)))
+        for trial in plan[600:]:
+            self.assertEqual(trial.kind,'sine')
+            self.assertAlmostEqual(trial.target(.25/trial.frequency_hz),4.)
+            self.assertAlmostEqual(trial.target(.75/trial.frequency_hz),-4.)
     def test_parity_and_rear_only(self):
         bus=Bus();io=m.CharacterizationIO(m.parse_args([]),bus,Log())
         io.command_ranges=m.parse_f0(m.contract.rear_f0_payload(bytes.fromhex('f0bb0300110807')))

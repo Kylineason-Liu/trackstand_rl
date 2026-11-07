@@ -12,13 +12,13 @@ Requires Python 3 with NumPy and the repository's adjacent experiment helpers an
 CAN writers. Support the frame and leave the rear wheel airborne/free. This script
 never queries, disables or commands steering; arrange its condition independently.
 
-The default plan contains 300 positive velocity targets, 0.1 through 30.0 rad/s in
-0.1 increments. Each is held for five seconds, then CF disables the rear motor,
+The default plan contains 600 constant velocity targets: +0.1, -0.1, +0.2, -0.2,
+through +30.0, -30.0 rad/s, testing both directions at each magnitude. Each is held for five seconds, then CF disables the rear motor,
 disable is confirmed, and a nominal two-second coasting window follows. There is
 no rest-speed requirement or braking command. Thus the next trial can start with
 nonzero velocity. Then five ten-second sine trials use amplitude 4 rad/s at
-0.5, 1, 2, 5 and 10 Hz, with the same disabled rests. Nominal total: 2160 seconds
-(36 minutes), plus setup, disable acknowledgements and query/printing overhead.
+0.5, 1, 2, 5 and 10 Hz, with the same disabled rests. Nominal total: 4260 seconds
+(71 minutes), plus setup, disable acknowledgements and query/printing overhead.
 `--amplitude`, `--frequencies` and `--sine-duration` customize only the sine suite.
 
 MIT packets and the host integrator update at nominal 200 Hz; A1/A2/A3/AE queries
